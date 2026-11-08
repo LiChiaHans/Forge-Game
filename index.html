@@ -198,6 +198,14 @@ html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .mo.s{width:24px;height:24px}
 .od{font-size:13px}
 .rc{margin:2px 0}
+#recC{display:block}
+.rcard{border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:10px}
+.rh{display:flex;justify-content:space-between;font-size:15px}
+.rd{font-size:12px;color:var(--mute);margin:2px 0 6px}
+.rg{display:grid;grid-template-columns:repeat(5,1fr);gap:8px 4px}
+#nm{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;z-index:85;background:rgba(0,0,0,.6)}
+#nm .hp{width:100%}
+#nmi{width:100%;padding:12px;font-size:16px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);-webkit-user-select:text;user-select:text}
 </style>
 </head>
 <body>
@@ -215,9 +223,9 @@ html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
   <h1>Forge Master</h1>
   <p id="hs"></p>
   <p>放礦石 · 合成升階 · 鍛造武器 · 賣給客人</p>
-  <button class="pri" onclick="$('title').style.display='none';start()">開始遊戲</button>
+  <button class="pri" onclick="askName(()=>{$('title').style.display='none';start('normal')})">開始遊戲</button>
   <button onclick="$('title').style.display='none';start('tut')">教學關卡</button>
-  <button onclick="openRec()">🏆 歷史最高紀錄</button>
+  <button onclick="openRec()">🏆 歷史紀錄</button>
   <button onclick="showHelp()">遊戲說明</button>
   <p class="cr">製作人: LiChia</p>
   <p class="cr" id="upd" style="margin-top:2px!important">更新日期: 2026/11/08</p>
@@ -265,7 +273,8 @@ html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 <div id="bagP"><div class="hp"><h2 style="margin:0 0 6px">🎒 道具箱</h2><p style="margin:0 0 8px;font-size:13px;color:var(--mute)">點選道具，放到「手持」欄後就能拖到棋盤使用。</p><div id="bagC" class="sg sg4"></div><button class="pri" style="width:100%;margin-top:12px" onclick="closeP('bagP')">關閉</button></div></div>
 <div id="rw"><div class="hp"><h2 style="margin:0 0 4px">每日獎勵</h2><p id="rwp" style="margin:0 0 10px;font-size:13px;color:var(--mute)"></p><button class="pri" id="rwk" style="width:100%;margin-bottom:8px"></button><button class="pri" id="rwg" style="width:100%;margin-bottom:8px"></button><button id="rwn" style="width:100%"></button></div></div>
 <div id="gcP"><div class="hp"><h2 style="margin:0 0 4px">🎴 抽道具卡</h2><p id="gcp" style="margin:0 0 10px;font-size:13px;color:var(--mute)"></p><div id="gcc" style="display:flex;gap:8px"></div><button id="gcb" class="pri" style="width:100%;margin-top:12px;display:none">收下</button></div></div>
-<div id="recP"><div class="hp"><h2 style="margin:0 0 6px">🏆 歷史最高紀錄</h2><p id="recS" style="margin:0 0 4px;font-size:14px;font-weight:700"></p><p style="margin:0;font-size:12px;color:var(--mute)">下面是創下最高分那一局的最佳作品圖鑑。</p><div id="recC"></div><button class="pri" style="width:100%;margin-top:12px" onclick="$('recP').style.display='none'">關閉</button></div></div>
+<div id="recP"><div class="hp"><h2 style="margin:0 0 6px">🏆 歷史紀錄</h2><p id="recS" style="margin:0 0 4px;font-size:12px;color:var(--mute)"></p><div id="recC"></div><button id="recClr" style="width:100%;margin-top:12px;background:#c0392b;color:#fff;border:0">🗑 清除紀錄</button><button class="pri" style="width:100%;margin-top:8px" onclick="$('recP').style.display='none'">關閉</button></div></div>
+<div id="nm"><div class="hp"><h2 style="margin:0 0 8px">輸入玩家名稱</h2><input id="nmi" maxlength="12" placeholder="你的名字（最多 12 字）" autocomplete="off"><button id="nmb" class="pri" style="width:100%;margin-top:10px">開始遊戲</button></div></div>
 <div id="cf"><div><h3 id="cft" style="margin:0 0 6px"></h3><p id="cfp"></p><button id="cfy" style="background:#c0392b;color:#fff;border:0;padding:11px 18px">取消訂單</button> <button id="cfn" style="padding:11px 18px">保留</button></div></div>
 <div id="ov"><div><h2 id="ovt"></h2><p id="ovp"></p><button id="ovb"></button></div></div>
 <script>
@@ -329,12 +338,20 @@ function leave(gh,r){
 const gem=(t,x="")=>`<svg class="gm ${x}" viewBox="0 0 24 24"><polygon points="6,3 18,3 23,9 12,22 1,9" fill="${C[t]}"/><polygon points="1,9 6,3 9,9" fill="#fff" opacity=".28"/><polygon points="6,3 18,3 15,9 9,9" fill="#fff" opacity=".5"/><polygon points="23,9 18,3 15,9" fill="#000" opacity=".1"/><polygon points="1,9 9,9 12,22" fill="#fff" opacity=".12"/><polygon points="9,9 15,9 12,22" fill="#fff" opacity=".32"/><polygon points="15,9 23,9 12,22" fill="#000" opacity=".2"/><polygon points="6,3 18,3 23,9 12,22 1,9" fill="none" stroke="rgba(0,0,0,.5)" stroke-width="1" stroke-linejoin="round"/><path class="sp" d="M7 4.5l.7 1.6 1.6.7-1.6.7-.7 1.6-.7-1.6-1.6-.7 1.6-.7z" fill="#fff"/><path class="sp s2" d="M16.5 10l.5 1.2 1.2.5-1.2.5-.5 1.2-.5-1.2-1.2-.5 1.2-.5z" fill="#fff"/></svg>`;
 let hi=0;try{hi=+localStorage.getItem("forgeHi")||0}catch(e){}
 const score=()=>earned*10+magic;
-let recSaved=null;try{recSaved=JSON.parse(localStorage.getItem("forgeRec")||"null")}catch(e){}
+let recs=[],runId=0,runDate="",playerName="";
+try{recs=JSON.parse(localStorage.getItem("forgeRecs")||"[]")||[];playerName=localStorage.getItem("forgeName")||""}catch(e){}
+const todayStr=()=>{const d=new Date();return d.getFullYear()+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+String(d.getDate()).padStart(2,"0")};
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const rankOf=w=>w?w.cs.reduce((a,x)=>a+x,0)*1e6+Math.round((w.b||0)*100)*1e3+(w.m||0):-1;
 const saveHi=()=>{
   if(day===0)return;const sc=score();
   if(sc>hi){hi=sc;try{localStorage.setItem("forgeHi",hi)}catch(e){}}
-  if(sc>0&&sc>=hi){recSaved={score:sc,best:JSON.parse(JSON.stringify(best))};try{localStorage.setItem("forgeRec",JSON.stringify(recSaved))}catch(e){}}
+  if(sc<=0)return;
+  const e={id:runId,name:playerName||"玩家",date:runDate,score:sc,best:JSON.parse(JSON.stringify(best))};
+  const i=recs.findIndex(r=>r.id===runId);
+  if(i>=0)recs[i]=e;else recs.push(e);
+  recs.sort((a,b)=>b.score-a.score);recs=recs.slice(0,5);
+  try{localStorage.setItem("forgeRecs",JSON.stringify(recs))}catch(e){}
 };
 function colHTML(B){
   return WN.map((n,c)=>{const r=B[c];
@@ -371,7 +388,7 @@ function tutMsg(){
   if(miss.length===1)return pre+"再放一顆銅礦，放在半透明提示的格子。";
   return pre+"把右側框起來的模具，拖到半透明模具提示的格子上。"+link;
 }
-function skipTut(){tutDoneSet();start("normal")}
+function skipTut(){tutDoneSet();beginNormal()}
 const rollM=()=>{
   if(Math.random()<.12&&sk('gc')>0)return 3;
   const w=[1,1,1];(orders||[]).forEach(o=>{if(o.c!==null)COMBO[o.c].split("").forEach(d=>w[+d]+=1)});
@@ -569,7 +586,7 @@ function newDay(){
   say("第 "+day+" 天開始！"+(sk("mg")?"紫色發光的格子放東西有魔法加成":""));render();
 }
 function endDay(){
-  if(day===0){tutDoneSet();ov("教學完成！","你已經學會基本流程了。接下來進入正式的第 1 天！","開始第 1 天",()=>start("normal"));return}
+  if(day===0){tutDoneSet();ov("教學完成！","你已經學會基本流程了。接下來進入正式的第 1 天！","開始第 1 天",beginNormal);return}
   sp++;saveHi();
   ov("🎉 第 "+day+" 天結算","恭喜你，完成了第"+day+"天的販售！總共服務"+dSold+"位客人，賺得"+dEarn+"元！","領取每日獎勵",openReward);
 }
@@ -577,11 +594,13 @@ let skMode="",skillDone=false,spentToday=0;
 const itemPool=()=>{const p=[];[0,1,2].forEach(m=>p.push([{k:'m',s:m},MPR]));p.push([{k:'f'},250]);p.push([{k:'u'},300]);[0,1,2,3,4].forEach(t=>p.push([{k:'o',t},OP[t]]));if(sk('gc'))[0,1,2,3,4].forEach(t=>p.push([{k:'d',t},DP[t]]));return p};
 function drawItem(){const p=itemPool(),w=p.map(x=>1/x[1]),tot=w.reduce((a,b)=>a+b,0);let r=Math.random()*tot;for(let k=0;k<p.length;k++){r-=w[k];if(r<0)return {...p[k][0]}}return {...p[0][0]}}
 function openReward(){gachaUsed=false;skillDone=false;spentToday=0;renderRw();$("rw").style.display="flex"}
+const canUp=()=>{const tot=Object.values(skills).reduce((a,b)=>a+b,0);return sp>0&&Object.keys(SK).some(k=>skills[k]<3&&(tot>0||k==='mm'))};
 function renderRw(){
-  $("rwp").textContent="獲得 1 點技能點（目前 ⭐ "+sp+"）。可以分配技能點、抽一張道具卡，準備好後進入下一天。";
-  $("rwk").textContent=skillDone?"🌟 今天已分配技能點數":"🌟 分配技能點"+(sp?"（⭐"+sp+"）":"");$("rwk").disabled=skillDone;
+  const skOK=skillDone||!canUp(),ready=skOK&&gachaUsed;
+  $("rwp").textContent="獲得 1 點技能點（目前 ⭐ "+sp+"）。必須分配技能點並抽一張道具卡，才能進入下一天。";
+  $("rwk").textContent=skillDone?"🌟 今天已分配技能點數":!canUp()?"🌟 沒有可升級的技能":"🌟 分配技能點（⭐"+sp+"）";$("rwk").disabled=skOK;
   $("rwg").textContent=gachaUsed?"🎴 今天已抽過卡":"🎴 抽道具卡（一次）";$("rwg").disabled=gachaUsed;
-  $("rwn").textContent="進入第 "+(day+1)+" 天";
+  $("rwn").textContent=ready?"進入第 "+(day+1)+" 天":"完成上面兩項才能進入第 "+(day+1)+" 天";$("rwn").disabled=!ready;
 }
 $("rwk").onclick=()=>openSkills(false);
 $("rwg").onclick=()=>{if(gachaUsed)return;gcItems=[drawItem(),drawItem(),drawItem()];
@@ -728,22 +747,29 @@ $("bagC").onclick=e=>{const b=e.target.closest("button");if(!b)return;
   hand=bag.splice(idx,1)[0];closeP("bagP");say("已拿到手持欄："+itemName(hand)+"，拖到棋盤上使用");render()};
 function start(mode){
   mode=mode||(day===0?"tut":"normal");
+  runId=Date.now();runDate=todayStr();
   skills={mm:0,gc:0,mg:0,wb:0,mc:0,mn:0};pack=[];bag=[];gachaUsed=false;$("sk").style.display="none";$("rw").style.display="none";$("gcP").style.display="none";
   g=Array(W*H).fill(null);best=Array(10).fill(null);Q=Array(5).fill(0);MQ=Array.from({length:3},rollM);
   fx=[];hold=new Set();pop=new Set();shown=new Map();busy=false;heat=Array(W*H).fill(0);coins=0;earned=0;magic=0;magicSet=new Set();lives=3;all=0;day=mode==="tut"?-1:0;sp=0;tutP2=false;hand=null;tool=-1;fresh=-1;$("ov").style.display="none";newDay();
 }
 $("orders").onclick=e=>{const c=e.target.closest(".od");if(!c||busy||day===0)return;const k=+c.dataset.k;
-  $("cft").textContent="取消這位客人的訂單？";$("cfp").textContent="會扣 1 點生命（目前 "+lives+" 條）。";
-  $("cf").style.display="flex";
-  $("cfy").onclick=()=>{$("cf").style.display="none";cancelOrder(k)};
-  $("cfn").onclick=()=>{$("cf").style.display="none"}};
+  confirmBox("取消這位客人的訂單？","會扣 1 點生命（目前 "+lives+" 條）。","取消訂單",()=>cancelOrder(k))};
 function toggleMute(){muted=!muted;try{localStorage.setItem("forgeMute",muted?"1":"0")}catch(e){}render()}
 function goHome(){render();$("title").style.display="flex"}
 function openRec(){
-  $("recS").textContent=hi>0?"🏆 歷史最高分："+hi+((recSaved&&recSaved.score===hi)?"":"（這筆紀錄沒有保存作品）"):"還沒有紀錄，快去玩一局吧！";
-  $("recC").innerHTML=recSaved?colHTML(recSaved.best):"";
+  $("recS").textContent=recs.length?"最多保留 5 筆，依分數由高到低排列。每張卡片是那一局的最佳作品圖鑑。":"還沒有紀錄，快去玩一局吧！";
+  $("recC").innerHTML=recs.map((r,k)=>`<div class="rcard"><div class="rh"><b>#${k+1} ${esc(r.name)}</b><span>⭐ ${r.score} 分</span></div><div class="rd">📅 ${esc(r.date||"")}</div><div class="rg">${colHTML(r.best)}</div></div>`).join("");
+  $("recClr").style.display=recs.length?"block":"none";
   $("recP").style.display="flex";
 }
+$("recClr").onclick=()=>confirmBox("清除所有歷史紀錄？","清除後無法復原。","清除",()=>{recs=[];hi=0;try{localStorage.removeItem("forgeHi");localStorage.removeItem("forgeRecs")}catch(e){}openRec();render()});
+function confirmBox(t,p,yes,fn){$("cft").textContent=t;$("cfp").textContent=p;$("cfy").textContent=yes;$("cf").style.display="flex";$("cfy").onclick=()=>{$("cf").style.display="none";fn()};$("cfn").onclick=()=>{$("cf").style.display="none"}}
+function askName(cb){
+  $("nmi").value=playerName;$("nm").style.display="flex";setTimeout(()=>$("nmi").focus(),60);
+  const go=()=>{const v=$("nmi").value.trim().slice(0,12);if(!v){$("nmi").focus();return}playerName=v;try{localStorage.setItem("forgeName",v)}catch(e){}$("nm").style.display="none";cb()};
+  $("nmb").onclick=go;$("nmi").onkeydown=e=>{if(e.key==="Enter")go()};
+}
+function beginNormal(){if(playerName)start("normal");else askName(()=>start("normal"))}
 function showHelp(){$("help").style.display="flex"}
 function openP(id){$(id).style.display="flex";render()}
 function closeP(id){$(id).style.display="none"}
