@@ -536,7 +536,7 @@ body::before{background:#1f2531}
 #side #handSlot .dm .q,#side #handSlot .dm .mo.f{width:27px;height:27px}
 .od .wt{font-size:14px;line-height:18px;top:2px;left:4px;font-weight:900;text-shadow:0 1px 2px #000}
 #pack{padding:7px 8px;margin-top:4px}
-#pack .pk{height:44px;aspect-ratio:auto}
+#pack .pk{height:auto;aspect-ratio:1}
 #msg{height:28px;min-height:28px;border-bottom-left-radius:0;border-bottom-right-radius:0}
 @media(max-width:600px){
  #app,#app[data-compact="true"]{padding-bottom:0;gap:4px}
@@ -548,6 +548,18 @@ body::before{background:#1f2531}
  .od .rc .mo{width:18px;height:18px}
  .od>small{font-size:9px;line-height:11px;height:22px}
  #app[data-compact="true"] #msg{height:28px;min-height:28px}
+}
+
+/* Square weapon storage and clearer customer requests. */
+#pack .pk{height:auto;aspect-ratio:1}
+#app #orders .od{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+#app #orders .od .hxo{flex:none;width:42px;height:42px;margin:0}
+#app #orders .od .order-name{flex:none;width:100%;font-size:12px;line-height:16px;font-weight:900;white-space:nowrap}
+#app #orders .od .rc{flex:none;height:26px;margin:0;gap:2px}
+#app #orders .od .rc .mo{width:26px;height:26px}
+#app #orders .od .rc small{font-size:11px;line-height:26px}
+@media(max-width:600px){
+ #app .bar2>button:nth-child(n+2):nth-child(-n+5){font-size:14px;padding-left:1px;padding-right:1px;letter-spacing:0}
 }
 </style>
 </head>
@@ -616,7 +628,7 @@ body::before{background:#1f2531}
   <h3>任務</h3>
   <p>畫面上方同時有 3 個任務，不需要接取，達成就自動領取 100～1000 金幣獎勵（同時換算成分數）。點任務卡可查看詳情；太困難可以放棄，該格會在隔天換成新任務，已完成的也會在隔天換新。魔法格每放一次物品 +5💰，算 1 個魔法附魔。「一步」指放下一次礦石、模具或鑽石；賣武器不算步數。</p>
   <h3>商店限購與生命藥水</h3>
-  <p>每天同類商品合計限購：模具 3 個、工具 1 個、礦石 3 個，隔天重置。鑽石依當天庫存各限購一次。工具都有功能說明；生命藥水每個 3000 金幣，放入手持欄後拖到棋盤使用，恢復一顆愛心，最多三顆；滿血時不消耗。</p>
+  <p>每天同類商品合計限購：模具 3 個、工具 1 個、礦石 3 個，隔天重置。鑽石依當天庫存各限購一次。工具都有功能說明；生命藥水每個 3000 金幣，放入手持欄後拖到棋盤使用，恢復一顆愛心；滿血時會顯示不能使用的提示，且不消耗藥水。</p>
   <h3>四季</h3>
   <p>從春天開始，春、夏、秋、冬依序輪替，每季持續三天。春天是綠色棋盤，規則不變；夏天是紅色棋盤，鍛造過熱增加為 60 步；秋天是黃橘色棋盤，每天在三個空格落下落葉，必須利用上下左右相鄰的過熱格燒掉才能重新使用；冬天是深藍色棋盤，第一、二、三天分別累積 1、2、3 格冰凍，過熱與暴風雪都不能解除。落葉及冰凍在換季時清除。出現位置以空格為限，不覆蓋既有物品。</p>
   <h3>每天與存檔</h3>
@@ -1103,7 +1115,7 @@ function showPendingSeasonNotice(){if(seasonNoticePending&&$('title').style.disp
 const SHOP_LIMIT={m:3,tool:1,o:3};
 function shopRemaining(type){return Math.max(0,SHOP_LIMIT[type]-(shopBought[type]||0));}
 function useLifePotion(){
-  if(lives>=3){say('❤️ 愛心已滿，生命藥水未消耗。');render();return;}
+  if(lives>=3){toast('❤️ 愛心已滿，不能使用生命藥水。');say('❤️ 愛心已滿，不能使用生命藥水，藥水未消耗。');render();return;}
   lives=Math.min(3,lives+1);hand=null;say('🧪 生命藥水！恢復一顆愛心。');render();saveNow();
 }
 const justHeated=new Set();
@@ -1474,14 +1486,14 @@ function render(){
     <span class="wt">⏳${o.c===null?"∞":Math.max(0,o.wait)}</span>
     <span class="em">${o.wait<=o.max/4?"😡":o.wait<=o.max/2?"😒":""}</span>
     ${o.c===null?`<div class="hxo"><div class="hxi" style="background:${C[o.t]}"><b>任意</b></div></div>`:hex(o.c,C[o.t],"",o.t)}
-    ${o.c===null?"任一武器":WN[o.c]}
+    <div class="order-name">${o.c===null?"≥任意"+NM[o.t]+"級道具":"≥"+NM[o.t]+"級"+WN[o.c]}</div>
     <div class="rc">${o.c===null?"<small>任何配方</small>":COMBO[o.c].split("").map(s=>mold(+s,"","s")).join("")}</div>
-    <small>≥${NM[o.t]}級 · 基本售價 ${Math.round(oPrice(o)*pat(o)*(1+.1*sk('mc')))}+</small></div>`;
+    </div>`;
   }).join("")+(()=>{
     /* 補上看不見的空位，讓外框大小固定；客人全部離開後顯示打烊字樣 */
     let h="";
     for(let i=orders.length;i<(day===0?1:3);i++)
-      h+=`<div class="od odg"><span class="wt">⏳0</span>${hex(0,C[0],"",0)}${WN[0]}<div class="rc">${COMBO[0].split("").map(s=>mold(+s,"","s")).join("")}</div><small>≥${NM[NM.length-1]}級 · 基本售價 1000+</small></div>`;
+      h+=`<div class="od odg"><span class="wt">⏳0</span>${hex(0,C[0],"",0)}${WN[0]}<div class="rc">${COMBO[0].split("").map(s=>mold(+s,"","s")).join("")}</div></div>`;
     return h+(orders.length?"":`<div id="closed">🌙 今日已打烊</div>`);
   })();
 
@@ -1522,7 +1534,7 @@ function render(){
     {key:'f',icon:'🔥',color:'#c0392b',name:'焚燒工具',price:FIREP,description:'清除棋盤上的一個物件'},
     {key:'u',icon:'⬆️',color:'#2f7de1',name:'礦石升級',price:UPGP,description:'將一顆礦石提升一階'},
     {key:'z',icon:'❄️',color:'#54a4cc',name:'暴風雪',price:BLIZZP,description:'將全盤過熱步數歸零'},
-    {key:'l',icon:'🧪',color:'#b94568',name:'生命藥水',price:LIFEP,description:'恢復一顆愛心（最多三顆）'}
+    {key:'l',icon:'🧪',color:'#b94568',name:'生命藥水',price:LIFEP,description:'恢復一顆愛心'}
   ];
   $("shop").innerHTML=
     '<div class="sh">模具<span class="shop-stock">今日剩餘 '+shopRemaining('m')+'/3</span></div>'
