@@ -513,6 +513,42 @@ body::before{background:#1f2531}
 #pack{flex:none;width:100%;margin-top:5px;padding:8px;gap:4px}
 #msg{flex:none}
 @media(max-width:600px){#app .bar #srv{min-height:30px}#app{padding-bottom:max(6px,env(safe-area-inset-bottom))}}
+
+/* Square cells, edge-to-edge bottom, and vertical supply labels. */
+#app{padding-bottom:0}
+#app>.bar:first-child{height:30px;min-height:30px;align-items:stretch}
+#app>.bar:first-child>span,#app>.bar:first-child>button{height:30px;min-height:30px;display:flex;align-items:center;justify-content:center;margin:0;padding-top:0;padding-bottom:0}
+#app>.bar:first-child>#sc{justify-content:flex-start}
+#workbench{width:auto;flex:none}
+#grid{width:calc(5 * var(--cs,56px) + 36px);grid-auto-rows:var(--cs,56px)}
+#side{height:58px;grid-template-columns:minmax(0,1.75fr) minmax(0,1.35fr) minmax(0,.6fr);gap:4px}
+#side #q,#side #tools,#side #handSlot{height:58px;padding:5px 4px 5px 20px;gap:4px}
+#side #q small,#side .tl2{position:absolute;top:0;bottom:0;left:3px;width:13px;height:100%;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;text-orientation:upright;font-size:10px;line-height:13px;letter-spacing:1px}
+#side #q .q{width:clamp(20px,5.2vw,26px);height:clamp(20px,5.2vw,26px)}
+#side #q .q.first{width:clamp(28px,7.1vw,34px);height:clamp(28px,7.1vw,34px)}
+#side #tools{padding-left:19px;gap:4px}
+#side #tools .dm{width:38px;height:38px}
+#side #tools .dm .mo.f{width:34px;height:34px}
+#side .mq{gap:3px}
+#side .mq .mo{width:31px;height:31px}
+#side #handSlot{padding-left:18px}
+#side #handSlot .dm{width:31px;height:36px;font-size:10px}
+#side #handSlot .dm .q,#side #handSlot .dm .mo.f{width:27px;height:27px}
+.od .wt{font-size:14px;line-height:18px;top:2px;left:4px;font-weight:900;text-shadow:0 1px 2px #000}
+#pack{padding:7px 8px;margin-top:4px}
+#pack .pk{height:44px;aspect-ratio:auto}
+#msg{height:28px;min-height:28px;border-bottom-left-radius:0;border-bottom-right-radius:0}
+@media(max-width:600px){
+ #app,#app[data-compact="true"]{padding-bottom:0;gap:4px}
+ #app[data-compact="true"] #side,#app[data-compact="true"] #side #q,#app[data-compact="true"] #side #tools,#app[data-compact="true"] #side #handSlot{height:58px}
+ #orders{height:110px;min-height:110px;max-height:110px}
+ .od{height:98px;min-height:98px;max-height:98px;line-height:14px}
+ .od .hxo{width:30px;height:30px;margin-bottom:1px}
+ .od .rc{height:19px;margin:1px 0}
+ .od .rc .mo{width:18px;height:18px}
+ .od>small{font-size:9px;line-height:11px;height:22px}
+ #app[data-compact="true"] #msg{height:28px;min-height:28px}
+}
 </style>
 </head>
 <body>
@@ -2634,7 +2670,7 @@ function fit(){
     const ap=$("app"),pl=$("play"),wb=$("workbench");
     const vv=window.visualViewport;
     if(!vv||Math.abs(vv.scale-1)<.05){
-      const h=Math.floor(vv?vv.height:window.innerHeight);
+      const h=Math.round(Math.max(window.innerHeight,document.documentElement.clientHeight,vv?vv.height:0));
       const value=h+"px";
       if(document.documentElement.style.getPropertyValue("--viewport-height")!==value)
         document.documentElement.style.setProperty("--viewport-height",value);
@@ -2643,10 +2679,9 @@ function fit(){
     const usableHeight=ap.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom);
     const compact=usableHeight<720?"true":"false";
     if(ap.dataset.compact!==compact)ap.dataset.compact=compact;
-    const cellWidth=Math.max(24,(pl.clientWidth-36)/5);
-    const cellHeight=Math.max(24,Math.min(cellWidth,(pl.clientHeight-40)/6));
-    ap.style.setProperty("--cs",cellWidth+"px");
-    ap.style.setProperty("--ch",cellHeight+"px");
+    const cell=Math.max(24,Math.min((pl.clientWidth-36)/5,(pl.clientHeight-40)/6));
+    ap.style.setProperty("--cs",cell+"px");
+    ap.style.setProperty("--ch",cell+"px");
     ap.dataset.boardOverflow=wb.offsetHeight>pl.clientHeight+1?"true":"false";
   });
 }
