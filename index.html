@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#171b23">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Forge Master">
 <title>Forge Master</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -374,6 +377,82 @@ background:radial-gradient(120% 70% at 50% 108%,#ff6e1e61,transparent 60%),linea
 .tool-desc{display:block;font-size:10px;line-height:1.4;color:var(--mute);margin-top:3px}
 .shop-stock{font-size:11px;color:var(--mute);margin-left:5px;font-weight:500}
 @media(prefers-reduced-motion:reduce){.season-cell.falling,.season-cell.burning{animation-duration:.01ms}}
+
+/* Mobile viewport: safe areas, Safari chrome, and readable board cells. */
+html,body{width:100%;min-height:0}
+#app{height:100dvh;height:var(--viewport-height,100dvh);min-height:0;
+  padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right))}
+#app> :not(#play){flex-shrink:0}
+#play{width:100%;overflow:visible}
+#app[data-board-overflow="true"] #play{overflow:auto;overscroll-behavior:contain}
+.hp{max-height:calc(var(--viewport-height,100dvh) - max(12px,env(safe-area-inset-top)) - max(12px,env(safe-area-inset-bottom)) - 12px);-webkit-overflow-scrolling:touch}
+#title,#help,#shopP,#colP,#qP,#sk,#bagP,#rw,#gcP,#recP,#nm,#svP,#pw,#cf,#ov,#seasonP{
+  padding-top:max(12px,env(safe-area-inset-top));padding-bottom:max(12px,env(safe-area-inset-bottom));
+  padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
+@media(max-width:600px){
+  #app{max-width:440px;gap:5px;padding-top:max(6px,env(safe-area-inset-top));padding-bottom:max(6px,env(safe-area-inset-bottom))}
+  .bar{gap:4px}
+  .bar:not(.bar2){display:grid;grid-template-columns:max-content minmax(0,1fr) max-content 34px;min-height:30px}
+  .bar:not(.bar2)>span{font-size:11px;padding:4px 6px;min-width:0;overflow:hidden;text-overflow:ellipsis}
+  .bar:not(.bar2)>button{width:34px;height:30px;min-width:0;margin-left:0;padding:2px;font-size:0}
+  .bar:not(.bar2)>button::before{content:'🏠';font-size:17px}
+  .bar2{display:grid;grid-template-columns:30px repeat(4,minmax(0,1fr)) 32px max-content;gap:4px;align-items:center}
+  .bar2>button{min-width:0;min-height:36px;padding:5px 2px;font-size:11px;white-space:nowrap}
+  #lv{margin-left:0;padding:3px 0;border:0;background:none;font-size:12px}
+  #orders{height:126px;min-height:126px;max-height:126px;padding:5px;gap:5px}
+  .od{height:114px;min-height:114px;max-height:114px;padding:4px 2px;font-size:11.5px;line-height:16px}
+  .od .hxo{width:36px;height:36px;margin-bottom:0}
+  .od .rc{height:20px;margin:2px 0}
+  .od .mo.s{width:20px;height:20px}
+  .od small{font-size:10px;line-height:12px}
+  .od>small{height:24px}
+  .od .rc small{line-height:20px}
+  .wt{font-size:9px;left:3px}
+  .em{font-size:13px}
+  #qbar{gap:4px}
+  .qc{padding:4px 5px 7px;line-height:1.25}
+  .qc b{font-size:10.5px}
+  .qc small{font-size:9.5px;gap:2px}
+  #qst{width:67px;padding:3px 5px;font-size:9.5px}
+  #seasonBar{min-height:27px;padding:3px 7px;font-size:11px}
+  #seasonHelp{min-height:23px;padding:2px 7px;font-size:10.5px}
+  #play{gap:6px}
+  #side{gap:6px}
+  #q{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 3px;justify-items:center;padding:6px 3px}
+  #q small{grid-column:1/-1;font-size:10px;line-height:13px}
+  #q .q{position:relative;width:clamp(20px,calc(var(--cs)*.42),25px);height:clamp(20px,calc(var(--cs)*.42),25px);font-size:10px}
+  #q .q.first{grid-column:1/-1;width:clamp(28px,calc(var(--cs)*.65),38px);height:clamp(28px,calc(var(--cs)*.65),38px);font-size:12px;outline-width:2px}
+  #q .q::after{content:attr(data-step);position:absolute;right:-3px;top:-5px;font-size:8px;line-height:12px;min-width:12px;border-radius:7px;background:#17212d;color:#dfe8f3;font-weight:800}
+  #q .q.first::after{color:#ffd185}
+  #tools,#handSlot{padding:5px 0;gap:4px}
+  .tl2{font-size:11px;line-height:15px}
+  .mq{gap:4px}
+  .mq .mo{width:calc(var(--cs)*.43);height:calc(var(--cs)*.43)}
+  .dm{width:calc(var(--cs) + 2px);height:calc(var(--cs) + 2px)}
+  .dm .mo.f,.dm .q{width:calc(var(--cs) - 4px);height:calc(var(--cs) - 4px)}
+  .dm.empty{font-size:11px}
+  #msg{height:34px;min-height:34px;font-size:11.5px;line-height:1.35;padding:3px 7px}
+  #tut{font-size:11.5px;line-height:1.35;padding:5px 7px}
+  #tut button{padding:6px;font-size:11px}
+  #title{gap:12px}
+  #title h1{font-size:36px}
+  #title p{font-size:12px}
+  #title button{min-height:45px;padding:10px;font-size:16px;max-width:100%}
+  .hp{padding:14px;border-radius:15px}
+  .hp>button{min-height:42px}
+  #app[data-compact="true"]{gap:4px}
+  #app[data-compact="true"] #orders{height:110px;min-height:110px;max-height:110px}
+  #app[data-compact="true"] .od{height:98px;min-height:98px;max-height:98px;font-size:11px;line-height:15px}
+  #app[data-compact="true"] .od .hxo{width:28px;height:28px}
+  #app[data-compact="true"] .od .rc{height:18px;margin:1px 0}
+  #app[data-compact="true"] .od .mo.s{width:18px;height:18px}
+  #app[data-compact="true"] .od small{font-size:9.5px;line-height:11px}
+  #app[data-compact="true"] .od>small{height:22px}
+  #app[data-compact="true"] .od .rc small{line-height:18px}
+  #app[data-compact="true"] .bar2>button{min-height:32px}
+  #app[data-compact="true"] #msg{height:30px;min-height:30px;font-size:11px}
+  #app[data-compact="true"] .qc{padding-top:3px;padding-bottom:6px}
+}
 </style>
 </head>
 <body>
@@ -1340,7 +1419,7 @@ function render(){
     +(hand!==null?`<span class="dm" data-drag="hand">${itemH(hand,1)}</span>`:`<span class="dm empty">空</span>`);
 
   $("q").innerHTML="<small>接下來</small>"+Q.map((t,k)=>
-    `<div class="q${k?"":" first"}" style="background-color:${C[t]}">${NM[t]}</div>`
+    `<div class="q${k?"":" first"}" data-step="${k+1}" aria-label="第${k+1}顆：${NM[t]}礦" style="background-color:${C[t]}">${NM[t]}</div>`
   ).join("");
 
   const toolItems=[
@@ -2486,24 +2565,45 @@ $("admGo").onclick=()=>{
 function showHelp(){$("help").style.display="flex"}
 function openP(id){$(id).style.display="flex";render()}
 function closeP(id){$(id).style.display="none"}
+let fitQueued=false;
 function fit(){
-  const ap=$("app"),pl=$("play"),w=pl.clientWidth;
-  const vis=[...ap.children].filter(e=>e.offsetHeight>0);
-  const other=vis.filter(e=>e.id!=="play"&&e.id!=="tools")
-    .reduce((a,e)=>a+e.offsetHeight,0);
-  const avail=ap.clientHeight-16-other-6*(vis.length-1);
-  let cs=Math.max(30,Math.floor(Math.min((w-36-20)/6,(avail-66)/(6+5/6))));
-  ap.style.setProperty("--cs",cs+"px");
-  /* 右側佇列＋工具欄也必須放得進畫面，放不下就再縮小格子 */
-  const sd=$("side"),wb=$("workbench");
-  for(let k=0;k<40&&cs>30&&Math.max(sd.offsetHeight,wb.offsetHeight)>pl.clientHeight+1;k++){
-    cs--;ap.style.setProperty("--cs",cs+"px");
-  }
+  if(fitQueued)return;
+  fitQueued=true;
+  requestAnimationFrame(()=>{
+    fitQueued=false;
+    const ap=$("app"),pl=$("play"),wb=$("workbench"),sd=$("side");
+    const vv=window.visualViewport;
+    if(!vv||Math.abs(vv.scale-1)<.05){
+      const h=Math.floor(vv?vv.height:window.innerHeight);
+      const value=h+"px";
+      if(document.documentElement.style.getPropertyValue("--viewport-height")!==value)
+        document.documentElement.style.setProperty("--viewport-height",value);
+    }
+    const style=getComputedStyle(ap);
+    const usableHeight=ap.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom);
+    const compact=usableHeight<720?"true":"false";
+    if(ap.dataset.compact!==compact)ap.dataset.compact=compact;
+    const gap=parseFloat(getComputedStyle(pl).columnGap)||0;
+    const widthLimit=Math.max(24,Math.floor((pl.clientWidth-36-12-gap)/6));
+    let lo=24,hi=Math.min(72,widthLimit),best=24;
+    const setSize=n=>ap.style.setProperty("--cs",n+"px");
+    // Measure both columns, including the six weapon slots and the hand panel.
+    // A compact queue no longer forces the board to shrink unnecessarily.
+    while(lo<=hi){
+      const n=Math.floor((lo+hi)/2);setSize(n);
+      const fits=Math.max(wb.offsetHeight,sd.offsetHeight)<=pl.clientHeight+1
+        &&wb.offsetWidth+sd.offsetWidth+gap<=pl.clientWidth+1;
+      if(fits){best=n;lo=n+1;}else hi=n-1;
+    }
+    setSize(best);
+    ap.dataset.boardOverflow=Math.max(wb.offsetHeight,sd.offsetHeight)>pl.clientHeight+1?"true":"false";
+  });
 }
 window.addEventListener("resize",fit);
 window.addEventListener("load",fit);
 window.addEventListener("orientationchange",fit);
-if(window.visualViewport)visualViewport.addEventListener("resize",fit);
+if(window.visualViewport){visualViewport.addEventListener("resize",fit);visualViewport.addEventListener("scroll",fit);}
+window.addEventListener("pageshow",fit);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
 try{
   const ro=new ResizeObserver(fit);
