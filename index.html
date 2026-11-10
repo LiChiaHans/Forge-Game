@@ -561,6 +561,35 @@ body::before{background:#1f2531}
 @media(max-width:600px){
  #app .bar2>button:nth-child(n+2):nth-child(-n+5){font-size:14px;padding-left:1px;padding-right:1px;letter-spacing:0}
 }
+
+/* Left ore queue, right square board, and enlarged lower controls. */
+#play{justify-content:flex-end;align-items:flex-start;gap:6px}
+#play>#q{position:relative;display:flex;flex-direction:column;flex:none;width:64px;gap:12px;padding:27px 4px 12px;min-height:0}
+#play #q small{position:absolute;top:5px;left:0;width:100%;height:auto;writing-mode:horizontal-tb;text-align:center;font-size:11px;line-height:16px;letter-spacing:0}
+#play #q .q{position:relative;flex:none;width:36px;height:36px;font-size:13px}
+#play #q .q.first{width:42px;height:42px;font-size:15px;grid-column:auto;margin:0;outline-width:2px}
+#play #q .q::after{content:attr(data-step);position:absolute;right:-3px;top:-5px;width:14px;height:14px;display:flex;align-items:center;justify-content:center;background:#17212d;color:#dfe8f3;border-radius:50%;font:9px/1 system-ui,sans-serif;text-shadow:none}
+#app #side,#app[data-compact="true"] #side{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(0,1fr) 66px;height:88px;gap:5px;width:100%}
+#app #side #tools,#app #side #handSlot,#app[data-compact="true"] #side #tools,#app[data-compact="true"] #side #handSlot{height:88px;padding:8px 5px 8px 22px;gap:7px}
+#app #side .tl2{left:4px;font-size:12px;line-height:15px;width:15px}
+#app #side #tools .dm{width:56px;height:56px}
+#app #side #tools .dm .mo.f{width:50px;height:50px}
+#app #side .mq{gap:5px}
+#app #side .mq .mo{width:36px;height:36px}
+#app #side #handSlot .dm{width:58px;height:58px;font-size:13px}
+#app #side #handSlot .dm .q,#app #side #handSlot .dm .mo.f{width:52px;height:52px}
+#app #side #pack{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:66px;height:88px;margin:0;padding:4px;border-radius:12px;touch-action:manipulation}
+#pack .chest-icon{font-size:36px;line-height:42px}#pack small{font-size:13px;line-height:18px}
+#pack.all-locked .chest-icon{opacity:.4}
+#chestP{position:fixed;inset:0;z-index:76;display:none;align-items:center;justify-content:center;padding:12px;background:#0009;backdrop-filter:blur(3px)}
+#chestItems{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.chest-slot{position:relative;aspect-ratio:1;min-width:0;padding:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.chest-weapon{position:relative;width:68%;aspect-ratio:1}
+.chest-slot small{font-size:12px;line-height:16px}.chest-slot.locked{opacity:.3}
+#sk .hp{font-size:17px}#sk #skp{font-size:17px;line-height:1.6}
+#sk .skr{font-size:17px;line-height:1.55;padding:12px 10px;gap:8px;align-items:flex-start}
+#sk .skr small{font-size:15px;line-height:1.65}#sk .skr button{font-size:16px;padding:10px;white-space:nowrap}
+@media(max-width:380px){#app #side{grid-template-columns:minmax(0,1.65fr) minmax(0,1fr) 58px}#app #side #pack{width:58px}#app #side #tools .dm{width:44px;height:44px}#app #side #tools .dm .mo.f{width:38px;height:38px}#app #side .mq .mo{width:28px;height:28px}#app #side #handSlot .dm{width:45px;height:45px}}
 </style>
 </head>
 <body>
@@ -581,15 +610,16 @@ body::before{background:#1f2531}
   <div id="tut"><span id="tutt"></span><button onclick="skipTut()">略過教學</button></div>
   <div id="orders"></div>
   <div id="qbar" style="display:none"></div>
-  <div id="side"><div id="q"></div><div id="tools"></div><div id="handSlot"></div></div>
   <div id="play">
+    <div id="q"></div>
     <div id="workbench"><div id="grid"></div></div>
     <div id="fx"></div>
   </div>
-  <div id="pack"></div>
+  <div id="side"><div id="tools"></div><div id="handSlot"></div><button id="pack" onclick="openChest()" aria-label="開啟武器箱"></button></div>
   <div id="msg"></div>
 </div>
 
+<div id="chestP"><div class="hp"><h2>📦 武器箱</h2><p id="chestInfo"></p><div id="chestItems"></div><button style="width:100%;margin-top:14px" onclick="closeP('chestP')">關閉</button></div></div>
 <div id="title">
   <div class="tl" id="tl"></div>
   <h1>Forge Master</h1>
@@ -624,7 +654,7 @@ body::before{background:#1f2531}
   <p>開始有三條生命。銅級客人等待 100 步，其後每階增加 60 步；任意武器客人不限步數。客人逾時離開或主動取消訂單，扣一條生命。生命歸零，或棋盤滿且無法操作，遊戲結束。</p>
   <h3>商店與技能</h3>
   <p>商店購買的商品進入道具箱。點道具移到手持欄，再拖到棋盤使用。焚燒工具清除物件；升級工具提升礦石一階；暴風雪售價 300 金幣，拖到棋盤任意格（包含已有物品或過熱格），即可消耗道具將全盤過熱歸零，不清除物品、不消耗步數。每日結束獲得技能點與一次抽卡，完成分配、抽卡後進入下一天。首次技能只能選合成大師。</p>
-  <p>棋盤為 5 欄 × 6 列，下方固定顯示 6 格武器箱，格子會等比例縮小以符合棋盤寬度。未解鎖格呈暗色，武器箱技能 Lv1／Lv2／Lv3 分別解鎖 2／4／6 格。武器箱可存放武器；收納後只能賣出，不能放回棋盤。大商人增加成交價，專業礦工提高高階礦石出現機率。</p>
+  <p>棋盤為 5 欄 × 6 列，礦石佇列在左側，模具、手持欄與武器箱圖示在下方。點擊武器箱可查看六格收納空間，未解鎖格呈暗色，武器箱技能 Lv1／Lv2／Lv3 分別解鎖 2／4／6 格。武器箱可存放武器；拖到箱子圖示收納，點擊箱子後選擇武器可取到空的手持欄，再拖回棋盤或賣給客人。大商人增加成交價，專業礦工提高高階礦石出現機率。</p>
   <h3>任務</h3>
   <p>畫面上方同時有 3 個任務，不需要接取，達成就自動領取 100～1000 金幣獎勵（同時換算成分數）。點任務卡可查看詳情；太困難可以放棄，該格會在隔天換成新任務，已完成的也會在隔天換新。魔法格每放一次物品 +5💰，算 1 個魔法附魔。「一步」指放下一次礦石、模具或鑽石；賣武器不算步數。</p>
   <h3>商店限購與生命藥水</h3>
@@ -1187,7 +1217,22 @@ const rollM=()=>{
 };
 const packCap=()=>[0,2,4,6][sk('wb')];
 const syncPack=()=>{while(pack.length<packCap())pack.push(null)};
-function packHTML(){const cap=packCap();return `<span class="pack-title">武器箱 ${cap}/6</span>`+Array.from({length:6},(_,k)=>{const locked=k>=cap,w=locked?null:pack[k];return `<div class="pk${locked?' locked':''}" data-k="${k}" aria-label="武器箱第${k+1}格：${locked?'升級武器箱技能解鎖':w?'已收納武器':'可收納武器'}">${locked?'<span class="lock">🔒</span>':w?`<div class="pkw" data-pw="${k}">${hex(w.c,bands(w),'',w.t)}${mb(w)}</div>`:''}</div>`;}).join('');}
+function packHTML(){const cap=packCap();return Array.from({length:6},(_,k)=>{
+  const locked=k>=cap,w=locked?null:pack[k];
+  return `<button class="chest-slot${locked?' locked':''}" data-take="${k}" ${locked||!w?'disabled':''} aria-label="${locked?'尚未解鎖':w?'取出'+itemName(w):'空格'}">${locked?'🔒':w?'<div class="chest-weapon">'+hex(w.c,bands(w),'',w.t)+mb(w)+'</div><small>'+itemName(w)+'</small>':'<span>空</span>'}</button>`;
+}).join('');}
+function openChest(){render();$('chestP').style.display='flex';}
+function storeWeapon(w,clear){
+  syncPack();const cap=packCap(),slot=pack.findIndex((x,i)=>i<cap&&!x);
+  if(slot<0){toast(cap?'📦 武器箱已滿':'🔒 請先升級武器箱技能');render();return false;}
+  pack[slot]=w;clear();say('📦 武器已收納，點擊箱子可取到手持欄');settle();return true;
+}
+$('chestItems').onclick=e=>{
+  const button=e.target.closest('[data-take]');if(!button||button.disabled||busy)return;
+  const i=+button.dataset.take,w=pack[i];if(i>=packCap()||!w)return;
+  if(hand!==null){toast('請先清空手持欄，再取出武器');return;}
+  hand=w;pack[i]=null;closeP('chestP');say('已拿起'+itemName(w)+'，拖到棋盤空格或客人身上');render();saveNow();
+};
 const sellable=w=>orders.some(o=>(o.c===null||o.c===w.c)&&w.t>=o.t);
 function rollOre(){
   const T=[[],[[1,2]],[[1,4],[2,2]],[[1,6],[2,4],[3,2]]][sk('mn')];
@@ -1216,7 +1261,7 @@ const SK={
   },
   wb:{
     n:"武器箱",i:"🧰",
-    d:["解鎖 2 格武器箱，收納後只能賣出","武器箱增加到 4 格","武器箱增加到 6 格（全部解鎖）"]
+    d:["解鎖 2 格武器箱，可取到手持欄再放回棋盤","武器箱增加到 4 格","武器箱增加到 6 格（全部解鎖）"]
   },
   mc:{
     n:"大商人",i:"💰",
@@ -1435,7 +1480,7 @@ function renderQ(){
   bar.innerHTML=quests.map((q,k)=>{
     const d=QD[q.t];
     return `<div class="qc${q.s==='d'?" d":q.s==='x'?" x":""}"><b>${d.i} ${esc(d.sh(q))}</b><small><span>${q.s==='d'?"✅ 完成":q.s==='x'?"已放棄":q.p+"/"+q.n}</span><span>💰${q.r}</span></small><u style="--pg:${pg(q)}%"></u></div>`;
-  }).join("")+`<div id="qst"><span>🙋 服務 ${all}</span><span>✅ 任務 ${qDone}</span></div>`;
+  }).join("");
   $("qS").textContent="累計服務 "+all+" 位客人 · 已完成 "+qDone+" 個任務";
   $("qC").innerHTML=quests.map((q,k)=>{
     const d=QD[q.t];
@@ -1548,7 +1593,9 @@ function render(){
 
   syncPack();
   $("pack").className=packCap()?"":"all-locked";
-  $("pack").innerHTML=packHTML();
+  $("pack").innerHTML=`<span class="chest-icon">📦</span><small>${pack.filter(Boolean).length}/${packCap()}</small>`;
+  $("chestItems").innerHTML=packHTML();
+  $("chestInfo").textContent=packCap()?"點擊武器取到手持欄，再拖到棋盤空格。":"升級武器箱技能後可收納武器（2／4／6 格）。";
 
   $("skl").innerHTML="<b>目前技能：</b>"+(
     Object.keys(SK).filter(k=>sk(k)).map(k=>SK[k].i+SK[k].n+" Lv"+sk(k)).join("　")||"尚無"
@@ -2093,8 +2140,8 @@ function mv(e){
   clearPrediction();
   const k=drag.kind;
 
-  if(k==="w"||k==="p"){
-    const w=k==="w"?g[drag.i]:pack[drag.i];
+  if(k==="w"||k==="p"||(k==="hand"&&hand&&hand.k==='w')){
+    const w=k==="w"?g[drag.i]:k==="p"?pack[drag.i]:hand;
     const od=at(e.clientX,e.clientY,".od");
     if(od&&w){
       const o=orders[+od.dataset.k];
@@ -2109,15 +2156,14 @@ function mv(e){
       );
       return;
     }
-    const pk=k==="w"?at(e.clientX,e.clientY,".pk"):null;
-    if(pk){
-      const locked=+pk.dataset.k>=packCap(),full=!!pack[+pk.dataset.k];
-      showPrediction(
-        locked?"這格武器箱尚未解鎖":full?"這格武器箱已滿":"放開收進武器箱",
-        locked?"升級「武器箱」技能可解鎖更多格子":full?"請選空的武器箱格子":"收納後可直接拖給客人，不能放回棋盤",
-        locked||full
-      );
-    }else showPrediction("拖到客人身上查看成交價","綠框可成交；紅框會說明不符合訂單的原因");
+    if(at(e.clientX,e.clientY,'#pack')){
+      const full=!pack.slice(0,packCap()).some(x=>!x),locked=!packCap();
+      showPrediction(locked?'武器箱尚未解鎖':full?'武器箱已滿':'放開收進武器箱',locked?'升級武器箱技能即可解鎖':full?'請先取出箱內武器':'點擊箱子可取到手持欄，再放回棋盤',locked||full);
+    }else if(k==='hand'){
+      const cell=at(e.clientX,e.clientY,'.c');
+      if(cell){const i=+cell.dataset.i,why=isOff(i)?'這格尚未開放':cellBlock(i)|| (g[i]?'這格已有物件':heat[i]>0?'這格仍在過熱':'');markPrediction(i,why?'pv-bad':'pv-target');showPrediction(why?'無法放置':'放開放回棋盤',why||'保留武器的品質、鑽石與魔法加成',!!why);}
+      else showPrediction('拖到棋盤、客人或武器箱','空格可放置；客人可出售；箱子可收納');
+    }else showPrediction('拖到客人或武器箱','客人可出售；箱子可收納');
     return;
   }
 
@@ -2258,22 +2304,17 @@ function up(e){
   document.removeEventListener("pointercancel",up);
   if(e.type!=="pointerup"){render();return}
   const x=e.clientX,y=e.clientY;
-  if(kind==="w"||kind==="p"){
-    const w=kind==="w"?g[i]:pack[i];
+  if(kind==="w"||kind==="p"||(kind==="hand"&&hand&&hand.k==='w')){
+    const w=kind==="w"?g[i]:kind==="p"?pack[i]:hand;
     if(!w){render();return}
-    const clr=kind==="w"?()=>{g[i]=null}:()=>{pack[i]=null};
+    const clr=kind==="w"?()=>{g[i]=null}:kind==="p"?()=>{pack[i]=null}:()=>{hand=null};
     const od=at(x,y,".od");
     if(od){
       if(sellW(w,+od.dataset.k,clr))settle();else render();
       return;
     }
-    if(kind==="w"){
-      const pk=at(x,y,".pk");
-      if(pk&&+pk.dataset.k<packCap()&&!pack[+pk.dataset.k]){
-        pack[+pk.dataset.k]=w;g[i]=null;
-        say("武器已放入武器箱（只能賣出）");settle();return;
-      }
-    }
+    if(kind!=='p'&&at(x,y,'#pack')){storeWeapon(w,clr);return;}
+    if(kind==='hand'){dropOn(kind,x,y);return;}
     render();return;
   }
   dropOn(kind,x,y);
@@ -2286,13 +2327,6 @@ $("grid").addEventListener("pointerdown",e=>{
   if(!c||c.k!=='w')return;
   e.preventDefault();
   startDrag(e,"w",i,hex(c.c,bands(c),"",c.t),d);
-});
-$("pack").addEventListener("pointerdown",e=>{
-  if(busy||e.button>0)return;
-  const t=e.target.closest("[data-pw]");if(!t)return;
-  const k=+t.dataset.pw,w=pack[k];if(k>=packCap()||!w)return;
-  e.preventDefault();
-  startDrag(e,"p",k,hex(w.c,bands(w),"",w.t),t);
 });
 $("side").addEventListener("pointerdown",e=>{
   if(busy||e.button>0)return;
@@ -2691,10 +2725,10 @@ function fit(){
     const usableHeight=ap.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom);
     const compact=usableHeight<720?"true":"false";
     if(ap.dataset.compact!==compact)ap.dataset.compact=compact;
-    const cell=Math.max(24,Math.min((pl.clientWidth-36)/5,(pl.clientHeight-40)/6));
+    const cell=Math.max(24,Math.min((pl.clientWidth-64-6-36)/5,(pl.clientHeight-40)/6));
     ap.style.setProperty("--cs",cell+"px");
     ap.style.setProperty("--ch",cell+"px");
-    ap.dataset.boardOverflow=wb.offsetHeight>pl.clientHeight+1?"true":"false";
+    ap.dataset.boardOverflow=Math.max(wb.offsetHeight,$("q").offsetHeight)>pl.clientHeight+1?"true":"false";
   });
 }
 // Keep the saved web app at a fixed page scale while preserving single-finger play.
