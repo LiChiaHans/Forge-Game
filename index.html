@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#171b23">
+<meta name="theme-color" content="#1f2531">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Forge Master">
@@ -488,6 +488,31 @@ body::before{content:"";position:fixed;inset:-100px;z-index:-1;pointer-events:no
  #app .bar #srv{min-height:38px}
  #app[data-compact="true"] #side,#app[data-compact="true"] #side #q,#app[data-compact="true"] #side #tools,#app[data-compact="true"] #side #handSlot{height:70px}
 }
+
+/* Fill the screen and anchor storage and messages above the home indicator. */
+html,body{background:#1f2531}
+body::before{background:#1f2531}
+#app>.bar:first-child{min-height:30px;grid-template-columns:max-content minmax(0,1fr) max-content 30px}
+#app .bar #srv{height:30px;min-height:30px;flex-direction:row;gap:4px;padding:3px 5px;white-space:nowrap}
+#app #srv span,#app #srv .season-info{font-size:10px;line-height:16px}
+#app>.bar:first-child>button:last-child{height:30px;width:30px}
+#side{grid-template-columns:minmax(0,1.65fr) minmax(0,1.3fr) minmax(0,.55fr)}
+#side #q{gap:5px;padding-left:5px;padding-right:5px}
+#side #q .q{width:clamp(22px,5.7vw,28px);height:clamp(22px,5.7vw,28px);font-size:11px}
+#side #q .q.first{width:clamp(30px,7.6vw,36px);height:clamp(30px,7.6vw,36px);font-size:13px;margin-right:1px}
+#side #q .q::after{display:flex;align-items:center;justify-content:center;width:13px;height:13px;min-width:13px;line-height:1;padding:0;top:-6px;right:-3px;border-radius:50%;font-family:system-ui,sans-serif;font-size:8px;text-shadow:none;box-shadow:none;text-align:center}
+#side #tools{gap:5px}
+#side .mq{flex-direction:row;gap:4px}
+#side .mq .mo{width:25px;height:25px}
+#play{flex:1 1 0;min-height:0}
+#workbench{width:100%;height:auto}
+#grid{width:100%;grid-auto-rows:var(--ch,var(--cs,56px))}
+#grid .t{width:calc(min(var(--cs),var(--ch))*.88);height:calc(min(var(--cs),var(--ch))*.88)}
+#grid .t.o{width:calc(min(var(--cs),var(--ch))*.72);height:calc(min(var(--cs),var(--ch))*.72)}
+#grid .t2{width:calc(min(var(--cs),var(--ch))*.94);height:calc(min(var(--cs),var(--ch))*.94)}
+#pack{flex:none;width:100%;margin-top:5px;padding:8px;gap:4px}
+#msg{flex:none}
+@media(max-width:600px){#app .bar #srv{min-height:30px}#app{padding-bottom:max(6px,env(safe-area-inset-bottom))}}
 </style>
 </head>
 <body>
@@ -510,9 +535,10 @@ body::before{content:"";position:fixed;inset:-100px;z-index:-1;pointer-events:no
   <div id="qbar" style="display:none"></div>
   <div id="side"><div id="q"></div><div id="tools"></div><div id="handSlot"></div></div>
   <div id="play">
-    <div id="workbench"><div id="grid"></div><div id="pack"></div></div>
+    <div id="workbench"><div id="grid"></div></div>
     <div id="fx"></div>
   </div>
+  <div id="pack"></div>
   <div id="msg"></div>
 </div>
 
@@ -1401,7 +1427,7 @@ function render(){
   }else $("tut").style.display="none";
   $("sc").textContent="⭐ "+score()+" · 🏆 "+hi;
   $("hs").textContent="🏆 歷史最高分："+hi;
-  $("srv").innerHTML=`<span class="day-info">${day===0?"教學":"第 "+day+" 天"} · 客人 ${dServed}/${dTot}</span><span class="season-info">${currentSeason.icon} ${currentSeason.name} ${day>0?seasonDay()+"/3":""}</span>`;
+  $("srv").innerHTML=`<span class="season-info">${currentSeason.icon}${currentSeason.name}</span><span class="day-info">${day===0?"教學":"第 "+day+" 天"} · 客人 ${dServed}/${dTot}</span>`;
   renderQ();
 
   $("orders").innerHTML=orders.map((o,k)=>{
@@ -2617,16 +2643,10 @@ function fit(){
     const usableHeight=ap.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom);
     const compact=usableHeight<720?"true":"false";
     if(ap.dataset.compact!==compact)ap.dataset.compact=compact;
-    const widthLimit=Math.max(24,Math.floor((pl.clientWidth-36)/5));
-    let lo=24,hi=widthLimit,best=24;
-    const setSize=n=>ap.style.setProperty("--cs",n+"px");
-    // Supplies have their own row; give all remaining width to the board.
-    while(lo<=hi){
-      const n=Math.floor((lo+hi)/2);setSize(n);
-      const fits=wb.offsetHeight<=pl.clientHeight+1&&wb.offsetWidth<=pl.clientWidth+1;
-      if(fits){best=n;lo=n+1;}else hi=n-1;
-    }
-    setSize(best);
+    const cellWidth=Math.max(24,(pl.clientWidth-36)/5);
+    const cellHeight=Math.max(24,Math.min(cellWidth,(pl.clientHeight-40)/6));
+    ap.style.setProperty("--cs",cellWidth+"px");
+    ap.style.setProperty("--ch",cellHeight+"px");
     ap.dataset.boardOverflow=wb.offsetHeight>pl.clientHeight+1?"true":"false";
   });
 }
