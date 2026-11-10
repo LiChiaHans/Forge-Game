@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#171b23">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -453,12 +453,47 @@ html,body{width:100%;min-height:0}
   #app[data-compact="true"] #msg{height:30px;min-height:30px;font-size:11px}
   #app[data-compact="true"] .qc{padding-top:3px;padding-bottom:6px}
 }
+
+/* Full-screen canvas and horizontal supplies above the board. */
+html{background-color:#171b23;min-height:100%;touch-action:none}
+body{position:fixed;inset:0;width:100%;height:100%;min-height:100dvh;background:none;isolation:isolate;touch-action:none}
+body::before{content:"";position:fixed;inset:-100px;z-index:-1;pointer-events:none;background:radial-gradient(130% 55% at 50% 108%,#ff782833,transparent 62%),linear-gradient(#1f2531,#171b23)}
+#app{max-width:500px}
+#app>.bar:first-child{display:grid;grid-template-columns:max-content minmax(0,1fr) max-content 32px;gap:4px;min-height:38px}
+#app>.bar:first-child>span{min-width:0;padding:4px 6px;font-size:11px;overflow:hidden;text-overflow:ellipsis}
+#app>.bar:first-child>button:last-child{width:32px;height:32px;padding:2px;font-size:0;margin:0}
+#app>.bar:first-child>button:last-child::before{content:'🏠';font-size:17px}
+#app .bar #srv{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:auto;height:38px;padding:3px 7px;font-size:10px;line-height:13px;margin:0}
+#app #srv::before{content:none}
+#app #srv span{display:block;font-size:10px;line-height:13px;padding:0;border:0;background:none;border-radius:0}
+#app #srv .season-info{color:#cae5b5;font-size:9px}
+#app[data-season="summer"] #srv .season-info{color:#ffb9a3}
+#app[data-season="autumn"] #srv .season-info{color:#ffd68e}
+#app[data-season="winter"] #srv .season-info{color:#b6d6ff}
+#side{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1.2fr) minmax(0,.7fr);width:100%;height:76px;gap:5px}
+#side #q,#side #tools,#side #handSlot{position:relative;display:flex;flex-direction:row;justify-content:center;align-items:center;gap:4px;width:100%;height:76px;min-width:0;padding:22px 5px 6px;border-radius:12px;overflow:visible}
+#side #q small,#side .tl2{position:absolute;top:3px;left:0;width:100%;text-align:center;font-size:10px;line-height:13px}
+#side #q .q{position:relative;flex:none;grid-column:auto;width:clamp(19px,4.8vw,24px);height:clamp(19px,4.8vw,24px);font-size:10px}
+#side #q .q.first{grid-column:auto;width:clamp(26px,6.7vw,32px);height:clamp(26px,6.7vw,32px);font-size:12px;outline-width:2px;margin-right:2px}
+#side #q .q::after{content:attr(data-step);position:absolute;right:-2px;top:-6px;font-size:8px;line-height:11px;min-width:11px;border-radius:6px;background:#17212d;color:#dfe8f3}
+#side .dm{flex:none;width:38px;height:38px;padding:2px}
+#side .dm .mo.f,#side .dm .q{width:34px;height:34px}
+#side .dm .gm.f{width:18px;height:18px}
+#side .mq{flex-direction:column;gap:2px}
+#side .mq .mo{width:18px;height:18px}
+#play{justify-content:center}
+#workbench{gap:6px}
+@media(max-width:600px){
+ #app{max-width:500px;padding-left:max(6px,env(safe-area-inset-left));padding-right:max(6px,env(safe-area-inset-right))}
+ #app .bar #srv{min-height:38px}
+ #app[data-compact="true"] #side,#app[data-compact="true"] #side #q,#app[data-compact="true"] #side #tools,#app[data-compact="true"] #side #handSlot{height:70px}
+}
 </style>
 </head>
 <body>
 <div id="app">
   <div class="bar">
-    <span id="coin"></span><span id="sc"></span><span id="srv"></span>
+    <span id="coin"></span><span id="sc"></span><button id="srv" onclick="showSeasonNotice()" aria-label="日期、客人與季節資訊"></button>
     <button onclick="goHome()">🏠 回首頁</button>
   </div>
   <div class="bar bar2">
@@ -473,10 +508,9 @@ html,body{width:100%;min-height:0}
   <div id="tut"><span id="tutt"></span><button onclick="skipTut()">略過教學</button></div>
   <div id="orders"></div>
   <div id="qbar" style="display:none"></div>
-  <div id="seasonBar"><span id="seasonLabel"></span><button id="seasonHelp" onclick="showSeasonNotice()">季節說明</button></div>
+  <div id="side"><div id="q"></div><div id="tools"></div><div id="handSlot"></div></div>
   <div id="play">
     <div id="workbench"><div id="grid"></div><div id="pack"></div></div>
-    <div id="side"><div id="q"></div><div id="tools"></div><div id="handSlot"></div></div>
     <div id="fx"></div>
   </div>
   <div id="msg"></div>
@@ -502,7 +536,7 @@ html,body{width:100%;min-height:0}
   <h2>遊戲說明</h2>
   <p><b>目標：</b>完成客人訂單、累積最高分。分數＝（出售武器＋完成任務）所得金幣 ×10。購買道具不扣分。計分板會顯示累計服務客人數與完成任務數。</p>
   <h3>放礦石與模具</h3>
-  <p>點空格放下右側佇列的礦石。拖曳模具到至少兩顆同階礦石旁，消耗相連材料，製成刃、柄或盾胚。學會合成大師後，三顆相連同階礦石可以升階；四顆可產生兩顆升階礦石，五顆可升兩階。</p>
+  <p>點空格放下上方佇列的礦石。拖曳模具到至少兩顆同階礦石旁，消耗相連材料，製成刃、柄或盾胚。學會合成大師後，三顆相連同階礦石可以升階；四顆可產生兩顆升階礦石，五顆可升兩階。</p>
   <h3>鍛造武器</h3>
   <p>三個相連、排成直線或彎線的胚會合成武器。配方由胚的種類決定，品質為三個胚階級的平均值，無條件捨去，仍用來判定能否符合訂單。售價則另外計算「材料基價」：取三個胚各自階級對應的武器基本售價平均，四捨五入，且不低於原品質的基本售價。例如銅＋銅＋銅為 30 金幣；鐵＋銅＋銅仍是銅級，但材料基價為 38 金幣。鑽石、指定訂單與大商人加成再套用在這個基價上。四個、五個胚可以同時鍛造兩把、三把武器，每把依自己的三個胚分別計價。混合材料的武器底色會分層顯示。</p>
   <h3>拖曳預覽</h3>
@@ -1349,7 +1383,7 @@ $("qC").onclick=e=>{
 function render(){
   const currentSeason=SEASONS[seasonIndex()];
   $("app").dataset.season=currentSeason.id;
-  $("seasonLabel").textContent=day>0?currentSeason.icon+" "+currentSeason.name+" · 第 "+seasonDay()+"/3 天":"🌱 春天 · 教學";
+  $("srv").title=currentSeason.name+" · 季節第 "+seasonDay()+"/3 天（點擊查看季節說明）";
   if(day===0&&tutStage===1&&dServed>=1)tutSetup2();
   if(cheat.m)coins=999999;
   if(cheat.s)sp=99;
@@ -1367,7 +1401,7 @@ function render(){
   }else $("tut").style.display="none";
   $("sc").textContent="⭐ "+score()+" · 🏆 "+hi;
   $("hs").textContent="🏆 歷史最高分："+hi;
-  $("srv").textContent=(day===0?"教學 · ":"第 "+day+" 天 · ")+dServed+"/"+dTot;
+  $("srv").innerHTML=`<span class="day-info">${day===0?"教學":"第 "+day+" 天"} · 客人 ${dServed}/${dTot}</span><span class="season-info">${currentSeason.icon} ${currentSeason.name} ${day>0?seasonDay()+"/3":""}</span>`;
   renderQ();
 
   $("orders").innerHTML=orders.map((o,k)=>{
@@ -2571,7 +2605,7 @@ function fit(){
   fitQueued=true;
   requestAnimationFrame(()=>{
     fitQueued=false;
-    const ap=$("app"),pl=$("play"),wb=$("workbench"),sd=$("side");
+    const ap=$("app"),pl=$("play"),wb=$("workbench");
     const vv=window.visualViewport;
     if(!vv||Math.abs(vv.scale-1)<.05){
       const h=Math.floor(vv?vv.height:window.innerHeight);
@@ -2583,22 +2617,23 @@ function fit(){
     const usableHeight=ap.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom);
     const compact=usableHeight<720?"true":"false";
     if(ap.dataset.compact!==compact)ap.dataset.compact=compact;
-    const gap=parseFloat(getComputedStyle(pl).columnGap)||0;
-    const widthLimit=Math.max(24,Math.floor((pl.clientWidth-36-12-gap)/6));
-    let lo=24,hi=Math.min(72,widthLimit),best=24;
+    const widthLimit=Math.max(24,Math.floor((pl.clientWidth-36)/5));
+    let lo=24,hi=widthLimit,best=24;
     const setSize=n=>ap.style.setProperty("--cs",n+"px");
-    // Measure both columns, including the six weapon slots and the hand panel.
-    // A compact queue no longer forces the board to shrink unnecessarily.
+    // Supplies have their own row; give all remaining width to the board.
     while(lo<=hi){
       const n=Math.floor((lo+hi)/2);setSize(n);
-      const fits=Math.max(wb.offsetHeight,sd.offsetHeight)<=pl.clientHeight+1
-        &&wb.offsetWidth+sd.offsetWidth+gap<=pl.clientWidth+1;
+      const fits=wb.offsetHeight<=pl.clientHeight+1&&wb.offsetWidth<=pl.clientWidth+1;
       if(fits){best=n;lo=n+1;}else hi=n-1;
     }
     setSize(best);
-    ap.dataset.boardOverflow=Math.max(wb.offsetHeight,sd.offsetHeight)>pl.clientHeight+1?"true":"false";
+    ap.dataset.boardOverflow=wb.offsetHeight>pl.clientHeight+1?"true":"false";
   });
 }
+// Keep the saved web app at a fixed page scale while preserving single-finger play.
+for(const eventName of ["gesturestart","gesturechange","gestureend"])
+  document.addEventListener(eventName,e=>e.preventDefault(),{passive:false});
+document.addEventListener("touchmove",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});
 window.addEventListener("resize",fit);
 window.addEventListener("load",fit);
 window.addEventListener("orientationchange",fit);
@@ -2627,3 +2662,4 @@ start();fit();booting=false;render();
 </script>
 </body>
 </html>
+
