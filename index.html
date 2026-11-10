@@ -590,6 +590,43 @@ body::before{background:#1f2531}
 #sk .skr{font-size:17px;line-height:1.55;padding:12px 10px;gap:8px;align-items:flex-start}
 #sk .skr small{font-size:15px;line-height:1.65}#sk .skr button{font-size:16px;padding:10px;white-space:nowrap}
 @media(max-width:380px){#app #side{grid-template-columns:minmax(0,1.65fr) minmax(0,1fr) 58px}#app #side #pack{width:58px}#app #side #tools .dm{width:44px;height:44px}#app #side #tools .dm .mo.f{width:38px;height:38px}#app #side .mq .mo{width:28px;height:28px}#app #side #handSlot .dm{width:45px;height:45px}}
+
+/* Larger phone text and lower controls. */
+#app>.bar:first-child{height:34px;min-height:34px}
+#app>.bar:first-child>span,#app>.bar:first-child>button{height:34px;min-height:34px;font-size:14px;line-height:20px}
+#app .bar #srv{height:34px;min-height:34px;padding:3px 5px;gap:3px}
+#app #srv span,#app #srv .season-info{font-size:12px;line-height:20px}
+#app>.bar:first-child>button:last-child{font-size:0;height:34px;min-height:34px}
+#app #qbar .qc{font-size:13px;line-height:1.4;padding:5px 6px 8px}
+#app #qbar .qc b{font-size:14px;line-height:19px}
+#app #qbar .qc small{font-size:12px;line-height:17px;gap:4px}
+#app #side,#app[data-compact="true"] #side,#app #side #tools,#app #side #handSlot,#app[data-compact="true"] #side #tools,#app[data-compact="true"] #side #handSlot{height:100px}
+#app #side .tl2{font-size:16px;line-height:20px;width:19px;left:4px;letter-spacing:2px}
+#app #side #tools,#app #side #handSlot{padding-left:28px;gap:7px}
+#app #side #tools .dm{width:68px;height:68px}
+#app #side #tools .dm .mo.f{width:62px;height:62px}
+#app #side .mq{gap:5px}
+#app #side .mq .mo{width:44px;height:44px}
+#app #side #pack{height:100px}
+#shopP .hp{font-size:17px;line-height:1.55}
+#shopP h2{font-size:24px}
+#shopP .sh{font-size:18px;line-height:1.5;margin-top:14px}
+#shopP .shop-stock{font-size:14px;line-height:1.5;display:inline-block}
+#shopP .sg{gap:8px;margin-top:7px}
+#shopP .si{font-size:16px;line-height:1.4;padding:12px 5px;gap:6px;min-width:0}
+#shopP .si small{font-size:15px;line-height:1.4;overflow-wrap:anywhere}
+#shopP .si .tool-desc{font-size:15px;line-height:1.45}
+#shopP .si .q,#shopP .si .mo.f,#shopP .si .gm.f{width:38px;height:38px;font-size:17px}
+#shopP button{font-size:17px}
+@media(max-width:600px){#shopP .sg4,#shopP .sg5{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:380px){
+ #app>.bar:first-child>span{font-size:12px;padding-left:4px;padding-right:4px}
+ #app #srv span,#app #srv .season-info{font-size:11px}
+ #app #side #tools .dm{width:52px;height:52px}
+ #app #side #tools .dm .mo.f{width:46px;height:46px}
+ #app #side .mq .mo{width:32px;height:32px}
+ #app #qbar .qc b{font-size:12px}#app #qbar .qc small{font-size:11px}
+}
 </style>
 </head>
 <body>
