@@ -744,6 +744,24 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 @keyframes town-loot-reveal{from{transform:translateY(14px) scale(.7);opacity:0}to{transform:none;opacity:1}}
 @media(prefers-reduced-motion:reduce){.town-skill-star.has-points,.town-loot-item{animation:none}.town-chest-lid{transition:none}}
 
+.exp-overlay{position:fixed;inset:0;z-index:81;display:none;align-items:center;justify-content:center;padding:12px;background:#080e19ed;backdrop-filter:blur(3px)}
+.exp-overlay .hp{width:100%;max-height:calc(var(--viewport-height,100dvh) - 24px);overflow:auto;overscroll-behavior:contain}
+.exp-panel{max-width:540px}.weapon-stat-panel{max-width:410px;text-align:center}.exp-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.exp-header h2{margin:4px 0}.exp-header small{color:#b5c9c4;font-size:13px}.exp-header button{font-size:16px;padding:8px}
+.exp-wide{width:100%;min-height:46px;font-size:17px;margin-top:10px}.exp-note{font-size:13px;line-height:1.65;color:#b8c5d0}.exp-overlay p{line-height:1.65}.exp-overlay [hidden]{display:none!important}
+#weaponStatsArt{width:128px;height:128px;margin:12px auto}#weaponStatsArt .hxo{width:100%;height:100%}
+.weapon-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.weapon-stats>div{background:#152331;border:1px solid #61716c;border-bottom:3px solid #a58b5c;padding:10px 4px;text-align:center}.weapon-stats small{display:block;font-size:13px;color:#d0d9d8}.weapon-stats b{display:block;margin-top:4px;font-size:28px;line-height:1.25;color:#ffe4a2}
+.weapon-enchant{padding:10px 12px;border:1px solid #8e72a1;background:#382a4855;margin:10px 0;border-radius:6px;font-size:14px;line-height:1.6}.weapon-enchant b{display:block;color:#e2c7ff}.weapon-enchant span,.weapon-enchant small{display:block}.weapon-enchant small{font-size:12px;color:#b8b2c6;margin-top:4px}
+.weapon-part-list{display:flex;justify-content:center;gap:12px}.weapon-part-list>div{width:30%;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px}.weapon-part-list svg{width:46px;height:46px}.weapon-stat-panel h3{font-size:17px;margin:16px 0 10px}#weaponStatsPrice{color:#edd39a;font-size:14px}
+[data-record-weapon]{cursor:pointer}[data-record-weapon]:focus-visible{outline:2px solid #f1cc77;outline-offset:2px}
+#townP #townExpedition{position:absolute;left:24%;top:3%;width:54%;height:25%;z-index:2;appearance:none;border:0;background:none;padding:0;box-shadow:none}#townExpedition .town-sign{top:83%;left:14%;min-width:72%;font-size:17px}
+#expeditionStages{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:12px 0}#expeditionStages button{padding:8px 3px;font-size:15px}#expeditionStages button[aria-pressed="true"]{background:#685334;border-color:#e2bd70}
+#expeditionMonster{display:flex;align-items:center;gap:12px;padding:12px;background:#152936;border:1px solid #6c837b;border-radius:8px}.exp-monster-art{flex:none;width:92px;height:92px}.exp-monster-art svg{width:100%;height:100%}#expeditionMonster h3{font-size:21px;margin:5px 0}.exp-monster-stats{font-size:14px;line-height:1.6}#expeditionMonster small{color:#c2c2ae;font-size:12px}#expeditionReward{font-size:15px;color:#f4d993;padding:0 4px}
+#expeditionWeapons{display:grid;grid-template-columns:1fr 1fr;gap:7px;max-height:215px;overflow:auto;padding:2px}.exp-weapon{display:flex;gap:7px;align-items:center;text-align:left;min-width:0;padding:7px;font-size:13px}.exp-weapon.selected{border-color:#f1cb74;background:#524a36}.exp-weapon-art{width:48px;height:48px;flex:none}.exp-weapon-art .hxo{width:100%;height:100%}.exp-weapon b{display:block;font-size:13px}.exp-weapon small{display:block;font-size:11px;line-height:1.65;color:#c5cecf}.exp-empty{grid-column:1/-1;padding:18px;background:#152431;color:#c2cbd5;font-size:15px;line-height:1.7}
+#expeditionForecast{font-size:15px;line-height:1.7;background:#263c35;padding:10px;border-left:3px solid #bfa265}.exp-rules{margin:16px 0;padding:12px;border:1px solid #50635f;background:#12232b}.exp-rules summary{cursor:pointer;font-size:15px;color:#e7d39f}.exp-rules p{font-size:13px;color:#bcc9ca}
+#expeditionArena{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:20px 10px;background:linear-gradient(#456175 0%,#789785 70%,#405745 70%);border:2px solid #94a291;border-radius:8px;margin-top:14px}.exp-fighter{width:44%;text-align:center;min-width:0}.exp-fighter>div{width:86px;height:86px;margin:0 auto 14px;filter:drop-shadow(0 4px #1a293580)}.exp-fighter .hxo,.exp-fighter svg{width:100%;height:100%}.exp-fighter b{display:block;font-size:15px}.exp-fighter small{display:block;font-size:12px;margin:5px 0}.exp-fighter progress{width:100%;height:12px;accent-color:#82bd6b}.exp-fighter:last-child progress{accent-color:#ce8a6f}
+#expeditionLog{min-height:156px;background:#14222c;padding:10px 12px;margin:12px 0;font-size:13px;border:1px solid #415956}#expeditionLog p{margin:3px 0}#expeditionLog .hero{color:#d8ebbe}#expeditionLog .enemy{color:#e6bcb5}#expeditionResult{text-align:center}#expeditionResult h3{font-size:24px;color:#f1d086}#expeditionResult p{font-size:16px}
+@media(max-width:360px){.exp-weapon{gap:4px;padding:5px}.exp-weapon-art{width:38px;height:38px}.exp-weapon b{font-size:12px}.exp-weapon small{font-size:10px}.exp-monster-art{width:74px;height:74px}.exp-monster-stats{font-size:12px}}
+
 </style>
 </head>
 <body>
@@ -774,9 +792,28 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 </div>
 
 <div id="chestP"><div class="hp"><h2>📦 武器箱</h2><p id="chestInfo"></p><div id="chestItems"></div><button style="width:100%;margin-top:14px" onclick="closeP('chestP')">關閉</button></div></div>
-<div id="townP"><header class="town-header"><div><b>🏘 鍛造小鎮</b><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></div><div id="townStats"></div><div id="townSeason"></div></header><div id="townMap"><div id="townScenery"></div><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><div id="townQueue"></div><button id="townChest" onclick="openTownChest()" hidden></button><div id="townWeather" aria-hidden="true"></div></div></div>
+<div id="townP"><header class="town-header"><div><b>🏘 鍛造小鎮</b><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></div><div id="townStats"></div><div id="townSeason"></div></header><div id="townMap"><div id="townScenery"></div><button id="townExpedition" onclick="openExpedition()" aria-label="城門遠征"><span class="town-sign">⚔ 遠征</span></button><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><div id="townQueue"></div><button id="townChest" onclick="openTownChest()" hidden></button><div id="townWeather" aria-hidden="true"></div></div></div>
 <div id="townLootP"><div class="hp"><h2>每日寶箱</h2><div id="townLootArt"></div><h3 id="townLootName"></h3><p id="townLootRemaining" aria-live="polite"></p><div class="town-dialog-actions"><button id="townLootClose" onclick="if(!chestOpening)closeP('townLootP')">稍後再開</button><button id="townLootOpen" class="pri" onclick="claimTownChest()">開啟寶箱</button></div></div></div>
 <div id="townSkillP"><div class="hp"><h2>⭐ 還有技能點可以使用</h2><p id="townSkillCount"></p><div class="town-dialog-actions"><button onclick="startTownForge()">仍要進入</button><button class="pri" onclick="closeP('townSkillP');openSkills(false)">前往訓練所</button></div></div></div>
+<div id="weaponStatsP" class="exp-overlay"><div class="hp weapon-stat-panel">
+ <small id="weaponStatsSource"></small><h2 id="weaponStatsTitle"></h2><div id="weaponStatsArt"></div><div id="weaponStatsValues"></div>
+ <div id="weaponStatsParts"></div><p id="weaponStatsNote" class="exp-note"></p><p id="weaponStatsPrice"></p>
+ <button class="pri exp-wide" onclick="closeP('weaponStatsP')">關閉</button>
+</div></div>
+<div id="expeditionP" class="exp-overlay"><div class="hp exp-panel">
+ <header class="exp-header"><div><small>鍛造之後，向城外出發</small><h2>⚔ 遠征</h2></div><button onclick="closeExpedition()">回城鎮</button></header>
+ <p id="expeditionAttempts"></p>
+ <div id="expeditionSetup">
+  <div id="expeditionStages" aria-label="選擇遠征關卡"></div><div id="expeditionMonster"></div><p id="expeditionReward"></p>
+  <h3>選擇出戰武器</h3><div id="expeditionWeapons"></div><div id="expeditionSelectedStats"></div><p id="expeditionForecast" aria-live="polite"></p>
+  <button id="expeditionFight" class="pri exp-wide" onclick="beginExpedition()">開始挑戰 · 使用 1 次遠征</button>
+  <p class="exp-note">武器可重複使用，每天有 3 次挑戰。失敗不扣鍛造愛心；同一關每天可勝利一次，首次勝利另送道具。</p>
+  <details class="exp-rules"><summary>能力與戰鬥規則</summary><p>每個胚分別提供能力：刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度。銅、鐵、鋼、金、秘銀的材料強度為 1、1.7、2.8、4.4、6.8 倍。</p><p>出戰生命＝100＋防禦×2。速度決定先後與行動頻率；物理傷害＝攻擊－對方防禦的 60%，至少造成 1 傷害。奧術傷害無視防禦，護盾先吸收傷害。80 次行動後仍未分勝負則撤退。</p><p>戰鬥推演會顯示目前裝備的預估結果。先改用其他配方或提高材料、附魔，再挑戰較強的怪物。</p></details>
+  <p id="expeditionLast" class="exp-note"></p>
+ </div>
+ <div id="expeditionBattle" hidden><div id="expeditionArena"></div><div id="expeditionLog" aria-live="polite"></div><div id="expeditionResult" aria-live="polite"></div><button id="expeditionSkip" class="exp-wide" onclick="finishExpeditionPlayback()">顯示戰果</button><button id="expeditionAgain" class="pri exp-wide" hidden>選擇下一場</button></div>
+</div></div>
+
 <div id="title">
   <div class="tl" id="tl"></div>
   <h1>Forge Master</h1>
@@ -785,11 +822,12 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
   <button class="pri" onclick="askName(newGameFlow)">開始遊戲</button>
   <button id="ctn" onclick="openSaves('load')">▶ 繼續遊戲</button>
   <button onclick="$('title').style.display='none';start('tut')">教學關卡</button>
+  <button onclick="startExpeditionDemo()">⚔ 試玩遠征（示範裝備）</button>
   <button id="homeAlbum" onclick="openWeaponAlbum()">📖 武器圖鑑</button>
   <button onclick="openRec()">🏆 歷史紀錄</button>
   <button onclick="showHelp()">遊戲說明</button>
   <p class="cr">製作人: LiChia</p>
-  <p class="cr" id="upd">更新日期: 2026/11/11</p>
+  <p class="cr" id="upd">更新日期: 2026/11/12</p>
 </div>
 
 <div id="weaponAlbumP"><div class="hp">
@@ -803,16 +841,16 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 
 <div id="help"><div class="hp">
   <h2>遊戲說明</h2>
-  <p><b>目標：</b>完成客人訂單、累積最高分。分數＝（出售武器＋完成任務）所得金幣 ×10。購買道具不扣分。計分板會顯示累計服務客人數與完成任務數。</p>
+  <p><b>目標：</b>完成客人訂單、累積最高分。分數＝（出售武器＋完成任務＋遠征）所得金幣 ×10。購買道具不扣分。計分板會顯示累計服務客人數與完成任務數。</p>
   <h3>放礦石與模具</h3>
   <p>點空格放下上方佇列的礦石。拖曳模具到至少兩顆同階礦石旁，消耗相連材料，製成刃、柄或盾胚。學會合成大師後，三顆相連同階礦石可以升階；四顆可產生兩顆升階礦石，五顆可升兩階。</p>
   <h3>鍛造武器</h3>
   <p>三個相連、排成直線或彎線的胚會合成武器。配方由胚的種類決定，品質為三個胚階級的平均值，無條件捨去，仍用來判定能否符合訂單。售價則另外計算「材料基價」：取三個胚各自階級對應的武器基本售價平均，四捨五入，且不低於原品質的基本售價。例如銅＋銅＋銅為 30 金幣；鐵＋銅＋銅仍是銅級，但材料基價為 38 金幣。鑽石、指定訂單與大商人加成再套用在這個基價上。四個、五個胚可以同時鍛造兩把、三把武器，每把依自己的三個胚分別計價。混合材料的武器底色會分層顯示。</p>
-  <h3>拖曳預覽</h3>
+  <h3>武器能力與遠征</h3><p>點擊棋盤或歷史紀錄中的完成武器，可查看攻擊力、防禦力與速度。刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度；每個胚使用的材料會分別影響能力。城鎮城門可進行遠征，每天最多 3 次；武器不消耗，勝利可獲金幣，首次過關另送道具。</p><h3>拖曳預覽</h3>
   <p>拖曳模具到棋盤，可以預覽消耗材料、製胚與鍛造結果。金框是消耗材料，紫框是參與鍛造的胚，綠框是放置位置。紅框會說明無法操作的原因。拖曳武器到客人身上，可以先看成交價。</p>
   <h3>鑽石與魔法</h3>
   <p>學會寶石匠後會出現鑽石模具與商品。胚旁的鑽石在鍛造時自動鑲嵌，最多三顆；每顆讓售價增加 30%×（階級＋1）。武器圖示上的裝飾寶石不等於實際鑲鑽，實際加成以 💎 標記為準。</p>
-  <p>魔法師技能每天提供 1～3 個紫色魔法格。放置在上面的物品累積 +5 金幣，隨合成保留，最後賣出時結算。</p>
+  <p>魔法師技能每天提供 1～3 個紫色魔法格。放置在上面的物品累積 +5 金幣，隨合成保留，最後賣出時結算。每 +5 魔法值同時算 1 層附魔，遠征每層增加 2 奧術傷害與 3 點開戰護盾，最多計算 20 層。</p>
   <h3>過熱與出售</h3>
   <p>鍛造消耗的胚及鑽石格通常過熱 50 步，夏天為 60 步。每次成功放下礦石、模具或鑽石減少一步。武器拖給種類與品質符合的客人即可出售；指定種類訂單付 1.3 倍價格。</p>
   <h3>客人與生命</h3>
@@ -1203,7 +1241,7 @@ const todayStr=()=>{
 const esc=t=>String(t).replace(/[&<>"']/g,c=>({
   "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
 }[c]));
-const rankOf=w=>w?w.cs.reduce((a,x)=>a+x,0)*1e6+Math.round((w.b||0)*100)*1e3+(w.m||0):-1;
+const rankOf=w=>w?(w.cs||[w.t,w.t,w.t]).reduce((a,x)=>a+x,0)*1e6+Math.round((w.b||0)*100)*1e3+(w.m||0):-1;
 const saveHi=()=>{
   if(day===0||testRun)return;
   const sc=score();
@@ -1230,7 +1268,7 @@ function colHTML(B){
     const badges=r?(r.m?'<span class="best-magic">✨+'+r.m+'</span>':'')
       +(gems?'<span class="best-gems">💎'+gems+' · +'+Math.round((r.b||0)*100)+'%</span>':''):'';
     const amount=w?wp(w)+(w.m||0):0;
-    return '<div class="sl"><div class="best-art">'+hex(c,r?bands(r):'var(--line)',r?'':'dim',r?r.t:0)+badges+'</div><b>'+n+'</b>'+recipe(c)
+    return '<div class="sl"'+(r?' data-record-weapon="'+c+'" role="button" tabindex="0" aria-label="查看'+n+'的能力"':'')+'><div class="best-art">'+hex(c,r?bands(r):'var(--line)',r?'':'dim',r?r.t:0)+badges+'</div><b>'+n+'</b>'+recipe(c)
       +(r?'<small class="best-price" title="含鑽石與魔法，未含訂單與商人加成">'+amount+' 金幣</small>':'')+'</div>';
   }).join('');
 }
@@ -1944,6 +1982,7 @@ function forge(i){
     wt:Math.floor(t.reduce((s,j)=>s+g[j].t,0)/3),
     cells:t,
     cs:t.map(j=>g[j].t).sort((x,y)=>y-x),
+    parts:t.map(j=>({s:g[j].s,t:g[j].t})),
     mm:t.reduce((a,j)=>a+(g[j].m||0),0)
   }));
   const pt=path.map(j=>g[j].t);
@@ -1957,11 +1996,12 @@ function forge(i){
         b+=.3*(g[j].t+1);dm+=g[j].m||0;
         dts.push(g[j].t);g[j]=null;heat[j]=hotSteps();justHeated.add(j);
       });
-    g[spots[k]]={k:'w',t:f.wt,c:f.w,b,cs:f.cs,m:f.mm+dm,dts};
+    g[spots[k]]={k:'w',t:f.wt,c:f.w,b,cs:f.cs,parts:f.parts,m:f.mm+dm,dts,statVersion:1};
     const wo=g[spots[k]];
     if(day>0&&!testRun)rememberWeapon(wo);
     if(rankOf(wo)>rankOf(best[f.w]))
-      best[f.w]={t:wo.t,cs:wo.cs,b:wo.b,dts:wo.dts,m:wo.m};
+      best[f.w]={t:wo.t,cs:wo.cs,parts:wo.parts,b:wo.b,dts:wo.dts,m:wo.m,statVersion:1};
+    qOnForgeStats(wo);
     ev.to.push(spots[k]);
     msgs.push(NM[f.wt]+"級"+WN[f.w]+"（"+materialNote(wo)+"）"+(b?"（💎+"+Math.round(b*100)+"%）":""));
   });
@@ -1999,6 +2039,7 @@ function checkWait(){
   if(n){lives-=n;say("客人等太久離開了！生命 -"+n)}
 }
 function gameOver(why){
+  stopExpeditionPlayback();$("expeditionP").style.display="none";$("weaponStatsP").style.display="none";
   $("townP").style.display="none";
   saveHi();removeSave(runId);
   if(day===0){
@@ -2173,10 +2214,177 @@ function restoreTownProgress(t){
  if(day>0)showTown();
 }
 
+/* Stats v1: material provenance is independent of price and the quality gate. */
+const ORE_POWER=[1,1.7,2.8,4.4,6.8];
+const MOLD_STATS=[{atk:8,def:1,spd:2},{atk:2,def:2,spd:7},{atk:1,def:8,spd:1}];
+const STAT_NAMES={atk:'攻擊力',def:'防禦力',spd:'速度'};
+function weaponParts(w){
+ if(Array.isArray(w.parts)&&w.parts.length===3&&w.parts.every(p=>Number.isInteger(p.s)&&p.s>=0&&p.s<3&&Number.isInteger(p.t)&&p.t>=0&&p.t<5))return w.parts.map(p=>({s:p.s,t:p.t}));
+ const tiers=Array.isArray(w.cs)&&w.cs.length===3?w.cs:[w.t||0,w.t||0,w.t||0];
+ return (COMBO[w.c]||'012').split('').map((s,i)=>({s:+s,t:Math.max(0,Math.min(4,Number(tiers[i])||0))}));
+}
+function weaponStats(w){
+ const parts=weaponParts(w),v={atk:5,def:3,spd:3};
+ parts.forEach(p=>Object.keys(v).forEach(k=>v[k]+=MOLD_STATS[p.s][k]*ORE_POWER[p.t]));
+ const gemPower=Array.isArray(w.dts)?w.dts.reduce((a,t)=>a+.05*(Math.max(0,Math.min(4,t))+1),0):Math.max(0,w.b||0)/6;
+ Object.keys(v).forEach(k=>v[k]=Math.round(v[k]*(1+gemPower)));
+ const stacks=Math.max(0,Math.floor((w.m||0)/5)),effective=Math.min(20,stacks);
+ return {...v,stacks,arcane:effective*2,ward:effective*3,estimated:!Array.isArray(w.parts)};
+}
+function statsHTML(w){
+ const s=weaponStats(w);return '<div class="weapon-stats">'+Object.entries(STAT_NAMES).map(([k,n])=>'<div><small>'+({atk:'⚔',def:'🛡',spd:'💨'}[k])+' '+n+'</small><b>'+s[k]+'</b></div>').join('')+'</div>';
+}
+function weaponEnchantHTML(w){
+ const s=weaponStats(w);return '<div class="weapon-enchant"><b>✦ 奧術附魔 '+s.stacks+' 層</b><span>每次攻擊額外 '+s.arcane+' 奧術傷害 · 開戰護盾 '+s.ward+'</span><small>每層提供 2 傷害、3 護盾，戰鬥效果最多計算 20 層。</small></div>';
+}
+function openCraftedWeapon(w,source='鍛造作品'){
+ if(!w||w.c==null)return;
+ $('weaponStatsTitle').textContent=NM[w.t]+'級'+WN[w.c];$('weaponStatsSource').textContent=source;
+ $('weaponStatsArt').innerHTML=hex(w.c,bands(w),'',w.t);$('weaponStatsValues').innerHTML=statsHTML(w)+weaponEnchantHTML(w);
+ $('weaponStatsParts').innerHTML='<h3>製作材料</h3><div class="weapon-part-list">'+weaponParts(w).map(p=>'<div>'+mold(p.s,C[p.t],'s')+'<span>'+NM[p.t]+'・'+TY[p.s]+'胚</span></div>').join('')+'</div>';
+ $('weaponStatsNote').textContent=weaponStats(w).estimated?'舊版作品未記錄各胚的材料對應，能力值依原配方與材料估算。':'刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度；高階材料會加強該胚的貢獻。';
+ $('weaponStatsPrice').textContent=(wp(w)+(w.m||0))+' 金幣 · 不含指定訂單與商人加成';
+ $('weaponStatsP').style.display='flex';
+}
+function qOnForgeStats(w){
+ const s=weaponStats(w);
+ ['atk','def','spd'].forEach(k=>qEach('stat_'+k,q=>{if(s[k]>=q.x)qProg(q,q.n)}));
+}
+function addStatQuests(){
+ const thresholds={atk:[20,30,45,65,90],def:[18,28,42,62,85],spd:[16,24,36,52,72]};
+ Object.keys(STAT_NAMES).forEach(k=>QD['stat_'+k]={
+  i:{atk:'⚔️',def:'🛡️',spd:'💨'}[k],w:2,ok:()=>true,
+  mk:()=>{const band=Math.max(0,Math.min(4,Math.floor((day-1)/3)));return {n:1,x:thresholds[k][band],r:[150,230,350,500,700][band]};},
+  tx:q=>'鍛造一把'+STAT_NAMES[k]+'達 '+q.x+' 以上的武器',sh:q=>STAT_NAMES[k]+'≥'+q.x,
+  tip:'完成鍛造時判定，不必賣出；混合材料與實際鑲嵌的鑽石都會計入。'
+ });
+ QD.mag.tip='每累積 +5 金幣魔法值算 1 層附魔；同時提供遠征的奧術傷害與開戰護盾。';
+}
+addStatQuests();
+
+const EXPEDITIONS=[
+ {name:'苔原史萊姆',area:'林間小徑',kind:'slime',color:'#81ad67',hp:65,atk:12,def:3,spd:8,gold:120,loot:{k:'o',t:1}},
+ {name:'疾風灰狼',area:'風嘯森林',kind:'wolf',color:'#a3b9bc',hp:115,atk:18,def:6,spd:18,gold:200,loot:{k:'m',s:0}},
+ {name:'岩甲魔像',area:'廢棄礦坑',kind:'golem',color:'#99a397',hp:180,atk:22,def:22,spd:8,gold:300,loot:{k:'d',t:0}},
+ {name:'盜賊隊長',area:'舊城商道',kind:'knight',color:'#af7773',hp:220,atk:31,def:16,spd:25,gold:450,loot:{k:'o',t:2}},
+ {name:'冰霜守衛',area:'霜封哨站',kind:'golem',color:'#a5dbe8',hp:280,atk:35,def:26,spd:17,gold:650,loot:{k:'d',t:1}},
+ {name:'熔火魔獸',area:'赤焰山谷',kind:'dragon',color:'#dc9470',hp:340,atk:42,def:20,spd:27,gold:900,loot:{k:'o',t:3}},
+ {name:'夜影獵豹',area:'月影古林',kind:'wolf',color:'#a593c7',hp:400,atk:46,def:25,spd:42,gold:1200,loot:{k:'d',t:2}},
+ {name:'遺跡巨兵',area:'沉睡王陵',kind:'golem',color:'#c3b17b',hp:480,atk:58,def:38,spd:20,gold:1500,loot:{k:'o',t:4}},
+ {name:'暮色飛龍',area:'龍脊山巔',kind:'dragon',color:'#a587b5',hp:580,atk:65,def:36,spd:32,gold:2000,loot:{k:'d',t:3}},
+ {name:'古王之鎧',area:'星隕王座',kind:'knight',color:'#e0c57a',hp:700,atk:75,def:45,spd:34,gold:2600,loot:{k:'d',t:4}}
+];
+function freshExpeditionState(){return {day:0,attempts:0,unlocked:0,cleared:[],wonToday:[],victories:0,lastBattle:null};}
+let expeditionState=freshExpeditionState(),expeditionSelected='',expeditionStage=0,expeditionBattleStep=0,expeditionTimer=null;
+const EXPEDITION_LIMIT=3;
+function restoreExpeditionState(raw){
+ const r=raw&&typeof raw==='object'?raw:{},s=freshExpeditionState();
+ s.day=Math.max(0,Number(r.day)||0);s.attempts=Math.max(0,Math.min(EXPEDITION_LIMIT,Math.floor(Number(r.attempts)||0)));
+ s.cleared=[...new Set((Array.isArray(r.cleared)?r.cleared:[]).filter(x=>Number.isInteger(x)&&x>=0&&x<EXPEDITIONS.length))];
+ s.wonToday=[...new Set((Array.isArray(r.wonToday)?r.wonToday:[]).filter(x=>Number.isInteger(x)&&x>=0&&x<EXPEDITIONS.length))];
+ s.unlocked=Math.max(0,Math.min(EXPEDITIONS.length-1,s.cleared.length?Math.max(...s.cleared)+1:0));
+ s.victories=Math.max(s.cleared.length,Math.floor(Number(r.victories)||0));
+ s.lastBattle=r.lastBattle&&Number.isInteger(r.lastBattle.stage)&&r.lastBattle.stage>=0&&r.lastBattle.stage<EXPEDITIONS.length&&r.lastBattle.weapon&&r.lastBattle.stats&&Array.isArray(r.lastBattle.log)?r.lastBattle:null;
+ return s;
+}
+function syncExpeditionDay(){
+ if(day>0&&expeditionState.day!==day){expeditionState.day=day;expeditionState.attempts=0;expeditionState.wonToday=[];}
+}
+function expeditionWeapons(){
+ const a=[];[['g',g],['pack',pack],['bag',bag]].forEach(([where,list])=>(list||[]).forEach((w,i)=>{if(w&&w.k==='w')a.push({key:where+':'+i,w,source:{g:'棋盤',pack:'武器箱',bag:'道具箱'}[where]});}));
+ if(hand&&hand.k==='w')a.push({key:'hand',w:hand,source:'手持'});return a;
+}
+function simulateExpedition(w,monster){
+ const s=weaponStats(w),hpMax=100+s.def*2;let hp=hpMax,shield=s.ward,enemyHp=monster.hp,heroClock=1000/Math.max(1,s.spd),enemyClock=1000/Math.max(1,monster.spd);
+ const log=[];
+ for(let n=0;n<80&&hp>0&&enemyHp>0;n++){
+  if(heroClock<=enemyClock){
+   const physical=Math.max(1,s.atk-Math.floor(monster.def*.6)),damage=Math.min(enemyHp,physical+s.arcane);enemyHp-=damage;
+   log.push({actor:'hero',damage,arcane:s.arcane,hp,shield,enemyHp,text:'武器命中 '+damage+' 傷害'+(s.arcane?'（含奧術 '+s.arcane+'）':'')});heroClock+=1000/Math.max(1,s.spd);
+  }else{
+   const raw=Math.max(1,monster.atk-Math.floor(s.def*.6)),absorbed=Math.min(shield,raw);shield-=absorbed;const damage=Math.min(hp,raw-absorbed);hp-=damage;
+   log.push({actor:'enemy',damage,absorbed,hp,shield,enemyHp,text:monster.name+'造成 '+damage+' 傷害'+(absorbed?'，護盾吸收 '+absorbed:'')});enemyClock+=1000/Math.max(1,monster.spd);
+  }
+ }
+ return {outcome:enemyHp<=0?'win':hp<=0?'lose':'draw',hpMax,hp,shield,enemyHp,stats:s,log};
+}
+function monsterArt(m){
+ const base='<ellipse cx="32" cy="57" rx="26" ry="5" fill="#102330" opacity=".4"/>';
+ let shape='';
+ if(m.kind==='slime')shape='<path fill="#29483d" d="M6 49V33h5V23h8v-7h26v7h8v10h5v18H6z"/><path fill="'+m.color+'" d="M10 47V34h5V24h9v-5h17v7h9v10h5v11z"/><path fill="#b9d98a" d="M17 29v-6h10v-3h10v5H25v7H17z"/><path fill="#21403e" d="M20 35h5v8h-5zM40 35h5v8h-5zM27 44h11v3H27z"/><path fill="#f2f5cc" d="M21 35h2v3h-2zM41 35h2v3h-2z"/>';
+ else if(m.kind==='wolf')shape='<path fill="#273a45" d="M4 33l10-5 7-17 9 10 15-7 7 16 8 4-5 16H42v8h-8v-9H21v9h-8V43l-9-4z"/><path fill="'+m.color+'" d="M10 34l9-2 5-14 7 8 12-6 5 14 8 2-5 10H20l-4-8z"/><path fill="#d5ded0" d="M14 36h13v9h-8zM34 30h12v12H34z"/><path fill="#ce9a64" d="M25 17l3 6h-5zM42 23h4v7h-4z"/><path fill="#263741" d="M42 33h5v4h-5zM52 37h4v4h-4z"/><path fill="#e8c967" d="M43 33h2v2h-2z"/>';
+ else if(m.kind==='golem')shape='<path fill="#344b50" d="M21 6h24v5h5v17h8v26H45v6H21v-6H8V28h8V11h5z"/><path fill="'+m.color+'" d="M23 10h19v16H23zM18 29h29v23H18zM10 32h7v17h-7zM49 32h7v17h-7zM23 52h8v6h-8zM36 52h8v6h-8z"/><path fill="#d5dfcd" d="M24 11h16v3H24zM19 30h25v4H19zM11 33h4v10h-4z"/><path fill="#4a5e5a" d="M31 28v8h8v6h-7v9M22 18h7v5h-7zM36 18h7v5h-7z"/><path fill="#f3cd6d" d="M23 18h5v3h-5zM37 18h5v3h-5zM27 37h6v6h-6z"/>';
+ else if(m.kind==='dragon')shape='<path fill="#41364c" d="M3 15l20 10 6-16 10 6 6-5 7 13 9 2-5 13-12 3 6 13H34v7H22v-8H10l6-12L3 35z"/><path fill="'+m.color+'" d="M7 21l16 9 7-15 8 5 7-4 4 12 8 1-5 6-13 3 7 13H33v7h-8v-8H15l7-13-15-5z"/><path fill="#f1c488" d="M26 29h8v19h-8zM43 25h5v4h-5z"/><path fill="#60465c" d="M7 23l11 9-9-1zM33 12l3 6h-5z"/><path fill="#f5e5ae" d="M45 25h2v2h-2zM52 32h3v3h-3z"/>';
+ else shape='<path fill="#344352" d="M24 5h19v5h5v18h9v28H42v6H21v-6H7V28h12V10h5z"/><path fill="'+m.color+'" d="M25 9h16v5h4v13H22V14h3zM21 31h24v22H21zM10 32h9v20h-9zM47 32h7v20h-7zM23 54h7v6h-7zM36 54h7v6h-7z"/><path fill="#e4d7aa" d="M26 10h13v4H26zM22 32h21v4H22zM29 15h5v13h-5z"/><path fill="#263744" d="M23 19h21v5H23zM27 39h11v11H27z"/><path fill="#f1b760" d="M25 20h5v2h-5zM37 20h5v2h-5zM31 40h3v8h-3z"/>';
+ return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" aria-label="'+m.name+'">'+base+shape+'</svg>';
+}
+function openExpedition(){
+ syncExpeditionDay();stopExpeditionPlayback();expeditionStage=Math.min(expeditionState.unlocked,expeditionStage);
+ $('expeditionP').style.display='flex';$('expeditionBattle').hidden=true;$('expeditionSetup').hidden=false;renderExpedition();
+}
+function closeExpedition(){stopExpeditionPlayback();$('expeditionP').style.display='none';}
+function renderExpedition(){
+ syncExpeditionDay();const options=expeditionWeapons();if(!options.some(x=>x.key===expeditionSelected))expeditionSelected=options[0]?.key||'';
+ const chosen=options.find(x=>x.key===expeditionSelected),m=EXPEDITIONS[expeditionStage],already=expeditionState.wonToday.includes(expeditionStage);
+ $('expeditionAttempts').textContent='第 '+day+' 天 · 剩餘 '+Math.max(0,EXPEDITION_LIMIT-expeditionState.attempts)+' / '+EXPEDITION_LIMIT+' 次 · 累計勝利 '+expeditionState.victories+' 場';
+ $('expeditionStages').innerHTML=EXPEDITIONS.map((x,i)=>'<button data-exp-stage="'+i+'" '+(i>expeditionState.unlocked?'disabled':'')+' aria-pressed="'+(i===expeditionStage)+'">'+(i>expeditionState.unlocked?'🔒':expeditionState.cleared.includes(i)?'✓':'⚑')+' '+(i+1)+'</button>').join('');
+ $('expeditionMonster').innerHTML='<div class="exp-monster-art">'+monsterArt(m)+'</div><div><small>第 '+(expeditionStage+1)+' 關 · '+m.area+'</small><h3>'+m.name+'</h3><div class="exp-monster-stats">♥ '+m.hp+'　⚔ '+m.atk+'　🛡 '+m.def+'　💨 '+m.spd+'</div></div>';
+ const first=!expeditionState.cleared.includes(expeditionStage),gold=first?m.gold:Math.round(m.gold*.45);
+ $('expeditionReward').textContent=(already?'今日已擊敗，明天可再次挑戰。':first?'首次勝利：'+gold+' 金幣＋'+itemName(m.loot):'再次勝利：'+gold+' 金幣');
+ $('expeditionWeapons').innerHTML=options.length?options.map(x=>'<button class="exp-weapon '+(x.key===expeditionSelected?'selected':'')+'" data-exp-weapon="'+x.key+'"><span class="exp-weapon-art">'+hex(x.w.c,bands(x.w),'',x.w.t)+'</span><span><b>'+esc(itemName(x.w))+'</b><small>'+x.source+' · ⚔'+weaponStats(x.w).atk+' 🛡'+weaponStats(x.w).def+' 💨'+weaponStats(x.w).spd+'</small></span></button>').join(''):'<div class="exp-empty">先在冶煉廠鍛造一把武器，再回來挑戰。棋盤、武器箱、道具箱與手持欄的武器都能出戰。</div>';
+ $('expeditionSelectedStats').innerHTML=chosen?statsHTML(chosen.w)+weaponEnchantHTML(chosen.w):'';
+ $('expeditionForecast').textContent=chosen?(()=>{const r=simulateExpedition(chosen.w,m);return '戰鬥推演：'+(r.outcome==='win'?'可獲勝，預計剩餘 '+r.hp+' / '+r.hpMax+' 生命':r.outcome==='lose'?'目前裝備會落敗，試試其他配方、材料或附魔。':'戰鬥將陷入僵持，建議提高攻擊或附魔。');})():'';
+ $('expeditionFight').disabled=!chosen||already||expeditionState.attempts>=EXPEDITION_LIMIT;
+ $('expeditionLast').textContent=expeditionState.lastBattle?'上次遠征：'+EXPEDITIONS[expeditionState.lastBattle.stage].name+' · '+({win:'勝利',lose:'落敗',draw:'撤退'}[expeditionState.lastBattle.outcome]):'';
+}
+function beginExpedition(){
+ syncExpeditionDay();if(expeditionState.attempts>=EXPEDITION_LIMIT||expeditionStage>expeditionState.unlocked||expeditionState.wonToday.includes(expeditionStage))return;
+ const chosen=expeditionWeapons().find(x=>x.key===expeditionSelected);if(!chosen)return;
+ const m=EXPEDITIONS[expeditionStage],result=simulateExpedition(chosen.w,m),first=!expeditionState.cleared.includes(expeditionStage);
+ expeditionState.attempts++;let gold=0,loot=null;
+ if(result.outcome==='win'){
+  gold=first?m.gold:Math.round(m.gold*.45);coins+=gold;earned+=gold;dEarn+=gold;expeditionState.victories++;
+  expeditionState.wonToday.push(expeditionStage);
+  if(first){expeditionState.cleared.push(expeditionStage);expeditionState.unlocked=Math.min(EXPEDITIONS.length-1,expeditionStage+1);loot={...m.loot};bag.push(loot);}
+ }
+ expeditionState.lastBattle={...result,stage:expeditionStage,weapon:JSON.parse(JSON.stringify(chosen.w)),gold,loot,first,day};
+ // Resolve and save once before presentation, including defeats and rewards.
+ saveHi();saveNow();render();expeditionBattleStep=0;
+ $('expeditionSetup').hidden=true;$('expeditionBattle').hidden=false;renderExpeditionBattle();
+ stopExpeditionPlayback();expeditionTimer=setInterval(()=>{expeditionBattleStep++;renderExpeditionBattle();if(expeditionBattleStep>=result.log.length)stopExpeditionPlayback();},360);
+}
+function stopExpeditionPlayback(){if(expeditionTimer!==null){clearInterval(expeditionTimer);expeditionTimer=null;}}
+function finishExpeditionPlayback(){stopExpeditionPlayback();expeditionBattleStep=expeditionState.lastBattle?.log.length||0;renderExpeditionBattle();}
+function renderExpeditionBattle(){
+ const b=expeditionState.lastBattle;if(!b)return;const m=EXPEDITIONS[b.stage],step=Math.min(expeditionBattleStep,b.log.length),frame=step?b.log[step-1]:{hp:b.hpMax,shield:b.stats.ward,enemyHp:m.hp},done=step>=b.log.length;
+ $('expeditionArena').innerHTML='<div class="exp-fighter"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t)+'</div><b>'+WN[b.weapon.c]+'</b><small>♥ '+frame.hp+' / '+b.hpMax+(frame.shield?'　護盾 '+frame.shield:'')+'</small><progress max="'+b.hpMax+'" value="'+frame.hp+'"></progress></div><strong>VS</strong><div class="exp-fighter"><div>'+monsterArt(m)+'</div><b>'+m.name+'</b><small>♥ '+frame.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+frame.enemyHp+'"></progress></div>';
+ $('expeditionLog').innerHTML=b.log.slice(0,step).slice(-5).map(x=>'<p class="'+x.actor+'">'+esc(x.text)+'</p>').join('')||'<p>雙方準備交戰，速度較高的一方先行。</p>';
+ $('expeditionResult').innerHTML=done?'<h3>'+({win:'🏆 遠征勝利',lose:'已返回城鎮',draw:'戰況僵持，安全撤退'}[b.outcome])+'</h3><p>'+(b.outcome==='win'?'獲得 '+b.gold+' 金幣'+(b.loot?'＋'+itemName(b.loot):''):'武器與鍛造愛心保留。調整裝備後再試一次。')+'</p>':'';
+ $('expeditionSkip').hidden=done;$('expeditionAgain').hidden=!done;
+}
+function startExpeditionDemo(){
+ $('title').style.display='none';cheat.m=false;cheat.s=false;start('normal',{test:true});
+ $('seasonP').style.display='none';seasonNoticePending=false;
+ const make=(c,t,m=0)=>({k:'w',c,t,cs:[t,t,t],parts:COMBO[c].split('').map(s=>({s:+s,t})),m,b:0,dts:[]});
+ g=Array(W*H).fill(null);g[11]=make(0,0);g[12]=make(6,0);g[13]=make(9,1);g[16]=make(1,1,20);g[17]=make(4,2);g[18]=make(8,3,50);
+ best=Array(10).fill(null);g.forEach(w=>{if(w)best[w.c]={...w};});
+ quests=['atk','def','spd'].map(k=>({t:'stat_'+k,s:'a',p:0,n:1,x:{atk:30,def:28,spd:24}[k],r:230}));
+ coins=600;sp=1;pendingChests=1;render();showTown();openExpedition();
+}
+$('expeditionStages').onclick=e=>{const b=e.target.closest('[data-exp-stage]');if(!b||b.disabled)return;expeditionStage=+b.dataset.expStage;renderExpedition();};
+$('expeditionWeapons').onclick=e=>{const b=e.target.closest('[data-exp-weapon]');if(!b)return;expeditionSelected=b.dataset.expWeapon;renderExpedition();};
+$('expeditionAgain').onclick=()=>{$('expeditionSetup').hidden=false;$('expeditionBattle').hidden=true;renderExpedition();};
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-record-weapon]')){e.preventDefault();e.target.click();}});
+document.addEventListener('click',e=>{
+ const item=e.target.closest('[data-record-weapon]');if(!item)return;
+ const c=+item.dataset.recordWeapon,record=item.closest('[data-record-index]');const w=record?recs[+record.dataset.recordIndex]?.best?.[c]:best[c];
+ if(w)openCraftedWeapon({...w,k:'w',c},record?'歷史紀錄':'本次最佳作品');
+});
+
 function newDay(){
   phase="play";
   const previousDay=day;
-  day++;heat=heat.map(()=>0);dMagic=0;
+  day++;heat=heat.map(()=>0);dMagic=0;syncExpeditionDay();
   shopBought={m:0,tool:0,o:0};prepareSeasonDay(previousDay);
   const nMagic=sk('mg'),st=new Set();
   while(st.size<nMagic)st.add(rnd(W*H));
@@ -2357,7 +2565,7 @@ $("grid").onclick=e=>{
       g[i]={k:'o',t:Q.shift(),m:0};Q.push(rollOre());
       fresh=i;say("");magicAt(i);auto(i);cool();
     }
-  }else if(c.k==='w')say("把武器拖到客人身上出售，或拖進武器箱");
+  }else if(c.k==='w'){openCraftedWeapon(c,"棋盤上的武器");return;}
   else if(c.k==='d')say("鑽石會在鍛造時自動加裝到旁邊的武器");
   else merge(i);
   settle();
@@ -2429,6 +2637,7 @@ function predictMold(i,s){
       t:Math.floor(cells.reduce((a,j)=>a+board[j].t,0)/3),
       m:cells.reduce((a,j)=>a+(board[j].m||0),0),
       cs:cells.map(j=>board[j].t).sort((x,y)=>y-x),
+      parts:cells.map(j=>({s:board[j].s,t:board[j].t})),
       b:0,cells
     }));
     path.forEach(j=>board[j]=null);
@@ -2682,6 +2891,8 @@ function start(mode,opt){
   active=!booting&&mode!=="tut"&&!testRun;
   skills={mm:0,gc:0,mg:0,wb:0,mc:0,mn:0};
   pack=[];bag=[];gachaUsed=false;pendingChests=0;lastCompletedDay=0;chestOpening=false;
+  stopExpeditionPlayback();expeditionState=freshExpeditionState();expeditionSelected="";expeditionStage=0;
+  $("expeditionP").style.display="none";$("weaponStatsP").style.display="none";
   leaves=new Set();frozen=new Set();seasonEffects=new Map();seasonNoticePending=false;shopBought={m:0,tool:0,o:0};
   $("seasonP").style.display="none";
   $("sk").style.display="none";$("rw").style.display="none";$("gcP").style.display="none";$("townLootP").style.display="none";$("townSkillP").style.display="none";
@@ -2704,12 +2915,12 @@ function toggleMute(){
   try{localStorage.setItem("forgeMute",muted?"1":"0")}catch(e){}
   render();
 }
-function goHome(){saveNow();$("townP").style.display="none";render();$("title").style.display="flex"}
+function goHome(){stopExpeditionPlayback();$("expeditionP").style.display="none";$("weaponStatsP").style.display="none";saveNow();$("townP").style.display="none";render();$("title").style.display="flex"}
 function openRec(){
   $("recS").textContent=recs.length
     ?"最多保留 5 筆，依分數由高到低排列。":"還沒有紀錄，快去玩一局吧！";
   $("recC").innerHTML=recs.map((r,k)=>
-    `<div class="rcard"><div class="rh"><b>#${k+1} ${esc(r.name)}</b><span>⭐ ${r.score} 分</span></div><div class="rd">📅 ${esc(r.date||"")}${r.served!=null?" · 🙋 服務 "+r.served+" 位 · ✅ 任務 "+(r.quests||0)+" 個":""}</div><div class="rg">${colHTML(r.best)}</div></div>`
+    `<div class="rcard" data-record-index="${k}"><div class="rh"><b>#${k+1} ${esc(r.name)}</b><span>⭐ ${r.score} 分</span></div><div class="rd">📅 ${esc(r.date||"")}${r.served!=null?" · 🙋 服務 "+r.served+" 位 · ✅ 任務 "+(r.quests||0)+" 個":""}</div><div class="rg">${colHTML(r.best)}</div></div>`
   ).join("");
   $("recClr").style.display=recs.length?"block":"none";
   $("recP").style.display="flex";
@@ -2763,7 +2974,7 @@ function saveNow(){
   const st={
     g,coins,earned,all,day,dTot,dServed,dEarn,dLeft,orders,dq,best,Q,MQ,
     heat,hand,shopD,magic,magicSet:[...magicSet],dMagic,dSold,lives,
-    skills,pack,sp,bag,gachaUsed,skillDone,spentToday,phase,quests,qDone,dLv,pendingChests,lastCompletedDay,
+    skills,pack,sp,bag,gachaUsed,skillDone,spentToday,phase,quests,qDone,dLv,pendingChests,lastCompletedDay,expedition:expeditionState,
     shopBought,leaves:[...leaves],frozen:[...frozen],seasonVersion:1,seasonNoticePending
   };
   const e={
@@ -2790,6 +3001,7 @@ function loadGame(id){
   heat=t.heat;hand=t.hand;shopD=t.shopD;magic=t.magic;
   magicSet=new Set(t.magicSet);dMagic=t.dMagic;dSold=t.dSold;
   lives=t.lives;skills=t.skills;pack=t.pack;sp=t.sp;bag=t.bag;
+  stopExpeditionPlayback();expeditionState=restoreExpeditionState(t.expedition);syncExpeditionDay();expeditionSelected="";expeditionStage=expeditionState.unlocked;
   gachaUsed=t.gachaUsed;skillDone=t.skillDone;spentToday=t.spentToday;
   shopBought={m:0,tool:0,o:0,...t.shopBought};
   leaves=new Set((t.leaves||[]).filter(i=>i>=0&&i<W*H&&!g[i]));
@@ -2805,7 +3017,7 @@ function loadGame(id){
   stepSales=0;justHeated.clear();ensureQuests();
   tool=-1;fresh=-1;fx=[];hold=new Set();pop=new Set();shown=new Map();
   enter.clear();busy=false;tutP2=false;lead=0;flyI=-1;exitMs=0;active=true;
-  ["ov","cf","sk","rw","gcP","svP","recP","help","seasonP","townLootP","townSkillP"].forEach(x=>$(x).style.display="none");
+  ["ov","cf","sk","rw","gcP","svP","recP","help","seasonP","townLootP","townSkillP","expeditionP","weaponStatsP"].forEach(x=>$(x).style.display="none");
   $("title").style.display="none";clearPrediction();render();
   restoreTownProgress(t);
   showPendingSeasonNotice();
