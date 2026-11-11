@@ -2497,7 +2497,7 @@ function legendWeaponSVG(id){
  }
  return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" aria-label="'+l.name+'"><path fill="#f4d780" opacity=".2" d="M7 2h3v7H7zM4 5h9v2H4zM54 49h3v9h-3zM51 52h9v3h-9z"/>'+s+'<path fill="'+h+'" opacity=".7" d="M7 44h2v2H7zM57 7h2v2h-2z"/></svg>';
 }
-function legendBlueprintSVG(id){return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" aria-label="'+LEGENDS[id].name+'藍圖"><path fill="#263a51" d="M7 6h45v5h6v46H11v-5H5V12h2z"/><path fill="#4c7295" d="M11 10h37v5h6v37H15v-5h-4z"/><path stroke="#87b6cb" stroke-width="1" opacity=".35" d="M15 19h35M15 28h35M15 37h35M15 46h35M20 14v34M29 14v34M38 14v34M47 14v34"/><path fill="#e1cc90" d="M5 8h9v40H5zM12 48h43v9H12z"/><path fill="#fff0bd" d="M7 10h4v34H7zM15 50h37v3H15z"/><svg x="17" y="12" width="35" height="35" style="filter:grayscale(1) brightness(1.6)">'+legendWeaponSVG(id).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'')+'</svg><path fill="#e6c875" d="M43 46h11v9H43z"/></svg>';}
+function legendBlueprintSVG(id){return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" aria-label="'+LEGENDS[id].name+'藍圖"><path fill="#263a51" d="M7 6h45v5h6v46H11v-5H5V12h2z"/><path fill="#4c7295" d="M11 10h37v5h6v37H15v-5h-4z"/><path stroke="#87b6cb" stroke-width="1" opacity=".35" d="M15 19h35M15 28h35M15 37h35M15 46h35M20 14v34M29 14v34M38 14v34M47 14v34"/><path fill="#e1cc90" d="M5 8h9v40H5zM12 48h43v9H12z"/><path fill="#fff0bd" d="M7 10h4v34H7zM15 50h37v3H15z"/><svg x="17" y="12" width="35" height="35" viewBox="0 0 64 64" style="filter:grayscale(1) brightness(1.6)">'+legendWeaponSVG(id).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'')+'</svg><path fill="#e6c875" d="M43 46h11v9H43z"/></svg>';}
 
 function newDay(){
   phase="play";
