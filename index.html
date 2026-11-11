@@ -2656,6 +2656,7 @@ function predictMold(i,s){
 }
 function mv(e){
   if(!drag)return;
+  drag.distance=Math.max(drag.distance||0,Math.hypot(e.clientX-drag.startX,e.clientY-drag.startY));
   drag.gh.style.left=e.clientX+"px";
   drag.gh.style.top=e.clientY+"px";
   document.querySelectorAll(".hl,.hl2").forEach(o=>o.classList.remove("hl","hl2"));
@@ -2774,7 +2775,7 @@ function mv(e){
 function startDrag(e,kind,i,html,src){
   const gh=document.createElement("div");
   gh.className="drag";gh.innerHTML=html;document.body.appendChild(gh);
-  drag={kind,i,gh};src.style.opacity=.35;mv(e);
+  drag={kind,i,gh,startX:e.clientX,startY:e.clientY,distance:0};src.style.opacity=.35;mv(e);
   document.addEventListener("pointermove",mv);
   document.addEventListener("pointerup",up);
   document.addEventListener("pointercancel",up);
@@ -2819,7 +2820,7 @@ function dropOn(kind,x,y){
 }
 function up(e){
   if(!drag)return;
-  const {kind,i,gh}=drag;drag=null;gh.remove();clearPrediction();
+  const {kind,i,gh,distance}=drag;drag=null;gh.remove();clearPrediction();
   document.querySelectorAll(".hl,.hl2").forEach(o=>o.classList.remove("hl","hl2"));
   document.removeEventListener("pointermove",mv);
   document.removeEventListener("pointerup",up);
@@ -2829,6 +2830,7 @@ function up(e){
   if(kind==="w"||kind==="p"||(kind==="hand"&&hand&&hand.k==='w')){
     const w=kind==="w"?g[i]:kind==="p"?pack[i]:hand;
     if(!w){render();return}
+    if(kind==="w"&&(distance||0)<=8){const cell=at(x,y,".c");if(cell&&+cell.dataset.i===i){render();openCraftedWeapon(w,"棋盤上的武器");return;}}
     const clr=kind==="w"?()=>{g[i]=null}:kind==="p"?()=>{pack[i]=null}:()=>{hand=null};
     const od=at(x,y,".od");
     if(od){
