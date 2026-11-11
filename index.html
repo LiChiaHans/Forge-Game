@@ -696,23 +696,35 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 #inspectArt{width:min(230px,65vw);aspect-ratio:1;margin:16px auto}
 #inspectArt .hxo{width:100%;height:100%}
 #inspectState{font-size:15px;line-height:1.6}.inspect-tiers{display:flex;gap:10px}.inspect-tiers button{flex:1;font-size:16px}
-/* Seasonal town is a separate screen; forge board geometry is unchanged. */
-#townP{position:fixed;inset:0;z-index:54;display:none;flex-direction:column;max-width:540px;margin:auto;height:var(--viewport-height,100dvh);background:#2b3936;color:#fff3d4;overflow:hidden}
-.town-header{flex:none;padding:max(8px,env(safe-area-inset-top)) 12px 9px;background:#202e3bf2;border-bottom:3px solid #b79c65}
-.town-header>div:first-child{display:flex;align-items:center;justify-content:space-between;font-size:21px}.town-header button{padding:5px 10px;font-size:14px}
+/* Town has its own scene; board geometry stays unchanged. */
+#app>.bar:first-child>button:last-child::before{content:'🏘'}
+#townP{position:fixed;inset:0;z-index:54;display:none;flex-direction:column;max-width:540px;margin:auto;height:var(--viewport-height,100dvh);background:#263a39;color:#fff3d4;overflow:hidden}
+.town-header{flex:none;padding:max(8px,env(safe-area-inset-top)) 12px 9px;background:#202e3bf2;border-bottom:3px solid #b79c65;position:relative;z-index:8}
+.town-header>div:first-child{display:flex;align-items:center;justify-content:space-between;font-size:21px}.town-header button{padding:5px 10px;font-size:18px;min-width:42px}
 #townStats{font-size:16px;line-height:1.7;margin-top:4px}#townSeason{font-size:14px;line-height:1.6;color:#d7d8bf}
 #townMap{position:relative;flex:1;min-height:270px;overflow:hidden;isolation:isolate}
-#townScenery,#townScenery>svg{position:absolute;inset:0;width:100%;height:100%}
-#townP .town-building{position:absolute;display:block;appearance:none;padding:0;margin:0;border:0;border-radius:0;background:none;box-shadow:none;overflow:visible;touch-action:manipulation}
+#townScenery,#townScenery>svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#townP .town-building{position:absolute;display:block;appearance:none;padding:0;margin:0;border:0;border-radius:0;background:none;box-shadow:none;overflow:visible;touch-action:manipulation;z-index:2}
 .town-building svg{width:100%;height:100%;display:block;filter:drop-shadow(0 4px 0 #23322c44)}
 #townP .town-building:active{transform:translateY(2px)}
-#townArchive{left:0%;top:25%;width:38%;height:30%}#townForge{left:40%;top:24%;width:57%;height:35%}
-#townShop{left:1%;top:63%;width:45%;height:32%}#townTraining{left:51%;top:65%;width:48%;height:32%}
-.town-sign{position:absolute;left:12%;top:63%;min-width:74%;padding:3px 4px;background:#f4e4af;color:#392d24;border:2px solid #7a5e38;box-shadow:2px 3px #27322a55;font-size:clamp(15px,4.2vw,20px);line-height:1.2;font-weight:900;white-space:nowrap}
-.town-sign b{font-size:13px;color:#805127}
+#townArchive{left:-1%;top:26%;width:40%;height:29%}#townForge{left:39%;top:25%;width:59%;height:35%}
+#townShop{left:0%;top:64%;width:47%;height:31%}#townTraining{left:51%;top:65%;width:49%;height:32%}
+.town-sign{position:absolute;left:12%;top:65%;min-width:74%;padding:4px;background:#f4e4af;color:#392d24;border:2px solid #7a5e38;box-shadow:2px 3px #27322a55;font-size:clamp(15px,4.2vw,20px);line-height:1.2;font-weight:900;white-space:nowrap}
+.town-sign b{font-size:13px;color:#805127}.town-reward{position:absolute;left:25%;top:84%;padding:4px 8px;border:2px solid #f1d591;background:#34443c;color:#fff2be;font-size:14px;white-space:nowrap;box-shadow:2px 3px #15292480;animation:town-reward-glow 2.5s ease-in-out infinite}
 #townQueue{position:absolute;left:46%;top:57%;width:128px;height:74px;pointer-events:none;z-index:3}.town-person{position:absolute;width:24px;height:38px;image-rendering:pixelated;filter:drop-shadow(2px 2px 0 #26372e66)}
-.town-footer{flex:none;padding:9px 12px 10px;background:#22313af5;border-top:2px solid #918462}.town-footer p{margin:0 0 8px;font-size:14px;line-height:1.45;min-height:20px}.town-footer button{width:100%;font-size:18px;min-height:44px;padding:8px}
-@media(max-height:740px){.town-header>div:first-child{font-size:18px}#townStats{font-size:14px}#townSeason{font-size:12px}.town-footer p{font-size:12px}.town-sign{font-size:15px}.town-header{padding-bottom:5px}}
+#townWeather{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:5;contain:layout paint}
+.town-weather-particle{position:absolute;display:block;image-rendering:pixelated;animation-fill-mode:both;animation-iteration-count:infinite;animation-timing-function:linear;will-change:transform,opacity}
+.town-snow{width:4px;height:4px;background:#f4fcff;box-shadow:0 -3px #e1f1f8,0 3px #e1f1f8,-3px 0 #e1f1f8,3px 0 #e1f1f8;animation-name:town-snowfall}
+.town-leaf{width:9px;height:6px;background:#d68a37;clip-path:polygon(0 33%,22% 33%,22% 0,76% 0,76% 25%,100% 25%,100% 75%,70% 75%,70% 100%,25% 100%,25% 70%,0 70%);animation-name:town-leaffall}
+.town-sunray{top:-30%;height:160%;width:15%;background:linear-gradient(180deg,#fff4ae7a,#fff4ae2b 50%,#fff4ae00);transform:rotate(24deg);transform-origin:top center;animation-name:town-sunlight;animation-duration:13s;mix-blend-mode:screen;filter:blur(2px)}
+.town-flower{width:5px;height:5px;background:#f4d77e;box-shadow:-5px 0 var(--petal),5px 0 var(--petal),0 -5px var(--petal),0 5px var(--petal),0 10px #466a42,0 15px #466a42,5px 10px #729c57;transform-origin:50% 100%;animation-name:town-bloom;animation-duration:12s;animation-timing-function:ease-in-out}
+@keyframes town-snowfall{0%{transform:translate3d(0,-20px,0);opacity:0}7%{opacity:.85}65%{transform:translate3d(22px,65vh,0);opacity:.9}100%{transform:translate3d(-14px,105vh,0);opacity:0}}
+@keyframes town-leaffall{0%{transform:translate3d(0,-25px,0) rotate(0);opacity:0}8%{opacity:1}35%{transform:translate3d(38px,30vh,0) rotate(85deg)}70%{transform:translate3d(-28px,65vh,0) rotate(220deg);opacity:.9}100%{transform:translate3d(40px,105vh,0) rotate(340deg);opacity:0}}
+@keyframes town-sunlight{0%,100%{opacity:0;transform:rotate(24deg) translateX(-12px)}25%{opacity:.05}45%,58%{opacity:.75}78%{opacity:.1;transform:rotate(24deg) translateX(18px)}}
+@keyframes town-bloom{0%,10%,100%{opacity:0;transform:scale(.15)}22%,74%{opacity:1;transform:scale(1)}85%{opacity:.5;transform:scale(.85)}}
+@keyframes town-reward-glow{50%{filter:brightness(1.22)}}
+@media(prefers-reduced-motion:reduce){.town-weather-particle{animation:none;will-change:auto}.town-snow,.town-leaf{top:35%!important;opacity:.45}.town-sunray{opacity:.15}.town-flower{opacity:1;transform:none}.town-reward{animation:none}}
+@media(max-height:740px){.town-header>div:first-child{font-size:18px}#townStats{font-size:14px}#townSeason{font-size:12px}.town-sign{font-size:15px}.town-header{padding-bottom:5px}}
 
 </style>
 </head>
@@ -720,7 +732,7 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 <div id="app">
   <div class="bar">
     <span id="coin"></span><span id="sc"></span><button id="srv" onclick="showSeasonNotice()" aria-label="日期、客人與季節資訊"></button>
-    <button onclick="goHome()">🏠 回首頁</button>
+    <button onclick="returnToTown()" aria-label="回到城鎮" title="回到城鎮">🏘 回城鎮</button>
   </div>
   <div class="bar bar2">
     <button onclick="showHelp()">?</button>
@@ -744,7 +756,7 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 </div>
 
 <div id="chestP"><div class="hp"><h2>📦 武器箱</h2><p id="chestInfo"></p><div id="chestItems"></div><button style="width:100%;margin-top:14px" onclick="closeP('chestP')">關閉</button></div></div>
-<div id="townP"><header class="town-header"><div><b>🏘 鍛造小鎮</b><button onclick="goHome()">首頁</button></div><div id="townStats"></div><div id="townSeason"></div></header><div id="townMap"><div id="townScenery"></div><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><div id="townQueue"></div></div><footer class="town-footer"><p id="townNotice"></p><button id="townContinue" class="pri" onclick="townNextAction()"></button></footer></div>
+<div id="townP"><header class="town-header"><div><b>🏘 鍛造小鎮</b><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></div><div id="townStats"></div><div id="townSeason"></div></header><div id="townMap"><div id="townScenery"></div><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><div id="townQueue"></div><div id="townWeather" aria-hidden="true"></div></div></div>
 <div id="title">
   <div class="tl" id="tl"></div>
   <h1>Forge Master</h1>
@@ -2021,44 +2033,72 @@ function over(){
   ));
 }
 const TOWN_SEASONS=[
- {sky:'#b4d4ca',ground:'#617d50',road:'#cfbd89',tree:'#54844c',light:'#8fb864',roof:'#775464',snow:false,desc:'春風拂過小鎮，準備迎接今天的客人。'},
- {sky:'#b3d3df',ground:'#74954b',road:'#dac18c',tree:'#3f713f',light:'#78a64d',roof:'#a05b46',snow:false,desc:'盛夏爐火正旺，冶煉廠的過熱需要更久冷卻。'},
- {sky:'#cbc6ad',ground:'#8a7845',road:'#d5b478',tree:'#b16536',light:'#e2a14b',roof:'#80554b',snow:false,desc:'秋葉散落街道，留意棋盤上的落葉。'},
- {sky:'#a9c3d7',ground:'#c5d9dc',road:'#93afbd',tree:'#50746a',light:'#d8e9e7',roof:'#596d83',snow:true,desc:'冬雪覆蓋屋頂，冰凍的格子無法放置物品。'}
+ {sky:'#bad9dc',ground:'#6f914f',road:'#d5c18c',tree:'#426b41',light:'#8fba60',roof:'#7b586d',snow:false},
+ {sky:'#97cce0',ground:'#7d984d',road:'#ddc38a',tree:'#346642',light:'#83ae52',roof:'#9b654a',snow:false},
+ {sky:'#d8c6ae',ground:'#998049',road:'#d9b77f',tree:'#974e36',light:'#e6a34e',roof:'#85554e',snow:false},
+ {sky:'#afc9dc',ground:'#d1e2e6',road:'#a6bbc7',tree:'#506d75',light:'#8faeb0',roof:'#637b91',snow:true}
 ];
 function townHouse(kind,p){
- const roof=kind==='forge'?'#a25a48':kind==='training'?'#486878':p.roof;
- const sign={forge:'⚒',training:'⚔',shop:'✦',archive:'▤'}[kind];
- return `<svg viewBox="0 0 180 170" aria-hidden="true" shape-rendering="crispEdges"><ellipse cx="91" cy="156" rx="79" ry="11" fill="#17232f" opacity=".22"/><path fill="#514737" d="M20 71l100-13 44 28v60l-42 18-102-18z"/><path fill="#d3c99e" d="M25 75l94-11v92l-94-15z"/><path fill="#a49c7c" d="M122 66l36 23v54l-36 14z"/><path fill="#574638" d="M25 81l94-12v7L25 87zM25 128l94 12v7l-94-12zM25 75h7v66h-7zM111 66h8v90h-8zM59 76h6v66h-6z"/><path fill="#352f2e" d="M7 72L83 8l90 67-49 21z"/><path fill="${roof}" d="M12 67L83 13l84 61-44 16z"/><path fill="#d6b16a" opacity=".35" d="M21 64l61-46 6 4-61 46z"/><path fill="#362f31" opacity=".35" d="M44 43l82 39 8-3-83-41zM63 29l82 43 8-3-83-45zM29 55l80 35 8-2-80-39z"/><path fill="#5c5144" d="M75 113h27v41H75z"/><path fill="#242c32" d="M79 116h19v35H79z"/><path fill="#a8b9ab" d="M39 99h18v20H39zM128 94h19v20h-19z"/><path stroke="#544a3a" stroke-width="3" d="M48 99v20M39 109h18M137 94v20M128 104h19"/><path fill="#c9b276" d="M10 91h67v17H10z"/><path fill="#fff0bd" d="M12 91h63v3H12z"/><text x="43" y="104" text-anchor="middle" fill="#4a392b" font-size="15">${sign}</text>${kind==='forge'?`<path fill="#636568" d="M126 11h21v59h-21z"/><path fill="#97958b" d="M123 10h27v8h-27zM128 22h17v4h-17zM128 35h17v4h-17z"/><path fill="#d8e1d6" opacity=".7" d="M126 7V0h7v-7h15v9h-8v5z"/><image href="${UNITY_ART.anvil}" x="30" y="127" width="41" height="28"/><image href="${UNITY_ART.fire0}" x="80" y="125" width="18" height="23"/>`:''}${kind==='training'?'<path fill="#293f58" stroke="#d6bb78" stroke-width="2" d="M81 27l16 5-3 20-13 10-13-10-3-20z"/><path stroke="#c6dbdf" stroke-width="4" d="M74 35l16 17M90 35L74 52"/>':''}${p.snow?'<path fill="#edf6ee" d="M12 67L83 13l84 61-12 4-72-53-57 44zM23 72h9v7h-9zM43 54h7v12h-7zM130 73h9v12h-9z"/>':''}<path fill="#866a43" d="M8 137h12v16H8zM160 141h12v15h-12z"/><path fill="#b99963" d="M8 139h12v3H8zM160 143h12v3h-12z"/></svg>`;
+ const id='townRoof-'+kind,roof=kind==='forge'?['#6f3934','#984b3b','#b7684b','#d08860']:kind==='training'?['#283f57','#395a74','#507891','#79a0ac']:p.snow?['#3d536d','#566f89','#758b9d','#a4b4b9']:kind==='shop'?['#57384f','#78516a','#95657b','#ba8894']:['#49434f',p.roof,'#987c8a','#b79a9f'];
+ const A=[13,76],B=[65,22],C=[160,45],D=[119,103];
+ const at=(u,v)=>[A[0]*(1-u)*(1-v)+B[0]*u*(1-v)+C[0]*u*v+D[0]*(1-u)*v,A[1]*(1-u)*(1-v)+B[1]*u*(1-v)+C[1]*u*v+D[1]*(1-u)*v];
+ const points=a=>a.map(x=>x.map(Math.round).join(',')).join(' ');
+ let tiles='';
+ for(let r=0;r<9;r++)for(let k=-1;k<11;k++){
+   const v0=(k+(r%2)*.5)/10,v1=v0+.1,u0=r/9,u1=(r+1)/9;
+   tiles+=`<polygon points="${points([at(u0,v0),at(u1,v0),at(u1,v1),at(u0,v1)])}" fill="${roof[1+(r*7+k*3+30)%2]}" stroke="${roof[0]}" stroke-width=".7"/><path d="M${points([at(u0+.018,v0+.018),at(u0+.018,v1-.012)]).replace(' ','L')}" stroke="${roof[3]}" stroke-width="1" opacity=".6"/>`;
+ }
+ let wall='';for(let i=0;i<18;i++){const x=27+(i*17)%82,y=107+Math.floor(i/6)*14;wall+=`<rect x="${x}" y="${y}" width="${i%2?6:3}" height="2" fill="#9c8f66" opacity=".42"/>`;}
+ const window=(x,y)=>`<g transform="translate(${x} ${y})"><path fill="#3c3b32" d="M-2-2h23v27H-2z"/><path fill="#638b92" d="M1 1h17v19H1z"/><path fill="#b2d0ba" d="M2 2h6v7H2zM11 11h6v8h-6z"/><path fill="#dbba72" d="M8 0h3v21H8zM0 9h19v3H0zM-3 22h26v4H-3z"/><path fill="#77613e" d="M-5 0h4v21h-4zM20 0h4v21h-4z"/></g>`;
+ const chimney=kind==='forge'?`<g><path fill="#343f49" d="M140 4h19v60l-19-3z"/><path fill="#69777d" d="M140 4h6v55h-6z"/><path fill="#9b9f93" d="M137 2h25v8h-25z"/><path stroke="#3d4b52" stroke-width="2" d="M141 18h17M141 29h17M141 40h17M141 51h17M149 10v8M149 29v11"/><g fill="#d8e4dc" opacity=".75"><path d="M143-2v-6h-7v-7h15v7h7v6z"/><path d="M131-20v-7h-6v-6h18v6h8v7z" opacity=".6"/></g></g>`:'';
+ const crest=kind==='training'?'<path fill="#263f5c" stroke="#cfb774" stroke-width="2" d="M156 60l14 5-2 18-12 10-12-10-2-18z"/><path stroke="#c7d7d8" stroke-width="3" d="M150 68l13 16M163 68l-13 16"/><path stroke="#d7b56d" stroke-width="2" d="M148 78l6-5M159 78l6 5"/>':kind==='archive'?'<path fill="#34495b" stroke="#c4b37b" stroke-width="2" d="M144 65h25v22h-25z"/><path fill="#e6d6a5" d="M148 69h7v14h-7zM157 69h7v14h-7z"/>':'<path fill="#9e8049" d="M151 64h13v3h-13zM149 69h17v3h-17zM151 74h13v3h-13z"/>';
+ const snow=p.snow?`<g fill="#f1f7f4"><path d="M13 76l52-54 95 23-5 6-90-22-45 48zM20 79l34-34 9 2-26 31-4 8h-9v-5zM84 58l14-14 25 6-6 8-16-2-6 9H84zM103 95l8-10 18 4-10 14-12-3v6h-6z"/><path d="M19 139l100 25 62-16v6l-62 16-100-24z"/><path d="M28 120h22v5H28zM71 129h19v5H71z"/></g><path fill="#a9c8d7" d="M35 81v8h3v-8zM109 103v10h3v-9zM126 105v8h3v-9z"/>`:'';
+ return `<svg viewBox="0 -28 192 212" aria-hidden="true" shape-rendering="crispEdges"><defs><clipPath id="${id}"><polygon points="${points([A,B,C,D])}"/></clipPath></defs><path fill="#243b30" opacity=".25" d="M8 147l112 31 69-24v9l-69 25L8 157z"/><path fill="#655440" stroke="#393c33" stroke-width="3" d="M20 77l98 22 64-15v69l-64 19-98-25z"/><path fill="#dfcea0" d="M24 85l91 22v58l-91-22z"/><path fill="#b8aa7f" d="M121 106l57-15v58l-57 16z"/>${wall}<path fill="#edd8a2" stroke="#554b39" stroke-width="3" d="M118 101l42-56 27 42z"/><path fill="#6a5039" d="M157 51h5v37h-5zM140 75l36 9v4l-39-9z"/><path fill="#67513b" d="M23 88l94 23v6L23 94zM23 130l94 24v6l-94-24zM23 84h7v61h-7zM111 106h7v62h-7zM60 94h5v60h-5zM122 108l56-15v6l-56 15zM175 92h6v59h-6z"/><path fill="#362f2c" d="M75 123l26 6v35l-26-6z"/><path fill="#77563a" d="M78 127l19 5v28l-19-5z"/><path stroke="#493e32" stroke-width="2" d="M84 129v26M91 131v26"/><rect x="92" y="144" width="2" height="3" fill="#dfbb64"/>${window(35,102)}<path fill="#8b734d" d="M72 159l29 7 7 5-32-7z"/><path fill="#d0b47b" d="M75 158l24 6v3l-24-6z"/><polygon points="${points([A,B,C,D])}" fill="${roof[0]}" stroke="#383536" stroke-width="5"/><g clip-path="url(#${id})">${tiles}</g><path fill="${roof[3]}" d="M61 21l5-3 95 24 3 4-4 3-95-24z"/><path fill="${roof[0]}" d="M10 75l109 27v6L10 81zM119 102l42-58 4 3-44 61z"/><path fill="${roof[3]}" opacity=".6" d="M13 75l104 26v2L13 77z"/>${crest}${chimney}${kind==='forge'?`<image href="${UNITY_ART.anvil}" x="33" y="149" width="39" height="27"/><path fill="#302f2c" d="M128 122h37v29l-37 10z"/><path fill="#a75432" d="M132 125h29v21l-29 9z"/><image href="${UNITY_ART.fire0}" x="136" y="126" width="22" height="27"/><path fill="#b69767" d="M126 151l41-11v8l-41 12z"/>`:''}${kind==='shop'?'<path fill="#e2bd76" d="M25 96l34 8-2 8-34-8z"/><path fill="#6e9353" d="M27 97l5 1-2 8-5-1zM39 100l5 1-2 8-5-1zM51 103l5 1-2 8-5-1z"/>':''}${snow}<g fill="#735338" stroke="#4b4132" stroke-width="2"><path d="M8 149h13v18H8zM165 155h15v17h-15z"/></g><path stroke="#c4a575" stroke-width="2" d="M9 153h11M9 162h11M166 159h13M166 168h13"/></svg>`;
+}
+function townCastle(p){
+ const stone=p.snow?'#d2dce0':'#d4ccae',shade=p.snow?'#8faab8':'#9da58f',dark='#566e78',roof=p.snow?'#617b98':'#69758f';
+ const tower=(x,y,w,h)=>{let blocks='';for(let r=0;r<Math.floor(h/8);r++)for(let k=0;k<3;k++)blocks+=`<rect x="${x+2+k*(w/3)+(r%2)*2}" y="${y+6+r*8}" width="${3+k%2}" height="2" fill="${r%2?shade:'#e4e1c8'}" opacity=".55"/>`;return `<path fill="${shade}" d="M${x+w} ${y}l7-5v${h}l-7 6z"/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${stone}"/><path fill="#e8e2c7" d="M${x} ${y}h4v${h}h-4z"/>${blocks}<path fill="${dark}" d="M${x+w/2-3} ${y+14}h6v14h-6z"/><path fill="#b1c3ba" d="M${x+w/2-2} ${y+15}h2v11h-2z"/><path fill="${roof}" stroke="#4b6378" stroke-width="2" d="M${x-5} ${y}l${w/2+5}-${24} ${w/2+9} 20-6 4z"/><path fill="#a1b1be" d="M${x-3} ${y-2}l${w/2+3}-20 3 2-${w/2+2} 19z"/><path stroke="#ddc994" stroke-width="2" d="M${x+w/2} ${y-24}v-13"/><path fill="#a36362" d="M${x+w/2+1} ${y-37}h13l-4 4 4 4h-13z"/>${p.snow?`<path fill="#edf5f2" d="M${x-4} ${y}l${w/2+4}-24 5 5-7 1-${w/2} 19z"/>`:''}`;};
+ let brick='';for(let r=0;r<8;r++)for(let k=0;k<11;k++)brick+=`<path fill="${(k+r)%3?shade:'#eee6ce'}" opacity=".5" d="M${29+k*12+(r%2)*5} ${83+r*7}h7v2h-7z"/>`;
+ let merlons='';for(let x=25;x<170;x+=14)merlons+=`<path fill="${stone}" d="M${x} 70h8v10h-8z"/><path fill="#eee7d0" d="M${x} 70h8v2h-8z"/>`;
+ return `<g transform="translate(87 17) scale(.92)" data-town-castle="detailed"><path fill="#738f89" opacity=".35" d="M8 155h196l21 12H-9z"/>${tower(75,31,37,102)}<path fill="${shade}" d="M29 82l133-9 18 12v61H29z"/><path fill="${stone}" d="M29 80h135v65H29z"/>${brick}${merlons}<path fill="#eee3c3" d="M25 79h146v5H25z"/><path fill="#85978c" d="M25 85h146v3H25z"/><path fill="#667b7e" d="M76 109v-10h6v-6h26v6h6v10h4v38H72v-38z"/><path fill="#a58e6a" d="M81 110v-9h6v-4h17v4h6v9h3v35H77v-35z"/><path fill="#4c6064" d="M84 109h22v34H84z"/><path stroke="#9b997b" stroke-width="2" d="M88 110v32M95 108v34M102 110v32M84 117h22M84 125h22"/><path fill="#c6b990" d="M77 143h36l12 13H65z"/><path stroke="#a09377" stroke-width="2" d="M74 148h41M70 153h51"/>${tower(12,72,28,78)}${tower(153,64,29,83)}${tower(48,66,22,47)}${tower(121,59,22,47)}<path fill="${dark}" d="M89 47h8v18h-8z"/><path fill="#d1bf83" d="M91 49h2v14h-2z"/>${p.snow?'<path fill="#f0f7f4" d="M27 78h43v4H27zM117 78h47v4h-47zM68 153h53v3H68z"/>':''}</g>`;
 }
 function townScene(p){
- const tree=(x,y)=>`<g transform="translate(${x} ${y})"><path fill="#66503a" d="M-4 12h9v42h-9z"/><path fill="${p.tree}" d="M-23 0h12v-12h26V0h13v29H14v10h-30V28h-13V7h6z"/><path fill="${p.light}" d="M-17-1h13v-7h18V3h10v8H6v-5h-23z"/>${p.snow?'<path fill="#ecf5ef" d="M-17-1h13v-7h18V3h10v8H6v-5h-23z"/>':''}</g>`;
- let decor='';for(let i=0;i<36;i++){const x=12+(i*83)%335,y=126+(i*47)%475;decor+=p.snow?`<rect x="${x}" y="${y}" width="3" height="3" fill="#f2f7ed" opacity=".7"/>`:seasonIndex()===2?`<path fill="${i%2?'#d8a44b':'#9b5735'}" d="M${x} ${y}h4v2h-2v3h-3v-3h1z"/>`:`<path fill="${i%3?'#93ab66':'#e3c6a2'}" d="M${x} ${y}h3v2h-3z"/>`;}
- return `<svg viewBox="0 0 360 620" preserveAspectRatio="none" aria-hidden="true" shape-rendering="crispEdges"><rect width="360" height="620" fill="${p.ground}"/><path fill="${p.sky}" d="M0 0h360v120H0z"/><path fill="#7faaa6" opacity=".7" d="M0 101l41-60 34 45 31-26 50 49 40-70 43 39 51-45 70 76v26H0z"/><path fill="#c5cdba" d="M126 72h112v69H126zM144 39h20v84h-20zM199 30h21v99h-21z"/><path fill="${p.roof}" d="M139 39l15-18 15 18zM193 30l17-18 17 18zM172 70l12-17 17 17z"/><path fill="#73928d" d="M174 115h19v28h-19z"/><path fill="${p.road}" d="M167 132h33l-4 43 22 31 18 68-13 58 14 52-15 49-38 42-5 57 25 88h-91l25-92 16-65 42-52 4-35-18-51 13-62-13-52-21-29z"/><path stroke="#a68e62" opacity=".35" stroke-width="3" fill="none" d="M171 146l-11 47 25 37 13 42-18 55 16 56-12 36-36 45-16 58"/>${tree(33,141)}${tree(320,144)}${tree(335,347)}${tree(24,343)}${tree(38,560)}${decor}<path fill="#6f694e" d="M4 578h80v4H4zM8 582h4v20H8zM70 582h4v20h-4z"/></svg>`;
+ const si=seasonIndex();
+ const tree=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"><path fill="#334638" opacity=".24" d="M-25 48h51v7h-51z"/><path fill="#71533b" d="M-4 8h9v44h-9z"/><path fill="#9a7750" d="M-3 12h3v36h-3z"/><path stroke="#71533b" stroke-width="4" d="M0 27l-14-15M2 22l13-12"/><path fill="${p.tree}" d="M-27-4h10v-12h12v-7h19v8h12v12h7v24h-8v12H9v6h-23v-7h-12V17h-7V1h6z"/><path fill="${si===2?'#c47a38':p.light}" d="M-24-3h9v-10h12v-6h15v7h11v11h-9v8H-4v-4h-20z"/><path fill="${si===2?'#edba60':'#a7c77b'}" opacity=".8" d="M-10-9h9v-6h11v7h8v5H5v4H-10z"/><path fill="${p.tree}" d="M-16 13h9v5h-9zM10 17h12v5H10z"/>${p.snow?'<path fill="#eef7f6" d="M-26-4h11v-12h12v-7h17v8h12v11h7v6H13v-5H-5v8h-21zM-17 22h17v6h-17zM10 23h12v5H10z"/>':''}</g>`;
+ let decor='';for(let i=0;i<95;i++){const x=7+(i*83)%348,y=170+(i*47)%441;if(x>125&&x<234)continue;decor+=p.snow?`<path fill="${i%2?'#eef5f5':'#afcbd5'}" d="M${x} ${y}h5v2h-5z"/>`:si===2?`<path fill="${i%2?'#e2b356':'#b85b35'}" d="M${x} ${y}h4v2h-2v3h-3v-3h1z"/>`:`<path fill="${i%4?'#8fac60':'#c7c77e'}" d="M${x} ${y}h3v2h-3z"/>`;}
+ let stones='';for(let i=0;i<28;i++){const y=179+i*15,x=183+Math.round(Math.sin(i*.6)*12);stones+=`<path fill="#8a775a" opacity=".3" d="M${x} ${y}h9v2h-9zM${x+12} ${y+6}h5v2h-5z"/>`;}
+ const fence=(x,y)=>`<g transform="translate(${x} ${y})"><path fill="#7b633e" d="M0 5h61v4H0zM0 17h61v4H0zM4 0h5v30H4zM27 0h5v30h-5zM52 0h5v30h-5z"/><path fill="#b79c65" d="M4 0h5v3H4zM27 0h5v3h-5zM52 0h5v3h-5zM0 5h61v2H0z"/>${p.snow?'<path fill="#f0f6f3" d="M0 3h61v3H0zM4-2h5v3H4zM27-2h5v3h-5zM52-2h5v3h-5z"/>':''}</g>`;
+ return `<svg viewBox="0 0 360 620" preserveAspectRatio="none" aria-hidden="true" shape-rendering="crispEdges"><rect width="360" height="620" fill="${p.ground}"/><rect width="360" height="145" fill="${p.sky}"/><path fill="#f4ead0" opacity=".8" d="M28 25h12v-5h21v5h18v7H28zM264 42h15v-6h25v6h20v8h-60z"/><path fill="#8faeb2" d="M0 115V95l22-16 8-14 15-13 21 24 12 7 21-24 14 9 19 23 25-34 14-10 26 31 12 9 26-37 18-13 22 24 17 9 25-27 23 28 22 17v39z"/><path fill="#adc4c0" d="M28 65l17-13 21 24-18-8-8 6zM157 57l14-10 26 31-22-14-10 7zM235 50l18-13 22 24-22-12-7 6z"/><path fill="#77988c" d="M0 116h28v-5h27v6h28v-7h45v5h34v-6h39v7h38v-8h34v8h28v-5h30v8h29v31H0z"/>${townCastle(p)}<path fill="${p.ground}" d="M0 157h34v-8h42v7h36v-5h37v6h44v-6h49v7h38v-5h43v4h37v463H0z"/><path fill="${p.road}" d="M169 156h26l3 28 19 31 16 61-12 58 17 50-16 49-38 42-5 57 25 88h-91l25-92 16-65 42-52 4-35-18-51 13-62-13-52-21-29z"/><path stroke="${p.snow?'#8faebb':'#b5a171'}" opacity=".6" stroke-width="3" fill="none" d="M169 159l-9 34 25 37 13 42-18 55 16 56-12 36-36 45-16 58"/>${stones}${tree(30,158,.9)}${tree(324,163,.95)}${tree(335,359,.8)}${tree(21,365,.78)}${tree(37,566,.85)}${decor}${fence(5,581)}${fence(286,593)}<path fill="#4c675b" opacity=".3" d="M240 572h35v8h-35z"/><path fill="#677f83" d="M243 558h29v13h-29zM247 549h21v10h-21z"/><path fill="${p.snow?'#ecf5f4':'#8ab7b9'}" d="M246 558h23v5h-23z"/><path fill="#a5c1bd" d="M250 548h15v3h-15z"/></svg>`;
+}
+function renderTownWeather(si){
+ const el=$('townWeather');if(el.dataset.season===String(si))return;el.dataset.season=String(si);
+ let particles='';
+ if(si===3||si===2){const count=si===3?30:17;for(let i=0;i<count;i++)particles+=`<i class="town-weather-particle ${si===3?'town-snow':'town-leaf'}" style="left:${(i*37+13)%100}%;top:-16px;animation-duration:${si===3?11+i%7:13+i%6}s;animation-delay:-${(i*2.7)%19}s;${si===2?'background:'+['#db9741','#c96a36','#e8b756'][i%3]+';':''}scale:${si===3?.55+(i%3)*.25:.7+(i%3)*.2}"></i>`;}
+ else if(si===1){for(let i=0;i<5;i++)particles+=`<i class="town-weather-particle town-sunray" style="left:${15+i*23}%;animation-delay:-${i%2?7:1}s;animation-duration:${13+i%2*3}s;width:${10+i%3*5}%"></i>`;}
+ else{const beds=[[8,27],[19,30],[88,25],[94,32],[9,58],[24,62],[90,57],[82,61],[12,95],[23,97],[72,94],[83,96]];beds.forEach(([x,y],i)=>particles+=`<i class="town-weather-particle town-flower" style="left:${x}%;top:${y}%;--petal:${['#e8aac0','#ecdfb4','#c5b1df'][i%3]};animation-delay:-${i*1.3}s;animation-duration:${11+i%4}s"></i>`);}
+ el.innerHTML=particles;
 }
 function renderTown(){
  const si=seasonIndex(),p=TOWN_SEASONS[si],s=SEASONS[si],remaining=phase==='reward'?0:orders.length+dq.length;
  $('townP').dataset.season=s.id;$('townStats').textContent='💰 '+coins+'　⭐ '+score()+'　'+'❤️'.repeat(Math.max(0,lives));
  $('townSeason').textContent=s.icon+' '+s.name+' · 第 '+day+' 天 · '+(phase==='reward'?'今日營業結束':remaining+' 位客人等候');
- $('townScenery').innerHTML=townScene(p);
+ const scenery=$('townScenery');if(scenery.dataset.season!==s.id){scenery.innerHTML=townScene(p);scenery.dataset.season=s.id;}
  [['townArchive','archive','圖鑑館'],['townForge','forge','冶煉廠'],['townShop','shop','商店'],['townTraining','training','訓練所']].forEach(([id,kind,label])=>{
-   $(id).innerHTML=townHouse(kind,p)+'<span class="town-sign">'+label+(kind==='training'?' <b>⭐'+sp+'</b>':'')+'</span>';
+   $(id).innerHTML=townHouse(kind,p)+'<span class="town-sign">'+label+(kind==='training'?' <b>⭐'+sp+'</b>':'')+'</span>'+(kind==='forge'&&phase==='reward'?'<span class="town-reward">'+(gachaUsed?'☀ 迎接明天':'🎁 每日獎勵')+'</span>':'');
  });
+ $('townForge').setAttribute('aria-label',phase==='reward'?(gachaUsed?'冶煉廠，迎接明天':'冶煉廠，領取每日獎勵'):'冶煉廠，進入棋盤');
  $('townQueue').innerHTML=Array.from({length:remaining},(_,i)=>{const col=['#b85653','#4e8191','#a88c4c','#716891'][i%4];return `<svg class="town-person" style="left:${(i%4)*22}px;top:${Math.floor(i/4)*28}px" viewBox="0 0 16 25" aria-label="排隊客人 ${i+1}"><path fill="#26343c" d="M4 20h4v5H4zM9 20h4v5H9z"/><path fill="${col}" d="M4 11h8v3h3v7H2v-7h2z"/><path fill="#e0b586" d="M4 3h8v8H4zM1 14h2v5H1zM14 14h2v5h-2z"/><path fill="#55433b" d="M3 1h10v4H3zM3 5h2v3H3z"/><path fill="#26343c" d="M6 6h1v2H6zM10 6h1v2h-1z"/></svg>`;}).join('');
- $('townNotice').textContent=phase==='reward'?'今日賺得 '+dEarn+' 金幣，獲得 1 點技能點。可到訓練所升級。':p.desc;
- $('townContinue').textContent=phase==='reward'?(gachaUsed?'迎接第 '+(day+1)+' 天':'領取每日道具'):'進入冶煉廠';
+ renderTownWeather(si);
 }
 function showTown(){
  if(day<=0)return;if(phase!=='reward')phase='town';renderTown();$('townP').style.display='flex';saveNow();
 }
+function returnToTown(){if(day<=0){goHome();return;}showTown();}
 function enterTownForge(){
- if(phase==='reward'){toast('今日已打烊，領取道具後迎接新的一天');return;}
+ if(phase==='reward'){if(!gachaUsed)openReward(true);else newDay();return;}
  phase='play';$('townP').style.display='none';render();saveNow();showPendingSeasonNotice();
 }
-function townNextAction(){
- if(phase!=='reward'){enterTownForge();return;}
- if(!gachaUsed){openReward(true);return;}newDay();
-}
+function townNextAction(){enterTownForge();}
 function visitTrainingFromGame(){if(day<=0){openSkills(false);return;}showTown();}
 
 
