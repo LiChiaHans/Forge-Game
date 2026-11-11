@@ -676,6 +676,26 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 .season-cell.ice{background-color:#4f8cbb55;background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0IiBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiPjxwYXRoIGZpbGw9IiM1MThhYjciIGZpbGwtb3BhY2l0eT0iLjU1IiBkPSJNNCAwaDU2djRoNHY1NmgtNHY0SDR2LTRIMFY0aDR6Ii8+PHBhdGggZmlsbD0iI2Q0ZjVmZiIgZmlsbC1vcGFjaXR5PSIuNCIgZD0iTTQgNGg1NnY1Nkg0eiIvPjxwYXRoIGZpbGw9IiNlZmZmZmYiIGZpbGwtb3BhY2l0eT0iLjciIGQ9Ik00IDBoNTZ2M0g2djNIM3Y0OEgwVjRoNHoiLz48cGF0aCBmaWxsPSIjMjA1NDgxIiBmaWxsLW9wYWNpdHk9Ii44IiBkPSJNNjEgOGgzdjUyaC00djRIOHYtM2g1MHYtM2gzeiIvPjxwYXRoIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iLjI0IiBkPSJNNiAzMGg2di02aDZ2LTZoNnYtNmg2VjZoMTJ2NmgtNnY2aC02djZoLTZ2NmgtNnY2aC02djZINnpNMjQgNTh2LTZoNnYtNmg2di02aDZ2LTZoNnYtNmgxMHY4aC02djZoLTZ2NmgtNnY2aC02djR6Ii8+PHBhdGggc3Ryb2tlPSIjZTFmYWZmIiBzdHJva2Utb3BhY2l0eT0iLjgiIGZpbGw9Im5vbmUiIGQ9Ik00IDE1aDEwdjRoNnY3aDh2NmgxMHY4aDh2N2gxNE0yMCAyNnYxM2gtNXY5TTM4IDQwdi05aDZ2LThoOE0xNCAxOXYtNmg1VjUiLz48cGF0aCBzdHJva2U9IiM0NDdmYTkiIHN0cm9rZS1vcGFjaXR5PSIuNjUiIGZpbGw9Im5vbmUiIGQ9Ik01IDE3aDh2NGg2djdoOHY2aDEwdjhoOHY3aDE0Ii8+PHBhdGggZmlsbD0iI2VlZmVmZiIgZD0iTTQ3IDVoM3Y2aDZ2M2gtNnY2aC0zdi02aC02di0zaDZ6TTggNDZoMnY0aDR2MmgtNHY0SDh2LTRINHYtMmg0eiIvPjxwYXRoIGZpbGw9IiNhNGQ5ZWYiIGQ9Ik01NCA0OGg0djdoLTR6TTQ5IDU0aDV2NGgtNXpNNCA2aDV2M0g0eiIvPjwvc3ZnPg==");background-size:100% 100%;box-shadow:inset 0 0 0 1px #dffaff99,inset 0 -3px 0 #285a85aa}
 .hxi svg,.mo,.gm{filter:drop-shadow(1px 1px 0 #0c1725c0)}
 /* UNITY_PIXEL_SKIN_END */
+
+/* Home weapon gallery; existing gameplay layout stays unchanged. */
+#weaponAlbumP,#weaponInspectP{position:fixed;inset:0;z-index:76;display:none;align-items:center;justify-content:center;padding:12px;background:#080e19dd;backdrop-filter:blur(3px)}
+#weaponInspectP{z-index:77}
+#weaponAlbumP .hp{max-width:560px}#weaponInspectP .hp{max-width:400px;text-align:center}
+#albumProgress{font-size:14px;line-height:1.6;color:var(--mute)}
+#albumTabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:12px 0}
+#albumTabs button{font-size:15px;padding:8px 4px}#albumTabs button[aria-pressed="true"]{border-color:#e7c16b;background:#655233;color:#fff1bf}
+.album-section h3{font-size:19px;margin:18px 0 10px}.album-section h3 small{font-size:13px;color:var(--mute);margin-left:8px}
+.album-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.album-card{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;padding:8px 5px;font-size:14px}
+.album-art{display:block;width:100%;aspect-ratio:1}
+.album-art .hxo{width:100%;height:100%}
+.album-card small{font-size:12px;color:var(--mute)}
+.uncollected .album-art,.uncollected#inspectArt{filter:grayscale(1) brightness(.28);opacity:.65}
+.collected .album-art,.collected#inspectArt{filter:drop-shadow(0 2px 2px #0008)}
+.album-card.collected{border-color:#b69b60}.album-card.collected small{color:#ecd397}
+#inspectArt{width:min(230px,65vw);aspect-ratio:1;margin:16px auto}
+#inspectArt .hxo{width:100%;height:100%}
+#inspectState{font-size:15px;line-height:1.6}.inspect-tiers{display:flex;gap:10px}.inspect-tiers button{flex:1;font-size:16px}
 </style>
 </head>
 <body>
@@ -714,12 +734,20 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
   <button class="pri" onclick="askName(newGameFlow)">開始遊戲</button>
   <button id="ctn" onclick="openSaves('load')">▶ 繼續遊戲</button>
   <button onclick="$('title').style.display='none';start('tut')">教學關卡</button>
+  <button id="homeAlbum" onclick="openWeaponAlbum()">📖 武器圖鑑</button>
   <button onclick="openRec()">🏆 歷史紀錄</button>
   <button onclick="showHelp()">遊戲說明</button>
   <p class="cr">製作人: LiChia</p>
   <p class="cr" id="upd">更新日期: 2026/11/11</p>
 </div>
 
+<div id="weaponAlbumP"><div class="hp">
+  <h2>📖 武器圖鑑</h2><p id="albumProgress"></p>
+  <div id="albumTabs" role="group" aria-label="依武器階級篩選"></div>
+  <div id="albumWeapons"></div>
+  <button style="width:100%;margin-top:14px" onclick="closeP('weaponAlbumP')">關閉圖鑑</button>
+</div></div>
+<div id="weaponInspectP"><div class="hp"><h2 id="inspectName"></h2><div id="inspectArt"></div><p id="inspectState"></p><div class="inspect-tiers"><button id="inspectPrev">上一階</button><button id="inspectNext">下一階</button></div><button style="width:100%;margin-top:12px" onclick="closeP('weaponInspectP')">回到圖鑑</button></div></div>
 <div id="seasonP"><div class="hp"><h2 id="seasonTitle"></h2><p id="seasonDescription" style="line-height:1.8"></p><button class="pri" style="width:100%" onclick="closeP('seasonP')">開始鍛造</button></div></div>
 
 <div id="help"><div class="hp">
@@ -1008,7 +1036,7 @@ const MP=[
   '<polygon points="12,2 20.7,7 20.7,17 12,22 3.3,17 3.3,7"/>',
   '<polygon points="6,3 18,3 23,9 12,22 1,9"/>'
 ];
-const mold=(s,f,x="")=>{const cuts=['M11 3h2v2h2v2h1v3h-1v10H9V10H8V7h1V5h2z','M8 4h8v16H8z','M11 3h2v1h3v2h3v2h1v8h-1v2h-3v2h-3v1h-2v-1H8v-2H5v-2H4V8h1V6h3V4h3z','M7 4h10v2h3v3h1v3h-3v3h-3v3h-2v3h-2v-3H9v-3H6v-3H3V9h1V6h3z'];const cut=cuts[s];return `<svg class="mo ${x}" viewBox="0 0 24 24" shape-rendering="crispEdges"><path fill="#5a452e" d="M2 0h20v2h2v20h-2v2H2v-2H0V2h2z"/><path fill="#cdb27a" d="M2 2h20v20H2z"/><path fill="#f3dfaa" d="M2 2h20v2H4v16H2z"/><path fill="#967442" d="M4 20h16V4h2v18H4z"/><path fill="#e4cb92" d="M4 4h16v16H4z"/><path d="${cut}" fill="#f6e3b1" transform="translate(0 1)"/><path d="${cut}" fill="#806340"/><path d="${cut}" fill="${f||'#352a20'}" stroke="#4d3827" stroke-width="1"/><path fill="#fff1c9" opacity=".6" d="M3 3h2v1H3zM19 3h2v1h-2zM3 19h1v2H3zM20 19h1v2h-1z"/>${f?'<path fill="#ffffff" opacity=".35" d="M10 7h1v10h-1z"/>':'<path fill="#1d1815" opacity=".65" d="M10 7h1v10h-1z"/>'}</svg>`;};
+const mold=(s,f,x="")=>{const cuts=['M12 3L15 7V20H9V7Z','M8 4h8v16H8z','M11 3h2v1h3v2h3v2h1v8h-1v2h-3v2h-3v1h-2v-1H8v-2H5v-2H4V8h1V6h3V4h3z','M7 4h10v2h3v3h1v3h-3v3h-3v3h-2v3h-2v-3H9v-3H6v-3H3V9h1V6h3z'];const cut=cuts[s];return `<svg class="mo ${x}" viewBox="0 0 24 24" shape-rendering="crispEdges"><path fill="#5a452e" d="M2 0h20v2h2v20h-2v2H2v-2H0V2h2z"/><path fill="#cdb27a" d="M2 2h20v20H2z"/><path fill="#f3dfaa" d="M2 2h20v2H4v16H2z"/><path fill="#967442" d="M4 20h16V4h2v18H4z"/><path fill="#e4cb92" d="M4 4h16v16H4z"/><path d="${cut}" fill="#f6e3b1" transform="translate(0 1)"/><path d="${cut}" fill="#806340"/><path d="${cut}" fill="${f||'#352a20'}" stroke="#4d3827" stroke-width="1"/><path fill="#fff1c9" opacity=".6" d="M3 3h2v1H3zM19 3h2v1h-2zM3 19h1v2H3zM20 19h1v2h-1z"/>${f?'<path fill="#ffffff" opacity=".35" d="M10 7h1v10h-1z"/>':'<path fill="#1d1815" opacity=".65" d="M10 7h1v10h-1z"/>'}</svg>`;};
 const mb=c=>c.m?`<span class="mb">+${c.m}💰</span>`:"";
 const oreH=(t,x="",m=0)=>`<div class="t o ${x}" style="background-color:${C[t]}">${NM[t]}${m?`<span class="mb">+${m}💰</span>`:""}</div>`;
 const bands=w=>w.cs&&new Set(w.cs).size>1
@@ -1142,6 +1170,8 @@ const saveHi=()=>{
   recs.sort((a,b)=>b.score-a.score);recs=recs.slice(0,5);
   try{localStorage.setItem("forgeRecs",JSON.stringify(recs))}catch(e){}
 };
+
+
 function colHTML(B){
   return WN.map((n,c)=>{
     const r=B&&B[c],w=r?{...r,c}:null;
@@ -1218,6 +1248,48 @@ function useLifePotion(){
 }
 const justHeated=new Set();
 const $=id=>document.getElementById(id),rnd=n=>Math.floor(Math.random()*n);
+// Permanent collection records exact weapon/tier discoveries independently of runs.
+const weaponAlbum=new Set();let albumTier=-1,inspectedWeapon=0,inspectedTier=0;
+try{const stored=JSON.parse(localStorage.getItem('forgeWeaponAlbumV1')||'[]');if(Array.isArray(stored))stored.forEach(k=>{if(typeof k==='string'&&/^[0-9]:[0-4]$/.test(k))weaponAlbum.add(k);});}catch(e){}
+function albumKey(c,t){return c+':'+t;}
+function rememberWeapon(w,persist=true){
+  if(!w||!Number.isInteger(w.c)||w.c<0||w.c>=WN.length||!Number.isInteger(w.t)||w.t<0||w.t>=NM.length)return false;
+  const key=albumKey(w.c,w.t);if(weaponAlbum.has(key))return false;weaponAlbum.add(key);
+  if(persist)persistWeaponAlbum();return true;
+}
+function persistWeaponAlbum(){try{localStorage.setItem('forgeWeaponAlbumV1',JSON.stringify([...weaponAlbum].sort()));}catch(e){}}
+function importWeaponAlbum(){
+  let changed=false;
+  const scanBest=b=>{if(Array.isArray(b))b.forEach((w,c)=>{if(w)changed=rememberWeapon({...w,c},false)||changed;});};
+  const scanState=s=>{if(!s)return;scanBest(s.best);[...(s.g||[]),...(s.pack||[]),...(s.bag||[]),s.hand].forEach(w=>{if(w&&w.k==='w')changed=rememberWeapon(w,false)||changed;});};
+  recs.forEach(r=>scanBest(r.best));saves.forEach(s=>scanState(s.state));
+  if(!testRun&&day>0){scanBest(best);scanState({g,pack,bag,hand});}
+  if(changed)persistWeaponAlbum();
+}
+function openWeaponAlbum(){importWeaponAlbum();albumTier=-1;renderWeaponAlbum();$('weaponAlbumP').style.display='flex';}
+function renderWeaponAlbum(){
+  $('albumProgress').textContent='已蒐集 '+weaponAlbum.size+' / '+(WN.length*NM.length)+' · 鍛造後永久點亮，可點擊欣賞細節';
+  $('albumTabs').innerHTML=[-1,0,1,2,3,4].map(t=>'<button data-album-tier="'+t+'" aria-pressed="'+(t===albumTier)+'">'+(t<0?'全部':NM[t]+'級')+'</button>').join('');
+  $('albumWeapons').innerHTML=NM.map((name,t)=>{
+    if(albumTier!==-1&&albumTier!==t)return '';
+    const total=WN.filter((_,c)=>weaponAlbum.has(albumKey(c,t))).length;
+    return '<section class="album-section"><h3 style="color:'+C[t]+'">'+name+'級 <small>'+total+'/10</small></h3><div class="album-grid">'+WN.map((n,c)=>{
+      const found=weaponAlbum.has(albumKey(c,t));
+      return '<button class="album-card '+(found?'collected':'uncollected')+'" data-album-weapon="'+c+'" data-tier="'+t+'" aria-label="'+name+'級'+n+'，'+(found?'已蒐集':'未蒐集')+'"><span class="album-art">'+hex(c,C[t],'',t)+'</span><b>'+n+'</b><small>'+(found?'已蒐集':'未蒐集')+'</small></button>';
+    }).join('')+'</div></section>';
+  }).join('');
+}
+$('albumTabs').onclick=e=>{const b=e.target.closest('[data-album-tier]');if(!b)return;albumTier=+b.dataset.albumTier;renderWeaponAlbum();};
+$('albumWeapons').onclick=e=>{const b=e.target.closest('[data-album-weapon]');if(!b)return;showWeaponDetail(+b.dataset.albumWeapon,+b.dataset.tier);};
+function showWeaponDetail(c,t){
+  inspectedWeapon=c;inspectedTier=t;const found=weaponAlbum.has(albumKey(c,t));
+  $('inspectName').textContent=NM[t]+'級'+WN[c];$('inspectArt').className=found?'collected':'uncollected';$('inspectArt').innerHTML=hex(c,C[t],'',t);
+  $('inspectState').textContent=found?'已蒐集 · '+NM[t]+'級工藝':'尚未蒐集 · 鍛造這個階級的武器即可點亮';
+  $('inspectPrev').disabled=t===0;$('inspectNext').disabled=t===NM.length-1;$('weaponInspectP').style.display='flex';
+}
+$('inspectPrev').onclick=()=>{if(inspectedTier>0)showWeaponDetail(inspectedWeapon,inspectedTier-1);};
+$('inspectNext').onclick=()=>{if(inspectedTier<NM.length-1)showWeaponDetail(inspectedWeapon,inspectedTier+1);};
+
 const say=t=>$("msg").textContent=t;
 const sk=id=>skills[id]||0;
 const TG=[[11,12,13],[16,17,18],[21,22,23]];
@@ -1833,6 +1905,7 @@ function forge(i){
       });
     g[spots[k]]={k:'w',t:f.wt,c:f.w,b,cs:f.cs,m:f.mm+dm,dts};
     const wo=g[spots[k]];
+    if(day>0&&!testRun)rememberWeapon(wo);
     if(rankOf(wo)>rankOf(best[f.w]))
       best[f.w]={t:wo.t,cs:wo.cs,b:wo.b,dts:wo.dts,m:wo.m};
     ev.to.push(spots[k]);
