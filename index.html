@@ -627,6 +627,10 @@ body::before{background:#1f2531}
  #app #side .mq .mo{width:32px;height:32px}
  #app #qbar .qc b{font-size:12px}#app #qbar .qc small{font-size:11px}
 }
+
+/* Readable live messages and a stable reward-dialog layout. */
+#app #msg,#app[data-compact="true"] #msg{font-size:15px;line-height:1.45;height:auto;min-height:44px;max-height:70px;padding:7px 9px;overflow-y:auto}
+#gcb:disabled{opacity:.35;cursor:default;filter:saturate(.35)}
 </style>
 </head>
 <body>
@@ -742,7 +746,7 @@ body::before{background:#1f2531}
 <div id="gcP"><div class="hp">
   <h2>🎴 抽道具卡</h2><p id="gcp"></p>
   <div id="gcc" style="display:flex;gap:8px"></div>
-  <button id="gcb" class="pri" style="width:100%;margin-top:12px;display:none">收下</button>
+  <button id="gcb" class="pri" style="width:100%;margin-top:12px" disabled>收下</button>
 </div></div>
 
 <div id="recP"><div class="hp">
@@ -1980,7 +1984,8 @@ $("rwg").onclick=()=>{
   $("gcc").innerHTML=gcItems.map((it,k)=>
     `<div class="gwrap" data-k="${k}"><div class="gin"><button class="gcard gf" data-k="${k}">🎴<small>點我翻牌</small></button><div class="gcard gb">${itemH(it)}<small>${itemName(it)}</small></div></div></div>`
   ).join("");
-  $("gcb").style.display="none";
+  $("gcb").style.display="block";
+  $("gcb").disabled=true;
   $("gcp").textContent="選一張道具卡！（價格越便宜的道具越容易抽到）";
   $("gcP").style.display="flex";
 };
@@ -1994,11 +1999,11 @@ $("gcc").onclick=e=>{
   ws.forEach((w,j)=>{if(j!==k)setTimeout(()=>w.classList.add("flip","dim"),650+j*140)});
   setTimeout(()=>{
     $("gcp").textContent="你抽到了「"+itemName(gcItems[k])+"」！";
-    $("gcb").style.display="block";
-  },950);
+    $("gcb").disabled=false;
+  },1800);
   render();
 };
-$("gcb").onclick=()=>{$("gcP").style.display="none";renderRw()};
+$("gcb").onclick=()=>{if($("gcb").disabled)return;$("gcP").style.display="none";renderRw()};
 $("rwn").onclick=()=>{$("rw").style.display="none";newDay()};
 function openSkills(end){
   skMode=end?"end":"menu";renderSk();$("sk").style.display="flex";
@@ -2446,6 +2451,8 @@ $("recClr").onclick=()=>confirmBox(
 );
 function confirmBox(t,p,yes,fn){
   $("cft").textContent=t;$("cfp").textContent=p;$("cfy").textContent=yes;
+  if(yes==="取消訂單")$("cfy").before($("cfn"));
+  else $("cfn").before($("cfy"));
   $("cf").style.display="flex";
   $("cfy").onclick=()=>{$("cf").style.display="none";fn()};
   $("cfn").onclick=()=>{$("cf").style.display="none"};
