@@ -631,6 +631,13 @@ body::before{background:#1f2531}
 /* Readable live messages and a stable reward-dialog layout. */
 #app #msg,#app[data-compact="true"] #msg{font-size:15px;line-height:1.45;height:auto;min-height:44px;max-height:70px;padding:7px 9px;overflow-y:auto}
 #gcb:disabled{opacity:.35;cursor:default;filter:saturate(.35)}
+
+/* Center the actual home content independently of the ember overlay. */
+#title{height:var(--viewport-height,100dvh);bottom:auto;padding-bottom:max(24px,calc(env(safe-area-inset-bottom) + 6dvh))}
+#title>#tl{margin-top:auto}
+#title>#upd{margin-bottom:auto!important}
+#title>:not(.emw){flex-shrink:0}
+html,body,button,a,.c,.qc{touch-action:manipulation}
 </style>
 </head>
 <body>
@@ -2779,6 +2786,29 @@ function fit(){
 for(const eventName of ["gesturestart","gesturechange","gestureend"])
   document.addEventListener(eventName,e=>e.preventDefault(),{passive:false});
 document.addEventListener("touchmove",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});
+// Block Safari double-tap zoom while preserving the second game/button tap.
+let lastPageTap=null,pageTapStart=null;
+document.addEventListener('touchstart',e=>{
+  if(e.touches.length!==1){pageTapStart=null;lastPageTap=null;return;}
+  const t=e.touches[0];pageTapStart={x:t.clientX,y:t.clientY};
+},{passive:true});
+document.addEventListener('touchmove',e=>{
+  if(!pageTapStart||e.touches.length!==1){pageTapStart=null;return;}
+  const t=e.touches[0];if(Math.hypot(t.clientX-pageTapStart.x,t.clientY-pageTapStart.y)>10)pageTapStart=null;
+},{passive:true});
+document.addEventListener('touchend',e=>{
+  if(!pageTapStart||e.touches.length||!e.changedTouches.length){pageTapStart=null;return;}
+  pageTapStart=null;const t=e.changedTouches[0],now=performance.now();
+  const doubleTap=lastPageTap&&now-lastPageTap.time<320&&Math.hypot(t.clientX-lastPageTap.x,t.clientY-lastPageTap.y)<24;
+  lastPageTap={time:now,x:t.clientX,y:t.clientY};
+  if(!doubleTap)return;
+  const target=e.target instanceof Element?e.target:null;
+  if(target&&target.closest('input,textarea,[contenteditable="true"]'))return;
+  e.preventDefault();
+  const action=target&&target.closest('button,a,.c,.qc');
+  if(action&&!action.closest('[data-drag]')&&!action.classList.contains('wc'))action.click();
+},{passive:false});
+document.addEventListener('dblclick',e=>{if(!(e.target instanceof Element)||!e.target.closest('input,textarea,[contenteditable="true"]'))e.preventDefault();},{passive:false});
 window.addEventListener("resize",fit);
 window.addEventListener("load",fit);
 window.addEventListener("orientationchange",fit);
