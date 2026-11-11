@@ -726,6 +726,24 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 @media(prefers-reduced-motion:reduce){.town-weather-particle{animation:none;will-change:auto}.town-snow,.town-leaf{top:35%!important;opacity:.45}.town-sunray{opacity:.15}.town-flower{opacity:1;transform:none}.town-reward{animation:none}}
 @media(max-height:740px){.town-header>div:first-child{font-size:18px}#townStats{font-size:14px}#townSeason{font-size:12px}.town-sign{font-size:15px}.town-header{padding-bottom:5px}}
 
+/* Match the ten-item best-record grid: five columns, two rows per material tier. */
+.album-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px 6px}
+.album-card{gap:4px;padding:5px 2px;font-size:12px}.album-card small{font-size:10px}.album-card b{font-size:12px;white-space:nowrap}
+.town-skill-star{position:absolute;left:53%;top:14%;width:clamp(60px,16vw,80px);aspect-ratio:1;transform:translateX(-50%);z-index:3;filter:drop-shadow(2px 4px 0 #302e3280)}
+.town-skill-star svg{width:100%;height:100%;filter:none}.town-skill-star b{position:absolute;left:0;right:0;top:30%;font-family:monospace;font-size:clamp(23px,6vw,30px);line-height:1.2;color:#573b22;text-shadow:1px 1px #fff4b2}
+.town-skill-star.has-points{animation:town-star-shine 2.6s ease-in-out infinite}.town-skill-star:not(.has-points){filter:drop-shadow(2px 3px 0 #302e3255) saturate(.65)}
+#townP #townChest{position:absolute;left:34%;top:61%;width:80px;height:80px;z-index:4;background:none;border:0;padding:0;box-shadow:none;overflow:visible;touch-action:manipulation;filter:drop-shadow(0 0 8px #ffdd6b70)}
+#townP #townChest[hidden]{display:none}#townChest svg{width:100%;height:100%}.town-chest-count{position:absolute;right:2px;top:5px;min-width:25px;padding:2px 5px;background:#65432b;border:2px solid #f6d789;color:#fff2bd;box-shadow:2px 2px #26362c;font-family:monospace;font-size:18px;font-weight:900;line-height:1.15}
+#townLootP,#townSkillP{position:fixed;inset:0;z-index:79;display:none;align-items:center;justify-content:center;padding:16px;background:#080e19d9;backdrop-filter:blur(3px)}
+#townLootP .hp,#townSkillP .hp{width:100%;max-width:360px;text-align:center;padding:22px 18px}
+#townLootArt{width:144px;height:144px;margin:0 auto;display:flex;align-items:center;justify-content:center}#townLootArt>svg{width:100%;height:100%}.town-loot-item{width:108px;height:108px;display:flex;align-items:center;justify-content:center;animation:town-loot-reveal .35s ease-out}
+.town-loot-item>*{width:90px!important;height:90px!important;max-width:100%}.town-loot-item .hxo{width:108px!important;height:108px!important}
+#townLootName{font-size:23px;margin:6px 0 10px}#townLootRemaining,#townSkillCount{font-size:17px;line-height:1.65}.town-dialog-actions{display:flex;gap:10px;margin-top:18px}.town-dialog-actions button{flex:1;font-size:17px;min-height:46px;padding:8px}
+#townLootP button:disabled{opacity:.38}.town-chest-lid{transform-origin:40px 30px;transition:transform .35s steps(4)}.town-chest-lid.is-open{transform:translateY(-12px) rotate(-12deg)}
+@keyframes town-star-shine{50%{filter:drop-shadow(0 0 8px #ffdb74b0) brightness(1.15)}}
+@keyframes town-loot-reveal{from{transform:translateY(14px) scale(.7);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){.town-skill-star.has-points,.town-loot-item{animation:none}.town-chest-lid{transition:none}}
+
 </style>
 </head>
 <body>
@@ -756,7 +774,9 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 </div>
 
 <div id="chestP"><div class="hp"><h2>📦 武器箱</h2><p id="chestInfo"></p><div id="chestItems"></div><button style="width:100%;margin-top:14px" onclick="closeP('chestP')">關閉</button></div></div>
-<div id="townP"><header class="town-header"><div><b>🏘 鍛造小鎮</b><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></div><div id="townStats"></div><div id="townSeason"></div></header><div id="townMap"><div id="townScenery"></div><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><div id="townQueue"></div><div id="townWeather" aria-hidden="true"></div></div></div>
+<div id="townP"><header class="town-header"><div><b>🏘 鍛造小鎮</b><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></div><div id="townStats"></div><div id="townSeason"></div></header><div id="townMap"><div id="townScenery"></div><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><div id="townQueue"></div><button id="townChest" onclick="openTownChest()" hidden></button><div id="townWeather" aria-hidden="true"></div></div></div>
+<div id="townLootP"><div class="hp"><h2>每日寶箱</h2><div id="townLootArt"></div><h3 id="townLootName"></h3><p id="townLootRemaining" aria-live="polite"></p><div class="town-dialog-actions"><button id="townLootClose" onclick="if(!chestOpening)closeP('townLootP')">稍後再開</button><button id="townLootOpen" class="pri" onclick="claimTownChest()">開啟寶箱</button></div></div></div>
+<div id="townSkillP"><div class="hp"><h2>⭐ 還有技能點可以使用</h2><p id="townSkillCount"></p><div class="town-dialog-actions"><button onclick="startTownForge()">仍要進入</button><button class="pri" onclick="closeP('townSkillP');openSkills(false)">前往訓練所</button></div></div></div>
 <div id="title">
   <div class="tl" id="tl"></div>
   <h1>Forge Master</h1>
@@ -1222,6 +1242,7 @@ let fx=[],hold=new Set(),pop=new Set(),shown=new Map(),busy=false;
 let magic=0,magicSet=new Set(),dMagic=0,dSold=0,lives=3;
 let skills={mm:0,gc:0,mg:0,wb:0,mc:0,mn:0};
 let pack=[],sp=0,dq=[],lead=0,flyI=-1,bag=[],gachaUsed=false,gcItems=[];
+let pendingChests=0,lastCompletedDay=0,chestOpening=false;
 let quests=[],qDone=0,stepSales=0,dLv=3,qFlip=null;
 let shopBought={m:0,tool:0,o:0};
 let leaves=new Set(),frozen=new Set(),seasonEffects=new Map(),seasonNoticePending=false;
@@ -2079,28 +2100,78 @@ function renderTownWeather(si){
  el.innerHTML=particles;
 }
 function renderTown(){
- const si=seasonIndex(),p=TOWN_SEASONS[si],s=SEASONS[si],remaining=phase==='reward'?0:orders.length+dq.length;
+ const si=seasonIndex(),p=TOWN_SEASONS[si],s=SEASONS[si],remaining=orders.length+dq.length;
  $('townP').dataset.season=s.id;$('townStats').textContent='💰 '+coins+'　⭐ '+score()+'　'+'❤️'.repeat(Math.max(0,lives));
- $('townSeason').textContent=s.icon+' '+s.name+' · 第 '+day+' 天 · '+(phase==='reward'?'今日營業結束':remaining+' 位客人等候');
+ $('townSeason').textContent=s.icon+' '+s.name+' · 第 '+day+' 天 · '+(remaining+' 位客人等候');
  const scenery=$('townScenery');if(scenery.dataset.season!==s.id){scenery.innerHTML=townScene(p);scenery.dataset.season=s.id;}
  [['townArchive','archive','圖鑑館'],['townForge','forge','冶煉廠'],['townShop','shop','商店'],['townTraining','training','訓練所']].forEach(([id,kind,label])=>{
-   $(id).innerHTML=townHouse(kind,p)+'<span class="town-sign">'+label+(kind==='training'?' <b>⭐'+sp+'</b>':'')+'</span>'+(kind==='forge'&&phase==='reward'?'<span class="town-reward">'+(gachaUsed?'☀ 迎接明天':'🎁 每日獎勵')+'</span>':'');
+   $(id).innerHTML=townHouse(kind,p)+'<span class="town-sign">'+label+'</span>'+(kind==='training'?townSkillStar():'');
  });
- $('townForge').setAttribute('aria-label',phase==='reward'?(gachaUsed?'冶煉廠，迎接明天':'冶煉廠，領取每日獎勵'):'冶煉廠，進入棋盤');
+ $('townForge').setAttribute('aria-label','冶煉廠，進入棋盤');
  $('townQueue').innerHTML=Array.from({length:remaining},(_,i)=>{const col=['#b85653','#4e8191','#a88c4c','#716891'][i%4];return `<svg class="town-person" style="left:${(i%4)*22}px;top:${Math.floor(i/4)*28}px" viewBox="0 0 16 25" aria-label="排隊客人 ${i+1}"><path fill="#26343c" d="M4 20h4v5H4zM9 20h4v5H9z"/><path fill="${col}" d="M4 11h8v3h3v7H2v-7h2z"/><path fill="#e0b586" d="M4 3h8v8H4zM1 14h2v5H1zM14 14h2v5h-2z"/><path fill="#55433b" d="M3 1h10v4H3zM3 5h2v3H3z"/><path fill="#26343c" d="M6 6h1v2H6zM10 6h1v2h-1z"/></svg>`;}).join('');
- renderTownWeather(si);
+ renderTownChest();renderTownWeather(si);
 }
 function showTown(){
- if(day<=0)return;if(phase!=='reward')phase='town';renderTown();$('townP').style.display='flex';saveNow();
+ if(day<=0)return;phase='town';renderTown();$('townP').style.display='flex';saveNow();
 }
 function returnToTown(){if(day<=0){goHome();return;}showTown();}
 function enterTownForge(){
- if(phase==='reward'){if(!gachaUsed)openReward(true);else newDay();return;}
- phase='play';$('townP').style.display='none';render();saveNow();showPendingSeasonNotice();
+ if(sp>0){remindTownSkills();return;}startTownForge();
 }
 function townNextAction(){enterTownForge();}
 function visitTrainingFromGame(){if(day<=0){openSkills(false);return;}showTown();}
 
+
+function townSkillStar(){
+ return '<span class="town-skill-star '+(sp>0?'has-points':'')+'" aria-label="剩餘 '+sp+' 點技能點"><svg viewBox="0 0 64 64" aria-hidden="true" shape-rendering="crispEdges"><path fill="#73502e" d="M27 1h10v10h5v8h19v12h-7v6h-7v8h4v16H39v-5h-7v-4h-7v4h-8v5H9V45h4v-8H6v-6H1V19h20v-8h6z"/><path fill="#d89b35" d="M29 5h6v10h5v8h17v6h-7v6h-7v10h4v10h-6v-5h-9v-4h-9v5h-8v4h-2v-9h4V35h-7v-6H5v-6h19v-8h5z"/><path fill="#f8d976" d="M29 7h6v13h5v7h12l-13 12 3 11-11-7-11 7 3-13-12-10h14v-7h4z"/><path fill="#fff0aa" d="M29 8h4v14h-5v8H16v-3h10V17h3z"/></svg><b>'+sp+'</b></span>';
+}
+function townChestArt(open=false){
+ return '<svg viewBox="0 0 80 72" aria-hidden="true" shape-rendering="crispEdges"><path fill="#142333" opacity=".4" d="M7 61h65v7H7z"/><path fill="#322e32" d="M8 29h64v34H8z"/><path fill="#95613a" d="M12 33h56v26H12z"/><path fill="#67422d" d="M12 45h56v13H12z"/><path fill="#d19a4a" d="M12 33h7v26h-7zM60 33h8v26h-8zM12 57h56v4H12z"/><path stroke="#3f332a" stroke-width="2" d="M20 40h39M20 51h39"/><g class="town-chest-lid '+(open?'is-open':'')+'"><path fill="#322e32" d="M8 30V17h5v-5h53v5h6v16H8z"/><path fill="#a66d3e" d="M12 28V19h5v-3h45v3h6v9z"/><path fill="#dba94f" d="M12 21h7v9h-7zM60 20h8v10h-8zM16 16h48v4H16z"/><path fill="#edc16b" d="M17 16h44v3H17z"/><path fill="#69452e" d="M21 23h37v4H21z"/></g><path fill="#dca54c" d="M33 28h15v19H33z"/><path fill="#ffe39a" d="M35 30h11v5H35z"/><path fill="#4b3930" d="M39 36h4v8h-4z"/>'+(open?'<path fill="#ffe38d" d="M19 12h4v5h-4zM51 4h4v7h-4zM35 2h3v4h-3zM62 9h4v4h-4z"/>':'')+'</svg>';
+}
+function renderTownChest(){
+ const el=$('townChest');el.hidden=pendingChests<=0;
+ el.innerHTML=townChestArt()+'<span class="town-chest-count">'+pendingChests+'</span>';
+ el.setAttribute('aria-label','每日寶箱，剩餘 '+pendingChests+' 次');
+}
+function openTownChest(){
+ if(pendingChests<=0||chestOpening)return;
+ $('townLootArt').innerHTML=townChestArt();$('townLootName').textContent='每日寶箱';
+ $('townLootRemaining').textContent='累積 '+pendingChests+' 次，每次開啟可獲得 1 個道具。';
+ $('townLootOpen').textContent='開啟寶箱';$('townLootOpen').disabled=false;
+ $('townLootClose').textContent='稍後再開';$('townLootClose').disabled=false;
+ $('townLootP').style.display='flex';
+}
+function claimTownChest(){
+ if(chestOpening||pendingChests<=0)return;
+ chestOpening=true;const item=drawItem();pendingChests--;bag.push({...item});
+ // Commit the item and counter together before animation so reloads cannot lose or duplicate a reward.
+ saveNow();renderTown();
+ $('townLootOpen').disabled=true;$('townLootClose').disabled=true;
+ $('townLootArt').innerHTML=townChestArt(true);$('townLootName').textContent='寶箱開啟中…';
+ setTimeout(()=>{
+   $('townLootArt').innerHTML='<div class="town-loot-item">'+itemH(item)+'</div>';
+   $('townLootName').textContent=itemName(item);$('townLootRemaining').textContent='已放入道具箱 · 還有 '+pendingChests+' 次';
+   $('townLootOpen').textContent='再開一個';$('townLootOpen').disabled=pendingChests<=0;
+   $('townLootClose').textContent='收下';$('townLootClose').disabled=false;chestOpening=false;
+ },700);
+}
+function remindTownSkills(){
+ $('townSkillCount').textContent='還有 '+sp+' 點技能點尚未使用。要先前往訓練所嗎？';
+ $('townSkillP').style.display='flex';
+}
+function startTownForge(){
+ $('townSkillP').style.display='none';phase='play';$('townP').style.display='none';render();saveNow();showPendingSeasonNotice();
+}
+function restoreTownProgress(t){
+ pendingChests=Math.max(0,Math.floor(Number(t.pendingChests)||0));
+ lastCompletedDay=Math.max(0,Math.floor(Number(t.lastCompletedDay)||0));
+ if(t.phase==='reward'){
+   // Old saves already received their skill point; only carry over the unclaimed daily item.
+   if(!t.gachaUsed)pendingChests++;
+   lastCompletedDay=Math.max(lastCompletedDay,day);newDay();return;
+ }
+ if(day>0)showTown();
+}
 
 function newDay(){
   phase="play";
@@ -2137,9 +2208,10 @@ function endDay(){
     ov("教學完成！","你已經學會放礦石、做胚、過熱、魔法格與鑽石加成了。","回到首頁",goHome);
     return;
   }
+  if(lastCompletedDay>=day||orders.length||dq.length)return;
   qEach('safe',q=>{if(lives>=dLv)qProg(q,q.n)});
-  if(phase==='reward')return;
-  sp++;saveHi();phase='reward';gachaUsed=false;skillDone=false;spentToday=0;render();showTown();
+  lastCompletedDay=day;sp++;pendingChests++;saveHi();
+  gachaUsed=false;skillDone=false;spentToday=0;newDay();
 }
 
 let skMode="",skillDone=false,spentToday=0;
@@ -2609,10 +2681,10 @@ function start(mode,opt){
   if(!testRun){cheat.m=false;cheat.s=false}
   active=!booting&&mode!=="tut"&&!testRun;
   skills={mm:0,gc:0,mg:0,wb:0,mc:0,mn:0};
-  pack=[];bag=[];gachaUsed=false;
+  pack=[];bag=[];gachaUsed=false;pendingChests=0;lastCompletedDay=0;chestOpening=false;
   leaves=new Set();frozen=new Set();seasonEffects=new Map();seasonNoticePending=false;shopBought={m:0,tool:0,o:0};
   $("seasonP").style.display="none";
-  $("sk").style.display="none";$("rw").style.display="none";$("gcP").style.display="none";
+  $("sk").style.display="none";$("rw").style.display="none";$("gcP").style.display="none";$("townLootP").style.display="none";$("townSkillP").style.display="none";
   g=Array(W*H).fill(null);best=Array(10).fill(null);
   Q=Array(5).fill(0);MQ=Array.from({length:3},rollM);
   fx=[];hold=new Set();pop=new Set();shown=new Map();busy=false;
@@ -2691,7 +2763,7 @@ function saveNow(){
   const st={
     g,coins,earned,all,day,dTot,dServed,dEarn,dLeft,orders,dq,best,Q,MQ,
     heat,hand,shopD,magic,magicSet:[...magicSet],dMagic,dSold,lives,
-    skills,pack,sp,bag,gachaUsed,skillDone,spentToday,phase,quests,qDone,dLv,
+    skills,pack,sp,bag,gachaUsed,skillDone,spentToday,phase,quests,qDone,dLv,pendingChests,lastCompletedDay,
     shopBought,leaves:[...leaves],frozen:[...frozen],seasonVersion:1,seasonNoticePending
   };
   const e={
@@ -2733,9 +2805,9 @@ function loadGame(id){
   stepSales=0;justHeated.clear();ensureQuests();
   tool=-1;fresh=-1;fx=[];hold=new Set();pop=new Set();shown=new Map();
   enter.clear();busy=false;tutP2=false;lead=0;flyI=-1;exitMs=0;active=true;
-  ["ov","cf","sk","rw","gcP","svP","recP","help","seasonP"].forEach(x=>$(x).style.display="none");
+  ["ov","cf","sk","rw","gcP","svP","recP","help","seasonP","townLootP","townSkillP"].forEach(x=>$(x).style.display="none");
   $("title").style.display="none";clearPrediction();render();
-  if(day>0)showTown();
+  restoreTownProgress(t);
   showPendingSeasonNotice();
 }
 let svMode="load";
