@@ -762,6 +762,14 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 #expeditionLog{min-height:156px;background:#14222c;padding:10px 12px;margin:12px 0;font-size:13px;border:1px solid #415956}#expeditionLog p{margin:3px 0}#expeditionLog .hero{color:#d8ebbe}#expeditionLog .enemy{color:#e6bcb5}#expeditionResult{text-align:center}#expeditionResult h3{font-size:24px;color:#f1d086}#expeditionResult p{font-size:16px}
 @media(max-width:360px){.exp-weapon{gap:4px;padding:5px}.exp-weapon-art{width:38px;height:38px}.exp-weapon b{font-size:12px}.exp-weapon small{font-size:10px}.exp-monster-art{width:74px;height:74px}.exp-monster-stats{font-size:12px}}
 
+.hxo.legendary .hxi{background:linear-gradient(135deg,#3a3657,#75603e 50%,#2f344b)!important;border-color:#f4cf76;box-shadow:inset 0 0 0 2px #fbe9a733,0 0 6px #e4bb6044}.hxo.legendary svg{filter:drop-shadow(0 1px #111c32)}
+.best-legend{color:#f2d08a!important;font-size:10px!important}.blueprint-known{border-color:#83bfd3;background:#294451}.blueprint-known small{color:#a4def1}.album-card .album-art>svg{width:100%;height:100%}.album-card[data-legend] b{font-size:11px;white-space:normal;line-height:1.3;min-height:2.6em}
+.legend-panel{max-width:440px;text-align:center}.legend-panel h2{font-size:23px;line-height:1.4}.legend-panel h3{font-size:18px}.legend-panel p{font-size:15px;line-height:1.65}.legend-large-art{width:128px;height:128px;margin:12px auto}.legend-large-art svg{width:100%;height:100%;filter:drop-shadow(0 3px 0 #17233488)}
+#legendBlueprintP{z-index:82}#legendForgeP{z-index:83}.legend-recipe{display:flex;justify-content:center;gap:7px;margin:14px 0}.legend-recipe>div{width:18%;min-width:0}.legend-recipe .hxo{width:100%;height:auto;aspect-ratio:1}.legend-recipe small{display:block;font-size:12px;margin-top:6px;color:#e1d4b4}
+#legendBlueprintState{color:#f0d390;border-top:1px solid #716344;border-bottom:1px solid #716344;padding:10px 0}#legendBlueprintRecipe .exp-note{font-size:13px;text-align:left}
+#legendForgeMaterials{text-align:left}#legendForgeMaterials label{display:block;margin:12px 0}#legendForgeMaterials label>span{display:block;font-size:14px;color:#e9d5a3;margin-bottom:6px}#legendForgeMaterials select{display:block;width:100%;min-height:44px;padding:8px;background:#192a36;color:#f4e7c8;border:1px solid #71847b;border-radius:5px;font-size:16px}
+.legend-price{color:#f6d48c;border:1px solid #8d7548;background:#483c2944;padding:10px;font-weight:700}#legendForgeConfirm:disabled,#legendBlueprintForge:disabled{opacity:.35}.legend-ingredient-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}.legend-ingredient-row>div{width:70px;font-size:11px}.legend-ingredient-row .hxo{width:55px;height:55px;margin:auto}.legend-ingredient-row span{display:block;margin-top:5px;color:#ccc8b8}.legend-chest-button{width:100%;margin-top:12px;min-height:44px;color:#f2d799;font-size:17px}
+
 </style>
 </head>
 <body>
@@ -791,7 +799,7 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
   <div id="msg"></div>
 </div>
 
-<div id="chestP"><div class="hp"><h2>📦 武器箱</h2><p id="chestInfo"></p><div id="chestItems"></div><button style="width:100%;margin-top:14px" onclick="closeP('chestP')">關閉</button></div></div>
+<div id="chestP"><div class="hp"><h2>📦 武器箱</h2><p id="chestInfo"></p><div id="chestItems"></div><button class="legend-chest-button" onclick="openLegendRecipes()">🌟 傳說藍圖與鍛造</button><button style="width:100%;margin-top:14px" onclick="closeP('chestP')">關閉</button></div></div>
 <div id="townP"><header class="town-header"><div><b>🏘 鍛造小鎮</b><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></div><div id="townStats"></div><div id="townSeason"></div></header><div id="townMap"><div id="townScenery"></div><button id="townExpedition" onclick="openExpedition()" aria-label="城門遠征"><span class="town-sign">⚔ 遠征</span></button><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><div id="townQueue"></div><button id="townChest" onclick="openTownChest()" hidden></button><div id="townWeather" aria-hidden="true"></div></div></div>
 <div id="townLootP"><div class="hp"><h2>每日寶箱</h2><div id="townLootArt"></div><h3 id="townLootName"></h3><p id="townLootRemaining" aria-live="polite"></p><div class="town-dialog-actions"><button id="townLootClose" onclick="if(!chestOpening)closeP('townLootP')">稍後再開</button><button id="townLootOpen" class="pri" onclick="claimTownChest()">開啟寶箱</button></div></div></div>
 <div id="townSkillP"><div class="hp"><h2>⭐ 還有技能點可以使用</h2><p id="townSkillCount"></p><div class="town-dialog-actions"><button onclick="startTownForge()">仍要進入</button><button class="pri" onclick="closeP('townSkillP');openSkills(false)">前往訓練所</button></div></div></div>
@@ -807,12 +815,15 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
   <div id="expeditionStages" aria-label="選擇遠征關卡"></div><div id="expeditionMonster"></div><p id="expeditionReward"></p>
   <h3>選擇出戰武器</h3><div id="expeditionWeapons"></div><div id="expeditionSelectedStats"></div><p id="expeditionForecast" aria-live="polite"></p>
   <button id="expeditionFight" class="pri exp-wide" onclick="beginExpedition()">開始挑戰 · 使用 1 次遠征</button>
-  <p class="exp-note">武器可重複使用，每天有 3 次挑戰。失敗不扣鍛造愛心；同一關每天可勝利一次，首次勝利另送道具。</p>
+  <p class="exp-note">武器可重複使用，每天有 3 次挑戰。失敗不扣鍛造愛心；同一關每天可勝利一次，首次勝利取得對應傳說藍圖。</p>
   <details class="exp-rules"><summary>能力與戰鬥規則</summary><p>每個胚分別提供能力：刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度。銅、鐵、鋼、金、秘銀的材料強度為 1、1.7、2.8、4.4、6.8 倍。</p><p>出戰生命＝100＋防禦×2。速度決定先後與行動頻率；物理傷害＝攻擊－對方防禦的 60%，至少造成 1 傷害。奧術傷害無視防禦，護盾先吸收傷害。80 次行動後仍未分勝負則撤退。</p><p>戰鬥推演會顯示目前裝備的預估結果。先改用其他配方或提高材料、附魔，再挑戰較強的怪物。</p></details>
   <p id="expeditionLast" class="exp-note"></p>
  </div>
  <div id="expeditionBattle" hidden><div id="expeditionArena"></div><div id="expeditionLog" aria-live="polite"></div><div id="expeditionResult" aria-live="polite"></div><button id="expeditionSkip" class="exp-wide" onclick="finishExpeditionPlayback()">顯示戰果</button><button id="expeditionAgain" class="pri exp-wide" hidden>選擇下一場</button></div>
 </div></div>
+
+<div id="legendBlueprintP" class="exp-overlay"><div class="hp legend-panel"><h2 id="legendBlueprintTitle"></h2><div id="legendBlueprintArt" class="legend-large-art"></div><p id="legendBlueprintState"></p><div id="legendBlueprintRecipe"></div><button id="legendBlueprintForge" class="pri exp-wide" onclick="openLegendForge()">前往傳說鍛造</button><button class="exp-wide" onclick="closeP('legendBlueprintP')">返回圖鑑</button></div></div>
+<div id="legendForgeP" class="exp-overlay"><div class="hp legend-panel"><h2 id="legendForgeTitle"></h2><div id="legendForgeArt" class="legend-large-art"></div><p id="legendForgeCapacity"></p><div id="legendForgeMaterials"></div><h3>成品預覽</h3><div id="legendForgePreview"></div><button id="legendForgeConfirm" class="pri exp-wide" onclick="craftLegendary()">鍛造</button><button class="exp-wide" onclick="closeP('legendForgeP')">稍後再鍛造</button></div></div>
 
 <div id="title">
   <div class="tl" id="tl"></div>
@@ -822,6 +833,7 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
   <button class="pri" onclick="askName(newGameFlow)">開始遊戲</button>
   <button id="ctn" onclick="openSaves('load')">▶ 繼續遊戲</button>
   <button onclick="$('title').style.display='none';start('tut')">教學關卡</button>
+  <button onclick="startLegendDemo()">🌟 試玩傳說鍛造</button>
   <button onclick="startExpeditionDemo()">⚔ 試玩遠征（示範裝備）</button>
   <button id="homeAlbum" onclick="openWeaponAlbum()">📖 武器圖鑑</button>
   <button onclick="openRec()">🏆 歷史紀錄</button>
@@ -846,7 +858,7 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
   <p>點空格放下上方佇列的礦石。拖曳模具到至少兩顆同階礦石旁，消耗相連材料，製成刃、柄或盾胚。學會合成大師後，三顆相連同階礦石可以升階；四顆可產生兩顆升階礦石，五顆可升兩階。</p>
   <h3>鍛造武器</h3>
   <p>三個相連、排成直線或彎線的胚會合成武器。配方由胚的種類決定，品質為三個胚階級的平均值，無條件捨去，仍用來判定能否符合訂單。售價則另外計算「材料基價」：取三個胚各自階級對應的武器基本售價平均，四捨五入，且不低於原品質的基本售價。例如銅＋銅＋銅為 30 金幣；鐵＋銅＋銅仍是銅級，但材料基價為 38 金幣。鑽石、指定訂單與大商人加成再套用在這個基價上。四個、五個胚可以同時鍛造兩把、三把武器，每把依自己的三個胚分別計價。混合材料的武器底色會分層顯示。</p>
-  <h3>武器能力與遠征</h3><p>點擊棋盤或歷史紀錄中的完成武器，可查看攻擊力、防禦力與速度。刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度；每個胚使用的材料會分別影響能力。城鎮城門可進行遠征，每天最多 3 次；武器不消耗，勝利可獲金幣，首次過關另送道具。</p><h3>拖曳預覽</h3>
+  <h3>傳說藍圖與鍛造</h3><p>十關遠征各有一張永久藍圖，已通關存檔會自動補發。圖鑑的「傳說藍圖」可查看配方；將指定 3～5 把普通武器放入武器箱後，從武器箱或圖鑑進行鍛造。鍛造會消耗所選原料，成品放回武器箱；藍圖不消耗，可重複製作。需要 5 件原料時，必須將武器箱升級至 6 格。</p><h3>武器能力與遠征</h3><p>點擊棋盤或歷史紀錄中的完成武器，可查看攻擊力、防禦力與速度。刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度；每個胚使用的材料會分別影響能力。城鎮城門可進行遠征，每天最多 3 次；武器不消耗，勝利可獲金幣，首次過關取得傳說藍圖。</p><h3>拖曳預覽</h3>
   <p>拖曳模具到棋盤，可以預覽消耗材料、製胚與鍛造結果。金框是消耗材料，紫框是參與鍛造的胚，綠框是放置位置。紅框會說明無法操作的原因。拖曳武器到客人身上，可以先看成交價。</p>
   <h3>鑽石與魔法</h3>
   <p>學會寶石匠後會出現鑽石模具與商品。胚旁的鑽石在鍛造時自動鑲嵌，最多三顆；每顆讓售價增加 30%×（階級＋1）。武器圖示上的裝飾寶石不等於實際鑲鑽，實際加成以 💎 標記為準。</p>
@@ -1241,7 +1253,7 @@ const todayStr=()=>{
 const esc=t=>String(t).replace(/[&<>"']/g,c=>({
   "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
 }[c]));
-const rankOf=w=>w?(w.cs||[w.t,w.t,w.t]).reduce((a,x)=>a+x,0)*1e6+Math.round((w.b||0)*100)*1e3+(w.m||0):-1;
+const rankOf=w=>w?(isLegend(w)?1e12:0)+(w.cs||[w.t,w.t,w.t]).reduce((a,x)=>a+x,0)*1e6+Math.round((w.b||0)*100)*1e3+(w.m||0):-1;
 const saveHi=()=>{
   if(day===0||testRun)return;
   const sc=score();
@@ -1268,7 +1280,7 @@ function colHTML(B){
     const badges=r?(r.m?'<span class="best-magic">✨+'+r.m+'</span>':'')
       +(gems?'<span class="best-gems">💎'+gems+' · +'+Math.round((r.b||0)*100)+'%</span>':''):'';
     const amount=w?wp(w)+(w.m||0):0;
-    return '<div class="sl"'+(r?' data-record-weapon="'+c+'" role="button" tabindex="0" aria-label="查看'+n+'的能力"':'')+'><div class="best-art">'+hex(c,r?bands(r):'var(--line)',r?'':'dim',r?r.t:0)+badges+'</div><b>'+n+'</b>'+recipe(c)
+    return '<div class="sl"'+(r?' data-record-weapon="'+c+'" role="button" tabindex="0" aria-label="查看'+n+'的能力"':'')+'><div class="best-art">'+hex(c,r?bands(r):'var(--line)',r?'':'dim',r?r.t:0,w)+badges+'</div><b>'+(isLegend(w)?LEGENDS[w.legendId].name:n)+'</b>'+(isLegend(w)?'<span class="best-legend">傳說</span>':recipe(c))
       +(r?'<small class="best-price" title="含鑽石與魔法，未含訂單與商人加成">'+amount+' 金幣</small>':'')+'</div>';
   }).join('');
 }
@@ -1357,10 +1369,11 @@ function importWeaponAlbum(){
   if(!testRun&&day>0){scanBest(best);scanState({g,pack,bag,hand});}
   if(changed)persistWeaponAlbum();
 }
-function openWeaponAlbum(){importWeaponAlbum();albumTier=-1;renderWeaponAlbum();$('weaponAlbumP').style.display='flex';}
+function openWeaponAlbum(){importLegendProgress();importWeaponAlbum();albumTier=-1;renderWeaponAlbum();$('weaponAlbumP').style.display='flex';}
 function renderWeaponAlbum(){
-  $('albumProgress').textContent='已蒐集 '+weaponAlbum.size+' / '+(WN.length*NM.length)+' · 鍛造後永久點亮，可點擊欣賞細節';
-  $('albumTabs').innerHTML=[-1,0,1,2,3,4].map(t=>'<button data-album-tier="'+t+'" aria-pressed="'+(t===albumTier)+'">'+(t<0?'全部':NM[t]+'級')+'</button>').join('');
+  $('albumProgress').textContent='普通 '+weaponAlbum.size+'/50 · 藍圖 '+LEGENDS.filter((_,id)=>hasLegendBlueprint(id)).length+'/10 · 傳說 '+LEGENDS.filter((_,id)=>hasLegendCollection(id)).length+'/10';
+  $('albumTabs').innerHTML=[-1,0,1,2,3,4,-2].map(t=>'<button data-album-tier="'+t+'" aria-pressed="'+(t===albumTier)+'">'+(t===-2?'🌟 傳說藍圖':t<0?'全部':NM[t]+'級')+'</button>').join('');
+  if(albumTier===-2){renderLegendAlbum();return;}
   $('albumWeapons').innerHTML=NM.map((name,t)=>{
     if(albumTier!==-1&&albumTier!==t)return '';
     const total=WN.filter((_,c)=>weaponAlbum.has(albumKey(c,t))).length;
@@ -1371,7 +1384,7 @@ function renderWeaponAlbum(){
   }).join('');
 }
 $('albumTabs').onclick=e=>{const b=e.target.closest('[data-album-tier]');if(!b)return;albumTier=+b.dataset.albumTier;renderWeaponAlbum();};
-$('albumWeapons').onclick=e=>{const b=e.target.closest('[data-album-weapon]');if(!b)return;showWeaponDetail(+b.dataset.albumWeapon,+b.dataset.tier);};
+$('albumWeapons').onclick=e=>{const legend=e.target.closest('[data-legend]');if(legend){openLegendBlueprint(+legend.dataset.legend);return;}const b=e.target.closest('[data-album-weapon]');if(!b)return;showWeaponDetail(+b.dataset.albumWeapon,+b.dataset.tier);};
 function showWeaponDetail(c,t){
   inspectedWeapon=c;inspectedTier=t;const found=weaponAlbum.has(albumKey(c,t));
   $('inspectName').textContent=NM[t]+'級'+WN[c];$('inspectArt').className=found?'collected':'uncollected';$('inspectArt').innerHTML=hex(c,C[t],'',t);
@@ -1450,7 +1463,7 @@ const packCap=()=>[0,2,4,6][sk('wb')];
 const syncPack=()=>{while(pack.length<packCap())pack.push(null)};
 function packHTML(){const cap=packCap();return Array.from({length:6},(_,k)=>{
   const locked=k>=cap,w=locked?null:pack[k];
-  return `<button class="chest-slot${locked?' locked':''}" data-take="${k}" ${locked||!w?'disabled':''} aria-label="${locked?'尚未解鎖':w?'取出'+itemName(w):'空格'}">${locked?'🔒':w?'<div class="chest-weapon">'+hex(w.c,bands(w),'',w.t)+mb(w)+'</div><small>'+itemName(w)+'</small>':'<span>空</span>'}</button>`;
+  return `<button class="chest-slot${locked?' locked':''}" data-take="${k}" ${locked||!w?'disabled':''} aria-label="${locked?'尚未解鎖':w?'取出'+itemName(w):'空格'}">${locked?'🔒':w?'<div class="chest-weapon">'+hex(w.c,bands(w),'',w.t,w)+mb(w)+'</div><small>'+itemName(w)+'</small>':'<span>空</span>'}</button>`;
 }).join('');}
 function openChest(){render();$('chestP').style.display='flex';}
 function storeWeapon(w,clear){
@@ -1522,7 +1535,7 @@ const hu=o=>{
 };
 const pat=()=>1;
 const svg=(c,t=0)=>`<svg viewBox="0 0 48 48" shape-rendering="crispEdges"><image href="${UNITY_ART['weapon'+c+'_'+t]}" width="48" height="48" style="image-rendering:pixelated"/></svg>`;
-const hex=(c,bg,cls="",t=0)=>`<div class="hxo ${cls}"><div class="hxi" style="background:${bg}">${svg(c,t)}</div></div>`;
+const hex=(c,bg,cls="",t=0,w=null)=>`<div class="hxo ${cls}${isLegend(w)?" legendary":""}"><div class="hxi" style="background:${bg}">${isLegend(w)?legendWeaponSVG(w.legendId):svg(c,t)}</div></div>`;
 const price=(t,c)=>Math.round(PR[t]*MUL[c]);
 const tok=(bg,tx,b)=>`<div class="${b?"t o":"q"}" style="background-color:${bg}">${tx}</div>`;
 const itemH=(h,b)=>h.k==='m'?mold(h.s,"","f")
@@ -1532,7 +1545,7 @@ const itemH=(h,b)=>h.k==='m'?mold(h.s,"","f")
   :h.k==='z'?tok("#54a4cc","❄️",b)
   :h.k==='l'?tok("#b94568","🧪",b)
   :h.k==='p'?mold(h.s,C[h.t],"f")
-  :h.k==='w'?hex(h.c,bands(h),"",h.t)
+  :h.k==='w'?hex(h.c,bands(h),"",h.t,h)
   :tok(C[h.t],NM[h.t],b);
 const itemName=h=>h.k==='m'?TY[h.s]+"模"
   :h.k==='f'?"焚燒工具"
@@ -1540,7 +1553,8 @@ const itemName=h=>h.k==='m'?TY[h.s]+"模"
   :h.k==='z'?"暴風雪"
   :h.k==='l'?"生命藥水"
   :h.k==='p'?NM[h.t]+TY[h.s]+"胚"
-  :h.k==='w'?NM[h.t]+"級"+WN[h.c]
+  :h.k==='bp'?'傳說藍圖：'+LEGENDS[h.id].name
+  :h.k==='w'?(isLegend(h)?LEGENDS[h.legendId].name:NM[h.t]+"級"+WN[h.c])
   :h.k==='o'?NM[h.t]+"礦":NM[h.t]+"鑽";
 const itemKey=h=>h.k==='w'||h.k==='p'?h.k+JSON.stringify(h):h.k+(h.s!==undefined?"s"+h.s:"")+(h.t!==undefined?"t"+h.t:"");
 /* 品質門檻維持平均階級無條件捨去；售價另依實際材料計算。
@@ -1554,7 +1568,7 @@ const materialPrice=w=>{
 const materialGain=w=>materialPrice(w)-price(w.t,w.c);
 const materialNote=w=>"材料基價 "+materialPrice(w)+" 金幣"
   +(materialGain(w)>0?"（混材 +"+materialGain(w)+"）":"");
-const wp=w=>Math.round(materialPrice(w)*(1+(w.b||0)));
+const wp=w=>isLegend(w)?Math.max(0,Math.round(w.legendPrice||0)):Math.round(materialPrice(w)*(1+(w.b||0)));
 const recipe=c=>COMBO[c].split("").map(x=>TY[x]).join("");
 const oPrice=o=>o.c===null?PR[o.t]:Math.round(price(o.t,o.c)*1.3);
 const salePrice=(w,o)=>Math.round(
@@ -1785,7 +1799,7 @@ function render(){
       else if(c.k==='d')
         h=`<div class="t2 dg${nw}">${gem(c.t)}${mb(c)}</div>`;
       else
-        h=`<div class="t2${nw}">${hex(c.c,bands(c),"",c.t)}${mb(c)}${c.b?`<span class="bd">💎+${Math.round(c.b*100)}%</span>`:""}</div>`;
+        h=`<div class="t2${nw}">${hex(c.c,bands(c),"",c.t,c)}${mb(c)}${c.b?`<span class="bd">💎+${Math.round(c.b*100)}%</span>`:""}</div>`;
     }
     if(!c&&th[i])h=th[i];
     if(shown.has(i))h=shown.get(i);
@@ -1837,7 +1851,7 @@ function render(){
     (grp[k]=grp[k]||{it,n:0}).n++;
   });
   $("bagC").innerHTML=Object.entries(grp).map(([k,v])=>
-    `<button class="si" data-k="${k}">${itemH(v.it)}<small>${itemName(v.it)} ×${v.n}</small></button>`
+    `<button class="si" data-k="${esc(k)}">${itemH(v.it)}<small>${itemName(v.it)} ×${v.n}</small></button>`
   ).join("")||"<small>道具箱是空的</small>";
   $("bgb").textContent="🎒道具";
 
@@ -2224,12 +2238,12 @@ function weaponParts(w){
  return (COMBO[w.c]||'012').split('').map((s,i)=>({s:+s,t:Math.max(0,Math.min(4,Number(tiers[i])||0))}));
 }
 function weaponStats(w){
- const parts=weaponParts(w),v={atk:5,def:3,spd:3};
- parts.forEach(p=>Object.keys(v).forEach(k=>v[k]+=MOLD_STATS[p.s][k]*ORE_POWER[p.t]));
+ const parts=weaponParts(w),v=isLegend(w)?{...w.legendCore}:{atk:5,def:3,spd:3};
+ if(!isLegend(w))parts.forEach(p=>Object.keys(v).forEach(k=>v[k]+=MOLD_STATS[p.s][k]*ORE_POWER[p.t]));
  const gemPower=Array.isArray(w.dts)?w.dts.reduce((a,t)=>a+.05*(Math.max(0,Math.min(4,t))+1),0):Math.max(0,w.b||0)/6;
- Object.keys(v).forEach(k=>v[k]=Math.round(v[k]*(1+gemPower)));
+ if(!isLegend(w))Object.keys(v).forEach(k=>v[k]=Math.round(v[k]*(1+gemPower)));
  const stacks=Math.max(0,Math.floor((w.m||0)/5)),effective=Math.min(20,stacks);
- return {...v,stacks,arcane:effective*2,ward:effective*3,estimated:!Array.isArray(w.parts)};
+ return {...v,stacks,arcane:effective*2,ward:effective*3,estimated:!isLegend(w)&&!Array.isArray(w.parts)};
 }
 function statsHTML(w){
  const s=weaponStats(w);return '<div class="weapon-stats">'+Object.entries(STAT_NAMES).map(([k,n])=>'<div><small>'+({atk:'⚔',def:'🛡',spd:'💨'}[k])+' '+n+'</small><b>'+s[k]+'</b></div>').join('')+'</div>';
@@ -2239,10 +2253,10 @@ function weaponEnchantHTML(w){
 }
 function openCraftedWeapon(w,source='鍛造作品'){
  if(!w||w.c==null)return;
- $('weaponStatsTitle').textContent=NM[w.t]+'級'+WN[w.c];$('weaponStatsSource').textContent=source;
- $('weaponStatsArt').innerHTML=hex(w.c,bands(w),'',w.t);$('weaponStatsValues').innerHTML=statsHTML(w)+weaponEnchantHTML(w);
- $('weaponStatsParts').innerHTML='<h3>製作材料</h3><div class="weapon-part-list">'+weaponParts(w).map(p=>'<div>'+mold(p.s,C[p.t],'s')+'<span>'+NM[p.t]+'・'+TY[p.s]+'胚</span></div>').join('')+'</div>';
- $('weaponStatsNote').textContent=weaponStats(w).estimated?'舊版作品未記錄各胚的材料對應，能力值依原配方與材料估算。':'刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度；高階材料會加強該胚的貢獻。';
+ $('weaponStatsTitle').textContent=isLegend(w)?LEGENDS[w.legendId].name+' · 傳說':NM[w.t]+'級'+WN[w.c];$('weaponStatsSource').textContent=source;
+ $('weaponStatsArt').innerHTML=hex(w.c,bands(w),'',w.t,w);$('weaponStatsValues').innerHTML=statsHTML(w)+weaponEnchantHTML(w);
+ $('weaponStatsParts').innerHTML=isLegend(w)?'<h3>消耗的原料武器</h3><div class="legend-ingredient-row">'+(w.legendIngredients||[]).map(x=>'<div>'+hex(x.c,bands(x),'',x.t,x)+'<span>'+itemName(x)+'</span></div>').join('')+'</div>':'<h3>製作材料</h3><div class="weapon-part-list">'+weaponParts(w).map(p=>'<div>'+mold(p.s,C[p.t],'s')+'<span>'+NM[p.t]+'・'+TY[p.s]+'胚</span></div>').join('')+'</div>';
+ $('weaponStatsNote').textContent=isLegend(w)?LEGENDS[w.legendId].trait+' 加成已計入上方能力。':weaponStats(w).estimated?'舊版作品未記錄各胚的材料對應，能力值依原配方與材料估算。':'刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度；高階材料會加強該胚的貢獻。';
  $('weaponStatsPrice').textContent=(wp(w)+(w.m||0))+' 金幣 · 不含指定訂單與商人加成';
  $('weaponStatsP').style.display='flex';
 }
@@ -2331,7 +2345,7 @@ function renderExpedition(){
  $('expeditionMonster').innerHTML='<div class="exp-monster-art">'+monsterArt(m)+'</div><div><small>第 '+(expeditionStage+1)+' 關 · '+m.area+'</small><h3>'+m.name+'</h3><div class="exp-monster-stats">♥ '+m.hp+'　⚔ '+m.atk+'　🛡 '+m.def+'　💨 '+m.spd+'</div></div>';
  const first=!expeditionState.cleared.includes(expeditionStage),gold=first?m.gold:Math.round(m.gold*.45);
  $('expeditionReward').textContent=(already?'今日已擊敗，明天可再次挑戰。':first?'首次勝利：'+gold+' 金幣＋'+itemName(m.loot):'再次勝利：'+gold+' 金幣');
- $('expeditionWeapons').innerHTML=options.length?options.map(x=>'<button class="exp-weapon '+(x.key===expeditionSelected?'selected':'')+'" data-exp-weapon="'+x.key+'"><span class="exp-weapon-art">'+hex(x.w.c,bands(x.w),'',x.w.t)+'</span><span><b>'+esc(itemName(x.w))+'</b><small>'+x.source+' · ⚔'+weaponStats(x.w).atk+' 🛡'+weaponStats(x.w).def+' 💨'+weaponStats(x.w).spd+'</small></span></button>').join(''):'<div class="exp-empty">先在冶煉廠鍛造一把武器，再回來挑戰。棋盤、武器箱、道具箱與手持欄的武器都能出戰。</div>';
+ $('expeditionWeapons').innerHTML=options.length?options.map(x=>'<button class="exp-weapon '+(x.key===expeditionSelected?'selected':'')+'" data-exp-weapon="'+x.key+'"><span class="exp-weapon-art">'+hex(x.w.c,bands(x.w),'',x.w.t,x.w)+'</span><span><b>'+esc(itemName(x.w))+'</b><small>'+x.source+' · ⚔'+weaponStats(x.w).atk+' 🛡'+weaponStats(x.w).def+' 💨'+weaponStats(x.w).spd+'</small></span></button>').join(''):'<div class="exp-empty">先在冶煉廠鍛造一把武器，再回來挑戰。棋盤、武器箱、道具箱與手持欄的武器都能出戰。</div>';
  $('expeditionSelectedStats').innerHTML=chosen?statsHTML(chosen.w)+weaponEnchantHTML(chosen.w):'';
  $('expeditionForecast').textContent=chosen?(()=>{const r=simulateExpedition(chosen.w,m);return '戰鬥推演：'+(r.outcome==='win'?'可獲勝，預計剩餘 '+r.hp+' / '+r.hpMax+' 生命':r.outcome==='lose'?'目前裝備會落敗，試試其他配方、材料或附魔。':'戰鬥將陷入僵持，建議提高攻擊或附魔。');})():'';
  $('expeditionFight').disabled=!chosen||already||expeditionState.attempts>=EXPEDITION_LIMIT;
@@ -2345,7 +2359,7 @@ function beginExpedition(){
  if(result.outcome==='win'){
   gold=first?m.gold:Math.round(m.gold*.45);coins+=gold;earned+=gold;dEarn+=gold;expeditionState.victories++;
   expeditionState.wonToday.push(expeditionStage);
-  if(first){expeditionState.cleared.push(expeditionStage);expeditionState.unlocked=Math.min(EXPEDITIONS.length-1,expeditionStage+1);loot={...m.loot};bag.push(loot);}
+  if(first){expeditionState.cleared.push(expeditionStage);expeditionState.unlocked=Math.min(EXPEDITIONS.length-1,expeditionStage+1);loot={k:'bp',id:expeditionStage};unlockLegendBlueprint(expeditionStage);}
  }
  expeditionState.lastBattle={...result,stage:expeditionStage,weapon:JSON.parse(JSON.stringify(chosen.w)),gold,loot,first,day};
  // Resolve and save once before presentation, including defeats and rewards.
@@ -2357,7 +2371,7 @@ function stopExpeditionPlayback(){if(expeditionTimer!==null){clearInterval(exped
 function finishExpeditionPlayback(){stopExpeditionPlayback();expeditionBattleStep=expeditionState.lastBattle?.log.length||0;renderExpeditionBattle();}
 function renderExpeditionBattle(){
  const b=expeditionState.lastBattle;if(!b)return;const m=EXPEDITIONS[b.stage],step=Math.min(expeditionBattleStep,b.log.length),frame=step?b.log[step-1]:{hp:b.hpMax,shield:b.stats.ward,enemyHp:m.hp},done=step>=b.log.length;
- $('expeditionArena').innerHTML='<div class="exp-fighter"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t)+'</div><b>'+WN[b.weapon.c]+'</b><small>♥ '+frame.hp+' / '+b.hpMax+(frame.shield?'　護盾 '+frame.shield:'')+'</small><progress max="'+b.hpMax+'" value="'+frame.hp+'"></progress></div><strong>VS</strong><div class="exp-fighter"><div>'+monsterArt(m)+'</div><b>'+m.name+'</b><small>♥ '+frame.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+frame.enemyHp+'"></progress></div>';
+ $('expeditionArena').innerHTML='<div class="exp-fighter"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</div><b>'+itemName(b.weapon)+'</b><small>♥ '+frame.hp+' / '+b.hpMax+(frame.shield?'　護盾 '+frame.shield:'')+'</small><progress max="'+b.hpMax+'" value="'+frame.hp+'"></progress></div><strong>VS</strong><div class="exp-fighter"><div>'+monsterArt(m)+'</div><b>'+m.name+'</b><small>♥ '+frame.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+frame.enemyHp+'"></progress></div>';
  $('expeditionLog').innerHTML=b.log.slice(0,step).slice(-5).map(x=>'<p class="'+x.actor+'">'+esc(x.text)+'</p>').join('')||'<p>雙方準備交戰，速度較高的一方先行。</p>';
  $('expeditionResult').innerHTML=done?'<h3>'+({win:'🏆 遠征勝利',lose:'已返回城鎮',draw:'戰況僵持，安全撤退'}[b.outcome])+'</h3><p>'+(b.outcome==='win'?'獲得 '+b.gold+' 金幣'+(b.loot?'＋'+itemName(b.loot):''):'武器與鍛造愛心保留。調整裝備後再試一次。')+'</p>':'';
  $('expeditionSkip').hidden=done;$('expeditionAgain').hidden=!done;
@@ -2380,6 +2394,110 @@ document.addEventListener('click',e=>{
  const c=+item.dataset.recordWeapon,record=item.closest('[data-record-index]');const w=record?recs[+record.dataset.recordIndex]?.best?.[c]:best[c];
  if(w)openCraftedWeapon({...w,k:'w',c},record?'歷史紀錄':'本次最佳作品');
 });
+
+const LEGENDS=[
+ {name:'苔冠獵爪',c:0,tier:0,recipe:[0,1,6],scale:1.5,price:1.15,magic:10,color:'#80d79b',trait:'翠刃工藝：攻擊額外提升 12%。'},
+ {name:'逐風長矛',c:3,tier:0,recipe:[3,6,1],scale:1.5,price:1.17,magic:10,color:'#81d9eb',trait:'逐風工藝：速度額外提升 15%。'},
+ {name:'岩心大盾',c:9,tier:1,recipe:[9,2,4],scale:1.55,price:1.19,magic:15,color:'#c4bd85',trait:'岩心工藝：防禦額外提升 15%。'},
+ {name:'竊影大劍',c:1,tier:1,recipe:[1,0,3,8],scale:1.6,price:1.21,magic:20,color:'#c4a1ef',trait:'影刃工藝：攻擊與速度額外提升 8%。'},
+ {name:'霜衛聖鎧',c:4,tier:2,recipe:[4,9,2,5],scale:1.6,price:1.23,magic:25,color:'#b6ecf1',trait:'霜衛工藝：防禦額外提升 15%。'},
+ {name:'熔核戰錘',c:5,tier:2,recipe:[5,8,1],scale:1.65,price:1.25,magic:30,color:'#f3a06a',trait:'熔核工藝：攻擊額外提升 15%。'},
+ {name:'夜行長棍',c:6,tier:3,recipe:[6,3,0,2],scale:1.7,price:1.27,magic:35,color:'#ba9ce7',trait:'夜行工藝：速度額外提升 18%。'},
+ {name:'遺跡破城鏟',c:7,tier:3,recipe:[7,5,9,4],scale:1.7,price:1.29,magic:40,color:'#e9cb83',trait:'破城工藝：攻擊與防禦額外提升 10%。'},
+ {name:'龍焰巨斧',c:8,tier:4,recipe:[8,1,5,3,4],scale:1.75,price:1.32,magic:45,color:'#f2b477',trait:'龍焰工藝：攻擊額外提升 18%。'},
+ {name:'星隕盾刃',c:2,tier:4,recipe:[2,9,1,0,6],scale:1.8,price:1.35,magic:50,color:'#e9d4ff',trait:'星隕工藝：攻擊、防禦、速度額外提升 8%。'}
+];
+const LEGEND_BONUS=[{atk:1.12},{spd:1.15},{def:1.15},{atk:1.08,spd:1.08},{def:1.15},{atk:1.15},{spd:1.18},{atk:1.1,def:1.1},{atk:1.18},{atk:1.08,def:1.08,spd:1.08}];
+const legendBlueprints=new Set(),legendCollection=new Set(),legendDemoBlueprints=new Set(),legendDemoCollection=new Set();
+let legendForgeId=0,legendSelection=[];
+function validLegendId(id){return Number.isInteger(id)&&id>=0&&id<LEGENDS.length;}
+function isLegend(w){return !!w&&validLegendId(w.legendId)&&w.legendCore&&['atk','def','spd'].every(k=>Number.isFinite(w.legendCore[k])&&w.legendCore[k]>0);}
+function readLegendSet(key,set){try{const a=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(a))a.forEach(id=>{if(validLegendId(id))set.add(id)});}catch(e){}}
+readLegendSet('forgeLegendBlueprintsV1',legendBlueprints);readLegendSet('forgeLegendCollectionV1',legendCollection);
+function persistLegendSets(){try{localStorage.setItem('forgeLegendBlueprintsV1',JSON.stringify([...legendBlueprints].sort((a,b)=>a-b)));localStorage.setItem('forgeLegendCollectionV1',JSON.stringify([...legendCollection].sort((a,b)=>a-b)));}catch(e){}}
+function hasLegendBlueprint(id){return legendBlueprints.has(id)||(testRun&&legendDemoBlueprints.has(id));}
+function hasLegendCollection(id){return legendCollection.has(id)||(testRun&&legendDemoCollection.has(id));}
+function unlockLegendBlueprint(id){if(!validLegendId(id))return;const set=testRun?legendDemoBlueprints:legendBlueprints;if(set.has(id))return;set.add(id);if(!testRun)persistLegendSets();}
+function importLegendProgress(){
+ let changed=false;const unlock=id=>{if(validLegendId(id)&&!legendBlueprints.has(id)){legendBlueprints.add(id);changed=true;}};
+ const scan=w=>{if(isLegend(w)){unlock(w.legendId);if(!legendCollection.has(w.legendId)){legendCollection.add(w.legendId);changed=true;}}};
+ const state=s=>{if(!s)return;(s.expedition?.cleared||[]).forEach(unlock);[...(s.best||[]),...(s.g||[]),...(s.pack||[]),...(s.bag||[]),s.hand].forEach(scan);};
+ saves.forEach(x=>state(x.state));recs.forEach(r=>(r.best||[]).forEach(scan));
+ if(!testRun&&day>0){(expeditionState.cleared||[]).forEach(unlock);state({best,g,pack,bag,hand});}
+ if(changed)persistLegendSets();
+}
+function legendSample(id,t=LEGENDS[id].tier){const l=LEGENDS[id];return {k:'w',c:l.c,t,parts:COMBO[l.c].split('').map(s=>({s:+s,t})),cs:[t,t,t],m:0,b:0,dts:[]};}
+function legendaryWeapon(id,ingredients){
+ const l=LEGENDS[id],t=Math.floor(ingredients.reduce((a,w)=>a+w.t,0)/ingredients.length),ref=weaponStats(legendSample(id,t)),values=ingredients.map(weaponStats),core={};
+ ['atk','def','spd'].forEach(k=>{const avg=values.reduce((a,s)=>a+s[k],0)/values.length;core[k]=Math.round(Math.max(ref[k]*1.4,(ref[k]*.65+avg*.35)*l.scale)*(LEGEND_BONUS[id][k]||1));});
+ const dts=ingredients.flatMap(w=>w.dts||[]).sort((a,b)=>b-a).slice(0,3);
+ const price=Math.ceil(ingredients.reduce((a,w)=>a+wp(w),0)*l.price);
+ return {k:'w',c:l.c,t,cs:[t,t,t],legendId:id,legendCore:core,legendPrice:price,legendIngredients:JSON.parse(JSON.stringify(ingredients)),m:ingredients.reduce((a,w)=>a+(w.m||0),0)+l.magic,dts,b:dts.reduce((a,x)=>a+.3*(x+1),0),statVersion:1};
+}
+function legendMaterials(id,indices){
+ const l=LEGENDS[id];if(!l||!hasLegendBlueprint(id)||packCap()<l.recipe.length||indices.length!==l.recipe.length||new Set(indices).size!==indices.length)return null;
+ const a=indices.map((slot,i)=>Number.isInteger(slot)&&slot>=0&&slot<packCap()?pack[slot]:null);
+ return a.every((w,i)=>w&&w.k==='w'&&!isLegend(w)&&w.c===l.recipe[i]&&w.t>=l.tier)?a:null;
+}
+function chooseLegendMaterials(id){
+ const used=new Set();return LEGENDS[id].recipe.map(c=>{const candidates=pack.map((w,i)=>({w,i})).filter(({w,i})=>i<packCap()&&!used.has(i)&&w&&w.k==='w'&&!isLegend(w)&&w.c===c&&w.t>=LEGENDS[id].tier).sort((a,b)=>wp(a.w)+(a.w.m||0)-wp(b.w)-(b.w.m||0));const i=candidates[0]?.i??-1;if(i>=0)used.add(i);return i;});
+}
+function renderLegendAlbum(){
+ $('albumWeapons').innerHTML='<section class="album-section"><h3>傳說藍圖 <small>'+LEGENDS.filter((_,id)=>hasLegendBlueprint(id)).length+'/10</small></h3><div class="album-grid">'+LEGENDS.map((l,id)=>'<button class="album-card '+(hasLegendCollection(id)?'collected':hasLegendBlueprint(id)?'blueprint-known':'uncollected')+'" data-legend="'+id+'"><span class="album-art">'+(hasLegendCollection(id)?legendWeaponSVG(id):legendBlueprintSVG(id))+'</span><b>'+l.name+'</b><small>'+(hasLegendCollection(id)?'已鍛造':hasLegendBlueprint(id)?'藍圖已取得':'第 '+(id+1)+' 關')+'</small></button>').join('')+'</div></section>';
+}
+function openLegendBlueprint(id){
+ if(!validLegendId(id))return;legendForgeId=id;const l=LEGENDS[id];
+ $('legendBlueprintTitle').textContent=l.name+'・傳說藍圖';$('legendBlueprintArt').innerHTML=hasLegendCollection(id)?legendWeaponSVG(id):legendBlueprintSVG(id);
+ $('legendBlueprintState').textContent=(hasLegendBlueprint(id)?'已學會 · 可重複鍛造':'第 '+(id+1)+' 關「'+EXPEDITIONS[id].name+'」首次勝利取得')+(hasLegendCollection(id)?' · 已完成鍛造':'');
+ $('legendBlueprintRecipe').innerHTML='<p>將以下 '+l.recipe.length+' 把'+NM[l.tier]+'級以上的普通武器放入武器箱：</p><div class="legend-recipe">'+l.recipe.map(c=>'<div>'+hex(c,C[l.tier],'',l.tier)+'<small>'+WN[c]+'</small></div>').join('')+'</div><p class="exp-note">'+l.trait+'鍛造時保留原料的魔法，並額外增加 '+(l.magic/5)+' 層附魔。售價為原料基價總和的 '+Math.round(l.price*100)+'%。</p><p class="exp-note">藍圖永久學會；每次消耗原料，傳說成品放回武器箱。傳說武器不能當作原料。</p>';
+ $('legendBlueprintForge').disabled=!hasLegendBlueprint(id);$('legendBlueprintP').style.display='flex';
+}
+function openLegendForge(id=legendForgeId){
+ if(!hasLegendBlueprint(id))return;legendForgeId=id;legendSelection=chooseLegendMaterials(id);
+ $('legendBlueprintP').style.display='none';$('legendForgeP').style.display='flex';renderLegendForge();
+}
+function openLegendRecipes(){importLegendProgress();albumTier=-2;renderWeaponAlbum();$('weaponAlbumP').style.display='flex';}
+function renderLegendForge(){
+ const id=legendForgeId,l=LEGENDS[id],a=legendMaterials(id,legendSelection);
+ $('legendForgeTitle').textContent='鍛造 '+l.name;$('legendForgeArt').innerHTML=legendWeaponSVG(id);
+ $('legendForgeCapacity').textContent=packCap()<l.recipe.length?'需要至少 '+l.recipe.length+' 格武器箱容量，目前 '+packCap()+' 格。請先到訓練所升級武器箱。':'選擇將消耗的 '+l.recipe.length+' 把原料；預設優先選擇售價較低的武器。';
+ $('legendForgeMaterials').innerHTML=l.recipe.map((c,k)=>'<label><span>'+WN[c]+' · ≥'+NM[l.tier]+'級</span><select data-legend-slot="'+k+'"><option value="-1">選擇武器箱中的原料</option>'+pack.map((w,i)=>w&&i<packCap()&&w.k==='w'&&!isLegend(w)&&w.c===c&&w.t>=l.tier?'<option value="'+i+'" '+(legendSelection[k]===i?'selected':'')+'>第 '+(i+1)+' 格 · '+NM[w.t]+'級 · '+(wp(w)+(w.m||0))+' 金幣</option>':'').join('')+'</select></label>').join('');
+ $('legendForgePreview').innerHTML=a?(()=>{const w=legendaryWeapon(id,a);return statsHTML(w)+weaponEnchantHTML(w)+'<p class="legend-price">成品 '+(wp(w)+w.m)+' 金幣 · 原料合計 '+a.reduce((v,x)=>v+wp(x)+(x.m||0),0)+' 金幣</p><p class="exp-note">'+l.trait+' 此加成已包含在上方能力值。</p>';})():'<p class="exp-note">缺少符合配方的原料。請先在冶煉廠製作，再拖進武器箱。</p>';
+ $('legendForgeConfirm').disabled=!a;$('legendForgeConfirm').textContent='消耗 '+l.recipe.length+' 把原料並鍛造';
+}
+function craftLegendary(){
+ const id=legendForgeId,a=legendMaterials(id,legendSelection);if(!a){renderLegendForge();return;}
+ const w=legendaryWeapon(id,a),slot=legendSelection[0];legendSelection.forEach(i=>pack[i]=null);pack[slot]=w;
+ const collection=testRun?legendDemoCollection:legendCollection;collection.add(id);if(!testRun){legendBlueprints.add(id);persistLegendSets();rememberWeapon(w);}
+ if(rankOf(w)>rankOf(best[w.c]))best[w.c]=JSON.parse(JSON.stringify(w));qOnForgeStats(w);saveHi();saveNow();
+ $('legendForgeP').style.display='none';render();say('🌟 '+LEGENDS[id].name+' 已鍛造完成，放入武器箱！');openCraftedWeapon(w,'傳說鍛造 · 成品已存入武器箱');
+}
+function startLegendDemo(){
+ startExpeditionDemo();closeExpedition();legendDemoBlueprints.clear();legendDemoCollection.clear();LEGENDS.forEach((_,id)=>legendDemoBlueprints.add(id));
+ skills.wb=3;sp=0;pack=[legendSample(0),legendSample(0),legendSample(0),null,null,null];
+ pack[0]={...legendSample(0),c:0};pack[1]={...legendSample(0),c:1,parts:COMBO[1].split('').map(s=>({s:+s,t:0}))};pack[2]={...legendSample(0),c:6,parts:COMBO[6].split('').map(s=>({s:+s,t:0}))};
+ pack[4]={...legendSample(0,1),c:9,parts:COMBO[9].split('').map(s=>({s:+s,t:1}))};render();openLegendForge(0);
+}
+$('legendForgeMaterials').onchange=e=>{const s=e.target.closest('[data-legend-slot]');if(!s)return;legendSelection[+s.dataset.legendSlot]=+s.value;renderLegendForge();};
+EXPEDITIONS.forEach((m,id)=>m.loot={k:'bp',id});
+
+function legendWeaponSVG(id){
+ const l=LEGENDS[id],a=l.color,d='#27303f',g='#d8b56c',h='#fff0ba';let s='';
+ switch(id){
+ case 0:s='<path fill="'+d+'" d="M9 43V21l6-12 5 4v25h5V16l7-12 5 5v29h5V20l8-9 4 6-3 30-9 11H18z"/><path fill="'+a+'" d="M12 39V23l5-10v27zM28 38V17l5-9v31zM44 40V22l7-7-3 28z"/><path fill="#e1ffca" d="M15 35V23h2v12zM31 34V18h2v16zM47 36V23h2v13z"/><path fill="'+g+'" d="M10 40h42v9l-9 8H20l-10-8z"/><path fill="#765d39" d="M15 45h32v6H15zM22 56h18v5H22z"/><path fill="'+a+'" d="M27 43h10v10H27z"/>';break;
+ case 1:s='<path stroke="'+d+'" stroke-width="8" d="M15 57l32-41"/><path stroke="'+g+'" stroke-width="4" d="M15 57l29-37"/><path fill="'+d+'" d="M34 18L53 3l2 21-9 9-10-3-6-9z"/><path fill="'+a+'" d="M38 18L51 7l1 15-8 8-7-3-3-5z"/><path fill="#e9ffff" d="M40 19L51 7l-7 18z"/><path fill="'+g+'" d="M25 26l14 10-4 5-14-10zM13 53l7 5-4 5-7-5z"/><path fill="'+a+'" d="M28 35l-13 2 6-7zM35 41l-3 13 9-8z"/>';break;
+ case 2:s='<path fill="'+d+'" d="M13 9h38v7h6v28l-9 12-16 7-16-7-9-12V16h6z"/><path fill="'+g+'" d="M15 12h34v7h5v24l-9 11-13 6-13-6-9-11V19h5z"/><path fill="#647a76" d="M19 17h26v7h5v17l-8 9-10 5-10-5-8-9V24h5z"/><path fill="'+a+'" d="M20 20h24v6h4v12H16V26h4z"/><path fill="#394f57" d="M29 18h6v35h-6zM17 36h30v5H17z"/><path fill="#92d8b3" stroke="'+g+'" stroke-width="2" d="M32 25l8 8-8 12-8-12z"/>';break;
+ case 3:s='<path stroke="'+d+'" stroke-width="10" d="M14 56l12-16"/><path stroke="#84634f" stroke-width="5" d="M14 56l12-16"/><path fill="'+d+'" d="M21 36L46 5h12l-2 17-25 25z"/><path fill="'+a+'" d="M26 34L47 9h7l-3 12-23 22z"/><path fill="#f1e6ff" d="M28 32L48 9h5L29 38z"/><path fill="#705488" d="M33 34l16-18-1 9-15 17z"/><path fill="'+g+'" d="M14 33l9-4 15 15-3 8-8-9-8-3zM8 55l7-5 7 7-7 5z"/><path fill="#dd8eca" d="M22 36h7v7h-7z"/>';break;
+ case 4:s='<path fill="'+d+'" d="M22 7h20l4 8 13 4 3 15-12 7v17H14V41L2 34l3-15 13-4z"/><path fill="'+a+'" d="M23 11h18l2 9 12 3 3 9-10 5-2 17H18l-2-17-10-5 3-9 12-3z"/><path fill="#5e9cae" d="M22 13h19l-3 10H26zM20 31h25v21H20z"/><path fill="'+h+'" d="M9 22h12v5H9zM44 22h12v5H44zM19 50h27v5H19z"/><path fill="'+g+'" d="M30 25h5v20h-5zM23 31h19v4H23z"/><path fill="#e9ffff" d="M32 24l7 9-7 9-7-9z"/>';break;
+ case 5:s='<path stroke="'+d+'" stroke-width="10" d="M21 57l17-34"/><path stroke="'+g+'" stroke-width="5" d="M21 57l17-34"/><path fill="'+d+'" d="M13 9h38v6h8v22h-9v6H13v-6H5V15h8z"/><path fill="#80564b" d="M15 12h34v6h7v16h-9v6H16v-6H8V18h7z"/><path fill="'+a+'" d="M13 17h13v18H13zM39 17h13v18H39z"/><path fill="'+g+'" d="M27 12h11v28H27z"/><path fill="#e76843" d="M28 18h9v16h-9z"/><path fill="#ffda79" d="M32 20h4v11h-7v-6h3z"/><path fill="'+h+'" d="M13 16h11v3H13zM40 16h11v3H40z"/>';break;
+ case 6:s='<path stroke="'+d+'" stroke-width="9" d="M21 59l14-39"/><path stroke="'+g+'" stroke-width="4" d="M21 59l14-39"/><path fill="'+d+'" d="M28 4h21l8 10-5 17-14 7-17-9-4-15z"/><path fill="'+a+'" d="M29 7h13l-10 9-2 10 9 8-15-7-4-12z"/><path fill="#64467d" d="M39 12h10l4 6-4 9-10 2-5-9z"/><path fill="#d7c2ff" d="M39 14h7v10h-7z"/><path fill="'+g+'" d="M26 38l8 3-2 5-8-3zM20 52l8 3-2 5-8-3z"/><path fill="'+h+'" d="M13 7h3v5h-3zM52 35h3v4h-3z"/>';break;
+ case 7:s='<path stroke="'+d+'" stroke-width="10" d="M23 59l14-33"/><path stroke="'+g+'" stroke-width="5" d="M23 59l14-33"/><path fill="'+d+'" d="M22 7h29v7h8v23l-19 11-21-11V14h3z"/><path fill="'+a+'" d="M25 11h22v7h8v16l-15 10-17-10V18h2z"/><path fill="#7f8a82" d="M28 16h17v7h6v8l-11 8-12-7z"/><path fill="'+h+'" d="M26 12h18v3H26zM25 20h3v11h-3z"/><path fill="'+g+'" d="M35 18h6v19h-6zM30 26h16v4H30z"/><path fill="#d0a757" d="M15 53h15v8H15z"/>';break;
+ case 8:s='<path stroke="'+d+'" stroke-width="9" d="M16 60l28-45"/><path stroke="'+g+'" stroke-width="4" d="M16 60l28-45"/><path fill="'+d+'" d="M31 6h17l12 5-3 19-12 9-8-11-13 9-13-5-5-14 17-1z"/><path fill="#ae5e47" d="M33 9h13l10 5-3 14-9 7-7-13-14 12-9-5-4-9h15z"/><path fill="'+a+'" d="M12 20l14 1 6-9-4 16-7 4-7-4zM44 11l11 4-3 12-7 6-3-9z"/><path fill="'+h+'" d="M12 20h13v3H12zM50 15h3v10h-3z"/><path fill="'+g+'" d="M33 14h7v14h-7z"/><path fill="#f7d780" d="M34 17h4v8h-4z"/>';break;
+ case 9:s='<path fill="'+d+'" d="M9 20l18-12 25 9 6 25-15 18-25-5L5 38z"/><path fill="#8275a2" d="M12 22l16-10 21 8 5 21-13 15-21-5L9 37z"/><path fill="'+g+'" d="M12 23l5-4 6 31-5-1-8-13zM42 20l8 3 4 16-5 5z"/><path fill="'+d+'" d="M23 56l7-27L48 3h9l-3 17-18 20-4 20z"/><path fill="'+a+'" d="M28 52l7-23L49 7h4l-3 12-18 20z"/><path fill="#fff5ff" d="M36 27L50 7h3L35 33z"/><path fill="'+g+'" d="M22 33l15 6-1 7-16-7zM20 54l10 3-2 6-10-3z"/><path fill="#cab0fb" d="M25 23l6-7 6 7-6 8z"/>';break;
+ }
+ return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" aria-label="'+l.name+'"><path fill="#f4d780" opacity=".2" d="M7 2h3v7H7zM4 5h9v2H4zM54 49h3v9h-3zM51 52h9v3h-9z"/>'+s+'<path fill="'+h+'" opacity=".7" d="M7 44h2v2H7zM57 7h2v2h-2z"/></svg>';
+}
+function legendBlueprintSVG(id){return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" aria-label="'+LEGENDS[id].name+'藍圖"><path fill="#263a51" d="M7 6h45v5h6v46H11v-5H5V12h2z"/><path fill="#4c7295" d="M11 10h37v5h6v37H15v-5h-4z"/><path stroke="#87b6cb" stroke-width="1" opacity=".35" d="M15 19h35M15 28h35M15 37h35M15 46h35M20 14v34M29 14v34M38 14v34M47 14v34"/><path fill="#e1cc90" d="M5 8h9v40H5zM12 48h43v9H12z"/><path fill="#fff0bd" d="M7 10h4v34H7zM15 50h37v3H15z"/><svg x="17" y="12" width="35" height="35" style="filter:grayscale(1) brightness(1.6)">'+legendWeaponSVG(id).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'')+'</svg><path fill="#e6c875" d="M43 46h11v9H43z"/></svg>';}
 
 function newDay(){
   phase="play";
@@ -2850,7 +2968,7 @@ $("grid").addEventListener("pointerdown",e=>{
   const i=+d.dataset.i,c=g[i];
   if(!c||c.k!=='w')return;
   e.preventDefault();
-  startDrag(e,"w",i,hex(c.c,bands(c),"",c.t),d);
+  startDrag(e,"w",i,hex(c.c,bands(c),"",c.t,c),d);
 });
 $("side").addEventListener("pointerdown",e=>{
   if(busy||e.button>0)return;
@@ -2893,6 +3011,8 @@ function start(mode,opt){
   active=!booting&&mode!=="tut"&&!testRun;
   skills={mm:0,gc:0,mg:0,wb:0,mc:0,mn:0};
   pack=[];bag=[];gachaUsed=false;pendingChests=0;lastCompletedDay=0;chestOpening=false;
+  legendDemoBlueprints.clear();legendDemoCollection.clear();
+  $("legendBlueprintP").style.display="none";$("legendForgeP").style.display="none";
   stopExpeditionPlayback();expeditionState=freshExpeditionState();expeditionSelected="";expeditionStage=0;
   $("expeditionP").style.display="none";$("weaponStatsP").style.display="none";
   leaves=new Set();frozen=new Set();seasonEffects=new Map();seasonNoticePending=false;shopBought={m:0,tool:0,o:0};
@@ -3003,7 +3123,7 @@ function loadGame(id){
   heat=t.heat;hand=t.hand;shopD=t.shopD;magic=t.magic;
   magicSet=new Set(t.magicSet);dMagic=t.dMagic;dSold=t.dSold;
   lives=t.lives;skills=t.skills;pack=t.pack;sp=t.sp;bag=t.bag;
-  stopExpeditionPlayback();expeditionState=restoreExpeditionState(t.expedition);syncExpeditionDay();expeditionSelected="";expeditionStage=expeditionState.unlocked;
+  stopExpeditionPlayback();expeditionState=restoreExpeditionState(t.expedition);syncExpeditionDay();expeditionSelected="";expeditionStage=expeditionState.unlocked;importLegendProgress();
   gachaUsed=t.gachaUsed;skillDone=t.skillDone;spentToday=t.spentToday;
   shopBought={m:0,tool:0,o:0,...t.shopBought};
   leaves=new Set((t.leaves||[]).filter(i=>i>=0&&i<W*H&&!g[i]));
@@ -3019,7 +3139,7 @@ function loadGame(id){
   stepSales=0;justHeated.clear();ensureQuests();
   tool=-1;fresh=-1;fx=[];hold=new Set();pop=new Set();shown=new Map();
   enter.clear();busy=false;tutP2=false;lead=0;flyI=-1;exitMs=0;active=true;
-  ["ov","cf","sk","rw","gcP","svP","recP","help","seasonP","townLootP","townSkillP","expeditionP","weaponStatsP"].forEach(x=>$(x).style.display="none");
+  ["ov","cf","sk","rw","gcP","svP","recP","help","seasonP","townLootP","townSkillP","expeditionP","weaponStatsP","legendBlueprintP","legendForgeP"].forEach(x=>$(x).style.display="none");
   $("title").style.display="none";clearPrediction();render();
   restoreTownProgress(t);
   showPendingSeasonNotice();
@@ -3312,7 +3432,7 @@ document.addEventListener("visibilitychange",()=>{
     t.appendChild(e);
   }
 })();
-start();fit();booting=false;render();
+importLegendProgress();start();fit();booting=false;render();
 </script>
 </body>
 </html>
