@@ -757,7 +757,7 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 #expeditionStages{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:12px 0}#expeditionStages button{padding:8px 3px;font-size:15px}#expeditionStages button[aria-pressed="true"]{background:#685334;border-color:#e2bd70}
 #expeditionMonster{display:flex;align-items:center;gap:12px;padding:12px;background:#152936;border:1px solid #6c837b;border-radius:8px}.exp-monster-art{flex:none;width:92px;height:92px}.exp-monster-art svg{width:100%;height:100%}#expeditionMonster h3{font-size:21px;margin:5px 0}.exp-monster-stats{font-size:14px;line-height:1.6}#expeditionMonster small{color:#c2c2ae;font-size:12px}#expeditionReward{font-size:15px;color:#f4d993;padding:0 4px}
 #expeditionWeapons{display:grid;grid-template-columns:1fr 1fr;gap:7px;max-height:215px;overflow:auto;padding:2px}.exp-weapon{display:flex;gap:7px;align-items:center;text-align:left;min-width:0;padding:7px;font-size:13px}.exp-weapon.selected{border-color:#f1cb74;background:#524a36}.exp-weapon-art{width:48px;height:48px;flex:none}.exp-weapon-art .hxo{width:100%;height:100%}.exp-weapon b{display:block;font-size:13px}.exp-weapon small{display:block;font-size:11px;line-height:1.65;color:#c5cecf}.exp-empty{grid-column:1/-1;padding:18px;background:#152431;color:#c2cbd5;font-size:15px;line-height:1.7}
-#expeditionForecast{font-size:15px;line-height:1.7;background:#263c35;padding:10px;border-left:3px solid #bfa265}.exp-rules{margin:16px 0;padding:12px;border:1px solid #50635f;background:#12232b}.exp-rules summary{cursor:pointer;font-size:15px;color:#e7d39f}.exp-rules p{font-size:13px;color:#bcc9ca}
+.exp-rules{margin:16px 0;padding:12px;border:1px solid #50635f;background:#12232b}.exp-rules summary{cursor:pointer;font-size:15px;color:#e7d39f}.exp-rules p{font-size:13px;color:#bcc9ca}
 #expeditionArena{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:20px 10px;background:linear-gradient(#456175 0%,#789785 70%,#405745 70%);border:2px solid #94a291;border-radius:8px;margin-top:14px}.exp-fighter{width:44%;text-align:center;min-width:0}.exp-fighter>div{width:86px;height:86px;margin:0 auto 14px;filter:drop-shadow(0 4px #1a293580)}.exp-fighter .hxo,.exp-fighter svg{width:100%;height:100%}.exp-fighter b{display:block;font-size:15px}.exp-fighter small{display:block;font-size:12px;margin:5px 0}.exp-fighter progress{width:100%;height:12px;accent-color:#82bd6b}.exp-fighter:last-child progress{accent-color:#ce8a6f}
 #expeditionLog{min-height:156px;background:#14222c;padding:10px 12px;margin:12px 0;font-size:13px;border:1px solid #415956}#expeditionLog p{margin:3px 0}#expeditionLog .hero{color:#d8ebbe}#expeditionLog .enemy{color:#e6bcb5}#expeditionResult{text-align:center}#expeditionResult h3{font-size:24px;color:#f1d086}#expeditionResult p{font-size:16px}
 @media(max-width:360px){.exp-weapon{gap:4px;padding:5px}.exp-weapon-art{width:38px;height:38px}.exp-weapon b{font-size:12px}.exp-weapon small{font-size:10px}.exp-monster-art{width:74px;height:74px}.exp-monster-stats{font-size:12px}}
@@ -788,6 +788,17 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 .avatar-style-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px;margin:18px 0}.avatar-style-grid label>span{display:block;font-size:15px;color:#e4d2a0;margin:0 0 6px}.avatar-style-grid select{width:100%;min-height:42px;background:#192a36;color:#f4e7ce;border:1px solid #73877d;border-radius:4px;padding:8px;font-size:16px}.avatar-editor-actions{position:sticky;bottom:-16px;display:flex;gap:10px;background:#263645fa;border-top:1px solid #88764e;padding:12px 0 3px;margin-top:16px;z-index:3}.avatar-editor-actions button{flex:1;min-height:46px;font-size:16px;padding:8px 5px}.avatar-editor-actions .pri{flex:2}
 @media(max-width:380px){.avatar-editor{padding:12px}.avatar-editor-header h2{font-size:20px}.avatar-dice{font-size:14px;padding:6px}.avatar-preview-area{top:-12px}#avatarPreview{width:120px;height:120px}.avatar-editor-actions{bottom:-12px}.avatar-swatch{width:31px;height:31px;min-width:31px;min-height:31px}.town-player-heading{gap:6px}.town-header>div:first-child{font-size:18px}}
 
+.avatar-style>span{display:block;font-size:15px;color:#e4d2a0;margin-bottom:6px}.avatar-stepper{display:flex;align-items:center;justify-content:space-between;gap:3px;min-height:44px;background:#192a36;border:1px solid #73877d;border-radius:4px}.avatar-stepper button{flex:none;min-width:36px;min-height:42px;padding:5px;font-size:16px;background:#344e58;border:0;box-shadow:none;border-radius:2px;color:#e9d397}.avatar-stepper output{flex:1;text-align:center;font-size:16px;white-space:nowrap;color:#f4e7ce}
+#spb[hidden]{display:none!important}
+#townShop{left:-2%;top:70%;width:46%;height:28%}#townTraining{left:53%;top:71%;width:47%;height:28%}
+#townFountain{position:absolute;left:34%;top:57%;width:30%;aspect-ratio:1;z-index:2;pointer-events:none;filter:drop-shadow(0 3px 0 #263b3244)}#townFountain svg{display:block;width:100%;height:100%}
+#townP #townChest{left:64%;top:62%;width:64px;height:64px}
+#townQueue{left:0;top:0;width:100%;height:100%;z-index:3;pointer-events:none}#townQueue>svg{display:block;width:100%;height:100%;overflow:visible}
+.fountain-stream{stroke-dasharray:6 3;animation:fountain-flow .6s linear infinite}.fountain-drops{animation:fountain-splash .65s steps(3) infinite}.fountain-ripple{transform-origin:50px 59px;animation:fountain-ring 1.7s steps(5) infinite}
+@keyframes fountain-flow{to{stroke-dashoffset:-9}}@keyframes fountain-splash{0%{transform:translateY(-3px);opacity:.2}50%{opacity:1}100%{transform:translateY(3px);opacity:.2}}@keyframes fountain-ring{0%{transform:scale(.6);opacity:.1}45%{opacity:.8}100%{transform:scale(1.05);opacity:0}}
+#tut{height:68px;min-height:68px;flex:none;padding:6px 8px;box-sizing:border-box;font-size:13px;line-height:1.45}#tutt{flex:1;min-width:0;height:2.9em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}#tut button{font-size:11px;padding:5px;max-width:64px;white-space:normal}#tutNext[hidden]{display:none}
+@media(prefers-reduced-motion:reduce){.fountain-stream,.fountain-drops,.fountain-ripple{animation:none}}
+
 </style>
 </head>
 <body>
@@ -805,7 +816,7 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
     <button id="mu" onclick="toggleMute()">🔊</button>
     <span id="lv"></span>
   </div>
-  <div id="tut"><span id="tutt"></span><button onclick="skipTut()">略過教學</button></div>
+  <div id="tut"><span id="tutt"></span><button id="tutNext" onclick="tutSetup3();render()" hidden>學魔法格</button><button onclick="skipTut()">略過教學</button></div>
   <div id="orders"></div>
   <div id="qbar" style="display:none"></div>
   <div id="play">
@@ -818,7 +829,7 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 </div>
 
 <div id="chestP"><div class="hp"><h2>📦 武器箱</h2><p id="chestInfo"></p><div id="chestItems"></div><button class="legend-chest-button" onclick="openLegendRecipes()">🌟 藍圖收藏</button><button style="width:100%;margin-top:14px" onclick="closeP('chestP')">關閉</button></div></div>
-<div id="townP"><header class="town-header"><div><span class="town-player-heading"><button id="townAvatar" class="player-avatar" onclick="openAvatarCreator('edit')" title="調整角色外觀" aria-label="調整角色外觀"></button><b>🏘 鍛造小鎮</b></span><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></div><div id="townStats"></div><div id="townSeason"></div></header><div id="townMap"><div id="townScenery"></div><button id="townExpedition" onclick="openExpedition()" aria-label="城門遠征"><span class="town-sign">⚔ 遠征</span></button><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><div id="townQueue"></div><button id="townChest" onclick="openTownChest()" hidden></button><div id="townWeather" aria-hidden="true"></div></div></div>
+<div id="townP"><header class="town-header"><div><span class="town-player-heading"><button id="townAvatar" class="player-avatar" onclick="openAvatarCreator('edit')" title="調整角色外觀" aria-label="調整角色外觀"></button><b>🏘 鍛造小鎮</b></span><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></div><div id="townStats"></div><div id="townSeason"></div></header><div id="townMap"><div id="townScenery"></div><button id="townExpedition" onclick="openExpedition()" aria-label="城門遠征"><span class="town-sign">⚔ 遠征</span></button><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><div id="townFountain" aria-label="城鎮噴水池"></div><div id="townQueue"></div><button id="townChest" onclick="openTownChest()" hidden></button><div id="townWeather" aria-hidden="true"></div></div></div>
 <div id="townLootP"><div class="hp"><h2>每日寶箱</h2><div id="townLootArt"></div><h3 id="townLootName"></h3><p id="townLootRemaining" aria-live="polite"></p><div class="town-dialog-actions"><button id="townLootClose" onclick="if(!chestOpening)closeP('townLootP')">稍後再開</button><button id="townLootOpen" class="pri" onclick="claimTownChest()">開啟寶箱</button></div></div></div>
 <div id="townSkillP"><div class="hp"><h2>⭐ 還有技能點可以使用</h2><p id="townSkillCount"></p><div class="town-dialog-actions"><button onclick="startTownForge()">仍要進入</button><button class="pri" onclick="closeP('townSkillP');openSkills(false)">前往訓練所</button></div></div></div>
 <div id="weaponStatsP" class="exp-overlay"><div class="hp weapon-stat-panel">
@@ -831,10 +842,10 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
  <p id="expeditionAttempts"></p>
  <div id="expeditionSetup">
   <div id="expeditionStages" aria-label="選擇遠征關卡"></div><div id="expeditionMonster"></div><p id="expeditionReward"></p>
-  <h3>選擇出戰武器</h3><div id="expeditionWeapons"></div><div id="expeditionSelectedStats"></div><p id="expeditionForecast" aria-live="polite"></p>
-  <button id="expeditionFight" class="pri exp-wide" onclick="beginExpedition()">開始挑戰 · 使用 1 次遠征</button>
-  <p class="exp-note">武器可重複使用，每天有 3 次挑戰。失敗不扣鍛造愛心；同一關每天可勝利一次，首次勝利取得對應傳說藍圖。</p>
-  <details class="exp-rules"><summary>能力與戰鬥規則</summary><p>每個胚分別提供能力：刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度。銅、鐵、鋼、金、秘銀的材料強度為 1、1.7、2.8、4.4、6.8 倍。</p><p>出戰生命＝100＋防禦×2。速度決定先後與行動頻率；物理傷害＝攻擊－對方防禦的 60%，至少造成 1 傷害。奧術傷害無視防禦，護盾先吸收傷害。80 次行動後仍未分勝負則撤退。</p><p>戰鬥推演會顯示目前裝備的預估結果。先改用其他配方或提高材料、附魔，再挑戰較強的怪物。</p></details>
+  <h3>選擇出戰武器</h3><div id="expeditionWeapons"></div><div id="expeditionSelectedStats"></div>
+  <button id="expeditionFight" class="pri exp-wide" onclick="beginExpedition()">開始挑戰</button>
+  <p class="exp-note">武器可重複使用，未通關的關卡可不限次重試；通關後前往下一關。落敗扣一顆愛心，撤退不扣愛心；通關取得金幣與對應傳說藍圖。</p>
+  <details class="exp-rules"><summary>能力與戰鬥規則</summary><p>每個胚分別提供能力：刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度。銅、鐵、鋼、金、秘銀的材料強度為 1、1.7、2.8、4.4、6.8 倍。</p><p>出戰生命＝100＋防禦×2。速度決定先後與行動頻率；物理傷害＝攻擊－對方防禦的 60%，至少造成 1 傷害。奧術傷害無視防禦，護盾先吸收傷害。80 次行動後仍未分勝負則撤退。</p></details>
   <p id="expeditionLast" class="exp-note"></p>
  </div>
  <div id="expeditionBattle" hidden><div id="expeditionArena"></div><div id="expeditionLog" aria-live="polite"></div><div id="expeditionResult" aria-live="polite"></div><button id="expeditionSkip" class="exp-wide" onclick="finishExpeditionPlayback()">顯示戰果</button><button id="expeditionAgain" class="pri exp-wide" hidden>選擇下一場</button></div>
@@ -1428,13 +1439,17 @@ const tutBase=new Set([11,12,13]),tutExt=new Set([16,17,18,21,22,23]);
 const isOff=i=>day===0&&!(tutBase.has(i)||(tutP2&&tutExt.has(i)));
 
 function tutSetup2(){
-  tutStage=2;tutP2=true;g=Array(W*H).fill(null);heat=Array(W*H).fill(0);
-  g[13]={k:'p',t:0,s:0,m:0};g[18]={k:'p',t:0,s:1,m:0};
-  magicSet=new Set([21]);hand={k:'d',t:0};MQ=[2,0,1];Q=Array(5).fill(0);
-  say("🎓 第二階段：魔法格與鑽石！");
+ tutStage=2;tutP2=true;g=Array(W*H).fill(null);heat=Array(W*H).fill(0);magicSet=new Set();hand=null;MQ=[3,2,0];Q=Array(5).fill(0);say('🎓 第二階段：親手合成鑽石！');
 }
+function tutSetup3(){
+ if(tutStage!==2)return;const diamond=g.find(x=>x?.k==='d');if(!diamond)return;
+ tutStage=3;g=Array(W*H).fill(null);heat=Array(W*H).fill(0);g[13]={k:'p',t:0,s:0,m:0};g[18]={k:'p',t:0,s:1,m:0};
+ magicSet=new Set([21]);hand={...diamond};MQ=[2,0,1];Q=Array(5).fill(0);say('🎓 第三階段：魔法格與鑽石強化！');
+}
+
 function tutHints(){
-  if(tutStage===2){
+  if(tutStage===2){const h={};if(g.some(x=>x?.k==='d'))return h;[11,12].filter(i=>!g[i]).forEach(i=>h[i]=`<div class="gst">${oreH(0)}</div>`);if(g[11]&&g[12]&&!g[13])h[13]=`<div class="t2 gst">${mold(3,'')}</div>`;return h;}
+  if(tutStage===3){
     const h={};if(g.some(x=>x&&x.k==='w'))return h;
     [21,22].forEach(c=>{if(!g[c])h[c]=`<div class="gst">${oreH(0)}</div>`});
     if(!g.some(x=>x&&x.k==='d')&&hand&&hand.k==='d'&&!g[17])
@@ -1455,15 +1470,16 @@ const tutDoneSet=()=>{try{localStorage.setItem("forgeTut","1")}catch(e){}};
 
 function tutMsg(){
   const cnt=k=>g.filter(x=>x&&x.k===k).length;
-  if(tutStage===2){
-    if(cnt('w'))return "完成！這把武器帶有 💎 鑽石加成（售價 +30%）和 ✨ 魔法金幣 +5，把它拖給客人，賣出時會一併結算。";
+  if(tutStage===2){if(cnt('d'))return '💎 鑽石完成！能在鍛造時提高售價與能力。點「學魔法格」繼續。';if(!g[11]||!g[12])return '💎 先照提示放兩顆銅礦，再用鑽石模具合成鑽石。';return '把框起來的鑽石模具拖到提示格，親手合成鑽石！';}
+  if(tutStage===3){
+    if(cnt('w'))return "💎 鑽石加價 30%、強化能力；✨ 魔法提供附魔。把成品拖給客人！";
     const hasGem=g.some(x=>x&&x.k==='d');
-    if(!g[21])return "✨ 點紫色發光的格子放下銅礦。魔法 +5💰 會一路累積，賣出武器時結算。";
+    if(!g[21])return "✨ 點紫色格放銅礦。魔法會累積到武器，增加附魔能力與售價。";
     if(!g[22])return "再放一顆銅礦在它旁邊。";
-    if(!hasGem)return "💎 把右側「手持」的鑽石拖到半透明鑽石提示的格子，貼著胚。";
+    if(!hasGem)return "💎 把「手持」的鑽石拖到提示格，讓它貼著胚，鍛造時會消耗鑽石。";
     return "把模具拖到半透明模具提示的格子，合成帶有鑽石和魔法加成的武器！";
   }
-  if(cnt('w'))return "太棒了！三個胚合成了武器。🔥 用掉的格子會過熱 50 步，其中一格掉落礦石。現在把武器拖到上方客人身上出售！";
+  if(cnt('w'))return "武器完成！🔥 使用的格子會過熱 50 步。把武器拖到上方客人身上出售！";
   const np=cnt('p');
   if(np>=3)return "讓三個胚緊貼在一起，就會自動合成武器。";
   const [a,b]=TG[np],miss=[a,b].filter(c=>!g[c]);
@@ -1776,6 +1792,7 @@ function render(){
   $("app").dataset.season=currentSeason.id;
   $("srv").title=currentSeason.name+" · 季節第 "+seasonDay()+"/3 天（點擊查看季節說明）";
   if(day===0&&tutStage===1&&dServed>=1)tutSetup2();
+  $("tutNext").hidden=!(day===0&&tutStage===2&&g.some(x=>x?.k==='d'));
   if(cheat.m)coins=999999;
   if(cheat.s)sp=99;
   if(day===0&&!tutP2&&g.some(x=>x&&(x.k==='p'||x.k==='w')))tutP2=true;
@@ -1785,6 +1802,7 @@ function render(){
   $("ctn").disabled=!saves.length;
   $("lv").textContent="❤️".repeat(Math.max(0,lives))+"🖤".repeat(3-Math.max(0,lives));
   $("mu").textContent=muted?"🔇":"🔊";
+  $("spb").hidden=day>0;
   $("spb").textContent=day>0?"🏘城鎮":"🌟技能";
   if(day===0){
     $("tut").style.display="flex";
@@ -2144,8 +2162,24 @@ const TOWN_SEASONS=[
  {sky:'#d8c6ae',ground:'#998049',road:'#d9b77f',tree:'#974e36',light:'#e6a34e',roof:'#85554e',snow:false},
  {sky:'#afc9dc',ground:'#d1e2e6',road:'#a6bbc7',tree:'#506d75',light:'#8faeb0',roof:'#637b91',snow:true}
 ];
+function townHouseSign(kind){
+ const labels={archive:'圖鑑館',forge:'冶煉廠',shop:'商店',training:'訓練所'},colors={archive:'#384e68',forge:'#804931',shop:'#3d6244',training:'#3e526f'},x=kind==='forge'?45:31,y=kind==='forge'?111:108;
+ return `<g class="town-house-sign" transform="translate(${x} ${y})"><path stroke="#332b28" stroke-width="3" d="M9-14v18M94-8V4"/><path stroke="#c3a36a" stroke-width="1" d="M9-13v13M94-7v7"/><path fill="#292c2b" d="M0 4h5V0h94v4h5v26h-5v4H5v-4H0z"/><path fill="#b49559" d="M3 6h5V3h88v3h5v21h-5v4H8v-4H3z"/><path fill="${colors[kind]}" d="M7 8h90v17h-5v3H12v-3H7z"/><path stroke="#e4c68b" d="M12 7h79M13 28h78"/><path fill="#eed199" d="M10 11h3v3h-3zM91 11h3v3h-3zM10 21h3v3h-3zM91 21h3v3h-3z"/><text x="52" y="23" text-anchor="middle" fill="#fff0c4" font-size="17" font-weight="900" font-family="sans-serif" style="paint-order:stroke;stroke:#18262c;stroke-width:2px">${labels[kind]}</text></g>`;
+}
+function townFountainArt(){
+ return `<svg viewBox="0 0 100 100" role="img" aria-label="圓形石造噴水池" shape-rendering="crispEdges"><ellipse cx="50" cy="82" rx="43" ry="12" fill="#293d3b" opacity=".25"/><path fill="#4a6471" d="M12 56h76v18h-6v9H69v5H31v-5H18v-9h-6z"/><path fill="#93a5a5" d="M8 53h6V43h14v-6h44v6h14v10h6v15h-6v9H73v5H27v-5H14v-9H8z"/><path fill="#ced3bd" d="M14 51v-7h15v-5h42v5h15v7h4v12h-6v9H72v5H28v-5H16v-9h-6V51z"/><path fill="#668e9b" d="M18 50h12v-5h40v5h12v15H70v6H30v-6H18z"/><path fill="#3c8caa" d="M22 53h10v-5h36v5h10v9H68v6H32v-6H22z"/><path class="fountain-ripple" fill="none" stroke="#a9e3df" stroke-width="2" d="M28 57h10v-4h24v4h10v5H62v3H38v-3H28z"/><path fill="#557380" d="M41 53h18v10H41zM45 29h10v24H45z"/><path fill="#b0c4bc" d="M44 31h5v25h-5zM37 26h26v7H37z"/><path fill="#d7dfc7" d="M39 24h22v4H39z"/><path class="fountain-stream" fill="none" stroke="#bdeee3" stroke-width="3" d="M49 24V12h-5V8h-6v4h-4v15h-4v20M52 23V11h5V8h6v6h4v15h4v18"/><path class="fountain-drops" fill="#e6fff3" d="M28 48h4v6h-4zM69 46h4v6h-4zM46 4h4v5h-4zM58 2h3v4h-3z"/><path fill="#f1efcc" d="M17 47h9v3h-9zM29 40h16v3H29zM19 71h8v3h-8z"/><path fill="#69818a" d="M27 78h3v5h-3zM69 78h3v5h-3zM12 59h5v3h-5zM82 59h5v3h-5z"/></svg>`;
+}
+function renderTownVisitors(remaining){
+ const el=$('townQueue'),key=runId+':'+day+':'+remaining;
+ if(el.dataset.visitors===key)return;el.dataset.visitors=key;
+ el.innerHTML='<svg viewBox="0 0 360 620" preserveAspectRatio="none" aria-label="沿道路前往冶煉廠的客人">'+Array.from({length:remaining},(_,i)=>{
+  const col=['#b85653','#4e8191','#a88c4c','#716891'][i%4],x=210+(i%4)*16,y=343+Math.floor(i/4)*24;
+  return `<g class="town-walker" aria-label="排隊客人 ${i+1}" transform="translate(${x} ${y})"><animateMotion begin="${i*.55}s" dur="${4+i*.15}s" fill="freeze" path="M${162-x} ${650-y}L${145-x} ${533-y}L${168-x} ${475-y}L${205-x} ${433-y}L${226-x} ${401-y}L${220-x} ${372-y}L0 0"/><g class="town-walker-body"><ellipse cx="8" cy="24" rx="8" ry="3" fill="#24382b" opacity=".3"/><path fill="#26343c" d="M4 20h4v5H4zM9 20h4v5H9z"/><path fill="${col}" d="M4 11h8v3h3v7H2v-7h2z"/><path fill="#e0b586" d="M4 3h8v8H4zM1 14h2v5H1zM14 14h2v5h-2z"/><path fill="#55433b" d="M3 1h10v4H3zM3 5h2v3H3z"/><path fill="#26343c" d="M6 6h1v2H6zM10 6h1v2h-1z"/><animateTransform attributeName="transform" type="translate" values="0 0;0 -1;0 0" dur=".32s" begin="${i*.55}s" repeatCount="${Math.ceil((4+i*.15)/.32)}"/></g></g>`;
+ }).join('')+'</svg>';
+}
+
 function townHouse(kind,p){
- const id='townRoof-'+kind,roof=kind==='forge'?['#6f3934','#984b3b','#b7684b','#d08860']:kind==='training'?['#283f57','#395a74','#507891','#79a0ac']:p.snow?['#3d536d','#566f89','#758b9d','#a4b4b9']:kind==='shop'?['#57384f','#78516a','#95657b','#ba8894']:['#49434f',p.roof,'#987c8a','#b79a9f'];
+ const id='townRoof-'+kind,roof=kind==='forge'?['#6f3934','#984b3b','#b7684b','#d08860']:kind==='training'?['#283f57','#395a74','#507891','#79a0ac']:kind==='shop'?['#254b3c','#3d7150','#61905d','#9bb974']:p.snow?['#3d536d','#566f89','#758b9d','#a4b4b9']:['#49434f',p.roof,'#987c8a','#b79a9f'];
  const A=[13,76],B=[65,22],C=[160,45],D=[119,103];
  const at=(u,v)=>[A[0]*(1-u)*(1-v)+B[0]*u*(1-v)+C[0]*u*v+D[0]*(1-u)*v,A[1]*(1-u)*(1-v)+B[1]*u*(1-v)+C[1]*u*v+D[1]*(1-u)*v];
  const points=a=>a.map(x=>x.map(Math.round).join(',')).join(' ');
@@ -2159,7 +2193,7 @@ function townHouse(kind,p){
  const chimney=kind==='forge'?`<g><path fill="#343f49" d="M140 4h19v60l-19-3z"/><path fill="#69777d" d="M140 4h6v55h-6z"/><path fill="#9b9f93" d="M137 2h25v8h-25z"/><path stroke="#3d4b52" stroke-width="2" d="M141 18h17M141 29h17M141 40h17M141 51h17M149 10v8M149 29v11"/><g fill="#d8e4dc" opacity=".75"><path d="M143-2v-6h-7v-7h15v7h7v6z"/><path d="M131-20v-7h-6v-6h18v6h8v7z" opacity=".6"/></g></g>`:'';
  const crest=kind==='training'?'<path fill="#263f5c" stroke="#cfb774" stroke-width="2" d="M156 60l14 5-2 18-12 10-12-10-2-18z"/><path stroke="#c7d7d8" stroke-width="3" d="M150 68l13 16M163 68l-13 16"/><path stroke="#d7b56d" stroke-width="2" d="M148 78l6-5M159 78l6 5"/>':kind==='archive'?'<path fill="#34495b" stroke="#c4b37b" stroke-width="2" d="M144 65h25v22h-25z"/><path fill="#e6d6a5" d="M148 69h7v14h-7zM157 69h7v14h-7z"/>':'<path fill="#9e8049" d="M151 64h13v3h-13zM149 69h17v3h-17zM151 74h13v3h-13z"/>';
  const snow=p.snow?`<g fill="#f1f7f4"><path d="M13 76l52-54 95 23-5 6-90-22-45 48zM20 79l34-34 9 2-26 31-4 8h-9v-5zM84 58l14-14 25 6-6 8-16-2-6 9H84zM103 95l8-10 18 4-10 14-12-3v6h-6z"/><path d="M19 139l100 25 62-16v6l-62 16-100-24z"/><path d="M28 120h22v5H28zM71 129h19v5H71z"/></g><path fill="#a9c8d7" d="M35 81v8h3v-8zM109 103v10h3v-9zM126 105v8h3v-9z"/>`:'';
- return `<svg viewBox="0 -28 192 212" aria-hidden="true" shape-rendering="crispEdges"><defs><clipPath id="${id}"><polygon points="${points([A,B,C,D])}"/></clipPath></defs><path fill="#243b30" opacity=".25" d="M8 147l112 31 69-24v9l-69 25L8 157z"/><path fill="#655440" stroke="#393c33" stroke-width="3" d="M20 77l98 22 64-15v69l-64 19-98-25z"/><path fill="#dfcea0" d="M24 85l91 22v58l-91-22z"/><path fill="#b8aa7f" d="M121 106l57-15v58l-57 16z"/>${wall}<path fill="#edd8a2" stroke="#554b39" stroke-width="3" d="M118 101l42-56 27 42z"/><path fill="#6a5039" d="M157 51h5v37h-5zM140 75l36 9v4l-39-9z"/><path fill="#67513b" d="M23 88l94 23v6L23 94zM23 130l94 24v6l-94-24zM23 84h7v61h-7zM111 106h7v62h-7zM60 94h5v60h-5zM122 108l56-15v6l-56 15zM175 92h6v59h-6z"/><path fill="#362f2c" d="M75 123l26 6v35l-26-6z"/><path fill="#77563a" d="M78 127l19 5v28l-19-5z"/><path stroke="#493e32" stroke-width="2" d="M84 129v26M91 131v26"/><rect x="92" y="144" width="2" height="3" fill="#dfbb64"/>${window(35,102)}<path fill="#8b734d" d="M72 159l29 7 7 5-32-7z"/><path fill="#d0b47b" d="M75 158l24 6v3l-24-6z"/><polygon points="${points([A,B,C,D])}" fill="${roof[0]}" stroke="#383536" stroke-width="5"/><g clip-path="url(#${id})">${tiles}</g><path fill="${roof[3]}" d="M61 21l5-3 95 24 3 4-4 3-95-24z"/><path fill="${roof[0]}" d="M10 75l109 27v6L10 81zM119 102l42-58 4 3-44 61z"/><path fill="${roof[3]}" opacity=".6" d="M13 75l104 26v2L13 77z"/>${crest}${chimney}${kind==='forge'?`<image href="${UNITY_ART.anvil}" x="33" y="149" width="39" height="27"/><path fill="#302f2c" d="M128 122h37v29l-37 10z"/><path fill="#a75432" d="M132 125h29v21l-29 9z"/><image href="${UNITY_ART.fire0}" x="136" y="126" width="22" height="27"/><path fill="#b69767" d="M126 151l41-11v8l-41 12z"/>`:''}${kind==='shop'?'<path fill="#e2bd76" d="M25 96l34 8-2 8-34-8z"/><path fill="#6e9353" d="M27 97l5 1-2 8-5-1zM39 100l5 1-2 8-5-1zM51 103l5 1-2 8-5-1z"/>':''}${snow}<g fill="#735338" stroke="#4b4132" stroke-width="2"><path d="M8 149h13v18H8zM165 155h15v17h-15z"/></g><path stroke="#c4a575" stroke-width="2" d="M9 153h11M9 162h11M166 159h13M166 168h13"/></svg>`;
+ return `<svg viewBox="0 -28 192 212" aria-hidden="true" shape-rendering="crispEdges"><defs><clipPath id="${id}"><polygon points="${points([A,B,C,D])}"/></clipPath></defs><path fill="#243b30" opacity=".25" d="M8 147l112 31 69-24v9l-69 25L8 157z"/><path fill="#655440" stroke="#393c33" stroke-width="3" d="M20 77l98 22 64-15v69l-64 19-98-25z"/><path fill="#dfcea0" d="M24 85l91 22v58l-91-22z"/><path fill="#b8aa7f" d="M121 106l57-15v58l-57 16z"/>${wall}<path fill="#edd8a2" stroke="#554b39" stroke-width="3" d="M118 101l42-56 27 42z"/><path fill="#6a5039" d="M157 51h5v37h-5zM140 75l36 9v4l-39-9z"/><path fill="#67513b" d="M23 88l94 23v6L23 94zM23 130l94 24v6l-94-24zM23 84h7v61h-7zM111 106h7v62h-7zM60 94h5v60h-5zM122 108l56-15v6l-56 15zM175 92h6v59h-6z"/><path fill="#362f2c" d="M75 123l26 6v35l-26-6z"/><path fill="#77563a" d="M78 127l19 5v28l-19-5z"/><path stroke="#493e32" stroke-width="2" d="M84 129v26M91 131v26"/><rect x="92" y="144" width="2" height="3" fill="#dfbb64"/>${window(35,102)}<path fill="#8b734d" d="M72 159l29 7 7 5-32-7z"/><path fill="#d0b47b" d="M75 158l24 6v3l-24-6z"/><polygon points="${points([A,B,C,D])}" fill="${roof[0]}" stroke="#383536" stroke-width="5"/><g clip-path="url(#${id})">${tiles}</g><path fill="${roof[3]}" d="M61 21l5-3 95 24 3 4-4 3-95-24z"/><path fill="${roof[0]}" d="M10 75l109 27v6L10 81zM119 102l42-58 4 3-44 61z"/><path fill="${roof[3]}" opacity=".6" d="M13 75l104 26v2L13 77z"/>${crest}${chimney}${kind==='forge'?`<image href="${UNITY_ART.anvil}" x="33" y="149" width="39" height="27"/><path fill="#302f2c" d="M128 122h37v29l-37 10z"/><path fill="#a75432" d="M132 125h29v21l-29 9z"/><image href="${UNITY_ART.fire0}" x="136" y="126" width="22" height="27"/><path fill="#b69767" d="M126 151l41-11v8l-41 12z"/>`:''}${kind==='shop'?'<path fill="#e2bd76" d="M25 96l34 8-2 8-34-8z"/><path fill="#6e9353" d="M27 97l5 1-2 8-5-1zM39 100l5 1-2 8-5-1zM51 103l5 1-2 8-5-1z"/>':''}${snow}${townHouseSign(kind)}<g fill="#735338" stroke="#4b4132" stroke-width="2"><path d="M8 149h13v18H8zM165 155h15v17h-15z"/></g><path stroke="#c4a575" stroke-width="2" d="M9 153h11M9 162h11M166 159h13M166 168h13"/></svg>`;
 }
 function townCastle(p){
  const stone=p.snow?'#d2dce0':'#d4ccae',shade=p.snow?'#8faab8':'#9da58f',dark='#566e78',roof=p.snow?'#617b98':'#69758f';
@@ -2190,10 +2224,11 @@ function renderTown(){
  $('townSeason').textContent=s.icon+' '+s.name+' · 第 '+day+' 天 · '+(remaining+' 位客人等候');
  const scenery=$('townScenery');if(scenery.dataset.season!==s.id){scenery.innerHTML=townScene(p);scenery.dataset.season=s.id;}
  [['townArchive','archive','圖鑑館'],['townForge','forge','冶煉廠'],['townShop','shop','商店'],['townTraining','training','訓練所']].forEach(([id,kind,label])=>{
-   $(id).innerHTML=townHouse(kind,p)+'<span class="town-sign">'+label+'</span>'+(kind==='training'?townSkillStar():'');
+   $(id).setAttribute('aria-label',label);$(id).innerHTML=townHouse(kind,p)+(kind==='training'?townSkillStar():'');
  });
  $('townForge').setAttribute('aria-label','冶煉廠，進入棋盤');
- $('townQueue').innerHTML=Array.from({length:remaining},(_,i)=>{const col=['#b85653','#4e8191','#a88c4c','#716891'][i%4];return `<svg class="town-person" style="left:${(i%4)*22}px;top:${Math.floor(i/4)*28}px" viewBox="0 0 16 25" aria-label="排隊客人 ${i+1}"><path fill="#26343c" d="M4 20h4v5H4zM9 20h4v5H9z"/><path fill="${col}" d="M4 11h8v3h3v7H2v-7h2z"/><path fill="#e0b586" d="M4 3h8v8H4zM1 14h2v5H1zM14 14h2v5h-2z"/><path fill="#55433b" d="M3 1h10v4H3zM3 5h2v3H3z"/><path fill="#26343c" d="M6 6h1v2H6zM10 6h1v2h-1z"/></svg>`;}).join('');
+ renderTownVisitors(remaining);
+ if(!$('townFountain').innerHTML)$('townFountain').innerHTML=townFountainArt();
  renderTownChest();renderTownWeather(si);
 }
 function showTown(){
@@ -2320,10 +2355,10 @@ const EXPEDITIONS=[
 ];
 function freshExpeditionState(){return {day:0,attempts:0,unlocked:0,cleared:[],wonToday:[],victories:0,lastBattle:null};}
 let expeditionState=freshExpeditionState(),expeditionSelected='',expeditionStage=0,expeditionBattleStep=0,expeditionTimer=null;
-const EXPEDITION_LIMIT=3;
+
 function restoreExpeditionState(raw){
  const r=raw&&typeof raw==='object'?raw:{},s=freshExpeditionState();
- s.day=Math.max(0,Number(r.day)||0);s.attempts=Math.max(0,Math.min(EXPEDITION_LIMIT,Math.floor(Number(r.attempts)||0)));
+ s.day=Math.max(0,Number(r.day)||0);s.attempts=Math.max(0,Math.floor(Number(r.attempts)||0));
  s.cleared=[...new Set((Array.isArray(r.cleared)?r.cleared:[]).filter(x=>Number.isInteger(x)&&x>=0&&x<EXPEDITIONS.length))];
  s.wonToday=[...new Set((Array.isArray(r.wonToday)?r.wonToday:[]).filter(x=>Number.isInteger(x)&&x>=0&&x<EXPEDITIONS.length))];
  s.unlocked=Math.max(0,Math.min(EXPEDITIONS.length-1,s.cleared.length?Math.max(...s.cleared)+1:0));
@@ -2366,23 +2401,23 @@ function openExpedition(){
  syncExpeditionDay();stopExpeditionPlayback();expeditionStage=Math.min(expeditionState.unlocked,expeditionStage);
  $('expeditionP').style.display='flex';$('expeditionBattle').hidden=true;$('expeditionSetup').hidden=false;renderExpedition();
 }
-function closeExpedition(){stopExpeditionPlayback();$('expeditionP').style.display='none';}
+function closeExpedition(){stopExpeditionPlayback();$('expeditionP').style.display='none';if(lives<=0)gameOver('遠征落敗，最後一顆愛心已用完。');}
 function renderExpedition(){
  syncExpeditionDay();const options=expeditionWeapons();if(!options.some(x=>x.key===expeditionSelected))expeditionSelected=options[0]?.key||'';
- const chosen=options.find(x=>x.key===expeditionSelected),m=EXPEDITIONS[expeditionStage],already=expeditionState.wonToday.includes(expeditionStage);
- $('expeditionAttempts').textContent='第 '+day+' 天 · 剩餘 '+Math.max(0,EXPEDITION_LIMIT-expeditionState.attempts)+' / '+EXPEDITION_LIMIT+' 次 · 累計勝利 '+expeditionState.victories+' 場';
- $('expeditionStages').innerHTML=EXPEDITIONS.map((x,i)=>'<button data-exp-stage="'+i+'" '+(i>expeditionState.unlocked?'disabled':'')+' aria-pressed="'+(i===expeditionStage)+'">'+(i>expeditionState.unlocked?'🔒':expeditionState.cleared.includes(i)?'✓':'⚑')+' '+(i+1)+'</button>').join('');
+ const chosen=options.find(x=>x.key===expeditionSelected),m=EXPEDITIONS[expeditionStage];
+ $('expeditionAttempts').textContent='第 '+day+' 天 · 挑戰不限次數 · 累計勝利 '+expeditionState.victories+' 場';
+ $('expeditionStages').innerHTML=EXPEDITIONS.map((x,i)=>'<button data-exp-stage="'+i+'" '+(i>expeditionState.unlocked||expeditionState.cleared.includes(i)?'disabled':'')+' aria-pressed="'+(i===expeditionStage)+'">'+(i>expeditionState.unlocked?'🔒':expeditionState.cleared.includes(i)?'✓':'⚑')+' '+(i+1)+'</button>').join('');
  $('expeditionMonster').innerHTML='<div class="exp-monster-art">'+monsterArt(m)+'</div><div><small>第 '+(expeditionStage+1)+' 關 · '+m.area+'</small><h3>'+m.name+'</h3><div class="exp-monster-stats">♥ '+m.hp+'　⚔ '+m.atk+'　🛡 '+m.def+'　💨 '+m.spd+'</div></div>';
  const first=!expeditionState.cleared.includes(expeditionStage),gold=first?m.gold:Math.round(m.gold*.45);
- $('expeditionReward').textContent=(already?'今日已擊敗，明天可再次挑戰。':first?'首次勝利：'+gold+' 金幣＋'+itemName(m.loot):'再次勝利：'+gold+' 金幣');
+ $('expeditionReward').textContent=expeditionState.cleared.includes(expeditionStage)?'已通關，請前往下一關。':(first?'首次勝利：'+gold+' 金幣＋'+itemName(m.loot):'再次勝利：'+gold+' 金幣');
  $('expeditionWeapons').innerHTML=options.length?options.map(x=>'<button class="exp-weapon '+(x.key===expeditionSelected?'selected':'')+'" data-exp-weapon="'+x.key+'"><span class="exp-weapon-art">'+hex(x.w.c,bands(x.w),'',x.w.t,x.w)+'</span><span><b>'+esc(itemName(x.w))+'</b><small>'+x.source+' · ⚔'+weaponStats(x.w).atk+' 🛡'+weaponStats(x.w).def+' 💨'+weaponStats(x.w).spd+'</small></span></button>').join(''):'<div class="exp-empty">先在冶煉廠鍛造一把武器，再回來挑戰。棋盤、武器箱、道具箱與手持欄的武器都能出戰。</div>';
  $('expeditionSelectedStats').innerHTML=chosen?statsHTML(chosen.w)+weaponEnchantHTML(chosen.w):'';
- $('expeditionForecast').textContent=chosen?(()=>{const r=simulateExpedition(chosen.w,m);return '戰鬥推演：'+(r.outcome==='win'?'可獲勝，預計剩餘 '+r.hp+' / '+r.hpMax+' 生命':r.outcome==='lose'?'目前裝備會落敗，試試其他配方、材料或附魔。':'戰鬥將陷入僵持，建議提高攻擊或附魔。');})():'';
- $('expeditionFight').disabled=!chosen||already||expeditionState.attempts>=EXPEDITION_LIMIT;
+ $('expeditionFight').disabled=!chosen||lives<=0||expeditionState.cleared.includes(expeditionStage);
  $('expeditionLast').textContent=expeditionState.lastBattle?'上次遠征：'+EXPEDITIONS[expeditionState.lastBattle.stage].name+' · '+({win:'勝利',lose:'落敗',draw:'撤退'}[expeditionState.lastBattle.outcome]):'';
 }
-function beginExpedition(){
- syncExpeditionDay();if(expeditionState.attempts>=EXPEDITION_LIMIT||expeditionStage>expeditionState.unlocked||expeditionState.wonToday.includes(expeditionStage))return;
+function beginExpedition(confirmed=false){
+ syncExpeditionDay();if(lives<=0||expeditionStage>expeditionState.unlocked||expeditionState.cleared.includes(expeditionStage)||$('expeditionSetup').hidden)return;
+ if(lives===1&&!confirmed){confirmBox('只剩最後一顆愛心','這次遠征若落敗，會失去最後一顆愛心並結束遊戲。確定要挑戰嗎？','仍要挑戰',()=>beginExpedition(true));return;}
  const chosen=expeditionWeapons().find(x=>x.key===expeditionSelected);if(!chosen)return;
  const m=EXPEDITIONS[expeditionStage],result=simulateExpedition(chosen.w,m),first=!expeditionState.cleared.includes(expeditionStage);
  expeditionState.attempts++;let gold=0,loot=null;
@@ -2391,6 +2426,8 @@ function beginExpedition(){
   expeditionState.wonToday.push(expeditionStage);
   if(first){expeditionState.cleared.push(expeditionStage);expeditionState.unlocked=Math.min(EXPEDITIONS.length-1,expeditionStage+1);loot={k:'bp',id:expeditionStage};grantBlueprintItem(expeditionStage);}
  }
+ if(result.outcome==='lose')lives=Math.max(0,lives-1);
+ if(lives<=0)removeSave(runId);
  expeditionState.lastBattle={...result,stage:expeditionStage,weapon:JSON.parse(JSON.stringify(chosen.w)),gold,loot,first,day};
  // Resolve and save once before presentation, including defeats and rewards.
  saveHi();saveNow();render();expeditionBattleStep=0;
@@ -2403,7 +2440,8 @@ function renderExpeditionBattle(){
  const b=expeditionState.lastBattle;if(!b)return;const m=EXPEDITIONS[b.stage],step=Math.min(expeditionBattleStep,b.log.length),frame=step?b.log[step-1]:{hp:b.hpMax,shield:b.stats.ward,enemyHp:m.hp},done=step>=b.log.length;
  $('expeditionArena').innerHTML='<div class="exp-fighter"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</div><b>'+itemName(b.weapon)+'</b><small>♥ '+frame.hp+' / '+b.hpMax+(frame.shield?'　護盾 '+frame.shield:'')+'</small><progress max="'+b.hpMax+'" value="'+frame.hp+'"></progress></div><strong>VS</strong><div class="exp-fighter"><div>'+monsterArt(m)+'</div><b>'+m.name+'</b><small>♥ '+frame.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+frame.enemyHp+'"></progress></div>';
  $('expeditionLog').innerHTML=b.log.slice(0,step).slice(-5).map(x=>'<p class="'+x.actor+'">'+esc(x.text)+'</p>').join('')||'<p>雙方準備交戰，速度較高的一方先行。</p>';
- $('expeditionResult').innerHTML=done?'<h3>'+({win:'🏆 遠征勝利',lose:'已返回城鎮',draw:'戰況僵持，安全撤退'}[b.outcome])+'</h3><p>'+(b.outcome==='win'?'獲得 '+b.gold+' 金幣'+(b.loot?'＋'+itemName(b.loot):''):'武器與鍛造愛心保留。調整裝備後再試一次。')+'</p>':'';
+ $('expeditionResult').innerHTML=done?'<h3>'+({win:'🏆 遠征勝利',lose:'已返回城鎮',draw:'戰況僵持，安全撤退'}[b.outcome])+'</h3><p>'+(b.outcome==='win'?'獲得 '+b.gold+' 金幣'+(b.loot?'＋'+itemName(b.loot):''):b.outcome==='lose'?'落敗，失去一顆愛心。'+(lives>0?'剩餘 '+lives+' 顆，可調整裝備後再挑戰。':'最後一顆愛心已用完，這趟旅程結束。'):'戰況僵持，撤退不扣愛心。調整裝備後再挑戰。')+'</p>':'';
+ $('expeditionAgain').textContent=lives<=0?'結束旅程':'選擇下一場';
  $('expeditionSkip').hidden=done;$('expeditionAgain').hidden=!done;
 }
 function startExpeditionDemo(){
@@ -2417,7 +2455,7 @@ function startExpeditionDemo(){
 }
 $('expeditionStages').onclick=e=>{const b=e.target.closest('[data-exp-stage]');if(!b||b.disabled)return;expeditionStage=+b.dataset.expStage;renderExpedition();};
 $('expeditionWeapons').onclick=e=>{const b=e.target.closest('[data-exp-weapon]');if(!b)return;expeditionSelected=b.dataset.expWeapon;renderExpedition();};
-$('expeditionAgain').onclick=()=>{$('expeditionSetup').hidden=false;$('expeditionBattle').hidden=true;renderExpedition();};
+$('expeditionAgain').onclick=()=>{if(lives<=0){closeExpedition();return;}$('expeditionSetup').hidden=false;$('expeditionBattle').hidden=true;renderExpedition();};
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-record-weapon]')){e.preventDefault();e.target.click();}});
 document.addEventListener('click',e=>{
  const item=e.target.closest('[data-record-weapon]');if(!item)return;
@@ -2465,7 +2503,7 @@ function legendaryWeapon(id,ingredients){
  return {k:'w',c:l.c,t,cs:[t,t,t],legendId:id,legendCore:core,legendPrice:price,legendIngredients:JSON.parse(JSON.stringify(ingredients)),m:ingredients.reduce((a,w)=>a+(w.m||0),0)+l.magic,dts,b:dts.reduce((a,x)=>a+.3*(x+1),0),statVersion:1};
 }
 const BLUEPRINT_SHAPES=[[[0,0],[0,1],[1,1]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[1,1]],[[0,0],[1,0],[2,0],[1,1]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[0,1]],[[1,0],[2,0],[0,1],[1,1]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[0,1],[1,1],[0,2]],[[1,0],[0,1],[1,1],[2,1],[1,2]]];
-const BLUEPRINT_TIERS=[[0,0,0],[0,0,0],[1,0,0],[1,0,0,1],[2,1,1,0],[2,1,1],[3,2,2,1],[3,2,2,1],[4,3,3,2,2],[4,3,3,2,2]];
+const BLUEPRINT_TIERS=[[0,0,0],[0,0,0],[1,0,0],[1,0,0,1],[2,2,1,0],[2,2,2],[3,2,2,1],[3,2,2,1],[4,3,3,2,2],[4,3,3,4,2]];
 let legendProjects=[],blueprintSequence=0,blueprintInspectId=0,blueprintRotation=0,blueprintProjectId='';
 function blueprintShape(id,rotation=0){
  let a=BLUEPRINT_SHAPES[id].map(p=>[...p]);for(let i=0;i<((rotation%4)+4)%4;i++)a=a.map(([x,y])=>[-y,x]);
@@ -2659,7 +2697,7 @@ function openAvatarCreator(mode='new',done=null){
 function renderAvatarEditor(){
  $('avatarPreview').innerHTML=avatarSVG(avatarDraft);
  const palettes={skin:'膚色',hairColor:'頭髮顏色',eyeColor:'眼睛顏色'},styles={hairStyle:'髮型',brows:'眉毛樣式',eyes:'眼睛樣式',nose:'鼻子樣式',mouth:'嘴巴樣式'};
- $('avatarControls').innerHTML=Object.entries(palettes).map(([k,label])=>'<section class="avatar-palette"><h3>'+label+'</h3><div role="group" aria-label="'+label+'">'+AVATAR_OPTIONS[k].map((x,i)=>'<button type="button" class="avatar-swatch" data-avatar-field="'+k+'" data-avatar-value="'+i+'" aria-label="'+x.n+'" aria-pressed="'+(avatarDraft[k]===i)+'" title="'+x.n+'" style="--swatch:'+x.c+'"><span>'+(avatarDraft[k]===i?'✓':'')+'</span></button>').join('')+'</div></section>').join('')+'<div class="avatar-style-grid">'+Object.entries(styles).map(([k,label])=>'<label><span>'+label+'</span><select data-avatar-field="'+k+'">'+AVATAR_OPTIONS[k].map((x,i)=>'<option value="'+i+'" '+(avatarDraft[k]===i?'selected':'')+'>'+x+'</option>').join('')+'</select></label>').join('')+'</div>';
+ $('avatarControls').innerHTML=Object.entries(palettes).map(([k,label])=>'<section class="avatar-palette"><h3>'+label+'</h3><div role="group" aria-label="'+label+'">'+AVATAR_OPTIONS[k].map((x,i)=>'<button type="button" class="avatar-swatch" data-avatar-field="'+k+'" data-avatar-value="'+i+'" aria-label="'+x.n+'" aria-pressed="'+(avatarDraft[k]===i)+'" title="'+x.n+'" style="--swatch:'+x.c+'"><span>'+(avatarDraft[k]===i?'✓':'')+'</span></button>').join('')+'</div></section>').join('')+'<div class="avatar-style-grid">'+Object.entries(styles).map(([k,label])=>'<section class="avatar-style"><span>'+label+'</span><div class="avatar-stepper" role="group" aria-label="'+label+'"><button type="button" data-avatar-step="-1" data-avatar-field="'+k+'" aria-label="上一個'+label+'">◀</button><output aria-live="polite">'+AVATAR_OPTIONS[k][avatarDraft[k]]+'</output><button type="button" data-avatar-step="1" data-avatar-field="'+k+'" aria-label="下一個'+label+'">▶</button></div></section>').join('')+'</div>';
 }
 function updateAvatarField(k,value){if(!Object.hasOwn(AVATAR_DEFAULT,k))return;avatarDraft=normalizeAvatar({...avatarDraft,[k]:Number(value)});renderAvatarEditor();}
 function randomizeAvatar(){const a={};Object.keys(AVATAR_DEFAULT).forEach(k=>a[k]=Math.floor(Math.random()*AVATAR_OPTIONS[k].length));avatarDraft=a;renderAvatarEditor();}
@@ -2671,7 +2709,7 @@ function confirmAvatar(){
 }
 function cancelAvatar(){const mode=avatarCreatorMode;avatarCreatorMode='';avatarComplete=null;$('avatarCreatorP').style.display='none';if(mode==='new'){$('title').style.display='flex';pendingNewAvatar=null;}}
 function beginNewCharacter(){saveNow();active=false;pendingNewAvatar=null;askName(()=>openAvatarCreator('new',newGameFlow));}
-$('avatarControls').onclick=e=>{const b=e.target.closest('button[data-avatar-field]');if(b)updateAvatarField(b.dataset.avatarField,b.dataset.avatarValue);};
+$('avatarControls').onclick=e=>{const b=e.target.closest('button[data-avatar-field]');if(b){const k=b.dataset.avatarField,n=AVATAR_OPTIONS[k].length;updateAvatarField(k,b.dataset.avatarStep?(avatarDraft[k]+Number(b.dataset.avatarStep)+n)%n:b.dataset.avatarValue);}};
 $('avatarControls').onchange=e=>{const s=e.target.closest('select[data-avatar-field]');if(s)updateAvatarField(s.dataset.avatarField,s.value);};
 
 function newDay(){
@@ -3621,4 +3659,3 @@ importLegendProgress();start();fit();booting=false;render();
 </script>
 </body>
 </html>
-
