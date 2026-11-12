@@ -781,6 +781,13 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 .season-cell.leaf,.season-cell.burning{background-image:none!important;text-shadow:none;background-color:#b7772220;box-shadow:inset 0 0 0 1px #d6a35b44}.season-cell.leaf>svg,.season-cell.burning>svg{width:70%;height:70%;transform:rotate(-15deg);filter:drop-shadow(2px 2px 0 #493b2855);image-rendering:pixelated}.season-cell.burning{background:#e1762022}.season-cell.burning img{position:absolute;width:70%;height:70%;object-fit:contain;image-rendering:pixelated}.season-cell.falling>svg{animation:bp-leaf-sway .9s ease-out both}@keyframes bp-leaf-sway{from{transform:translateY(-15px) rotate(-48deg)}to{transform:translateY(0) rotate(-15deg)}}
 @media(prefers-reduced-motion:reduce){.season-cell.falling>svg{animation:none}}
 
+.player-avatar{display:inline-flex;flex:none;width:46px;height:46px;align-items:center;justify-content:center;image-rendering:pixelated}.player-avatar svg{display:block;width:100%;height:100%}.town-player-heading{display:flex;align-items:center;gap:9px;min-width:0}.town-header #townAvatar{width:44px;height:44px;min-width:44px;padding:0;background:none;border:0;box-shadow:none;border-radius:0}.town-header #townAvatar:active{transform:translateY(1px)}
+.exp-player-heading{display:flex;align-items:center;gap:10px;min-width:0}#expeditionAvatar{width:46px;height:46px}.exp-player-heading h2{font-size:23px}.save-player-heading{display:flex;align-items:center;gap:9px;min-width:0}.save-player-heading .player-avatar{width:44px;height:44px}.save-player-heading b{overflow-wrap:anywhere}
+#avatarCreatorP{z-index:86}.avatar-editor{width:100%;max-width:510px;padding:16px}.avatar-editor-header{display:flex;align-items:center;justify-content:space-between;gap:8px}.avatar-editor-header h2{font-size:23px;margin:3px 0}.avatar-editor-header p{margin:4px 0;color:#d3c9af;font-size:15px}.avatar-dice{font-size:16px;min-height:42px;padding:8px 10px;white-space:nowrap}.avatar-preview-area{position:sticky;top:-16px;z-index:2;display:flex;flex-direction:column;align-items:center;padding:14px 0 8px;background:#263645f5;border-bottom:1px solid #88764e}.avatar-preview-area p{font-size:13px;color:#c7c6b0;margin:6px 0 0}#avatarPreview{width:144px;height:144px;filter:drop-shadow(0 4px 0 #14212c80)}#avatarPreview svg{width:100%;height:100%;image-rendering:pixelated}
+.avatar-palette{margin:15px 0}.avatar-palette h3{font-size:16px;color:#e6d39d;margin:0 0 9px}.avatar-palette>div{display:flex;flex-wrap:wrap;gap:7px}.avatar-swatch{width:34px;height:34px;min-width:34px;min-height:34px;padding:2px;border:2px solid #63777b;background:var(--swatch)!important;box-shadow:inset 0 -3px #0003,0 2px #12212a88;border-radius:3px}.avatar-swatch[aria-pressed="true"]{border-color:#ffe4a2;outline:1px solid #f1c96c;outline-offset:2px}.avatar-swatch span{display:block;font-size:19px;line-height:24px;color:#fff3c3;text-shadow:1px 1px 1px #182335,-1px -1px 1px #182335}
+.avatar-style-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px;margin:18px 0}.avatar-style-grid label>span{display:block;font-size:15px;color:#e4d2a0;margin:0 0 6px}.avatar-style-grid select{width:100%;min-height:42px;background:#192a36;color:#f4e7ce;border:1px solid #73877d;border-radius:4px;padding:8px;font-size:16px}.avatar-editor-actions{position:sticky;bottom:-16px;display:flex;gap:10px;background:#263645fa;border-top:1px solid #88764e;padding:12px 0 3px;margin-top:16px;z-index:3}.avatar-editor-actions button{flex:1;min-height:46px;font-size:16px;padding:8px 5px}.avatar-editor-actions .pri{flex:2}
+@media(max-width:380px){.avatar-editor{padding:12px}.avatar-editor-header h2{font-size:20px}.avatar-dice{font-size:14px;padding:6px}.avatar-preview-area{top:-12px}#avatarPreview{width:120px;height:120px}.avatar-editor-actions{bottom:-12px}.avatar-swatch{width:31px;height:31px;min-width:31px;min-height:31px}.town-player-heading{gap:6px}.town-header>div:first-child{font-size:18px}}
+
 </style>
 </head>
 <body>
@@ -811,7 +818,7 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 </div>
 
 <div id="chestP"><div class="hp"><h2>📦 武器箱</h2><p id="chestInfo"></p><div id="chestItems"></div><button class="legend-chest-button" onclick="openLegendRecipes()">🌟 藍圖收藏</button><button style="width:100%;margin-top:14px" onclick="closeP('chestP')">關閉</button></div></div>
-<div id="townP"><header class="town-header"><div><b>🏘 鍛造小鎮</b><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></div><div id="townStats"></div><div id="townSeason"></div></header><div id="townMap"><div id="townScenery"></div><button id="townExpedition" onclick="openExpedition()" aria-label="城門遠征"><span class="town-sign">⚔ 遠征</span></button><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><div id="townQueue"></div><button id="townChest" onclick="openTownChest()" hidden></button><div id="townWeather" aria-hidden="true"></div></div></div>
+<div id="townP"><header class="town-header"><div><span class="town-player-heading"><button id="townAvatar" class="player-avatar" onclick="openAvatarCreator('edit')" title="調整角色外觀" aria-label="調整角色外觀"></button><b>🏘 鍛造小鎮</b></span><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></div><div id="townStats"></div><div id="townSeason"></div></header><div id="townMap"><div id="townScenery"></div><button id="townExpedition" onclick="openExpedition()" aria-label="城門遠征"><span class="town-sign">⚔ 遠征</span></button><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><div id="townQueue"></div><button id="townChest" onclick="openTownChest()" hidden></button><div id="townWeather" aria-hidden="true"></div></div></div>
 <div id="townLootP"><div class="hp"><h2>每日寶箱</h2><div id="townLootArt"></div><h3 id="townLootName"></h3><p id="townLootRemaining" aria-live="polite"></p><div class="town-dialog-actions"><button id="townLootClose" onclick="if(!chestOpening)closeP('townLootP')">稍後再開</button><button id="townLootOpen" class="pri" onclick="claimTownChest()">開啟寶箱</button></div></div></div>
 <div id="townSkillP"><div class="hp"><h2>⭐ 還有技能點可以使用</h2><p id="townSkillCount"></p><div class="town-dialog-actions"><button onclick="startTownForge()">仍要進入</button><button class="pri" onclick="closeP('townSkillP');openSkills(false)">前往訓練所</button></div></div></div>
 <div id="weaponStatsP" class="exp-overlay"><div class="hp weapon-stat-panel">
@@ -820,7 +827,7 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
  <button class="pri exp-wide" onclick="closeP('weaponStatsP')">關閉</button>
 </div></div>
 <div id="expeditionP" class="exp-overlay"><div class="hp exp-panel">
- <header class="exp-header"><div><small>鍛造之後，向城外出發</small><h2>⚔ 遠征</h2></div><button onclick="closeExpedition()">回城鎮</button></header>
+ <header class="exp-header"><div class="exp-player-heading"><span id="expeditionAvatar" class="player-avatar"></span><div><small>鍛造之後，向城外出發</small><h2>⚔ 遠征</h2></div></div><button onclick="closeExpedition()">回城鎮</button></header>
  <p id="expeditionAttempts"></p>
  <div id="expeditionSetup">
   <div id="expeditionStages" aria-label="選擇遠征關卡"></div><div id="expeditionMonster"></div><p id="expeditionReward"></p>
@@ -835,12 +842,18 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 
 <div id="legendBlueprintP" class="exp-overlay"><div class="hp legend-panel"><h2 id="legendBlueprintTitle"></h2><div id="legendBlueprintArt" class="legend-large-art"></div><button class="bp-rotate" onclick="rotateBlueprint()">↻ 旋轉樣式</button><p id="legendBlueprintState"></p><div id="legendBlueprintRecipe"></div><button id="legendBlueprintForge" class="pri exp-wide" onclick="prepareBlueprintHand()">確認放置 · 移到手持欄</button><button class="exp-wide" onclick="closeP('legendBlueprintP')">返回圖鑑</button></div></div>
 <div id="blueprintProjectP" class="exp-overlay"><div class="hp"><h2 id="blueprintProjectTitle"></h2><div id="blueprintProjectInfo"></div><button class="exp-wide bp-cancel" onclick="cancelBlueprintProject()">撤回藍圖與原料</button><button class="exp-wide" onclick="closeP('blueprintProjectP')">繼續製作</button></div></div>
+<div id="avatarCreatorP" class="exp-overlay"><div class="hp avatar-editor">
+ <header class="avatar-editor-header"><div><h2 id="avatarCreatorTitle">設計你的角色</h2><p id="avatarCreatorName"></p></div><button class="avatar-dice" onclick="randomizeAvatar()" aria-label="隨機搭配角色外觀">🎲 隨機搭配</button></header>
+ <div class="avatar-preview-area"><div id="avatarPreview"></div><p>選擇喜歡的樣式與顏色</p></div><div id="avatarControls"></div>
+ <footer class="avatar-editor-actions"><button onclick="cancelAvatar()">取消</button><button class="pri" id="avatarCreatorConfirm" onclick="confirmAvatar()">完成角色，開始遊戲</button></footer>
+</div></div>
+
 <div id="title">
   <div class="tl" id="tl"></div>
   <h1>Forge Master</h1>
   <p id="hs"></p>
   <p>放礦石 · 合成升階 · 鍛造武器 · 賣給客人</p>
-  <button class="pri" onclick="askName(newGameFlow)">開始遊戲</button>
+  <button class="pri" onclick="beginNewCharacter()">開始遊戲</button>
   <button id="ctn" onclick="openSaves('load')">▶ 繼續遊戲</button>
   <button onclick="$('title').style.display='none';start('tut')">教學關卡</button>
   
@@ -1379,7 +1392,7 @@ function importWeaponAlbum(){
   if(!testRun&&day>0){scanBest(best);scanState({g,pack,bag,hand});}
   if(changed)persistWeaponAlbum();
 }
-function openWeaponAlbum(){importLegendProgress();importWeaponAlbum();albumTier=-1;renderWeaponAlbum();$('weaponAlbumP').style.display='flex';}
+function openWeaponAlbum(){albumFromHome=$("title").style.display!=="none";importLegendProgress();importWeaponAlbum();albumTier=-1;renderWeaponAlbum();$('weaponAlbumP').style.display='flex';}
 function renderWeaponAlbum(){
   const blueprintOnly=albumTier===-2;
   $('weaponAlbumP').querySelector('h2').textContent=blueprintOnly?'🌟 藍圖收藏':'📖 武器圖鑑';
@@ -1397,7 +1410,7 @@ function renderWeaponAlbum(){
   }).join('')+legendAlbumSection();
 }
 $('albumTabs').onclick=e=>{const b=e.target.closest('[data-album-tier]');if(!b)return;albumTier=+b.dataset.albumTier;renderWeaponAlbum();};
-$('albumWeapons').onclick=e=>{const legend=e.target.closest('[data-legend]');if(legend){openLegendBlueprint(+legend.dataset.legend);return;}const b=e.target.closest('[data-album-weapon]');if(!b)return;showWeaponDetail(+b.dataset.albumWeapon,+b.dataset.tier);};
+$('albumWeapons').onclick=e=>{const legend=e.target.closest('[data-legend]');if(legend){openLegendBlueprint(+legend.dataset.legend,albumFromHome);return;}const b=e.target.closest('[data-album-weapon]');if(!b)return;showWeaponDetail(+b.dataset.albumWeapon,+b.dataset.tier);};
 function showWeaponDetail(c,t){
   inspectedWeapon=c;inspectedTier=t;const found=weaponAlbum.has(albumKey(c,t));
   $('inspectName').textContent=NM[t]+'級'+WN[c];$('inspectArt').className=found?'collected':'uncollected';$('inspectArt').innerHTML=hex(c,C[t],'',t);
@@ -1758,6 +1771,7 @@ $("qC").onclick=e=>{
 };
 
 function render(){
+  renderAvatarBadges();
   const currentSeason=SEASONS[seasonIndex()];
   $("app").dataset.season=currentSeason.id;
   $("srv").title=currentSeason.name+" · 季節第 "+seasonDay()+"/3 天（點擊查看季節說明）";
@@ -2075,7 +2089,7 @@ function gameOver(why){
     ov("格子滿了","教學卡住了，重新試一次吧！","重做教學",()=>start("tut"));
     return;
   }
-  ov("遊戲結束",why+"第 "+day+" 天，累計分數 "+score()+"。服務 "+all+" 位客人、完成 "+qDone+" 個任務。歷史最高 "+hi+"。"+rec(),"再來一局",start);
+  ov("遊戲結束",why+"第 "+day+" 天，累計分數 "+score()+"。服務 "+all+" 位客人、完成 "+qDone+" 個任務。歷史最高 "+hi+"。"+rec(),"再來一局",beginNewCharacter);
 }
 function cancelOrder(k){
   if(!orders[k])return;
@@ -2472,19 +2486,21 @@ function legendAlbumSection(){
  return '<section class="album-section legend-album-section"><h3>傳說藍圖 <small>'+LEGENDS.filter((_,id)=>hasLegendBlueprint(id)).length+'/10</small></h3><div class="album-grid">'+LEGENDS.map((l,id)=>'<button class="album-card '+(hasLegendCollection(id)?'collected':hasLegendBlueprint(id)?'blueprint-known':'uncollected')+'" data-legend="'+id+'"><span class="album-art">'+(hasLegendCollection(id)?legendWeaponSVG(id):legendBlueprintSVG(id))+'</span><b>'+l.name+'</b><small>'+(hasLegendCollection(id)?'已鍛造':hasLegendBlueprint(id)?'藍圖已取得':'第 '+(id+1)+' 關')+'</small></button>').join('')+'</div></section>';
 }
 function renderLegendAlbum(){$('albumWeapons').innerHTML=legendAlbumSection();}
-function openLegendRecipes(){importLegendProgress();ensureBlueprintInventory();albumTier=-2;renderWeaponAlbum();$('weaponAlbumP').style.display='flex';}
-function openLegendBlueprint(id){
+function openLegendRecipes(){albumFromHome=false;importLegendProgress();ensureBlueprintInventory();albumTier=-2;renderWeaponAlbum();$('weaponAlbumP').style.display='flex';}
+function openLegendBlueprint(id,readOnly=false){
+ blueprintReadOnly=!!readOnly;
  if(!validLegendId(id))return;blueprintInspectId=id;blueprintRotation=hand?.k==='bp'&&hand.id===id?(hand.rot||0):0;
  renderBlueprintPreview();$('legendBlueprintP').style.display='flex';
 }
 function renderBlueprintPreview(){
  const id=blueprintInspectId,l=LEGENDS[id];$('legendBlueprintTitle').textContent=l.name+'・傳說藍圖';$('legendBlueprintArt').innerHTML=blueprintShapeHTML(id,blueprintRotation);
- $('legendBlueprintState').textContent=hasLegendBlueprint(id)?'將藍圖移到手持欄，再拖曳到棋盤放置。':'第 '+(id+1)+' 關「'+EXPEDITIONS[id].name+'」首次勝利取得';
+ $('legendBlueprintState').textContent=blueprintReadOnly?'首頁圖鑑僅供欣賞；進入遊戲後，可從道具箱使用藍圖。':hasLegendBlueprint(id)?'將藍圖移到手持欄，再拖曳到棋盤放置。':'第 '+(id+1)+' 關「'+EXPEDITIONS[id].name+'」首次勝利取得';
  $('legendBlueprintRecipe').innerHTML='<div class="bp-requirements">'+l.recipe.map((c,k)=>'<div><b>'+(k+1)+'</b>'+hex(c,C[BLUEPRINT_TIERS[id][k]],'',BLUEPRINT_TIERS[id][k])+'<span>'+NM[BLUEPRINT_TIERS[id][k]]+'級'+WN[c]+'</span></div>').join('')+'</div><p class="exp-note">每格需要指定種類與固定階級的普通武器，更高或更低階都不能放入；最後一件放入的位置會產生傳說武器。</p><p class="exp-note">'+l.trait+'完成後藍圖回到道具箱，可重複使用。點擊已放置的黃色格，可撤回藍圖與已投入的原料。</p>';
- const active=legendProjects.some(p=>p.id===id);$('legendBlueprintForge').disabled=!hasLegendBlueprint(id)||active;$('legendBlueprintForge').textContent=active?'這張藍圖已放在棋盤':'確認放置 · 移到手持欄';
+ const active=legendProjects.some(p=>p.id===id);$('legendBlueprintForge').hidden=blueprintReadOnly;$('legendBlueprintForge').disabled=!hasLegendBlueprint(id)||active;$('legendBlueprintForge').textContent=active?'這張藍圖已放在棋盤':'確認放置 · 移到手持欄';
 }
 function rotateBlueprint(){blueprintRotation=(blueprintRotation+1)%4;renderBlueprintPreview();}
 function prepareBlueprintHand(){
+ if(blueprintReadOnly)return;
  const id=blueprintInspectId;if(!hasLegendBlueprint(id)||legendProjects.some(p=>p.id===id))return;
  if(hand?.k==='bp'&&hand.id===id)hand.rot=blueprintRotation;
  else{ensureBlueprintInventory();const index=bag.findIndex(x=>x.k==='bp'&&x.id===id);if(index<0)return;const bp=bag.splice(index,1)[0];if(hand)bag.push(hand);hand={...bp,rot:blueprintRotation};}
@@ -2574,6 +2590,89 @@ function legendWeaponSVG(id){
  return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" aria-label="'+l.name+'"><path fill="#f4d780" opacity=".2" d="M7 2h3v7H7zM4 5h9v2H4zM54 49h3v9h-3zM51 52h9v3h-9z"/>'+s+'<path fill="'+h+'" opacity=".7" d="M7 44h2v2H7zM57 7h2v2h-2z"/></svg>';
 }
 function legendBlueprintSVG(id){return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" aria-label="'+LEGENDS[id].name+'藍圖"><path fill="#263a51" d="M7 6h45v5h6v46H11v-5H5V12h2z"/><path fill="#4c7295" d="M11 10h37v5h6v37H15v-5h-4z"/><path stroke="#87b6cb" stroke-width="1" opacity=".35" d="M15 19h35M15 28h35M15 37h35M15 46h35M20 14v34M29 14v34M38 14v34M47 14v34"/><path fill="#e1cc90" d="M5 8h9v40H5zM12 48h43v9H12z"/><path fill="#fff0bd" d="M7 10h4v34H7zM15 50h37v3H15z"/><svg x="17" y="12" width="35" height="35" viewBox="0 0 64 64" style="filter:grayscale(1) brightness(1.6)">'+legendWeaponSVG(id).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'')+'</svg><path fill="#e6c875" d="M43 46h11v9H43z"/></svg>';}
+
+const AVATAR_OPTIONS={
+ skin:[{n:'暖白',c:'#f2d4b7',s:'#c59374',h:'#ffe8cf'},{n:'桃膚',c:'#eab998',s:'#b77f64',h:'#f8d7b6'},{n:'米膚',c:'#dca77d',s:'#a47253',h:'#edc69a'},{n:'蜂蜜',c:'#c28e5b',s:'#8d5f3e',h:'#ddb382'},{n:'暖棕',c:'#ad7750',s:'#784c34',h:'#cd986c'},{n:'紅棕',c:'#986347',s:'#693f2f',h:'#b98764'},{n:'深棕',c:'#79503b',s:'#513329',h:'#9d7052'},{n:'烏棕',c:'#583c30',s:'#352720',h:'#7e5742'}],
+ hairStyle:['短髮','側分','齊瀏海','刺蝟頭','捲髮','長髮','馬尾','光頭'],
+ hairColor:[{n:'深黑',c:'#303039',s:'#171b24',h:'#54515b'},{n:'栗棕',c:'#73503a',s:'#3e302a',h:'#9c7352'},{n:'淺棕',c:'#ac7a4b',s:'#694d35',h:'#d4aa70'},{n:'金色',c:'#d7af60',s:'#98753b',h:'#f0d591'},{n:'銀白',c:'#cad6d4',s:'#84969b',h:'#f1f3de'},{n:'赤紅',c:'#b45f46',s:'#71382f',h:'#da8e62'},{n:'海藍',c:'#527d9b',s:'#334d67',h:'#84b2c0'},{n:'苔綠',c:'#6f8b58',s:'#405841',h:'#a2b67a'},{n:'紫羅蘭',c:'#8c699c',s:'#503f6c',h:'#b599c9'},{n:'粉紅',c:'#c884a0',s:'#87506d',h:'#e9b6c6'}],
+ brows:['平眉','上揚眉','柔弧眉','濃眉','短眉','無眉'],
+ eyes:['圓眼','杏眼','細眼','銳眼','笑眼','平視'],
+ eyeColor:[{n:'墨黑',c:'#292a35'},{n:'棕色',c:'#815836'},{n:'琥珀',c:'#b68b3d'},{n:'湖藍',c:'#447f9d'},{n:'森林綠',c:'#548063'},{n:'紫色',c:'#806299'},{n:'灰色',c:'#839797'},{n:'玫瑰',c:'#a25c72'}],
+ nose:['小鼻','直鼻','圓鼻','寬鼻','短鼻'],mouth:['微笑','平口','開朗','小嘴','堅毅','露齒笑']
+};
+const AVATAR_DEFAULT={skin:1,hairStyle:0,hairColor:1,brows:0,eyes:0,eyeColor:1,nose:0,mouth:0};
+let playerAvatar={...AVATAR_DEFAULT},avatarDraft={...AVATAR_DEFAULT},pendingNewAvatar=null,avatarCreatorMode='',avatarComplete=null,albumFromHome=false,blueprintReadOnly=false;
+function normalizeAvatar(raw){
+ const r=raw&&typeof raw==='object'?raw:{},a={};Object.keys(AVATAR_DEFAULT).forEach(k=>a[k]=Number.isInteger(r[k])&&r[k]>=0&&r[k]<AVATAR_OPTIONS[k].length?r[k]:AVATAR_DEFAULT[k]);return a;
+}
+function avatarSVG(raw){
+ const a=normalizeAvatar(raw),skin=AVATAR_OPTIONS.skin[a.skin],hair=AVATAR_OPTIONS.hairColor[a.hairColor],iris=AVATAR_OPTIONS.eyeColor[a.eyeColor].c;
+ const rect=(x,y,w,h,c)=>'<path fill="'+c+'" d="M'+x+' '+y+'h'+w+'v'+h+'h-'+w+'z"/>';
+ let back='';if(a.hairStyle===5)back='<path fill="'+hair.s+'" d="M16 15h32v7h4v33H12V22h4z"/><path fill="'+hair.c+'" d="M14 24h5v27h-5zM45 22h5v30h-5z"/>';
+ if(a.hairStyle===6)back='<path fill="'+hair.s+'" d="M45 18h8v8h4v21h-5v9h-7V39h4V25h-4z"/><path fill="'+hair.c+'" d="M49 26h5v18h-3v8h-4V40h2z"/>';
+ if(a.hairStyle===4)back='<path fill="'+hair.s+'" d="M16 15h30v4h5v6h3v16h-5v7H15v-6h-5V25h3v-6h3z"/>';
+ const fringe=[
+  '<path d="M16 23V15h4v-4h23v4h5v13h-5v-7H23v4z"/><path d="M18 18h9v5h-9z"/>',
+  '<path d="M16 27V16h4v-5h25v5h4v11h-7V17h-9v5h-9v6z"/>',
+  '<path d="M16 27V16h4v-5h24v5h5v13h-5v-6h-6v4h-5v-4h-5v4h-5v-4h-3v4z"/>',
+  '<path d="M16 25V14h6V7h5v6h5V5h5v7h6V9h4v12h-5v-3h-8v3H23v5z"/>',
+  '<path d="M13 27v-8h4v-6h7V9h15v3h8v6h5v9h-8v-5h-6v3h-6v-4h-6v5h-6v3z"/>',
+  '<path d="M16 29V17h3v-5h25v5h5v11h-5V17h-9v6h-8v5h-5v5h-4z"/>',
+  '<path d="M16 26V16h4v-5h24v5h5v12h-6V18H23v7z"/><path d="M47 21h6v5h-6z"/>',''
+ ][a.hairStyle];
+ const brows=[
+  '<path d="M22 27h7v2h-7zM35 27h7v2h-7z"/>',
+  '<path d="M22 28h3v-2h5v2h-3v2h-5zM34 26h5v2h3v2h-5v-2h-3z"/>',
+  '<path d="M22 28v-2h6v1h2v2h-3v-1zM34 29v-2h2v-1h6v2h-5v1z"/>',
+  '<path d="M21 26h9v3h-9zM34 26h9v3h-9z"/>',
+  '<path d="M24 27h5v2h-5zM35 27h5v2h-5z"/>',''
+ ][a.brows];
+ let eyes='';
+ for(const x of [22,35]){
+  if(a.eyes===4){eyes+=rect(x,32,2,2,hair.s)+rect(x+2,30,3,2,hair.s)+rect(x+5,32,2,2,hair.s);continue;}
+  const height=a.eyes===2?2:a.eyes===5?3:4,y=a.eyes===2?32:30;
+  eyes+=rect(x,y,7,height+2,'#483e3c')+rect(x+1,y+1,5,height,'#f2e7cc')+rect(x+3,y+1,3,height,iris)+rect(x+4,y+2,1,Math.max(1,height-1),'#222b34')+rect(x+3,y+1,1,1,'#fff8dc');
+  if(a.eyes===1)eyes+=rect(x,y,2,2,skin.c)+rect(x+6,y+height,1,2,skin.c);
+  if(a.eyes===3)eyes+=rect(x,y,2,2,hair.s)+rect(x+2,y+1,5,1,hair.s);
+ }
+ const noses=[rect(31,36,2,4,skin.s)+rect(33,39,2,1,skin.h),rect(31,34,2,6,skin.s)+rect(33,38,2,2,skin.h),rect(30,37,5,3,skin.s)+rect(31,36,3,2,skin.h),rect(29,38,7,2,skin.s)+rect(31,36,3,3,skin.h),rect(31,38,3,2,skin.s)];
+ const lip=a.skin>=5?'#c58a70':'#915e50',mouths=[
+  rect(27,43,2,2,lip)+rect(29,45,6,2,lip)+rect(35,43,2,2,lip),
+  rect(27,44,10,2,lip),
+  rect(27,43,10,5,'#5c3c37')+rect(29,43,6,2,'#fff0d7')+rect(30,47,4,1,'#bd7866'),
+  rect(30,44,5,2,lip),rect(27,44,10,2,lip)+rect(27,43,3,1,lip),
+  rect(26,43,12,4,'#6b4840')+rect(28,43,8,2,'#fff3d5')+rect(29,46,6,1,lip)
+ ];
+ return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" role="img" aria-label="玩家像素頭像"><path fill="#172431" d="M5 1h54v4h4v54h-4v4H5v-4H1V5h4z"/><path fill="#d7bd7a" d="M6 3h52v3h3v52h-3v3H6v-3H3V6h3z"/><path fill="#3d5b68" d="M7 7h50v50H7z"/><path fill="#496e77" d="M7 7h50v22H7z"/><path fill="#597d7c" opacity=".7" d="M9 11h12v3H9zM43 17h10v3H43z"/>'+back+'<path fill="#263847" d="M21 48h22v3h8v6h6v4H7v-4h6v-6h8z"/><path fill="#4d6878" d="M18 51h28v10H18z"/><path fill="#bc9a61" d="M20 51h5v10h-5zM39 51h5v10h-5z"/><path fill="'+skin.s+'" d="M26 43h12v11H26z"/><path fill="'+skin.c+'" d="M28 44h8v9h-8z"/><path fill="#ede2bc" d="M24 51l8 7 8-7v5l-8 5-8-5z"/><path fill="'+skin.s+'" d="M20 15h24v5h4v9h3v10h-5v8h-5v5H23v-5h-5v-8h-5V29h4v-9h3z"/><path fill="'+skin.c+'" d="M22 18h20v4h3v19h-3v6h-5v3H26v-4h-5V23h1z"/><path fill="'+skin.h+'" d="M22 23h3v17h-3zM25 20h15v2H25zM26 40h3v2h-3z"/>'+rect(14,31,4,6,skin.c)+rect(47,31,3,6,skin.c)+eyes+'<g fill="'+hair.s+'">'+brows+'</g>'+noses[a.nose]+mouths[a.mouth]+'<g fill="'+hair.c+'">'+fringe+'</g>'+(a.hairStyle===7?'':'<path fill="'+hair.h+'" d="M22 14h11v2H22zM19 17h5v2h-5z" opacity=".8"/>')+'<path fill="#f0dba2" d="M7 7h3v3H7zM54 54h3v3h-3z"/></svg>';
+}
+function renderAvatarBadges(){
+ const key=JSON.stringify(playerAvatar);['townAvatar','expeditionAvatar'].forEach(id=>{const el=$(id);if(el.dataset.avatarKey!==key){el.innerHTML=avatarSVG(playerAvatar);el.dataset.avatarKey=key;}});
+ $('townAvatar').setAttribute('aria-label',playerName+'的頭像，點擊調整外觀');$('expeditionAvatar').setAttribute('aria-label',playerName+'的頭像');
+}
+function openAvatarCreator(mode='new',done=null){
+ avatarCreatorMode=mode;avatarComplete=done;
+ let preset=null;try{preset=JSON.parse(localStorage.getItem('forgeAvatarPresetV1')||'null')}catch(e){}
+ avatarDraft=normalizeAvatar(mode==='edit'?playerAvatar:preset||playerAvatar);
+ $('avatarCreatorTitle').textContent=mode==='new'?'設計你的角色':'調整角色外觀';$('avatarCreatorName').textContent=playerName||'鍛造師';
+ $('avatarCreatorConfirm').textContent=mode==='new'?'完成角色，開始遊戲':'儲存外觀';renderAvatarEditor();$('avatarCreatorP').style.display='flex';
+}
+function renderAvatarEditor(){
+ $('avatarPreview').innerHTML=avatarSVG(avatarDraft);
+ const palettes={skin:'膚色',hairColor:'頭髮顏色',eyeColor:'眼睛顏色'},styles={hairStyle:'髮型',brows:'眉毛樣式',eyes:'眼睛樣式',nose:'鼻子樣式',mouth:'嘴巴樣式'};
+ $('avatarControls').innerHTML=Object.entries(palettes).map(([k,label])=>'<section class="avatar-palette"><h3>'+label+'</h3><div role="group" aria-label="'+label+'">'+AVATAR_OPTIONS[k].map((x,i)=>'<button type="button" class="avatar-swatch" data-avatar-field="'+k+'" data-avatar-value="'+i+'" aria-label="'+x.n+'" aria-pressed="'+(avatarDraft[k]===i)+'" title="'+x.n+'" style="--swatch:'+x.c+'"><span>'+(avatarDraft[k]===i?'✓':'')+'</span></button>').join('')+'</div></section>').join('')+'<div class="avatar-style-grid">'+Object.entries(styles).map(([k,label])=>'<label><span>'+label+'</span><select data-avatar-field="'+k+'">'+AVATAR_OPTIONS[k].map((x,i)=>'<option value="'+i+'" '+(avatarDraft[k]===i?'selected':'')+'>'+x+'</option>').join('')+'</select></label>').join('')+'</div>';
+}
+function updateAvatarField(k,value){if(!Object.hasOwn(AVATAR_DEFAULT,k))return;avatarDraft=normalizeAvatar({...avatarDraft,[k]:Number(value)});renderAvatarEditor();}
+function randomizeAvatar(){const a={};Object.keys(AVATAR_DEFAULT).forEach(k=>a[k]=Math.floor(Math.random()*AVATAR_OPTIONS[k].length));avatarDraft=a;renderAvatarEditor();}
+function confirmAvatar(){
+ if(!avatarCreatorMode)return;const mode=avatarCreatorMode,done=avatarComplete,chosen=normalizeAvatar(avatarDraft);avatarCreatorMode='';avatarComplete=null;$('avatarCreatorP').style.display='none';
+ try{localStorage.setItem('forgeAvatarPresetV1',JSON.stringify(chosen))}catch(e){}
+ if(mode==='new'){pendingNewAvatar=chosen;done?.();}
+ else{playerAvatar=chosen;renderAvatarBadges();saveHi();saveNow();}
+}
+function cancelAvatar(){const mode=avatarCreatorMode;avatarCreatorMode='';avatarComplete=null;$('avatarCreatorP').style.display='none';if(mode==='new'){$('title').style.display='flex';pendingNewAvatar=null;}}
+function beginNewCharacter(){saveNow();active=false;pendingNewAvatar=null;askName(()=>openAvatarCreator('new',newGameFlow));}
+$('avatarControls').onclick=e=>{const b=e.target.closest('button[data-avatar-field]');if(b)updateAvatarField(b.dataset.avatarField,b.dataset.avatarValue);};
+$('avatarControls').onchange=e=>{const s=e.target.closest('select[data-avatar-field]');if(s)updateAvatarField(s.dataset.avatarField,s.value);};
 
 function newDay(){
   phase="play";
@@ -3089,6 +3188,7 @@ function start(mode,opt){
   mode=mode||(day===0?"tut":"normal");
   runId=Date.now();runDate=todayStr();runTime=timeStr();
   testRun=!!(opt&&opt.test);
+  if(mode==="normal"&&!booting&&!testRun){playerAvatar=normalizeAvatar(pendingNewAvatar||AVATAR_DEFAULT);pendingNewAvatar=null;}
   if(!testRun){cheat.m=false;cheat.s=false}
   active=!booting&&mode!=="tut"&&!testRun;
   skills={mm:0,gc:0,mg:0,wb:0,mc:0,mn:0};
@@ -3162,10 +3262,8 @@ function askName(cb){
   $("nmb").onclick=go;
   $("nmi").onkeydown=e=>{if(e.key==="Enter")go()};
 }
-function beginNormal(){
-  if(playerName)start("normal");
-  else askName(()=>start("normal"));
-}
+function beginNormal(){beginNewCharacter();}
+
 function persistSaves(){
   try{localStorage.setItem("forgeSaves",JSON.stringify(saves))}catch(e){}
 }
@@ -3179,11 +3277,11 @@ function saveNow(){
   const st={
     g,coins,earned,all,day,dTot,dServed,dEarn,dLeft,orders,dq,best,Q,MQ,
     heat,hand,shopD,magic,magicSet:[...magicSet],dMagic,dSold,lives,
-    skills,pack,sp,bag,gachaUsed,skillDone,spentToday,phase,quests,qDone,dLv,pendingChests,lastCompletedDay,expedition:expeditionState,legendProjects,
+    skills,pack,sp,bag,gachaUsed,skillDone,spentToday,phase,quests,qDone,dLv,pendingChests,lastCompletedDay,expedition:expeditionState,legendProjects,avatar:normalizeAvatar(playerAvatar),
     shopBought,leaves:[...leaves],frozen:[...frozen],seasonVersion:1,seasonNoticePending
   };
   const e={
-    id:runId,name:playerName||"玩家",date:runDate,time:runTime,
+    id:runId,name:playerName||"玩家",date:runDate,time:runTime,avatar:normalizeAvatar(playerAvatar),
     coins,score:score(),day,updated:Date.now(),
     state:JSON.parse(JSON.stringify(st))
   };
@@ -3199,6 +3297,7 @@ function loadGame(id){
   const e=saves.find(x=>x.id===id);if(!e)return;
   const t=resizeSaveBoard(e.state);
   runId=e.id;playerName=e.name;runDate=e.date;runTime=e.time;
+  playerAvatar=normalizeAvatar(t.avatar||e.avatar);pendingNewAvatar=null;avatarCreatorMode="";avatarComplete=null;
   testRun=false;cheat.m=false;cheat.s=false;
   g=t.g;coins=t.coins;earned=t.earned;all=t.all;day=t.day;
   dTot=t.dTot;dServed=t.dServed;dEarn=t.dEarn;dLeft=t.dLeft;
@@ -3224,7 +3323,7 @@ function loadGame(id){
   stepSales=0;justHeated.clear();ensureQuests();
   tool=-1;fresh=-1;fx=[];hold=new Set();pop=new Set();shown=new Map();
   enter.clear();busy=false;tutP2=false;lead=0;flyI=-1;exitMs=0;active=true;
-  ["ov","cf","sk","rw","gcP","svP","recP","help","seasonP","townLootP","townSkillP","expeditionP","weaponStatsP","legendBlueprintP","blueprintProjectP"].forEach(x=>$(x).style.display="none");
+  ["ov","cf","sk","rw","gcP","svP","recP","help","seasonP","townLootP","townSkillP","expeditionP","weaponStatsP","legendBlueprintP","blueprintProjectP","avatarCreatorP"].forEach(x=>$(x).style.display="none");
   $("title").style.display="none";clearPrediction();render();
   restoreTownProgress(t);
   showPendingSeasonNotice();
@@ -3237,7 +3336,7 @@ function openSaves(mode){
     ?"最多 3 個存檔，請選一個覆蓋後開始新遊戲。":"選擇存檔繼續。遊戲會自動存檔。";
   const list=[...saves].sort((a,b)=>b.updated-a.updated);
   $("svC").innerHTML=list.map(e=>
-    `<div class="rcard"><div class="rh"><b>📁 ${esc(e.name)}</b><span>第 ${e.day} 天</span></div>
+    `<div class="rcard"><div class="rh"><span class="save-player-heading"><span class="player-avatar">${avatarSVG(e.avatar||e.state?.avatar)}</span><b>${esc(e.name)}</b></span><span>第 ${e.day} 天</span></div>
     <div class="rd">🕒 開始：${esc(e.date)} ${esc(e.time||"")}</div>
     <div>💰 ${e.coins}　⭐ ${e.score} 分</div>
     <div>🙋 服務 ${(e.state&&e.state.all)||0} 位　✅ 任務 ${(e.state&&e.state.qDone)||0} 個</div>
@@ -3265,6 +3364,7 @@ $("svC").onclick=e=>{
   }
 };
 function newGameFlow(){
+  if(!pendingNewAvatar){openAvatarCreator("new",newGameFlow);return;}
   if(saves.length>=3){openSaves("over");return}
   $("title").style.display="none";start("normal");
 }
