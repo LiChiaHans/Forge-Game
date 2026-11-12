@@ -1470,24 +1470,24 @@ const tutDoneSet=()=>{try{localStorage.setItem("forgeTut","1")}catch(e){}};
 
 function tutMsg(){
   const cnt=k=>g.filter(x=>x&&x.k===k).length;
-  if(tutStage===2){if(cnt('d'))return '💎 鑽石完成！能在鍛造時提高售價與能力。點「學魔法格」繼續。';if(!g[11]||!g[12])return '💎 先照提示放兩顆銅礦，再用鑽石模具合成鑽石。';return '把框起來的鑽石模具拖到提示格，親手合成鑽石！';}
+  if(tutStage===2){if(cnt('d'))return '💎 鑽石完成！可強化武器，點「學魔法格」繼續。';if(!g[11]||!g[12])return '💎 先照提示放兩顆銅礦，再用鑽石模具合成鑽石。';return '把框起來的鑽石模具拖到提示格，親手合成鑽石！';}
   if(tutStage===3){
-    if(cnt('w'))return "💎 鑽石加價 30%、強化能力；✨ 魔法提供附魔。把成品拖給客人！";
+    if(cnt('w'))return "💎 加價 30%、強化能力；✨ 魔法提供附魔。拖給客人出售！";
     const hasGem=g.some(x=>x&&x.k==='d');
-    if(!g[21])return "✨ 點紫色格放銅礦。魔法會累積到武器，增加附魔能力與售價。";
+    if(!g[21])return "✨ 點紫色格放銅礦，魔法可增加武器附魔與售價。";
     if(!g[22])return "再放一顆銅礦在它旁邊。";
-    if(!hasGem)return "💎 把「手持」的鑽石拖到提示格，讓它貼著胚，鍛造時會消耗鑽石。";
+    if(!hasGem)return "💎 把手持鑽石拖到提示格，貼著胚，鍛造時可強化武器。";
     return "把模具拖到半透明模具提示的格子，合成帶有鑽石和魔法加成的武器！";
   }
-  if(cnt('w'))return "武器完成！🔥 使用的格子會過熱 50 步。把武器拖到上方客人身上出售！";
+  if(cnt('w'))return "武器完成！🔥 格子過熱 50 步。把武器拖給上方客人出售！";
   const np=cnt('p');
   if(np>=3)return "讓三個胚緊貼在一起，就會自動合成武器。";
   const [a,b]=TG[np],miss=[a,b].filter(c=>!g[c]);
   const pre="第 "+(np+1)+"/3 個胚：";
   const intro=np===0?"先用 3 格學會基本流程。":np===1?"下方又亮起 6 格，繼續做第 2、3 個胚！":"";
-  if(miss.length===2)return intro+pre+"照著半透明提示，點格子放下銅礦。";
+  if(miss.length===2)return pre+"點兩個提示格放銅礦，再拖入模具。";
   if(miss.length===1)return pre+"再放一顆銅礦，放在半透明提示的格子。";
-  return pre+"把右側框起來的模具拖到半透明模具提示的格子。";
+  return pre+"把框起來的模具拖到提示格。";
 }
 function skipTut(){tutDoneSet();goHome()}
 
@@ -3276,6 +3276,7 @@ $("recClr").onclick=()=>confirmBox(
   }
 );
 function confirmBox(t,p,yes,fn){
+  $("cfn").textContent=yes==="取消訂單"?"保留":yes==="仍要挑戰"?"先不挑戰":"取消";
   $("cft").textContent=t;$("cfp").textContent=p;$("cfy").textContent=yes;
   if(yes==="取消訂單")$("cfy").before($("cfn"));
   else $("cfn").before($("cfy"));
