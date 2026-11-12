@@ -773,9 +773,10 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
 #app.blueprint-mode #grid{background:#a18b45!important;border-color:#e3c366;box-shadow:0 0 0 2px #e1bd5366,0 4px 14px #131b28aa}
 #grid .blueprint-cell{background:#d2b55b!important;box-shadow:inset 0 0 0 2px #fbe39a,inset 0 -4px 0 #ad883b;isolation:isolate}.bp-board-art{position:absolute;inset:6% 8% 20%;pointer-events:none}.bp-board-art .hxo{width:100%;height:100%}.bp-ghost{filter:grayscale(.8) brightness(.35);opacity:.4}.bp-ghost .hxi{background:#796f4e!important}.blueprint-filled .bp-board-art{filter:drop-shadow(0 2px #56432c66)}
 .bp-board-need{position:absolute;left:1px;right:1px;bottom:3px;font-size:clamp(8px,2.1vw,12px);color:#463724;line-height:1.15;text-align:center;font-weight:900;white-space:nowrap;pointer-events:none}.bp-board-index{position:absolute;left:4px;top:3px;font-size:11px;color:#4d3e29;font-weight:900;pointer-events:none}.blueprint-filled .bp-board-need{color:#294e33}
-.bp-shape{display:grid;grid-template-columns:repeat(var(--bp-cols),minmax(0,1fr));grid-template-rows:repeat(var(--bp-rows),minmax(0,1fr));gap:4px;width:100%;height:100%;padding:0}.bp-shape-tile{position:relative;min-width:0;min-height:0;background:#d2b55b;border:2px solid #f1d98e;box-shadow:inset 0 -2px #9f7f3d}.bp-shape-tile>.bp-ghost{position:absolute;inset:7%;display:block}.bp-shape-tile .hxo{width:100%;height:100%;margin:0}.bp-shape-tile b{position:absolute;left:3px;top:1px;color:#463b29;font-size:11px;line-height:1.2}.bp-shape-gap{pointer-events:none}
+.bp-shape{--bp-frame:160px;--bp-gap:4px;--bp-square:var(--bp-tile-size,calc((var(--bp-frame) - (var(--bp-max) - 1)*var(--bp-gap))/var(--bp-max)));display:grid;grid-template-columns:repeat(var(--bp-cols),var(--bp-square));grid-template-rows:repeat(var(--bp-rows),var(--bp-square));gap:var(--bp-grid-gap,var(--bp-gap));width:max-content;height:max-content;flex:none;padding:0}.bp-shape-tile{position:relative;box-sizing:border-box;aspect-ratio:1;min-width:0;min-height:0;background:#d2b55b;border:2px solid #f1d98e;box-shadow:inset 0 -2px #9f7f3d}.bp-shape-tile>.bp-ghost{position:absolute;inset:7%;display:block}.bp-shape-tile .hxo{width:100%;height:100%;margin:0}.bp-shape-tile b{position:absolute;left:3px;top:1px;color:#463b29;font-size:11px;line-height:1.2}.bp-shape-gap{pointer-events:none}
 #legendBlueprintArt{width:160px;height:160px;display:flex;align-items:center;justify-content:center;margin:16px auto}.bp-requirements{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:15px 0}.bp-requirements>div{position:relative;width:28%;min-width:80px;max-width:110px;padding:9px 4px;background:#162632;border:1px solid #6d795e}.bp-requirements .hxo{width:48px;height:48px;margin:0 auto 7px}.bp-requirements span{display:block;font-size:12px;line-height:1.5;color:#e9d9a7}.bp-requirements b{position:absolute;left:5px;top:3px;font-size:12px;color:#e1c578}.bp-item-icon{display:block;width:48px;height:48px}.bp-item-icon>svg{width:100%;height:100%}
-#handSlot .bp-shape{width:58px;height:58px;gap:2px}#handSlot .bp-shape-tile{border-width:1px}#handSlot .bp-shape-tile b{display:none}.drag.blueprint-drag{transform:none!important;background:none;opacity:.85;border:0;box-shadow:none;pointer-events:none}.drag.blueprint-drag .bp-shape{gap:4px}
+#handSlot .bp-shape{--bp-frame:54px;--bp-gap:2px;width:max-content;height:max-content}#handSlot .bp-shape-tile{border-width:1px}#handSlot .bp-shape-tile b{display:none}.drag.blueprint-drag{transform:none!important;background:none;opacity:.85;border:0;box-shadow:none;pointer-events:none}.drag.blueprint-drag .bp-shape{gap:var(--bp-grid-gap,4px)}
+#app #side #handSlot{position:relative}#app #side #handSlot .hand-stow{position:absolute;top:3px;right:3px;width:26px;height:26px;min-width:0;min-height:0;padding:0;margin:0;z-index:6;font-size:20px;line-height:22px;text-align:center;color:#f2e1c4;background:#28313ee8;border:1px solid #9a8c72;border-radius:4px;box-shadow:0 1px 3px #1118;touch-action:manipulation}#app #side #handSlot .hand-stow:active{background:#735343}@media(max-width:380px){#handSlot .bp-shape{--bp-frame:40px}}
 .bp-rotate{font-size:16px;padding:8px 15px;margin:4px auto 10px}#blueprintProjectP{z-index:83}#blueprintProjectP .hp{max-width:440px;text-align:center}.bp-cancel{background:#6b4439;color:#ffe5b4}
 .season-cell.leaf,.season-cell.burning{background-image:none!important;text-shadow:none;background-color:#b7772220;box-shadow:inset 0 0 0 1px #d6a35b44}.season-cell.leaf>svg,.season-cell.burning>svg{width:70%;height:70%;transform:rotate(-15deg);filter:drop-shadow(2px 2px 0 #493b2855);image-rendering:pixelated}.season-cell.burning{background:#e1762022}.season-cell.burning img{position:absolute;width:70%;height:70%;object-fit:contain;image-rendering:pixelated}.season-cell.falling>svg{animation:bp-leaf-sway .9s ease-out both}@keyframes bp-leaf-sway{from{transform:translateY(-15px) rotate(-48deg)}to{transform:translateY(0) rotate(-15deg)}}
 @media(prefers-reduced-motion:reduce){.season-cell.falling>svg{animation:none}}
@@ -867,7 +868,7 @@ button.pri,#title button.pri{background-color:#b66c35;background-image:url("data
   <p>點空格放下上方佇列的礦石。拖曳模具到至少兩顆同階礦石旁，消耗相連材料，製成刃、柄或盾胚。學會合成大師後，三顆相連同階礦石可以升階；四顆可產生兩顆升階礦石，五顆可升兩階。</p>
   <h3>鍛造武器</h3>
   <p>三個相連、排成直線或彎線的胚會合成武器。配方由胚的種類決定，品質為三個胚階級的平均值，無條件捨去，仍用來判定能否符合訂單。售價則另外計算「材料基價」：取三個胚各自階級對應的武器基本售價平均，四捨五入，且不低於原品質的基本售價。例如銅＋銅＋銅為 30 金幣；鐵＋銅＋銅仍是銅級，但材料基價為 38 金幣。鑽石、指定訂單與大商人加成再套用在這個基價上。四個、五個胚可以同時鍛造兩把、三把武器，每把依自己的三個胚分別計價。混合材料的武器底色會分層顯示。</p>
-  <h3>傳說藍圖與棋盤鍛造</h3><p>遠征首次勝利取得藍圖，會放入道具箱。點擊藍圖查看每格需求與樣式，可旋轉後確認移到手持欄，再拖至棋盤空格部署。黃色格會顯示暗色原料武器，將對應的普通武器拖入即可；各格有自己的最低階級，可混合不同階級。放入最後一件時，傳說武器出現在該格，其他藍圖格釋放並過熱。藍圖完成後回道具箱，可重複使用。點黃色格可撤回藍圖及原料。</p><h3>武器能力與遠征</h3><p>點擊棋盤或歷史紀錄中的完成武器，可查看攻擊力、防禦力與速度。刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度；每個胚使用的材料會分別影響能力。城鎮城門可進行遠征，每天最多 3 次；武器不消耗，勝利可獲金幣，首次過關取得傳說藍圖。</p><h3>拖曳預覽</h3>
+  <h3>傳說藍圖與棋盤鍛造</h3><p>遠征首次勝利取得藍圖，會放入道具箱。點擊藍圖查看每格需求與樣式，可旋轉後確認移到手持欄，再拖至棋盤空格部署。黃色格會顯示暗色原料武器，原料種類與階級必須完全符合該格指定值，更高或更低階皆不能替代。放入最後一件時，傳說武器出現在該格，其他藍圖格釋放並過熱。藍圖完成後回道具箱，可重複使用。點黃色格可撤回藍圖及原料；手持欄的小叉叉可將物品收回道具箱。</p><h3>武器能力與遠征</h3><p>點擊棋盤或歷史紀錄中的完成武器，可查看攻擊力、防禦力與速度。刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度；每個胚使用的材料會分別影響能力。城鎮城門可進行遠征，每天最多 3 次；武器不消耗，勝利可獲金幣，首次過關取得傳說藍圖。</p><h3>拖曳預覽</h3>
   <p>拖曳模具到棋盤，可以預覽消耗材料、製胚與鍛造結果。金框是消耗材料，紫框是參與鍛造的胚，綠框是放置位置。紅框會說明無法操作的原因。拖曳武器到客人身上，可以先看成交價。</p>
   <h3>鑽石與魔法</h3>
   <p>學會寶石匠後會出現鑽石模具與商品。胚旁的鑽石在鍛造時自動鑲嵌，最多三顆；每顆讓售價增加 30%×（階級＋1）。武器圖示上的裝飾寶石不等於實際鑲鑽，實際加成以 💎 標記為準。</p>
@@ -1380,6 +1381,10 @@ function importWeaponAlbum(){
 }
 function openWeaponAlbum(){importLegendProgress();importWeaponAlbum();albumTier=-1;renderWeaponAlbum();$('weaponAlbumP').style.display='flex';}
 function renderWeaponAlbum(){
+  const blueprintOnly=albumTier===-2;
+  $('weaponAlbumP').querySelector('h2').textContent=blueprintOnly?'🌟 藍圖收藏':'📖 武器圖鑑';
+  $('albumTabs').style.display=blueprintOnly?'none':'grid';
+  if(blueprintOnly){$('albumProgress').textContent='藍圖 '+LEGENDS.filter((_,id)=>hasLegendBlueprint(id)).length+'/10 · 傳說 '+LEGENDS.filter((_,id)=>hasLegendCollection(id)).length+'/10';renderLegendAlbum();return;}
   $('albumProgress').textContent='普通 '+weaponAlbum.size+'/50 · 藍圖 '+LEGENDS.filter((_,id)=>hasLegendBlueprint(id)).length+'/10 · 傳說 '+LEGENDS.filter((_,id)=>hasLegendCollection(id)).length+'/10';
   $('albumTabs').innerHTML=[-1,0,1,2,3,4].map(t=>'<button data-album-tier="'+t+'" aria-pressed="'+(t===albumTier)+'">'+(t===-2?'🌟 傳說藍圖':t<0?'全部':NM[t]+'級')+'</button>').join('');
   $('albumWeapons').innerHTML=NM.map((name,t)=>{
@@ -1823,7 +1828,8 @@ function render(){
     <span class="dm" data-drag="mold">${mold(MQ[0],"","f")}</span>
     <div class="mq">${MQ.slice(1,3).map(m=>mold(m,"","")).join("")}</div>`;
   $("handSlot").innerHTML=`<div class="tl2">手持</div>`
-    +(hand!==null?`<span class="dm" data-drag="hand">${hand.k==='bp'?blueprintShapeHTML(hand.id,hand.rot||0):itemH(hand,1)}</span>`:`<span class="dm empty">空</span>`);
+    +(hand!==null?`<span class="dm" data-drag="hand">${hand.k==='bp'?blueprintShapeHTML(hand.id,hand.rot||0):itemH(hand,1)}</span>`:`<span class="dm empty">空</span>`)
+    +(hand!==null?'<button class="hand-stow" onclick="stowHand(event)" aria-label="將手持物品收回道具箱" title="收回道具箱">×</button>':'');
 
   $("q").innerHTML="<small>接下來</small>"+Q.map((t,k)=>
     `<div class="q${k?"":" first"}" data-step="${k+1}" aria-label="第${k+1}顆：${NM[t]}礦" style="background-color:${C[t]}">${NM[t]}</div>`
@@ -2453,20 +2459,20 @@ function blueprintShape(id,rotation=0){
  return {cells:a,w:Math.max(...a.map(p=>p[0]))+1,h:Math.max(...a.map(p=>p[1]))+1};
 }
 function blueprintRequirement(id,k){return {c:LEGENDS[id].recipe[k],tier:BLUEPRINT_TIERS[id][k]};}
-function blueprintAccepts(id,k,w){const r=blueprintRequirement(id,k);return !!w&&w.k==='w'&&!isLegend(w)&&w.c===r.c&&w.t>=r.tier;}
+function blueprintAccepts(id,k,w){const r=blueprintRequirement(id,k);return !!w&&w.k==='w'&&!isLegend(w)&&w.c===r.c&&w.t===r.tier;}
 function blueprintSlotAt(i){for(const project of legendProjects){const slot=project.cells.indexOf(i);if(slot>=0)return {project,slot};}return null;}
 function hasBlueprintItem(id){return bag.some(x=>x.k==='bp'&&x.id===id)||(hand?.k==='bp'&&hand.id===id)||legendProjects.some(p=>p.id===id);}
 function grantBlueprintItem(id){if(!validLegendId(id))return;unlockLegendBlueprint(id);if(!hasBlueprintItem(id))bag.push({k:'bp',id,rot:0});}
 function ensureBlueprintInventory(){if(day<1)return;LEGENDS.forEach((_,id)=>{if(hasLegendBlueprint(id)&&!hasBlueprintItem(id))bag.push({k:'bp',id,rot:0});});}
 function blueprintShapeHTML(id,rotation=0){
  const s=blueprintShape(id,rotation);let a='';for(let y=0;y<s.h;y++)for(let x=0;x<s.w;x++){const k=s.cells.findIndex(p=>p[0]===x&&p[1]===y);if(k<0)a+='<span class="bp-shape-gap"></span>';else{const r=blueprintRequirement(id,k);a+='<span class="bp-shape-tile"><span class="bp-ghost">'+hex(r.c,C[r.tier],'',r.tier)+'</span><b>'+(k+1)+'</b></span>';}}
- return '<span class="bp-shape" style="--bp-cols:'+s.w+';--bp-rows:'+s.h+'">'+a+'</span>';
+ return '<span class="bp-shape" style="--bp-cols:'+s.w+';--bp-rows:'+s.h+';--bp-max:'+Math.max(s.w,s.h)+'">'+a+'</span>';
 }
 function legendAlbumSection(){
  return '<section class="album-section legend-album-section"><h3>傳說藍圖 <small>'+LEGENDS.filter((_,id)=>hasLegendBlueprint(id)).length+'/10</small></h3><div class="album-grid">'+LEGENDS.map((l,id)=>'<button class="album-card '+(hasLegendCollection(id)?'collected':hasLegendBlueprint(id)?'blueprint-known':'uncollected')+'" data-legend="'+id+'"><span class="album-art">'+(hasLegendCollection(id)?legendWeaponSVG(id):legendBlueprintSVG(id))+'</span><b>'+l.name+'</b><small>'+(hasLegendCollection(id)?'已鍛造':hasLegendBlueprint(id)?'藍圖已取得':'第 '+(id+1)+' 關')+'</small></button>').join('')+'</div></section>';
 }
 function renderLegendAlbum(){$('albumWeapons').innerHTML=legendAlbumSection();}
-function openLegendRecipes(){importLegendProgress();ensureBlueprintInventory();albumTier=-1;renderWeaponAlbum();$('weaponAlbumP').style.display='flex';}
+function openLegendRecipes(){importLegendProgress();ensureBlueprintInventory();albumTier=-2;renderWeaponAlbum();$('weaponAlbumP').style.display='flex';}
 function openLegendBlueprint(id){
  if(!validLegendId(id))return;blueprintInspectId=id;blueprintRotation=hand?.k==='bp'&&hand.id===id?(hand.rot||0):0;
  renderBlueprintPreview();$('legendBlueprintP').style.display='flex';
@@ -2474,7 +2480,7 @@ function openLegendBlueprint(id){
 function renderBlueprintPreview(){
  const id=blueprintInspectId,l=LEGENDS[id];$('legendBlueprintTitle').textContent=l.name+'・傳說藍圖';$('legendBlueprintArt').innerHTML=blueprintShapeHTML(id,blueprintRotation);
  $('legendBlueprintState').textContent=hasLegendBlueprint(id)?'將藍圖移到手持欄，再拖曳到棋盤放置。':'第 '+(id+1)+' 關「'+EXPEDITIONS[id].name+'」首次勝利取得';
- $('legendBlueprintRecipe').innerHTML='<div class="bp-requirements">'+l.recipe.map((c,k)=>'<div><b>'+(k+1)+'</b>'+hex(c,C[BLUEPRINT_TIERS[id][k]],'',BLUEPRINT_TIERS[id][k])+'<span>≥'+NM[BLUEPRINT_TIERS[id][k]]+'級'+WN[c]+'</span></div>').join('')+'</div><p class="exp-note">原料可以混用不同階級，每格各自判定。黃色格只接受對應的普通武器；最後一件放入的位置會產生傳說武器。</p><p class="exp-note">'+l.trait+'完成後藍圖回到道具箱，可重複使用。點擊已放置的黃色格，可撤回藍圖與已投入的原料。</p>';
+ $('legendBlueprintRecipe').innerHTML='<div class="bp-requirements">'+l.recipe.map((c,k)=>'<div><b>'+(k+1)+'</b>'+hex(c,C[BLUEPRINT_TIERS[id][k]],'',BLUEPRINT_TIERS[id][k])+'<span>'+NM[BLUEPRINT_TIERS[id][k]]+'級'+WN[c]+'</span></div>').join('')+'</div><p class="exp-note">每格需要指定種類與固定階級的普通武器，更高或更低階都不能放入；最後一件放入的位置會產生傳說武器。</p><p class="exp-note">'+l.trait+'完成後藍圖回到道具箱，可重複使用。點擊已放置的黃色格，可撤回藍圖與已投入的原料。</p>';
  const active=legendProjects.some(p=>p.id===id);$('legendBlueprintForge').disabled=!hasLegendBlueprint(id)||active;$('legendBlueprintForge').textContent=active?'這張藍圖已放在棋盤':'確認放置 · 移到手持欄';
 }
 function rotateBlueprint(){blueprintRotation=(blueprintRotation+1)%4;renderBlueprintPreview();}
@@ -2483,6 +2489,10 @@ function prepareBlueprintHand(){
  if(hand?.k==='bp'&&hand.id===id)hand.rot=blueprintRotation;
  else{ensureBlueprintInventory();const index=bag.findIndex(x=>x.k==='bp'&&x.id===id);if(index<0)return;const bp=bag.splice(index,1)[0];if(hand)bag.push(hand);hand={...bp,rot:blueprintRotation};}
  ['legendBlueprintP','bagP','weaponAlbumP','chestP'].forEach(id=>$(id).style.display='none');render();saveNow();say('傳說藍圖已移到手持欄，拖到棋盤空位放置。');
+}
+function stowHand(e){
+ e?.stopPropagation();if(hand===null||busy||drag)return;
+ const item=hand;bag.push(item);hand=null;clearPrediction();render();saveNow();say('已收回道具箱：'+itemName(item));
 }
 function blueprintFootprint(id,rotation,origin){
  if(!validLegendId(id)||!Number.isInteger(origin)||!Number.isInteger(rotation))return [-1];
@@ -2502,13 +2512,13 @@ function placeBlueprint(origin){
 function renderBlueprintCells(){
  $('app').classList.toggle('blueprint-mode',legendProjects.length>0);
  legendProjects.forEach(p=>p.cells.forEach((i,k)=>{const el=$('grid').children[i];if(!el)return;const r=blueprintRequirement(p.id,k),w=p.filled[k];el.classList.add('blueprint-cell');if(w)el.classList.add('blueprint-filled');
-  el.innerHTML='<div class="bp-board-art '+(w?'':'bp-ghost')+'">'+(w?hex(w.c,bands(w),'',w.t,w):hex(r.c,C[r.tier],'',r.tier))+'</div><small class="bp-board-need">'+(w?'✓ 已放入':'≥'+NM[r.tier]+' '+WN[r.c])+'</small><span class="bp-board-index">'+(k+1)+'</span>';
+  el.innerHTML='<div class="bp-board-art '+(w?'':'bp-ghost')+'">'+(w?hex(w.c,bands(w),'',w.t,w):hex(r.c,C[r.tier],'',r.tier))+'</div><small class="bp-board-need">'+(w?'✓ 已放入':NM[r.tier]+'級 '+WN[r.c])+'</small><span class="bp-board-index">'+(k+1)+'</span>';
  }));
 }
 function fillBlueprint(i,w,clear){
  const target=blueprintSlotAt(i);if(!target)return false;const {project:p,slot:k}=target,r=blueprintRequirement(p.id,k);
  if(p.filled[k]){toast('這格原料已放入');render();return false;}
- if(!blueprintAccepts(p.id,k,w)){toast('無法放入：此格需要 ≥'+NM[r.tier]+'級'+WN[r.c]);say('無法放入，請依暗色圖樣的種類與階級放置普通武器。');render();return false;}
+ if(!blueprintAccepts(p.id,k,w)){toast('無法放入：此格只接受'+NM[r.tier]+'級'+WN[r.c]);say('無法放入，原料種類與階級都必須完全符合，更高階也不能替代。');render();return false;}
  const value=JSON.parse(JSON.stringify(w));clear();p.filled[k]=value;
  if(p.filled.every(Boolean)){
   const result=legendaryWeapon(p.id,p.filled);legendProjects=legendProjects.filter(x=>x!==p);g[i]=result;
@@ -2521,7 +2531,7 @@ function fillBlueprint(i,w,clear){
 }
 function openBlueprintProject(uid){
  const p=legendProjects.find(x=>x.uid===uid);if(!p)return;blueprintProjectId=uid;$('blueprintProjectTitle').textContent=LEGENDS[p.id].name+'・進行中';
- $('blueprintProjectInfo').innerHTML='<p>已投入 '+p.filled.filter(Boolean).length+' / '+p.cells.length+' 把武器</p><div class="bp-requirements">'+p.filled.map((w,k)=>{const r=blueprintRequirement(p.id,k);return '<div><b>'+(k+1)+'</b>'+hex(r.c,C[r.tier],'',r.tier)+'<span>'+(w?'✓ '+itemName(w):'等待 ≥'+NM[r.tier]+'級'+WN[r.c])+'</span></div>';}).join('')+'</div><p class="exp-note">撤回後，藍圖及已投入的武器全部退回道具箱。</p>';
+ $('blueprintProjectInfo').innerHTML='<p>已投入 '+p.filled.filter(Boolean).length+' / '+p.cells.length+' 把武器</p><div class="bp-requirements">'+p.filled.map((w,k)=>{const r=blueprintRequirement(p.id,k);return '<div><b>'+(k+1)+'</b>'+hex(r.c,C[r.tier],'',r.tier)+'<span>'+(w?'✓ '+itemName(w):'等待 '+NM[r.tier]+'級'+WN[r.c])+'</span></div>';}).join('')+'</div><p class="exp-note">撤回後，藍圖及已投入的武器全部退回道具箱。</p>';
  $('blueprintProjectP').style.display='flex';
 }
 function cancelBlueprintProject(){
@@ -2530,7 +2540,7 @@ function cancelBlueprintProject(){
 }
 function restoreBlueprintProjects(raw){
  legendProjects=[];if(!Array.isArray(raw))return;const occupied=new Set();
- for(const p of raw){if(!p||!validLegendId(p.id))continue;const cells=blueprintFootprint(p.id,p.rot||0,p.origin),filled=Array.isArray(p.filled)?p.filled:[];
+ for(const p of raw){if(!p||!validLegendId(p.id))continue;const cells=blueprintFootprint(p.id,p.rot||0,p.origin),filled=Array.isArray(p.filled)?p.filled.map((w,k)=>{if(w&&k<cells.length&&!blueprintAccepts(p.id,k,w)){bag.push(w);return null;}return w;}):[];
   const good=Number.isInteger(p.origin)&&cells.every(i=>i>=0&&!g[i]&&!occupied.has(i))&&filled.length===cells.length&&filled.every((w,k)=>!w||blueprintAccepts(p.id,k,w))&&!filled.every(Boolean);
   if(!good){bag.push(...filled.filter(Boolean));if(!bag.some(x=>x.k==='bp'&&x.id===p.id))bag.push({k:'bp',id:p.id,rot:0});continue;}
   const project={uid:'bp-'+Date.now()+'-'+(++blueprintSequence),id:p.id,rot:((p.rot||0)%4+4)%4,origin:p.origin,cells,filled};legendProjects.push(project);cells.forEach(i=>occupied.add(i));
@@ -2540,6 +2550,7 @@ function blueprintDragPreview(e){
  const cell=at(e.clientX,e.clientY,'.c');if(!cell){showPrediction('拖曳整張藍圖到棋盤','需要相連的空格區域，可先在藍圖預覽旋轉。');return;}
  const origin=+cell.dataset.i,r=blueprintPlacement(hand.id,hand.rot||0,origin),shape=blueprintShape(hand.id,hand.rot||0),rect=cell.getBoundingClientRect(),gap=parseFloat(getComputedStyle($('grid')).columnGap)||4;
  drag.gh.classList.add('blueprint-drag');drag.gh.innerHTML=blueprintShapeHTML(hand.id,hand.rot||0);drag.gh.style.width=(rect.width*shape.w+gap*(shape.w-1))+'px';drag.gh.style.height=(rect.height*shape.h+gap*(shape.h-1))+'px';drag.gh.style.left=rect.left+'px';drag.gh.style.top=rect.top+'px';
+ drag.gh.style.setProperty('--bp-tile-size',rect.width+'px');drag.gh.style.setProperty('--bp-grid-gap',gap+'px');
  r.cells.filter(i=>i>=0).forEach(i=>markPrediction(i,r.why?'pv-bad':'pv-target'));showPrediction(r.why||'放開部署 '+LEGENDS[hand.id].name,r.why||'依黃色格的暗色圖樣投入武器，最後一件的位置產生成品。',!!r.why);
 }
 function autumnLeafArt(){return '<svg viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true"><path fill="#70432b" d="M14 2h4v7h3V6h5v7h4v5h-5v4h-6v6h-3v3h-3v-5H8v-4H3v-5H1v-5h6V7h4v4h3z"/><path fill="#d97835" d="M15 5h2v8h5v-4h2v6h4v2h-6v4h-5v6h-2v-3h-5v-4H5v-4H3v-2h6v-4h1v5h5z"/><path fill="#eeaa4e" d="M15 6h2v9h6v2h-6v7h-2v-7H9v-2h6zM6 16h3v2H6z"/><path fill="#9d4c2c" d="M16 17h2v8h-2zM10 18h4v2h-4zM20 18h4v2h-4z"/><path fill="#f4c672" d="M15 7h1v8h-1z"/></svg>';}
