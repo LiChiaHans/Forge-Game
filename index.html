@@ -1928,7 +1928,7 @@ const materialPrice=w=>{
 const materialGain=w=>materialPrice(w)-price(w.t,w.c);
 const materialNote=w=>"材料基價 "+materialPrice(w)+" 金幣"
   +(materialGain(w)>0?"（混材 +"+materialGain(w)+"）":"");
-const wp=w=>Math.round((isLegend(w)?Math.max(0,Math.round(w.legendPrice||0)):Math.round(materialPrice(w)*(1+(w.b||0))))*(validElement(w.element)?1.2:1));
+const wp=w=>Math.round((isUltimate(w)?ultimateSaleQuote(w):isLegend(w)?Math.max(0,Math.round(w.legendPrice||0)):Math.round(materialPrice(w)*(1+(w.b||0))))*(validElement(w.element)?1.2:1));
 const recipe=c=>COMBO[c].split("").map(x=>TY[x]).join("");
 const oPrice=o=>o.c===null?PR[o.t]:Math.round(price(o.t,o.c)*1.3);
 const salePrice=(w,o)=>Math.round(
@@ -3056,6 +3056,11 @@ function ultimateSkill(w){return isUltimate(w)?ULTIMATES[w.legendId-10].skill:nu
 function legendKind(id){return id>=10?'終極':'傳說';}
 function requirementName(r){return r.legendId!==undefined?LEGENDS[r.legendId].name:NM[r.tier]+'級'+WN[r.c];}
 function requirementArt(r){return r.legendId!==undefined?legendWeaponSVG(r.legendId):hex(r.c,C[r.tier],'',r.tier);}
+function ultimateSaleQuote(w){
+ const l=LEGENDS[w.legendId],ingredients=Array.isArray(w.legendIngredients)&&w.legendIngredients.length===l.recipe.length?w.legendIngredients:l.recipe.map(id=>baseLegendWeapon(id));
+ return Math.ceil(ingredients.reduce((sum,x)=>sum+wp(x),0)*l.price);
+}
+function firstUltimateReward(id){return id>=10&&!hasLegendCollection(id)?(LEGENDS[id].recipe.length===2?2500:4500):0;}
 function ultimateWeapon(id,ingredients){
  const u=LEGENDS[id],values=ingredients.map(weaponStats),three=ingredients.length===3,core={};
  // Two/three legends contribute every stat. Floors keep early copper recipes useful in NG+.
@@ -3064,7 +3069,7 @@ function ultimateWeapon(id,ingredients){
  if(u.c===3||u.c===6)core.spd=Math.round(core.spd*1.2);
  else if(u.c===2)core.def=Math.round(core.def*1.2);
  else core.atk=Math.round(core.atk*1.2);
- return {k:'w',c:u.c,t:4,cs:[4,4,4],legendId:id,legendCore:core,legendPrice:Math.max(three?18000:9000,Math.ceil(ingredients.reduce((n,w)=>n+wp(w),0)*u.price)),legendIngredients:JSON.parse(JSON.stringify(ingredients)),m:ingredients.reduce((n,w)=>n+(w.m||0),0)+u.magic,dts:ingredients.flatMap(w=>w.dts||[]).sort((a,b)=>b-a).slice(0,3),b:0,statVersion:2};
+ return {k:'w',c:u.c,t:4,cs:[4,4,4],legendId:id,legendCore:core,legendPrice:Math.ceil(ingredients.reduce((n,w)=>n+wp(w),0)*u.price),legendIngredients:JSON.parse(JSON.stringify(ingredients)),m:ingredients.reduce((n,w)=>n+(w.m||0),0)+u.magic,dts:ingredients.flatMap(w=>w.dts||[]).sort((a,b)=>b-a).slice(0,3),b:0,statVersion:2};
 }
 function ultimateSkillHTML(w){const skill=ultimateSkill(w);return skill?'<section class="ultimate-skill"><b>✦ 主動技能 · '+skill.name+'</b><p>'+skill.desc+'</p><small>每場限一次 · 技能傷害無視防禦，套用屬性相剋</small></section>':'';}
 function ultimatePixelArt(id){
@@ -3151,7 +3156,7 @@ function openLegendBlueprint(id,readOnly=false){
 function renderBlueprintPreview(){
  const id=blueprintInspectId,l=LEGENDS[id];$('legendBlueprintTitle').textContent=l.name+'・'+legendKind(id)+'藍圖';$('legendBlueprintArt').innerHTML=blueprintShapeHTML(id,blueprintRotation);
  $('legendBlueprintState').textContent=blueprintReadOnly?'首頁圖鑑僅供欣賞；進入遊戲後，可從武器箱的藍圖收藏使用藍圖。':hasLegendBlueprint(id)?'將藍圖移到手持欄，再拖曳到棋盤放置。':'第 '+(id+1)+' 關「'+EXPEDITIONS[id].name+'」首次勝利取得';
- const sample=baseLegendWeapon(id);$('legendBlueprintStats').innerHTML='<p class="exp-note">'+legendKind(id)+'武器基礎能力 · 未附魔</p>'+statsHTML(sample)+ultimateSkillHTML(sample)+ultimateArtHTML(id);
+ const sample=baseLegendWeapon(id);$('legendBlueprintStats').innerHTML='<p class="exp-note">'+legendKind(id)+'武器基礎能力 · 未附魔</p>'+statsHTML(sample)+ultimateSkillHTML(sample)+ultimateArtHTML(id)+(id>=10?'<p class="exp-note">售價為原料合計的 '+(LEGENDS[id].price*100)+'%。'+(firstUltimateReward(id)?'本局首次打造另得 '+firstUltimateReward(id)+' 金幣（不計分）。':'本局首次打造獎金已領取。')+'</p>':'');
  $('legendBlueprintRecipe').innerHTML='<div class="bp-requirements">'+l.recipe.map((c,k)=>{const r=blueprintRequirement(id,k);return '<div><b>'+(k+1)+'</b>'+requirementArt(r)+'<span>'+requirementName(r)+'</span></div>';}).join('')+'</div><p class="exp-note">'+(id>=10?'每格只接受上方指定名稱的一周目傳說武器；普通武器、其他傳說或終極武器都不能替代。':'每格需要指定種類與固定階級的普通武器，更高或更低階都不能放入。')+'原料會消耗，最後一件放入的位置產生成品。</p><p class="exp-note">'+l.trait+' 完成後藍圖回到收藏，可重複使用。點擊黃色格可撤回藍圖與已投入原料。</p>';
  const active=legendProjects.some(p=>p.id===id);$('legendBlueprintForge').hidden=blueprintReadOnly;$('legendBlueprintForge').disabled=!hasLegendBlueprint(id)||active;$('legendBlueprintForge').textContent=active?'這張藍圖已放在棋盤':'確認放置 · 移到手持欄';
 }
@@ -3196,7 +3201,7 @@ function fillBlueprint(i,w,clear){
  const value=JSON.parse(JSON.stringify(w));clear();p.filled[k]=value;
  if(p.filled.every(Boolean)){
   const result=applyWeaponElement(legendaryWeapon(p.id,p.filled),i);legendProjects=legendProjects.filter(x=>x!==p);g[i]=result;
-  p.cells.forEach(j=>{heat[j]=hotSteps();justHeated.add(j)});recordLegendForge(p.id);
+  p.cells.forEach(j=>{heat[j]=hotSteps();justHeated.add(j)});const debutReward=firstUltimateReward(p.id);recordLegendForge(p.id);if(debutReward){coins+=debutReward;toast("首次打造獎金 +"+debutReward+" 金幣（不計分）");}
   if(!testRun){legendBlueprints.add(p.id);persistLegendSets();rememberWeapon(result);}
   if(rankOf(result)>rankOf(best[result.c]))best[result.c]=JSON.parse(JSON.stringify(result));qOnForgeStats(result);grantBlueprintItem(p.id);burnLeaves();saveHi();
   say('🌟 '+LEGENDS[p.id].name+' 已在最後放入的位置鍛造完成！藍圖已回到藍圖收藏。');
