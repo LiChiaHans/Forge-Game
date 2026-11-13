@@ -911,6 +911,14 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
 @keyframes coast-glitter{0%,100%{opacity:.12}35%{opacity:1}65%{opacity:.3}}
 @media(prefers-reduced-motion:reduce){.coast-wave,.coast-glitter,.ice-arch-glint{animation:none}}
 </style>
+<style>#leaderboardP,#leaderboardDetailP{z-index:75}#leaderboardP .hp,#leaderboardDetailP .hp{max-width:560px}
+.leaderboard-panel h2{color:#efd18b}#leaderboardIdentity{padding:10px;border:1px solid #8b825d;border-radius:7px;color:#eddbac;background:#2c3b46;font-size:15px}
+#leaderboardTotal{color:#b3c2ca;font-size:13px}#leaderboardStatus{min-height:42px;color:#d9c79c;font-size:14px;line-height:1.5}#leaderboardRegisterForm{font-size:14px;line-height:1.6;padding:10px;background:#24333f;border-radius:8px}#leaderboardRegisterForm p,#leaderboardKeyBox p{font-size:12px;color:#b6c4ca}
+.lb-form-row{display:flex;gap:7px;margin:8px 0}.lb-form-row input,#leaderboardKey{min-width:0;width:100%;border:1px solid #8a8a71;border-radius:5px;padding:10px;color:#fff0c5;background:#142331;font-size:16px}.lb-form-row button{flex:none;font-size:14px;padding:9px}.lb-actions{display:flex;flex-wrap:wrap;gap:6px}.lb-actions button{font-size:13px;padding:9px}.lb-refresh{font-size:13px;padding:8px 12px;margin-bottom:10px}#leaderboardKeyBox{margin:10px 0;padding:10px;border:1px solid #8b825d}#leaderboardKey{font-family:monospace;font-size:12px}
+.leaderboard-row{display:flex;align-items:center;gap:9px;width:100%;text-align:left;margin:6px 0;padding:10px 8px;min-height:74px;border:1px solid #536778;background:#263542;border-radius:8px;color:#f1e5c6}.leaderboard-row.is-me{border-color:#e7ca7c;background:#3c403e}.lb-rank{width:25px;text-align:center;font-size:18px}.lb-avatar{display:block;width:44px;height:44px;border:2px solid #a3976d;flex:none;background:#293440}.lb-avatar svg{width:100%;height:100%;image-rendering:pixelated}.lb-name{flex:1;min-width:0;font-size:16px;overflow-wrap:anywhere}.lb-name small{display:block;font-size:11px;color:#bac8cf;margin-top:5px}.leaderboard-row strong{font-size:17px;color:#f4d486;white-space:nowrap}.leaderboard-row strong small{display:block;text-align:right;font-size:11px;font-weight:400;color:#bbc4b9}.lb-empty{text-align:center;padding:32px 12px;color:#e4ce97}.lb-empty p{font-size:13px;color:#a9b9c2}#leaderboardDetailProfile{display:flex;align-items:center;gap:12px;font-size:13px}#leaderboardDetailProfile strong{font-size:24px;color:#f3d48a}.lb-detail-avatar{width:70px;height:70px;flex:none}.lb-detail-avatar svg{width:100%;height:100%}#leaderboardDetailWeapons{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.lb-weapon{padding:5px;min-width:0;display:flex;flex-direction:column;align-items:center;gap:5px;justify-content:center}.lb-weapon .hxo{width:100%;height:auto;aspect-ratio:1}.lb-weapon small{font-size:10px;line-height:1.35}.lb-unknown{font-size:35px;opacity:.25}.lb-weapon[disabled]{opacity:.35}#leaderboardDetailSkills{font-size:13px;line-height:1.7}
+#leaderboardRegisterForm[hidden],#leaderboardAccountActions[hidden],#leaderboardKeyBox[hidden],#leaderboardLocalOnly[hidden],#leaderboardSwitch[hidden]{display:none!important}
+#onlineNameStatus{font-size:13px;line-height:1.5;min-height:20px;color:#e7c98e;max-width:350px}#onlineNameOffline{font-size:13px;margin-top:8px}#onlineNameOffline[hidden]{display:none!important}
+</style>
 </head>
 <body>
 <div id="portraitGuard" hidden role="dialog" aria-modal="true" aria-hidden="true" aria-label="請直向遊玩"><svg viewBox="0 0 40 52" aria-hidden="true" shape-rendering="crispEdges"><path fill="#0c1726" d="M7 0h26v3h3v46h-3v3H7v-3H4V3h3z"/><path fill="#b8a577" d="M8 3h24v46H8z"/><path fill="#293e51" d="M10 8h20v34H10z"/><path fill="#e8d696" d="M16 4h8v2h-8zM17 45h6v2h-6z"/><path fill="#84b6b0" d="M19 14h3v16h-3zM13 21h3v3h-3zM16 18h3v3h-3zM22 18h3v3h-3zM25 21h3v3h-3z"/></svg><b>請直向遊玩</b><p>將手機轉回直向<br>即可繼續遊戲</p></div>
@@ -982,6 +990,13 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
 <div id="greenhouseP" class="exp-overlay"><div class="hp greenhouse-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('greenhouseP')">×</button><h2>🌿 溫室</h2><p class="greenhouse-intro">種下元素之花，三天後收成附魔精華。</p><div id="greenhouseSeeds"></div><div id="greenhouseBeds" class="greenhouse-beds"></div><p id="greenhouseDetail"></p></div></div>
 <div id="seedP" class="exp-overlay"><div class="hp seed-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('seedP')">×</button><h2 id="seedTitle">選擇花種</h2><p id="seedCoins"></p><div id="seedChoices"></div><p class="exp-note">庫存種子免費播種；沒有庫存時購買一顆並立即播種。播種當天為種子，第四天開花。</p></div></div>
 
+<div id="leaderboardP" class="exp-overlay"><div class="hp leaderboard-panel"><button class="modal-x" aria-label="關閉視窗" onclick="onlineRequestVersion++;closeP('leaderboardP')">×</button><h2>🏆 全球排行榜</h2><p id="leaderboardTotal"></p><p id="leaderboardIdentity"></p><p id="leaderboardLocalOnly" hidden>教學與後台測試不會上傳成績。</p>
+ <section id="leaderboardRegisterForm"><label for="leaderboardName">玩家名稱（2～16 個字，全站唯一）</label><div class="lb-form-row"><input id="leaderboardName" maxlength="32" autocomplete="nickname" placeholder="輸入你的排行榜名稱"><button id="leaderboardRegister" class="pri" onclick="registerLeaderboardPlayer()">建立玩家</button></div><p>名稱、頭像與最高紀錄會公開在排行榜。</p><details><summary>已有玩家識別碼？取回原本身份</summary><div class="lb-form-row"><input id="leaderboardRestoreKey" type="password" autocomplete="off" placeholder="貼上玩家識別碼"><button id="leaderboardRestore" onclick="restoreLeaderboardPlayer()">取回</button></div></details></section>
+ <div id="leaderboardAccountActions" class="lb-actions" hidden><button id="leaderboardSync" onclick="syncLeaderboardNow()">同步最高紀錄</button><button onclick="$('leaderboardKeyBox').hidden=!$('leaderboardKeyBox').hidden;$('leaderboardKey').value=onlinePlayer.key">玩家識別碼</button><button id="leaderboardSwitch" onclick="switchLeaderboardPlayer()">切換玩家</button></div>
+ <div id="leaderboardKeyBox" hidden><p>請自行保管；這是取回身份的憑證，勿分享給其他玩家。</p><input id="leaderboardKey" readonly aria-label="玩家識別碼" onclick="this.select()"></div><p id="leaderboardStatus" role="status"></p><div class="lb-actions"><button class="lb-refresh" onclick="openLeaderboard()">↻ 重新整理</button><button onclick="closeP('leaderboardP');openRec()">個人歷史紀錄</button></div><div id="leaderboardList"></div>
+</div></div>
+<div id="leaderboardDetailP" class="exp-overlay"><div class="hp leaderboard-detail"><button class="modal-x" aria-label="關閉視窗" onclick="closeP('leaderboardDetailP')">×</button><h2 id="leaderboardDetailTitle"></h2><div id="leaderboardDetailProfile"></div><h3>最佳作品</h3><div id="leaderboardDetailWeapons"></div><p id="leaderboardDetailSkills"></p></div></div>
+
 <div id="title">
   <div class="tl" id="tl"></div>
   <h1>Forge Master</h1>
@@ -993,7 +1008,7 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
   
   
   <button id="homeAlbum" onclick="openWeaponAlbum()">📖 武器圖鑑</button>
-  <button onclick="openRec()">🏆 歷史紀錄</button>
+  <button id="homeLeaderboard" onclick="openLeaderboard()">🏆 全球排行榜</button>
   <button onclick="showHelp()">遊戲說明</button>
   <p class="cr">製作人: LiChia</p>
   <p class="cr" id="upd">更新日期: 2026/11/14</p>
@@ -1081,15 +1096,15 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
 </div></div>
 
 <div id="recP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('recP')">×</button>
-  <h2>🏆 歷史紀錄</h2><p id="recS"></p><div id="recC"></div>
+  <h2>🏆 歷史紀錄</h2><button onclick="openLeaderboard()">🏆 全球排行榜</button><p id="recS"></p><div id="recC"></div>
   <button id="recClr" style="width:100%;margin-top:12px;background:#c0392b">🗑 清除紀錄</button>
   <button  class="pri legacy-modal-close" style="width:100%;margin-top:8px" onclick="$('recP').style.display='none'" hidden>關閉</button>
 </div></div>
 
 <div id="nm"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('nm')">×</button>
   <h2>輸入玩家名稱</h2>
-  <input id="nmi" maxlength="12" placeholder="你的名字（最多 12 字）" autocomplete="off">
-  <button id="nmb" class="pri" style="width:100%;margin-top:10px">開始遊戲</button>
+  <input id="nmi" maxlength="32" placeholder="你的名字（2～16 字）" autocomplete="off">
+  <p id="onlineNameStatus" role="status"></p><button id="onlineNameOffline" hidden>離線遊玩，稍後再加入排行榜</button><button id="nmb" class="pri" style="width:100%;margin-top:10px">開始遊戲</button>
   <button hidden class="legacy-modal-close" id="nmq" style="width:100%;margin-top:8px">退出</button>
 </div></div>
 
@@ -1472,12 +1487,13 @@ const saveHi=()=>{
   if(sc<=0)return;
   const e={
     id:runId,name:playerName||"玩家",date:runDate,
-    score:sc,served:all,quests:qDone,best:JSON.parse(JSON.stringify(best))
+    score:sc,served:all,quests:qDone,best:JSON.parse(JSON.stringify(best)),day,earned,magic,expedition:expeditionState.cleared.length,avatar:normalizeAvatar(playerAvatar),skills:{...skills}
   };
   const i=recs.findIndex(r=>r.id===runId);
   if(i>=0)recs[i]=e;else recs.push(e);
   recs.sort((a,b)=>b.score-a.score);recs=recs.slice(0,5);
   try{gameStorage.setItem("forgeRecs",JSON.stringify(recs))}catch(e){}
+  try{queueOnlineRecord();}catch(e){}
 };
 
 
@@ -3856,21 +3872,21 @@ function confirmBox(t,p,yes,fn){
 }
 $("nmq").onclick=()=>{$("nm").style.display="none";$("title").style.display="flex"};
 function askName(cb){
-  $("nmi").value=playerName;$("nm").style.display="flex";
-  gameTimeout(()=>$("nmi").focus(),60);
-  const go=()=>{
-    const v=$("nmi").value.trim().slice(0,12);
-    if(!v){$("nmi").focus();return}
-    if(v.toLowerCase()==="test"){
-      $("nm").style.display="none";askPwd();return;
-    }
-    playerName=v;
-    try{gameStorage.setItem("forgeName",v)}catch(e){}
-    $("nm").style.display="none";cb();
-  };
-  $("nmb").onclick=go;
-  $("nmi").onkeydown=e=>{if(e.key==="Enter")go()};
+ const requestVersion=++onlineNameRequestVersion;
+ $('nmi').value=onlinePlayer?.name||playerName;$('nmi').readOnly=false;$('nm').style.display='flex';$('onlineNameOffline').hidden=true;
+ $('onlineNameStatus').textContent=onlinePlayer?'使用已保留的排行榜名稱。若要換另一位玩家，請到排行榜切換身份。':'名稱會在網路上檢查是否重複；名字、頭像與最高紀錄將公開在排行榜。';
+ gameTimeout(()=>$('nmi').focus(),60);let busy=false;
+ const finish=name=>{playerName=name;try{gameStorage.setItem('forgeName',name)}catch(e){}$('nm').style.display='none';cb();};
+ const go=async()=>{
+  if(busy)return;const v=$('nmi').value.trim();if(!v){$('nmi').focus();return;}
+  if(v.toLowerCase()==='test'){$('nm').style.display='none';askPwd();return;}
+  busy=true;$('nmb').disabled=true;$('onlineNameStatus').textContent='確認玩家名稱中…';
+  try{const p=await claimOnlineName(v);if(requestVersion===onlineNameRequestVersion&&$('nm').style.display==='flex')finish(p.name);}catch(e){if(requestVersion===onlineNameRequestVersion){$('onlineNameStatus').textContent=e.message;$('onlineNameOffline').hidden=!!e.status||String(e.message).includes('已被使用')||String(e.message).includes('目前使用');}}finally{busy=false;if(requestVersion===onlineNameRequestVersion)$('nmb').disabled=false;}
+ };
+ $('nmb').disabled=false;$('nmb').onclick=go;$('nmi').onkeydown=e=>{if(e.key==='Enter')go();};
+ $('onlineNameOffline').onclick=()=>{if(!busy)finish($('nmi').value.trim().slice(0,16));};
 }
+
 function beginNormal(){beginNewCharacter();}
 
 function persistSaves(){
@@ -4301,7 +4317,7 @@ function finishSandbox(){
 }
 
 function showHelp(){$("help").style.display="flex"}
-const townModalIds=['ultimateArtP','chestP','townLootP','townSkillP','weaponStatsP','expeditionP','legendBlueprintP','blueprintProjectP','avatarCreatorP','weaponAlbumP','weaponInspectP','seasonP','help','shopP','qP','colP','sk','bagP','rw','gcP','recP','nm','svP','pw','decorShopP','decorInventoryP','cityLayoutsP','cityLayoutPreviewP','cf','ov','greenhouseP','seedP'];
+const townModalIds=['leaderboardP','leaderboardDetailP','ultimateArtP','chestP','townLootP','townSkillP','weaponStatsP','expeditionP','legendBlueprintP','blueprintProjectP','avatarCreatorP','weaponAlbumP','weaponInspectP','seasonP','help','shopP','qP','colP','sk','bagP','rw','gcP','recP','nm','svP','pw','decorShopP','decorInventoryP','cityLayoutsP','cityLayoutPreviewP','cf','ov','greenhouseP','seedP'];
 function dismissModal(id){
  if(id==='avatarCreatorP')cancelAvatar();
  else if(id==='expeditionP')closeExpedition();
@@ -4406,6 +4422,112 @@ document.addEventListener("visibilitychange",()=>{
     t.appendChild(e);
   }
 })();
+const LEADERBOARD_ORIGIN='https://forge-master-leaderboard.adeption.chatgpt.site';
+const LB_PROFILE_KEY='forgeOnlinePlayerV1',LB_PENDING_KEY='forgeOnlinePendingV1';
+let onlinePlayer=null,onlineRows=[],onlineMine=null,onlineBusy=false,onlineTimer=null,onlineNameCallback=null;
+let onlineRequestVersion=0,onlineNameRequestVersion=0,onlineLastUpload=0;
+function readOnline(key,fallback){try{return JSON.parse(localStorage.getItem(key)||'null')||fallback;}catch{return fallback;}}
+function onlineNameKey(name){return String(name||'').normalize('NFKC').trim().replace(/\s+/g,' ').toLowerCase();}
+function onlineAllowed(){return !sandboxSession&&!testRun&&!booting&&day>0&&onlinePlayer&&onlineNameKey(playerName)===onlineNameKey(onlinePlayer.name);}
+function loadOnlinePlayer(){const p=readOnline(LB_PROFILE_KEY,null);onlinePlayer=p&&typeof p.id==='string'&&typeof p.name==='string'&&/^[a-f0-9]{64}$/.test(p.key)?p:null;}
+loadOnlinePlayer();
+async function onlineAPI(route,{method='GET',body,profile=onlinePlayer,signal}={}){
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+ const abort=()=>controller.abort();signal?.addEventListener('abort',abort,{once:true});
+ try{
+  const headers={};if(body!==undefined)headers['Content-Type']='application/json';if(profile?.key)headers.Authorization='Bearer '+profile.key;
+  const response=await fetch(LEADERBOARD_ORIGIN+'/api/'+route,{method,headers,body:body===undefined?undefined:JSON.stringify(body),signal:controller.signal,credentials:'omit',cache:'no-store',keepalive:route==='submit'});
+  const data=await response.json();if(!response.ok)throw Object.assign(new Error(data.error||'排行榜暫時無法使用'),{status:response.status});return data;
+ }catch(e){if(e.name==='AbortError')throw new Error('連線逾時，請確認網路後重試');throw e;}
+ finally{clearTimeout(timer);signal?.removeEventListener('abort',abort);}
+}
+function createOnlineKey(){if(!globalThis.crypto?.getRandomValues)throw new Error('此瀏覽器無法建立玩家識別碼');return Array.from(crypto.getRandomValues(new Uint8Array(32)),n=>n.toString(16).padStart(2,'0')).join('');}
+function storeOnlinePlayer(p,key){onlinePlayer={id:p.id,name:p.name,key};localStorage.setItem(LB_PROFILE_KEY,JSON.stringify(onlinePlayer));onlineMine=null;renderOnlineAccount();}
+async function claimOnlineName(name){
+ if(sandboxSession||testRun)throw new Error('後台與教學不使用排行榜身份');
+ if(onlinePlayer){if(onlineNameKey(name)!==onlineNameKey(onlinePlayer.name))throw new Error('目前使用「'+onlinePlayer.name+'」。若是另一位玩家，請先在排行榜選擇「切換玩家」。');return onlinePlayer;}
+ let draft=readOnline('forgeOnlineClaimV1',null);
+ if(draft&&onlineNameKey(draft.name)===onlineNameKey(name)){try{const own=await onlineAPI('me',{profile:{key:draft.key}});storeOnlinePlayer(own.player,draft.key);localStorage.removeItem('forgeOnlineClaimV1');return onlinePlayer;}catch(e){if(e.status!==401)throw e;}}
+ const checking=await onlineAPI('name-check?name='+encodeURIComponent(name),{profile:null});if(!checking.available)throw new Error('這個名稱已被使用，請換一個名稱；若是你本人，可用玩家識別碼取回。');
+ // Persist an unlisted claim key before the request so an interrupted response can be retried safely.
+ if(!draft||onlineNameKey(draft.name)!==onlineNameKey(checking.name)){draft={name:checking.name,key:createOnlineKey()};localStorage.setItem('forgeOnlineClaimV1',JSON.stringify(draft));}
+ const result=await onlineAPI('register',{method:'POST',body:{name:draft.name,ownerKey:draft.key},profile:null});storeOnlinePlayer(result.player,draft.key);localStorage.removeItem('forgeOnlineClaimV1');return onlinePlayer;
+}
+function onlineWeapon(w,c){if(!w)return null;const out={k:'w',c,t:w.t,m:w.m||0,b:w.b||0};for(const k of ['cs','parts','dts','element','legendId','legendCore','legendPrice'])if(w[k]!==undefined)out[k]=JSON.parse(JSON.stringify(w[k]));return out;}
+function captureOnlineRecord(){
+ if(!onlineAllowed()||score()<=0)return null;
+ return {mode:'normal',testRun:false,sandbox:false,runId:String(runId),score:score(),earned,magic,day,served:all,quests:qDone,expedition:expeditionState.cleared.length,avatar:normalizeAvatar(playerAvatar),weapons:best.map((w,c)=>onlineWeapon(w,c)),skills:{...skills}};
+}
+function historicalOnlineRecord(r){
+ if(!onlinePlayer||onlineNameKey(r.name)!==onlineNameKey(onlinePlayer.name)||!Number.isSafeInteger(r.score)||r.score<=0)return null;
+ const legacy=!Number.isSafeInteger(r.earned)||!Number.isSafeInteger(r.magic);
+ return {mode:'normal',testRun:false,sandbox:false,legacy,runId:String(r.id),score:r.score,earned:legacy?0:r.earned,magic:legacy?0:r.magic,day:legacy?0:r.day,served:r.served||0,quests:r.quests||0,expedition:r.expedition||0,avatar:normalizeAvatar(r.avatar||AVATAR_DEFAULT),weapons:Array.from({length:10},(_,c)=>onlineWeapon(r.best?.[c],c)),skills:r.skills||{}};
+}
+function queueOnlineRecord(immediate=false){
+ if(sandboxSession||testRun||booting||!onlinePlayer)return;
+ const record=[captureOnlineRecord(),...recs.map(historicalOnlineRecord)].filter(Boolean).sort((a,b)=>b.score-a.score)[0];if(!record)return;
+ const records=readOnline(LB_PENDING_KEY,{}),previous=records[onlinePlayer.id];if(onlineMine&&record.score<=onlineMine.score&&!previous)return;
+ if(!previous||record.score>previous.score){records[onlinePlayer.id]=record;localStorage.setItem(LB_PENDING_KEY,JSON.stringify(records));}
+ if(onlineTimer!==null)clearTimeout(onlineTimer);onlineTimer=setTimeout(()=>{onlineTimer=null;flushOnlineRecord(false);},immediate?0:Math.max(1800,15000-(Date.now()-onlineLastUpload)));
+}
+async function flushOnlineRecord(manual=false){
+ if(sandboxSession||testRun||!onlinePlayer||onlineBusy)return false;
+ const profile={...onlinePlayer},pending=readOnline(LB_PENDING_KEY,{})[profile.id];
+ if(!pending){if(manual)$('leaderboardStatus').textContent=onlineMine?'目前已是最高紀錄。':'還沒有可上傳的正式遊戲成績。';return false;}
+ onlineBusy=true;if(manual)$('leaderboardStatus').textContent='正在同步最高紀錄…';
+ try{
+  const result=await onlineAPI('submit',{method:'POST',body:pending,profile});
+  const records=readOnline(LB_PENDING_KEY,{});if(records[profile.id]?.score<=pending.score){delete records[profile.id];localStorage.setItem(LB_PENDING_KEY,JSON.stringify(records));}
+  if(onlinePlayer?.id===profile.id){onlineMine=result.best;if($('leaderboardP').style.display==='flex'){renderOnlineAccount();$('leaderboardStatus').textContent=result.improved?'最高紀錄已更新！':'已同步，保留原本較高的成績。';}}
+  onlineLastUpload=Date.now();return true;
+ }catch(e){if(manual)$('leaderboardStatus').textContent=e.message+'；紀錄已保留，連線後可重試。';return false;}
+ finally{onlineBusy=false;}
+}
+function renderOnlineAccount(){
+ const p=onlinePlayer;$('leaderboardIdentity').textContent=p?'玩家：'+p.name+' · '+(onlineMine?'目前第 '+onlineMine.rank+' 名，最高 '+onlineMine.score.toLocaleString()+' 分':'尚未上傳成績'):'建立唯一玩家名稱，即可加入排行榜。';
+ $('leaderboardRegisterForm').hidden=!!p;$('leaderboardAccountActions').hidden=!p;$('leaderboardKeyBox').hidden=true;
+ $('leaderboardSwitch').hidden=!p;$('leaderboardSync').disabled=!p||sandboxSession||testRun;
+ $('leaderboardLocalOnly').hidden=!(sandboxSession||testRun);
+}
+async function openLeaderboard(){
+ const version=++onlineRequestVersion;$('leaderboardP').style.display='flex';renderOnlineAccount();$('leaderboardStatus').textContent='讀取排行榜中…';$('leaderboardList').innerHTML='';
+ try{
+  const data=await onlineAPI('leaderboard',{profile:null});if(version!==onlineRequestVersion)return;onlineRows=data.entries;
+  $('leaderboardTotal').textContent='共 '+data.total+' 位玩家 · 顯示前 100 名';renderLeaderboardRows();
+  if(onlinePlayer&&!sandboxSession&&!testRun){try{const profileId=onlinePlayer.id,mine=await onlineAPI('me');if(version===onlineRequestVersion&&onlinePlayer?.id===profileId){onlineMine=mine.best;renderOnlineAccount();}}catch(e){if(version===onlineRequestVersion)$('leaderboardStatus').textContent=e.message;return;}}
+  if(version===onlineRequestVersion)$('leaderboardStatus').textContent='每位玩家只保留最高分，點擊紀錄可查看最佳武器。';
+ }catch(e){if(version===onlineRequestVersion)$('leaderboardStatus').textContent='無法讀取排行榜：'+e.message+'，請稍後重新整理。';}
+}
+function renderLeaderboardRows(){
+ $('leaderboardList').innerHTML=onlineRows.length?onlineRows.map((r,i)=>'<button class="leaderboard-row '+(r.playerId===onlinePlayer?.id?'is-me':'')+'" data-online-row="'+i+'"><b class="lb-rank">'+(r.rank<=3?['🥇','🥈','🥉'][r.rank-1]:r.rank)+'</b><span class="lb-avatar">'+avatarSVG(normalizeAvatar(r.avatar))+'</span><span class="lb-name">'+esc(r.name)+'<small>'+(r.day?'第 '+r.day+' 天 · 遠征 '+r.expedition+'/20':'舊版最高紀錄')+'</small></span><strong>'+r.score.toLocaleString()+'<small>分</small></strong></button>').join(''):'<div class="lb-empty">第一個傳奇故事，等待你來寫下。<p>目前還沒有上傳的紀錄。</p></div>';
+}
+function openLeaderboardRecord(index){
+ const r=onlineRows[index];if(!r)return;$('leaderboardDetailTitle').textContent='第 '+r.rank+' 名 · '+r.name;$('leaderboardDetailProfile').innerHTML='<span class="lb-detail-avatar">'+avatarSVG(normalizeAvatar(r.avatar))+'</span><div><strong>'+r.score.toLocaleString()+' 分</strong><p>'+(r.day?'第 '+r.day+' 天':'天數未記錄')+' · 服務 '+r.served+' 位客人 · 完成 '+r.quests+' 個任務</p><p>'+(r.day?'遠征 '+r.expedition+'/20':'舊版紀錄，未保存遠征與技能資訊')+' · '+new Date(r.updatedAt).toLocaleString('zh-TW')+'</p></div>';
+ $('leaderboardDetailWeapons').innerHTML=r.weapons.map((w,c)=>'<button class="lb-weapon" data-online-weapon="'+c+'" '+(!w?'disabled':'')+'>'+(w?hex(c,bands(w),'',w.t,w):'<span class="lb-unknown">?</span>')+'<small>'+esc(w?itemName(w):WN[c])+'</small></button>').join('');
+ $('leaderboardDetailSkills').textContent='技能：'+Object.keys(SK).filter(k=>r.skills[k]).map(k=>SK[k].n+' Lv'+r.skills[k]).join('、');$('leaderboardDetailP').dataset.row=String(index);$('leaderboardDetailP').style.display='flex';
+}
+async function registerLeaderboardPlayer(){
+ if(sandboxSession||testRun)return;$('leaderboardRegister').disabled=true;
+ try{await claimOnlineName($('leaderboardName').value);$('leaderboardStatus').textContent='玩家名稱已建立。請保管玩家識別碼，換手機時可用它取回身份。';$('leaderboardKeyBox').hidden=false;$('leaderboardKey').value=onlinePlayer.key;queueOnlineRecord(true);}
+ catch(e){$('leaderboardStatus').textContent=e.message;}finally{$('leaderboardRegister').disabled=false;}
+}
+async function restoreLeaderboardPlayer(){
+ if(sandboxSession||testRun)return;const key=$('leaderboardRestoreKey').value.trim().toLowerCase();if(!/^[a-f0-9]{64}$/.test(key)){$('leaderboardStatus').textContent='請貼上完整的玩家識別碼。';return;}
+ $('leaderboardRestore').disabled=true;try{const result=await onlineAPI('me',{profile:{key}});storeOnlinePlayer(result.player,key);onlineMine=result.best;$('leaderboardRestoreKey').value='';renderOnlineAccount();$('leaderboardStatus').textContent='已取回「'+onlinePlayer.name+'」的排行榜身份。';queueOnlineRecord(true);}catch(e){$('leaderboardStatus').textContent=e.message;}finally{$('leaderboardRestore').disabled=false;}
+}
+function switchLeaderboardPlayer(){
+ confirmBox('切換排行榜玩家','請先保管目前玩家的識別碼。切換後，雲端最高紀錄仍會保留；可以建立新玩家，或用識別碼取回原玩家。','切換玩家',()=>{onlinePlayer=null;onlineMine=null;localStorage.removeItem(LB_PROFILE_KEY);renderOnlineAccount();$('leaderboardName').value='';$('leaderboardStatus').textContent='請建立另一位玩家，或貼上識別碼取回身份。';});
+}
+async function syncLeaderboardNow(){queueOnlineRecord(false);if(await flushOnlineRecord(true)){await openLeaderboard();$('leaderboardStatus').textContent='最高紀錄已同步。';}}
+function installLeaderboard(){
+ $('leaderboardList').onclick=e=>{const b=e.target.closest('[data-online-row]');if(b)openLeaderboardRecord(+b.dataset.onlineRow);};
+ $('leaderboardDetailWeapons').onclick=e=>{const b=e.target.closest('[data-online-weapon]'),r=onlineRows[+$('leaderboardDetailP').dataset.row],w=r?.weapons[+b?.dataset.onlineWeapon];if(w)openCraftedWeapon(w,'排行榜 · '+r.name);};
+ addEventListener('online',()=>{if(!sandboxSession&&!testRun)flushOnlineRecord(false);});
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&onlineAllowed()){queueOnlineRecord(true);}});
+ setTimeout(()=>{if(onlinePlayer&&!sandboxSession&&!testRun)flushOnlineRecord(false);},1500);
+}
+
+installLeaderboard();
 installCityControls();importLegendProgress();start();fit();booting=false;render();installTownMotionObserver();installSeasonMusic();
 // Native orientation lock is best-effort; unsupported browsers retain the portrait canvas under a landscape guard.
 let portraitLockPending=false,portraitLockDone=false;
