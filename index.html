@@ -870,6 +870,21 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
 @media(prefers-reduced-motion:reduce){.decor-windmill,.sticker-love{animation:none}}
 
 #townFountain,#townFurniture,#townPets{display:none!important}
+/* All architect controls float over the map; the town header and map retain their normal dimensions. */
+.town-header-actions{gap:5px}#townArchitectBtn{width:36px;min-width:36px;height:36px;padding:4px;font-size:19px}#townArchitectBtn[aria-pressed=true]{border-color:#edce87;background:#5a6449;color:#ffdf97}
+#architectBar{position:absolute;top:calc(100% + 5px);right:8px;z-index:16;display:flex;align-items:center;gap:5px;margin:0;padding:4px;background:#20343bea;border:1px solid #b4a173;border-radius:5px;box-shadow:0 2px 5px #14232c55;max-width:calc(100% - 16px)}
+.architect-season-picker{display:flex;align-items:center;gap:2px}#architectBar button{font-size:12px;padding:5px 7px;min-width:0;min-height:30px;white-space:nowrap}#architectSeasonName{min-width:48px;text-align:center;font-size:13px;color:#f2dcaa;font-weight:700}#architectSeasonPrev,#architectSeasonNext{width:22px;padding:4px!important}
+#architectPlacementBar{left:auto;right:0;top:calc(100% + 4px);min-width:240px;max-width:calc(100vw - 25px)}
+#architectPanel{bottom:0;top:auto;max-height:32%;padding:9px 12px;border-radius:8px 8px 0 0}#architectPanel[data-dock=top]{bottom:auto;top:calc(var(--architect-map-top,110px) + 46px);border-top:0;border-bottom:2px solid #c5ac75;border-radius:0 0 8px 8px;box-shadow:0 4px 12px #15212c66}
+.architect-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.architect-panel-heading b{font-size:15px}#architectDeselect{padding:0;width:27px;height:27px;min-width:27px;font-size:20px;line-height:1;background:#2e4650;border:1px solid #8f9b80}
+.architect-scale-row{margin:7px 0;min-height:28px}.architect-scale-row label{min-width:30px}.architect-scale-row output{min-width:43px;text-align:right}.architect-transform-tools{gap:5px;margin-top:5px}.architect-transform-tools button{padding:6px 8px;font-size:12px;min-height:31px}
+.decor-inventory-toolbar{display:flex;gap:8px}.decor-inventory-toolbar button{flex:1;font-size:14px;padding:9px 6px}
+.city-layout-card{display:grid;grid-template-columns:minmax(0,1fr) 112px;gap:10px;align-items:start;padding:11px}.city-layout-card .city-layout-info{display:block;min-width:0}.city-layout-card b{font-size:15px;line-height:1.5}.city-layout-default{display:inline-block;margin-left:5px;padding:1px 5px;border:1px solid #b79f68;color:#efd08b;font-size:10px;vertical-align:middle}
+.city-layout-card .city-layout-author{display:flex;align-items:center;gap:6px;margin:7px 0}.city-layout-author .player-avatar{width:31px;height:31px;flex:none}.city-layout-author>span:last-child{font-size:12px;line-height:1.4;min-width:0;overflow-wrap:anywhere}.city-layout-author small{font-size:10px!important;margin:1px 0!important;color:#aebfae}
+.city-layout-card .city-layout-buttons{display:flex;flex-wrap:wrap;gap:6px}.city-layout-buttons button{font-size:12px;padding:7px 8px}.city-layout-thumbnail{width:100%;padding:4px!important;background:#122934!important;border:1px solid #718b79!important;display:flex;flex-direction:column;align-items:center;gap:4px;overflow:hidden}.city-layout-thumbnail img{width:100%;height:154px;object-fit:contain;image-rendering:pixelated;background:#203c45}.city-layout-thumbnail img:not([src]){visibility:hidden}.city-layout-thumbnail span{font-size:10px;color:#d6d8b4}
+.city-layout-preview{z-index:90}.city-layout-preview .hp{max-width:600px;background:#1b303a}.city-layout-preview h2{font-size:20px}.city-layout-preview p{font-size:12px;margin:5px 0 10px;color:#b8c9b6}.city-layout-preview img{display:block;width:100%;max-height:calc(var(--viewport-height,100dvh) - 125px);object-fit:contain;image-rendering:pixelated}
+@media(max-width:380px){.city-layout-card{grid-template-columns:minmax(0,1fr) 91px;gap:7px}.city-layout-thumbnail img{height:135px}.city-layout-card{padding:9px}.city-layout-card b{font-size:14px}.town-header-actions{gap:3px}#townArchitectBtn{width:32px;min-width:32px}.town-header-actions #sandboxNextDay{font-size:11px!important;padding:4px 5px!important}}
+
 </style>
 </head>
 <body>
@@ -901,10 +916,13 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
 </div>
 
 <div id="chestP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('chestP')">×</button><h2>📦 武器箱</h2><p id="chestInfo"></p><div id="chestItems"></div><button class="legend-chest-button" onclick="openLegendRecipes()">🌟 藍圖收藏</button><button  style="width:100%;margin-top:14px" onclick="closeP('chestP')" class="legacy-modal-close" hidden>關閉</button></div></div>
-<div id="townP"><header class="town-header"><div><span class="town-player-heading"><button id="townAvatar" class="player-avatar" onclick="openAvatarCreator('edit')" title="調整角色外觀" aria-label="調整角色外觀"></button><b>🏘 鍛造小鎮</b></span><span class="town-header-actions"><button id="sandboxNextDay" hidden onclick="nextSandboxDay()">下一天 ▶</button><button id="townMute" onclick="toggleMute()" aria-label="切換靜音">🔊</button><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></span></div><div id="townStats"></div><div id="townSeason"></div><div class="town-tools-row"><button id="townArchitectBtn">🏗 建築師</button><span id="sandboxTag" class="sandbox-tag"></span></div><div id="architectBar" hidden><div id="architectSeasons" class="city-season-tabs"></div><div class="architect-header-tools"><button id="architectInventoryTop">📦 收藏</button><button id="architectLayoutsTop">🖼 版型</button><button id="architectPanelToggle">收起工具 ▴</button></div><div id="architectPlacementBar" hidden><span id="architectPlacementHint" aria-live="polite"></span><button id="architectCancelTop">取消放置</button></div></div></header><div id="townMap"><div id="townScenery"></div><div id="townDecorBack"></div><div id="townDecorFront"></div><div id="townPlaza" aria-hidden="true"></div><div id="townFurniture" aria-hidden="true"></div><button id="townExpedition" onclick="openExpedition()" aria-label="城門遠征"><span class="town-sign">⚔ 遠征</span></button><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townGreenhouse" class="town-building" onclick="openP('greenhouseP')" aria-label="溫室"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><button id="townDecorShop" class="town-building" onclick="openDecorationShop()" aria-label="裝飾行"></button><div id="townFountain" aria-label="城鎮噴水池"></div><div id="townQueue"></div><div id="townPets"><button id="townPet-cat" class="town-pet" onclick="petLove('cat')" aria-label="摸摸小貓"></button><button id="townPet-dog" class="town-pet" onclick="petLove('dog')" aria-label="摸摸小狗"></button></div><div id="townBirds" aria-hidden="true"></div><button id="townChest" onclick="openTownChest()" hidden></button><div id="townWeather" aria-hidden="true"></div></div><section id="architectPanel" hidden><b id="architectSelected">尚未選取裝飾</b><p id="architectHint"></p><div class="architect-top-tools"><button id="architectInventory">📦 裝飾收藏</button><button id="architectLayouts">🖼 城鎮版型</button><button id="architectCancelPlace">取消放置</button></div><div id="architectActions" hidden><div class="architect-scale-row"><label for="architectScale">大小</label><input type="range" id="architectScale" min="30" max="200" step="5" value="100"><output id="architectScaleValue">100%</output></div><div class="architect-transform-tools"><button data-city-action="flip">水平翻轉</button><button data-city-action="flipY">上下翻轉</button><button data-city-action="rotate">旋轉 45°</button><button data-city-action="depth" id="architectDepth">移到後方</button><button data-city-action="roam" id="architectRoam">散步</button><button data-city-action="stow">📦 收起來</button></div></div></section></div>
+<div id="townP"><header class="town-header"><div><span class="town-player-heading"><button id="townAvatar" class="player-avatar" onclick="openAvatarCreator('edit')" title="調整角色外觀" aria-label="調整角色外觀"></button><b>🏘 鍛造小鎮</b></span><span class="town-header-actions"><button id="sandboxNextDay" hidden onclick="nextSandboxDay()">下一天 ▶</button><button id="townArchitectBtn" aria-label="開啟建築師" title="建築師" aria-pressed="false">🏗</button><button id="townMute" onclick="toggleMute()" aria-label="切換靜音">🔊</button><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></span></div><div id="townStats"></div><div id="townSeason"></div><span id="sandboxTag" hidden></span><div id="architectBar" hidden><div class="architect-season-picker"><button id="architectSeasonPrev" aria-label="上一個季節">◀</button><output id="architectSeasonName">春天</output><button id="architectSeasonNext" aria-label="下一個季節">▶</button></div><button id="architectInventoryTop">📦 收藏</button><button id="architectLayoutsTop">🖼 版型</button><div id="architectPlacementBar" hidden><span id="architectPlacementHint" aria-live="polite"></span><button id="architectCancelTop">取消放置</button></div></div>
+</header><div id="townMap"><div id="townScenery"></div><div id="townDecorBack"></div><div id="townDecorFront"></div><div id="townPlaza" aria-hidden="true"></div><div id="townFurniture" aria-hidden="true"></div><button id="townExpedition" onclick="openExpedition()" aria-label="城門遠征"><span class="town-sign">⚔ 遠征</span></button><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townGreenhouse" class="town-building" onclick="openP('greenhouseP')" aria-label="溫室"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><button id="townDecorShop" class="town-building" onclick="openDecorationShop()" aria-label="裝飾行"></button><div id="townFountain" aria-label="城鎮噴水池"></div><div id="townQueue"></div><div id="townPets"><button id="townPet-cat" class="town-pet" onclick="petLove('cat')" aria-label="摸摸小貓"></button><button id="townPet-dog" class="town-pet" onclick="petLove('dog')" aria-label="摸摸小狗"></button></div><div id="townBirds" aria-hidden="true"></div><button id="townChest" onclick="openTownChest()" hidden></button><div id="townWeather" aria-hidden="true"></div></div><section id="architectPanel" hidden><div class="architect-panel-heading"><b id="architectSelected"></b><button id="architectDeselect" aria-label="關閉裝飾工具">×</button></div><div id="architectActions"><div class="architect-scale-row"><label for="architectScale">大小</label><input type="range" id="architectScale" min="30" max="200" step="5" value="100"><output id="architectScaleValue">100%</output></div><div class="architect-scale-row"><label for="architectRotation">旋轉</label><input type="range" id="architectRotation" min="0" max="360" step="1" value="0"><output id="architectRotationValue">0°</output></div><div class="architect-transform-tools"><button data-city-action="flip">水平翻轉</button><button data-city-action="flipY">上下翻轉</button><button data-city-action="depth" id="architectDepth">移到後方</button><button data-city-action="roam" id="architectRoam">散步</button><button data-city-action="stow">📦 收起來</button></div></div></section></div>
 <div id="decorShopP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('decorShopP')">×</button><h2>🎨 裝飾行</h2><p id="decorShopSummary"></p><div id="decorShopTabs" class="city-season-tabs"></div><p id="decorShopNotice" class="city-note"></p><div id="decorShopGrid" class="decor-grid"></div></div></div>
-<div id="decorInventoryP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('decorInventoryP')">×</button><h2 id="decorInventoryTitle">裝飾收藏</h2><p class="city-note">收起的裝飾會留在收藏；同一件四季通用裝飾可用於各季的配置。</p><button id="decorInventoryShop">🎨 前往裝飾行</button><div id="decorInventoryGrid" class="decor-grid"></div></div></div>
-<div id="cityLayoutsP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('cityLayoutsP')">×</button><h2 id="cityLayoutsTitle">城鎮版型</h2><p class="city-note">版型庫可供不同玩家參考套用；只有擁有足夠裝飾時才能套用，不會改動其他玩家的擺設或收藏。</p><div class="city-layout-save"><input id="cityLayoutName" maxlength="28" aria-label="城鎮版型名稱" placeholder="幫版型取個名字"><button id="cityLayoutSave">儲存目前版型</button></div><div id="cityLayoutsList"></div></div></div>
+<div id="decorInventoryP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('decorInventoryP')">×</button><h2 id="decorInventoryTitle">裝飾收藏</h2><p class="city-note">收起的裝飾會留在收藏；同一件四季通用裝飾可用於各季的配置。</p><div class="decor-inventory-toolbar"><button id="decorInventoryShop">🎨 前往裝飾行</button><button id="decorReturnAll">📦 全部收回</button></div><div id="decorInventoryGrid" class="decor-grid"></div></div></div>
+<div id="cityLayoutPreviewP" class="city-modal city-layout-preview"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('cityLayoutPreviewP')">×</button><h2 id="cityLayoutPreviewTitle">城鎮版型預覽</h2><p id="cityLayoutPreviewMeta"></p><img id="cityLayoutPreviewImage" alt="城鎮截圖"></div></div>
+
+<div id="cityLayoutsP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('cityLayoutsP')">×</button><h2 id="cityLayoutsTitle">城鎮版型</h2><p class="city-note">版型包含城鎮截圖與作者資訊。缺少的裝飾可付費補齊並套用；預設版型可隨時還原原始佈置。</p><div class="city-layout-save"><input id="cityLayoutName" maxlength="28" aria-label="城鎮版型名稱" placeholder="幫版型取個名字"><button id="cityLayoutSave">儲存目前版型</button></div><div id="cityLayoutsList"></div></div></div>
 
 <div id="townLootP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('townLootP')">×</button><h2>每日寶箱</h2><div id="townLootArt"></div><h3 id="townLootName"></h3><p id="townLootRemaining" aria-live="polite"></p><div class="town-dialog-actions"><button  id="townLootClose" onclick="if(!chestOpening)closeP('townLootP')" class="legacy-modal-close" hidden>稍後再開</button><button id="townLootOpen" class="pri" onclick="claimTownChest()">開啟寶箱</button></div></div></div>
 <div id="townSkillP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('townSkillP')">×</button><h2>⭐ 還有技能點可以使用</h2><p id="townSkillCount"></p><div class="town-dialog-actions"><button onclick="startTownForge()">仍要進入</button><button class="pri" onclick="closeP('townSkillP');openSkills(false)">前往訓練所</button></div></div></div>
@@ -3887,11 +3905,11 @@ function freshCity(){
 function cleanCityItem(raw){
  if(!raw||!DECOR_BY_ID.has(raw.id))return null;
  const finite=(v,f)=>Number.isFinite(+v)?+v:f,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
- return {uid:typeof raw.uid==='string'&&/^[\w-]{1,60}$/.test(raw.uid)?raw.uid:'d-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),id:raw.id,x:clamp(finite(raw.x,50),0,100),y:clamp(finite(raw.y,70),5,100),s:clamp(finite(raw.s,1),.3,2),fx:!!raw.fx,fy:!!raw.fy,r:((Math.round(finite(raw.r,0)/45)*45)%360+360)%360,z:raw.z===0?0:1,roam:['cat','dog'].includes(raw.id)&&!!raw.roam};
+ return {uid:typeof raw.uid==='string'&&/^[\w-]{1,60}$/.test(raw.uid)?raw.uid:'d-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),id:raw.id,x:clamp(finite(raw.x,50),0,100),y:clamp(finite(raw.y,70),5,100),s:clamp(finite(raw.s,1),.3,2),fx:!!raw.fx,fy:!!raw.fy,r:finite(raw.r,0)===360?360:((finite(raw.r,0)%360)+360)%360,z:raw.z===0?0:1,roam:['cat','dog'].includes(raw.id)&&!!raw.roam};
 }
-function resetCity(){stopCityAnimals();cityState=freshCity();cityRevision++;architect={active:false,season:0,selected:null,placing:null,drag:null};closeCityPanels();}
+function resetCity(){cancelCityPresetSave();stopCityAnimals();cityState=freshCity();cityRevision++;architect={active:false,season:0,selected:null,placing:null,drag:null};closeCityPanels();}
 function restoreCity(raw){
- stopCityAnimals();architect={active:false,season:seasonIndex(),selected:null,placing:null,drag:null};closeCityPanels();
+ cancelCityPresetSave();stopCityAnimals();architect={active:false,season:seasonIndex(),selected:null,placing:null,drag:null};closeCityPanels();
  const base=freshCity();if(!raw||raw.version!==1){cityState=base;cityRevision++;return;}
  const owned={};for(const d of DECOR_CATALOG)owned[d.id]=Math.max(0,Math.min(9999,Math.floor(Number(raw.owned?.[d.id])||0)));
  const layouts={};for(const key of DECOR_SEASONS){const used={},uids=new Set();layouts[key]=(Array.isArray(raw.layouts?.[key])?raw.layouts[key]:base.layouts[key]).slice(0,100).map(cleanCityItem).filter(i=>{if(!i||uids.has(i.uid)||(used[i.id]||0)>=(owned[i.id]||0))return false;uids.add(i.uid);used[i.id]=(used[i.id]||0)+1;return true;});}
@@ -3902,7 +3920,7 @@ function townVisualSeason(){return architect.active?architect.season:seasonIndex
 function cityLayout(si=townVisualSeason()){if(!cityState)cityState=freshCity();return cityState.layouts[DECOR_SEASONS[si]];}
 function cityAvailable(id,si=townVisualSeason()){return Math.max(0,(cityState?.owned[id]||0)-cityLayout(si).filter(i=>i.id===id).length);}
 function commitCity(){cityRevision++;petNavigation=null;renderCityDecor();renderArchitect();saveNow();}
-function closeCityPanels(){for(const id of ['decorShopP','decorInventoryP','cityLayoutsP'])$(id).style.display='none';$('architectPanel').hidden=true;}
+function closeCityPanels(){for(const id of ['decorShopP','decorInventoryP','cityLayoutsP','cityLayoutPreviewP'])$(id).style.display='none';$('architectPanel').hidden=true;}
 function stickerTransform(i){return 'rotate('+i.r+'deg) scale('+(i.fx?-i.s:i.s)+','+(i.fy?-i.s:i.s)+')';}
 function renderCityDecor(){
  if(!cityState)cityState=freshCity();const si=townVisualSeason(),key=runId+':'+si+':'+cityRevision+':'+architect.active;
@@ -3915,24 +3933,29 @@ function updateCitySelection(){document.querySelectorAll('#townMap .town-sticker
 function selectedCityItem(){return cityLayout().find(i=>i.uid===architect.selected)||null;}
 function toggleArchitect(){
  if(architect.active){architect.active=false;architect.placing=null;architect.selected=null;$('architectPanel').hidden=true;renderTown();saveNow();return;}
- architect.active=true;architect.compact=false;architect.season=seasonIndex();architect.selected=null;architect.placing=null;renderTown();renderArchitect();
+ architect.active=true;architect.season=seasonIndex();architect.selected=null;architect.placing=null;renderTown();renderArchitect();
 }
 function setArchitectSeason(si){if(!architect.active)return;architect.season=Math.max(0,Math.min(3,si));architect.selected=null;architect.placing=null;renderTown();renderArchitect();}
 function renderArchitect(){
- $('townArchitectBtn').textContent=architect.active?'✓ 完成佈置':'🏗 建築師';$('architectBar').hidden=!architect.active;$('architectPanel').hidden=!architect.active||!!architect.compact;$('architectPanelToggle').textContent=architect.compact?'顯示工具 ▾':'收起工具 ▴';
+ const selected=architect.active?selectedCityItem():null;
+ $('townArchitectBtn').textContent=architect.active?'✓':'🏗';$('townArchitectBtn').setAttribute('aria-label',architect.active?'完成城鎮佈置':'開啟建築師');$('townArchitectBtn').setAttribute('aria-pressed',String(architect.active));$('architectBar').hidden=!architect.active;
+ $('architectPanel').hidden=!selected||!!architect.drag?.moved;
+ $('architectPanel').dataset.dock=selected&&selected.y>=50?'top':'bottom';
+ const mapRect=$('townMap').getBoundingClientRect(),townRect=$('townP').getBoundingClientRect();$('architectPanel').style.setProperty('--architect-map-top',Math.max(0,mapRect.top-townRect.top)+'px');
  $('architectPlacementBar').hidden=!architect.active||!architect.placing;$('architectPlacementHint').textContent=architect.placing?'輕點地面放置「'+DECOR_BY_ID.get(architect.placing).name+'」':'';
- $('architectSeasons').innerHTML=SEASONS.map((s,i)=>'<button data-city-season="'+i+'" aria-pressed="'+(i===architect.season)+'">'+s.icon+s.name+'</button>').join('');
- if(!architect.active)return;const selected=selectedCityItem();
- $('architectHint').textContent=architect.placing?'輕點地面放置「'+DECOR_BY_ID.get(architect.placing).name+'」':selected?'拖曳移動，或使用下方工具調整。':'點選裝飾後拖曳；收藏中的裝飾可重新放置。';
- $('architectSelected').textContent=selected?DECOR_BY_ID.get(selected.id).name:'尚未選取裝飾';$('architectActions').hidden=!selected;
- if(selected){$('architectScale').value=Math.round(selected.s*100);$('architectScaleValue').textContent=Math.round(selected.s*100)+'%';$('architectRoam').hidden=!['cat','dog'].includes(selected.id);$('architectRoam').textContent=selected.roam?'停止散步':'開始散步';$('architectDepth').textContent=selected.z?'移到建築後方':'移到建築前方';}
+ const season=SEASONS[architect.season];$('architectSeasonName').textContent=season.icon+' '+season.name;
+ if(!architect.active)return;
+ $('architectSelected').textContent=selected?DECOR_BY_ID.get(selected.id).name:'';
+ if(selected){$('architectScale').value=Math.round(selected.s*100);$('architectScaleValue').textContent=Math.round(selected.s*100)+'%';$('architectRotation').value=selected.r;$('architectRotationValue').textContent=selected.r+'°';$('architectRoam').hidden=!['cat','dog'].includes(selected.id);$('architectRoam').textContent=selected.roam?'停止散步':'開始散步';$('architectDepth').textContent=selected.z?'移到建築後方':'移到建築前方';}
 }
 function openDecorInventory(){if(!architect.active)toggleArchitect();renderDecorInventory();$('decorInventoryP').style.display='flex';syncTownMotion();}
 function renderDecorInventory(){
  const si=townVisualSeason();$('decorInventoryTitle').textContent='裝飾收藏 · '+SEASONS[si].name;
+ $('decorReturnAll').disabled=cityLayout(si).length===0;
  $('decorInventoryGrid').innerHTML=DECOR_CATALOG.filter(d=>(d.season==='all'||d.season===DECOR_SEASONS[si])&&(cityState.owned[d.id]||0)>0).map(d=>{const n=cityAvailable(d.id,si);return '<article class="decor-card"><div class="decor-thumb">'+decorSVG(d.id,si,'inventory-'+d.id)+'</div><b>'+d.name+'</b><small>擁有 '+cityState.owned[d.id]+' · 可放 '+n+'</small><button data-place-decor="'+d.id+'" '+(!n?'disabled':'')+'>放置</button></article>';}).join('')||'<p>還沒有這個季節的裝飾，可以到裝飾行購買。</p>';
 }
-function chooseDecoration(id){if(!DECOR_BY_ID.has(id)||cityAvailable(id)<1)return false;architect.placing=id;architect.selected=null;architect.compact=true;closeP('decorInventoryP');renderArchitect();return true;}
+function chooseDecoration(id){if(!DECOR_BY_ID.has(id)||cityAvailable(id)<1)return false;architect.placing=id;architect.selected=null;closeP('decorInventoryP');renderArchitect();return true;}
+function stowAllCityDecor(){const key=DECOR_SEASONS[townVisualSeason()],count=cityLayout().length;cityState.layouts[key]=[];architect.selected=null;architect.placing=null;architect.drag=null;commitCity();renderDecorInventory();toast('已收回'+SEASONS[townVisualSeason()].name+'的 '+count+' 件裝飾。');return count;}
 function placeDecoration(id,x,y){
  if(!architect.active||cityAvailable(id)<1||cityLayout().length>=100){toast('裝飾數量不足，或已達 100 件擺設上限。');return false;}
  const item=cleanCityItem({uid:'d-'+cityState.next++,id,x,y,s:1,z:1});cityLayout().push(item);architect.selected=item.uid;architect.placing=null;commitCity();return true;
@@ -3956,22 +3979,42 @@ function buyDecoration(id){
  if(!sandboxSession&&coins<d.price){toast('金幣不足。');return false;}if((cityState.owned[id]||0)>=9999)return false;
  if(!sandboxSession)coins-=d.price;cityState.owned[id]=(cityState.owned[id]||0)+1;saveNow();render();renderDecorationShop();toast('已購買「'+d.name+'」，可到裝飾收藏放置。');return true;
 }
+let cityPresetSaving=false,cityPresetSaveToken=0;
+function cancelCityPresetSave(){cityPresetSaveToken++;cityPresetSaving=false;$('cityLayoutSave').disabled=false;$('cityLayoutSave').textContent='儲存目前版型';}
 function readCityPresets(){try{const data=JSON.parse(gameStorage.getItem('forgeTownLayoutsV1')||'[]');return Array.isArray(data)?data.slice(0,40).filter(p=>p&&typeof p.name==='string'&&DECOR_SEASONS.includes(p.season)&&Array.isArray(p.items)):[];}catch(e){return [];}}
 function presetMissing(items){const needs={};for(const raw of items){const i=cleanCityItem(raw);if(!i)return [{id:'unknown',n:1}];needs[i.id]=(needs[i.id]||0)+1;}return Object.entries(needs).filter(([id,n])=>n>(cityState.owned[id]||0)).map(([id,n])=>({id,n:n-(cityState.owned[id]||0)}));}
+function quoteCityPreset(p){
+ if(!p||!DECOR_SEASONS.includes(p.season)||!Array.isArray(p.items)||p.items.length>100||p.items.some(i=>!cleanCityItem(i)))return {valid:false,missing:[],cost:0};
+ const missing=presetMissing(p.items);if(missing.some(i=>!DECOR_BY_ID.has(i.id)||(cityState.owned[i.id]||0)+i.n>9999))return {valid:false,missing:[],cost:0};
+ return {valid:true,missing,cost:missing.reduce((total,i)=>total+DECOR_BY_ID.get(i.id).price*i.n,0)};
+}
 function openCityLayouts(){if(!architect.active)toggleArchitect();$('cityLayoutName').value=SEASONS[townVisualSeason()].name+'小鎮';renderCityLayouts();$('cityLayoutsP').style.display='flex';syncTownMotion();}
 function renderCityLayouts(){
- const season=DECOR_SEASONS[townVisualSeason()],list=readCityPresets().filter(p=>p.season===season);$('cityLayoutsTitle').textContent=SEASONS[townVisualSeason()].name+' · 城鎮版型';
- $('cityLayoutsList').innerHTML=list.map(p=>{const missing=presetMissing(p.items);return '<article class="city-layout-card"><b>'+esc(p.name)+'</b><small>'+p.items.length+' 件裝飾'+(missing.length?' · 尚缺 '+missing.map(x=>(DECOR_BY_ID.get(x.id)?.name||'未知裝飾')+'×'+x.n).join('、'):' · 裝飾已備齊')+'</small><div><button data-apply-layout="'+esc(p.id)+'" '+(missing.length?'disabled':'')+'>套用版型</button><button data-delete-layout="'+esc(p.id)+'">刪除版型</button></div></article>';}).join('')||'<p>這個季節還沒有版型。完成佈置後可以儲存在這裡。</p>';
+ const si=townVisualSeason(),season=DECOR_SEASONS[si],list=[defaultCityPreset(si),...readCityPresets().filter(p=>p.season===season)];$('cityLayoutsTitle').textContent=SEASONS[si].name+' · 城鎮版型';
+ $('cityLayoutsList').innerHTML=list.map(p=>{
+  const q=quoteCityPreset(p),insufficient=!sandboxSession&&coins<q.cost,author=p.authorName||'舊版版型',missing=q.missing.map(x=>(DECOR_BY_ID.get(x.id)?.name||'未知裝飾')+'×'+x.n).join('、'),image=safeCityThumbnail(p.thumbnail);
+  return '<article class="city-layout-card"><div class="city-layout-info"><b>'+esc(p.name)+(p.builtin?'<span class="city-layout-default">預設</span>':'')+'</b><div class="city-layout-author"><span class="player-avatar">'+avatarSVG(normalizeAvatar(p.avatar||AVATAR_DEFAULT))+'</span><span>'+esc(author)+'<small>'+esc(cityPresetDate(p))+'</small></span></div><small>'+p.items.length+' 件裝飾 · '+(!q.valid?'版型內容不完整':q.missing.length?'尚缺：'+esc(missing)+'<br>補齊總價：💰 '+q.cost+(insufficient?'（還差 '+(q.cost-coins)+' 金幣）':''):'裝飾已備齊')+'</small><div class="city-layout-buttons"><button data-apply-layout="'+esc(p.id)+'" data-buy-missing="'+(q.cost>0?'1':'0')+'" '+(!q.valid||insufficient?'disabled':'')+'>'+(q.cost>0?'💰 '+q.cost+' 補齊並套用':p.builtin?'套用預設':'套用版型')+'</button>'+(p.builtin?'':'<button data-delete-layout="'+esc(p.id)+'">刪除</button>')+'</div></div><button class="city-layout-thumbnail" data-preview-layout="'+esc(p.id)+'" aria-label="放大查看'+esc(p.name)+'的截圖"><img data-layout-thumb="'+esc(p.id)+'" '+(image?'src="'+esc(image)+'"':'')+' alt="'+esc(p.name)+'的城鎮截圖"><span>點擊放大</span></button></article>';
+ }).join('');hydrateCityThumbnails(list);
 }
-function saveCityLayout(){
- const season=DECOR_SEASONS[townVisualSeason()],name=$('cityLayoutName').value.trim().slice(0,28)||SEASONS[townVisualSeason()].name+'小鎮',presets=readCityPresets();if(presets.filter(p=>p.season===season).length>=10){toast('每季最多保存 10 個版型，請先刪除不需要的版型。');return false;}
- presets.push({id:'layout-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name,season,items:JSON.parse(JSON.stringify(cityLayout()))});try{gameStorage.setItem('forgeTownLayoutsV1',JSON.stringify(presets));}catch(e){toast('儲存空間不足，版型未保存。');return false;}renderCityLayouts();toast(sandboxSession?'版型已保存在後台暫存區。':'城鎮版型已儲存。');return true;
+async function saveCityLayout(){
+ if(cityPresetSaving)return false;const si=townVisualSeason(),season=DECOR_SEASONS[si],name=$('cityLayoutName').value.trim().slice(0,28)||SEASONS[si].name+'小鎮',items=JSON.parse(JSON.stringify(cityLayout())),run=runId,epoch=sandboxEpoch,sandbox=sandboxSession,createdAt=new Date().toISOString(),authorName=playerName||'玩家',avatar=normalizeAvatar(playerAvatar);
+ if(readCityPresets().filter(p=>p.season===season).length>=10){toast('每季最多保存 10 個版型，請先刪除不需要的版型。');return false;}
+ const ticket=++cityPresetSaveToken;cityPresetSaving=true;$('cityLayoutSave').disabled=true;$('cityLayoutSave').textContent='截圖儲存中…';
+ try{
+  const thumbnail=await captureCityLayout(items,si);if(ticket!==cityPresetSaveToken||runId!==run||sandboxEpoch!==epoch||sandboxSession!==sandbox)return false;
+  const presets=readCityPresets();if(presets.filter(p=>p.season===season).length>=10){toast('這個季節的版型已滿。');return false;}
+  presets.push({id:'layout-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name,season,items,thumbnail,authorName,avatar,createdAt});gameStorage.setItem('forgeTownLayoutsV1',JSON.stringify(presets));renderCityLayouts();toast(sandboxSession?'版型與截圖已保存在後台暫存區。':'城鎮版型與截圖已儲存。');return true;
+ }catch(e){toast('儲存空間不足，版型未保存。');return false;}
+ finally{if(ticket===cityPresetSaveToken){cityPresetSaving=false;$('cityLayoutSave').disabled=false;$('cityLayoutSave').textContent='儲存目前版型';}}
 }
-function applyCityLayout(id){
- const p=readCityPresets().find(p=>p.id===id&&p.season===DECOR_SEASONS[townVisualSeason()]);if(!p||p.items.length>100||presetMissing(p.items).length)return false;
- cityState.layouts[p.season]=p.items.map(raw=>({...cleanCityItem(raw),uid:'d-'+cityState.next++}));architect.selected=null;architect.placing=null;commitCity();closeP('cityLayoutsP');toast('已套用「'+p.name+'」。');return true;
+function applyCityLayout(id,buyMissing=false){
+ const p=findCityPreset(id);if(!p||p.season!==DECOR_SEASONS[townVisualSeason()])return false;const quote=quoteCityPreset(p);
+ if(!quote.valid||quote.missing.length&&!buyMissing)return false;if(!sandboxSession&&coins<quote.cost){toast('金幣不足，版型與裝飾均未變更。');return false;}
+ const owned={...cityState.owned};quote.missing.forEach(i=>owned[i.id]=(owned[i.id]||0)+i.n);let next=cityState.next;const items=p.items.map(raw=>({...cleanCityItem(raw),uid:'d-'+next++}));
+ cityState.owned=owned;cityState.next=next;cityState.layouts[p.season]=items;if(!sandboxSession)coins-=quote.cost;architect.selected=null;architect.placing=null;architect.drag=null;commitCity();renderTown();closeP('cityLayoutsP');toast((quote.cost?'已補齊裝飾並':'已')+'套用「'+p.name+'」'+(quote.cost&&!sandboxSession?'，花費 '+quote.cost+' 金幣。':'。'));return true;
 }
-function deleteCityLayout(id){try{gameStorage.setItem('forgeTownLayoutsV1',JSON.stringify(readCityPresets().filter(p=>p.id!==id)));}catch(e){return;}renderCityLayouts();}
+function deleteCityLayout(id){if(id.startsWith('default-'))return;try{gameStorage.setItem('forgeTownLayoutsV1',JSON.stringify(readCityPresets().filter(p=>p.id!==id)));}catch(e){return;}renderCityLayouts();}
+
 function cityObstacleAt(x,y){
  if(!cityState)return false;return cityLayout().some(i=>{const d=DECOR_BY_ID.get(i.id);if(!d||['cat','dog','flowers','fence'].includes(i.id))return false;const px=i.x*3.6,py=i.y*6.2,s=i.s;
   if(i.id==='fountain'||d.art==='pond')return ((x-px)/(d.w*.43*s+6))**2+((y-(py-d.h*.32*s))/(d.h*.32*s+6))**2<1;
@@ -3994,25 +4037,73 @@ function walkCityPet(w){
 }
 function loveCityPet(node){const old=node.querySelector('.sticker-love');old?.remove();const b=document.createElement('span');b.className='sticker-love';b.setAttribute('aria-label','愛心');b.innerHTML='<svg viewBox="0 0 32 24" shape-rendering="crispEdges"><path fill="#fff0ce" stroke="#364b51" d="M2 1h28v18H19l-3 4-3-4H2z"/><path fill="#d88799" d="M8 6h6v3h4V6h6v7h-3v3h-3v2h-4v-2h-3v-3H8z"/></svg>';node.querySelector('.sticker-roamer').appendChild(b);gameTimeout(()=>b.remove(),1700);}
 function installCityControls(){
- $('townArchitectBtn').onclick=toggleArchitect;$('architectInventory').onclick=openDecorInventory;$('architectLayouts').onclick=openCityLayouts;$('architectCancelPlace').onclick=()=>{architect.placing=null;renderArchitect();};$('decorInventoryShop').onclick=()=>{closeP('decorInventoryP');openDecorationShop();};$('cityLayoutSave').onclick=saveCityLayout;
- $('architectInventoryTop').onclick=openDecorInventory;$('architectLayoutsTop').onclick=openCityLayouts;$('architectPanelToggle').onclick=()=>{architect.compact=!architect.compact;renderArchitect();};
+ $('townArchitectBtn').onclick=toggleArchitect;$('architectInventoryTop').onclick=openDecorInventory;$('architectLayoutsTop').onclick=openCityLayouts;$('decorInventoryShop').onclick=()=>{closeP('decorInventoryP');openDecorationShop();};$('decorReturnAll').onclick=stowAllCityDecor;$('cityLayoutSave').onclick=saveCityLayout;
  $('architectCancelTop').onclick=()=>{architect.placing=null;renderArchitect();};
- $('architectSeasons').onclick=e=>{const b=e.target.closest('[data-city-season]');if(b)setArchitectSeason(+b.dataset.citySeason);};
+ $('architectSeasonPrev').onclick=()=>setArchitectSeason((architect.season+3)%4);$('architectSeasonNext').onclick=()=>setArchitectSeason((architect.season+1)%4);
+ $('architectDeselect').onclick=()=>{architect.selected=null;renderArchitect();updateCitySelection();};
  $('architectActions').onclick=e=>{const b=e.target.closest('[data-city-action]');if(b)cityTransform(b.dataset.cityAction);};
- $('architectScale').oninput=e=>{const i=selectedCityItem();if(!i)return;i.s=Math.max(.3,Math.min(2,+e.target.value/100));document.querySelector('[data-decor-uid="'+i.uid+'"] .sticker-transform')?.style.setProperty('transform',stickerTransform(i));$('architectScaleValue').textContent=Math.round(i.s*100)+'%';};$('architectScale').onchange=()=>commitCity();
+ const preview=()=>{const i=selectedCityItem();if(!i)return;document.querySelector('[data-decor-uid="'+i.uid+'"] .sticker-transform')?.style.setProperty('transform',stickerTransform(i));};
+ $('architectScale').oninput=e=>{const i=selectedCityItem();if(!i)return;i.s=Math.max(.3,Math.min(2,+e.target.value/100));preview();$('architectScaleValue').textContent=Math.round(i.s*100)+'%';};$('architectScale').onchange=()=>commitCity();
+ $('architectRotation').oninput=e=>{const i=selectedCityItem();if(!i)return;i.r=Math.max(0,Math.min(360,+e.target.value||0));preview();$('architectRotationValue').textContent=i.r+'°';};$('architectRotation').onchange=()=>commitCity();
  $('decorInventoryGrid').onclick=e=>{const b=e.target.closest('[data-place-decor]');if(b)chooseDecoration(b.dataset.placeDecor);};
  $('decorShopTabs').onclick=e=>{const b=e.target.closest('[data-shop-season]');if(b){decorShopSeason=+b.dataset.shopSeason;renderDecorationShop();}};$('decorShopGrid').onclick=e=>{const b=e.target.closest('[data-buy-decor]');if(b&&!b.disabled)buyDecoration(b.dataset.buyDecor);};
- $('cityLayoutsList').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;if(b.dataset.applyLayout)applyCityLayout(b.dataset.applyLayout);if(b.dataset.deleteLayout)deleteCityLayout(b.dataset.deleteLayout);};
+ $('cityLayoutsList').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;if(b.dataset.previewLayout){openCityLayoutPreview(b.dataset.previewLayout).catch(()=>toast('暫時無法產生預覽，請再試一次。'));return;}if(b.dataset.applyLayout)applyCityLayout(b.dataset.applyLayout,b.dataset.buyMissing==='1');if(b.dataset.deleteLayout)deleteCityLayout(b.dataset.deleteLayout);};
  const map=$('townMap');
  map.addEventListener('pointerdown',e=>{
-  const node=e.target.closest('.town-sticker');if(!architect.active)return;if(e.button!==undefined&&e.button!==0)return;e.preventDefault();e.stopPropagation();
+  if(!architect.active||e.button!==undefined&&e.button!==0||architect.drag&&architect.drag.pointer!==e.pointerId)return;
+  const node=e.target.closest('.town-sticker');e.preventDefault();e.stopPropagation();
   if(architect.placing){const r=map.getBoundingClientRect();placeDecoration(architect.placing,(e.clientX-r.left)/r.width*100,(e.clientY-r.top)/r.height*100);return;}
-  architect.selected=node?.dataset.decorUid||null;renderArchitect();updateCitySelection();if(!node)return;
-  const i=selectedCityItem();architect.compact=true;renderArchitect();architect.drag={uid:i.uid,pointer:e.pointerId,cx:e.clientX,cy:e.clientY,x:i.x,y:i.y};map.setPointerCapture?.(e.pointerId);
+  architect.selected=node?.dataset.decorUid||null;architect.drag=null;if(node){const i=selectedCityItem();architect.drag={uid:i.uid,pointer:e.pointerId,cx:e.clientX,cy:e.clientY,x:i.x,y:i.y,moved:false};map.setPointerCapture?.(e.pointerId);}renderArchitect();updateCitySelection();
  });
- map.addEventListener('pointermove',e=>{const d=architect.drag;if(!d||d.pointer!==e.pointerId)return;e.preventDefault();const r=map.getBoundingClientRect(),i=selectedCityItem();if(!i)return;i.x=Math.max(1,Math.min(99,d.x+(e.clientX-d.cx)/r.width*100));i.y=Math.max(12,Math.min(99,d.y+(e.clientY-d.cy)/r.height*100));const n=document.querySelector('[data-decor-uid="'+i.uid+'"]');if(n){n.style.left=i.x+'%';n.style.top=i.y+'%';}});
- const finish=(e,cancel)=>{const d=architect.drag;if(!d||d.pointer!==e.pointerId)return;const i=selectedCityItem();if(cancel&&i){i.x=d.x;i.y=d.y;}architect.drag=null;map.releasePointerCapture?.(e.pointerId);commitCity();};map.addEventListener('pointerup',e=>finish(e,false));map.addEventListener('pointercancel',e=>finish(e,true));
+ map.addEventListener('pointermove',e=>{
+  const d=architect.drag;if(!d||d.pointer!==e.pointerId)return;e.preventDefault();if(!d.moved&&Math.hypot(e.clientX-d.cx,e.clientY-d.cy)<=4)return;
+  if(!d.moved){d.moved=true;renderArchitect();}const r=map.getBoundingClientRect(),i=selectedCityItem();if(!i)return;i.x=Math.max(1,Math.min(99,d.x+(e.clientX-d.cx)/r.width*100));i.y=Math.max(12,Math.min(99,d.y+(e.clientY-d.cy)/r.height*100));const n=document.querySelector('[data-decor-uid="'+i.uid+'"]');if(n){n.style.left=i.x+'%';n.style.top=i.y+'%';}
+ });
+ const finish=(e,cancel)=>{const d=architect.drag;if(!d||d.pointer!==e.pointerId)return;const i=selectedCityItem();if(cancel&&i){i.x=d.x;i.y=d.y;}architect.drag=null;map.releasePointerCapture?.(e.pointerId);if(d.moved)commitCity();else{renderArchitect();updateCitySelection();}};
+ map.addEventListener('pointerup',e=>finish(e,false));map.addEventListener('pointercancel',e=>finish(e,true));
  map.addEventListener('click',e=>{if(architect.active)return;const n=e.target.closest('.town-sticker');if(!n)return;const i=cityLayout().find(i=>i.uid===n.dataset.decorUid);if(i&&['cat','dog'].includes(i.id))loveCityPet(n);});
+ window.addEventListener('resize',()=>{if(architect.active)requestAnimationFrame(renderArchitect);});
+}
+
+const cityThumbnailCache=new Map();
+const CITY_DEFAULT_TIMESTAMP='2026-11-13T01:53:17.004Z';
+function defaultCityPreset(si){const season=DECOR_SEASONS[si];return {id:'default-'+season,name:'預設版型 · '+SEASONS[si].name,season,builtin:true,authorName:'Forge Master',avatar:normalizeAvatar(AVATAR_DEFAULT),createdAt:CITY_DEFAULT_TIMESTAMP,items:freshCity().layouts[season]};}
+function findCityPreset(id){const i=DECOR_SEASONS.findIndex(s=>id==='default-'+s);return i>=0?defaultCityPreset(i):readCityPresets().find(p=>p.id===id)||null;}
+function snapshotNestedSVG(svg,x,y,w,h){
+ if(!svg)return '';return svg.replace(/^<svg\b([^>]*)>/,(_,attrs)=>'<svg'+attrs.replace(/\s(?:x|y|width|height)="[^"]*"/g,'')+' x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'">');
+}
+function citySnapshotSVG(items,si){
+ const rect=$('townMap').getBoundingClientRect(),W=360,H=rect.width>100&&rect.height>200?Math.max(360,Math.min(1000,360*rect.height/rect.width)):620,p=TOWN_SEASONS[si];
+ const parts=[snapshotNestedSVG(townScene(p),0,0,W,H)];
+ function decorLayer(z){return items.filter(i=>i.z===z).slice().sort((a,b)=>a.y-b.y).map((i,k)=>{const d=DECOR_BY_ID.get(i.id);if(!d)return '';return '<g transform="translate('+(i.x*3.6)+' '+(i.y*H/100)+') rotate('+i.r+') scale('+(i.fx?-i.s:i.s)+' '+(i.fy?-i.s:i.s)+')">'+snapshotNestedSVG(decorSVG(i.id,si,'snapshot-'+k+'-'+i.uid),-d.w/2,-d.h,d.w,d.h)+'</g>';}).join('');}
+ parts.push(decorLayer(0));
+ const plaza=$('townPlaza').querySelector('svg');if(plaza)parts.push(snapshotNestedSVG(plaza.outerHTML,360*.5222-360*.19,H*(.65-.1097),360*.38,H*.2194));
+ const buildings=[['townArchive','archive',0,.26,.37,.27],['townForge','forge',.58,.25,.42,.29],['townShop','shop',-.03,.76,.44,.23],['townTraining','training',.57,.77,.43,.23],['townGreenhouse',null,0,.54,.3,.18],['townDecorShop','decor',.76,.55,.24,.18]];
+ for(const [id,kind,x,y,w,h]of buildings){const el=$(id),box=el.getBoundingClientRect(),valid=rect.width>100&&box.width>0;let art=kind?townHouse(kind,p):el.querySelector('svg')?.outerHTML||'';parts.push(snapshotNestedSVG(art,valid?(box.left-rect.left)/rect.width*360:x*360,valid?(box.top-rect.top)/rect.height*H:y*H,valid?box.width/rect.width*360:w*360,valid?box.height/rect.height*H:h*H));}
+ const sign=townExpeditionSign().match(/<svg[\s\S]*?<\/svg>/)?.[0];if(sign)parts.push(snapshotNestedSVG(sign,360*.26+360*.48*.14,H*(.03+.25*.83),360*.48*.72,H*.048));
+ parts.push(decorLayer(1));
+ return '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'"><style>.town-lamp-glow{opacity:.55}.forge-smoke{opacity:.45}.town-house-sign text{font-family:sans-serif}</style>'+parts.join('')+'</svg>';
+}
+function captureCityLayout(items,si){
+ const svg=citySnapshotSVG(items,si),fallback='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg),canvas=document.createElement('canvas');
+ if(typeof window.Image!=='function'||typeof canvas.getContext!=='function')return Promise.resolve(fallback);
+ return new Promise(resolve=>{
+  const ctx=canvas.getContext('2d');if(!ctx){resolve(fallback);return;}
+  const image=new window.Image();let settled=false;const finish=value=>{if(settled)return;settled=true;window.clearTimeout(timeout);resolve(value);},timeout=window.setTimeout(()=>finish(fallback),5000);
+  image.onload=()=>{try{canvas.width=320;canvas.height=Math.max(320,Math.min(850,Math.round(320*image.height/image.width)));ctx.imageSmoothingEnabled=false;ctx.drawImage(image,0,0,canvas.width,canvas.height);finish(canvas.toDataURL('image/png'));}catch(e){finish(fallback);}};image.onerror=()=>finish(fallback);image.src=fallback;
+ });
+}
+function safeCityThumbnail(value){return typeof value==='string'&&/^data:image\/(?:png|webp|jpeg);base64,/.test(value)||typeof value==='string'&&value.startsWith('data:image/svg+xml;charset=utf-8,')?value:'';}
+async function cityPresetThumbnail(p){
+ const saved=safeCityThumbnail(p.thumbnail);if(saved)return saved;
+ const key=p.id+':'+p.season+':'+JSON.stringify(p.items),cached=cityThumbnailCache.get(key);if(cached)return await cached;
+ const promise=captureCityLayout(p.items.map(cleanCityItem).filter(Boolean),DECOR_SEASONS.indexOf(p.season));cityThumbnailCache.set(key,promise);const result=await promise;cityThumbnailCache.set(key,result);return result;
+}
+function hydrateCityThumbnails(list){for(const p of list)cityPresetThumbnail(p).then(src=>{document.querySelectorAll('#cityLayoutsList [data-layout-thumb]').forEach(img=>{if(img.dataset.layoutThumb===p.id){img.setAttribute('src',src);img.setAttribute('alt',p.name+'的城鎮截圖');}});}).catch(()=>{});}
+function cityPresetDate(p){const d=new Date(p.createdAt||0);return p.createdAt&&Number.isFinite(d.getTime())?d.toLocaleString('zh-TW',{hour12:false}):'時間未記錄';}
+async function openCityLayoutPreview(id){
+ const p=findCityPreset(id);if(!p)return;const run=runId,epoch=sandboxEpoch;const src=await cityPresetThumbnail(p);if(runId!==run||sandboxEpoch!==epoch)return;
+ $('cityLayoutPreviewTitle').textContent=p.name;$('cityLayoutPreviewImage').setAttribute('src',src);$('cityLayoutPreviewImage').setAttribute('alt',p.name+'的城鎮截圖');$('cityLayoutPreviewMeta').textContent=(p.authorName||'舊版版型')+' · '+cityPresetDate(p);$('cityLayoutPreviewP').style.display='flex';syncTownMotion();
 }
 
 /* 後台設定 */
@@ -4038,14 +4129,14 @@ function nextSandboxDay(){
  if(!sandboxSession)return;stopExpeditionPlayback();closeCityPanels();architect.active=false;architect.selected=null;architect.placing=null;pendingChests++;newDay();seasonNoticePending=false;closeP('seasonP');coins=1e12;sp=9999;lives=3;render();showTown();
 }
 function finishSandbox(){
- if(!sandboxSession)return;stopCityAnimals();sandboxEpoch++;sandboxStorage.clear();sandboxSession=false;
+ if(!sandboxSession)return;stopCityAnimals();cancelCityPresetSave();sandboxEpoch++;sandboxStorage.clear();cityThumbnailCache.clear();sandboxSession=false;
  if(sandboxProfile){playerName=sandboxProfile.playerName;playerAvatar=normalizeAvatar(sandboxProfile.avatar);muted=sandboxProfile.muted;hi=sandboxProfile.hi;recs=sandboxProfile.recs;saves=sandboxProfile.saves;weaponAlbum.clear();sandboxProfile.weapons.forEach(k=>weaponAlbum.add(k));legendBlueprints.clear();sandboxProfile.blueprints.forEach(k=>legendBlueprints.add(k));legendCollection.clear();sandboxProfile.legends.forEach(k=>legendCollection.add(k));}sandboxProfile=null;
  cheat.m=false;cheat.s=false;testRun=false;active=false;runId=0;day=0;phase='play';coins=0;earned=0;magic=0;all=0;qDone=0;
  best=Array(10).fill(null);g=Array(W*H).fill(null);pack=[];bag=[];hand=null;resetRunCollections();legendDemoBlueprints.clear();legendDemoCollection.clear();legendProjects=[];architect.active=false;architect.placing=null;architect.selected=null;closeCityPanels();cityState=freshCity();cityRevision++;
 }
 
 function showHelp(){$("help").style.display="flex"}
-const townModalIds=['chestP','townLootP','townSkillP','weaponStatsP','expeditionP','legendBlueprintP','blueprintProjectP','avatarCreatorP','weaponAlbumP','weaponInspectP','seasonP','help','shopP','qP','colP','sk','bagP','rw','gcP','recP','nm','svP','pw','decorShopP','decorInventoryP','cityLayoutsP','cf','ov','greenhouseP','seedP'];
+const townModalIds=['chestP','townLootP','townSkillP','weaponStatsP','expeditionP','legendBlueprintP','blueprintProjectP','avatarCreatorP','weaponAlbumP','weaponInspectP','seasonP','help','shopP','qP','colP','sk','bagP','rw','gcP','recP','nm','svP','pw','decorShopP','decorInventoryP','cityLayoutsP','cityLayoutPreviewP','cf','ov','greenhouseP','seedP'];
 function dismissModal(id){
  if(id==='avatarCreatorP')cancelAvatar();
  else if(id==='expeditionP')closeExpedition();
