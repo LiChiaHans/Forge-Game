@@ -921,6 +921,7 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
 </style>
 <style>#expeditionLab{padding:12px;background:#283d42;border:1px solid #b6a471;border-radius:8px}#expeditionLab[hidden]{display:none!important}.exp-lab-fields{display:grid;grid-template-columns:1fr 1fr;gap:9px}.exp-lab-fields label{font-size:13px}.exp-lab-fields select,.exp-lab-fields input{display:block;width:100%;font-size:16px;margin-top:4px;padding:7px;background:#172936;color:#f4e2b4;border:1px solid #798a88;border-radius:4px}#expeditionStages button[data-cycle="3"]{grid-column:span 2;background:#50436d}</style>
 <style>#blueprintGoalP{z-index:76}.plan-row{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid #6b6a56;margin:6px 0;border-radius:6px}.plan-row.ready{border-color:#86b786;background:#29463c}.plan-row>span{width:48px;height:48px;flex:none}.plan-row svg,.plan-row .hxo{width:100%;height:100%}.plan-row b{font-size:14px}.plan-row small{display:block;color:#b7cac3;font-size:12px}.plan-row button{font-size:12px;padding:5px 8px;margin-top:5px}.plan-children{padding-left:15px;border-left:2px solid #83754c}.weapon-protected{position:absolute;right:-3px;top:-4px;font-size:14px;z-index:5}#weaponProtection{font-size:14px}#weaponProtection[hidden],#blueprintGoalSet[hidden],#blueprintGoalClear[hidden]{display:none!important}</style>
+<style>#expeditionIntent{color:#f4d28a;background:#423b3d;border-left:3px solid #d6aa66;padding:9px;font-size:14px}#expeditionGuard{background:#344d61;border-color:#91b0b9}#expeditionBossRule{padding:9px;background:#26363d;border-radius:6px;line-height:1.7}</style>
 </head>
 <body>
 <div id="portraitGuard" hidden role="dialog" aria-modal="true" aria-hidden="true" aria-label="請直向遊玩"><svg viewBox="0 0 40 52" aria-hidden="true" shape-rendering="crispEdges"><path fill="#0c1726" d="M7 0h26v3h3v46h-3v3H7v-3H4V3h3z"/><path fill="#b8a577" d="M8 3h24v46H8z"/><path fill="#293e51" d="M10 8h20v34H10z"/><path fill="#e8d696" d="M16 4h8v2h-8zM17 45h6v2h-6z"/><path fill="#84b6b0" d="M19 14h3v16h-3zM13 21h3v3h-3zM16 18h3v3h-3zM22 18h3v3h-3zM25 21h3v3h-3z"/></svg><b>請直向遊玩</b><p>將手機轉回直向<br>即可繼續遊戲</p></div>
@@ -972,14 +973,14 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
  <div id="expeditionSetup">
   <section id="expeditionLab" hidden><h3>🧪 遠征測試台</h3><div class="exp-lab-fields"><label>武器<select id="labWeapon" onchange="updateExpeditionLab()"></select></label><label>材料階級<select id="labTier" onchange="updateExpeditionLab()"></select></label><label>附魔層數（0～20）<input id="labStacks" type="number" min="0" max="20" value="0" onchange="updateExpeditionLab()"></label><label>屬性<select id="labElement" onchange="updateExpeditionLab()"></select></label><label>挑戰關卡（21 起為無限）<input id="labStage" type="number" min="1" max="1000000" value="1" onchange="updateExpeditionLab()"></label></div><p class="exp-note">直接產生測試武器，不占物品欄、不扣愛心。可自由選關，所有結果僅供本次後台測試。</p></section>
 
-  <div id="expeditionStages" aria-label="選擇遠征關卡"></div><div id="expeditionMonster"></div><p id="expeditionReward"></p>
+  <div id="expeditionStages" aria-label="選擇遠征關卡"></div><div id="expeditionMonster"></div><p id="expeditionBossRule" class="exp-note"></p><p id="expeditionReward"></p>
   <h3>選擇出戰武器</h3><div id="expeditionWeapons"></div><div id="expeditionSelectedStats"></div>
   <button id="expeditionFight" class="pri exp-wide" onclick="beginExpedition()">開始挑戰</button>
   <p class="exp-note">出戰時消耗一把武器，勝負、撤退或中途離開都不退回。落敗扣一顆愛心，未通關可不限次重試；勝利自動前往下一關。第 1～10 關解鎖傳說藍圖，第 11～20 關解鎖終極藍圖。</p>
-  <details class="exp-rules"><summary>能力與戰鬥規則</summary><p>每個胚分別提供能力：刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度。銅、鐵、鋼、金、秘銀的材料強度為 1、1.7、2.8、4.4、6.8 倍。</p><p>出戰生命＝100＋防禦×2。速度決定先後與行動頻率；物理傷害＝攻擊×屬性倍率－對方防禦的 60%，至少造成 1 傷害。奧術傷害無視防禦，護盾先吸收傷害。120 次行動後仍未分勝負則撤退。終極武器的主動技能每場可施放一次；按「顯示戰果」會直接完成剩餘戰鬥，不會自動施放技能。</p></details>
+  <details class="exp-rules"><summary>能力與戰鬥規則</summary><p>每個胚分別提供能力：刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度。銅、鐵、鋼、金、秘銀的材料強度為 1、1.7、2.8、4.4、6.8 倍。</p><p>出戰生命＝100＋防禦×2。速度決定先後與行動頻率；物理傷害＝攻擊×屬性倍率－對方防禦的 60%，至少造成 1 傷害。奧術傷害無視防禦，護盾先吸收傷害。120 次行動後仍未分勝負則撤退。終極武器的主動技能每場可施放一次；按「顯示戰果」會直接完成剩餘戰鬥，不會自動施放技能或防禦。防禦架勢每場一次，讓下一次敵方攻擊減少 60% 傷害，蓄力不會消耗已準備的防禦。</p></details>
   <p id="expeditionLast" class="exp-note"></p><section class="element-chart-panel"><h3>屬性相剋</h3><div id="elementChart"></div></section>
  </div>
- <div id="expeditionBattle" hidden><div id="expeditionArena"></div><div id="expeditionLog" aria-live="polite"></div><button id="expeditionSkill" class="exp-wide" onclick="useExpeditionSkill()" hidden></button><div id="expeditionResult" aria-live="polite"></div><button id="expeditionSkip" class="exp-wide" onclick="finishExpeditionPlayback()">顯示戰果</button><button id="expeditionAgain" class="pri exp-wide" hidden>選擇下一場</button></div>
+ <div id="expeditionBattle" hidden><div id="expeditionArena"></div><p id="expeditionIntent" role="status"></p><button id="expeditionGuard" class="exp-wide" onclick="useExpeditionGuard()">🛡 防禦架勢（每場一次）</button><div id="expeditionLog" aria-live="polite"></div><button id="expeditionSkill" class="exp-wide" onclick="useExpeditionSkill()" hidden></button><div id="expeditionResult" aria-live="polite"></div><button id="expeditionSkip" class="exp-wide" onclick="finishExpeditionPlayback()">顯示戰果</button><button id="expeditionAgain" class="pri exp-wide" hidden>選擇下一場</button></div>
 </div></div>
 
 <div id="ultimateArtP" class="exp-overlay"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="closeP('ultimateArtP')">×</button><h2 id="ultimateArtTitle"></h2><img id="ultimateArtImage" alt="" decoding="async"><p id="ultimateArtInfo"></p></div></div>
@@ -2931,23 +2932,30 @@ function monsterArt(m){
  else shape='<path fill="#344352" d="M24 5h19v5h5v18h9v28H42v6H21v-6H7V28h12V10h5z"/><path fill="'+m.color+'" d="M25 9h16v5h4v13H22V14h3zM21 31h24v22H21zM10 32h9v20h-9zM47 32h7v20h-7zM23 54h7v6h-7zM36 54h7v6h-7z"/><path fill="#e4d7aa" d="M26 10h13v4H26zM22 32h21v4H22zM29 15h5v13h-5z"/><path fill="#263744" d="M23 19h21v5H23zM27 39h11v11H27z"/><path fill="#f1b760" d="M25 20h5v2h-5zM37 20h5v2h-5zM31 40h3v8h-3z"/>';
  return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" aria-label="'+m.name+'">'+base+shape+'</svg>';
 }
+function bossRule(m){return m.kind==='dragon'?'巨龍循環：蓄力 → 雙倍重擊 → 普通攻擊。蓄力時不造成傷害，可準備防禦或延緩技能。':m.kind==='golem'?'魔像每第三次行動後硬化，下一次受到的物理傷害減少 60%；奧術與主動技能不受影響。':m.kind==='wolf'?'狼王每第三次行動使用兩段連擊，每段為 60% 攻擊；防禦分別抵擋兩段傷害。':'以普通攻擊交戰，速度決定出手頻率。';}
+function bossIntent(b){const next=(b.enemyTurns||0)+1,m=b.monster;if(m.kind==='dragon')return ['蓄力（本次不攻擊）','蓄力重擊 ×2','普通攻擊'][(next-1)%3];if(m.kind==='wolf'&&next%3===0)return '雙段連擊（各 60%）';if(m.kind==='golem'&&next%3===0)return '攻擊後硬化';return '普通攻擊';}
+function guardBattle(b){if(!b||b.resolved||b.outcome!=='ongoing'||b.guardUsed)return false;b.guardUsed=true;b.guarding=true;return true;}
+function useExpeditionGuard(){if(guardBattle(expeditionState.lastBattle))renderExpeditionBattle();}
 function expeditionBattleState(w,monster){
  const stats=weaponStats(w),hpMax=100+stats.def*2;
- return {weapon:JSON.parse(JSON.stringify(w)),monster:JSON.parse(JSON.stringify(monster)),stats,hpMax,hp:hpMax,shield:stats.ward,enemyHp:monster.hp,heroClock:1000/Math.max(1,stats.spd),enemyClock:1000/Math.max(1,monster.spd),enemyDef:monster.def,skillUsed:false,outcome:'ongoing',resolved:false,log:[]};
+ return {weapon:JSON.parse(JSON.stringify(w)),monster:JSON.parse(JSON.stringify(monster)),stats,hpMax,hp:hpMax,shield:stats.ward,enemyHp:monster.hp,heroClock:1000/Math.max(1,stats.spd),enemyClock:1000/Math.max(1,monster.spd),enemyDef:monster.def,skillUsed:false,guardUsed:false,guarding:false,enemyTurns:0,bossHardened:false,outcome:'ongoing',resolved:false,log:[]};
 }
 function battleTick(b){
- if(b.outcome!=='ongoing')return;
- const s=b.stats,m=b.monster,heroElement=elementOf(b.weapon),enemyElement=elementOf(m);
- let row;
+ if(b.outcome!=='ongoing')return;const s=b.stats,m=b.monster,heroElement=elementOf(b.weapon),enemyElement=elementOf(m);let row;
  if(b.heroClock<=b.enemyClock){
-  const mult=elementMultiplier(heroElement,enemyElement),physical=Math.max(1,Math.round(s.atk*mult)-Math.floor(b.enemyDef*.6)),damage=Math.min(b.enemyHp,physical+s.arcane);b.enemyHp-=damage;b.heroClock+=1000/Math.max(1,s.spd);
-  row={actor:'hero',damage,element:heroElement,multiplier:mult,text:elementName(heroElement)+'屬性命中 '+damage+' 傷害（×'+mult.toFixed(2)+'）'};
+  const mult=elementMultiplier(heroElement,enemyElement),base=Math.max(1,Math.round(s.atk*mult)-Math.floor(b.enemyDef*.6)),physical=b.bossHardened?Math.max(1,Math.round(base*.4)):base,hardened=!!b.bossHardened,damage=Math.min(b.enemyHp,physical+s.arcane);b.bossHardened=false;b.enemyHp-=damage;b.heroClock+=1000/Math.max(1,s.spd);
+  row={actor:'hero',damage,element:heroElement,multiplier:mult,text:elementName(heroElement)+'屬性命中 '+damage+' 傷害（×'+mult.toFixed(2)+'）'+(hardened?' · 硬化抵擋部分物理傷害':'')};
  }else{
-  const mult=elementMultiplier(enemyElement,heroElement),raw=Math.max(1,Math.round(m.atk*mult)-Math.floor(s.def*.6)),absorbed=Math.min(b.shield,raw);b.shield-=absorbed;const damage=Math.min(b.hp,raw-absorbed);b.hp-=damage;b.enemyClock+=1000/Math.max(1,m.spd);
-  row={actor:'enemy',damage,absorbed,text:m.name+'造成 '+damage+' 傷害'+(absorbed?'，護盾吸收 '+absorbed:'')};
+  b.enemyTurns=(b.enemyTurns||0)+1;const turn=b.enemyTurns,phase=(turn-1)%3,mult=elementMultiplier(enemyElement,heroElement),charge=m.kind==='dragon'&&phase===0,heavy=m.kind==='dragon'&&phase===1,hits=m.kind==='wolf'&&turn%3===0?2:1,power=heavy?2:hits===2?.6:1;
+  let damage=0,absorbed=0;
+  if(!charge){for(let k=0;k<hits;k++){let raw=Math.max(1,Math.round(m.atk*mult*power)-Math.floor(s.def*.6));if(b.guarding)raw=Math.max(1,Math.ceil(raw*.4));const block=Math.min(b.shield,raw);b.shield-=block;absorbed+=block;const hit=Math.min(b.hp,raw-block);b.hp-=hit;damage+=hit;}const defended=b.guarding;b.guarding=false;row={actor:'enemy',damage,absorbed,element:enemyElement,multiplier:mult,text:m.name+(heavy?' 蓄力重擊':hits===2?' 雙段連擊':'攻擊')+'造成 '+damage+' 傷害'+(defended?' · 防禦架勢減傷 60%':'')+(absorbed?' · 護盾吸收 '+absorbed:'')};}
+  else row={actor:'enemy',damage:0,absorbed:0,charge:true,text:m.name+' 正在蓄力，下一次將使用雙倍重擊！'};
+  if(m.kind==='golem'&&turn%3===0){b.bossHardened=true;row.text+=' · 進入硬化';}
+  b.enemyClock+=1000/Math.max(1,m.spd);
  }
  b.log.push({...row,hp:b.hp,shield:b.shield,enemyHp:b.enemyHp});checkBattleOutcome(b);
 }
+
 function checkBattleOutcome(b){b.outcome=b.enemyHp<=0?'win':b.hp<=0?'lose':b.log.length>=120?'draw':'ongoing';return b.outcome;}
 function castBattleSkill(b){
  const skill=ultimateSkill(b.weapon);if(!skill||b.skillUsed||b.outcome!=='ongoing')return false;
@@ -3009,7 +3017,7 @@ function renderExpeditionBattle(){
  const b=expeditionState.lastBattle;if(!b)return;const m=b.monster||{...EXPEDITIONS[b.stage],element:'none'},done=b.resolved;
  $('expeditionArena').innerHTML='<div class="exp-fighter"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</div><b>'+itemName(b.weapon)+'</b><small>♥ '+b.hp+' / '+b.hpMax+(b.shield?'　護盾 '+b.shield:'')+'</small><progress max="'+b.hpMax+'" value="'+b.hp+'"></progress></div><strong>VS</strong><div class="exp-fighter"><div>'+monsterArt(m)+elementBadge(m.element,'battle-element')+'</div><b>'+m.name+'</b><small>♥ '+b.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+b.enemyHp+'"></progress></div>';
  $('expeditionLog').innerHTML=b.log.slice(-5).map(x=>'<p class="'+x.actor+(x.skill?' skill-hit':'')+'">'+esc(x.text)+'</p>').join('')||'<p>武器已投入遠征；可在戰鬥中施放終極武器技能。</p>';
- const skill=ultimateSkill(b.weapon);$('expeditionSkill').hidden=!skill;$('expeditionSkill').disabled=done||b.skillUsed;$('expeditionSkill').textContent=skill?(b.skillUsed?'✓ 已施放 '+skill.name:'✦ 施放 '+skill.name):'';
+ $('expeditionIntent').textContent='敵方下次：'+bossIntent(b)+(b.bossHardened?' · 現正硬化':'')+(b.guarding?' · 防禦架勢準備中':'');$('expeditionGuard').disabled=done||b.guardUsed;$('expeditionGuard').textContent=b.guardUsed?'🛡 已使用防禦架勢':'🛡 防禦架勢（每場一次）';const skill=ultimateSkill(b.weapon);$('expeditionSkill').hidden=!skill;$('expeditionSkill').disabled=done||b.skillUsed;$('expeditionSkill').textContent=skill?(b.skillUsed?'✓ 已施放 '+skill.name:'✦ 施放 '+skill.name):'';
  $('expeditionResult').innerHTML=done?'<h3>'+({win:'🏆 遠征勝利',lose:'已返回城鎮',draw:'已撤退'}[b.outcome])+'</h3><p>'+(b.outcome==='win'?'獲得 '+b.gold+' 金幣'+(b.loot?'＋'+itemName(b.loot):'')+'。即將前往第 '+(b.stage+2)+' 關。':b.outcome==='lose'?'失去一顆愛心，剩餘 '+lives+' 顆。':'未獲得獎勵，出戰武器已消耗。')+'</p>'+(b.outcome==='win'&&b.stage>=10&&b.stage<20?'<button class="ultimate-unlocked" onclick="openUltimateArt('+b.stage+')">'+ultimatePixelArt(b.stage)+'<span>終極藍圖已解鎖 · 查看高清美術 ↗</span></button>':''):'';
  $('expeditionAgain').textContent=lives<=0?'結束旅程':b.outcome==='win'?'前往下一關':'返回遠征';$('expeditionSkip').hidden=done;$('expeditionAgain').hidden=!done;
 }
@@ -3020,7 +3028,7 @@ function renderExpedition(){
  $('expeditionAttempts').textContent=(expeditionStage>=20?'無限模式 · 第 '+(expeditionStage-19)+' 隻':expeditionStage>=10?'二周目':'一周目')+' · 第 '+day+' 天 · 累計勝利 '+expeditionState.victories+' 場 · 無限通關 '+(expeditionState.endless||0)+' 隻';
  $('expeditionStages').innerHTML=EXPEDITIONS.map((x,i)=>'<button data-exp-stage="'+i+'" data-cycle="'+(i>=10?2:1)+'" '+(!sandboxSession&&(i>expeditionState.unlocked||expeditionCleared(i))?'disabled':'')+' aria-label="第 '+(i+1)+' 關 '+x.name+'" aria-pressed="'+(i===expeditionStage)+'">'+(expeditionState.cleared.includes(i)?'✓':i>expeditionState.unlocked?'·':'⚑')+(i+1)+'</button>').join('')+((sandboxSession||expeditionState.cleared.includes(19))?'<button data-exp-stage="'+(20+(expeditionState.endless||0))+'" data-cycle="3" aria-pressed="'+(expeditionStage>=20)+'">∞ '+((expeditionState.endless||0)+1)+'</button>':'');
  $('expeditionMonster').innerHTML='<div class="exp-monster-art">'+monsterArt(m)+elementBadge(m.element,'monster-element')+'</div><div><small>第 '+(expeditionStage+1)+' 關 · '+m.area+'</small><h3>'+m.name+'</h3><div class="exp-monster-stats">♥ '+m.hp+'　⚔ '+m.atk+'　🛡 '+m.def+'　💨 '+m.spd+'</div></div>';
- $('expeditionReward').textContent=cleared?'已通關'+(expeditionStage===19?'，二周目全部完成！':'，請前往下一關。'):(expeditionStage>=20?'無限勝利：'+m.gold+' 金幣':'首次勝利：'+m.gold+' 金幣＋'+itemName(m.loot)+(expeditionStage>=10?' · 解鎖高清武器美術':''));
+ $('expeditionBossRule').textContent=bossRule(m);$('expeditionReward').textContent=cleared?'已通關'+(expeditionStage===19?'，二周目全部完成！':'，請前往下一關。'):(expeditionStage>=20?'無限勝利：'+m.gold+' 金幣':'首次勝利：'+m.gold+' 金幣＋'+itemName(m.loot)+(expeditionStage>=10?' · 解鎖高清武器美術':''));
  $('expeditionWeapons').innerHTML=options.length?options.map(x=>'<button class="exp-weapon '+(x.key===expeditionSelected?'selected':'')+'" data-exp-weapon="'+x.key+'"><span class="exp-weapon-art">'+hex(x.w.c,bands(x.w),'',x.w.t,x.w)+'</span><span><b>'+esc(itemName(x.w))+'</b><small>'+x.source+' · ⚔'+weaponStats(x.w).atk+' 🛡'+weaponStats(x.w).def+' 💨'+weaponStats(x.w).spd+'</small></span></button>').join(''):'<div class="exp-empty">沒有未受保護的可出戰武器。請先在冶煉廠鍛造武器；每次出戰都會消耗一把。</div>';
  $('expeditionSelectedStats').innerHTML=chosen?statsHTML(chosen.w)+weaponEnchantHTML(chosen.w)+ultimateSkillHTML(chosen.w)+elementMatchupHTML(chosen.w,m)+'<p class="exp-note">⚠ 出戰後消耗這把武器，勝利、失敗或撤退都不退回。</p>':'';
  if(!$('elementChart').innerHTML)$('elementChart').innerHTML=elementChartHTML();
