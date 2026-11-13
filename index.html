@@ -920,6 +920,7 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
 #onlineNameStatus{font-size:13px;line-height:1.5;min-height:20px;color:#e7c98e;max-width:350px}#onlineNameOffline{font-size:13px;margin-top:8px}#onlineNameOffline[hidden]{display:none!important}
 </style>
 <style>#expeditionLab{padding:12px;background:#283d42;border:1px solid #b6a471;border-radius:8px}#expeditionLab[hidden]{display:none!important}.exp-lab-fields{display:grid;grid-template-columns:1fr 1fr;gap:9px}.exp-lab-fields label{font-size:13px}.exp-lab-fields select,.exp-lab-fields input{display:block;width:100%;font-size:16px;margin-top:4px;padding:7px;background:#172936;color:#f4e2b4;border:1px solid #798a88;border-radius:4px}#expeditionStages button[data-cycle="3"]{grid-column:span 2;background:#50436d}</style>
+<style>#blueprintGoalP{z-index:76}.plan-row{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid #6b6a56;margin:6px 0;border-radius:6px}.plan-row.ready{border-color:#86b786;background:#29463c}.plan-row>span{width:48px;height:48px;flex:none}.plan-row svg,.plan-row .hxo{width:100%;height:100%}.plan-row b{font-size:14px}.plan-row small{display:block;color:#b7cac3;font-size:12px}.plan-row button{font-size:12px;padding:5px 8px;margin-top:5px}.plan-children{padding-left:15px;border-left:2px solid #83754c}.weapon-protected{position:absolute;right:-3px;top:-4px;font-size:14px;z-index:5}#weaponProtection{font-size:14px}#weaponProtection[hidden],#blueprintGoalSet[hidden],#blueprintGoalClear[hidden]{display:none!important}</style>
 </head>
 <body>
 <div id="portraitGuard" hidden role="dialog" aria-modal="true" aria-hidden="true" aria-label="請直向遊玩"><svg viewBox="0 0 40 52" aria-hidden="true" shape-rendering="crispEdges"><path fill="#0c1726" d="M7 0h26v3h3v46h-3v3H7v-3H4V3h3z"/><path fill="#b8a577" d="M8 3h24v46H8z"/><path fill="#293e51" d="M10 8h20v34H10z"/><path fill="#e8d696" d="M16 4h8v2h-8zM17 45h6v2h-6z"/><path fill="#84b6b0" d="M19 14h3v16h-3zM13 21h3v3h-3zM16 18h3v3h-3zM22 18h3v3h-3zM25 21h3v3h-3z"/></svg><b>請直向遊玩</b><p>將手機轉回直向<br>即可繼續遊戲</p></div>
@@ -949,7 +950,7 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
   <div id="msg"></div>
 </div>
 
-<div id="chestP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('chestP')">×</button><h2>📦 武器箱</h2><p id="chestInfo"></p><div id="chestItems"></div><button class="legend-chest-button" onclick="openLegendRecipes()">🌟 藍圖收藏</button><button  style="width:100%;margin-top:14px" onclick="closeP('chestP')" class="legacy-modal-close" hidden>關閉</button></div></div>
+<div id="chestP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('chestP')">×</button><h2>📦 武器箱</h2><p id="chestInfo"></p><button class="exp-wide" onclick="openBlueprintGoal()">📋 查看製作計畫</button><div id="chestItems"></div><button class="legend-chest-button" onclick="openLegendRecipes()">🌟 藍圖收藏</button><button  style="width:100%;margin-top:14px" onclick="closeP('chestP')" class="legacy-modal-close" hidden>關閉</button></div></div>
 <div id="townP"><header class="town-header"><div><span class="town-player-heading"><button id="townAvatar" class="player-avatar" onclick="openAvatarCreator('edit')" title="調整角色外觀" aria-label="調整角色外觀"></button><b>🏘 鍛造小鎮</b></span><span class="town-header-actions"><button id="sandboxNextDay" hidden onclick="nextSandboxDay()">下一天 ▶</button><button id="townArchitectBtn" aria-label="開啟建築師" title="建築師" aria-pressed="false">🏗</button><button id="townMute" onclick="toggleMute()" aria-label="切換靜音">🔊</button><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></span></div><div id="townStats"></div><div id="townSeason"></div><span id="sandboxTag" hidden></span><div id="architectBar" hidden><div class="architect-season-picker"><button id="architectSeasonPrev" aria-label="上一個季節">◀</button><output id="architectSeasonName">春天</output><button id="architectSeasonNext" aria-label="下一個季節">▶</button></div><button id="architectInventoryTop">📦 收藏</button><button id="architectLayoutsTop">🖼 版型</button><div id="architectPlacementBar" hidden><span id="architectPlacementHint" aria-live="polite"></span><button id="architectCancelTop">取消放置</button></div></div>
 </header><div id="townMap"><div id="townScenery"></div><div id="townDecorBack"></div><div id="townDecorFront"></div><div id="townPlaza" aria-hidden="true"></div><div id="townFurniture" aria-hidden="true"></div><button id="townExpedition" onclick="openExpedition()" aria-label="城門遠征"><span class="town-sign">⚔ 遠征</span></button><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townGreenhouse" class="town-building" onclick="openP('greenhouseP')" aria-label="溫室"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><button id="townDecorShop" class="town-building" onclick="openDecorationShop()" aria-label="裝飾行"></button><div id="townFountain" aria-label="城鎮噴水池"></div><div id="townQueue"></div><div id="townPets"><button id="townPet-cat" class="town-pet" onclick="petLove('cat')" aria-label="摸摸小貓"></button><button id="townPet-dog" class="town-pet" onclick="petLove('dog')" aria-label="摸摸小狗"></button></div><div id="townBirds" aria-hidden="true"></div><button id="townChest" onclick="openTownChest()" hidden></button><div id="townWeather" aria-hidden="true"></div></div><section id="architectPanel" hidden><div class="architect-panel-heading"><b id="architectSelected"></b><button id="architectDeselect" aria-label="關閉裝飾工具">×</button></div><div id="architectActions"><div class="architect-scale-row"><label for="architectScale">大小</label><input type="range" id="architectScale" min="30" max="200" step="1" value="100"><output id="architectScaleValue">100%</output></div><div class="architect-scale-row"><label for="architectRotation">旋轉</label><input type="range" id="architectRotation" min="0" max="360" step="1" value="0"><output id="architectRotationValue">0°</output></div><div class="architect-transform-tools"><button data-city-action="flip">水平翻轉</button><button data-city-action="flipY">上下翻轉</button><button data-city-action="depth" id="architectDepth">移到後方</button><button data-city-action="roam" id="architectRoam">散步</button><button data-city-action="stow">📦 收起來</button></div></div></section></div>
 <div id="decorShopP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('decorShopP')">×</button><h2>🎨 裝飾行</h2><p id="decorShopSummary"></p><div id="decorShopTabs" class="city-season-tabs"></div><p id="decorShopNotice" class="city-note"></p><div id="decorShopGrid" class="decor-grid"></div></div></div>
@@ -962,7 +963,7 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
 <div id="townSkillP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('townSkillP')">×</button><h2>⭐ 還有技能點可以使用</h2><p id="townSkillCount"></p><div class="town-dialog-actions"><button onclick="startTownForge()">仍要進入</button><button class="pri" onclick="closeP('townSkillP');openSkills(false)">前往訓練所</button></div></div></div>
 <div id="weaponStatsP" class="exp-overlay"><div class="hp weapon-stat-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('weaponStatsP')">×</button>
  <small id="weaponStatsSource"></small><h2 id="weaponStatsTitle"></h2><div id="weaponStatsArt"></div><div id="weaponStatsValues"></div>
- <div id="weaponStatsParts"></div><p id="weaponStatsNote" class="exp-note"></p><p id="weaponStatsPrice"></p>
+ <button id="weaponProtection" class="exp-wide" onclick="toggleWeaponProtection()" hidden></button><div id="weaponStatsParts"></div><p id="weaponStatsNote" class="exp-note"></p><p id="weaponStatsPrice"></p>
  <button  class="pri exp-wide legacy-modal-close" onclick="closeP('weaponStatsP')" hidden>關閉</button>
 </div></div>
 <div id="expeditionP" class="exp-overlay"><div class="hp exp-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('expeditionP')">×</button>
@@ -982,7 +983,8 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
 </div></div>
 
 <div id="ultimateArtP" class="exp-overlay"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="closeP('ultimateArtP')">×</button><h2 id="ultimateArtTitle"></h2><img id="ultimateArtImage" alt="" decoding="async"><p id="ultimateArtInfo"></p></div></div>
-<div id="legendBlueprintP" class="exp-overlay"><div class="hp legend-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('legendBlueprintP')">×</button><h2 id="legendBlueprintTitle"></h2><div id="legendBlueprintStats"></div><div id="legendBlueprintArt" class="legend-large-art"></div><button class="bp-rotate" onclick="rotateBlueprint()">↻ 旋轉樣式</button><p id="legendBlueprintState"></p><div id="legendBlueprintRecipe"></div><button id="legendBlueprintForge" class="pri exp-wide" onclick="prepareBlueprintHand()">確認放置 · 移到手持欄</button><button  class="exp-wide legacy-modal-close" onclick="closeP('legendBlueprintP')" hidden>返回圖鑑</button></div></div>
+<div id="blueprintGoalP" class="exp-overlay"><div class="hp"><button class="modal-x" aria-label="關閉視窗" onclick="closeP('blueprintGoalP')">×</button><h2 id="blueprintGoalTitle"></h2><div id="blueprintGoalInfo"></div><div id="blueprintGoalTree" onclick="const b=event.target.closest('[data-plan-inspect]');if(b)inspectPlannerWeapon(+b.dataset.planInspect)"></div><button id="blueprintGoalClear" onclick="clearBlueprintGoal()">取消製作目標</button></div></div>
+<div id="legendBlueprintP" class="exp-overlay"><div class="hp legend-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('legendBlueprintP')">×</button><h2 id="legendBlueprintTitle"></h2><div id="legendBlueprintStats"></div><div id="legendBlueprintArt" class="legend-large-art"></div><button class="bp-rotate" onclick="rotateBlueprint()">↻ 旋轉樣式</button><p id="legendBlueprintState"></p><button id="blueprintGoalSet" class="exp-wide" onclick="setBlueprintGoal(blueprintInspectId)">📋 設為製作目標</button><div id="legendBlueprintRecipe"></div><button id="legendBlueprintForge" class="pri exp-wide" onclick="prepareBlueprintHand()">確認放置 · 移到手持欄</button><button  class="exp-wide legacy-modal-close" onclick="closeP('legendBlueprintP')" hidden>返回圖鑑</button></div></div>
 <div id="blueprintProjectP" class="exp-overlay"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('blueprintProjectP')">×</button><h2 id="blueprintProjectTitle"></h2><div id="blueprintProjectInfo"></div><button class="exp-wide bp-cancel" onclick="cancelBlueprintProject()">撤回藍圖與原料</button><button  class="exp-wide legacy-modal-close" onclick="closeP('blueprintProjectP')" hidden>繼續製作</button></div></div>
 <div id="avatarCreatorP" class="exp-overlay"><div class="hp avatar-editor"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('avatarCreatorP')">×</button>
  <header class="avatar-editor-header"><div><h2 id="avatarCreatorTitle">設計你的角色</h2><p id="avatarCreatorName"></p></div><button class="avatar-dice" onclick="randomizeAvatar()" aria-label="隨機搭配角色外觀">🎲 隨機搭配</button></header>
@@ -1895,7 +1897,7 @@ function elementChartHTML(){
 
 const pat=()=>1;
 const svg=(c,t=0)=>`<svg viewBox="0 0 48 48" shape-rendering="crispEdges"><image href="${UNITY_ART['weapon'+c+'_'+t]}" width="48" height="48" style="image-rendering:pixelated"/></svg>`;
-const hex=(c,bg,cls="",t=0,w=null)=>`<div class="hxo ${cls}${isLegend(w)?" legendary":""}"><div class="hxi" style="background:${bg}">${isLegend(w)?legendWeaponSVG(w.legendId):svg(c,t)}</div>${validElement(w?.element)?'<span class="weapon-element-icon" style="--element:'+ELEMENTS[w.element].color+'" aria-label="'+ELEMENTS[w.element].name+'屬性">'+elementIcon(w.element)+'</span>':''}</div>`;
+const hex=(c,bg,cls="",t=0,w=null)=>`<div class="hxo ${cls}${isLegend(w)?" legendary":""}"><div class="hxi" style="background:${bg}">${isLegend(w)?legendWeaponSVG(w.legendId):svg(c,t)}</div>${w?.protected?'<span class="weapon-protected" aria-label="受保護武器">🔒</span>':''}${validElement(w?.element)?'<span class="weapon-element-icon" style="--element:'+ELEMENTS[w.element].color+'" aria-label="'+ELEMENTS[w.element].name+'屬性">'+elementIcon(w.element)+'</span>':''}</div>`;
 const price=(t,c)=>Math.round(PR[t]*MUL[c]);
 const tok=(bg,tx,b)=>`<div class="${b?"t o":"q"}" style="background-color:${bg}">${tx}</div>`;
 const itemH=(h,b)=>h.k==='ess'?'<span class="essence-icon">'+essenceArt(h.element)+'</span>':h.k==='seed'?'<span class="seed-icon">'+seedPacketArt(h.element)+'</span>':h.k==='bp'?'<span class="bp-item-icon">'+legendBlueprintSVG(h.id)+'</span>':h.k==='m'?mold(h.s,"","f")
@@ -2458,7 +2460,7 @@ function dropGem(t){
   say($("msg").textContent+" 💎 掉落一顆"+NM[t]+"鑽！");
 }
 function sellW(c,k,clear){
-  const o=orders[k];
+  if(c?.protected){toast('這把武器已受保護，請先取消保護');return false;}const o=orders[k];
   if(o.c!==null&&o.c!==c.c){say("這位客人要的是"+WN[o.c]);return false}
   if(c.t<o.t){say("品質不夠，這位客人需要"+NM[o.t]+"級以上");return false}
   const mg=c.m||0,p=salePrice(c,o);
@@ -2802,7 +2804,7 @@ function weaponEnchantHTML(w){
  const s=weaponStats(w);return elementWeaponHTML(w)+'<div class="weapon-enchant"><b>✦ 奧術附魔 '+s.stacks+' 層</b><span>每次攻擊額外 '+s.arcane+' 奧術傷害 · 開戰護盾 '+s.ward+'</span><small>每層提供 2 傷害、3 護盾，戰鬥效果最多計算 20 層。</small></div>';
 }
 function openCraftedWeapon(w,source='鍛造作品'){
- if(!w||w.c==null)return;
+ if(!w||w.c==null)return;inspectedLiveWeapon=liveWeapons().some(x=>x.w===w)?w:null;$('weaponProtection').hidden=!inspectedLiveWeapon;$('weaponProtection').textContent=w.protected?'🔓 取消武器保護':'🔒 保護這把武器（防止賣出、出戰與投入藍圖）';
  $('weaponStatsTitle').textContent=isLegend(w)?LEGENDS[w.legendId].name+' · '+legendKind(w.legendId):NM[w.t]+'級'+WN[w.c];$('weaponStatsSource').textContent=source;
  $('weaponStatsArt').innerHTML=hex(w.c,bands(w),'',w.t,w);$('weaponStatsValues').innerHTML=statsHTML(w)+weaponEnchantHTML(w)+ultimateSkillHTML(w)+ (isUltimate(w)?ultimateArtHTML(w.legendId):'');
  $('weaponStatsParts').innerHTML=isLegend(w)?'<h3>消耗的原料武器</h3><div class="legend-ingredient-row">'+(w.legendIngredients||[]).map(x=>'<div>'+hex(x.c,bands(x),'',x.t,x)+'<span>'+itemName(x)+'</span></div>').join('')+'</div>':'<h3>製作材料</h3><div class="weapon-part-list">'+weaponParts(w).map(p=>'<div>'+mold(p.s,C[p.t],'s')+'<span>'+NM[p.t]+'・'+TY[p.s]+'胚</span></div>').join('')+'</div>';
@@ -2847,6 +2849,28 @@ function renderExpeditionLab(){
  if(!$('labWeapon').innerHTML){$('labWeapon').innerHTML='<optgroup label="普通武器">'+WN.map((n,c)=>'<option value="n'+c+'">'+n+'</option>').join('')+'</optgroup><optgroup label="傳說武器">'+LEGENDS.slice(0,10).map((l,id)=>'<option value="l'+id+'">'+l.name+'</option>').join('')+'</optgroup><optgroup label="終極武器">'+LEGENDS.slice(10).map((l,i)=>'<option value="l'+(i+10)+'">'+l.name+'</option>').join('')+'</optgroup>';$('labTier').innerHTML=NM.map((n,t)=>'<option value="'+t+'">'+n+'級</option>').join('');$('labElement').innerHTML='<option value="none">無屬性</option>'+ELEMENT_IDS.map(e=>'<option value="'+e+'">'+elementName(e)+'</option>').join('');}
  $('labWeapon').value=expeditionLab.weapon;$('labTier').value=String(expeditionLab.tier);$('labStacks').value=String(expeditionLab.stacks);$('labElement').value=expeditionLab.element;$('labStage').value=String(expeditionStage+1);
 }
+
+let blueprintGoalId=null,inspectedLiveWeapon=null,plannerRows=[];
+function liveWeapons(){const a=[];[['棋盤',g],['武器箱',pack],['道具箱',bag]].forEach(([source,list])=>list.forEach(w=>{if(w?.k==='w')a.push({w,source});}));if(hand?.k==='w')a.push({w:hand,source:'手持'});return a;}
+function toggleWeaponProtection(){
+ const w=inspectedLiveWeapon;if(!w||!liveWeapons().some(x=>x.w===w))return;w.protected=!w.protected;openCraftedWeapon(w,'武器管理');render();saveNow();if($('blueprintGoalP').style.display==='flex')renderBlueprintGoal();
+}
+function setBlueprintGoal(id){if(!validLegendId(id))return;blueprintGoalId=id;['legendBlueprintP','weaponAlbumP','chestP'].forEach(closeP);openBlueprintGoal();saveNow();}
+function clearBlueprintGoal(){blueprintGoalId=null;renderBlueprintGoal();render();saveNow();}
+function planBlueprint(id){
+ const entries=liveWeapons(),used=new Set(),active=legendProjects.find(p=>p.id===id);
+ function allocate(r){const held=entries.find(x=>!used.has(x.w)&&(r.legendId!==undefined?isLegend(x.w)&&x.w.legendId===r.legendId:!isLegend(x.w)&&x.w.c===r.c&&x.w.t===r.tier));if(held){used.add(held.w);return {r,ready:true,held,children:[]};}const children=r.legendId!==undefined?LEGENDS[r.legendId].recipe.map((_,k)=>allocate(blueprintRequirement(r.legendId,k))):[];return {r,ready:false,children};}
+ return LEGENDS[id].recipe.map((_,k)=>active?.filled[k]?{r:blueprintRequirement(id,k),ready:true,invested:true,children:[]}:allocate(blueprintRequirement(id,k)));
+}
+function openBlueprintGoal(){closeP('chestP');renderBlueprintGoal();$('blueprintGoalP').style.display='flex';}
+function renderBlueprintGoal(){
+ $('blueprintGoalClear').hidden=blueprintGoalId===null;plannerRows=[];
+ if(!validLegendId(blueprintGoalId)){$('blueprintGoalTitle').textContent='📋 藍圖製作計畫';$('blueprintGoalInfo').innerHTML='<p>到武器箱的藍圖收藏，打開想製作的藍圖，再按「設為製作目標」。</p>';$('blueprintGoalTree').innerHTML='';return;}
+ const id=blueprintGoalId,rows=planBlueprint(id),ready=rows.filter(x=>x.ready).length;$('blueprintGoalTitle').textContent='📋 '+LEGENDS[id].name;$('blueprintGoalInfo').innerHTML='<p>原料 '+ready+' / '+rows.length+' 已備妥'+(hasLegendBlueprint(id)?'':' · 藍圖尚未解鎖，需通過第 '+(id+1)+' 關')+'</p><button onclick="openLegendBlueprint('+id+')">查看藍圖與放置樣式</button><p class="exp-note">受保護的原料必須先取消保護，才能投入。展開傳說原料可查看其普通武器需求；同一件武器只會計算一次。</p>';
+ function rowHTML(row){const index=plannerRows.push(row)-1,body='<div class="plan-row '+(row.ready?'ready':'')+'"><span>'+requirementArt(row.r)+'</span><div><b>'+(row.invested?'✓ 已投入':row.ready?'✓ 已備妥':'○ 尚缺')+' '+requirementName(row.r)+'</b>'+(row.held?'<small>'+row.held.source+(row.held.w.protected?' · 🔒 受保護':'')+'</small><button data-plan-inspect="'+index+'">查看／保護</button>':'')+'</div></div>';return row.children.length?'<details open><summary>'+body+'</summary><div class="plan-children">'+row.children.map(rowHTML).join('')+'</div></details>':body;}
+ $('blueprintGoalTree').innerHTML=rows.map(rowHTML).join('');
+}
+function inspectPlannerWeapon(index){const row=plannerRows[index];if(row?.held)openCraftedWeapon(row.held.w,row.held.source);}
 
 const EXPEDITIONS=[
  {name:'苔原史萊姆',area:'林間小徑',kind:'slime',color:'#81ad67',hp:65,atk:12,def:3,spd:8,gold:120,loot:{k:'o',t:1}},
@@ -2945,7 +2969,7 @@ function consumeExpeditionWeapon(chosen){
 function beginExpedition(confirmed=false){
  syncExpeditionDay();if((!sandboxSession&&(lives<=0||expeditionStage>expeditionState.unlocked||expeditionCleared(expeditionStage)))||$('expeditionSetup').hidden)return;
  if(!sandboxSession&&lives===1&&!confirmed){confirmBox('只剩最後一顆愛心','這次遠征若落敗，會失去最後一顆愛心並結束遊戲。出戰武器也會消耗。確定要挑戰嗎？','仍要挑戰',()=>beginExpedition(true));return;}
- const chosen=expeditionWeapons().find(x=>x.key===expeditionSelected);if(!chosen)return;
+ const chosen=expeditionWeapons().find(x=>x.key===expeditionSelected);if(!chosen)return;if(chosen.w.protected){toast('請先取消武器保護才能出戰');return;}
  const b=expeditionBattleState(chosen.w,expeditionMonster(expeditionStage));if(!consumeExpeditionWeapon(chosen))return;
  stopExpeditionPlayback();expeditionState.attempts++;expeditionState.lastBattle={...b,stage:expeditionStage,gold:0,loot:null,first:true,day};expeditionSelected='';expeditionBattleStep=0;
  // Save the consumed weapon before the first action. Reload/exit never refunds it or grants an unearned reward.
@@ -2991,13 +3015,13 @@ function renderExpeditionBattle(){
 }
 
 function renderExpedition(){
- syncExpeditionDay();renderExpeditionLab();const options=expeditionWeapons();if(!options.some(x=>x.key===expeditionSelected))expeditionSelected=options[0]?.key||'';
+ syncExpeditionDay();renderExpeditionLab();const options=expeditionWeapons().filter(x=>!x.w.protected);if(!options.some(x=>x.key===expeditionSelected))expeditionSelected=options[0]?.key||'';
  const chosen=options.find(x=>x.key===expeditionSelected),m=expeditionMonster(expeditionStage),cleared=(!sandboxSession&&expeditionCleared(expeditionStage));
  $('expeditionAttempts').textContent=(expeditionStage>=20?'無限模式 · 第 '+(expeditionStage-19)+' 隻':expeditionStage>=10?'二周目':'一周目')+' · 第 '+day+' 天 · 累計勝利 '+expeditionState.victories+' 場 · 無限通關 '+(expeditionState.endless||0)+' 隻';
  $('expeditionStages').innerHTML=EXPEDITIONS.map((x,i)=>'<button data-exp-stage="'+i+'" data-cycle="'+(i>=10?2:1)+'" '+(!sandboxSession&&(i>expeditionState.unlocked||expeditionCleared(i))?'disabled':'')+' aria-label="第 '+(i+1)+' 關 '+x.name+'" aria-pressed="'+(i===expeditionStage)+'">'+(expeditionState.cleared.includes(i)?'✓':i>expeditionState.unlocked?'·':'⚑')+(i+1)+'</button>').join('')+((sandboxSession||expeditionState.cleared.includes(19))?'<button data-exp-stage="'+(20+(expeditionState.endless||0))+'" data-cycle="3" aria-pressed="'+(expeditionStage>=20)+'">∞ '+((expeditionState.endless||0)+1)+'</button>':'');
  $('expeditionMonster').innerHTML='<div class="exp-monster-art">'+monsterArt(m)+elementBadge(m.element,'monster-element')+'</div><div><small>第 '+(expeditionStage+1)+' 關 · '+m.area+'</small><h3>'+m.name+'</h3><div class="exp-monster-stats">♥ '+m.hp+'　⚔ '+m.atk+'　🛡 '+m.def+'　💨 '+m.spd+'</div></div>';
  $('expeditionReward').textContent=cleared?'已通關'+(expeditionStage===19?'，二周目全部完成！':'，請前往下一關。'):(expeditionStage>=20?'無限勝利：'+m.gold+' 金幣':'首次勝利：'+m.gold+' 金幣＋'+itemName(m.loot)+(expeditionStage>=10?' · 解鎖高清武器美術':''));
- $('expeditionWeapons').innerHTML=options.length?options.map(x=>'<button class="exp-weapon '+(x.key===expeditionSelected?'selected':'')+'" data-exp-weapon="'+x.key+'"><span class="exp-weapon-art">'+hex(x.w.c,bands(x.w),'',x.w.t,x.w)+'</span><span><b>'+esc(itemName(x.w))+'</b><small>'+x.source+' · ⚔'+weaponStats(x.w).atk+' 🛡'+weaponStats(x.w).def+' 💨'+weaponStats(x.w).spd+'</small></span></button>').join(''):'<div class="exp-empty">沒有可出戰武器。請先在冶煉廠鍛造武器；每次出戰都會消耗一把。</div>';
+ $('expeditionWeapons').innerHTML=options.length?options.map(x=>'<button class="exp-weapon '+(x.key===expeditionSelected?'selected':'')+'" data-exp-weapon="'+x.key+'"><span class="exp-weapon-art">'+hex(x.w.c,bands(x.w),'',x.w.t,x.w)+'</span><span><b>'+esc(itemName(x.w))+'</b><small>'+x.source+' · ⚔'+weaponStats(x.w).atk+' 🛡'+weaponStats(x.w).def+' 💨'+weaponStats(x.w).spd+'</small></span></button>').join(''):'<div class="exp-empty">沒有未受保護的可出戰武器。請先在冶煉廠鍛造武器；每次出戰都會消耗一把。</div>';
  $('expeditionSelectedStats').innerHTML=chosen?statsHTML(chosen.w)+weaponEnchantHTML(chosen.w)+ultimateSkillHTML(chosen.w)+elementMatchupHTML(chosen.w,m)+'<p class="exp-note">⚠ 出戰後消耗這把武器，勝利、失敗或撤退都不退回。</p>':'';
  if(!$('elementChart').innerHTML)$('elementChart').innerHTML=elementChartHTML();
  $('expeditionFight').disabled=!chosen||lives<=0||cleared;$('expeditionFight').textContent='消耗武器 · 開始挑戰';
@@ -3158,7 +3182,7 @@ function renderBlueprintPreview(){
  $('legendBlueprintState').textContent=blueprintReadOnly?'首頁圖鑑僅供欣賞；進入遊戲後，可從武器箱的藍圖收藏使用藍圖。':hasLegendBlueprint(id)?'將藍圖移到手持欄，再拖曳到棋盤放置。':'第 '+(id+1)+' 關「'+EXPEDITIONS[id].name+'」首次勝利取得';
  const sample=baseLegendWeapon(id);$('legendBlueprintStats').innerHTML='<p class="exp-note">'+legendKind(id)+'武器基礎能力 · 未附魔</p>'+statsHTML(sample)+ultimateSkillHTML(sample)+ultimateArtHTML(id)+(id>=10?'<p class="exp-note">售價為原料合計的 '+(LEGENDS[id].price*100)+'%。'+(firstUltimateReward(id)?'本局首次打造另得 '+firstUltimateReward(id)+' 金幣（不計分）。':'本局首次打造獎金已領取。')+'</p>':'');
  $('legendBlueprintRecipe').innerHTML='<div class="bp-requirements">'+l.recipe.map((c,k)=>{const r=blueprintRequirement(id,k);return '<div><b>'+(k+1)+'</b>'+requirementArt(r)+'<span>'+requirementName(r)+'</span></div>';}).join('')+'</div><p class="exp-note">'+(id>=10?'每格只接受上方指定名稱的一周目傳說武器；普通武器、其他傳說或終極武器都不能替代。':'每格需要指定種類與固定階級的普通武器，更高或更低階都不能放入。')+'原料會消耗，最後一件放入的位置產生成品。</p><p class="exp-note">'+l.trait+' 完成後藍圖回到收藏，可重複使用。點擊黃色格可撤回藍圖與已投入原料。</p>';
- const active=legendProjects.some(p=>p.id===id);$('legendBlueprintForge').hidden=blueprintReadOnly;$('legendBlueprintForge').disabled=!hasLegendBlueprint(id)||active;$('legendBlueprintForge').textContent=active?'這張藍圖已放在棋盤':'確認放置 · 移到手持欄';
+ $('blueprintGoalSet').hidden=blueprintReadOnly;const active=legendProjects.some(p=>p.id===id);$('legendBlueprintForge').hidden=blueprintReadOnly;$('legendBlueprintForge').disabled=!hasLegendBlueprint(id)||active;$('legendBlueprintForge').textContent=active?'這張藍圖已放在棋盤':'確認放置 · 移到手持欄';
 }
 
 function rotateBlueprint(){blueprintRotation=(blueprintRotation+1)%4;renderBlueprintPreview();}
@@ -3195,12 +3219,12 @@ function renderBlueprintCells(){
  }));
 }
 function fillBlueprint(i,w,clear){
- const target=blueprintSlotAt(i);if(!target)return false;const {project:p,slot:k}=target,r=blueprintRequirement(p.id,k);
+ if(w?.protected){toast('原料武器已受保護，請先取消保護');return false;}const target=blueprintSlotAt(i);if(!target)return false;const {project:p,slot:k}=target,r=blueprintRequirement(p.id,k);
  if(p.filled[k]){toast('這格原料已放入');render();return false;}
  if(!blueprintAccepts(p.id,k,w)){toast('無法放入：此格只接受'+requirementName(r));say('無法放入，原料種類與階級都必須完全符合，更高階也不能替代。');render();return false;}
  const value=JSON.parse(JSON.stringify(w));clear();p.filled[k]=value;
  if(p.filled.every(Boolean)){
-  const result=applyWeaponElement(legendaryWeapon(p.id,p.filled),i);legendProjects=legendProjects.filter(x=>x!==p);g[i]=result;
+  const result=applyWeaponElement(legendaryWeapon(p.id,p.filled),i);legendProjects=legendProjects.filter(x=>x!==p);g[i]=result;if(blueprintGoalId===p.id){blueprintGoalId=null;toast("製作計畫完成！");}
   p.cells.forEach(j=>{heat[j]=hotSteps();justHeated.add(j)});const debutReward=firstUltimateReward(p.id);recordLegendForge(p.id);if(debutReward){coins+=debutReward;toast("首次打造獎金 +"+debutReward+" 金幣（不計分）");}
   if(!testRun){legendBlueprints.add(p.id);persistLegendSets();rememberWeapon(result);}
   if(rankOf(result)>rankOf(best[result.c]))best[result.c]=JSON.parse(JSON.stringify(result));qOnForgeStats(result);grantBlueprintItem(p.id);burnLeaves();saveHi();
@@ -3616,7 +3640,7 @@ function mv(e){
     const od=at(e.clientX,e.clientY,".od");
     if(od&&w){
       const o=orders[+od.dataset.k];
-      const why=o.c!==null&&o.c!==w.c
+      const why=w.protected?'這把武器已受保護':o.c!==null&&o.c!==w.c
         ?"需要"+WN[o.c]+"，這把是"+WN[w.c]
         :w.t<o.t?"需要"+NM[o.t]+"級以上，這把是"+NM[w.t]+"級":"";
       od.classList.add(why?"pv-bad":"pv-sale");
@@ -3849,7 +3873,7 @@ function start(mode,opt){
   active=!booting&&mode!=="tut"&&!testRun;
   skills={mm:0,gc:0,mg:0,wb:0,mc:0,mn:0,cd:0};
   pack=[];bag=[];gachaUsed=false;pendingChests=0;lastCompletedDay=0;chestOpening=false;
-  resetCity();resetEcology();resetRunCollections();legendProjects=[];blueprintSequence=0;
+  resetCity();resetEcology();resetRunCollections();legendProjects=[];blueprintSequence=0;blueprintGoalId=null;inspectedLiveWeapon=null;
   legendDemoBlueprints.clear();legendDemoCollection.clear();
   $("legendBlueprintP").style.display="none";$("blueprintProjectP").style.display="none";
   stopExpeditionPlayback();expeditionState=freshExpeditionState();expeditionSelected="";expeditionStage=0;
@@ -3934,7 +3958,7 @@ function saveNow(){
   const st={
     g,coins,earned,all,day,dTot,dServed,dEarn,dLeft,orders,dq,best,Q,MQ,
     heat,hand,shopD,magic,magicSet:[...magicSet],dMagic,dSold,lives,
-    skills,pack,sp,bag,gachaUsed,skillDone,spentToday,phase,quests,qDone,dLv,pendingChests,lastCompletedDay,expedition:expeditionState,legendProjects,collections:snapshotRunCollections(),ecology:snapshotEcology(),orderCapVersion:1,city:snapshotCity(),avatar:normalizeAvatar(playerAvatar),
+    skills,pack,sp,bag,gachaUsed,skillDone,spentToday,phase,quests,qDone,dLv,pendingChests,lastCompletedDay,expedition:expeditionState,legendProjects,blueprintGoalId,collections:snapshotRunCollections(),ecology:snapshotEcology(),orderCapVersion:1,city:snapshotCity(),avatar:normalizeAvatar(playerAvatar),
     shopBought,leaves:[...leaves],frozen:[...frozen],seasonVersion:1,seasonNoticePending
   };
   const e={
@@ -3963,7 +3987,7 @@ function loadGame(id){
   heat=t.heat;hand=t.hand;shopD=t.shopD;magic=t.magic;
   magicSet=new Set(t.magicSet);dMagic=t.dMagic;dSold=t.dSold;
   lives=t.lives;skills={mm:0,gc:0,mg:0,wb:0,mc:0,mn:0,cd:0,...t.skills};pack=t.pack;sp=t.sp;bag=t.bag;
-  restoreEcology(t.ecology);restoreBlueprintProjects(t.legendProjects);
+  blueprintGoalId=validLegendId(t.blueprintGoalId)?t.blueprintGoalId:null;inspectedLiveWeapon=null;restoreEcology(t.ecology);restoreBlueprintProjects(t.legendProjects);
   stopExpeditionPlayback();expeditionState=restoreExpeditionState(t.expedition);syncExpeditionDay();expeditionSelected="";expeditionStage=expeditionState.unlocked;restoreRunCollections(t);importLegendProgress();ensureBlueprintInventory();
   gachaUsed=t.gachaUsed;skillDone=t.skillDone;spentToday=t.spentToday;
   shopBought={m:0,tool:0,o:0,...t.shopBought};
@@ -4349,7 +4373,7 @@ function finishSandbox(){
 }
 
 function showHelp(){$("help").style.display="flex"}
-const townModalIds=['leaderboardP','leaderboardDetailP','ultimateArtP','chestP','townLootP','townSkillP','weaponStatsP','expeditionP','legendBlueprintP','blueprintProjectP','avatarCreatorP','weaponAlbumP','weaponInspectP','seasonP','help','shopP','qP','colP','sk','bagP','rw','gcP','recP','nm','svP','pw','decorShopP','decorInventoryP','cityLayoutsP','cityLayoutPreviewP','cf','ov','greenhouseP','seedP'];
+const townModalIds=['blueprintGoalP','leaderboardP','leaderboardDetailP','ultimateArtP','chestP','townLootP','townSkillP','weaponStatsP','expeditionP','legendBlueprintP','blueprintProjectP','avatarCreatorP','weaponAlbumP','weaponInspectP','seasonP','help','shopP','qP','colP','sk','bagP','rw','gcP','recP','nm','svP','pw','decorShopP','decorInventoryP','cityLayoutsP','cityLayoutPreviewP','cf','ov','greenhouseP','seedP'];
 function dismissModal(id){
  if(id==='avatarCreatorP')cancelAvatar();
  else if(id==='expeditionP')closeExpedition();
