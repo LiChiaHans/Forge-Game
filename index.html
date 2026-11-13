@@ -923,6 +923,14 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
 <style>#blueprintGoalP{z-index:76}.plan-row{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid #6b6a56;margin:6px 0;border-radius:6px}.plan-row.ready{border-color:#86b786;background:#29463c}.plan-row>span{width:48px;height:48px;flex:none}.plan-row svg,.plan-row .hxo{width:100%;height:100%}.plan-row b{font-size:14px}.plan-row small{display:block;color:#b7cac3;font-size:12px}.plan-row button{font-size:12px;padding:5px 8px;margin-top:5px}.plan-children{padding-left:15px;border-left:2px solid #83754c}.weapon-protected{position:absolute;right:-3px;top:-4px;font-size:14px;z-index:5}#weaponProtection{font-size:14px}#weaponProtection[hidden],#blueprintGoalSet[hidden],#blueprintGoalClear[hidden]{display:none!important}</style>
 <style>#expeditionIntent{color:#f4d28a;background:#423b3d;border-left:3px solid #d6aa66;padding:9px;font-size:14px}#expeditionGuard{background:#344d61;border-color:#91b0b9}#expeditionBossRule{padding:9px;background:#26363d;border-radius:6px;line-height:1.7}</style>
 <style>#backupP{z-index:76}.backup-file-label{display:block;margin:18px 0;font-size:15px}#backupFile{display:block;width:100%;margin-top:8px;font-size:14px}#backupStatus{color:#d9c497;font-size:14px;line-height:1.7}.low-effects-label{display:flex;align-items:center;gap:9px;font-size:15px}.low-effects-label input{width:22px;height:22px;flex:none}.low-effects #townWeather,.low-effects #townBirds{display:none!important}.low-effects #townP *{animation:none!important;transition:none!important}</style>
+<style>
+#app #side #handSlot .hand-bag{padding:0;margin:0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:32px;line-height:1;background:linear-gradient(#49566b,#273447);border:1px solid #b9a36d;box-shadow:inset 0 0 0 2px #1a2433,0 2px 4px #0005;touch-action:manipulation}
+#app #side #handSlot .hand-bag:active{background:#6b5938}
+#bagC .si{min-width:0;padding:8px 4px;gap:6px}
+#bagC .bag-item-art{display:flex;align-items:center;justify-content:center;min-height:54px;width:100%;flex:none}
+#bagC .bag-item-large>.q,#bagC .bag-item-large>.mo,#bagC .bag-item-large>.gm,#bagC .bag-item-large>.hxo,#bagC .bag-item-large>.seed-icon,#bagC .bag-item-large>.bp-item-icon{width:52px;height:52px;flex:none}
+#bagC .bag-item-large>.q{font-size:25px}
+</style>
 </head>
 <body>
 <div id="portraitGuard" hidden role="dialog" aria-modal="true" aria-hidden="true" aria-label="請直向遊玩"><svg viewBox="0 0 40 52" aria-hidden="true" shape-rendering="crispEdges"><path fill="#0c1726" d="M7 0h26v3h3v46h-3v3H7v-3H4V3h3z"/><path fill="#b8a577" d="M8 3h24v46H8z"/><path fill="#293e51" d="M10 8h20v34H10z"/><path fill="#e8d696" d="M16 4h8v2h-8zM17 45h6v2h-6z"/><path fill="#84b6b0" d="M19 14h3v16h-3zM13 21h3v3h-3zM16 18h3v3h-3zM22 18h3v3h-3zM25 21h3v3h-3z"/></svg><b>請直向遊玩</b><p>將手機轉回直向<br>即可繼續遊戲</p></div>
@@ -936,7 +944,6 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
     <button onclick="openP('shopP')">🛒商店</button>
     <button onclick="openP('colP')">📖圖鑑</button>
     <button id="spb" onclick="visitTrainingFromGame()">🌟技能</button>
-    <button id="bgb" onclick="openP('bagP')">🎒道具</button>
     <button id="mu" onclick="toggleMute()">🔊</button>
     <span id="lv"></span>
   </div>
@@ -1056,7 +1063,7 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
   <h3>商店限購與生命藥水</h3>
   <p>每天同類商品合計限購：模具 3 個、工具 1 個、礦石 3 個，隔天重置。鑽石依當天庫存各限購一次。工具都有功能說明；生命藥水每個 3000 金幣，放入手持欄後拖到棋盤使用，恢復一顆愛心；滿血時會顯示不能使用的提示，且不消耗藥水。</p>
   <h3>四季</h3>
-  <p>從春天開始，春、夏、秋、冬依序輪替，每季持續三天。春天是綠色棋盤，規則不變；夏天是紅色棋盤，鍛造過熱增加為 60 步；秋天是黃橘色棋盤，每天在三個空格落下落葉，必須利用上下左右相鄰的過熱格燒掉才能重新使用；冬天是深藍色棋盤，第一、二、三天分別累積 1、2、3 格冰凍，過熱與暴風雪都不能解除。落葉及冰凍在換季時清除。出現位置以空格為限，不覆蓋既有物品。</p>
+  <p>從春天開始，春、夏、秋、冬依序輪替，每季持續三天。春天是綠色棋盤，規則不變；夏天是紅色棋盤，鍛造過熱增加為 60 步；秋天是黃橘色棋盤，每天在三個空格落下落葉，必須利用上下左右相鄰的過熱格燒掉才能重新使用；冬天是深藍色棋盤，每天維持 1 格冰凍，不再逐日增加，過熱與暴風雪都不能解除。落葉及冰凍在換季時清除。出現位置以空格為限，不覆蓋既有物品。</p>
   <h3>每天與存檔</h3>
   <p>第 1～3 天分別有 3、4、5 位客人，之後每天 5～8 位，其中兩位接受任意武器。第 4 天起逐步增加品質要求。隔天保留棋盤並清除過熱。遊戲自動儲存在目前瀏覽器，最多三個存檔。載入舊版 5×7 存檔時，原第七排及超出新版容量的武器箱物品會完整移入道具箱，可取到手持欄後放回棋盤。清除瀏覽器資料會一併清除存檔。</p>
   <button  class="pri legacy-modal-close" style="width:100%" onclick="$('help').style.display='none'" hidden>知道了</button>
@@ -1533,7 +1540,7 @@ const SEASONS=[
   {id:'spring',name:'春天',icon:'🌱',description:'春回大地！玩法與原本相同，鍛造格過熱 50 步。春季持續 3 天。'},
   {id:'summer',name:'夏天',icon:'☀️',description:'盛夏高溫！鍛造格的過熱時間增加 10 步，由 50 步變成 60 步。夏季持續 3 天。'},
   {id:'autumn',name:'秋天',icon:'🍂',description:'秋風吹落葉！每天隨機在 3 個空格落下落葉，落葉格無法放置物品。當上下左右相鄰的格子過熱時，落葉會燃燒消失。未燒掉的落葉保留到秋季結束。'},
-  {id:'winter',name:'冬天',icon:'❄️',description:'寒冬結冰！第一天凍結 1 格，第二天累積到 2 格，第三天累積到 3 格。冰凍格不能放置物品，相鄰的過熱格及暴風雪都不會使它融化，換季後解除。'}
+  {id:'winter',name:'冬天',icon:'❄️',description:'寒冬結冰！整個冬季維持 1 格冰凍，不會逐日增加。冰凍格不能放置物品，相鄰的過熱格及暴風雪都不會使它融化，換季後解除。'}
 ];
 function seasonIndex(d=day){return d>0?Math.floor((d-1)/3)%4:0;}
 function seasonDay(d=day){return d>0?(d-1)%3+1:1;}
@@ -1559,13 +1566,19 @@ function addSeasonCells(target,count,type,animate=true){
   const candidates=[];for(let i=0;i<W*H;i++)if(!g[i]&&!leaves.has(i)&&!frozen.has(i)&&!blueprintSlotAt(i))candidates.push(i);
   while(count>0&&candidates.length){const i=candidates.splice(rnd(candidates.length),1)[0];target.add(i);if(animate&&type==='leaf')seasonEffect(i,'falling');count--;}
 }
+function normalizeWinterCells(animate=true){
+ if(seasonIndex()!==3)return;
+ frozen=new Set([...frozen].filter(i=>Number.isInteger(i)&&i>=0&&i<W*H&&!g[i]&&!blueprintSlotAt(i)).slice(0,1));
+ addSeasonCells(frozen,Math.max(0,1-frozen.size),'ice',animate);
+}
+function openHandBag(){if(hand!==null||busy||drag)return;openP('bagP');}
 function prepareSeasonDay(previousDay){
   seasonEffects=new Map();
   if(day<1){leaves=new Set();frozen=new Set();seasonNoticePending=false;return;}
   const changed=previousDay<1||seasonIndex(previousDay)!==seasonIndex();
   if(changed){leaves=new Set();frozen=new Set();}
   if(seasonIndex()===2)addSeasonCells(leaves,3,'leaf');
-  if(seasonIndex()===3)addSeasonCells(frozen,Math.max(0,seasonDay()-frozen.size),'ice');
+  normalizeWinterCells();
   seasonNoticePending=changed;
 }
 function showSeasonNotice(){
@@ -2195,9 +2208,10 @@ function render(){
   $("tools").innerHTML=`<div class="tl2">模具</div>
     <span class="dm" data-drag="mold">${mold(MQ[0],"","f")}</span>
     <div class="mq">${MQ.slice(1,3).map(m=>mold(m,"","")).join("")}</div>`;
-  $("handSlot").innerHTML=`<div class="tl2">手持</div>`
-    +(hand!==null?`<span class="dm" data-drag="hand">${hand.k==='bp'?blueprintShapeHTML(hand.id,hand.rot||0):itemH(hand,1)}</span>`:`<span class="dm empty">空</span>`)
-    +(hand!==null?'<button class="hand-stow" onclick="stowHand(event)" aria-label="收回手持物品" title="收回">×</button>':'');
+  $("handSlot").innerHTML=hand!==null?
+    '<div class="tl2">手持</div>'+`<span class="dm" data-drag="hand">${hand.k==='bp'?blueprintShapeHTML(hand.id,hand.rot||0):itemH(hand,1)}</span>`
+    +'<button class="hand-stow" onclick="stowHand(event)" aria-label="收回手持物品" title="收回">×</button>'
+    :'<div class="tl2">道具箱</div><button class="dm hand-bag" onclick="openHandBag()" aria-label="開啟道具箱" title="道具箱"><span aria-hidden="true">🎒</span></button>';
 
   $("q").innerHTML="<small>接下來</small>"+Q.map((t,k)=>
     `<div class="q${k?"":" first"}" data-step="${k+1}" aria-label="第${k+1}顆：${NM[t]}礦" style="background-color:${C[t]}">${NM[t]}</div>`
@@ -2234,9 +2248,8 @@ function render(){
     (grp[k]=grp[k]||{it,n:0}).n++;
   });
   $("bagC").innerHTML=Object.entries(grp).map(([k,v])=>
-    `<button class="si" data-k="${esc(k)}">${itemH(v.it)}<small>${itemName(v.it)} ×${v.n}</small></button>`
+    `<button class="si" data-k="${esc(k)}"><span class="bag-item-art${v.it.k==='ess'?'':' bag-item-large'}">${itemH(v.it)}</span><small>${itemName(v.it)} ×${v.n}</small></button>`
   ).join("")||"<small>道具箱是空的</small>";
-  $("bgb").textContent="🎒道具";
 
   $("lg").innerHTML=[0,1,2,3].map(s=>
     `<span>${mold(s,"","f")} ${s<3?TY[s]:"鑽石"}</span>`
@@ -4058,9 +4071,10 @@ function loadGame(id){
   legendProjects.forEach(p=>p.cells.forEach(i=>{leaves.delete(i);frozen.delete(i)}));
   if(!t.seasonVersion){
     if(seasonIndex()===2)addSeasonCells(leaves,3,'leaf',false);
-    if(seasonIndex()===3)addSeasonCells(frozen,seasonDay(),'ice',false);
+
     seasonNoticePending=day>0;
   }
+  normalizeWinterCells(false);
   phase=t.phase||"play";
   quests=t.quests||[];qDone=t.qDone||0;dLv=t.dLv!=null?t.dLv:lives;
   stepSales=0;justHeated.clear();ensureQuests();
