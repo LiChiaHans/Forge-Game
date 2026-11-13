@@ -919,6 +919,7 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
 #leaderboardRegisterForm[hidden],#leaderboardAccountActions[hidden],#leaderboardKeyBox[hidden],#leaderboardLocalOnly[hidden],#leaderboardSwitch[hidden]{display:none!important}
 #onlineNameStatus{font-size:13px;line-height:1.5;min-height:20px;color:#e7c98e;max-width:350px}#onlineNameOffline{font-size:13px;margin-top:8px}#onlineNameOffline[hidden]{display:none!important}
 </style>
+<style>#expeditionLab{padding:12px;background:#283d42;border:1px solid #b6a471;border-radius:8px}#expeditionLab[hidden]{display:none!important}.exp-lab-fields{display:grid;grid-template-columns:1fr 1fr;gap:9px}.exp-lab-fields label{font-size:13px}.exp-lab-fields select,.exp-lab-fields input{display:block;width:100%;font-size:16px;margin-top:4px;padding:7px;background:#172936;color:#f4e2b4;border:1px solid #798a88;border-radius:4px}#expeditionStages button[data-cycle="3"]{grid-column:span 2;background:#50436d}</style>
 </head>
 <body>
 <div id="portraitGuard" hidden role="dialog" aria-modal="true" aria-hidden="true" aria-label="請直向遊玩"><svg viewBox="0 0 40 52" aria-hidden="true" shape-rendering="crispEdges"><path fill="#0c1726" d="M7 0h26v3h3v46h-3v3H7v-3H4V3h3z"/><path fill="#b8a577" d="M8 3h24v46H8z"/><path fill="#293e51" d="M10 8h20v34H10z"/><path fill="#e8d696" d="M16 4h8v2h-8zM17 45h6v2h-6z"/><path fill="#84b6b0" d="M19 14h3v16h-3zM13 21h3v3h-3zM16 18h3v3h-3zM22 18h3v3h-3zM25 21h3v3h-3z"/></svg><b>請直向遊玩</b><p>將手機轉回直向<br>即可繼續遊戲</p></div>
@@ -968,6 +969,8 @@ body::before{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA
  <header class="exp-header"><div class="exp-player-heading"><span id="expeditionAvatar" class="player-avatar"></span><div><small>鍛造之後，向城外出發</small><h2>⚔ 遠征</h2></div></div><button hidden class="legacy-modal-close" onclick="closeExpedition()">回城鎮</button></header>
  <p id="expeditionAttempts"></p>
  <div id="expeditionSetup">
+  <section id="expeditionLab" hidden><h3>🧪 遠征測試台</h3><div class="exp-lab-fields"><label>武器<select id="labWeapon" onchange="updateExpeditionLab()"></select></label><label>材料階級<select id="labTier" onchange="updateExpeditionLab()"></select></label><label>附魔層數（0～20）<input id="labStacks" type="number" min="0" max="20" value="0" onchange="updateExpeditionLab()"></label><label>屬性<select id="labElement" onchange="updateExpeditionLab()"></select></label><label>挑戰關卡（21 起為無限）<input id="labStage" type="number" min="1" max="1000000" value="1" onchange="updateExpeditionLab()"></label></div><p class="exp-note">直接產生測試武器，不占物品欄、不扣愛心。可自由選關，所有結果僅供本次後台測試。</p></section>
+
   <div id="expeditionStages" aria-label="選擇遠征關卡"></div><div id="expeditionMonster"></div><p id="expeditionReward"></p>
   <h3>選擇出戰武器</h3><div id="expeditionWeapons"></div><div id="expeditionSelectedStats"></div>
   <button id="expeditionFight" class="pri exp-wide" onclick="beginExpedition()">開始挑戰</button>
@@ -1827,7 +1830,7 @@ function syncMonsterElements(){
  if(monsterElementDay===day&&monsterElements.length===EXPEDITIONS.length)return;
  const choices=['none',...ELEMENT_IDS];monsterElementDay=day;monsterElements=EXPEDITIONS.map(()=>day>0?choices[rnd(choices.length)]:'none');
 }
-function expeditionMonster(id){syncMonsterElements();return {...EXPEDITIONS[id],element:monsterElements[id]||'none'};}
+function expeditionMonster(id){syncMonsterElements();return id>=20?endlessMonster(id):{...EXPEDITIONS[id],element:monsterElements[id]||'none'};}
 function applyWeaponElement(w,i){const e=elementTiles.get(i);if(validElement(e))w.element=e;return w;}
 function elementBadge(e,cls=''){const color=validElement(e)?ELEMENTS[e].color:'#b8c3c9';return '<span class="element-badge '+cls+'" style="--element:'+color+'" aria-label="'+elementName(e)+'屬性">'+elementIcon(e)+'<b>'+elementName(e)+'</b></span>';}
 function elementWeaponHTML(w){const e=elementOf(w);return e==='none'?'<p class="element-weapon-note">無屬性</p>':'<div class="element-weapon-note">'+elementBadge(e)+'<span>屬性附魔 · 武器售價 +20%</span></div>';}
@@ -2823,6 +2826,28 @@ function addStatQuests(){
 }
 addStatQuests();
 
+let expeditionLab={weapon:'n0',tier:4,stacks:0,element:'none',stage:1};
+function expeditionCleared(stage){return stage<20?expeditionState.cleared.includes(stage):stage<20+(expeditionState.endless||0);}
+function endlessMonster(stage){
+ const wave=Math.max(1,Math.floor(stage)-19),kind=['dragon','golem','wolf','knight'][(wave-1)%4],names={dragon:'星海古龍',golem:'界域巨像',wolf:'虛空獵王',knight:'不朽王鎧'},choices=['none',...ELEMENT_IDS];
+ return {name:names[kind]+' · '+wave,area:'無限試煉',kind,color:['#dbacdc','#9bd5d2','#c3a7ee','#e7cf91'][(wave-1)%4],hp:5000+900*wave+90*wave*wave,atk:310+28*wave+2*wave*wave,def:220+16*wave+wave*wave,spd:Math.floor(115+6*wave+.25*wave*wave),gold:2200+300*wave+25*wave*wave,element:choices[((stage*17+Math.max(1,day)*13)>>>0)%choices.length],endless:wave};
+}
+function labWeapon(){
+ if(!sandboxSession)return null;const t=expeditionLab.tier,key=expeditionLab.weapon;let w;
+ if(key[0]==='n')w=baseAlbumWeapon(Number(key.slice(1)),t);
+ else{const id=Number(key.slice(1));w=id<10?legendaryWeapon(id,LEGENDS[id].recipe.map(c=>baseAlbumWeapon(c,t))):legendaryWeapon(id,LEGENDS[id].recipe.map(parent=>legendaryWeapon(parent,LEGENDS[parent].recipe.map(c=>baseAlbumWeapon(c,t)))));}
+ w.m=expeditionLab.stacks*5;if(validElement(expeditionLab.element))w.element=expeditionLab.element;else delete w.element;return w;
+}
+function updateExpeditionLab(){
+ if(!sandboxSession)return;expeditionLab={weapon:$('labWeapon').value,tier:Math.max(0,Math.min(4,Number($('labTier').value)||0)),stacks:Math.max(0,Math.min(20,Math.floor(Number($('labStacks').value)||0))),element:$('labElement').value,stage:Math.max(1,Math.min(1000000,Math.floor(Number($('labStage').value)||1)))};
+ expeditionStage=expeditionLab.stage-1;expeditionSelected='lab';renderExpedition();
+}
+function renderExpeditionLab(){
+ const el=$('expeditionLab');el.hidden=!sandboxSession;if(!sandboxSession)return;
+ if(!$('labWeapon').innerHTML){$('labWeapon').innerHTML='<optgroup label="普通武器">'+WN.map((n,c)=>'<option value="n'+c+'">'+n+'</option>').join('')+'</optgroup><optgroup label="傳說武器">'+LEGENDS.slice(0,10).map((l,id)=>'<option value="l'+id+'">'+l.name+'</option>').join('')+'</optgroup><optgroup label="終極武器">'+LEGENDS.slice(10).map((l,i)=>'<option value="l'+(i+10)+'">'+l.name+'</option>').join('')+'</optgroup>';$('labTier').innerHTML=NM.map((n,t)=>'<option value="'+t+'">'+n+'級</option>').join('');$('labElement').innerHTML='<option value="none">無屬性</option>'+ELEMENT_IDS.map(e=>'<option value="'+e+'">'+elementName(e)+'</option>').join('');}
+ $('labWeapon').value=expeditionLab.weapon;$('labTier').value=String(expeditionLab.tier);$('labStacks').value=String(expeditionLab.stacks);$('labElement').value=expeditionLab.element;$('labStage').value=String(expeditionStage+1);
+}
+
 const EXPEDITIONS=[
  {name:'苔原史萊姆',area:'林間小徑',kind:'slime',color:'#81ad67',hp:65,atk:12,def:3,spd:8,gold:120,loot:{k:'o',t:1}},
  {name:'疾風灰狼',area:'風嘯森林',kind:'wolf',color:'#a3b9bc',hp:115,atk:18,def:6,spd:18,gold:200,loot:{k:'m',s:0}},
@@ -2848,7 +2873,7 @@ const SECOND_BOSSES=[
  ['終焉星冕王','終焉王座','knight','#f0d7a2',5000,310,220,115,15000]
 ];
 SECOND_BOSSES.forEach(([name,area,kind,color,hp,atk,def,spd,gold])=>EXPEDITIONS.push({name,area,kind,color,hp,atk,def,spd,gold,cycle:2}));
-function freshExpeditionState(){return {day:0,attempts:0,unlocked:0,cleared:[],wonToday:[],victories:0,lastBattle:null};}
+function freshExpeditionState(){return {day:0,attempts:0,unlocked:0,cleared:[],wonToday:[],victories:0,endless:0,lastBattle:null};}
 let expeditionState=freshExpeditionState(),expeditionSelected='',expeditionStage=0,expeditionBattleStep=0,expeditionTimer=null;
 
 function restoreExpeditionState(raw){
@@ -2856,9 +2881,10 @@ function restoreExpeditionState(raw){
  s.day=Math.max(0,Number(r.day)||0);s.attempts=Math.max(0,Math.floor(Number(r.attempts)||0));
  s.cleared=[...new Set((Array.isArray(r.cleared)?r.cleared:[]).filter(x=>Number.isInteger(x)&&x>=0&&x<EXPEDITIONS.length))];
  s.wonToday=[...new Set((Array.isArray(r.wonToday)?r.wonToday:[]).filter(x=>Number.isInteger(x)&&x>=0&&x<EXPEDITIONS.length))];
- s.unlocked=Math.max(0,Math.min(EXPEDITIONS.length-1,s.cleared.length?Math.max(...s.cleared)+1:0));
+ s.endless=Math.max(0,Math.min(999980,Math.floor(Number(r.endless)||0)));
+ s.unlocked=s.cleared.includes(19)?20+s.endless:Math.max(0,Math.min(EXPEDITIONS.length-1,s.cleared.length?Math.max(...s.cleared)+1:0));
  s.victories=Math.max(s.cleared.length,Math.floor(Number(r.victories)||0));
- s.lastBattle=r.lastBattle&&Number.isInteger(r.lastBattle.stage)&&r.lastBattle.stage>=0&&r.lastBattle.stage<EXPEDITIONS.length&&r.lastBattle.weapon&&r.lastBattle.stats&&Array.isArray(r.lastBattle.log)?r.lastBattle:null;
+ s.lastBattle=r.lastBattle&&Number.isInteger(r.lastBattle.stage)&&r.lastBattle.stage>=0&&r.lastBattle.stage<1000000&&r.lastBattle.weapon&&r.lastBattle.stats&&Array.isArray(r.lastBattle.log)?r.lastBattle:null;
  if(s.lastBattle){if(s.lastBattle.outcome==='ongoing')s.lastBattle.outcome='draw';s.lastBattle.resolved=true;}
  return s;
 }
@@ -2868,7 +2894,7 @@ function syncExpeditionDay(){
 }
 function expeditionWeapons(){
  const a=[];[['g',g],['pack',pack],['bag',bag]].forEach(([where,list])=>(list||[]).forEach((w,i)=>{if(w&&w.k==='w')a.push({key:where+':'+i,w,source:{g:'棋盤',pack:'武器箱',bag:'道具箱'}[where]});}));
- if(hand&&hand.k==='w')a.push({key:'hand',w:hand,source:'手持'});return a;
+ if(hand&&hand.k==='w')a.push({key:'hand',w:hand,source:'手持'});if(sandboxSession)a.unshift({key:'lab',w:labWeapon(),source:'後台測試武器'});return a;
 }
 
 function monsterArt(m){
@@ -2911,13 +2937,14 @@ function castBattleSkill(b){
 function simulateExpedition(w,monster,useSkill=false){const b=expeditionBattleState(w,monster);if(useSkill)castBattleSkill(b);while(b.outcome==='ongoing')battleTick(b);return b;}
 let expeditionAdvanceTimer=null;
 function consumeExpeditionWeapon(chosen){
+ if(chosen.key==='lab')return !!sandboxSession;
  if(chosen.key==='hand'){if(hand!==chosen.w)return false;hand=null;}
  else{const [where,index]=chosen.key.split(':'),list=where==='g'?g:where==='pack'?pack:where==='bag'?bag:null,i=Number(index);if(!list||list[i]!==chosen.w)return false;if(where==='bag')list.splice(i,1);else list[i]=null;}
  return true;
 }
 function beginExpedition(confirmed=false){
- syncExpeditionDay();if(lives<=0||expeditionStage>expeditionState.unlocked||expeditionState.cleared.includes(expeditionStage)||$('expeditionSetup').hidden)return;
- if(lives===1&&!confirmed){confirmBox('只剩最後一顆愛心','這次遠征若落敗，會失去最後一顆愛心並結束遊戲。出戰武器也會消耗。確定要挑戰嗎？','仍要挑戰',()=>beginExpedition(true));return;}
+ syncExpeditionDay();if((!sandboxSession&&(lives<=0||expeditionStage>expeditionState.unlocked||expeditionCleared(expeditionStage)))||$('expeditionSetup').hidden)return;
+ if(!sandboxSession&&lives===1&&!confirmed){confirmBox('只剩最後一顆愛心','這次遠征若落敗，會失去最後一顆愛心並結束遊戲。出戰武器也會消耗。確定要挑戰嗎？','仍要挑戰',()=>beginExpedition(true));return;}
  const chosen=expeditionWeapons().find(x=>x.key===expeditionSelected);if(!chosen)return;
  const b=expeditionBattleState(chosen.w,expeditionMonster(expeditionStage));if(!consumeExpeditionWeapon(chosen))return;
  stopExpeditionPlayback();expeditionState.attempts++;expeditionState.lastBattle={...b,stage:expeditionStage,gold:0,loot:null,first:true,day};expeditionSelected='';expeditionBattleStep=0;
@@ -2933,12 +2960,12 @@ function advanceExpeditionBattle(){
 function useExpeditionSkill(){const b=expeditionState.lastBattle;if(!b||!castBattleSkill(b))return;expeditionBattleStep=b.log.length;combatSound('hero');if(b.outcome!=='ongoing')settleExpeditionBattle(b);renderExpeditionBattle();}
 function settleExpeditionBattle(b){
  if(b.resolved||b.outcome==='ongoing')return;stopExpeditionPlayback();b.resolved=true;
- if(b.outcome==='win'&&!expeditionState.cleared.includes(b.stage)){
-  b.gold=b.monster.gold;b.loot={k:'bp',id:b.stage};coins+=b.gold;earned+=b.gold;dEarn+=b.gold;expeditionState.victories++;expeditionState.wonToday.push(b.stage);expeditionState.cleared.push(b.stage);expeditionState.unlocked=Math.min(EXPEDITIONS.length-1,b.stage+1);grantBlueprintItem(b.stage);
- }else if(b.outcome==='lose')lives=Math.max(0,lives-1);
+ if(b.outcome==='win'&&!expeditionCleared(b.stage)){
+  b.gold=b.monster.gold;b.loot=b.stage<20?{k:'bp',id:b.stage}:null;coins+=b.gold;earned+=b.gold;dEarn+=b.gold;expeditionState.victories++;expeditionState.wonToday.push(b.stage);if(b.stage<20){expeditionState.cleared.push(b.stage);grantBlueprintItem(b.stage);}else expeditionState.endless=Math.max(expeditionState.endless||0,b.stage-19);expeditionState.unlocked=b.stage+1;
+ }else if(b.outcome==='lose'&&!sandboxSession)lives=Math.max(0,lives-1);
  if(lives<=0)removeSave(runId);saveHi();render();saveNow();
- if(b.outcome==='win'&&b.stage<EXPEDITIONS.length-1){
-  const finished=b;expeditionAdvanceTimer=gameTimeout(()=>{expeditionAdvanceTimer=null;if(expeditionState.lastBattle!==finished||$('expeditionP').style.display==='none')return;expeditionStage=finished.stage+1;showExpeditionSetup();toast('已前往第 '+(expeditionStage+1)+' 關'+(expeditionStage===10?' · 二周目開啟！':''));},2000);
+ if(b.outcome==='win'){
+  const finished=b;expeditionAdvanceTimer=gameTimeout(()=>{expeditionAdvanceTimer=null;if(expeditionState.lastBattle!==finished||$('expeditionP').style.display==='none')return;expeditionStage=finished.stage+1;showExpeditionSetup();toast('已前往第 '+(expeditionStage+1)+' 關'+(expeditionStage===10?' · 二周目開啟！':expeditionStage>=20?' · 無限試煉 '+(expeditionStage-19):''));},2000);
  }
 }
 function stopExpeditionPlayback(){if(expeditionTimer!==null){clearInterval(expeditionTimer);expeditionTimer=null;}if(expeditionAdvanceTimer!==null){clearTimeout(expeditionAdvanceTimer);expeditionAdvanceTimer=null;}}
@@ -2949,7 +2976,7 @@ function showExpeditionSetup(){stopExpeditionPlayback();$('expeditionSetup').hid
 function openExpedition(){
  syncExpeditionDay();const b=expeditionState.lastBattle;
  if(b&&b.outcome==='ongoing'&&!b.resolved){$('expeditionP').style.display='flex';$('expeditionSetup').hidden=true;$('expeditionBattle').hidden=false;renderExpeditionBattle();if(expeditionTimer===null)expeditionTimer=setInterval(advanceExpeditionBattle,420);return;}
- expeditionStage=expeditionState.unlocked;saveNow();$('expeditionP').style.display='flex';showExpeditionSetup();
+ expeditionStage=sandboxSession?Math.max(0,expeditionLab.stage-1):expeditionState.unlocked;saveNow();$('expeditionP').style.display='flex';showExpeditionSetup();
 }
 function closeExpedition(){
  const b=expeditionState.lastBattle;if(b?.outcome==='ongoing'&&!b.resolved){b.outcome='draw';settleExpeditionBattle(b);}stopExpeditionPlayback();$('expeditionP').style.display='none';if(lives<=0)gameOver('遠征落敗，最後一顆愛心已用完。');
@@ -2959,22 +2986,22 @@ function renderExpeditionBattle(){
  $('expeditionArena').innerHTML='<div class="exp-fighter"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</div><b>'+itemName(b.weapon)+'</b><small>♥ '+b.hp+' / '+b.hpMax+(b.shield?'　護盾 '+b.shield:'')+'</small><progress max="'+b.hpMax+'" value="'+b.hp+'"></progress></div><strong>VS</strong><div class="exp-fighter"><div>'+monsterArt(m)+elementBadge(m.element,'battle-element')+'</div><b>'+m.name+'</b><small>♥ '+b.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+b.enemyHp+'"></progress></div>';
  $('expeditionLog').innerHTML=b.log.slice(-5).map(x=>'<p class="'+x.actor+(x.skill?' skill-hit':'')+'">'+esc(x.text)+'</p>').join('')||'<p>武器已投入遠征；可在戰鬥中施放終極武器技能。</p>';
  const skill=ultimateSkill(b.weapon);$('expeditionSkill').hidden=!skill;$('expeditionSkill').disabled=done||b.skillUsed;$('expeditionSkill').textContent=skill?(b.skillUsed?'✓ 已施放 '+skill.name:'✦ 施放 '+skill.name):'';
- $('expeditionResult').innerHTML=done?'<h3>'+({win:'🏆 遠征勝利',lose:'已返回城鎮',draw:'已撤退'}[b.outcome])+'</h3><p>'+(b.outcome==='win'?'獲得 '+b.gold+' 金幣＋'+itemName(b.loot)+(b.stage<19?'。即將前往第 '+(b.stage+2)+' 關。':'。二周目全部通關！'):b.outcome==='lose'?'失去一顆愛心，剩餘 '+lives+' 顆。':'未獲得獎勵，出戰武器已消耗。')+'</p>'+(b.outcome==='win'&&b.stage>=10?'<button class="ultimate-unlocked" onclick="openUltimateArt('+b.stage+')">'+ultimatePixelArt(b.stage)+'<span>終極藍圖已解鎖 · 查看高清美術 ↗</span></button>':''):'';
- $('expeditionAgain').textContent=lives<=0?'結束旅程':b.outcome==='win'&&b.stage<19?'前往下一關':'返回遠征';$('expeditionSkip').hidden=done;$('expeditionAgain').hidden=!done;
+ $('expeditionResult').innerHTML=done?'<h3>'+({win:'🏆 遠征勝利',lose:'已返回城鎮',draw:'已撤退'}[b.outcome])+'</h3><p>'+(b.outcome==='win'?'獲得 '+b.gold+' 金幣'+(b.loot?'＋'+itemName(b.loot):'')+'。即將前往第 '+(b.stage+2)+' 關。':b.outcome==='lose'?'失去一顆愛心，剩餘 '+lives+' 顆。':'未獲得獎勵，出戰武器已消耗。')+'</p>'+(b.outcome==='win'&&b.stage>=10&&b.stage<20?'<button class="ultimate-unlocked" onclick="openUltimateArt('+b.stage+')">'+ultimatePixelArt(b.stage)+'<span>終極藍圖已解鎖 · 查看高清美術 ↗</span></button>':''):'';
+ $('expeditionAgain').textContent=lives<=0?'結束旅程':b.outcome==='win'?'前往下一關':'返回遠征';$('expeditionSkip').hidden=done;$('expeditionAgain').hidden=!done;
 }
 
 function renderExpedition(){
- syncExpeditionDay();const options=expeditionWeapons();if(!options.some(x=>x.key===expeditionSelected))expeditionSelected=options[0]?.key||'';
- const chosen=options.find(x=>x.key===expeditionSelected),m=expeditionMonster(expeditionStage),cleared=expeditionState.cleared.includes(expeditionStage);
- $('expeditionAttempts').textContent=(expeditionStage>=10?'二周目':'一周目')+' · 第 '+day+' 天 · 累計勝利 '+expeditionState.victories+' / 20';
- $('expeditionStages').innerHTML=EXPEDITIONS.map((x,i)=>'<button data-exp-stage="'+i+'" data-cycle="'+(i>=10?2:1)+'" '+(i>expeditionState.unlocked||expeditionState.cleared.includes(i)?'disabled':'')+' aria-label="第 '+(i+1)+' 關 '+x.name+'" aria-pressed="'+(i===expeditionStage)+'">'+(expeditionState.cleared.includes(i)?'✓':i>expeditionState.unlocked?'·':'⚑')+(i+1)+'</button>').join('');
+ syncExpeditionDay();renderExpeditionLab();const options=expeditionWeapons();if(!options.some(x=>x.key===expeditionSelected))expeditionSelected=options[0]?.key||'';
+ const chosen=options.find(x=>x.key===expeditionSelected),m=expeditionMonster(expeditionStage),cleared=(!sandboxSession&&expeditionCleared(expeditionStage));
+ $('expeditionAttempts').textContent=(expeditionStage>=20?'無限模式 · 第 '+(expeditionStage-19)+' 隻':expeditionStage>=10?'二周目':'一周目')+' · 第 '+day+' 天 · 累計勝利 '+expeditionState.victories+' 場 · 無限通關 '+(expeditionState.endless||0)+' 隻';
+ $('expeditionStages').innerHTML=EXPEDITIONS.map((x,i)=>'<button data-exp-stage="'+i+'" data-cycle="'+(i>=10?2:1)+'" '+(!sandboxSession&&(i>expeditionState.unlocked||expeditionCleared(i))?'disabled':'')+' aria-label="第 '+(i+1)+' 關 '+x.name+'" aria-pressed="'+(i===expeditionStage)+'">'+(expeditionState.cleared.includes(i)?'✓':i>expeditionState.unlocked?'·':'⚑')+(i+1)+'</button>').join('')+((sandboxSession||expeditionState.cleared.includes(19))?'<button data-exp-stage="'+(20+(expeditionState.endless||0))+'" data-cycle="3" aria-pressed="'+(expeditionStage>=20)+'">∞ '+((expeditionState.endless||0)+1)+'</button>':'');
  $('expeditionMonster').innerHTML='<div class="exp-monster-art">'+monsterArt(m)+elementBadge(m.element,'monster-element')+'</div><div><small>第 '+(expeditionStage+1)+' 關 · '+m.area+'</small><h3>'+m.name+'</h3><div class="exp-monster-stats">♥ '+m.hp+'　⚔ '+m.atk+'　🛡 '+m.def+'　💨 '+m.spd+'</div></div>';
- $('expeditionReward').textContent=cleared?'已通關'+(expeditionStage===19?'，二周目全部完成！':'，請前往下一關。'):'首次勝利：'+m.gold+' 金幣＋'+itemName(m.loot)+(expeditionStage>=10?' · 解鎖高清武器美術':'');
+ $('expeditionReward').textContent=cleared?'已通關'+(expeditionStage===19?'，二周目全部完成！':'，請前往下一關。'):(expeditionStage>=20?'無限勝利：'+m.gold+' 金幣':'首次勝利：'+m.gold+' 金幣＋'+itemName(m.loot)+(expeditionStage>=10?' · 解鎖高清武器美術':''));
  $('expeditionWeapons').innerHTML=options.length?options.map(x=>'<button class="exp-weapon '+(x.key===expeditionSelected?'selected':'')+'" data-exp-weapon="'+x.key+'"><span class="exp-weapon-art">'+hex(x.w.c,bands(x.w),'',x.w.t,x.w)+'</span><span><b>'+esc(itemName(x.w))+'</b><small>'+x.source+' · ⚔'+weaponStats(x.w).atk+' 🛡'+weaponStats(x.w).def+' 💨'+weaponStats(x.w).spd+'</small></span></button>').join(''):'<div class="exp-empty">沒有可出戰武器。請先在冶煉廠鍛造武器；每次出戰都會消耗一把。</div>';
  $('expeditionSelectedStats').innerHTML=chosen?statsHTML(chosen.w)+weaponEnchantHTML(chosen.w)+ultimateSkillHTML(chosen.w)+elementMatchupHTML(chosen.w,m)+'<p class="exp-note">⚠ 出戰後消耗這把武器，勝利、失敗或撤退都不退回。</p>':'';
  if(!$('elementChart').innerHTML)$('elementChart').innerHTML=elementChartHTML();
  $('expeditionFight').disabled=!chosen||lives<=0||cleared;$('expeditionFight').textContent='消耗武器 · 開始挑戰';
- $('expeditionLast').textContent=expeditionState.lastBattle?'上次遠征：'+EXPEDITIONS[expeditionState.lastBattle.stage].name+' · '+({win:'勝利',lose:'落敗',draw:'撤退',ongoing:'戰鬥中'}[expeditionState.lastBattle.outcome]):'';
+ $('expeditionLast').textContent=expeditionState.lastBattle?'上次遠征：'+(expeditionState.lastBattle.monster||expeditionMonster(expeditionState.lastBattle.stage)).name+' · '+({win:'勝利',lose:'落敗',draw:'撤退',ongoing:'戰鬥中'}[expeditionState.lastBattle.outcome]):'';
 }
 
 function startExpeditionDemo(){
@@ -2986,7 +3013,7 @@ function startExpeditionDemo(){
  quests=['atk','def','spd'].map(k=>({t:'stat_'+k,s:'a',p:0,n:1,x:{atk:30,def:28,spd:24}[k],r:230}));
  coins=600;sp=1;pendingChests=1;render();showTown();openExpedition();
 }
-$('expeditionStages').onclick=e=>{const b=e.target.closest('[data-exp-stage]');if(!b||b.disabled)return;expeditionStage=+b.dataset.expStage;renderExpedition();};
+$('expeditionStages').onclick=e=>{const b=e.target.closest('[data-exp-stage]');if(!b||b.disabled)return;expeditionStage=+b.dataset.expStage;if(sandboxSession)expeditionLab.stage=expeditionStage+1;renderExpedition();};
 $('expeditionWeapons').onclick=e=>{const b=e.target.closest('[data-exp-weapon]');if(!b)return;expeditionSelected=b.dataset.expWeapon;renderExpedition();};
 $('expeditionAgain').onclick=()=>{if(lives<=0){closeExpedition();return;}if(expeditionState.lastBattle?.outcome==='win')expeditionStage=expeditionState.unlocked;showExpeditionSetup();};
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-record-weapon]')){e.preventDefault();e.target.click();}});
