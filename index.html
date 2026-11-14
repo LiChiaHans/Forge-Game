@@ -373,7 +373,7 @@ html,body{width:100%;min-height:0}
 #title,#help,#shopP,#colP,#qP,#sk,#bagP,#rw,#gcP,#recP,#nm,#svP,#pw,#cf,#ov,#seasonP{
   padding-top:max(12px,env(safe-area-inset-top));padding-bottom:max(12px,env(safe-area-inset-bottom));
   padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
-@media(max-width:600px){
+@media(min-width:0px){
   #app{max-width:440px;gap:5px;padding-top:max(6px,env(safe-area-inset-top));padding-bottom:max(6px,env(safe-area-inset-bottom))}
   .bar{gap:4px}
   .bar:not(.bar2){display:grid;grid-template-columns:max-content minmax(0,1fr) max-content 34px;min-height:30px}
@@ -467,7 +467,7 @@ body::before{content:"";position:fixed;inset:-100px;z-index:-1;pointer-events:no
 #side .mq .mo{width:18px;height:18px}
 #play{justify-content:center}
 #workbench{gap:6px}
-@media(max-width:600px){
+@media(min-width:0px){
  #app{max-width:500px;padding-left:max(6px,env(safe-area-inset-left));padding-right:max(6px,env(safe-area-inset-right))}
  #app .bar #srv{min-height:38px}
  #app[data-compact="true"] #side,#app[data-compact="true"] #side #q,#app[data-compact="true"] #side #tools,#app[data-compact="true"] #side #handSlot{height:70px}
@@ -496,7 +496,7 @@ body::before{background:#1f2531}
 #grid .t2{width:calc(min(var(--cs),var(--ch))*.94);height:calc(min(var(--cs),var(--ch))*.94)}
 #pack{flex:none;width:100%;margin-top:5px;padding:8px;gap:4px}
 #msg{flex:none}
-@media(max-width:600px){#app .bar #srv{min-height:30px}#app{padding-bottom:max(6px,env(safe-area-inset-bottom))}}
+@media(min-width:0px){#app .bar #srv{min-height:30px}#app{padding-bottom:max(6px,env(safe-area-inset-bottom))}}
 
 /* Square cells, edge-to-edge bottom, and vertical supply labels. */
 #app{padding-bottom:0}
@@ -522,7 +522,7 @@ body::before{background:#1f2531}
 #pack{padding:7px 8px;margin-top:4px}
 #pack .pk{height:auto;aspect-ratio:1}
 #msg{height:28px;min-height:28px;border-bottom-left-radius:0;border-bottom-right-radius:0}
-@media(max-width:600px){
+@media(min-width:0px){
  #app,#app[data-compact="true"]{padding-bottom:0;gap:4px}
  #app[data-compact="true"] #side,#app[data-compact="true"] #side #q,#app[data-compact="true"] #side #tools,#app[data-compact="true"] #side #handSlot{height:58px}
  #orders{height:110px;min-height:110px;max-height:110px}
@@ -542,7 +542,7 @@ body::before{background:#1f2531}
 #app #orders .od .rc{flex:none;height:26px;margin:0;gap:2px}
 #app #orders .od .rc .mo{width:26px;height:26px}
 #app #orders .od .rc small{font-size:11px;line-height:26px}
-@media(max-width:600px){
+@media(min-width:0px){
  #app .bar2>button:nth-child(n+2):nth-child(-n+5){font-size:14px;padding-left:1px;padding-right:1px;letter-spacing:0}
 }
 
@@ -602,7 +602,7 @@ body::before{background:#1f2531}
 #shopP .si .tool-desc{font-size:15px;line-height:1.45}
 #shopP .si .q,#shopP .si .mo.f,#shopP .si .gm.f{width:38px;height:38px;font-size:17px}
 #shopP button{font-size:17px}
-@media(max-width:600px){#shopP .sg4,#shopP .sg5{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:0px){#shopP .sg4,#shopP .sg5{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:380px){
  #app>.bar:first-child>span{font-size:12px;padding-left:4px;padding-right:4px}
  #app #srv span,#app #srv .season-info{font-size:11px}
@@ -960,6 +960,17 @@ body::before{filter:brightness(.68) saturate(.78)}
 .low-effects .forge-sparks{display:none}.low-effects .forge-reveal,.low-effects .forge-trophy,.low-effects .forge-complete{animation:none}
 @media(prefers-reduced-motion:reduce){.forge-sparks{display:none}.forge-reveal,.forge-trophy,.forge-complete{animation:none}}
 
+</style>
+<style>
+/* A single portrait layout on desktop and phone; no transform-based scaling,
+   so drag/drop coordinates retain the browser's native coordinate system. */
+@media(min-width:601px){
+ :root{--portrait-layout-width:clamp(380px,calc(var(--viewport-height,100dvh)*.4614),430px)}
+ #app{width:var(--portrait-layout-width);max-width:var(--portrait-layout-width)}
+ #townP,#title{width:var(--portrait-layout-width);max-width:var(--portrait-layout-width);left:0;right:0;margin-left:auto;margin-right:auto}
+ body>div:not(#app):not(#townP):not(#title):not(#portraitGuard):not(#forgeCelebration)>div{max-width:min(100%,calc(var(--portrait-layout-width) - 24px))!important}
+ #app .weapon-kind-label{font-size:10px}#app .weapon-tier-label{font-size:9px}
+}
 </style>
 </head>
 <body>
