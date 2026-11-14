@@ -972,6 +972,17 @@ body::before{filter:brightness(.68) saturate(.78)}
  #app .weapon-kind-label{font-size:10px}#app .weapon-tier-label{font-size:9px}
 }
 </style>
+<style>
+.hxo{position:relative}.hxo>.weapon-stars{position:absolute;bottom:16%;left:50%;transform:translateX(-50%);display:flex;white-space:nowrap;line-height:1;gap:0;font:900 clamp(7px,1.9vw,11px)/1 monospace;letter-spacing:-1px;padding:1px 2px;background:#111a27dc;color:#ffe088;z-index:5;pointer-events:none;text-shadow:1px 1px #1b1520}
+.weapon-stars i{font-style:normal;opacity:.5;color:#bfc1ca}.weapon-stars>span{color:#ffe088}
+.weapon-mastery{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 5px;margin:9px 0;border:1px solid #998452;background:#272b32;border-radius:3px;text-align:center}
+.weapon-mastery>.stars-large{position:static;display:block;font:900 24px/1 monospace;letter-spacing:3px;background:none;padding:0;transform:none}
+.weapon-mastery b{font-size:15px;color:#f8e6bb}.weapon-mastery small{font-size:13px;color:#d9d0bc;line-height:1.5}.weapon-mastery>span:last-child{font-size:11px;color:#aaaeb9;line-height:1.4}
+.album-art{position:relative}.album-art>.weapon-stars{position:absolute;bottom:5%;left:50%;transform:translateX(-50%);font-size:11px;line-height:1;background:#15202ce8;white-space:nowrap}
+.forge-reveal>.stars-large{font:900 22px/1 monospace;letter-spacing:3px}
+@media(min-width:601px){.hxo>.weapon-stars{font-size:9px}}
+
+</style>
 </head>
 <body>
 <div id="portraitGuard" hidden role="dialog" aria-modal="true" aria-hidden="true" aria-label="請直向遊玩"><svg viewBox="0 0 40 52" aria-hidden="true" shape-rendering="crispEdges"><path fill="#0c1726" d="M7 0h26v3h3v46h-3v3H7v-3H4V3h3z"/><path fill="#b8a577" d="M8 3h24v46H8z"/><path fill="#293e51" d="M10 8h20v34H10z"/><path fill="#e8d696" d="M16 4h8v2h-8zM17 45h6v2h-6z"/><path fill="#84b6b0" d="M19 14h3v16h-3zM13 21h3v3h-3zM16 18h3v3h-3zM22 18h3v3h-3zM25 21h3v3h-3z"/></svg><b>請直向遊玩</b><p>將手機轉回直向<br>即可繼續遊戲</p></div>
@@ -1020,7 +1031,7 @@ body::before{filter:brightness(.68) saturate(.78)}
  <header class="exp-header"><div class="exp-player-heading"><span id="expeditionAvatar" class="player-avatar"></span><div><small>鍛造之後，向城外出發</small><h2>⚔ 遠征</h2></div></div><button hidden class="legacy-modal-close" onclick="closeExpedition()">回城鎮</button></header>
  <p id="expeditionAttempts"></p>
  <div id="expeditionSetup">
-  <section id="expeditionLab" hidden><h3>🧪 遠征測試台</h3><div class="exp-lab-fields"><label>武器<select id="labWeapon" onchange="updateExpeditionLab()"></select></label><label>材料階級<select id="labTier" onchange="updateExpeditionLab()"></select></label><label>附魔層數（0～20）<input id="labStacks" type="number" min="0" max="20" value="0" onchange="updateExpeditionLab()"></label><label>屬性<select id="labElement" onchange="updateExpeditionLab()"></select></label><label>挑戰關卡（21 起為無限）<input id="labStage" type="number" min="1" max="1000000" value="1" onchange="updateExpeditionLab()"></label></div><p class="exp-note">直接產生測試武器，不占物品欄、不扣愛心。可自由選關，所有結果僅供本次後台測試。</p></section>
+  <section id="expeditionLab" hidden><h3>🧪 遠征測試台</h3><div class="exp-lab-fields"><label>武器<select id="labWeapon" onchange="updateExpeditionLab()"></select></label><label>材料階級<select id="labTier" onchange="updateExpeditionLab()"></select></label><label>星級<select id="labStars" onchange="updateExpeditionLab()"><option value="0">零星</option><option value="1">一星</option><option value="2">二星</option><option value="3">三星</option></select></label><label>附魔層數（0～20）<label>附魔層數（0～20）<input id="labStacks" type="number" min="0" max="20" value="0" onchange="updateExpeditionLab()"></label><label>屬性<select id="labElement" onchange="updateExpeditionLab()"></select></label><label>挑戰關卡（21 起為無限）<input id="labStage" type="number" min="1" max="1000000" value="1" onchange="updateExpeditionLab()"></label></div><p class="exp-note">直接產生測試武器，不占物品欄、不扣愛心。可自由選關，所有結果僅供本次後台測試。</p></section>
 
   <div id="expeditionStages" aria-label="選擇遠征關卡"></div><div id="expeditionMonster"></div><p id="expeditionBossRule" class="exp-note"></p><p id="expeditionReward"></p>
   <h3>選擇出戰武器</h3><div id="expeditionWeapons"></div><div id="expeditionSelectedStats"></div>
@@ -1106,6 +1117,7 @@ body::before{filter:brightness(.68) saturate(.78)}
   <p>每天同類商品合計限購：模具 3 個、工具 1 個、礦石 3 個，隔天重置。鑽石依當天庫存各限購一次。工具都有功能說明；生命藥水每個 3000 金幣，放入手持欄後拖到棋盤使用，恢復一顆愛心；滿血時會顯示不能使用的提示，且不消耗藥水。</p>
   <h3>四季</h3>
   <p>從春天開始，春、夏、秋、冬依序輪替，每季持續三天。春天是綠色棋盤，規則不變；夏天是紅色棋盤，鍛造過熱增加為 60 步；秋天是黃橘色棋盤，每天在三個空格落下落葉，必須利用上下左右相鄰的過熱格燒掉才能重新使用；冬天是深藍色棋盤，每天維持 1 格冰凍，不再逐日增加，過熱與暴風雪都不能解除。落葉及冰凍在換季時清除。出現位置以空格為限，不覆蓋既有物品。</p><p>季節好處：春季每盆成熟花朵收成 2 份精華；夏季火屬性武器、冬季水屬性武器成交價 +25%；秋季每燒掉 1 格落葉，下一把武器鍛造獎金 +100 金幣（最多儲存 3 次，當天有效，不計分）。</p>
+  <h3>武器星級</h3><p>每局內，同名稱、同階級的普通武器分開累計鍛造經驗；傳說及終極武器則依各自名稱累計。累計 3／6／9 把升為一／二／三星，基礎售價與攻擊、防禦、速度提高 5%／10%／20%。已持有的同款武器同步升星；投入藍圖的原料與過往歷史保留當時數值。每天保留進度，新的一局重新累計。</p>
   <h3>每天與存檔</h3>
   <p>第 1～3 天分別有 3、4、5 位客人，之後每天 5～8 位，其中兩位接受任意武器。第 4 天起逐步增加品質要求。隔天保留棋盤並清除過熱。遊戲自動儲存在目前瀏覽器，最多三個存檔。載入舊版 5×7 存檔時，原第七排及超出新版容量的武器箱物品會完整移入道具箱，可取到手持欄後放回棋盤。清除瀏覽器資料會一併清除存檔。</p>
   <button  class="pri legacy-modal-close" style="width:100%" onclick="$('help').style.display='none'" hidden>知道了</button>
@@ -1534,7 +1546,7 @@ const todayStr=()=>{
 const esc=t=>String(t).replace(/[&<>"']/g,c=>({
   "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
 }[c]));
-const rankOf=w=>w?(isUltimate(w)?2e12:isLegend(w)?1e12:0)+(w.cs||[w.t,w.t,w.t]).reduce((a,x)=>a+x,0)*1e6+Math.round((w.b||0)*100)*1e3+(w.m||0)+(validElement(w.element)?500:0):-1;
+const rankOf=w=>w?(isUltimate(w)?2e12:isLegend(w)?1e12:0)+(w.cs||[w.t,w.t,w.t]).reduce((a,x)=>a+x,0)*1e6+Math.round((w.b||0)*100)*1e3+(w.m||0)+(validElement(w.element)?500:0)+weaponStarLevel(w)*100000:-1;
 const saveHi=()=>{
   if(day===0||testRun)return;
   const sc=score();
@@ -1615,12 +1627,51 @@ function presentForgeResults(results){
   cell.classList.add('forge-complete');const spark=document.createElement('span');spark.className='forge-sparks';spark.setAttribute('aria-hidden','true');cell.appendChild(spark);
   gameTimeout(()=>{if(epoch!==forgeFeedbackEpoch||forgeFlashes.get(i)!==w)return;forgeFlashes.delete(i);const current=$('grid').children[i];current?.classList.remove('forge-complete');current?.querySelector('.forge-sparks')?.remove();},700);
  });
- const chosen=live.reduce((best,x)=>rankOf(x.w)>rankOf(best.w)?x:best,live[0]),w=chosen.w,rank=isUltimate(w)?2:isLegend(w)?1:0;
- forgeSound(rank);if(!rank)return;
- const color=LEGENDS[w.legendId].color,stats=weaponStats(w),box=$('forgeCelebration');
+ const chosen=live.find(x=>forgeLevelUps.has(x.w))||live.reduce((best,x)=>rankOf(x.w)>rankOf(best.w)?x:best,live[0]),w=chosen.w,rank=isUltimate(w)?2:isLegend(w)?1:0;
+ const leveled=forgeLevelUps.has(w);forgeSound(rank||(leveled?1:0));if(!rank&&!leveled)return;forgeLevelUps.delete(w);
+ const color=isLegend(w)?LEGENDS[w.legendId].color:C[w.t],stats=weaponStats(w),box=$('forgeCelebration');
  if(forgeFeedbackTimer!==null)clearTimeout(forgeFeedbackTimer);
- box.dataset.rank=String(rank);box.style.setProperty('--forge-color',color);box.innerHTML='<div class="forge-reveal"><span class="forge-rarity">'+(rank===2?'終極鍛造':'傳說鍛造')+' · 完成</span><div class="forge-trophy">'+hex(w.c,bands(w),'',w.t,w)+'</div><strong>'+esc(itemName(w))+'</strong><span class="forge-kind">'+esc(weaponKindLabel(w))+(validElement(w.element)?' · '+esc(elementName(w.element))+'屬性':'')+'</span><span class="forge-values">⚔ '+stats.atk+'　🛡 '+stats.def+'　💨 '+stats.spd+'</span><small>已加入本局收藏</small></div>';
+ box.dataset.rank=String(rank);box.style.setProperty('--forge-color',color);box.innerHTML='<div class="forge-reveal"><span class="forge-rarity">'+(rank===2?'終極鍛造':rank===1?'傳說鍛造':'工藝升星')+' · 完成</span><div class="forge-trophy">'+hex(w.c,bands(w),'',w.t,w)+'</div><strong>'+esc(itemName(w))+'</strong><span class="forge-kind">'+esc(weaponKindLabel(w))+(validElement(w.element)?' · '+esc(elementName(w.element))+'屬性':'')+'</span>'+weaponStarsHTML(w,true)+'<span class="forge-values">⚔ '+stats.atk+'　🛡 '+stats.def+'　💨 '+stats.spd+'</span><small>已加入本局收藏</small></div>';
  box.hidden=false;forgeFeedbackTimer=gameTimeout(()=>{if(epoch===forgeFeedbackEpoch){box.hidden=true;forgeFeedbackTimer=null;}},lowEffects?1200:rank===2?1800:1450);
+}
+
+const WEAPON_STAR_THRESHOLDS=[0,3,6,9],WEAPON_STAR_BONUSES=[0,.05,.1,.2];
+let weaponMastery=new Map();
+const forgeLevelUps=new WeakSet();
+function weaponMasteryKey(w){
+ if(isLegend(w))return 'l:'+w.legendId;
+ return w&&Number.isInteger(w.c)&&w.c>=0&&w.c<10&&Number.isInteger(w.t)&&w.t>=0&&w.t<5?'n:'+w.c+':'+w.t:null;
+}
+function validMasteryKey(key){return typeof key==='string'&&(/^(?:n:[0-9]:[0-4]|l:(?:[0-9]|1[0-9]))$/).test(key);}
+function weaponStarLevel(w){return Number.isInteger(w?.stars)?Math.max(0,Math.min(3,w.stars)):0;}
+function weaponStarBonus(w){return WEAPON_STAR_BONUSES[weaponStarLevel(w)];}
+function weaponStarXp(w){return Math.max(WEAPON_STAR_THRESHOLDS[weaponStarLevel(w)],Math.min(1000000,Math.floor(Number(w?.starXp)||0)));}
+function weaponStarsHTML(w,large=false){
+ if(!weaponMasteryKey(w))return '';const level=weaponStarLevel(w);
+ return '<span class="weapon-stars'+(large?' stars-large':'')+'" role="img" aria-label="'+level+' 星"><span>'+('★'.repeat(level))+'</span><i>'+('☆'.repeat(3-level))+'</i></span>';
+}
+function weaponMasteryHTML(w){
+ if(!weaponMasteryKey(w))return '';const level=weaponStarLevel(w),xp=weaponStarXp(w),next=WEAPON_STAR_THRESHOLDS[level+1];
+ return '<div class="weapon-mastery">'+weaponStarsHTML(w,true)+'<b>'+level+' 星 · 鍛造經驗 '+xp+' 把</b><small>'+(level===3?'已達三星':('累計 '+next+' 把升到 '+(level+1)+' 星，還差 '+Math.max(0,next-xp)+' 把'))+'</small><small>基礎售價、攻擊、防禦、速度 +'+Math.round(weaponStarBonus(w)*100)+'% · 附魔效果另計</small><span>同名稱、同階級獨立累計；每局重新成長。</span></div>';
+}
+function masterySample(w){const count=weaponMastery.get(weaponMasteryKey(w))||0;return {...w,stars:Math.min(3,Math.floor(count/3)),starXp:count};}
+function galleryWeapon(c,t){const w=baseAlbumWeapon(c,t);return albumFromHome?w:masterySample(w);}
+function syncMasteryWeapons(key){
+ const count=weaponMastery.get(key)||0,level=Math.min(3,Math.floor(count/3));
+ [...g,...pack,...bag,hand].forEach(w=>{if(w?.k==='w'&&weaponMasteryKey(w)===key){w.stars=level;w.starXp=count;}});
+ best.forEach((w,c)=>{if(w&&weaponMasteryKey({...w,c})===key){w.stars=level;w.starXp=count;}});
+}
+function recordWeaponCraft(w){
+ const key=weaponMasteryKey(w);if(day<1||!key)return 0;
+ const previous=weaponMastery.get(key)||0,count=Math.min(1000000,previous+1),level=Math.min(3,Math.floor(count/3));weaponMastery.set(key,count);syncMasteryWeapons(key);w.stars=level;w.starXp=count;
+ if(level>Math.min(3,Math.floor(previous/3))){forgeLevelUps.add(w);toast(itemName(w)+' 升至 '+('★'.repeat(level))+'！售價與攻防速 +'+Math.round(weaponStarBonus(w)*100)+'%');}
+ return level;
+}
+function snapshotWeaponMastery(){return {version:1,counts:[...weaponMastery]};}
+function restoreWeaponMastery(raw){
+ weaponMastery=new Map();if(raw?.version===1&&Array.isArray(raw.counts))for(const row of raw.counts.slice(0,70))if(Array.isArray(row)&&validMasteryKey(row[0])&&Number.isSafeInteger(row[1])&&row[1]>=0&&row[1]<=1000000)weaponMastery.set(row[0],Math.max(weaponMastery.get(row[0])||0,row[1]));
+ // Legacy weapons keep their existing snapshots. Loading never awards craft XP.
+ for(const key of weaponMastery.keys())syncMasteryWeapons(key);
 }
 
 const SEASONS=[
@@ -1744,16 +1795,16 @@ function renderWeaponAlbum(){
     const total=WN.filter((_,c)=>albumWeapons().has(albumKey(c,t))).length;
     return '<section class="album-section"><h3 style="color:'+C[t]+'">'+name+'級 <small>'+total+'/10</small></h3><div class="album-grid">'+WN.map((n,c)=>{
       const found=albumWeapons().has(albumKey(c,t));
-      return '<button class="album-card '+(found?'collected':'uncollected')+'" data-album-weapon="'+c+'" data-tier="'+t+'" aria-label="'+name+'級'+n+'，'+(found?'已蒐集':'未蒐集')+'"><span class="album-art">'+hex(c,C[t],'',t)+'</span><b>'+n+'</b><small>'+(found?'已蒐集':'未蒐集')+'</small></button>';
+      return '<button class="album-card '+(found?'collected':'uncollected')+'" data-album-weapon="'+c+'" data-tier="'+t+'" aria-label="'+name+'級'+n+'，'+(found?'已蒐集':'未蒐集')+'"><span class="album-art">'+hex(c,C[t],'',t,galleryWeapon(c,t))+'</span><b>'+n+'</b><small>'+(found?'已蒐集':'未蒐集')+'</small></button>';
     }).join('')+'</div></section>';
   }).join('')+legendAlbumSection();
 }
 $('albumTabs').onclick=e=>{const b=e.target.closest('[data-album-tier]');if(!b)return;albumTier=+b.dataset.albumTier;renderWeaponAlbum();};
 $('albumWeapons').onclick=e=>{const legend=e.target.closest('[data-legend]');if(legend){openLegendBlueprint(+legend.dataset.legend,albumFromHome);return;}const b=e.target.closest('[data-album-weapon]');if(!b)return;showWeaponDetail(+b.dataset.albumWeapon,+b.dataset.tier);};
 function showWeaponDetail(c,t){
-  inspectedWeapon=c;inspectedTier=t;const found=albumWeapons().has(albumKey(c,t));
-  $('inspectName').textContent=NM[t]+'級'+WN[c];$('inspectArt').className=found?'collected':'uncollected';$('inspectArt').innerHTML=hex(c,C[t],'',t);
-  $('inspectStats').innerHTML='<p class="exp-note">基礎能力 · 未附魔</p>'+statsHTML(baseAlbumWeapon(c,t));
+  inspectedWeapon=c;inspectedTier=t;const found=albumWeapons().has(albumKey(c,t)),sample=galleryWeapon(c,t);
+  $('inspectName').textContent=NM[t]+'級'+WN[c];$('inspectArt').className=found?'collected':'uncollected';$('inspectArt').innerHTML=hex(c,C[t],'',t,sample);
+  $('inspectStats').innerHTML='<p class="exp-note">基礎能力 · 未附魔</p>'+statsHTML(sample);
   $('inspectState').textContent=found?'已蒐集 · '+NM[t]+'級工藝':'尚未蒐集 · 鍛造這個階級的武器即可點亮';
   $('inspectPrev').disabled=t===0;$('inspectNext').disabled=t===NM.length-1;$('weaponInspectP').style.display='flex';
 }
@@ -2003,7 +2054,7 @@ function elementChartHTML(){
 
 const pat=()=>1;
 const svg=(c,t=0)=>`<svg viewBox="0 0 48 48" shape-rendering="crispEdges"><image href="${UNITY_ART['weapon'+c+'_'+t]}" width="48" height="48" style="image-rendering:pixelated"/></svg>`;
-const hex=(c,bg,cls="",t=0,w=null)=>`<div class="hxo ${cls}${isLegend(w)?" legendary":""}"><div class="hxi" style="background:${bg}">${isLegend(w)?legendWeaponSVG(w.legendId):svg(c,t)}</div>${w?.protected?'<span class="weapon-protected" aria-label="受保護武器">🔒</span>':''}${validElement(w?.element)?'<span class="weapon-element-icon" style="--element:'+ELEMENTS[w.element].color+'" aria-label="'+ELEMENTS[w.element].name+'屬性">'+elementIcon(w.element)+'</span>':''}</div>`;
+const hex=(c,bg,cls="",t=0,w=null)=>`<div class="hxo ${cls}${isLegend(w)?" legendary":""}"><div class="hxi" style="background:${bg}">${isLegend(w)?legendWeaponSVG(w.legendId):svg(c,t)}</div>${weaponStarsHTML(w)}${w?.protected?'<span class="weapon-protected" aria-label="受保護武器">🔒</span>':''}${validElement(w?.element)?'<span class="weapon-element-icon" style="--element:'+ELEMENTS[w.element].color+'" aria-label="'+ELEMENTS[w.element].name+'屬性">'+elementIcon(w.element)+'</span>':''}</div>`;
 const price=(t,c)=>Math.round(PR[t]*MUL[c]);
 const tok=(bg,tx,b)=>`<div class="${b?"t o":"q"}" style="background-color:${bg}">${tx}</div>`;
 const itemH=(h,b)=>h.k==='ess'?'<span class="essence-icon">'+essenceArt(h.element)+'</span>':h.k==='seed'?'<span class="seed-icon">'+seedPacketArt(h.element)+'</span>':h.k==='bp'?'<span class="bp-item-icon">'+legendBlueprintSVG(h.id)+'</span>':h.k==='m'?mold(h.s,"","f")
@@ -2036,7 +2087,7 @@ const materialPrice=w=>{
 const materialGain=w=>materialPrice(w)-price(w.t,w.c);
 const materialNote=w=>"材料基價 "+materialPrice(w)+" 金幣"
   +(materialGain(w)>0?"（混材 +"+materialGain(w)+"）":"");
-const wp=w=>Math.round((isUltimate(w)?ultimateSaleQuote(w):isLegend(w)?Math.max(0,Math.round(w.legendPrice||0)):Math.round(materialPrice(w)*(1+(w.b||0))))*(validElement(w.element)?1.2:1));
+const wp=w=>Math.round((isUltimate(w)?ultimateSaleQuote(w):isLegend(w)?Math.max(0,Math.round(w.legendPrice||0)):Math.round(materialPrice(w)*(1+(w.b||0))))*(validElement(w.element)?1.2:1)*(1+weaponStarBonus(w)));
 const recipe=c=>COMBO[c].split("").map(x=>TY[x]).join("");
 const oPrice=o=>o.c===null?PR[o.t]:Math.round(price(o.t,o.c)*1.3);
 const salePrice=(w,o)=>Math.round(
@@ -2497,12 +2548,12 @@ function forge(i){
         dts.push(g[j].t);g[j]=null;heat[j]=0;justHeated.delete(j);
       });
     g[spots[k]]={k:'w',t:f.wt,c:f.w,b,cs:f.cs,parts:f.parts,m:f.mm+dm,dts,statVersion:1};
-    const wo=applyWeaponElement(g[spots[k]],spots[k]);
+    const wo=applyWeaponElement(g[spots[k]],spots[k]);recordWeaponCraft(wo);
     const emberGold=consumeAutumnForgeReward();if(emberGold)toast("🍂 落葉餘燼：鍛造獎金 +100 金幣（不計分）");
     (ev.forged||(ev.forged=[])).push({w:wo,i:spots[k]});
     if(day>0&&!testRun)rememberWeapon(wo);
     if(rankOf(wo)>rankOf(best[f.w]))
-      best[f.w]={t:wo.t,cs:wo.cs,parts:wo.parts,b:wo.b,dts:wo.dts,m:wo.m,element:wo.element,statVersion:1};
+      best[f.w]={t:wo.t,cs:wo.cs,parts:wo.parts,b:wo.b,dts:wo.dts,m:wo.m,element:wo.element,stars:wo.stars,starXp:wo.starXp,statVersion:1};
     qOnForgeStats(wo);
     ev.to.push(spots[k]);
     msgs.push(NM[f.wt]+"級"+WN[f.w]+"（"+materialNote(wo)+"）"+(b?"（💎+"+Math.round(b*100)+"%）":""));
@@ -2905,11 +2956,12 @@ function weaponStats(w){
  if(!isLegend(w))parts.forEach(p=>Object.keys(v).forEach(k=>v[k]+=MOLD_STATS[p.s][k]*ORE_POWER[p.t]));
  const gemPower=Array.isArray(w.dts)?w.dts.reduce((a,t)=>a+.05*(Math.max(0,Math.min(4,t))+1),0):Math.max(0,w.b||0)/6;
  if(!isLegend(w))Object.keys(v).forEach(k=>v[k]=Math.round(v[k]*(1+gemPower)));
+ Object.keys(v).forEach(k=>v[k]=Math.round(v[k]*(1+weaponStarBonus(w))));
  const stacks=Math.max(0,Math.floor((w.m||0)/5)),effective=Math.min(20,stacks);
  return {...v,stacks,arcane:effective*2,ward:effective*3,estimated:!isLegend(w)&&!Array.isArray(w.parts)};
 }
 function statsHTML(w){
- const s=weaponStats(w);return '<div class="weapon-stats">'+Object.entries(STAT_NAMES).map(([k,n])=>'<div><small>'+({atk:'⚔',def:'🛡',spd:'💨'}[k])+' '+n+'</small><b>'+s[k]+'</b></div>').join('')+'</div>';
+ const s=weaponStats(w);return '<div class="weapon-stats">'+Object.entries(STAT_NAMES).map(([k,n])=>'<div><small>'+({atk:'⚔',def:'🛡',spd:'💨'}[k])+' '+n+'</small><b>'+s[k]+'</b></div>').join('')+'</div>'+weaponMasteryHTML(w);
 }
 function weaponEnchantHTML(w){
  const s=weaponStats(w);return elementWeaponHTML(w)+'<div class="weapon-enchant"><b>✦ 奧術附魔 '+s.stacks+' 層</b><span>每次攻擊額外 '+s.arcane+' 奧術傷害 · 開戰護盾 '+s.ward+'</span><small>每層提供 2 傷害、3 護盾，戰鬥效果最多計算 20 層。</small></div>';
@@ -2949,16 +3001,16 @@ function labWeapon(){
  if(!sandboxSession)return null;const t=expeditionLab.tier,key=expeditionLab.weapon;let w;
  if(key[0]==='n')w=baseAlbumWeapon(Number(key.slice(1)),t);
  else{const id=Number(key.slice(1));w=id<10?legendaryWeapon(id,LEGENDS[id].recipe.map(c=>baseAlbumWeapon(c,t))):legendaryWeapon(id,LEGENDS[id].recipe.map(parent=>legendaryWeapon(parent,LEGENDS[parent].recipe.map(c=>baseAlbumWeapon(c,t)))));}
- w.m=expeditionLab.stacks*5;if(validElement(expeditionLab.element))w.element=expeditionLab.element;else delete w.element;return w;
+ w.stars=Math.max(0,Math.min(3,Number(expeditionLab.stars)||0));w.starXp=w.stars*3;w.m=expeditionLab.stacks*5;if(validElement(expeditionLab.element))w.element=expeditionLab.element;else delete w.element;return w;
 }
 function updateExpeditionLab(){
- if(!sandboxSession)return;expeditionLab={weapon:$('labWeapon').value,tier:Math.max(0,Math.min(4,Number($('labTier').value)||0)),stacks:Math.max(0,Math.min(20,Math.floor(Number($('labStacks').value)||0))),element:$('labElement').value,stage:Math.max(1,Math.min(1000000,Math.floor(Number($('labStage').value)||1)))};
+ if(!sandboxSession)return;expeditionLab={weapon:$('labWeapon').value,stars:Math.max(0,Math.min(3,Number($('labStars').value)||0)),tier:Math.max(0,Math.min(4,Number($('labTier').value)||0)),stacks:Math.max(0,Math.min(20,Math.floor(Number($('labStacks').value)||0))),element:$('labElement').value,stage:Math.max(1,Math.min(1000000,Math.floor(Number($('labStage').value)||1)))};
  expeditionStage=expeditionLab.stage-1;expeditionSelected='lab';renderExpedition();
 }
 function renderExpeditionLab(){
  const el=$('expeditionLab');el.hidden=!sandboxSession;if(!sandboxSession)return;
  if(!$('labWeapon').innerHTML){$('labWeapon').innerHTML='<optgroup label="普通武器">'+WN.map((n,c)=>'<option value="n'+c+'">'+n+'</option>').join('')+'</optgroup><optgroup label="傳說武器">'+LEGENDS.slice(0,10).map((l,id)=>'<option value="l'+id+'">'+l.name+'</option>').join('')+'</optgroup><optgroup label="終極武器">'+LEGENDS.slice(10).map((l,i)=>'<option value="l'+(i+10)+'">'+l.name+'</option>').join('')+'</optgroup>';$('labTier').innerHTML=NM.map((n,t)=>'<option value="'+t+'">'+n+'級</option>').join('');$('labElement').innerHTML='<option value="none">無屬性</option>'+ELEMENT_IDS.map(e=>'<option value="'+e+'">'+elementName(e)+'</option>').join('');}
- $('labWeapon').value=expeditionLab.weapon;$('labTier').value=String(expeditionLab.tier);$('labStacks').value=String(expeditionLab.stacks);$('labElement').value=expeditionLab.element;$('labStage').value=String(expeditionStage+1);
+ $('labStars').value=String(expeditionLab.stars||0);$('labWeapon').value=expeditionLab.weapon;$('labTier').value=String(expeditionLab.tier);$('labStacks').value=String(expeditionLab.stacks);$('labElement').value=expeditionLab.element;$('labStage').value=String(expeditionStage+1);
 }
 
 let blueprintGoalId=null,inspectedLiveWeapon=null,plannerRows=[];
@@ -2994,7 +3046,7 @@ function validateBackup(text){
  if(Object.keys(v.data).some(k=>!BACKUP_KEYS.includes(k)))throw new Error('備份含有不支援的欄位');
  for(const key of BACKUP_KEYS)if(v.data[key]!==null&&typeof v.data[key]!=='string')throw new Error('備份欄位不完整：'+key);
  const number=(n,min=0,max=1e15)=>typeof n==='number'&&Number.isFinite(n)&&n>=min&&n<=max;
- const item=w=>{if(w===null)return true;if(!w||typeof w!=='object')return false;if(w.k==='w')return Number.isInteger(w.c)&&w.c>=0&&w.c<10&&Number.isInteger(w.t)&&w.t>=0&&w.t<5&&(!('legendId'in w)||validLegendId(w.legendId)&&w.legendCore&&['atk','def','spd'].every(k=>number(w.legendCore[k],1,1e9)));if(w.k==='o'||w.k==='d')return Number.isInteger(w.t)&&w.t>=0&&w.t<5;if(w.k==='p')return Number.isInteger(w.s)&&w.s>=0&&w.s<3&&Number.isInteger(w.t)&&w.t>=0&&w.t<5;if(w.k==='m')return Number.isInteger(w.s)&&w.s>=0&&w.s<=3;if(['f','u','z','l'].includes(w.k))return true;if(w.k==='seed'||w.k==='ess')return validElement(w.element);return w.k==='bp'&&validLegendId(w.id);};
+ const item=w=>{if(w===null)return true;if(!w||typeof w!=='object')return false;if(w.k==='w')return (!('stars'in w)||Number.isInteger(w.stars)&&w.stars>=0&&w.stars<=3)&&(!('starXp'in w)||Number.isSafeInteger(w.starXp)&&w.starXp>=0&&w.starXp<=1000000)&&Number.isInteger(w.c)&&w.c>=0&&w.c<10&&Number.isInteger(w.t)&&w.t>=0&&w.t<5&&(!('legendId'in w)||validLegendId(w.legendId)&&w.legendCore&&['atk','def','spd'].every(k=>number(w.legendCore[k],1,1e9)));if(w.k==='o'||w.k==='d')return Number.isInteger(w.t)&&w.t>=0&&w.t<5;if(w.k==='p')return Number.isInteger(w.s)&&w.s>=0&&w.s<3&&Number.isInteger(w.t)&&w.t>=0&&w.t<5;if(w.k==='m')return Number.isInteger(w.s)&&w.s>=0&&w.s<=3;if(['f','u','z','l'].includes(w.k))return true;if(w.k==='seed'||w.k==='ess')return validElement(w.element);return w.k==='bp'&&validLegendId(w.id);};
  const parse=(key,fallback)=>{try{return v.data[key]===null?fallback:JSON.parse(v.data[key]);}catch{throw new Error('備份內容損壞：'+key);}};
  const saves=parse('forgeSaves',[]),records=parse('forgeRecs',[]);if(!Array.isArray(saves)||saves.length>3||!Array.isArray(records)||records.length>5)throw new Error('存檔或歷史紀錄數量不符');
  const ids=new Set();for(const save of saves){const s=save?.state;if(!s||!number(save.id)||ids.has(save.id)||typeof save.name!=='string'||save.name.length>100)throw new Error('存檔格式錯誤');ids.add(save.id);
@@ -3333,7 +3385,7 @@ function blueprintShapeHTML(id,rotation=0){
  return '<span class="bp-shape" style="--bp-cols:'+s.w+';--bp-rows:'+s.h+';--bp-max:'+Math.max(s.w,s.h)+'">'+a+'</span>';
 }
 function legendAlbumSection(){
- return [0,10].map(start=>{const list=LEGENDS.slice(start,start+10),count=list.filter((_,i)=>albumHasBlueprint(start+i)).length;return '<section class="album-section legend-album-section '+(start?'legend-ultimate':'')+'"><h3>'+(start?'終極藍圖 · 二周目':'傳說藍圖 · 一周目')+' <small>'+count+'/10</small></h3><div class="album-grid">'+list.map((l,i)=>{const id=start+i;return '<button class="album-card '+(albumHasLegend(id)?'collected':albumHasBlueprint(id)?'blueprint-known':'uncollected')+'" data-legend="'+id+'"><span class="album-art">'+(albumHasLegend(id)?legendWeaponSVG(id):legendBlueprintSVG(id))+'</span><b>'+l.name+'</b><small>'+(albumHasLegend(id)?'已鍛造':albumHasBlueprint(id)?'藍圖已取得':'第 '+(id+1)+' 關')+'</small></button>';}).join('')+'</div></section>';}).join('');
+ return [0,10].map(start=>{const list=LEGENDS.slice(start,start+10),count=list.filter((_,i)=>albumHasBlueprint(start+i)).length;return '<section class="album-section legend-album-section '+(start?'legend-ultimate':'')+'"><h3>'+(start?'終極藍圖 · 二周目':'傳說藍圖 · 一周目')+' <small>'+count+'/10</small></h3><div class="album-grid">'+list.map((l,i)=>{const id=start+i;return '<button class="album-card '+(albumHasLegend(id)?'collected':albumHasBlueprint(id)?'blueprint-known':'uncollected')+'" data-legend="'+id+'"><span class="album-art">'+(albumHasLegend(id)?legendWeaponSVG(id):legendBlueprintSVG(id))+(albumHasLegend(id)&&!albumFromHome?weaponStarsHTML(masterySample({k:'w',c:l.c,t:l.tier,legendId:id,legendCore:{atk:1,def:1,spd:1}})):'')+'</span><b>'+l.name+'</b><small>'+(albumHasLegend(id)?'已鍛造':albumHasBlueprint(id)?'藍圖已取得':'第 '+(id+1)+' 關')+'</small></button>';}).join('')+'</div></section>';}).join('');
 }
 
 function renderLegendAlbum(){$('albumWeapons').innerHTML=legendAlbumSection();}
@@ -3346,7 +3398,7 @@ function openLegendBlueprint(id,readOnly=false){
 function renderBlueprintPreview(){
  const id=blueprintInspectId,l=LEGENDS[id];$('legendBlueprintTitle').textContent=l.name+'・'+legendKind(id)+'藍圖';$('legendBlueprintArt').innerHTML=blueprintShapeHTML(id,blueprintRotation);
  $('legendBlueprintState').textContent=blueprintReadOnly?'首頁圖鑑僅供欣賞；進入遊戲後，可從武器箱的藍圖收藏使用藍圖。':hasLegendBlueprint(id)?'將藍圖移到手持欄，再拖曳到棋盤放置。':'第 '+(id+1)+' 關「'+EXPEDITIONS[id].name+'」首次勝利取得';
- const sample=baseLegendWeapon(id);$('legendBlueprintStats').innerHTML='<p class="exp-note">'+legendKind(id)+'武器基礎能力 · 未附魔</p>'+statsHTML(sample)+ultimateSkillHTML(sample)+ultimateArtHTML(id)+(id>=10?'<p class="exp-note">售價為原料合計的 '+(LEGENDS[id].price*100)+'%。'+(firstUltimateReward(id)?'本局首次打造另得 '+firstUltimateReward(id)+' 金幣（不計分）。':'本局首次打造獎金已領取。')+'</p>':'');
+ const sample=blueprintReadOnly?baseLegendWeapon(id):masterySample(baseLegendWeapon(id));$('legendBlueprintStats').innerHTML='<p class="exp-note">'+legendKind(id)+'武器基礎能力 · 未附魔</p>'+statsHTML(sample)+ultimateSkillHTML(sample)+ultimateArtHTML(id)+(id>=10?'<p class="exp-note">售價為原料合計的 '+(LEGENDS[id].price*100)+'%。'+(firstUltimateReward(id)?'本局首次打造另得 '+firstUltimateReward(id)+' 金幣（不計分）。':'本局首次打造獎金已領取。')+'</p>':'');
  $('legendBlueprintRecipe').innerHTML='<div class="bp-requirements">'+l.recipe.map((c,k)=>{const r=blueprintRequirement(id,k);return '<div><b>'+(k+1)+'</b>'+requirementArt(r)+'<span>'+requirementName(r)+'</span></div>';}).join('')+'</div><p class="exp-note">'+(id>=10?'每格只接受上方指定名稱的一周目傳說武器；普通武器、其他傳說或終極武器都不能替代。':'每格需要指定種類與固定階級的普通武器，更高或更低階都不能放入。')+'原料會消耗，最後一件放入的位置產生成品。</p><p class="exp-note">'+l.trait+' 完成後藍圖回到收藏，可重複使用。點擊黃色格可撤回藍圖與已投入原料。</p>';
  $('blueprintGoalSet').hidden=blueprintReadOnly;const active=legendProjects.some(p=>p.id===id);$('legendBlueprintForge').hidden=blueprintReadOnly;$('legendBlueprintForge').disabled=!hasLegendBlueprint(id)||active;$('legendBlueprintForge').textContent=active?'這張藍圖已放在棋盤':'確認放置 · 移到手持欄';
 }
@@ -3391,7 +3443,7 @@ function fillBlueprint(i,w,clear){
  let completed=null;
  const value=JSON.parse(JSON.stringify(w));clear();p.filled[k]=value;
  if(p.filled.every(Boolean)){
-  const result=applyWeaponElement(legendaryWeapon(p.id,p.filled),i);completed=result;const emberGold=consumeAutumnForgeReward();if(emberGold)toast('🍂 落葉餘燼：鍛造獎金 +100 金幣（不計分）');legendProjects=legendProjects.filter(x=>x!==p);g[i]=result;if(blueprintGoalId===p.id){blueprintGoalId=null;toast("製作計畫完成！");}
+  const result=applyWeaponElement(legendaryWeapon(p.id,p.filled),i);completed=result;recordWeaponCraft(result);const emberGold=consumeAutumnForgeReward();if(emberGold)toast('🍂 落葉餘燼：鍛造獎金 +100 金幣（不計分）');legendProjects=legendProjects.filter(x=>x!==p);g[i]=result;if(blueprintGoalId===p.id){blueprintGoalId=null;toast("製作計畫完成！");}
   p.cells.forEach(j=>{heat[j]=hotSteps();justHeated.add(j)});const debutReward=firstUltimateReward(p.id);recordLegendForge(p.id);if(debutReward){coins+=debutReward;toast("首次打造獎金 +"+debutReward+" 金幣（不計分）");}
   if(!testRun){legendBlueprints.add(p.id);persistLegendSets();rememberWeapon(result);}
   if(rankOf(result)>rankOf(best[result.c]))best[result.c]=JSON.parse(JSON.stringify(result));qOnForgeStats(result);grantBlueprintItem(p.id);burnLeaves();saveHi();
@@ -4031,7 +4083,7 @@ $("bagC").onclick=e=>{
 
 function start(mode,opt){
   if(sandboxSession)opt={...opt,test:true};
-  clearForgeFeedback();autumnForgeCharges=0;
+  clearForgeFeedback();autumnForgeCharges=0;weaponMastery=new Map();
   $("townP").style.display="none";
   mode=mode||(day===0?"tut":"normal");
   runId=Date.now();runDate=todayStr();runTime=timeStr();
@@ -4127,7 +4179,7 @@ function saveNow(){
     g,coins,earned,all,day,dTot,dServed,dEarn,dLeft,orders,dq,best,Q,MQ,
     heat,hand,shopD,magic,magicSet:[...magicSet],dMagic,dSold,lives,
     skills,pack,sp,bag,gachaUsed,skillDone,spentToday,phase,quests,qDone,dLv,pendingChests,lastCompletedDay,expedition:expeditionState,legendProjects,blueprintGoalId,collections:snapshotRunCollections(),ecology:snapshotEcology(),orderCapVersion:1,city:snapshotCity(),avatar:normalizeAvatar(playerAvatar),
-    shopBought,leaves:[...leaves],frozen:[...frozen],seasonVersion:1,seasonNoticePending,seasonCraft:{day,charges:autumnForgeCharges}
+    shopBought,leaves:[...leaves],frozen:[...frozen],seasonVersion:1,seasonNoticePending,seasonCraft:{day,charges:autumnForgeCharges},weaponMastery:snapshotWeaponMastery()
   };
   const e={
     id:runId,name:playerName||"玩家",date:runDate,time:runTime,avatar:normalizeAvatar(playerAvatar),
@@ -4177,6 +4229,7 @@ function loadGame(id){
   enter.clear();busy=false;tutP2=false;lead=0;flyI=-1;exitMs=0;active=true;
   ["ov","cf","sk","rw","gcP","svP","recP","help","seasonP","townLootP","townSkillP","expeditionP","weaponStatsP","legendBlueprintP","blueprintProjectP","avatarCreatorP","greenhouseP","seedP"].forEach(x=>$(x).style.display="none");
   $("title").style.display="none";clearPrediction();render();
+  restoreWeaponMastery(t.weaponMastery);render();
   restoreTownProgress(t);
   showPendingSeasonNotice();
 }
@@ -4537,7 +4590,7 @@ function nextSandboxDay(){
  if(!sandboxSession)return;stopExpeditionPlayback();closeCityPanels();architect.active=false;architect.selected=null;architect.placing=null;pendingChests++;newDay();seasonNoticePending=false;closeP('seasonP');coins=1e12;sp=9999;lives=3;render();showTown();
 }
 function finishSandbox(){
- if(!sandboxSession)return;stopCityAnimals();cancelCityPresetSave();sandboxEpoch++;sandboxStorage.clear();cityThumbnailCache.clear();cityPreviewCache.clear();cityPreviewRequest++;sandboxSession=false;
+ if(!sandboxSession)return;weaponMastery=new Map();stopCityAnimals();cancelCityPresetSave();sandboxEpoch++;sandboxStorage.clear();cityThumbnailCache.clear();cityPreviewCache.clear();cityPreviewRequest++;sandboxSession=false;
  if(sandboxProfile){playerName=sandboxProfile.playerName;playerAvatar=normalizeAvatar(sandboxProfile.avatar);muted=sandboxProfile.muted;hi=sandboxProfile.hi;recs=sandboxProfile.recs;saves=sandboxProfile.saves;weaponAlbum.clear();sandboxProfile.weapons.forEach(k=>weaponAlbum.add(k));legendBlueprints.clear();sandboxProfile.blueprints.forEach(k=>legendBlueprints.add(k));legendCollection.clear();sandboxProfile.legends.forEach(k=>legendCollection.add(k));}sandboxProfile=null;
  cheat.m=false;cheat.s=false;testRun=false;active=false;runId=0;day=0;phase='play';coins=0;earned=0;magic=0;all=0;qDone=0;
  best=Array(10).fill(null);g=Array(W*H).fill(null);pack=[];bag=[];hand=null;resetRunCollections();legendDemoBlueprints.clear();legendDemoCollection.clear();legendProjects=[];architect.active=false;architect.placing=null;architect.selected=null;closeCityPanels();cityState=freshCity();cityRevision++;
@@ -4681,7 +4734,7 @@ async function claimOnlineName(name){
  if(!draft||onlineNameKey(draft.name)!==onlineNameKey(checking.name)){draft={name:checking.name,key:createOnlineKey()};localStorage.setItem('forgeOnlineClaimV1',JSON.stringify(draft));}
  const result=await onlineAPI('register',{method:'POST',body:{name:draft.name,ownerKey:draft.key},profile:null});storeOnlinePlayer(result.player,draft.key);localStorage.removeItem('forgeOnlineClaimV1');return onlinePlayer;
 }
-function onlineWeapon(w,c){if(!w)return null;const out={k:'w',c,t:w.t,m:w.m||0,b:w.b||0};for(const k of ['cs','parts','dts','element','legendId','legendCore','legendPrice'])if(w[k]!==undefined)out[k]=JSON.parse(JSON.stringify(w[k]));return out;}
+function onlineWeapon(w,c){if(!w)return null;const out={k:'w',c,t:w.t,m:w.m||0,b:w.b||0};for(const k of ['cs','parts','dts','element','legendId','legendCore','legendPrice','stars','starXp'])if(w[k]!==undefined)out[k]=JSON.parse(JSON.stringify(w[k]));return out;}
 function captureOnlineRecord(){
  if(!onlineAllowed()||score()<=0)return null;
  return {mode:'normal',testRun:false,sandbox:false,runId:String(runId),score:score(),earned,magic,day,served:all,quests:qDone,expedition:expeditionState.cleared.length,avatar:normalizeAvatar(playerAvatar),weapons:best.map((w,c)=>onlineWeapon(w,c)),skills:{...skills}};
