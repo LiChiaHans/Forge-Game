@@ -1021,6 +1021,27 @@ body::before{filter:brightness(.68) saturate(.78)}
 @media(max-height:760px){#kitchenOrders{height:112px}.kitchen-order>div:not(.kitchen-recipe-strip){width:43px;height:43px}.kitchen-order .kitchen-recipe-strip{height:22px}.kitchen-order .kitchen-recipe-strip>span{width:21px}#kitchenProcesses svg{max-height:51px}#kitchenProcesses>button:not(.kitchen-process-ready) svg{max-height:37px}#kitchenProcesses b{font-size:9px}.kitchen-order>b{font-size:10px}}
 
 </style>
+<style>
+/* Match the forge's left-hand vertical labels and three-card tool rail. */
+.kitchen-screen header{display:grid;grid-template-columns:minmax(0,1fr) auto 32px 32px;gap:4px;min-height:33px}.kitchen-screen header>b,.kitchen-screen header>span{display:flex;align-items:center;height:33px;margin:0;padding:0 7px;border:1px solid #58677b;border-radius:9px;background:linear-gradient(#394759,#2d3849);white-space:nowrap;font-size:12px}.kitchen-screen header>button{height:33px;min-width:0;padding:2px;border-radius:9px;font-size:20px}.kitchen-screen nav button{font-size:16px}
+.kitchen-screen footer{grid-template-columns:minmax(0,1.8fr) minmax(0,.9fr) 55px;min-height:93px;gap:5px}
+#kitchenProcesses,#kitchenHand{padding:6px 5px 6px 23px;gap:5px;background:linear-gradient(#394759,#2d3849);border-color:#58677b;border-radius:11px}
+#kitchenProcesses>small,#kitchenHand>small{position:absolute;left:5px;top:50%;bottom:auto;transform:translateY(-50%);writing-mode:vertical-rl;text-orientation:upright;letter-spacing:2px;line-height:1.05;font-size:13px;color:#e9ca7d}
+#kitchenProcesses>button.kitchen-process-ready:after{content:none}#kitchenProcesses>button.kitchen-process-ready{outline:2px dashed #e7c36d;outline-offset:1px}#kitchenProcesses svg{max-height:66px}#kitchenProcesses>button:not(.kitchen-process-ready) svg{max-height:48px}#kitchenHand>span{width:58px;height:58px;min-width:0;max-width:100%}#kitchenHand>button:not(.kitchen-stow){padding:2px;font-size:40px}#kitchenHand .kitchen-stow{top:2px;right:2px}
+.kitchen-screen nav button{border-radius:10px}.kitchen-order{border-radius:10px}.kitchen-screen main{gap:5px}#kitchenQueue{border-radius:11px;border-color:#5e6a7c;background:linear-gradient(#394759,#2b3645)}#kitchenGrid{border-radius:12px;border-color:#99875e;background:#6b674f}.kc{border-radius:8px}.kitchen-customer-exit{box-sizing:border-box;overflow:hidden;contain:layout style}
+#kitchenP .kitchen-complete{animation:kitchen-finished .65s ease-out}@keyframes kitchen-finished{0%{box-shadow:inset 0 0 0 3px #fff1bc,0 0 10px #f5c96b}100%{box-shadow:inset 0 2px 5px #0d1625}}
+#townP[data-preview-kitchen="true"] #townExpedition{left:2%;top:1%;width:48%;height:25%}
+#townP[data-preview-kitchen="true"] #townForge{left:58%;top:11%;width:42%;height:25%}
+#townP[data-preview-kitchen="true"] #townKitchen{left:59%;top:36%;width:41%;height:27%}
+#townP[data-preview-kitchen="true"] #townDecorShop{left:76%;top:64%;width:24%;height:15%}
+#townP[data-preview-kitchen="true"] #townTraining{top:79%;height:21%}
+#townP[data-time="night"] #townPlaza{filter:brightness(.59) saturate(.75)}
+#townP[data-time="night"] .town-sticker[data-decor-kind="fountain"] .sticker-transform>svg{filter:brightness(.58) saturate(.8)}
+#townP[data-time="night"] #townFountain{filter:brightness(.58) saturate(.8)}
+@media(max-height:760px){.kitchen-screen footer{min-height:80px}#kitchenProcesses svg{max-height:54px}#kitchenProcesses>button:not(.kitchen-process-ready) svg{max-height:40px}#kitchenProcesses>small,#kitchenHand>small{font-size:12px}#kitchenHand>span{width:49px;height:49px}}
+@media(prefers-reduced-motion:reduce){#kitchenP .kitchen-complete{animation:none}}.low-effects #kitchenP .kitchen-complete{animation:none}
+
+</style>
 </head>
 <body>
 <div id="portraitGuard" hidden role="dialog" aria-modal="true" aria-hidden="true" aria-label="請直向遊玩"><svg viewBox="0 0 40 52" aria-hidden="true" shape-rendering="crispEdges"><path fill="#0c1726" d="M7 0h26v3h3v46h-3v3H7v-3H4V3h3z"/><path fill="#b8a577" d="M8 3h24v46H8z"/><path fill="#293e51" d="M10 8h20v34H10z"/><path fill="#e8d696" d="M16 4h8v2h-8zM17 45h6v2h-6z"/><path fill="#84b6b0" d="M19 14h3v16h-3zM13 21h3v3h-3zM16 18h3v3h-3zM22 18h3v3h-3zM25 21h3v3h-3z"/></svg><b>請直向遊玩</b><p>將手機轉回直向<br>即可繼續遊戲</p></div>
@@ -1723,7 +1744,7 @@ function restoreWeaponMastery(raw){
 
 const KITCHEN_NAMES=['鹽味飯糰','肉醬燴飯','蔬菜炊飯','豪華肉丼','主廚套餐','田園拌飯','香煎肉排','蔬菜燉肉','鄉村濃湯','田園沙拉'];
 const KITCHEN_GRADES=['家常','新鮮','精選','特級','頂級'],KITCHEN_TYPES=['主食','主菜','配菜'],KITCHEN_PROCESS=['炊煮卡','煎烤卡','切拌卡'];
-const KITCHEN_SKILLS={merge:{name:'備料達人',icon:'🥣',desc:['食材三／四／五顆相連可升階','料理完成後返還一包家常食材','返還食材提升為新鮮']},cool:{name:'火候掌控',icon:'🔥',desc:['爐火餘熱減少 2 步','減少 4 步','減少 6 步']},fresh:{name:'保鮮專家',icon:'🧊',desc:['新食材保鮮多 6 步','多 12 步','多 18 步']},spice:{name:'調味學',icon:'🌿',desc:['調味售價加成提高至 15%','提高至 20%','提高至 25%']},pack:{name:'餐盒管理',icon:'🥡',desc:['餐盒櫃開啟 2 格','開啟 4 格','開啟 6 格']},patience:{name:'主廚口碑',icon:'👨‍🍳',desc:['客人耐心多 8 步','多 16 步','多 24 步']}};
+const KITCHEN_SKILLS={merge:{name:'備料達人',icon:'🥣',desc:['食材三／四／五顆相連可升階','料理返還食材有 25% 機會保留原料階級','保留原料階級機率提升至 50%']},cool:{name:'火候掌控',icon:'🔥',desc:['爐火餘熱減少 2 步','減少 4 步','減少 6 步']},fresh:{name:'保鮮專家',icon:'🧊',desc:['新食材保鮮多 6 步','多 12 步','多 18 步']},spice:{name:'調味學',icon:'🌿',desc:['調味售價加成提高至 15%','提高至 20%','提高至 25%']},pack:{name:'餐盒管理',icon:'🥡',desc:['餐盒櫃開啟 2 格','開啟 4 格','開啟 6 格']},patience:{name:'主廚口碑',icon:'👨‍🍳',desc:['客人耐心多 8 步','多 16 步','多 24 步']}};
 const KITCHEN_CHALLENGES=[{name:'晚餐尖峰',icon:'⏱',goal:6,text:'服務六位客人，且沒有任何超時訂單。',kind:'rush'},{name:'蔬食餐會',icon:'🥬',goal:3,text:'售出三道含兩份以上配菜的料理。',kind:'vegetable'},{name:'嚴格食評',icon:'⭐',goal:3,text:'售出三道精選級以上，或至少一星的料理。',kind:'critic'}];
 const KITCHEN_SPICES={herb:{name:'香草',icon:'葉',color:'#8fd5a0',stat:'aroma',effect:'香氣 +20%'},spicy:{name:'辛香',icon:'辣',color:'#f49b6e',stat:'taste',effect:'滋味 +20%'},milk:{name:'奶香',icon:'乳',color:'#ffe6ab',stat:'fullness',effect:'飽足 +20%'}};
 let sandboxNight=false,kitchen=null,kitchenDrag=null,kitchenSuppressClick=0;
@@ -1733,12 +1754,12 @@ function kitchenFood(t=0){return {k:'o',t,fresh:14+6*kitchenLevel('fresh'),born:
 function kitchenOrder(generic=false){const c=generic?null:rnd(10),t=Math.min(3,Math.max(0,Math.floor((day-1)/6))),patience=(kitchen.challenge===0?50:70)+8*kitchenLevel('patience');return {c,t,max:patience,wait:patience};}
 function startKitchenNight(force=false){
  if(!sandboxSession)return;if(!kitchen)kitchen=freshKitchen();if(kitchen.day===day&&!force)return;
- kitchen.day=day;kitchen.heat.fill(0);kitchen.tiles={};kitchen.q=Array.from({length:5},()=>kitchenRollFood());kitchen.mq=[0,1,2];kitchen.served=0;kitchen.missed=0;kitchen.earned=0;kitchen.progress=0;kitchen.done=false;kitchen.settlement=null;kitchen.stock={m:0,tool:0,o:0};kitchen.challenge=day===1?0:rnd(3);kitchen.mode='ore';
+ clearKitchenDepartures();kitchen.day=day;kitchen.heat.fill(0);kitchen.tiles={};kitchen.q=Array.from({length:5},()=>kitchenRollFood());kitchen.mq=[0,1,2];kitchen.served=0;kitchen.missed=0;kitchen.earned=0;kitchen.progress=0;kitchen.done=false;kitchen.settlement=null;kitchen.stock={m:0,tool:0,o:0};kitchen.challenge=day===1?0:rnd(3);kitchen.mode='ore';
  const list=Array.from({length:6},(_,i)=>kitchenOrder(i<2||kitchen.challenge!==0));kitchen.orders=list.splice(0,3);kitchen.queue=list;kitchen.message='晚餐營業開始！點空格放食材，拖曳工序卡備料，再點三個相連的備料完成料理。';
 }
 function kitchenRollFood(){const r=Math.random();return r<.04?2:r<.18?1:0;}
 function openKitchen(){if(!sandboxSession){toast('廚房目前只在後台測試開放');return;}if(!sandboxNight){toast('白天先經營冶煉廠；可用標頭的晝夜按鈕切到晚上');return;}startKitchenNight();$('kitchenP').hidden=false;renderKitchen();if(kitchen.done){renderKitchenSettlement();return;}if(!kitchen.helpSeen){kitchen.helpSeen=true;kitchenHelp();}}
-function closeKitchen(){cancelKitchenDrag();$('kitchenP').hidden=true;$('kitchenModal').hidden=true;showTown();}
+function closeKitchen(){cancelKitchenDrag();clearKitchenDepartures();$('kitchenP').hidden=true;$('kitchenModal').hidden=true;showTown();}
 function kitchenNeighbors(i){return nb(i);}
 function kitchenGroup(i){const item=kitchen.g[i];if(!item)return [];const out=[i];for(let k=0;k<out.length;k++)for(const n of nb(out[k]))if(!out.includes(n)&&kitchen.g[n]?.k===item.k&&(item.k==='p'||kitchen.g[n].t===item.t))out.push(n);return out;}
 function kitchenAuto(i){
@@ -1747,22 +1768,28 @@ function kitchenAuto(i){
  }return changed;
 }
 function kitchenPrepare(i){
- if(kitchen.g[i]||kitchen.heat[i]>0){kitchen.message='工序卡要放在可用的空格。';return false;}const mat=moldMaterials(i,kitchen.g);if(!mat){kitchen.message='空格附近需要兩包相連的同階食材。';return false;}
- const held=kitchen.hand?.k==='m',s=held?kitchen.hand.s:kitchen.mq[0];mat.cells.slice(0,2).forEach(j=>kitchen.g[j]=null);kitchen.g[i]={k:'p',s,t:mat.t};if(held)kitchen.hand=null;else{kitchen.mq.shift();kitchen.mq.push(rnd(3));}kitchen.mode='ore';kitchen.message='已備好'+KITCHEN_GRADES[mat.t]+KITCHEN_TYPES[s]+'。三份相連的備料可組合料理。';return true;
+ if(kitchen.g[i]||kitchen.heat[i]>0){kitchen.message='工序卡要放在可用的空格。';return false;}
+ const mat=moldMaterials(i,kitchen.g);if(!mat){kitchen.message='空格附近需要至少兩包相連的同階食材。';return false;}
+ const held=kitchen.hand?.k==='m',s=held?kitchen.hand.s:kitchen.mq[0];mat.cells.forEach(j=>kitchen.g[j]=null);kitchen.g[i]={k:'p',s,t:mat.t};
+ if(held)kitchen.hand=null;else{kitchen.mq.shift();kitchen.mq.push(rnd(3));}kitchen.mode='ore';
+ kitchen.message='已備好'+KITCHEN_GRADES[mat.t]+KITCHEN_TYPES[s]+'。連成三份工序時會自動完成料理。';kitchenCraft(i,true);return true;
 }
 function kitchenStars(w){return Math.min(3,Math.floor((kitchen.xp[w.c+':'+w.t]||0)/3));}
 function kitchenPrice(w){const quality=Array.isArray(w.cs)?w.cs.reduce((sum,t)=>sum+[35,65,105,160,235][t],0)/3:[35,65,105,160,235][w.t];return Math.round(quality*(1+[0,.05,.1,.2][kitchenStars(w)])*(w.spice?1.1+.05*kitchenLevel('spice'):1));}
-function kitchenCraft(i){
- const path=forgePath(i,kitchen.g);if(!path){kitchen.message='三份備料需要排成直線或彎線。';return false;}
+function kitchenCraft(i,silent=false){
+ const path=forgePath(i,kitchen.g);if(!path){if(!silent)kitchen.message='三份備料需要排成直線或彎線。';return false;}
  const n=path.length,parts=path.map(j=>({...kitchen.g[j]})),spots=n===3?[i]:Array.from({length:n-2},(_,k)=>path[k+1]);path.forEach(j=>{kitchen.g[j]=null;kitchen.heat[j]=Math.max(2,8-2*kitchenLevel('cool'));kitchen.justHeated.add(j);});
- const made=[];spots.forEach((j,k)=>{const trio=parts.slice(k,k+3),c=COMBO.indexOf(trio.map(p=>p.s).sort().join('')),t=Math.floor(trio.reduce((sum,p)=>sum+p.t,0)/3),w={k:'w',c,t,cs:trio.map(p=>p.t),spice:kitchen.tiles[j]||null};kitchen.g[j]=w;const key=c+':'+t,old=kitchen.xp[key]||0;kitchen.xp[key]=old+1;kitchen.crafted++;made.push(KITCHEN_NAMES[c]);if(Math.floor((old+1)/3)>Math.floor(old/3)&&old<9)toast(KITCHEN_NAMES[c]+' 升星！');});
- if(kitchenLevel('merge')>=2){const free=path.find(j=>!kitchen.g[j]);if(free!==undefined)kitchen.g[free]=kitchenFood(kitchenLevel('merge')>=3?1:0);}
+ const made=[];spots.forEach((j,k)=>{const trio=parts.slice(k,k+3),c=COMBO.indexOf(trio.map(p=>p.s).sort().join('')),t=Math.floor(trio.reduce((sum,p)=>sum+p.t,0)/3),w={k:'w',c,t,cs:trio.map(p=>p.t),spice:kitchen.tiles[j]||null};kitchen.g[j]=w;const key=c+':'+t,old=kitchen.xp[key]||0;kitchen.xp[key]=old+1;kitchen.crafted++;(kitchen.forgedAt||(kitchen.forgedAt={}))[j]=Date.now();made.push(KITCHEN_NAMES[c]);if(Math.floor((old+1)/3)>Math.floor(old/3)&&old<9)toast(KITCHEN_NAMES[c]+' 升星！');});
+ const free=path.filter(j=>!spots.includes(j));if(free.length){const at=free[rnd(free.length)],chance=kitchenLevel('merge')>=3?.5:kitchenLevel('merge')===2?.25:0,tier=Math.random()<chance?parts[rnd(parts.length)].t:0;kitchen.g[at]=kitchenFood(tier);kitchenAuto(at);}
  kitchen.message='料理完成：'+made.join('、')+'！拖曳到客人即可出餐。';forgeSound(0);return true;
 }
 function kitchenStep(){
  kitchen.turn++;kitchen.heat=kitchen.heat.map((h,i)=>h>0&&!kitchen.justHeated.has(i)?h-1:h);kitchen.justHeated.clear();
  kitchen.g.forEach(item=>{if(item?.k==='o'&&item.born<kitchen.turn&&item.fresh>0){item.fresh--;if(item.fresh===0&&item.t>0){item.t--;item.fresh=14+6*kitchenLevel('fresh');kitchen.message+=' 有一包食材久放降了一階。';}}});
- const expired=kitchen.orders.filter(o=>--o.wait<=0);kitchen.missed+=expired.length;kitchen.orders=kitchen.orders.filter(o=>o.wait>0);if(expired.length){lives=Math.max(1,lives-1);kitchen.message+=' 訂單超時（後台至少保留一顆愛心）。';}while(kitchen.orders.length<3&&kitchen.queue.length)kitchen.orders.push(kitchen.queue.shift());if(!kitchen.orders.length&&!kitchen.queue.length)completeKitchenNight();
+ const expired=[];kitchen.orders.forEach((o,i)=>{if(--o.wait<=0)expired.push(i);});kitchen.missed+=expired.length;
+ for(let k=expired.length-1;k>=0;k--)kitchenRemoveOrder(expired[k]);
+ if(expired.length){lives=Math.max(1,lives-expired.length);kitchen.message+=' 訂單超時（後台至少保留一顆愛心）。';}
+ if(!kitchen.orders.length&&!kitchen.queue.length)completeKitchenNight();
 }
 function kitchenUseHand(i){
  const item=kitchen.hand;if(!item)return false;if(item.k==='m')return kitchenPrepare(i);
@@ -1781,7 +1808,7 @@ function kitchenClick(i){
 function kitchenSell(w,index,clear){
  if(!sandboxSession||!kitchen||kitchen.done)return false;const order=kitchen.orders[index];if(!order||w?.k!=='w')return false;if(order.c!==null&&order.c!==w.c){kitchen.message='這位客人需要'+KITCHEN_NAMES[order.c]+'。';return false;}if(w.t<order.t){kitchen.message='品質需要'+KITCHEN_GRADES[order.t]+'級以上。';return false;}
  const price=kitchenPrice(w);coins+=price;kitchen.earned+=price;kitchen.served++;if(kitchen.challenge===1&&COMBO[w.c].split('').filter(s=>s==='2').length>=2)kitchen.progress++;if(kitchen.challenge===2&&(w.t>=2||kitchenStars(w)>=1))kitchen.progress++;
- clear();kitchen.orders.splice(index,1);while(kitchen.orders.length<3&&kitchen.queue.length)kitchen.orders.push(kitchen.queue.shift());kitchen.message='出餐成功！'+KITCHEN_NAMES[w.c]+' +'+price+' 金幣';if(!kitchen.orders.length&&!kitchen.queue.length)completeKitchenNight();else kitchenStep();renderKitchen();return true;
+ clear();kitchenRemoveOrder(index);kitchen.message='出餐成功！'+KITCHEN_NAMES[w.c]+' +'+price+' 金幣';if(!kitchen.orders.length&&!kitchen.queue.length)completeKitchenNight();else kitchenStep();renderKitchen();return true;
 }
 function completeKitchenNight(){
  if(kitchen.done)return;kitchen.done=true;const c=KITCHEN_CHALLENGES[kitchen.challenge],passed=c.kind==='rush'?kitchen.served>=6&&kitchen.missed===0:kitchen.progress>=c.goal,paid=kitchen.lastRewarded!==day;
@@ -1811,7 +1838,7 @@ function kitchenHouseArt(){
  const at=(u,v)=>[15+48*u+108*v,72-49*u+27*v],pts=a=>a.map(([x,y])=>Math.round(x)+','+Math.round(y)).join(' ');let tiles='';
  for(let r=0;r<9;r++)for(let k=-1;k<12;k++){const u=r/9,v=(k+(r%2)*.5)/11;tiles+='<polygon points="'+pts([at(u,v),at(u+1/9,v),at(u+1/9,v+1/11),at(u,v+1/11)])+'" fill="'+['#965849','#b37254','#c58760'][(r+k+30)%3]+'" stroke="#744536" stroke-width=".7"/>';}
  let bricks='';for(let r=0;r<3;r++)for(let k=0;k<6;k++)bricks+='<path fill="#a08c65" opacity=".42" d="M'+(28+k*14+(r%2)*4)+' '+(114+r*13)+'h6v2h-6z"/>';
- return '<svg viewBox="0 -28 192 212" shape-rendering="crispEdges" aria-hidden="true"><defs><clipPath id="kitchen-house-roof"><polygon points="15,72 63,23 171,50 123,99"/></clipPath></defs><path fill="#1b302c" opacity=".3" d="M8 150l113 29 65-22v10l-65 21L8 158z"/><path fill="#677066" d="M15 146l107 27 61-20v10l-61 22-107-28z"/><path fill="#b3ab8e" d="M15 146l107 27 61-20-7-5-54 18-99-25z"/><path fill="#514a38" stroke="#303a33" stroke-width="3" d="M23 77l99 24 57-16v68l-57 19-99-25z"/><path fill="#ead6a1" d="M27 85l90 22v57l-90-22z"/><path fill="#b3a17b" d="M125 106l50-14v57l-50 17z"/>'+bricks+'<path fill="#715137" d="M25 83h6v62h-6zM115 105h7v64h-7zM26 129l92 24v6l-92-24zM126 107l49-14v6l-49 14zM173 92h6v61h-6z"/><path fill="#312f2a" d="M77 116l25 6v40l-25-6z"/><path fill="#8c643e" d="M80 120l18 5v34l-18-5z"/><path fill="#e3b672" d="M84 123l11 3v15l-11-3z"/><path fill="#774c31" d="M87 124h2v15h-2zM83 131l13 3v2l-13-3z"/><path fill="#f0d28b" d="M93 146h2v3h-2z"/><path fill="#34382e" d="M35 105l31 8v27l-31-8z"/><path fill="#f3cb75" d="M38 109l25 6v20l-25-6z"/><path fill="#fff0b0" d="M40 111l9 2v8l-9-2z"/><path fill="#9a6e3c" d="M49 112h3v20h-3zM37 121l27 7v3l-27-7z"/><path fill="#714e34" d="M33 132l35 9v4l-35-9z"/><path fill="#426a44" d="M37 133h5v-6h5v8h6v-4h5v8l-21-5z"/><path fill="#dda367" d="M35 137l31 8v7l-31-8z"/><path fill="#403d33" d="M137 113l26-7v29l-26 8z"/><path fill="#ddaa5f" d="M140 115l20-6v24l-20 6z"/><path fill="#f9e1a2" d="M142 118l7-2v12l-7 2z"/><path fill="#8f6238" d="M149 113h3v23h-3zM139 125l22-6v3l-22 6z"/><polygon points="15,72 63,23 171,50 123,99" fill="#754638" stroke="#313635" stroke-width="5"/><g clip-path="url(#kitchen-house-roof)">'+tiles+'</g><path fill="#e0b67d" d="M60 22l4-3 109 28v5l-109-28z"/><path fill="#6d4435" d="M12 72l110 27v7L12 79zM123 99l48-50 4 3-50 54z"/><path fill="#e8ba80" d="M16 73l104 26v2L16 75z"/><path fill="#e3cc98" stroke="#564b36" stroke-width="3" d="M126 98l44-47 18 33z"/><path fill="#805d3c" d="M167 56h4v32h-4zM149 76l30 9v4l-32-9z"/><path fill="#383d36" d="M45 30V-7l17 4v38z"/><path fill="#758078" d="M48 26V-4l10 2v31z"/><path fill="#c0bea0" d="M42-9l20 4v7L42-2z"/><path fill="#6b6250" d="M44 8l17 4v3l-17-4zM44 21l17 4v3l-17-4z"/><g class="kitchen-steam" fill="#e6dfcc" opacity=".55"><path d="M43-13h16v-7h-4v-5H43zM38-28h13v-6h-4v-5H36v7h2z"/></g><path fill="#322d27" d="M31 83l78 19v22l-78-19z"/><path fill="#6f5136" d="M33 85l74 18v17l-74-18z"/><path fill="none" stroke="#d4b579" stroke-width="1.5" d="M36 88l68 17v11l-68-17z"/><g transform="matrix(1 .245 0 1 0 0)"><text x="70" y="87" font-family="serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#f8e4ad">廚房餐廳</text></g><path fill="#ad754b" d="M31 106l38 9-4 7-38-9z"/><path fill="#f4d69e" d="M32 107l6 1-4 7-6-1zM45 110l6 1-4 7-6-1zM58 113l6 1-4 7-6-1z"/><path fill="#bea372" d="M74 158l30 8 5 4-32-7z"/><path fill="#f1d69c" d="M79 158l22 6v3l-22-6z"/><path fill="#6e5339" stroke="#414335" stroke-width="2" d="M12 145h12v16H12zM164 154h14v17h-14z"/><path fill="#ccaa6b" d="M13 149h10v2H13zM165 158h12v2h-12zM165 166h12v2h-12z"/>'+(townVisualSeason()===3?'<path fill="#e4eef0" d="M16 71l47-48 108 27-4 4-104-25-41 44zM124 97l11-12 9 2-17 18z"/>':'')+'</svg>';
+ return '<svg viewBox="0 -28 192 212" shape-rendering="crispEdges" aria-hidden="true"><defs><clipPath id="kitchen-house-roof"><polygon points="15,72 63,23 171,50 123,99"/></clipPath></defs><path fill="#1b302c" opacity=".3" d="M8 150l113 29 65-22v10l-65 21L8 158z"/><path fill="#677066" d="M15 146l107 27 61-20v10l-61 22-107-28z"/><path fill="#b3ab8e" d="M15 146l107 27 61-20-7-5-54 18-99-25z"/><path fill="#514a38" stroke="#303a33" stroke-width="3" d="M23 77l99 24 57-16v68l-57 19-99-25z"/><path fill="#ead6a1" d="M27 85l90 22v57l-90-22z"/><path fill="#b3a17b" d="M125 106l50-14v57l-50 17z"/>'+bricks+'<path fill="#715137" d="M25 83h6v62h-6zM115 105h7v64h-7zM26 129l92 24v6l-92-24zM126 107l49-14v6l-49 14zM173 92h6v61h-6z"/><path fill="#312f2a" d="M77 116l25 6v40l-25-6z"/><path fill="#8c643e" d="M80 120l18 5v34l-18-5z"/><path fill="#e3b672" d="M84 123l11 3v15l-11-3z"/><path fill="#774c31" d="M87 124h2v15h-2zM83 131l13 3v2l-13-3z"/><path fill="#f0d28b" d="M93 146h2v3h-2z"/><path fill="#34382e" d="M35 105l31 8v27l-31-8z"/><path fill="#f3cb75" d="M38 109l25 6v20l-25-6z"/><path fill="#fff0b0" d="M40 111l9 2v8l-9-2z"/><path fill="#9a6e3c" d="M49 112h3v20h-3zM37 121l27 7v3l-27-7z"/><path fill="#714e34" d="M33 132l35 9v4l-35-9z"/><path fill="#426a44" d="M37 133h5v-6h5v8h6v-4h5v8l-21-5z"/><path fill="#dda367" d="M35 137l31 8v7l-31-8z"/><path fill="#403d33" d="M137 113l26-7v29l-26 8z"/><path fill="#ddaa5f" d="M140 115l20-6v24l-20 6z"/><path fill="#f9e1a2" d="M142 118l7-2v12l-7 2z"/><path fill="#8f6238" d="M149 113h3v23h-3zM139 125l22-6v3l-22 6z"/><polygon points="15,72 63,23 171,50 123,99" fill="#754638" stroke="#313635" stroke-width="5"/><g clip-path="url(#kitchen-house-roof)">'+tiles+'</g><path fill="#e0b67d" d="M60 22l4-3 109 28v5l-109-28z"/><path fill="#6d4435" d="M12 72l110 27v7L12 79zM123 99l48-50 4 3-50 54z"/><path fill="#e8ba80" d="M16 73l104 26v2L16 75z"/><path fill="#e3cc98" stroke="#564b36" stroke-width="3" d="M126 98l44-47 18 33z"/><path fill="#805d3c" d="M167 56h4v32h-4zM149 76l30 9v4l-32-9z"/><path fill="#383d36" d="M45 30V-7l17 4v38z"/><path fill="#758078" d="M48 26V-4l10 2v31z"/><path fill="#c0bea0" d="M42-9l20 4v7L42-2z"/><path fill="#6b6250" d="M44 8l17 4v3l-17-4zM44 21l17 4v3l-17-4z"/><g class="kitchen-steam" fill="#e6dfcc" opacity=".55"><path d="M43-13h16v-7h-4v-5H43zM38-28h13v-6h-4v-5H36v7h2z"/></g><path fill="#322d27" d="M31 83l78 19v22l-78-19z"/><path fill="#6f5136" d="M33 85l74 18v17l-74-18z"/><path fill="none" stroke="#d4b579" stroke-width="1.5" d="M36 88l68 17v11l-68-17z"/><g transform="matrix(1 .245 0 1 0 0)"><text x="70" y="87" font-family="serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#f8e4ad">廚房餐廳</text></g><path fill="#ad754b" d="M31 106l38 9-4 7-38-9z"/><path fill="#f4d69e" d="M32 107l6 1-4 7-6-1zM45 110l6 1-4 7-6-1zM58 113l6 1-4 7-6-1z"/><path fill="#bea372" d="M74 158l30 8 5 4-32-7z"/><path fill="#f1d69c" d="M79 158l22 6v3l-22-6z"/>'+(townVisualSeason()===3?'<path fill="#e4eef0" d="M16 71l47-48 108 27-4 4-104-25-41 44zM124 97l11-12 9 2-17 18z"/>':'')+'</svg>';
 }
 
 function kitchenItemName(w){return w.k==='o'?KITCHEN_GRADES[w.t]+'食材包':w.k==='p'?KITCHEN_GRADES[w.t]+KITCHEN_TYPES[w.s]:w.k==='w'?KITCHEN_GRADES[w.t]+KITCHEN_NAMES[w.c]:w.k==='m'?KITCHEN_PROCESS[w.s]:w.k==='spice'?KITCHEN_SPICES[w.spice].name+'調味包':({z:'冰水桶',f:'清潔工具',u:'精選食材券'}[w.k]||'道具');}
@@ -1821,7 +1848,7 @@ function renderKitchen(){
  $('kitchenOrders').innerHTML=kitchen.orders.map((o,i)=>'<button class="kitchen-order" data-ko="'+i+'" onclick="kitchenOrderHelp('+i+')"><span>⏳ '+o.wait+'</span><div>'+ (o.c===null?'<b class="kitchen-any">任意</b>':kitchenArt({k:'w',c:o.c,t:o.t}))+'</div><b>'+'≥'+kitchenGradeName(o.t)+(o.c===null?'任意料理':KITCHEN_NAMES[o.c])+'</b>'+kitchenRecipeStrip(o.c)+'</button>').join('');
  const ch=KITCHEN_CHALLENGES[kitchen.challenge],progress=ch.kind==='rush'?kitchen.served:kitchen.progress;$('kitchenChallenge').textContent=kitchen.done?'晚餐營業完成 · 點此查看結算':ch.icon+' '+ch.name+' '+progress+'/'+ch.goal+' · 出餐 '+kitchen.served+'/6';$('kitchenChallenge').title=ch.text;
  $('kitchenQueue').innerHTML='<small>接下來</small>'+kitchen.q.map((t,i)=>'<span class="kitchen-next" '+(i===0?'data-kdrag="ore"':'')+'>'+kitchenArt({k:'o',t})+'<b>'+(i+1)+'</b><b class="kitchen-queue-grade">'+(t+1)+'階 '+KITCHEN_GRADES[t]+'</b></span>').join('');
- $('kitchenGrid').innerHTML=kitchen.g.map((w,i)=>'<button class="kc '+(w?.k==='w'?'kitchen-dish':'')+'" data-ki="'+i+'" '+(w?.k==='w'?'data-kdrag="dish"':'')+' onclick="kitchenClick('+i+')" aria-label="第'+(i+1)+'格 '+esc(w?kitchenItemName(w):kitchen.heat[i]?'餘熱':'空格')+'" style="'+(kitchen.heat[i]?'background:#8a4437;':'')+(kitchen.tiles[i]?'box-shadow:inset 0 0 0 2px '+KITCHEN_SPICES[kitchen.tiles[i]].color+';':'')+'">'+(w?kitchenArt(w):'')+(w?.k==='w'?'<small class="kitchen-star">'+('★'.repeat(kitchenStars(w)))+('☆'.repeat(3-kitchenStars(w)))+'</small><span class="kitchen-food-label">'+(w.t+1)+'階 '+KITCHEN_NAMES[w.c]+'</span>':'')+(w?.k==='o'?'<small class="kitchen-fresh">'+(w.fresh||'待處理')+'</small>':'')+(kitchen.heat[i]?'<small class="kitchen-heat">'+kitchen.heat[i]+'</small>':'')+(kitchen.tiles[i]?'<span class="kitchen-seasoning">'+KITCHEN_SPICES[kitchen.tiles[i]].icon+'</span>':'')+'</button>').join('');
+ $('kitchenGrid').innerHTML=kitchen.g.map((w,i)=>'<button class="kc '+(w?.k==='w'?'kitchen-dish':'')+(w?.k==='w'&&Date.now()-(kitchen.forgedAt?.[i]||0)<650?' kitchen-complete':'')+'" data-ki="'+i+'" '+(w?.k==='w'?'data-kdrag="dish"':'')+' onclick="kitchenClick('+i+')" aria-label="第'+(i+1)+'格 '+esc(w?kitchenItemName(w):kitchen.heat[i]?'餘熱':'空格')+'" style="'+(kitchen.heat[i]?'background:#8a4437;':'')+(kitchen.tiles[i]?'box-shadow:inset 0 0 0 2px '+KITCHEN_SPICES[kitchen.tiles[i]].color+';':'')+'">'+(w?kitchenArt(w):'')+(w?.k==='w'?'<small class="kitchen-star">'+('★'.repeat(kitchenStars(w)))+('☆'.repeat(3-kitchenStars(w)))+'</small><span class="kitchen-food-label">'+(w.t+1)+'階 '+KITCHEN_NAMES[w.c]+'</span>':'')+(w?.k==='o'?'<small class="kitchen-fresh">'+(w.fresh||'待處理')+'</small>':'')+(kitchen.heat[i]?'<small class="kitchen-heat">'+kitchen.heat[i]+'</small>':'')+(kitchen.tiles[i]?'<span class="kitchen-seasoning">'+KITCHEN_SPICES[kitchen.tiles[i]].icon+'</span>':'')+'</button>').join('');
  $('kitchenProcesses').innerHTML='<small>工序卡</small>'+kitchen.mq.map((s,i)=>'<button '+(i===0?'data-kdrag="process" onclick="kitchen.mode=kitchen.mode===\'prep\'?\'ore\':\'prep\';renderKitchen()"':'disabled')+' class="'+(i===0?'kitchen-process-ready ':'')+(i===0&&kitchen.mode==='prep'?'selected':'')+'">'+kitchenProcessArt(s)+'<b>'+KITCHEN_PROCESS[s]+'</b></button>').join('');
  $('kitchenHand').innerHTML=kitchen.hand?'<small>手持</small><span data-kdrag="hand">'+kitchenArt(kitchen.hand)+'</span><button class="kitchen-stow" onclick="kitchenStow()" aria-label="收回手持物品">×</button>':'<small>道具箱</small><button onclick="openKitchenBag()" aria-label="廚房道具箱">🎒</button>';
  $('kitchenFridge').innerHTML='🥡<small>'+kitchen.pack.length+'/'+(2*kitchenLevel('pack'))+'</small>';$('kitchenMessage').textContent=kitchen.message;requestAnimationFrame(fitKitchen);
@@ -1829,7 +1856,7 @@ function renderKitchen(){
 function fitKitchen(){const screen=$('kitchenP');if(screen.hidden)return;const main=screen.querySelector('main');if(!main||main.clientHeight<1)return;const grid=$('kitchenGrid'),cell=Math.max(24,Math.floor(Math.min((main.clientWidth-54-30)/5,(main.clientHeight-34)/6)));grid.style.width=(cell*5+30)+'px';grid.style.height=(cell*6+34)+'px';grid.style.gridTemplateColumns='repeat(5,'+cell+'px)';grid.style.gridTemplateRows='repeat(6,'+cell+'px)';}
 function kitchenOrderHelp(i){
  const o=kitchen.orders[i];if(!o)return;const target=o.c===null?'任意料理':KITCHEN_NAMES[o.c];
- kitchenModal('客人訂單 · '+target,'<p>需要 ≥'+kitchenGradeName(o.t)+' '+target+'，剩餘 '+o.wait+' 步。</p>'+(o.c===null?'<p>任意三份相連備料皆可組合料理。</p>':'<div class="kitchen-dish-preview">'+kitchenArt({k:'w',c:o.c,t:o.t})+'</div>'+kitchenRecipeStrip(o.c,true))+'<ol class="kitchen-method"><li>兩包同階食材旁放工序卡：炊煮→主食、煎烤→主菜、切拌→配菜。</li><li>依配方湊出三份備料並排成相連的直線或彎線，點備料完成料理。備料的平均階級取整數，須達客人要求。</li><li>將完成料理拖到這位客人即可出餐。</li></ol><button class="kitchen-wide" onclick="openKitchenRecipes('+o.t+')">查看全部食譜與階級</button>');
+ kitchenModal('客人訂單 · '+target,'<p>需要 ≥'+kitchenGradeName(o.t)+' '+target+'，剩餘 '+o.wait+' 步。</p>'+(o.c===null?'<p>任意三份相連備料皆可組合料理。</p>':'<div class="kitchen-dish-preview">'+kitchenArt({k:'w',c:o.c,t:o.t})+'</div>'+kitchenRecipeStrip(o.c,true))+'<ol class="kitchen-method"><li>兩包同階食材旁放工序卡：炊煮→主食、煎烤→主菜、切拌→配菜。</li><li>依配方湊出三份備料；第三份連成直線或彎線時，會在最後放置的格子自動完成料理。備料的平均階級取整數，須達客人要求。</li><li>將完成料理拖到這位客人即可出餐。</li></ol><button class="kitchen-wide" onclick="openKitchenRecipes('+o.t+')">查看全部食譜與階級</button>');
 }
 function kitchenStow(){if(!kitchen.hand)return;kitchen.bag.push(kitchen.hand);kitchen.hand=null;renderKitchen();}
 function openKitchenBag(){kitchenModal('🎒 廚房道具箱','<div class="kitchen-tool-list">'+kitchen.bag.map((w,i)=>'<button onclick="takeKitchenBag('+i+')">'+kitchenArt(w)+'<span><b>'+kitchenItemName(w)+'</b><small>'+kitchenItemEffect(w)+'</small><strong>點擊拿到手持欄</strong></span></button>').join('')+'</div>'+(kitchen.bag.length?'':'<p>道具箱是空的。可到菜市場購買。</p>'));}
@@ -1857,7 +1884,7 @@ function inspectKitchenDish(w){
 }
 function openKitchenChallenge(){if(kitchen.done){renderKitchenSettlement();return;}const c=KITCHEN_CHALLENGES[kitchen.challenge];kitchenModal(c.icon+c.name,'<p>'+c.text+'</p><p>完成營業可得廚房技能點與調味包；挑戰成功另加金幣及技能點。</p><h3>後台切換挑戰</h3><p>切換會重新開始本晚的訂單；已領過的當晚結算獎勵不重複發放。</p>'+KITCHEN_CHALLENGES.map((ch,i)=>'<button class="kitchen-wide" onclick="setKitchenChallenge('+i+')">'+ch.icon+ch.name+'</button>').join(''));}
 function setKitchenChallenge(index){if(!sandboxSession||!KITCHEN_CHALLENGES[index])return;startKitchenNight(true);kitchen.challenge=index;const list=Array.from({length:6},(_,i)=>kitchenOrder(i<2||index!==0));kitchen.orders=list.splice(0,3);kitchen.queue=list;$('kitchenModal').hidden=true;renderKitchen();}
-function kitchenHelp(){kitchenModal('廚房操作','<p>① 點空格或拖第一包食材到棋盤。三包相連升一階，四包得到兩包高一階，五包在最後落點升兩階。</p><p>② 拖第一張工序卡到兩包同階食材附近的空格，做出主食、主菜或配菜。也可以點工序卡，再點空格。</p><p>③ 三至五份備料排成直線或彎線，點備料即可合成料理。</p><p>④ 拖料理到上方客人出餐。餐盒櫃可收納，點道具箱可拿出買來的食材、工序卡或工具。</p><p>⑤ 放食材、備料、料理、使用工具及出餐會推進一步；看食譜、逛市場、整理道具不消耗步數。食材放久會降階，完成的備料及料理不會腐敗。</p><p>⑥ 晚餐做完六位客人的訂單後結算，再進入隔天白天。回城鎮不會結束營業。</p>');}
+function kitchenHelp(){kitchenModal('廚房操作','<p>① 點空格或拖第一包食材到棋盤。三包相連升一階，四包得到兩包高一階，五包在最後落點升兩階。</p><p>② 拖第一張工序卡到至少兩包同階食材附近（相連的同階食材會一起消耗）的空格，做出主食、主菜或配菜。也可以點工序卡，再點空格。</p><p>③ 像冶煉廠一樣，第三份工序連成直線或彎線就會自動完成料理；四／五份相連可完成多道料理。</p><p>④ 拖料理到上方客人出餐。餐盒櫃可收納，點道具箱可拿出買來的食材、工序卡或工具。</p><p>⑤ 放食材、備料、料理、使用工具及出餐會推進一步；看食譜、逛市場、整理道具不消耗步數。食材放久會降階，完成的備料及料理不會腐敗。</p><p>⑥ 晚餐做完六位客人的訂單後結算，再進入隔天白天。回城鎮不會結束營業。</p>');}
 function cancelKitchenDrag(){kitchenDrag?.ghost?.remove();kitchenDrag=null;}
 function startKitchenDrag(e){
  if(!sandboxSession||kitchen?.done||e.button>0)return;const target=e.target.closest('[data-kdrag]');if(!target)return;const kind=target.dataset.kdrag,index=+(target.dataset.ki||0),w=kind==='dish'?kitchen.g[index]:kind==='hand'?kitchen.hand:kind==='process'?{k:'m',s:kitchen.mq[0]}:kitchenFood(kitchen.q[0]);if(!w)return;
@@ -1900,13 +1927,9 @@ function renderTownNight(){
  const key=si+':'+night;if($('townNightSky').dataset.key!==key){$('townNightSky').innerHTML=night?nightSkyArt(si):'';$('townNightSky').dataset.key=key;}$('townSeason').textContent=SEASONS[si].icon+' '+SEASONS[si].name+' · 第 '+day+' 天'+(night?'夜晚 · 餐廳營業':'白天 · 冶煉廠營業');
  for(const id of ['townArchive','townForge','townShop','townTraining','townDecorShop','townGreenhouse']){const el=$(id),existing=el.querySelector('.night-house-glow');if(!night)existing?.remove();else if(!existing){const glow=document.createElement('span');glow.className='night-house-glow';el.appendChild(glow);}}
 }
-function ensureNightCityLayout(si){
- if(!cityState)cityState=freshCity();const key=DECOR_SEASONS[si];if(!cityState.nightLayouts)cityState.nightLayouts={};if(!cityState.nightLayouts[key]){
-  const base=JSON.parse(JSON.stringify(cityState.layouts[key]));NIGHT_DECOR_ROWS.filter(r=>r[3]===key).forEach((r,i)=>{if(!(cityState.owned[r[0]]>0))return;base.push({uid:'night-base-'+si+'-'+i,id:r[0],x:[5,95,88][i],y:[74,70,24][i],s:.85,fx:false,fy:false,r:0,z:1,roam:false});});cityState.nightLayouts[key]=base;
- }return cityState.nightLayouts[key];
-}
+function ensureNightCityLayout(si){if(!cityState)cityState=freshCity();const key=DECOR_SEASONS[si];if(!cityState.nightLayouts)cityState.nightLayouts={};if(!cityState.nightLayouts[key])cityState.nightLayouts[key]=JSON.parse(JSON.stringify(cityState.layouts[key]));return cityState.nightLayouts[key];}
 function cityLayoutStore(){if(isSandboxNight()){ensureNightCityLayout(townVisualSeason());return cityState.nightLayouts;}return cityState.layouts;}
-function defaultNightCityItems(si){const items=JSON.parse(JSON.stringify(freshCity().layouts[DECOR_SEASONS[si]]));NIGHT_DECOR_ROWS.filter(r=>r[3]===DECOR_SEASONS[si]).forEach((r,i)=>items.push({uid:'night-default-'+si+'-'+i,id:r[0],x:[5,95,88][i],y:[74,70,24][i],s:.85,fx:false,fy:false,r:0,z:1,roam:false}));return items;}
+function defaultNightCityItems(si){const items=JSON.parse(JSON.stringify(public_freshCity().layouts[DECOR_SEASONS[si]]));NIGHT_DECOR_ROWS.filter(r=>r[3]===DECOR_SEASONS[si]).forEach((r,i)=>items.push({uid:'night-default-'+si+'-'+i,id:r[0],x:[5,95,88][i],y:[74,70,24][i],s:.85,fx:false,fy:false,r:0,z:1,roam:false}));return items;}
 function nightDecorationSVG(d,si,uid){
  const color=['#d6b7e6','#8ee2e7','#ffbc68','#b0deff'][si],wood='#4b4140',edge='#283541';let shape='';
  if(d.art==='night-garland')shape='<path fill="none" stroke="'+wood+'" stroke-width="3" d="M4 28q28 24 56 0"/>'+[12,25,39,52].map((x,i)=>'<path fill="'+color+'" d="M'+x+' '+(32+(i===1||i===2?8:0))+'h7v10h-7z"/>').join('');
@@ -2014,6 +2037,26 @@ function kitchenDishStats(w){
  const boost=KITCHEN_SPICES[w.spice]?.stat;return Object.fromEntries(Object.entries(raw).map(([key,value])=>[key,Math.round(value*mult*(boost===key?1.2:1))]));
 }
 function kitchenRecipeStrip(c,labels=false){if(c===null)return '<small class="kitchen-any-recipe">任意三份備料</small>';return '<div class="kitchen-recipe-strip" aria-label="配方：'+COMBO[c].split('').map(s=>KITCHEN_TYPES[+s]).join('＋')+'">'+COMBO[c].split('').map((s,i)=>(i?'<em>＋</em>':'')+'<span>'+kitchenProcessArt(+s)+(labels?'<small>'+KITCHEN_TYPES[+s]+'</small>':'')+'</span>').join('')+'</div>';}
+const kitchenDepartures=new Set();
+function clearKitchenDepartures(){for(const d of kitchenDepartures){d.animation?.cancel?.();d.node.remove();}kitchenDepartures.clear();}
+function kitchenGuestExit(index){
+ const card=$('kitchenOrders').querySelector('[data-ko="'+index+'"]'),ghost=card?.cloneNode?.(true);if(!ghost)return;
+ const rect=card.getBoundingClientRect();if(!rect.width||!rect.height)return;
+ ghost.removeAttribute?.('onclick');ghost.removeAttribute?.('data-ko');ghost.onclick=null;ghost.tabIndex=-1;ghost.inert=true;ghost.classList.add('kitchen-customer-exit');ghost.setAttribute('aria-hidden','true');
+ ghost.style.cssText='position:fixed;left:'+rect.left+'px;top:'+rect.top+'px;width:'+rect.width+'px;height:'+rect.height+'px;margin:0;z-index:90;pointer-events:none;transform-origin:center center;';document.body.appendChild(ghost);
+ const reduced=lowEffects||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches,entry={node:ghost,animation:null};kitchenDepartures.add(entry);
+ const finish=()=>{ghost.remove();kitchenDepartures.delete(entry);};
+ if(ghost.animate){entry.animation=ghost.animate(reduced?[{opacity:1},{opacity:0}]:[{transform:'scale(1)',opacity:1},{transform:'scale(.65)',opacity:.8,offset:.45},{transform:'scale(.05)',opacity:0}],{duration:reduced?100:600,easing:'ease-in',fill:'forwards'});entry.animation.onfinish=finish;entry.animation.oncancel=finish;}else gameTimeout(finish,600);
+ steps();
+}
+function kitchenRemoveOrder(index){
+ if(!kitchen.orders[index])return;kitchenGuestExit(index);
+ if(kitchen.queue.length)kitchen.orders[index]=kitchen.queue.shift();else kitchen.orders.splice(index,1);
+}
+function kitchenTownRoads(){return TOWN_STREETS.map(r=>r.id==='north'?{...r,p:[[100,143],[144,172],[182,217],[182,285],[184,336]]}:r.id==='forge'?{...r,p:[[184,336],[211,309],[221,269],[253,242]]}:r.id==='decor'?{...r,p:[[248,414],[280,447],[312,461]]}:r).concat([{id:'kitchen',w:16,p:[[236,451],[246,426],[271,402]]}]);}
+function kitchenTownGuestPoint(i,night=isSandboxNight()){return night?[255+(i%3)*15,397+Math.floor(i/3)*21]:[246+(i%3)*15,238+Math.floor(i/3)*22];}
+function kitchenSnapshotPlazaSVG(svg){return isSandboxNight()?svg.replace('<svg ','<svg style="filter:brightness(.59) saturate(.75)" '):svg;}
+function kitchenSnapshotDecorSVG(svg,d){return isSandboxNight()&&d.art==='fountain'?svg.replace('<svg ','<svg style="filter:brightness(.58) saturate(.8)" '):svg;}
 const SEASONS=[
   {id:'spring',name:'春天',icon:'🌱',description:'春回大地！鍛造格過熱 50 步。春季持續 3 天。'},
   {id:'summer',name:'夏天',icon:'☀️',description:'盛夏高溫！鍛造格的過熱時間增加 10 步，由 50 步變成 60 步。夏季持續 3 天。'},
@@ -3070,7 +3113,8 @@ function renderCachedTownHouse(id,kind,label,p,season){
  if(el.dataset.artSeason!==season){el.innerHTML=townHouse(kind,p)+(kind==='training'?'<span class="town-counter">'+townSkillStar()+'</span>':'');el.dataset.artSeason=season;el.dataset.points=String(sp);}
  else if(kind==='training'&&el.dataset.points!==String(sp)){el.querySelector('.town-counter').innerHTML=townSkillStar();el.dataset.points=String(sp);}
 }
-function townGreenhouseArt(p,si=townVisualSeason()){
+function townGreenhouseArt(p,si=townVisualSeason()){const art=public_townGreenhouseArt(p,si);return sandboxSession?art.replace(/<g fill="#826649" stroke="#4d5a46"[\s\S]*?<\/g><path fill="[^"]*" d="M19 142[^"]*"\/>/,''):art;}
+function public_townGreenhouseArt(p,si=townVisualSeason()){
  const snow=p.snow,frame='#b2a16d',light='#e1d4a0',dark='#3c5d55',glass=snow?'#7babb8':'#8ebdb4',glint=snow?'#e0f6ee':'#c9e7d2',leaf=si===2?'#bd9b54':'#659b65',flower=['#e9b1c0','#e6d489','#dcac6d','#c3e3e1'][si];
  const pts=a=>a.map(p=>p.map(Math.round).join(',')).join(' '),A=[13,76],B=[65,22],C=[160,45],D=[119,103],at=(u,v)=>[A[0]*(1-u)*(1-v)+B[0]*u*(1-v)+C[0]*u*v+D[0]*(1-u)*v,A[1]*(1-u)*(1-v)+B[1]*u*(1-v)+C[1]*u*v+D[1]*(1-u)*v];
  let roof='';for(let r=0;r<5;r++)for(let k=0;k<5;k++){const u=r/5,v=k/5;roof+='<polygon points="'+pts([at(u,v),at(u+.2,v),at(u+.2,v+.2),at(u,v+.2)])+'" fill="'+[(r+k)%3?'#8fbfb7':'#b5d6c4',glass][(r+k)%2]+'" stroke="'+frame+'" stroke-width="2"/>';if((r+k)%3===0)roof+='<path d="M'+pts([at(u+.03,v+.025),at(u+.03,v+.16)]).replace(' ','L')+'" stroke="'+glint+'" stroke-width="2"/>';}
@@ -3088,7 +3132,8 @@ const townPetAnimations=new Set();let petNavigation=null;
 const townPets={cat:{kind:'cat',point:[178,558],anim:null,timer:null},dog:{kind:'dog',point:[178,222],anim:null,timer:null}};
 function petGround(x,y){
  if(x<20||x>340||y<174||y>607)return false;
- if(PET_BLOCKS.some(([x0,y0,x1,y1])=>x>=x0-8&&x<=x1+8&&y>=y0-7&&y<=y1+7))return false;
+ const blocks=sandboxSession?[[0,174,139,331],[209,83,360,231],[211,235,360,390],[0,337,112,454],[0,481,151,620],[205,487,360,620],[270,397,360,490]]:PET_BLOCKS;
+ if(blocks.some(([x0,y0,x1,y1])=>x>=x0-8&&x<=x1+8&&y>=y0-7&&y<=y1+7))return false;
  if(cityObstacleAt(x,y))return false;
  
  return true;
@@ -3164,12 +3209,12 @@ function preview_renderTownVisitors(remaining){
  }
  townVisitorAnimations.forEach(a=>a.cancel?.());townVisitorAnimations.clear();el.dataset.visitors=key;el.dataset.remaining=String(remaining);
  el.innerHTML=Array.from({length:remaining},(_,i)=>{
-  const col=['#b85653','#4e8191','#a88c4c','#716891'][i%4],x=isSandboxNight()?272+(i%3)*14:248+(i%4)*15,y=isSandboxNight()?405+Math.floor(i/3)*18:327+Math.floor(i/4)*24;
+  const col=['#b85653','#4e8191','#a88c4c','#716891'][i%4],[x,y]=kitchenTownGuestPoint(i);
   return `<span class="town-visitor" style="left:${x/360*100}%;top:${y/620*100}%" data-guest="${i}" aria-label="排隊客人 ${i+1}"><svg viewBox="0 0 16 26" shape-rendering="crispEdges" aria-hidden="true"><ellipse cx="8" cy="24" rx="8" ry="2" fill="#24382b" opacity=".3"/><path fill="#26343c" d="M4 20h4v5H4zM9 20h4v5H9z"/><path fill="${col}" d="M4 11h8v3h3v7H2v-7h2z"/><path fill="#e0b586" d="M4 3h8v8H4zM1 14h2v5H1zM14 14h2v5h-2z"/><path fill="#55433b" d="M3 1h10v4H3zM3 5h2v3H3z"/><path fill="#26343c" d="M6 6h1v2H6zM10 6h1v2h-1z"/></svg></span>`;
  }).join('');
  const rect=$('townMap').getBoundingClientRect(),sx=(rect.width||360)/360,sy=(rect.height||620)/620;
  [...el.querySelectorAll('.town-visitor')].forEach((n,i)=>{
-  const x=248+(i%4)*15,y=327+Math.floor(i/4)*24,route=[[188,650],[188,535],[188,471],[236,451],[256,403],[236,355],[x,y]];
+  const [x,y]=kitchenTownGuestPoint(i),route=isSandboxNight()?[[188,650],[188,535],[188,471],[236,451],[246,426],[248,410],[x,y]]:[[188,650],[188,535],[188,471],[209,395],[220,330],[221,269],[x,y]];
   const frames=route.map(([px,py],k)=>({transform:`translate3d(${(px-x)*sx}px,${(py-y)*sy}px,0)`,offset:[0,.25,.43,.6,.74,.87,1][k]}));
   const a=n.animate(frames,{duration:4700+i*110,delay:i*300,easing:'linear',fill:'backwards'});townVisitorAnimations.add(a);n.classList.add('arriving');
   a.onfinish=()=>{n.classList.remove('arriving');townVisitorAnimations.delete(a)};
@@ -3177,7 +3222,8 @@ function preview_renderTownVisitors(remaining){
  });
 }
 
-function townHouse(kind,p){
+function townHouse(kind,p){const art=public_townHouse(kind,p);return sandboxSession?art.replace(/<g fill="#735338" stroke="#4b4132"[\s\S]*?<\/g><path stroke="#c4a575"[^>]*\/>/,''):art;}
+function public_townHouse(kind,p){
  const id='townRoof-'+kind,roof=kind==='forge'?['#6f3934','#984b3b','#b7684b','#d08860']:kind==='decor'?['#43374f','#715c7a','#a58a9f','#d0b5ba']:kind==='training'?['#283f57','#395a74','#507891','#79a0ac']:kind==='shop'?['#254b3c','#3d7150','#61905d','#9bb974']:p.snow?['#3d536d','#566f89','#758b9d','#a4b4b9']:['#49434f',p.roof,'#987c8a','#b79a9f'];
  const A=[13,76],B=[65,22],C=[160,45],D=[119,103];
  const at=(u,v)=>[A[0]*(1-u)*(1-v)+B[0]*u*(1-v)+C[0]*u*v+D[0]*(1-u)*v,A[1]*(1-u)*(1-v)+B[1]*u*(1-v)+C[1]*u*v+D[1]*(1-u)*v];
@@ -3194,7 +3240,8 @@ function townHouse(kind,p){
  const snow=p.snow?`<g fill="#f1f7f4"><path d="M13 76l52-54 95 23-5 6-90-22-45 48zM20 79l34-34 9 2-26 31-4 8h-9v-5zM84 58l14-14 25 6-6 8-16-2-6 9H84zM103 95l8-10 18 4-10 14-12-3v6h-6z"/><path d="M19 139l100 25 62-16v6l-62 16-100-24z"/><path d="M28 120h22v5H28zM71 129h19v5H71z"/></g><path fill="#a9c8d7" d="M35 81v8h3v-8zM109 103v10h3v-9zM126 105v8h3v-9z"/>`:'';
  return `<svg viewBox="0 -28 192 212" aria-hidden="true" shape-rendering="crispEdges"><g data-house-facing="${kind==='shop'||kind==='archive'?'right':'left'}" transform="${kind==='shop'||kind==='archive'?'translate(192 0) scale(-1 1)':''}"><defs><clipPath id="${id}"><polygon points="${points([A,B,C,D])}"/></clipPath></defs><path fill="#243b30" opacity=".25" d="M8 147l112 31 69-24v9l-69 25L8 157z"/><g class="town-house-plinth"><path fill="#626b60" d="M14 145l105 27 66-22v10l-66 23-105-27z"/><path fill="#b5ab8c" d="M14 145l105 27 66-22-8-5-58 20-98-25z"/><path fill="#454f49" d="M119 172l66-22v10l-66 23z"/><path fill="#d2c7a5" d="M75 166l28 7v5l-28-7z"/></g><path fill="#655440" stroke="#393c33" stroke-width="3" d="M20 77l98 22 64-15v69l-64 19-98-25z"/><path fill="#dfcea0" d="M24 85l91 22v58l-91-22z"/><path fill="#b8aa7f" d="M121 106l57-15v58l-57 16z"/>${wall}<path fill="#edd8a2" stroke="#554b39" stroke-width="3" d="M118 101l42-56 27 42z"/><path fill="#6a5039" d="M157 51h5v37h-5zM140 75l36 9v4l-39-9z"/><path fill="#67513b" d="M23 88l94 23v6L23 94zM23 130l94 24v6l-94-24zM23 84h7v61h-7zM111 106h7v62h-7zM60 94h5v60h-5zM122 108l56-15v6l-56 15zM175 92h6v59h-6z"/><path fill="#362f2c" d="M75 123l26 6v35l-26-6z"/><path fill="#77563a" d="M78 127l19 5v28l-19-5z"/><path stroke="#493e32" stroke-width="2" d="M84 129v26M91 131v26"/><rect x="92" y="144" width="2" height="3" fill="#dfbb64"/>${window(35,102)}<path fill="#8b734d" d="M72 159l29 7 7 5-32-7z"/><path fill="#d0b47b" d="M75 158l24 6v3l-24-6z"/><polygon points="${points([A,B,C,D])}" fill="${roof[0]}" stroke="#383536" stroke-width="5"/><g clip-path="url(#${id})">${tiles}</g><path fill="${roof[3]}" d="M61 21l5-3 95 24 3 4-4 3-95-24z"/><path fill="${roof[0]}" d="M10 75l109 27v6L10 81zM119 102l42-58 4 3-44 61z"/><path fill="${roof[3]}" opacity=".6" d="M13 75l104 26v2L13 77z"/>${crest}${chimney}${kind==='forge'?`<image href="${UNITY_ART.anvil}" x="33" y="149" width="39" height="27"/><path fill="#302f2c" d="M128 122h37v29l-37 10z"/><path fill="#a75432" d="M132 125h29v21l-29 9z"/><image href="${UNITY_ART.fire0}" x="136" y="126" width="22" height="27"/><path fill="#b69767" d="M126 151l41-11v8l-41 12z"/>`:''}${kind==='shop'?'<path fill="#e2bd76" d="M25 96l34 8-2 8-34-8z"/><path fill="#6e9353" d="M27 97l5 1-2 8-5-1zM39 100l5 1-2 8-5-1zM51 103l5 1-2 8-5-1z"/>':''}${snow}${townHouseSign(kind)}<g fill="#735338" stroke="#4b4132" stroke-width="2"><path d="M8 149h13v18H8zM165 155h15v17h-15z"/></g><path stroke="#c4a575" stroke-width="2" d="M9 153h11M9 162h11M166 159h13M166 168h13"/></g></svg>`;
 }
-function townCastle(p){
+function townCastle(p){const art=public_townCastle(p);return sandboxSession?art.replace('translate(96 5) scale(.78 1)','translate(20 4) scale(.74 .9)'):art;}
+function public_townCastle(p){
  const snow=p.snow,stone=snow?'#d0dce0':'#d8cba7',lit=snow?'#ecf1e7':'#f0dfb9',mid=snow?'#9db4bd':'#b4ac89',shade=snow?'#6f8d9d':'#7d8b83',deep='#425a68';
  const slate=snow?['#344b67','#526e89','#7996aa','#b7cbd1']:['#2e465d','#476580','#6f8ea1','#a6b6b5'];
  const block=(x,y,w,h)=>{
@@ -3244,7 +3291,8 @@ function iceCrystalArchArt(){
 
 function townScene(p){
  const si=townVisualSeason(),path=a=>a.map(([x,y],i)=>(i?'L':'M')+x+' '+y).join('');
- const streetOrder=[...TOWN_STREETS.filter(r=>r.id==='shop'||r.id==='training'),...TOWN_STREETS.filter(r=>!['shop','training','south'].includes(r.id)),TOWN_STREETS.find(r=>r.id==='south')];
+ const roads=sandboxSession?kitchenTownRoads():TOWN_STREETS;
+ const streetOrder=[...roads.filter(r=>r.id==='shop'||r.id==='training'),...roads.filter(r=>!['shop','training','south'].includes(r.id)),roads.find(r=>r.id==='south')];
  const streets=streetOrder.map(r=>'<g data-town-road="'+r.id+'"><path d="'+path(r.p)+'" stroke="'+(p.snow?'#859fac':'#9b8860')+'" stroke-width="'+(r.w+4)+'"/><path d="'+path(r.p)+'" stroke="'+p.road+'" stroke-width="'+r.w+'"/><path d="'+path(r.p)+'" stroke="'+(p.snow?'#dae6e8':'#f0dba8')+'" opacity=".45" stroke-width="1.5"/></g>').join('');
  let stones='';streetOrder.forEach((r,k)=>{for(let j=1;j<r.p.length;j++){const a=r.p[j-1],b=r.p[j],dist=Math.hypot(b[0]-a[0],b[1]-a[1]),n=Math.floor(dist/15);for(let i=1;i<n;i++){const t=i/n,x=Math.round(a[0]+(b[0]-a[0])*t),y=Math.round(a[1]+(b[1]-a[1])*t);stones+='<path fill="'+(p.snow?'#8ba9b8':'#b6a171')+'" opacity=".5" d="M'+(x-4)+' '+y+'h7v2h-7zM'+(x+4)+' '+(y+4)+'h4v2h-4z"/>';}}});
  const tree=(x,y,s)=>'<g data-town-tree="'+x+','+y+'" transform="translate('+x+' '+y+') scale('+s+')"><path fill="#273d32" opacity=".25" d="M-24 47h49v7h-49z"/><path fill="#68503b" d="M-4 9h9v43h-9z"/><path fill="#a27f51" d="M-3 12h3v36h-3z"/><path stroke="#71533b" stroke-width="4" d="M0 27l-14-15M2 22l13-12"/><path fill="'+p.tree+'" d="M-27-4h10v-12h12v-7h19v8h12v12h7v24h-8v12H9v6h-23v-7h-12V17h-7V1h6z"/><path fill="'+(si===2?'#c47a38':p.light)+'" d="M-24-3h9v-10h12v-6h15v7h11v11h-9v8H-4v-4h-20z"/><path fill="'+(si===2?'#edba60':'#bfd38b')+'" opacity=".8" d="M-10-9h9v-6h11v7h8v5H5v4H-10z"/>'+(p.snow?'<path fill="#edf5f1" d="M-26-4h11v-12h12v-7h17v8h12v11h7v6H13v-5H-5v8h-21zM-17 22h17v6h-17z"/>':'')+'</g>';
@@ -3258,7 +3306,7 @@ function townFurnitureArt(p){
  return '<svg viewBox="0 0 360 620" preserveAspectRatio="none" shape-rendering="crispEdges" aria-hidden="true"><defs><radialGradient id="townLanternHalo"><stop offset="0" stop-color="#fff0b5" stop-opacity=".85"/><stop offset=".3" stop-color="#ffd18a" stop-opacity=".48"/><stop offset=".65" stop-color="#ffbf65" stop-opacity=".19"/><stop offset="1" stop-color="#ffbf65" stop-opacity="0"/></radialGradient></defs>'+[[158,272],[205,302],[144,462],[220,492],[163,557]].map(a=>lamp(...a)).join('')+bench(282,443)+bench(109,475)+'</svg>';
 }
 function renderTownPlaza(p,season){
- const el=$('townPlaza');if(el.dataset.season===season)return;el.dataset.season=season;
+ const el=$('townPlaza'),key=season+':'+(sandboxSession?isSandboxNight():'public');if(el.dataset.season===key)return;el.dataset.season=key;
  let stones='';for(let i=0;i<20;i++){const a=i*Math.PI/10,x=80+64*Math.cos(a),y=80+64*Math.sin(a);stones+='<path fill="'+(p.snow?'#9bb6c1':'#c1ad7c')+'" d="M'+Math.round(x-3)+' '+Math.round(y-2)+'h6v4h-6z"/>';}
  el.innerHTML='<svg viewBox="0 0 160 160" preserveAspectRatio="none" shape-rendering="crispEdges"><circle cx="80" cy="80" r="77" fill="'+(p.snow?'#849fac':'#9b8860')+'"/><circle cx="80" cy="80" r="74" fill="'+p.road+'"/><circle cx="80" cy="80" r="53" fill="'+(p.snow?'#e6eff0':'#f0dba8')+'"/><circle cx="80" cy="80" r="50" fill="'+p.ground+'"/>'+stones+'</svg>';
  $('townFurniture').innerHTML=townFurnitureArt(p);
@@ -4890,7 +4938,8 @@ function preview_decorSVG(id,season=seasonIndex(),uid='preview'){
 
 let cityState=null,cityRevision=0,architect={active:false,season:0,selected:null,placing:null,drag:null},decorShopSeason=0,cityArtEpoch=0;
 const townDecorAnimations=new Set(),cityWalkers=new Map();
-function freshCity(){
+function freshCity(){if(!sandboxSession)return public_freshCity();return {version:1,owned:{},layouts:Object.fromEntries(DECOR_SEASONS.map(s=>[s,[]])),next:1};}
+function public_freshCity(){
  const positions=[['fountain',188,431,1,1],...[[26,177,.72],[331,183,.68],[14,346,.42],[338,479,.45],[343,344,.38]].map(([x,y,s])=>['tree',x,y,s,0]),...[[158,272],[205,302],[144,462],[220,492],[163,557]].map(([x,y])=>['lamp',x,y,1,1]),['bench',288,473,1,1],['bench',109,475,1,1],['cat',178,558,1,1],['dog',178,222,.8,1],['fence',31,619,1,1],['fence',333,619,1,1],...[[27,155],[65,163],[324,352],[299,434],[270,452],[112,482],[140,525],[165,581],[29,461],[327,467]].map(([x,y])=>['flowers',x,y,.72,1])];
  const owned={};positions.forEach(([id])=>owned[id]=(owned[id]||0)+1);
  const layouts={};for(const season of DECOR_SEASONS)layouts[season]=positions.map(([id,x,y,s,z],i)=>({uid:'base-'+i,id,x:x/360*100,y:y/620*100,s,fx:false,fy:false,r:0,z,roam:id==='cat'||id==='dog'}));
@@ -4930,7 +4979,7 @@ function preview_renderCityDecor(){
  if(!cityState)cityState=freshCity();const si=townVisualSeason(),key=runId+':'+si+':'+cityRevision+':'+architect.active+':'+isSandboxNight();
  const back=$('townDecorBack'),front=$('townDecorFront');if(front.dataset.key===key){updateCitySelection();return;}
  stopCityAnimals();petNavigation=null;front.dataset.key=key;const nodes=[[],[]];
- cityLayout(si).slice().sort((a,b)=>a.y-b.y).forEach((i,k)=>{const d=DECOR_BY_ID.get(i.id);nodes[i.z].push('<button type="button" class="town-sticker'+(architect.active?' editable':'')+'" data-decor-uid="'+esc(i.uid)+'" aria-label="'+esc(d.name)+(architect.active?'，拖曳移動':'')+'" style="left:'+i.x+'%;top:'+i.y+'%;width:'+(d.w/360*100)+'%;aspect-ratio:'+d.w+'/'+d.h+';z-index:'+(k+1)+'"><span class="sticker-roamer"><span class="sticker-transform" style="transform:'+stickerTransform(i)+'">'+decorSVG(i.id,si,i.uid)+'</span></span></button>');});
+ cityLayout(si).slice().sort((a,b)=>a.y-b.y).forEach((i,k)=>{const d=DECOR_BY_ID.get(i.id);nodes[i.z].push('<button type="button" class="town-sticker'+(architect.active?' editable':'')+'" data-decor-uid="'+esc(i.uid)+'" data-decor-kind="'+esc(d.art)+'" aria-label="'+esc(d.name)+(architect.active?'，拖曳移動':'')+'" style="left:'+i.x+'%;top:'+i.y+'%;width:'+(d.w/360*100)+'%;aspect-ratio:'+d.w+'/'+d.h+';z-index:'+(k+1)+'"><span class="sticker-roamer"><span class="sticker-transform" style="transform:'+stickerTransform(i)+'">'+decorSVG(i.id,si,i.uid)+'</span></span></button>');});
  back.innerHTML=nodes[0].join('');front.innerHTML=nodes[1].join('');$('townP').classList.toggle('architect-editing',architect.active);updateCitySelection();ensureCityPetsMoving();
 }
 function updateCitySelection(){document.querySelectorAll('#townMap .town-sticker').forEach(n=>n.classList.toggle('selected',architect.active&&n.dataset.decorUid===architect.selected));}
@@ -5071,7 +5120,7 @@ function stable_cityObstacleAt(x,y){
  });
 }
 function preview_cityObstacleAt(x,y){
- if(sandboxSession&&x>=230&&x<=360&&y>=300&&y<=403)return true;
+ if(sandboxSession&&x>=220&&x<=360&&y>=235&&y<=390)return true;
  if(!cityState)return false;return cityLayout().some(i=>{const d=DECOR_BY_ID.get(i.id);if(!d||['cat','dog','flowers','fence'].includes(i.id))return false;const px=i.x*3.6,py=i.y*6.2,s=i.s;
   if(i.id==='fountain'||d.art==='pond')return ((x-px)/(d.w*.43*s+6))**2+((y-(py-d.h*.32*s))/(d.h*.32*s+6))**2<1;
   return Math.hypot(x-px,y-py)<Math.min(20,d.w*.2*s+5);
@@ -5127,7 +5176,7 @@ const cityPreviewCache=new Map();let cityPreviewRequest=0;
 const CITY_DEFAULT_TIMESTAMP='2026-11-13T02:01:05.684Z';
 function defaultCityPreset(){return sandboxSession?preview_defaultCityPreset(...arguments):stable_defaultCityPreset(...arguments);}
 function stable_defaultCityPreset(si){const season=DECOR_SEASONS[si];return {id:'default-'+season,name:'預設版型 · '+SEASONS[si].name,season,builtin:true,authorName:'Forge Master',avatar:normalizeAvatar(AVATAR_DEFAULT),createdAt:CITY_DEFAULT_TIMESTAMP,items:freshCity().layouts[season]};}
-function preview_defaultCityPreset(si){const season=DECOR_SEASONS[si],night=isSandboxNight();return {id:'default-'+(night?'night-':'')+season,name:'預設版型 · '+SEASONS[si].name+(night?'夜間':'白天'),season,night,builtin:true,authorName:'Forge Master',avatar:normalizeAvatar(AVATAR_DEFAULT),createdAt:CITY_DEFAULT_TIMESTAMP,items:night?defaultNightCityItems(si):freshCity().layouts[season]};}
+function preview_defaultCityPreset(si){const season=DECOR_SEASONS[si],night=isSandboxNight();return {id:'default-'+(night?'night-':'')+season,name:'預設版型 · '+SEASONS[si].name+(night?'夜間':'白天'),season,night,builtin:true,authorName:'Forge Master',avatar:normalizeAvatar(AVATAR_DEFAULT),createdAt:CITY_DEFAULT_TIMESTAMP,items:night?defaultNightCityItems(si):public_freshCity().layouts[season]};}
 function findCityPreset(){return sandboxSession?preview_findCityPreset(...arguments):stable_findCityPreset(...arguments);}
 function stable_findCityPreset(id){const i=DECOR_SEASONS.findIndex(s=>id==='default-'+s);return i>=0?defaultCityPreset(i):readCityPresets().find(p=>p.id===id)||null;}
 function preview_findCityPreset(id){const i=DECOR_SEASONS.findIndex(s=>id==='default-'+s||id==='default-night-'+s);return i>=0?defaultCityPreset(i):readCityPresets().find(p=>p.id===id)||null;}
@@ -5150,12 +5199,12 @@ function stable_citySnapshotSVG(items,si,savedHeight){
 function preview_citySnapshotSVG(items,si,savedHeight){
  const rect=$('townMap').getBoundingClientRect(),W=360,H=Number.isFinite(savedHeight)&&savedHeight>=360&&savedHeight<=1000?savedHeight:rect.width>100&&rect.height>200?Math.max(360,Math.min(1000,360*rect.height/rect.width)):620,p=nightTownPalette(TOWN_SEASONS[si]);
  const parts=[snapshotNestedSVG(townScene(p),0,0,W,H)];if(isSandboxNight())parts.push(snapshotNestedSVG(nightSkyArt(si),0,0,W,H));
- function decorLayer(z){return items.filter(i=>i.z===z).slice().sort((a,b)=>a.y-b.y).map((i,k)=>{const d=DECOR_BY_ID.get(i.id);if(!d)return '';return '<g transform="translate('+(i.x*3.6)+' '+(i.y*H/100)+') rotate('+i.r+') scale('+(i.fx?-i.s:i.s)+' '+(i.fy?-i.s:i.s)+')">'+snapshotNestedSVG(decorSVG(i.id,si,'snapshot-'+k+'-'+i.uid),-d.w/2,-d.h,d.w,d.h)+'</g>';}).join('');}
+ function decorLayer(z){return items.filter(i=>i.z===z).slice().sort((a,b)=>a.y-b.y).map((i,k)=>{const d=DECOR_BY_ID.get(i.id);if(!d)return '';return '<g transform="translate('+(i.x*3.6)+' '+(i.y*H/100)+') rotate('+i.r+') scale('+(i.fx?-i.s:i.s)+' '+(i.fy?-i.s:i.s)+')">'+snapshotNestedSVG(kitchenSnapshotDecorSVG(decorSVG(i.id,si,'snapshot-'+k+'-'+i.uid),d),-d.w/2,-d.h,d.w,d.h)+'</g>';}).join('');}
  parts.push(decorLayer(0));
- const plaza=$('townPlaza').querySelector('svg');if(plaza)parts.push(snapshotNestedSVG(plaza.outerHTML,360*.5222-360*.19,H*(.65-.1097),360*.38,H*.2194));
- const buildings=[['townArchive','archive',0,.26,.37,.27],['townForge','forge',.58,.25,.42,.29],['townShop','shop',-.03,.76,.44,.23],['townTraining','training',.57,.77,.43,.23],['townGreenhouse',null,0,.54,.3,.18],['townDecorShop','decor',.76,.55,.24,.18],...(sandboxSession?[['townKitchen',null,.64,.47,.34,.18]]:[])];
+ const plaza=$('townPlaza').querySelector('svg');if(plaza)parts.push(snapshotNestedSVG(kitchenSnapshotPlazaSVG(plaza.outerHTML),360*.5222-360*.19,H*(.65-.1097),360*.38,H*.2194));
+ const buildings=[['townArchive','archive',0,.26,.37,.27],['townForge','forge',.58,.11,.42,.25],['townShop','shop',-.03,.76,.44,.23],['townTraining','training',.57,.79,.43,.21],['townGreenhouse',null,0,.54,.3,.18],['townDecorShop','decor',.76,.64,.24,.15],...(sandboxSession?[['townKitchen',null,.59,.36,.41,.27]]:[])];
  for(const [id,kind,x,y,w,h]of buildings){const el=$(id),box=el.getBoundingClientRect(),valid=rect.width>100&&box.width>0;let art=kind?townHouse(kind,p):el.querySelector('svg')?.outerHTML||'';parts.push(snapshotNestedSVG(art,valid?(box.left-rect.left)/rect.width*360:x*360,valid?(box.top-rect.top)/rect.height*H:y*H,valid?box.width/rect.width*360:w*360,valid?box.height/rect.height*H:h*H));}
- const sign=townExpeditionSign().match(/<svg[\s\S]*?<\/svg>/)?.[0];if(sign)parts.push(snapshotNestedSVG(sign,360*.26+360*.48*.14,H*(.03+.25*.83),360*.48*.72,H*.048));
+ const sign=townExpeditionSign().match(/<svg[\s\S]*?<\/svg>/)?.[0];if(sign)parts.push(snapshotNestedSVG(sign,360*.02+360*.48*.14,H*(.01+.25*.83),360*.48*.72,H*.048));
  parts.push(decorLayer(1));
  return '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'"><style>image{image-rendering:pixelated}.town-lamp-glow{opacity:.55}.forge-smoke{opacity:.45}.town-house-sign text{font-family:sans-serif}</style>'+parts.join('')+'</svg>';
 }
@@ -5216,7 +5265,7 @@ function preview_openAdmin(){
  if(sandboxSession){showTown();return;}
  sandboxProfile={playerName,avatar:normalizeAvatar(playerAvatar),muted,hi,recs:JSON.parse(JSON.stringify(recs)),saves:JSON.parse(JSON.stringify(saves)),weapons:[...weaponAlbum],blueprints:[...legendBlueprints],legends:[...legendCollection]};sandboxEpoch++;sandboxStorage.clear();sandboxSession=true;
  $('title').style.display='none';cheat.m=true;cheat.s=true;start('normal',{test:true});
- skills.mm=1;coins=1e12;sp=9999;DECOR_CATALOG.forEach(d=>cityState.owned[d.id]=50);cityRevision++;seasonNoticePending=false;closeP('seasonP');render();showTown();toast('🧪 後台測試 · 無限金錢與技能點 · 資料不會保存');
+ skills.mm=1;coins=1e12;sp=9999;cityRevision++;seasonNoticePending=false;closeP('seasonP');render();showTown();toast('🧪 後台測試 · 無限金錢與技能點 · 資料不會保存');
 }
 function nextSandboxDay(){return sandboxSession?preview_nextSandboxDay(...arguments):stable_nextSandboxDay(...arguments);}
 function stable_nextSandboxDay(){
@@ -5487,7 +5536,7 @@ function installKitchenPreviewCatalog(enabled){
  DECOR_CATALOG.splice(0,DECOR_CATALOG.length,...rows);DECOR_BY_ID.clear();DECOR_CATALOG.forEach(d=>DECOR_BY_ID.set(d.id,d));
 }
 function clearKitchenPreviewScene(){
- cancelKitchenDrag();for(const id of ['townKitchen','sandboxNightToggle','kitchenP','kitchenModal'])$(id).hidden=true;
+ cancelKitchenDrag();clearKitchenDepartures();for(const id of ['townKitchen','sandboxNightToggle','kitchenP','kitchenModal'])$(id).hidden=true;
  $('townP').dataset.previewKitchen='false';$('townP').dataset.time='day';$('townNightSky').innerHTML='';$('townNightSky').dataset.key='';
  $('townScenery').dataset.season='';$('townWeather').dataset.season='';$('townQueue').dataset.visitors='';$('townDecorFront').dataset.key='';
  for(const id of ['townArchive','townForge','townShop','townTraining','townDecorShop','townGreenhouse']){const el=$(id);el.dataset.artSeason='';el.dataset.greenhouseArt='';el.dataset.harvestKey='';el.querySelector('.night-house-glow')?.remove();}
