@@ -1042,6 +1042,16 @@ body::before{filter:brightness(.68) saturate(.78)}
 @media(prefers-reduced-motion:reduce){#kitchenP .kitchen-complete{animation:none}}.low-effects #kitchenP .kitchen-complete{animation:none}
 
 </style>
+<style>
+#townP[data-preview-kitchen="true"] #townKitchen{left:58%;top:11%;width:42%;height:25%}
+#townP[data-preview-kitchen="true"] #townForge{left:59%;top:36%;width:41%;height:27%}
+#townP[data-preview-kitchen="true"] #townPlaza{width:35.5556%;height:20.6452%;left:52.2222%;top:65%}
+#townP[data-preview-kitchen="true"][data-time="night"] #townPlaza{filter:brightness(.66) saturate(.76)}
+#townP[data-preview-kitchen="true"] .workshop-ember{animation:workshop-embers 3.6s ease-in-out infinite}
+@keyframes workshop-embers{0%,100%{opacity:.85}35%{opacity:1}64%{opacity:.72}82%{opacity:.95}}
+.low-effects .workshop-ember{animation:none!important}@media(prefers-reduced-motion:reduce){.workshop-ember{animation:none!important}}
+
+</style>
 </head>
 <body>
 <div id="portraitGuard" hidden role="dialog" aria-modal="true" aria-hidden="true" aria-label="請直向遊玩"><svg viewBox="0 0 40 52" aria-hidden="true" shape-rendering="crispEdges"><path fill="#0c1726" d="M7 0h26v3h3v46h-3v3H7v-3H4V3h3z"/><path fill="#b8a577" d="M8 3h24v46H8z"/><path fill="#293e51" d="M10 8h20v34H10z"/><path fill="#e8d696" d="M16 4h8v2h-8zM17 45h6v2h-6z"/><path fill="#84b6b0" d="M19 14h3v16h-3zM13 21h3v3h-3zM16 18h3v3h-3zM22 18h3v3h-3zM25 21h3v3h-3z"/></svg><b>請直向遊玩</b><p>將手機轉回直向<br>即可繼續遊戲</p></div>
@@ -1834,11 +1844,11 @@ function kitchenProcessArt(type){const colors=['#e5cc92','#daa17b','#a5c58c'];le
  if(type===2)icon='<path fill="#755338" d="M13 32h38v15H13z"/><path fill="#c5a36b" d="M16 34h32v10H16z"/><path fill="#e5e7cf" d="M23 18h24v10H23z"/><path fill="#57716a" d="M13 19h11v8H13z"/><path fill="#6c9b58" d="M24 32h7v7h-7zM35 34h7v6h-7z"/><path fill="#e3a05b" d="M29 37h4v5h-4z"/>';
  return kitchenSVG('<path fill="#273640" d="M5 4h54v56H5z"/><path fill="'+colors[type]+'" d="M8 7h48v50H8z"/><path fill="#fff0c0" d="M10 9h44v3H10zM10 12h3v40h-3z"/><path fill="#9d7f54" d="M11 53h42v2H11z"/>'+icon);
 }
-function kitchenHouseArt(){
- const at=(u,v)=>[15+48*u+108*v,72-49*u+27*v],pts=a=>a.map(([x,y])=>Math.round(x)+','+Math.round(y)).join(' ');let tiles='';
- for(let r=0;r<9;r++)for(let k=-1;k<12;k++){const u=r/9,v=(k+(r%2)*.5)/11;tiles+='<polygon points="'+pts([at(u,v),at(u+1/9,v),at(u+1/9,v+1/11),at(u,v+1/11)])+'" fill="'+['#965849','#b37254','#c58760'][(r+k+30)%3]+'" stroke="#744536" stroke-width=".7"/>';}
- let bricks='';for(let r=0;r<3;r++)for(let k=0;k<6;k++)bricks+='<path fill="#a08c65" opacity=".42" d="M'+(28+k*14+(r%2)*4)+' '+(114+r*13)+'h6v2h-6z"/>';
- return '<svg viewBox="0 -28 192 212" shape-rendering="crispEdges" aria-hidden="true"><defs><clipPath id="kitchen-house-roof"><polygon points="15,72 63,23 171,50 123,99"/></clipPath></defs><path fill="#1b302c" opacity=".3" d="M8 150l113 29 65-22v10l-65 21L8 158z"/><path fill="#677066" d="M15 146l107 27 61-20v10l-61 22-107-28z"/><path fill="#b3ab8e" d="M15 146l107 27 61-20-7-5-54 18-99-25z"/><path fill="#514a38" stroke="#303a33" stroke-width="3" d="M23 77l99 24 57-16v68l-57 19-99-25z"/><path fill="#ead6a1" d="M27 85l90 22v57l-90-22z"/><path fill="#b3a17b" d="M125 106l50-14v57l-50 17z"/>'+bricks+'<path fill="#715137" d="M25 83h6v62h-6zM115 105h7v64h-7zM26 129l92 24v6l-92-24zM126 107l49-14v6l-49 14zM173 92h6v61h-6z"/><path fill="#312f2a" d="M77 116l25 6v40l-25-6z"/><path fill="#8c643e" d="M80 120l18 5v34l-18-5z"/><path fill="#e3b672" d="M84 123l11 3v15l-11-3z"/><path fill="#774c31" d="M87 124h2v15h-2zM83 131l13 3v2l-13-3z"/><path fill="#f0d28b" d="M93 146h2v3h-2z"/><path fill="#34382e" d="M35 105l31 8v27l-31-8z"/><path fill="#f3cb75" d="M38 109l25 6v20l-25-6z"/><path fill="#fff0b0" d="M40 111l9 2v8l-9-2z"/><path fill="#9a6e3c" d="M49 112h3v20h-3zM37 121l27 7v3l-27-7z"/><path fill="#714e34" d="M33 132l35 9v4l-35-9z"/><path fill="#426a44" d="M37 133h5v-6h5v8h6v-4h5v8l-21-5z"/><path fill="#dda367" d="M35 137l31 8v7l-31-8z"/><path fill="#403d33" d="M137 113l26-7v29l-26 8z"/><path fill="#ddaa5f" d="M140 115l20-6v24l-20 6z"/><path fill="#f9e1a2" d="M142 118l7-2v12l-7 2z"/><path fill="#8f6238" d="M149 113h3v23h-3zM139 125l22-6v3l-22 6z"/><polygon points="15,72 63,23 171,50 123,99" fill="#754638" stroke="#313635" stroke-width="5"/><g clip-path="url(#kitchen-house-roof)">'+tiles+'</g><path fill="#e0b67d" d="M60 22l4-3 109 28v5l-109-28z"/><path fill="#6d4435" d="M12 72l110 27v7L12 79zM123 99l48-50 4 3-50 54z"/><path fill="#e8ba80" d="M16 73l104 26v2L16 75z"/><path fill="#e3cc98" stroke="#564b36" stroke-width="3" d="M126 98l44-47 18 33z"/><path fill="#805d3c" d="M167 56h4v32h-4zM149 76l30 9v4l-32-9z"/><path fill="#383d36" d="M45 30V-7l17 4v38z"/><path fill="#758078" d="M48 26V-4l10 2v31z"/><path fill="#c0bea0" d="M42-9l20 4v7L42-2z"/><path fill="#6b6250" d="M44 8l17 4v3l-17-4zM44 21l17 4v3l-17-4z"/><g class="kitchen-steam" fill="#e6dfcc" opacity=".55"><path d="M43-13h16v-7h-4v-5H43zM38-28h13v-6h-4v-5H36v7h2z"/></g><path fill="#322d27" d="M31 83l78 19v22l-78-19z"/><path fill="#6f5136" d="M33 85l74 18v17l-74-18z"/><path fill="none" stroke="#d4b579" stroke-width="1.5" d="M36 88l68 17v11l-68-17z"/><g transform="matrix(1 .245 0 1 0 0)"><text x="70" y="87" font-family="serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#f8e4ad">廚房餐廳</text></g><path fill="#ad754b" d="M31 106l38 9-4 7-38-9z"/><path fill="#f4d69e" d="M32 107l6 1-4 7-6-1zM45 110l6 1-4 7-6-1zM58 113l6 1-4 7-6-1z"/><path fill="#bea372" d="M74 158l30 8 5 4-32-7z"/><path fill="#f1d69c" d="M79 158l22 6v3l-22-6z"/>'+(townVisualSeason()===3?'<path fill="#e4eef0" d="M16 71l47-48 108 27-4 4-104-25-41 44zM124 97l11-12 9 2-17 18z"/>':'')+'</svg>';
+function kitchenHouseArt(p=TOWN_SEASONS[townVisualSeason()]){
+ const wood='#71513b',cream=p.snow?'#dfdfc7':'#f0d9a5';let lattice='';
+ for(let i=0;i<3;i++){const x=31+i*15,y=112+i*3.7;lattice+='<g transform="matrix(1 .245 0 1 '+x+' '+y+')"><path fill="#5c4736" d="M0 0h13v26H0z"/><path fill="#f0bd64" d="M2 2h9v20H2z"/><path fill="#ffe2a0" d="M3 3h4v9H3z"/><path fill="#86603a" d="M6 1h2v23H6zM1 12h11v2H1z"/><path fill="#fff0c6" d="M2 20h9v3H2z"/><path fill="#c07a58" d="M5 18h4v2H5z"/></g>';}
+ const steam=Array.from({length:3},(_,i)=>'<g class="kitchen-steam" style="animation-delay:-'+i+'s"><path fill="#e0d7bd" opacity=".5" d="M48-4h13v-6h-4v-6h-9v5h-4v5h4z"/></g>').join('');
+ return '<svg viewBox="0 -28 192 212" shape-rendering="crispEdges" aria-hidden="true" data-workshop="hearth-restaurant"><path fill="#23372c" opacity=".3" d="M8 149l115 30 65-22v9l-65 22L8 157z"/><path fill="#786e58" d="M16 146l107 27 61-21v10l-61 22-107-29z"/><path fill="#c4b58b" d="M16 146l107 27 61-21-7-5-54 18-100-25z"/><path fill="'+wood+'" stroke="#373d32" stroke-width="3" d="M22 79l101 26 57-17v65l-57 20-101-26z"/><path fill="'+cream+'" d="M26 87l92 24v54l-92-23z"/><path fill="#c9b589" d="M127 109l49-14v56l-49 16z"/><path fill="#c8b17a" d="M27 138l90 23v4l-90-23z"/><path fill="'+wood+'" d="M26 91l91 23v6L26 97zM26 133l91 24v6l-91-24zM27 86h6v58h-6zM112 107h7v60h-7zM125 110l50-14v6l-50 14zM173 95h6v58h-6z"/>'+lattice+'<path fill="#594235" d="M83 119l22 6v36l-22-6z"/><path fill="#a67a49" d="M86 122l16 4v32l-16-4z"/><path fill="#eac174" d="M89 126l10 2v13l-10-2z"/><path stroke="#80603b" stroke-width="2" d="M94 127v13M88 133l12 3"/><path fill="#f2d291" d="M98 146h2v3h-2z"/><path fill="#72523c" d="M137 112l27-8v34l-27 9z"/><path fill="#edbf73" d="M140 115l21-6v27l-21 6z"/><path fill="#ffe6a5" d="M142 116l7-2v11l-7 2z"/><path fill="#98713f" d="M150 111h3v27h-3zM139 126l23-6v3l-23 7z"/><path fill="#cfac71" d="M135 140l31-9v5l-31 9z"/><path fill="'+cream+'" stroke="'+wood+'" stroke-width="3" d="M125 102l47-50 17 37z"/><path fill="'+wood+'" d="M168 58h4v31h-4zM149 81l30 8v4l-32-8z"/>'+townWorkshopRoof('restaurant-copper-roof',['#804c3e','#bd7756','#d78e62','#f0ba7f'])+'<path fill="#74533e" d="M45 8h19v38l-19-5z"/><path fill="#b68d63" d="M48 10h11v29l-11-3z"/><path fill="#d9c29a" d="M42 5l25 5v7l-25-5z"/>'+steam+'<path fill="#e1bc76" stroke="#825c3a" stroke-width="2" d="M87 43l16 6v19l-17 8-18-15V42z"/><path stroke="#fff0c5" stroke-width="3" fill="none" d="M78 49v10l10 9M76 48l3 1M80 50v7M95 53c6 1 6 8 1 7l-8 10"/><path fill="#5b4433" d="M27 91l84 21v20l-84-21z"/><g class="town-house-sign" data-sign-plane="front-wall" transform="matrix(1 .245 0 1 0 0)"><path fill="#d2ac68" d="M30 87h78v23H30z"/><path fill="#4d6554" d="M33 90h72v17H33z"/><path stroke="#edce8e" d="M35 92h68M35 105h68"/><text x="69" y="103" font-size="14" font-family="serif" font-weight="bold" text-anchor="middle" fill="#fff0bd">廚房餐廳</text></g><path fill="#8b4c3b" d="M27 111l52 13-5 9-52-13z"/><path fill="#f7d8a0" d="M28 112l7 2-5 8-7-2zM42 115l7 2-5 8-7-2zM56 119l7 1-5 9-7-2zM70 122l7 2-5 8-7-2z"/><path fill="#d2b27b" d="M80 155l27 7 6 6-31-8z"/><path fill="#f5d9a4" d="M85 155l20 5v3l-20-5z"/>'+(p.snow?'<path fill="#f1f6ed" d="M13 75l50-50 110 27-5 4L63 31 20 77zM124 101l12-11 7 2-16 16z"/>':'')+'</svg>';
 }
 
 function kitchenItemName(w){return w.k==='o'?KITCHEN_GRADES[w.t]+'食材包':w.k==='p'?KITCHEN_GRADES[w.t]+KITCHEN_TYPES[w.s]:w.k==='w'?KITCHEN_GRADES[w.t]+KITCHEN_NAMES[w.c]:w.k==='m'?KITCHEN_PROCESS[w.s]:w.k==='spice'?KITCHEN_SPICES[w.spice].name+'調味包':({z:'冰水桶',f:'清潔工具',u:'精選食材券'}[w.k]||'道具');}
@@ -2053,10 +2063,65 @@ function kitchenRemoveOrder(index){
  if(!kitchen.orders[index])return;kitchenGuestExit(index);
  if(kitchen.queue.length)kitchen.orders[index]=kitchen.queue.shift();else kitchen.orders.splice(index,1);
 }
-function kitchenTownRoads(){return TOWN_STREETS.map(r=>r.id==='north'?{...r,p:[[100,143],[144,172],[182,217],[182,285],[184,336]]}:r.id==='forge'?{...r,p:[[184,336],[211,309],[221,269],[253,242]]}:r.id==='decor'?{...r,p:[[248,414],[280,447],[312,461]]}:r).concat([{id:'kitchen',w:16,p:[[236,451],[246,426],[271,402]]}]);}
-function kitchenTownGuestPoint(i,night=isSandboxNight()){return night?[255+(i%3)*15,397+Math.floor(i/3)*21]:[246+(i%3)*15,238+Math.floor(i/3)*22];}
-function kitchenSnapshotPlazaSVG(svg){return isSandboxNight()?svg.replace('<svg ','<svg style="filter:brightness(.59) saturate(.75)" '):svg;}
+function kitchenTownRoads(){return [
+ {id:'north',w:22,p:[[188,355],[188,232],[105,162],[105,143]]},
+ {id:'south',w:23,p:[[188,451],[188,620]]},
+ {id:'archive',w:15,p:[[152,365],townMasterDoor('townArchive')]},
+ {id:'kitchen',w:16,p:[[188,252],[224,228],townMasterDoor('townKitchen')]},
+ {id:'forge',w:17,p:[[224,368],townMasterDoor('townForge')]},
+ {id:'greenhouse',w:14,p:[[142,429],townMasterDoor('townGreenhouse')]},
+ {id:'decor',w:13,p:[[226,433],townMasterDoor('townDecorShop')]},
+ {id:'shop',w:15,p:[[188,574],[152,601],townMasterDoor('townShop')]},
+ {id:'training',w:15,p:[[188,574],[225,604],townMasterDoor('townTraining')]}
+];}
+function kitchenTownGuestPoint(i,night=isSandboxNight()){
+ // The visible line follows the entrance path and then the outside of the plaza.
+ const line=night?[[264,224],[246,229],[228,234],[208,246],[188,264],[188,286],[188,308],[188,330]]:[[264,395],[257,413],[247,433],[232,452],[211,466],[188,477],[188,499],[188,521]];
+ return i<line.length?line[i]:[174+(i%2)*22,500+Math.floor((i-8)/2)*20];
+}
+function kitchenSnapshotPlazaSVG(svg){return isSandboxNight()?svg.replace('<svg ','<svg style="filter:brightness(.66) saturate(.76)" '):svg;}
 function kitchenSnapshotDecorSVG(svg,d){return isSandboxNight()&&d.art==='fountain'?svg.replace('<svg ','<svg style="filter:brightness(.58) saturate(.8)" '):svg;}
+const TOWN_MASTER_BUILDINGS=[['townArchive','archive',0,.26,.37,.27],['townKitchen','kitchen',.58,.11,.42,.25],['townForge','forge',.59,.36,.41,.27],['townShop','shop',-.03,.76,.44,.23],['townTraining','training',.57,.79,.43,.21],['townGreenhouse','greenhouse',0,.54,.3,.18],['townDecorShop','decor',.76,.64,.24,.15]];
+function townMasterDoor(id){
+ const row=TOWN_MASTER_BUILDINGS.find(r=>r[0]===id),points={townArchive:[105,160],townKitchen:[94,154],townForge:[66,147],townGreenhouse:[103,160],townShop:[105,160],townTraining:[87,160],townDecorShop:[87,160]},anchor=points[id],map=$('townMap').getBoundingClientRect(),el=$(id).getBoundingClientRect();
+ const live=map.width>100&&map.height>200&&el.width>0,worldWidth=live?map.width:360,worldHeight=live?map.height:620,box=live?el:{left:row[2]*360,top:row[3]*620,width:row[4]*360,height:row[5]*620},scale=Math.min(box.width/192,box.height/212);
+ return [Math.round((box.left-(live?map.left:0)+(box.width-192*scale)/2+anchor[0]*scale)/worldWidth*360),Math.round((box.top-(live?map.top:0)+(box.height-212*scale)/2+(anchor[1]+28)*scale)/worldHeight*620)];
+}
+function townPavingPalette(p){return isSandboxNight()?{base:p.road,edge:'#3b4543',kerb:'#96927e',seam:'#65685e',tile:'#a09a80',glint:'#c6bc99'}:p.snow?{base:'#c7d6d8',edge:'#6d8997',kerb:'#e7eff0',seam:'#9db5bc',tile:'#d7e1df',glint:'#f5f7ec'}:{base:p.road,edge:'#938570',kerb:'#e5d5b3',seam:'#b3a181',tile:'#e0cba5',glint:'#f1dfb9'};}
+function townPavingDefs(p,id){const c=townPavingPalette(p);return '<defs><pattern id="'+id+'" width="18" height="14" patternUnits="userSpaceOnUse"><rect width="18" height="14" fill="'+c.base+'"/><path fill="'+c.seam+'" opacity=".65" d="M0 0h18v1H0zM0 7h18v1H0zM8 1h1v6H8zM0 8h1v6H0zM17 8h1v6h-1z"/><path fill="'+c.tile+'" opacity=".65" d="M1 2h6v3H1zM10 2h6v3h-6zM2 9h13v3H2z"/><path fill="'+c.glint+'" opacity=".6" d="M1 1h6v1H1zM10 1h6v1h-6zM2 8h13v1H2z"/></pattern></defs>';}
+function townMasterRoadArt(p){
+ const roads=kitchenTownRoads(),c=townPavingPalette(p),d=r=>r.p.map(([x,y],i)=>(i?'L':'M')+x+' '+y).join(''),layer=(stroke,extra)=>roads.map(r=>'<path data-town-road="'+r.id+'" d="'+d(r)+'" stroke="'+stroke+'" stroke-width="'+(r.w+extra)+'"/>').join('');
+ return '<g data-town-network="unified-paving">'+townPavingDefs(p,'town-road-stone')+'<g fill="none" stroke-linejoin="round" stroke-linecap="round">'+layer(c.edge,6)+layer(c.kerb,3)+layer('url(#town-road-stone)',0)+'</g></g>';
+}
+function townMasterLandscape(p){
+ const si=townVisualSeason();if(si===1)return summerTownScene(p,'','').replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'').replace(townCastle(p),'');
+ const distant=p.snow?'#91aab9':'#8faeb2',near=p.snow?'#78969f':'#77988c';let grain='';
+ for(let i=0;i<65;i++){const x=7+(i*83)%348,y=175+(i*47)%435;if(x>135&&x<239)continue;grain+='<path fill="'+(p.snow?'#d7e5e4':si===2?'#c59e65':'#a7ba78')+'" opacity=".35" d="M'+x+' '+y+'h3v1h-3z"/>';}
+ return '<rect width="360" height="620" fill="'+p.ground+'"/><rect width="360" height="148" fill="'+p.sky+'"/>'+townClouds()+'<path fill="'+distant+'" d="M0 143V95l28-30 18-13 25 27 26-20 30 29 31-32 16-9 31 35 47-45 38 38 27-32 43 47v53z"/><path fill="'+(p.snow?'#c3d4d7':'#b6c9bf')+'" d="M28 65l18-13 25 27-24-12-8 8zM158 56l16-9 31 35-29-19-10 8zM234 54l18-17 24 26-24-13-8 12z"/><path fill="'+near+'" d="M0 123h31v-6h25v8h27v-9h44v7h34v-6h40v7h38v-8h34v9h30v-6h32v7h25v35H0z"/><path fill="'+p.ground+'" d="M0 157h34v-8h42v7h36v-5h37v6h44v-6h49v7h38v-5h43v4h37v463H0z"/>'+grain;
+}
+function townMasterScene(p){return '<svg viewBox="0 0 360 620" preserveAspectRatio="none" aria-hidden="true" shape-rendering="crispEdges" data-town-masterplan="stone-streets-v2">'+townMasterLandscape(p)+townMasterRoadArt(p)+townCastle(p)+'</svg>';}
+function townMasterPlazaArt(p){
+ const c=townPavingPalette(p);let joints='';for(let i=0;i<28;i++){const a=i*Math.PI/14,x1=80+57*Math.cos(a),y1=80+57*Math.sin(a),x2=80+76*Math.cos(a),y2=80+76*Math.sin(a);joints+='<path stroke="'+c.seam+'" opacity=".8" d="M'+Math.round(x1)+' '+Math.round(y1)+'L'+Math.round(x2)+' '+Math.round(y2)+'"/>';}
+ return '<svg viewBox="0 0 160 160" shape-rendering="crispEdges" preserveAspectRatio="none" data-town-plaza="masonry-ring"><circle cx="80" cy="80" r="79" fill="'+c.edge+'"/><circle cx="80" cy="80" r="76" fill="'+c.kerb+'"/><circle cx="80" cy="80" r="73" fill="'+c.base+'"/>'+joints+'<circle cx="80" cy="80" r="65" fill="none" stroke="'+c.seam+'" opacity=".35"/><circle cx="80" cy="80" r="57" fill="'+c.kerb+'"/><circle cx="80" cy="80" r="54" fill="'+p.ground+'"/><path fill="'+c.glint+'" opacity=".6" d="M76 3h8v2h-8zM3 76h2v8H3z"/></svg>';
+}
+function townGuestRoute(i,night=isSandboxNight()){
+ const [x,y]=kitchenTownGuestPoint(i,night),around=[[188,650],[188,495],[188,472],[224,452],[244,432],[252,403],[244,375]];
+ return night?around.concat([[215,345],[188,334],[188,252],[224,228],[x,y]]):around.concat([[250,377],[x,y]]);
+}
+function townMasterBlocks(){return [[0,174,139,324],[210,89,360,216],[211,239,360,386],[0,337,112,442],[0,481,151,620],[205,492,360,620],[270,397,360,479]];}
+function townMasterBuildingArt(kind,p){return kind==='kitchen'?kitchenHouseArt(p):kind==='forge'?townForgeWorkshopArt(p):kind==='greenhouse'?townGreenhouseArt(p):townHouse(kind,p);}
+let townMasterResizeFrame=0;
+window.addEventListener('resize',()=>{if(!sandboxSession||$('townP').style.display!=='flex'||townMasterResizeFrame)return;townMasterResizeFrame=requestAnimationFrame(()=>{townMasterResizeFrame=0;renderTown();});});
+function townWorkshopRoof(id,colors,industrial=false){
+ const A=[12,76],B=[63,25],C=[173,52],D=[122,103],at=(u,v)=>[A[0]*(1-u)*(1-v)+B[0]*u*(1-v)+C[0]*u*v+D[0]*(1-u)*v,A[1]*(1-u)*(1-v)+B[1]*u*(1-v)+C[1]*u*v+D[1]*(1-u)*v],pts=a=>a.map(([x,y])=>Math.round(x)+','+Math.round(y)).join(' ');let tiles='';
+ for(let r=0;r<(industrial?6:10);r++)for(let k=-1;k<12;k++){const rows=industrial?6:10,u=r/rows,v=(k+(r%2)*.5)/11;tiles+='<polygon points="'+pts([at(u,v),at(u+1/rows,v),at(u+1/rows,v+1/11),at(u,v+1/11)])+'" fill="'+colors[1+(r+k+30)%2]+'" stroke="'+colors[0]+'" stroke-width="'+(industrial?1.1:.7)+'"/>';if(industrial&&(r+k)%3===0){const [x,y]=at(u+.04,v+.04);tiles+='<rect x="'+Math.round(x)+'" y="'+Math.round(y)+'" width="2" height="2" fill="'+colors[3]+'"/>';}}
+ return '<defs><clipPath id="'+id+'"><polygon points="'+pts([A,B,C,D])+'"/></clipPath></defs><polygon points="'+pts([A,B,C,D])+'" fill="'+colors[0]+'" stroke="#29363b" stroke-width="5"/><g clip-path="url(#'+id+')">'+tiles+'</g><path fill="'+colors[3]+'" d="M60 24l4-3 110 28v5L64 27z"/><path fill="'+colors[0]+'" d="M9 75l113 28v7L9 82zM122 103l51-52 4 3-53 56z"/><path fill="'+colors[3]+'" opacity=".7" d="M13 77l106 26v2L13 79z"/>';
+}
+function townForgeWorkshopArt(p){
+ const stone=p.snow?'#a9b9bd':'#adb1a4',warm=p.snow?'#c8d2cf':'#d0c9ac';let blocks='';for(let r=0;r<4;r++)for(let k=0;k<7;k++){const x=26+k*13+(r%2)*6,y=103+r*11;blocks+='<path fill="'+((r+k)%3?'#7b8a83':warm)+'" opacity=".6" d="M'+x+' '+y+'h9v2h-9z"/>';}
+ const smoke=Array.from({length:4},(_,i)=>'<g class="forge-smoke" style="--smoke-delay:-'+i*1.3+'s"><path fill="#b9c6be" d="M141-3v-5h-4v-7h4v-4h11v4h5v8h-5v4z"/><path fill="#edf0dc" opacity=".55" d="M141-15h7v3h4v4h-7v-3h-4z"/></g>').join('');
+ return '<svg viewBox="0 -28 192 212" shape-rendering="crispEdges" aria-hidden="true" data-workshop="iron-forge"><path fill="#172e2c" opacity=".3" d="M7 149l115 30 66-23v8l-66 23L7 158z"/><path fill="#535e5e" d="M14 143l108 29 63-21v11l-63 22-108-29z"/><path fill="#919689" d="M14 143l108 29 63-21-8-5-55 18-100-25z"/><path fill="#3a494c" stroke="#26383a" stroke-width="3" d="M21 80l101 25 58-16v64l-58 20-101-25z"/><path fill="'+stone+'" d="M25 88l92 23v54l-92-23z"/><path fill="#7a8a82" d="M126 110l50-14v54l-50 17z"/>'+blocks+'<path fill="#4e5b58" d="M25 91l92 23v7L25 98zM25 132l92 24v6l-92-24zM26 89h7v56h-7zM110 111h8v57h-8zM125 111l50-14v6l-50 14zM172 96h7v56h-7z"/><path fill="#242f32" d="M39 112l55 14v32l-55-14z"/><path fill="#574d3b" d="M44 116l45 12v25l-45-12z"/><path fill="#f1c16e" opacity=".25" d="M45 124l37 9v18l-37-9z"/><path fill="#5b6d70" d="M50 125l35 9-6 7-20-5v12l-7-2v-12l-7-3z"/><path fill="#bbba9f" d="M49 125l36 9-3 3-36-9z"/><path fill="#293b40" d="M57 136l15 4v12l-15-4z"/><path fill="#98a5a0" d="M58 136l12 3v3l-12-3z"/><path fill="#845b37" d="M91 122l11 3v34l-11-3z"/><path fill="#d6a55d" d="M96 129h2v24h-2z"/><path fill="#27383a" d="M134 116l29-8v34l-29 9z"/><path fill="#7a4131" d="M138 118l21-6v29l-21 6z"/><g class="workshop-ember"><path fill="#d97532" d="M140 124l17-5v20l-17 5z"/><path fill="#ffb34d" d="M141 134v-7l4-6 2 8 4-8 4 6v11l-14 4z"/><path fill="#ffe09b" d="M145 137v-6l3-6 2 8 3-3v7l-8 3z"/></g><path fill="#3a484a" d="M132 144l32-9v7l-32 10z"/><path fill="#a5a78d" d="M132 144l32-9v2l-32 9z"/><path fill="#d1c69e" stroke="#41504d" stroke-width="3" d="M126 101l46-49 15 37z"/><path fill="#586764" d="M168 58h4v31h-4zM149 81l29 7v4l-32-8z"/>'+townWorkshopRoof('iron-forge-roof',['#2c414a','#49626c','#5e7980','#a0b1a6'],true)+'<path fill="#435158" d="M139 2h20v62l-20-4z"/><path fill="#7b8b89" d="M141 3h6v54l-6-2z"/><path fill="#b5b79f" d="M136-1h27v8h-27z"/><path fill="#26383d" d="M139-3h21v4h-21z"/><path stroke="#364a51" stroke-width="2" d="M141 16h17M141 29h17M141 42h17M149 7v9M149 29v13"/>'+smoke+'<path fill="#384d56" stroke="#b4a46c" stroke-width="2" d="M74 44l21 6v22l-21 9-20-16V43z"/><path fill="#d2c8a2" d="M68 49l17 4v7l-17-4zM74 57l5 1v15l-5-2z"/><path fill="#7f9293" d="M63 46l22 6v4l-22-6z"/><path fill="#3a4849" d="M25 95l82 20v17l-82-20z"/><g class="town-house-sign" data-sign-plane="front-wall" transform="matrix(1 .245 0 1 0 0)"><path fill="#776b4c" d="M30 91h73v20H30z"/><path fill="#354a50" d="M33 93h67v16H33z"/><path stroke="#cbbf87" d="M35 95h63M35 107h63"/><text x="67" y="106" font-size="15" font-family="serif" font-weight="bold" text-anchor="middle" fill="#f6df9e">冶煉廠</text></g><path fill="#7e8b80" d="M39 145l54 14 5 4-57-14z"/><path fill="#c3c2a5" d="M43 145l47 12v3l-47-12z"/>'+(p.snow?'<path fill="#edf6ee" d="M13 75l50-50 110 27-4 4L64 31 19 77zM122 101l10-10 8 2-14 15z"/>':'')+'</svg>';
+}
 const SEASONS=[
   {id:'spring',name:'春天',icon:'🌱',description:'春回大地！鍛造格過熱 50 步。春季持續 3 天。'},
   {id:'summer',name:'夏天',icon:'☀️',description:'盛夏高溫！鍛造格的過熱時間增加 10 步，由 50 步變成 60 步。夏季持續 3 天。'},
@@ -3132,7 +3197,7 @@ const townPetAnimations=new Set();let petNavigation=null;
 const townPets={cat:{kind:'cat',point:[178,558],anim:null,timer:null},dog:{kind:'dog',point:[178,222],anim:null,timer:null}};
 function petGround(x,y){
  if(x<20||x>340||y<174||y>607)return false;
- const blocks=sandboxSession?[[0,174,139,331],[209,83,360,231],[211,235,360,390],[0,337,112,454],[0,481,151,620],[205,487,360,620],[270,397,360,490]]:PET_BLOCKS;
+ const blocks=sandboxSession?townMasterBlocks():PET_BLOCKS;
  if(blocks.some(([x0,y0,x1,y1])=>x>=x0-8&&x<=x1+8&&y>=y0-7&&y<=y1+7))return false;
  if(cityObstacleAt(x,y))return false;
  
@@ -3214,15 +3279,15 @@ function preview_renderTownVisitors(remaining){
  }).join('');
  const rect=$('townMap').getBoundingClientRect(),sx=(rect.width||360)/360,sy=(rect.height||620)/620;
  [...el.querySelectorAll('.town-visitor')].forEach((n,i)=>{
-  const [x,y]=kitchenTownGuestPoint(i),route=isSandboxNight()?[[188,650],[188,535],[188,471],[236,451],[246,426],[248,410],[x,y]]:[[188,650],[188,535],[188,471],[209,395],[220,330],[221,269],[x,y]];
-  const frames=route.map(([px,py],k)=>({transform:`translate3d(${(px-x)*sx}px,${(py-y)*sy}px,0)`,offset:[0,.25,.43,.6,.74,.87,1][k]}));
-  const a=n.animate(frames,{duration:4700+i*110,delay:i*300,easing:'linear',fill:'backwards'});townVisitorAnimations.add(a);n.classList.add('arriving');
+  const [x,y]=kitchenTownGuestPoint(i),route=townGuestRoute(i);let length=0;const distances=route.map((point,k)=>{if(k)length+=Math.hypot(point[0]-route[k-1][0],point[1]-route[k-1][1]);return length;});
+  const frames=route.map(([px,py],k)=>({transform:`translate3d(${(px-x)*sx}px,${(py-y)*sy}px,0)`,offset:distances[k]/length}));
+  const a=n.animate(frames,{duration:Math.min(8000,Math.max(3800,length*9))+i*70,delay:i*300,easing:'linear',fill:'backwards'});townVisitorAnimations.add(a);n.classList.add('arriving');
   a.onfinish=()=>{n.classList.remove('arriving');townVisitorAnimations.delete(a)};
   if(townMotionPaused)a.pause?.();
  });
 }
 
-function townHouse(kind,p){const art=public_townHouse(kind,p);return sandboxSession?art.replace(/<g fill="#735338" stroke="#4b4132"[\s\S]*?<\/g><path stroke="#c4a575"[^>]*\/>/,''):art;}
+function townHouse(kind,p){if(sandboxSession&&kind==='forge')return townForgeWorkshopArt(p);const art=public_townHouse(kind,p);return sandboxSession?art.replace(/<g fill="#735338" stroke="#4b4132"[\s\S]*?<\/g><path stroke="#c4a575"[^>]*\/>/,''):art;}
 function public_townHouse(kind,p){
  const id='townRoof-'+kind,roof=kind==='forge'?['#6f3934','#984b3b','#b7684b','#d08860']:kind==='decor'?['#43374f','#715c7a','#a58a9f','#d0b5ba']:kind==='training'?['#283f57','#395a74','#507891','#79a0ac']:kind==='shop'?['#254b3c','#3d7150','#61905d','#9bb974']:p.snow?['#3d536d','#566f89','#758b9d','#a4b4b9']:['#49434f',p.roof,'#987c8a','#b79a9f'];
  const A=[13,76],B=[65,22],C=[160,45],D=[119,103];
@@ -3289,7 +3354,8 @@ function iceCrystalArchArt(){
  return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" aria-label="冰晶拱門">'+f('#233e5444','M0 59h64v5H0z')+f('#294d69','M3 60V23h4V14h7V8h9V3h18v5h9v6h7v9h4v37H47V27h-4v-7H21v7h-4v33z')+f('#679fb9','M5 58V24h4v-9h7v-5h9V5h14v5h9v5h7v9h4v34H49V26h-4v-8H19v8h-4v32z')+f('#a0dce8','M6 24h8v32H6zM50 24h8v32h-8zM11 16h7v8h-7zM17 11h9v7h-9zM25 6h13v11H25zM38 11h9v7h-9zM47 16h6v8h-6z')+f('#def8f6','M6 25h3v28H6zM11 17h3v6h-3zM18 12h7v2h-7zM26 7h4v9h-4zM39 12h7v2h-7zM51 25h2v28h-2z')+f('#4c82a3','M12 26h2v30h-2zM56 26h2v30h-2zM17 18h3v6h-3zM43 18h3v6h-3zM31 7h5v9h-5z')+f('#bdebf0','M2 54h16v5H2zM46 54h16v5H46zM1 59h18v3H1zM45 59h18v3H45z')+f('#ecffff','M2 54h15v2H2zM47 54h14v2H47z')+f('#4e8cab','M25 4l7-4 7 4-7 11zM5 34l6-5 5 6-5 12zM49 35l5-6 6 6-6 12z')+f('#b3f0f2','M27 4l5-3 4 3-4 8zM7 35l4-4 3 4-3 9zM51 35l3-4 4 4-4 9z')+f('#f3ffff','M29 4h3v5h-1zM8 35h2v6H8zM52 35h2v6h-2z')+f('#c9f3f3','M19 19h4v8l-2 6-2-6zM29 18h4v5l-2 5-2-5zM40 19h3v8l-1 5-2-5z')+'<g class="ice-arch-glint">'+f('#fffef5','M20 5h1v7h-1zM17 8h7v1h-7zM56 17h1v7h-1zM53 20h7v1h-7zM3 46h1v5H3zM1 48h5v1H1z')+'</g></svg>';
 }
 
-function townScene(p){
+function townScene(p){return sandboxSession?townMasterScene(p):public_layoutTownScene(p);}
+function public_layoutTownScene(p){
  const si=townVisualSeason(),path=a=>a.map(([x,y],i)=>(i?'L':'M')+x+' '+y).join('');
  const roads=sandboxSession?kitchenTownRoads():TOWN_STREETS;
  const streetOrder=[...roads.filter(r=>r.id==='shop'||r.id==='training'),...roads.filter(r=>!['shop','training','south'].includes(r.id)),roads.find(r=>r.id==='south')];
@@ -3306,7 +3372,7 @@ function townFurnitureArt(p){
  return '<svg viewBox="0 0 360 620" preserveAspectRatio="none" shape-rendering="crispEdges" aria-hidden="true"><defs><radialGradient id="townLanternHalo"><stop offset="0" stop-color="#fff0b5" stop-opacity=".85"/><stop offset=".3" stop-color="#ffd18a" stop-opacity=".48"/><stop offset=".65" stop-color="#ffbf65" stop-opacity=".19"/><stop offset="1" stop-color="#ffbf65" stop-opacity="0"/></radialGradient></defs>'+[[158,272],[205,302],[144,462],[220,492],[163,557]].map(a=>lamp(...a)).join('')+bench(282,443)+bench(109,475)+'</svg>';
 }
 function renderTownPlaza(p,season){
- const el=$('townPlaza'),key=season+':'+(sandboxSession?isSandboxNight():'public');if(el.dataset.season===key)return;el.dataset.season=key;
+ const el=$('townPlaza'),key=season+':'+(sandboxSession?isSandboxNight():'public');if(el.dataset.season===key)return;el.dataset.season=key;if(sandboxSession){el.innerHTML=townMasterPlazaArt(p);$('townFurniture').innerHTML='';return;}
  let stones='';for(let i=0;i<20;i++){const a=i*Math.PI/10,x=80+64*Math.cos(a),y=80+64*Math.sin(a);stones+='<path fill="'+(p.snow?'#9bb6c1':'#c1ad7c')+'" d="M'+Math.round(x-3)+' '+Math.round(y-2)+'h6v4h-6z"/>';}
  el.innerHTML='<svg viewBox="0 0 160 160" preserveAspectRatio="none" shape-rendering="crispEdges"><circle cx="80" cy="80" r="77" fill="'+(p.snow?'#849fac':'#9b8860')+'"/><circle cx="80" cy="80" r="74" fill="'+p.road+'"/><circle cx="80" cy="80" r="53" fill="'+(p.snow?'#e6eff0':'#f0dba8')+'"/><circle cx="80" cy="80" r="50" fill="'+p.ground+'"/>'+stones+'</svg>';
  $('townFurniture').innerHTML=townFurnitureArt(p);
@@ -3353,7 +3419,7 @@ function preview_renderTown(){
  $('townSeason').textContent=s.icon+' '+s.name+' · 第 '+day+' 天 · '+(remaining+' 位客人等候');
  $('townSeason').title=seasonBenefitText();
  $('townP').dataset.previewKitchen=String(sandboxSession);
- const scenery=$('townScenery');if(scenery.dataset.season!==s.id){scenery.innerHTML=townScene(p);scenery.dataset.season=s.id;}
+ const scenery=$('townScenery'),mapRect=$('townMap').getBoundingClientRect(),sceneKey=s.id+':master:'+Math.round(mapRect.width)+'x'+Math.round(mapRect.height);if(scenery.dataset.season!==sceneKey){scenery.innerHTML=townScene(p);scenery.dataset.season=sceneKey;}
  [['townArchive','archive','圖鑑館'],['townForge','forge','冶煉廠'],['townShop','shop','商店'],['townTraining','training','訓練所'],['townDecorShop','decor','裝飾行']].forEach(([id,kind,label])=>{
    renderCachedTownHouse(id,kind,label,p,s.id);
  });
@@ -5120,7 +5186,7 @@ function stable_cityObstacleAt(x,y){
  });
 }
 function preview_cityObstacleAt(x,y){
- if(sandboxSession&&x>=220&&x<=360&&y>=235&&y<=390)return true;
+ if(sandboxSession&&townMasterBlocks().some(([x0,y0,x1,y1])=>x>=x0&&x<=x1&&y>=y0&&y<=y1))return true;
  if(!cityState)return false;return cityLayout().some(i=>{const d=DECOR_BY_ID.get(i.id);if(!d||['cat','dog','flowers','fence'].includes(i.id))return false;const px=i.x*3.6,py=i.y*6.2,s=i.s;
   if(i.id==='fountain'||d.art==='pond')return ((x-px)/(d.w*.43*s+6))**2+((y-(py-d.h*.32*s))/(d.h*.32*s+6))**2<1;
   return Math.hypot(x-px,y-py)<Math.min(20,d.w*.2*s+5);
@@ -5201,10 +5267,10 @@ function preview_citySnapshotSVG(items,si,savedHeight){
  const parts=[snapshotNestedSVG(townScene(p),0,0,W,H)];if(isSandboxNight())parts.push(snapshotNestedSVG(nightSkyArt(si),0,0,W,H));
  function decorLayer(z){return items.filter(i=>i.z===z).slice().sort((a,b)=>a.y-b.y).map((i,k)=>{const d=DECOR_BY_ID.get(i.id);if(!d)return '';return '<g transform="translate('+(i.x*3.6)+' '+(i.y*H/100)+') rotate('+i.r+') scale('+(i.fx?-i.s:i.s)+' '+(i.fy?-i.s:i.s)+')">'+snapshotNestedSVG(kitchenSnapshotDecorSVG(decorSVG(i.id,si,'snapshot-'+k+'-'+i.uid),d),-d.w/2,-d.h,d.w,d.h)+'</g>';}).join('');}
  parts.push(decorLayer(0));
- const plaza=$('townPlaza').querySelector('svg');if(plaza)parts.push(snapshotNestedSVG(kitchenSnapshotPlazaSVG(plaza.outerHTML),360*.5222-360*.19,H*(.65-.1097),360*.38,H*.2194));
- const buildings=[['townArchive','archive',0,.26,.37,.27],['townForge','forge',.58,.11,.42,.25],['townShop','shop',-.03,.76,.44,.23],['townTraining','training',.57,.79,.43,.21],['townGreenhouse',null,0,.54,.3,.18],['townDecorShop','decor',.76,.64,.24,.15],...(sandboxSession?[['townKitchen',null,.59,.36,.41,.27]]:[])];
- for(const [id,kind,x,y,w,h]of buildings){const el=$(id),box=el.getBoundingClientRect(),valid=rect.width>100&&box.width>0;let art=kind?townHouse(kind,p):el.querySelector('svg')?.outerHTML||'';parts.push(snapshotNestedSVG(art,valid?(box.left-rect.left)/rect.width*360:x*360,valid?(box.top-rect.top)/rect.height*H:y*H,valid?box.width/rect.width*360:w*360,valid?box.height/rect.height*H:h*H));}
- const sign=townExpeditionSign().match(/<svg[\s\S]*?<\/svg>/)?.[0];if(sign)parts.push(snapshotNestedSVG(sign,360*.02+360*.48*.14,H*(.01+.25*.83),360*.48*.72,H*.048));
+ const plaza=$('townPlaza').querySelector('svg');if(plaza)parts.push(snapshotNestedSVG(kitchenSnapshotPlazaSVG(plaza.outerHTML),360*(188/360-64/360),H*(.65-64/620),128,H*128/620));
+ const buildings=TOWN_MASTER_BUILDINGS;
+ for(const [id,kind,x,y,w,h]of buildings){const el=$(id),box=el.getBoundingClientRect(),valid=rect.width>100&&box.width>0;let art=townMasterBuildingArt(kind,p);parts.push(snapshotNestedSVG(art,valid?(box.left-rect.left)/rect.width*360:x*360,valid?(box.top-rect.top)/rect.height*H:y*H,valid?box.width/rect.width*360:w*360,valid?box.height/rect.height*H:h*H));}
+ const sign=townExpeditionSign().match(/<svg[\s\S]*?<\/svg>/)?.[0];if(sign)parts.push(snapshotNestedSVG(sign,360*(.02+.48*.02),H*(.01+.25*.82),360*.48*.96,360*.48*.96*46/180));
  parts.push(decorLayer(1));
  return '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'"><style>image{image-rendering:pixelated}.town-lamp-glow{opacity:.55}.forge-smoke{opacity:.45}.town-house-sign text{font-family:sans-serif}</style>'+parts.join('')+'</svg>';
 }
