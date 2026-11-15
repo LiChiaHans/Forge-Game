@@ -1156,6 +1156,20 @@ body.workshop-backend #kitchenModal .kitchen-grade-tabs [aria-pressed="true"],bo
 .low-effects .kitchen-ingredient-land>svg{animation:none}
 
 </style>
+<style>
+/* Keep original boxes, overlays and hit areas; only replace their artwork. */
+body.cozy-items .cozy-ore{background-color:transparent!important;background-image:var(--cozy-ore-art)!important;background-position:center!important;background-size:contain!important;background-repeat:no-repeat!important;color:transparent!important;text-shadow:none!important;box-shadow:none!important;border-color:transparent!important;border-radius:0!important;position:relative;image-rendering:pixelated}
+body.cozy-items .cozy-ore::before{content:attr(data-ore-name);position:absolute;left:50%;bottom:0;transform:translateX(-50%);padding:0 3px;border-radius:2px;background:#26312bc9;color:#fff1cb;text-shadow:1px 1px #1b2325;white-space:nowrap;font-size:clamp(9px,2.6vw,12px);font-weight:900;line-height:1.2;z-index:2;pointer-events:none}
+body.cozy-items #q .cozy-ore::before{font-size:10px}
+body.cozy-items [data-cozy-item],body.cozy-items [data-cozy-decor]{overflow:visible}
+.cozy-decor-halo{animation:cozy-lamp-breathe 4.6s ease-in-out infinite;pointer-events:none}
+.cozy-fountain-water{animation:cozy-water-shimmer 2.2s ease-in-out infinite;pointer-events:none}
+@keyframes cozy-lamp-breathe{50%{opacity:.42}}
+@keyframes cozy-water-shimmer{50%{opacity:.35;transform:translateY(.5px)}}
+.low-effects .cozy-decor-halo,.low-effects .cozy-fountain-water{animation:none}
+@media(prefers-reduced-motion:reduce){.cozy-decor-halo,.cozy-fountain-water{animation:none}}
+
+</style>
 </head>
 <body>
 <div id="portraitGuard" hidden role="dialog" aria-modal="true" aria-hidden="true" aria-label="請直向遊玩"><svg viewBox="0 0 40 52" aria-hidden="true" shape-rendering="crispEdges"><path fill="#0c1726" d="M7 0h26v3h3v46h-3v3H7v-3H4V3h3z"/><path fill="#b8a577" d="M8 3h24v46H8z"/><path fill="#293e51" d="M10 8h20v34H10z"/><path fill="#e8d696" d="M16 4h8v2h-8zM17 45h6v2h-6z"/><path fill="#84b6b0" d="M19 14h3v16h-3zM13 21h3v3h-3zM16 18h3v3h-3zM22 18h3v3h-3zM25 21h3v3h-3z"/></svg><b>請直向遊玩</b><p>將手機轉回直向<br>即可繼續遊戲</p></div>
@@ -1672,7 +1686,7 @@ function flyIn(i,t){
   if(!src||!dst)return;
   const a=src.getBoundingClientRect(),b=dst.getBoundingClientRect(),pr=$("play").getBoundingClientRect();
   const el=document.createElement("div");el.className="gh";
-  el.innerHTML=`<div class="q" style="width:100%;height:100%;font-size:13px;background-color:${C[t]}">${NM[t]}</div>`;
+  el.innerHTML=sandboxSession?cozyOreMarkup(t,0,true):`<div class="q" style="width:100%;height:100%;font-size:13px;background-color:${C[t]}">${NM[t]}</div>`;
   el.style.cssText=`left:${a.left-pr.left}px;top:${a.top-pr.top}px;width:${a.width}px;height:${a.height}px`;
   $("fx").appendChild(el);
   /* 只改圓球大小，不用 scale，文字大小全程不變 */
@@ -1935,7 +1949,7 @@ function finishKitchenNight(){if(!sandboxSession||!sandboxNight||!kitchen?.done|
 function kitchenSVG(body){return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" aria-hidden="true">'+body+'</svg>';}
 function kitchenArt(item){
  if(!item)return '';const t=Math.max(0,Math.min(4,item.t||0));if(item.k==='o')return kitchenIngredientArt(t);if(item.k==='m')return kitchenProcessArt(item.s);if(item.k==='w')return kitchenDishArt(item.c,t);
- if(item.k==='p'){const p=kitchenTierPalette(t),food=item.s===0?kitchenRice(t):item.s===1?kitchenMeat(t):kitchenVegetables(t);return kitchenSVG('<path fill="#29373c" d="M8 21h48v32H8z"/><path fill="'+p.rim+'" d="M10 23h44v28H10z"/><path fill="#71563e" d="M13 26h38v21H13z"/>'+food+'<path fill="#dec097" d="M13 48h38v2H13z"/>'+kitchenTierMark(t));}
+ if(sandboxSession&&item.k==='p')return cozyPreparedSVG(item);if(item.k==='p'){const p=kitchenTierPalette(t),food=item.s===0?kitchenRice(t):item.s===1?kitchenMeat(t):kitchenVegetables(t);return kitchenSVG('<path fill="#29373c" d="M8 21h48v32H8z"/><path fill="'+p.rim+'" d="M10 23h44v28H10z"/><path fill="#71563e" d="M13 26h38v21H13z"/>'+food+'<path fill="#dec097" d="M13 48h38v2H13z"/>'+kitchenTierMark(t));}
  if(item.k==='spice'){const p=KITCHEN_SPICES[item.spice],emblem=item.spice==='herb'?'<path fill="#e2ebbc" d="M25 34h7v-6h8v7h-7v9h-5v-6h-3z"/>':item.spice==='spicy'?'<path fill="#fff0bd" d="M27 30h9v4h4v6h-5v4h-9v-5h5v-4h-4z"/>':'<path fill="#9a7956" d="M28 28h8v6h4v10H24V34h4z"/>';return kitchenSVG('<path fill="#26343a" d="M21 4h23v11h-3v5h5v35H18V20h5v-5h-2z"/><path fill="#b28755" d="M23 6h19v7H23z"/><path fill="#e2cf9b" d="M22 17h20v35H22z"/><path fill="'+p.color+'" d="M23 25h18v23H23z"/><path fill="#fff3d1" d="M24 18h4v10h-4z"/>'+emblem);}
  if(item.k==='z')return kitchenSVG('<path fill="#253740" d="M13 21h39v30H13zM21 11h23v5H21zM16 15h5v12h-5zM44 15h5v12h-5z"/><path fill="#759ca7" d="M16 26h33v22H16z"/><path fill="#bfdae0" d="M16 22h33v7H16zM19 30h4v14h-4z"/><path fill="#e2f4e8" d="M25 25h9v9h-9zM36 30h9v9h-9z"/><path fill="#9acee2" d="M26 27h5v3h-5zM37 32h5v3h-5z"/>');
  if(item.k==='f')return kitchenSVG('<path fill="#26343b" d="M38 5h8v8h-5v7h-5v8h-5v7H18v-7h8v-8h6v-8h6zM17 32h20v7h6v14H10V40h7z"/><path fill="#bb9364" d="M39 7h4v5h-5v8h-5v8h-4v-4h2v-6h5v-6h3z"/><path fill="#e6c486" d="M18 34h17v5h5v11H13V40h5z"/><path fill="#ac814f" d="M17 39h3v10h-3zM25 38h3v12h-3zM33 40h3v10h-3z"/>');
@@ -2060,78 +2074,14 @@ function nightDecorationSVG(d,si,uid){
 
 function kitchenTierPalette(t){return [{rim:'#b58b60',light:'#e4c398',dark:'#79583f',plate:'#e4d8bb'},{rim:'#619f8f',light:'#c0ddbb',dark:'#386960',plate:'#e7eee0'},{rim:'#73a9d0',light:'#d2e9f0',dark:'#3f637f',plate:'#eef3e6'},{rim:'#d4ab4f',light:'#ffedb0',dark:'#8b6634',plate:'#fff2d6'},{rim:'#b493d3',light:'#f6dfef',dark:'#5c4a83',plate:'#f3e9f6'}][t];}
 function kitchenTierMark(t){const p=kitchenTierPalette(t);return '<g class="kitchen-tier-mark" data-grade="'+t+'"><path fill="#202d35" d="M2 2h14v14H2z"/><path fill="'+p.rim+'" d="M3 3h12v12H3z"/><path fill="'+p.light+'" d="M4 4h10v2H4z"/><text x="9" y="13" fill="#172a32" font-size="10" font-family="monospace" font-weight="bold" text-anchor="middle">'+(t+1)+'</text></g>';}
-function kitchenIngredientArt(t){
- const p=kitchenTierPalette(t),dark='#293237';let s='';
- // Each grade has a different silhouette, closure and ingredient arrangement.
- if(t===0)s='<path fill="'+dark+'" d="M13 23h38v31H13zM20 16h24v10H20z"/><path fill="#b58b60" d="M15 26h34v25H15zM21 18h22v10H21z"/><path fill="#e3c597" d="M18 29h28v3H18zM19 33h3v15h-3z"/><path fill="#7f5d41" d="M16 46h32v6H16zM24 22h16v4H24z"/><path fill="#e7d6a6" d="M23 35h18v9H23z"/><path fill="#b0864b" d="M27 37h10v2H27zM31 34h2v11h-2z"/>';
- if(t===1)s='<path fill="'+dark+'" d="M14 27h38v26H14zM19 18h27v4H19zM16 22h4v10h-4zM45 22h4v10h-4z"/><path fill="#b88a4e" d="M16 29h34v22H16z"/><path fill="#e0bc7d" d="M16 30h34v4H16zM18 39h30v3H18zM20 47h26v3H20zM23 32h3v18h-3zM36 32h3v18h-3z"/><path fill="#467d50" d="M16 24h5v-7h6v-5h5v12h-6v8H16zM33 20h5v-8h6v5h6v15H33z"/><path fill="#91bb62" d="M19 22h5v-6h5v10H19zM37 21h5v-5h3v11h-8z"/><path fill="#e29a4e" d="M28 25h7v14h-4v5h-3z"/>';
- if(t===2)s='<path fill="'+dark+'" d="M10 22h44v32H10z"/><path fill="#95704a" d="M12 26h40v26H12z"/><path fill="#ceaa71" d="M12 25h40v5H12zM12 46h40v5H12zM15 29h5v18h-5zM43 29h5v18h-5z"/><path fill="#536c7b" d="M11 23h6v5h-6zM47 23h6v5h-6zM12 48h5v5h-5zM47 48h5v5h-5z"/><path fill="#f2e3b6" d="M22 29h20v16H22z"/><path fill="#9c4f40" d="M23 22h17v17H23z"/><path fill="#d57e62" d="M25 23h13v12H25z"/><path fill="#f0c39b" d="M26 24h4v8h-4zM33 25h3v7h-3z"/><path fill="#629552" d="M20 17h5v9h-5zM38 16h5v11h-5z"/>';
- if(t===3)s='<path fill="'+dark+'" d="M10 24h44v30H10zM15 15h34v11H15z"/><path fill="#e5e8dc" d="M12 27h40v23H12zM17 17h30v9H17z"/><path fill="#80b4bf" d="M13 37h38v11H13zM17 18h30v3H17z"/><path fill="#d2b166" d="M13 28h4v23h-4zM47 28h4v23h-4zM12 48h40v4H12z"/><path fill="#527d8b" d="M19 29h19v6H19zM38 27h5v10h-5z"/><path fill="#c5dfda" d="M21 29h14v2H21z"/><path fill="#283c48" d="M22 31h2v2h-2z"/><path fill="#e69a76" d="M28 37h14v8H28z"/><path fill="#fbd0a0" d="M30 38h2v6h-2zM35 38h2v6h-2zM40 38h2v6h-2z"/><path fill="#eff4e1" d="M17 39h7v7h-7z"/>';
- if(t===4)s='<path fill="'+dark+'" d="M9 25h46v30H9zM15 17h34v10H15zM20 12h24v5H20z"/><path fill="#5c4a75" d="M11 28h42v24H11z"/><path fill="#b69cc1" d="M13 31h38v16H13z"/><path fill="#dfbf73" d="M10 27h44v4H10zM10 49h44v4H10zM13 28h4v24h-4zM47 28h4v24h-4zM25 49v-5h14v5z"/><path fill="#f4e8bf" d="M20 20h8v17h-8zM35 18h8v19h-8z"/><path fill="#9d6550" d="M17 21h14v6H17zM32 18h14v7H32z"/><path fill="#e4b965" d="M20 22h7v2h-7zM35 19h7v2h-7z"/><path fill="#6f9f65" d="M25 31h13v8H25z"/><path fill="#d77853" d="M25 36h14v7H25z"/><path fill="#f4dc85" d="M28 38h3v3h-3zM34 38h3v3h-3z"/><path fill="#fff2bb" d="M49 11h2v6h-2zM47 13h6v2h-6z"/>';
- return kitchenSVG('<ellipse fill="#101b24" opacity=".45" cx="32" cy="55" rx="23" ry="4"/>'+s+kitchenTierMark(t));
-}
+function kitchenIngredientArt(t){return sandboxSession?cozySpriteSVG('ingredient-'+t,64,kitchenTierMark(t),'data-ingredient-grade="'+t+'"'):cozyLegacy_kitchenIngredientArt(t);}
 function kitchenRice(t){let s='<path fill="#cbb98a" d="M18 34h29v11H18zM22 28h21v7H22z"/><path fill="#f4e6ba" d="M19 33h27v9H19zM23 27h18v9H23z"/><path fill="#fff6d8" d="M23 30h4v2h-4zM30 28h4v2h-4zM37 31h4v2h-4zM21 36h3v2h-3zM29 34h3v2h-3zM37 37h4v2h-4z"/>';
  if(t>=1)s+='<path fill="#b5a36f" d="M25 39h2v2h-2zM40 34h2v2h-2z"/>';if(t>=2)s+='<path fill="#57935a" d="M28 29h2v2h-2zM34 36h2v2h-2zM23 35h2v2h-2z"/>';return s;}
 function kitchenMeat(t){let s='<path fill="#693e31" d="M17 29h6v-4h20v4h5v14h-7v4H21v-4h-4z"/><path fill="#b86d43" d="M20 29h22v12H20zM24 26h16v4H24z"/><path fill="#de9d67" d="M22 29h5v3h-5zM28 27h9v2h-9zM40 31h3v7h-3z"/><path fill="#653b2c" d="M24 33h16v2H24zM25 39h13v2H25z"/>';
  if(t>=1)s+='<path fill="#e7b278" d="M28 30h2v11h-2zM34 30h2v11h-2z"/>';if(t>=2)s+='<path fill="#f2d298" d="M34 27h6v4h-6z"/><path fill="#fff0b6" d="M35 27h3v2h-3z"/>';if(t>=3)s+='<path fill="#965039" d="M18 43h6v2h-6zM42 43h7v2h-7z"/>';return s;}
 function kitchenVegetables(t){let s='<path fill="#41673e" d="M13 30h10v-5h9v8h-8v11H13zM39 30h12v15H39z"/><path fill="#83b561" d="M14 30h8v-3h7v5h-7v7h-8zM41 31h8v5h-8z"/><path fill="#bdce79" d="M17 32h3v3h-3zM42 33h3v2h-3z"/><path fill="#cf7e3e" d="M27 37h5v9h-5zM44 40h4v6h-4z"/>';
  if(t>=1)s+='<path fill="#d87d58" d="M33 34h6v6h-6z"/><path fill="#f2bc77" d="M35 35h2v2h-2z"/>';if(t>=2)s+='<path fill="#edcf76" d="M23 32h4v3h-4zM36 42h4v3h-4z"/>';return s;}
-function kitchenDishArt(c,t){
- const p=kitchenTierPalette(t),dark='#26343d';let ware='',food='';
- // Wood, glazed earthenware, porcelain, gold service and a cut-crystal banquet tray.
- if(t===0)ware='<path fill="'+dark+'" d="M7 39h50v13H7zM13 35h38v5H13z"/><path fill="'+p.rim+'" d="M9 39h46v10H9z"/><path fill="'+p.plate+'" d="M13 36h38v10H13z"/><path fill="'+p.dark+'" d="M13 49h38v3H13z"/>';
- if(t===1)ware='<path fill="'+dark+'" d="M6 37h52v12h-5v5H11v-5H6z"/><path fill="'+p.rim+'" d="M8 38h48v10h-6v4H14v-4H8z"/><path fill="'+p.plate+'" d="M12 35h40v9H12z"/><path fill="'+p.light+'" d="M13 46h38v2H13z"/>';
- if(t===2)ware='<path fill="'+dark+'" d="M5 36h54v13h-5v5H10v-5H5z"/><path fill="'+p.rim+'" d="M7 37h50v10h-5v5H12v-5H7z"/><path fill="'+p.plate+'" d="M10 34h44v11H10z"/><path fill="'+p.light+'" d="M12 47h40v3H12z"/><path fill="'+p.dark+'" d="M13 48h3v2h-3zM23 48h3v2h-3zM34 48h3v2h-3zM45 48h3v2h-3z"/>';
- if(t===3)ware='<path fill="'+dark+'" d="M4 34h56v17h-6v4H10v-4H4z"/><path fill="#a77d3f" d="M6 37h52v12h-6v4H12v-4H6z"/><path fill="'+p.light+'" d="M7 35h50v4H7zM12 49h40v2H12z"/><path fill="'+p.plate+'" d="M11 36h42v10H11z"/><path fill="#b78a43" d="M9 39h3v5H9zM52 39h3v5h-3z"/>';
- if(t===4)ware='<path fill="'+dark+'" d="M2 34h60v15h-5v7H7v-7H2z"/><path fill="#80719f" d="M4 36h56v11h-5v7H9v-7H4z"/><path fill="#e9c981" d="M5 34h54v3H5zM9 51h46v3H9z"/><path fill="'+p.plate+'" d="M9 35h46v10H9z"/><path fill="#d5bddc" d="M11 46h5v3h-5zM22 46h5v3h-5zM34 46h5v3h-5zM47 46h5v3h-5z"/><path fill="#fff1c6" d="M6 38h2v6H6zM56 38h2v6h-2z"/>';
- if(c===0){food='<path fill="#bdb58d" d="M11 42v-6h3v-7h4v-6h5v6h4v7h3v6zM32 42v-7h3v-7h4v-5h5v7h4v6h4v6z"/><path fill="#fff0ca" d="M13 40v-5h3v-7h4v-4h2v6h4v10zM34 40v-5h3v-6h4v-5h2v6h4v10z"/><path fill="#254e40" d="M17 35h8v9h-8zM38 35h8v9h-8z"/><path fill="#d6c493" d="M18 31h2v2h-2zM40 30h2v2h-2z"/>';if(t>=1)food+='<path fill="#d97d61" d="M21 29h4v3h-4zM44 29h4v3h-4z"/>';if(t>=3)food+='<path fill="#cfa755" d="M12 43h3v2h-3zM48 42h3v2h-3z"/>';}
- else if(c===1)food=kitchenRice(t)+'<path fill="#78442f" d="M15 36h15v9H15zM34 30h13v9H34z"/><path fill="#b67544" d="M17 36h6v3h-6zM24 39h4v4h-4zM36 31h8v4h-8z"/><path fill="#dbad68" d="M18 37h2v2h-2zM38 32h3v2h-3z"/>';
- else if(c===2)food=kitchenRice(t)+'<path fill="#699453" d="M15 33h5v6h-5zM34 29h6v5h-6zM39 38h5v4h-5z"/><path fill="#df9d4f" d="M23 35h4v4h-4zM31 40h4v4h-4z"/><path fill="#c7a05d" d="M29 32h3v3h-3z"/>';
- else if(c===3)food=kitchenRice(t)+'<g transform="translate(0 -2)">'+kitchenMeat(t)+'</g>';
- else if(c===4){ware='<path fill="#23333a" d="M5 17h54v37H5z"/><path fill="'+p.dark+'" d="M7 19h50v33H7z"/><path fill="'+p.rim+'" d="M9 21h46v29H9z"/><path fill="'+p.plate+'" d="M11 23h17v24H11zM31 23h21v11H31zM31 37h21v10H31z"/><path fill="'+p.light+'" d="M8 19h48v2H8zM8 50h48v2H8z"/>';food='<path fill="#e7d8ac" d="M13 27h13v17H13z"/><path fill="#fff1cc" d="M15 25h10v17H15z"/><path fill="#d4bf8a" d="M17 29h3v2h-3zM22 35h2v2h-2z"/><path fill="#7e4935" d="M33 25h16v7H33z"/><path fill="#d1975f" d="M34 25h3v5h-3zM40 25h3v5h-3zM46 25h3v5h-3z"/><path fill="#638d4b" d="M33 39h16v6H33z"/><path fill="#d78c4d" d="M39 39h4v5h-4z"/>';if(t>=2)food+='<path fill="#d77859" d="M19 27h4v4h-4z"/><path fill="#acc578" d="M34 39h3v3h-3z"/>';if(t>=3)food+='<path fill="#f4d98b" d="M50 23h2v4h-2zM49 47h3v2h-3z"/>';}
- else if(c===5)food=kitchenRice(t)+kitchenVegetables(t);
- else if(c===6)food=kitchenMeat(t)+'<path fill="#72914f" d="M10 37h6v7h-6zM49 35h5v10h-5z"/><path fill="#e1be60" d="M48 29h7v5h-7z"/>';
- else if(c===7){ware+='<path fill="#273b40" d="M11 26h42v21H11zM5 29h8v5H5zM51 29h8v5h-8z"/><path fill="#6b8583" d="M13 27h38v3H13z"/><path fill="#9f6842" d="M15 30h34v13H15z"/>';food='<path fill="#bc784c" d="M19 31h9v7h-9zM35 35h10v7H35z"/><path fill="#e5b275" d="M20 31h4v2h-4zM37 35h4v2h-4z"/><path fill="#80a45b" d="M31 30h6v6h-6zM17 39h6v5h-6z"/><path fill="#dda05a" d="M27 38h5v6h-5z"/>';}
- else if(c===8){ware+='<path fill="'+p.dark+'" d="M12 26h40v20h-6v5H18v-5h-6z"/><path fill="'+p.rim+'" d="M14 28h36v15h-5v5H19v-5h-5z"/><path fill="#efcf8d" d="M15 26h34v13H15z"/><path fill="#f9e9ba" d="M17 27h30v8H17z"/>';food='<path fill="#729855" d="M21 29h4v3h-4zM35 32h4v3h-4z"/><path fill="#d59852" d="M29 29h4v3h-4zM23 34h3v2h-3z"/><path fill="#fff2d1" d="M38 28h4v2h-4z"/>';}
- else food=kitchenVegetables(t)+'<path fill="#cf6651" d="M23 28h7v6h-7zM33 40h7v5h-7z"/><path fill="#f3ce78" d="M27 35h5v4h-5z"/>';
- let finish='';
- // Recipe-specific upgrades retain the dish silhouette while making higher service visibly richer.
- if(t>=2){
-  if(c===0)finish+='<path fill="#d87b48" d="M17 25h6v3h-6zM39 25h6v3h-6z"/><path fill="#f5c282" d="M18 25h2v2h-2zM42 25h2v2h-2z"/>';
-  if(c===1)finish+='<path fill="#527d43" d="M14 30h3v-4h4v9h-7z"/><path fill="#e7b26b" d="M36 39h9v3h-9z"/>';
-  if(c===2)finish+='<path fill="#6d4a32" d="M19 27h7v4h-7zM39 32h8v3h-8z"/><path fill="#d1af77" d="M21 31h3v4h-3zM41 35h3v4h-3z"/>';
-  if(c===3)finish+='<path fill="#ffefcb" d="M43 31h8v10h-8z"/><path fill="#e6ad4c" d="M45 33h5v5h-5z"/>';
-  if(c===4)finish+='<path fill="#6a9b59" d="M23 23h3v4h-3z"/><path fill="#dfb45c" d="M34 38h3v3h-3zM44 40h3v3h-3z"/>';
-  if(c===5)finish+='<path fill="#a26040" d="M33 26h8v4h-8z"/><path fill="#f2d3a1" d="M35 30h3v6h-3z"/>';
-  if(c===6)finish+='<path fill="#5b382e" d="M32 29h2v13h-2zM38 31h2v11h-2z"/><path fill="#e2a170" d="M30 29h2v11h-2zM36 30h2v12h-2z"/>';
-  if(c===7)finish+='<path fill="#4c7b48" d="M27 27h7v6h-7z"/><path fill="#e3ad65" d="M40 29h6v5h-6zM19 39h5v3h-5z"/>';
-  if(c===8)finish+='<path fill="#f7eccb" d="M25 30h12v2H25zM23 32h3v3h-3zM35 33h3v3h-3zM27 35h8v2h-8z"/>';
-  if(c===9)finish+='<path fill="#c6dc91" d="M34 24h5v8h-5zM42 28h5v7h-5z"/><path fill="#faf0ca" d="M19 37h4v4h-4zM37 35h4v4h-4z"/>';
- }
- if(t>=3){
-  if(c===0)finish+='<path fill="#fff0c8" d="M28 39v-6h3v-6h3v6h3v6z"/><path fill="#2f5542" d="M30 35h5v7h-5z"/>';
-  if(c===1||c===2||c===5)finish+='<path fill="#e9bb63" d="M44 37h7v6h-7z"/><path fill="#fff0bc" d="M46 38h3v3h-3z"/>';
-  if(c===3||c===6)finish+='<path fill="#53854a" d="M17 25h5v-5h3v10h-8z"/><path fill="#b9ce7c" d="M18 23h3v3h-3z"/>';
-  if(c===4)finish+='<path fill="#b96849" d="M33 29h16v2H33z"/><path fill="#f1c382" d="M35 25h2v3h-2zM42 25h2v3h-2z"/>';
-  if(c===7)finish+='<path fill="#e3d5b2" d="M28 32h6v4h-6z"/><path fill="#a46f43" d="M29 31h5v2h-5z"/>';
-  if(c===8)finish+='<path fill="#668f52" d="M29 25h2v7h-2zM31 27h3v2h-3z"/>';
-  if(c===9)finish+='<path fill="#b87c45" d="M28 23h7v4h-7z"/><path fill="#edd2a2" d="M30 27h3v6h-3z"/>';
- }
- if(t===4){
-  if(c===0)finish+='<path fill="#bd674c" d="M16 26h10v3H16zM37 26h11v3H37z"/><path fill="#f3b571" d="M17 25h2v2h-2zM22 25h2v2h-2zM39 25h2v2h-2zM44 25h2v2h-2z"/>';
-  if(c===1||c===3||c===6)finish+='<path fill="#73412e" d="M24 32h15v2H24zM28 37h15v2H28z"/><path fill="#efbc7b" d="M24 31h6v1h-6zM33 36h7v1h-7z"/><path fill="#eed886" d="M33 26h4v3h-4z"/>';
-  if(c===2||c===5||c===9)finish+='<path fill="#65974e" d="M29 24h4v-5h3v10h-7z"/><path fill="#d9e7ad" d="M30 21h2v4h-2z"/><path fill="#f6e4b6" d="M23 39h3v3h-3zM38 38h3v3h-3z"/>';
-  if(c===4)finish+='<path fill="#a05239" d="M33 38h6v6h-6z"/><path fill="#f3d79e" d="M34 38h3v2h-3z"/><path fill="#f0c765" d="M18 30h4v2h-4z"/>';
-  if(c===7)finish+='<path fill="#e4d7b2" d="M17 28h6v5h-6zM37 37h6v4h-6z"/><path fill="#875f3d" d="M18 27h5v2h-5z"/><path fill="#cbd99c" d="M31 26h3v3h-3z"/>';
-  if(c===8)finish+='<path fill="#fff4d8" d="M20 28h3v2h-3zM39 31h3v2h-3zM28 34h3v2h-3z"/><path fill="#c89558" d="M45 34h6v7h-6z"/><path fill="#f0d29b" d="M46 34h4v2h-4z"/>';
- }
- if(t>=1)finish+='<path fill="#4e814b" d="M13 43h3v-4h2v4h3v2h-8z"/>';
- if(t>=2)finish+='<path fill="#e4c06b" d="M45 43h7v2h-7z"/><path fill="#a36a43" d="M46 45h6v2h-6z"/>';
- if(t>=3)finish+='<path fill="#f2e2ad" d="M27 23h2v3h-2zM33 25h2v2h-2zM42 28h2v2h-2z"/><path fill="#e49e5c" d="M7 42h3v4H7z"/>';
- if(t===4)finish+='<path fill="#86558e" d="M49 25h4v-4h3v4h4v3h-4v4h-3v-4h-4z"/><path fill="#ffe5a3" d="M53 25h3v3h-3z"/><path fill="#f0d074" d="M31 23h3v2h-3zM39 26h2v2h-2z"/><path fill="#fff6cf" d="M55 12h2v6h-2zM53 14h6v2h-6z"/>';
- const steam=t>=2&&c!==9?'<g fill="#ece4ce" opacity=".38"><path d="M25 21v-5h2v-5h2v5h-2v5zM36 19v-5h2v-5h2v5h-2v5z"/></g>':'';
- return kitchenSVG('<g data-dish="'+c+'" data-grade="'+t+'"><ellipse fill="#101d28" opacity=".4" cx="32" cy="55" rx="26" ry="4"/>'+ware+food+finish+steam+kitchenTierMark(t)+'</g>');
-}
+function kitchenDishArt(c,t){return sandboxSession?cozySpriteSVG('dish-'+c+'-'+t,64,kitchenTierMark(t),'data-dish="'+c+'" data-grade="'+t+'"'):cozyLegacy_kitchenDishArt(c,t);}
 const KITCHEN_TOOL_INFO={
  z:{name:'冰水桶',price:500,text:'放到棋盤任意格，全盤爐火餘熱立即歸零；不會清除物品。'},
  f:{name:'清潔工具',price:200,text:'清除指定格的一包食材或一份備料；不能清除完成料理。'},
@@ -2309,7 +2259,7 @@ async function prepareGeminiSnapshot(si){
 }
 const WORKSHOP_ART={"forge":"assets/interiors/forge.4296ba06a3b2.webp","kitchen":"assets/interiors/kitchen.957bd2e9fd2b.webp"};
 function syncWorkshopLook(){
- const enabled=sandboxSession&&day>0,app=$('app'),screen=$('kitchenP');
+ syncCozyItemLook();const enabled=sandboxSession&&day>0,app=$('app'),screen=$('kitchenP');
  app.dataset.workshop=enabled?'forge':'';screen.dataset.workshop=enabled?'kitchen':'';document.body.classList.toggle('workshop-backend',enabled);
  if(enabled){if(app.dataset.wallArt!=='forge17'){app.style.setProperty('--workshop-wall','url("'+WORKSHOP_ART.forge+'")');app.dataset.wallArt='forge17';}if(screen.dataset.wallArt!=='kitchen17'){screen.style.setProperty('--workshop-wall','url("'+WORKSHOP_ART.kitchen+'")');screen.dataset.wallArt='kitchen17';}}
  else{app.style.setProperty('--workshop-wall','none');screen.style.setProperty('--workshop-wall','none');app.dataset.wallArt='';screen.dataset.wallArt='';}
@@ -2343,6 +2293,102 @@ function flyKitchenIngredient(i,launch){
  if(!node.animate){finish();return false;}
  entry.animation=node.animate([{width:a.width+'px',height:a.height+'px',transform:'translate(0,0) rotate(-6deg)',opacity:.9},{width:Math.max(size,a.width)*1.08+'px',height:Math.max(size,a.height)*1.08+'px',transform:'translate('+dx*.5+'px,'+(dy*.5-lift)+'px) rotate(5deg)',opacity:1,offset:.5},{width:size+'px',height:size+'px',transform:'translate('+dx+'px,'+dy+'px) rotate(0deg)',opacity:1}],{duration:Math.min(420,280+Math.hypot(dx,dy)*.18),easing:'cubic-bezier(.22,.65,.38,1)',fill:'forwards'});
  entry.animation.onfinish=()=>finish(true);entry.animation.oncancel=()=>finish();return true;
+}
+const COZY_ITEM_ART={"ore-0":"assets/items/ore-0.cca4c91fe673.webp","ore-1":"assets/items/ore-1.5edbbcf9003b.webp","ore-2":"assets/items/ore-2.92997a428a49.webp","ore-3":"assets/items/ore-3.7415628f0a64.webp","ore-4":"assets/items/ore-4.4a50f81b96a1.webp","ingredient-0":"assets/items/ingredient-0.10dcd7936bb9.webp","ingredient-1":"assets/items/ingredient-1.b772f4bd2b1f.webp","ingredient-2":"assets/items/ingredient-2.96fa05ced1ba.webp","ingredient-3":"assets/items/ingredient-3.542ceba53b97.webp","ingredient-4":"assets/items/ingredient-4.b2524b412a65.webp","weapon-0-0":"assets/items/weapon-0-0.7ddb98af2e8f.webp","weapon-1-0":"assets/items/weapon-1-0.182baed499ca.webp","weapon-2-0":"assets/items/weapon-2-0.4305d94b8fa0.webp","weapon-3-0":"assets/items/weapon-3-0.d9eb3fee6652.webp","weapon-4-0":"assets/items/weapon-4-0.a8d9f2e8dde0.webp","weapon-0-1":"assets/items/weapon-0-1.94d74b6a137b.webp","weapon-1-1":"assets/items/weapon-1-1.c43ffab2e361.webp","weapon-2-1":"assets/items/weapon-2-1.8f5c3fccc7d2.webp","weapon-3-1":"assets/items/weapon-3-1.d7be690a9732.webp","weapon-4-1":"assets/items/weapon-4-1.712686279290.webp","weapon-0-2":"assets/items/weapon-0-2.19de4b67ee08.webp","weapon-1-2":"assets/items/weapon-1-2.fcf0bf5c0044.webp","weapon-2-2":"assets/items/weapon-2-2.b44c13d2e868.webp","weapon-3-2":"assets/items/weapon-3-2.4626e70712d5.webp","weapon-4-2":"assets/items/weapon-4-2.3fa44438e12e.webp","weapon-0-3":"assets/items/weapon-0-3.fd556bea4ef0.webp","weapon-1-3":"assets/items/weapon-1-3.6b459013dd3e.webp","weapon-2-3":"assets/items/weapon-2-3.ba2004e17850.webp","weapon-3-3":"assets/items/weapon-3-3.e03005c7a59c.webp","weapon-4-3":"assets/items/weapon-4-3.8c11f042118d.webp","weapon-0-4":"assets/items/weapon-0-4.4759ae1b713c.webp","weapon-1-4":"assets/items/weapon-1-4.2e9b2ddb9c9a.webp","weapon-2-4":"assets/items/weapon-2-4.f3b6b693ca3e.webp","weapon-3-4":"assets/items/weapon-3-4.09e33682c81d.webp","weapon-4-4":"assets/items/weapon-4-4.22786aa00616.webp","weapon-5-0":"assets/items/weapon-5-0.0ee357e9ba26.webp","weapon-6-0":"assets/items/weapon-6-0.312504d74730.webp","weapon-7-0":"assets/items/weapon-7-0.9c6e8b8d05bf.webp","weapon-8-0":"assets/items/weapon-8-0.56a1af24081b.webp","weapon-9-0":"assets/items/weapon-9-0.06f693fd259a.webp","weapon-5-1":"assets/items/weapon-5-1.a4d13eadc07e.webp","weapon-6-1":"assets/items/weapon-6-1.0bf12e113188.webp","weapon-7-1":"assets/items/weapon-7-1.76115b660619.webp","weapon-8-1":"assets/items/weapon-8-1.56606796056a.webp","weapon-9-1":"assets/items/weapon-9-1.1c3a00516de8.webp","weapon-5-2":"assets/items/weapon-5-2.bbcffc441eb7.webp","weapon-6-2":"assets/items/weapon-6-2.53ea761b82cb.webp","weapon-7-2":"assets/items/weapon-7-2.e18dd2220ddd.webp","weapon-8-2":"assets/items/weapon-8-2.7cf41e15dc3e.webp","weapon-9-2":"assets/items/weapon-9-2.b50921962091.webp","weapon-5-3":"assets/items/weapon-5-3.813635e3dff3.webp","weapon-6-3":"assets/items/weapon-6-3.2354444bf4dc.webp","weapon-7-3":"assets/items/weapon-7-3.599e4c5ce1fd.webp","weapon-8-3":"assets/items/weapon-8-3.5255b5cf776e.webp","weapon-9-3":"assets/items/weapon-9-3.c5602bd7764d.webp","weapon-5-4":"assets/items/weapon-5-4.12b09c6e0584.webp","weapon-6-4":"assets/items/weapon-6-4.70ff82c0e244.webp","weapon-7-4":"assets/items/weapon-7-4.93238073256d.webp","weapon-8-4":"assets/items/weapon-8-4.56f754dd3ff1.webp","weapon-9-4":"assets/items/weapon-9-4.402e9ac401f2.webp","legend-0":"assets/items/legend-0.cbf4e7f6f846.webp","legend-1":"assets/items/legend-1.c1d54f24582f.webp","legend-2":"assets/items/legend-2.d091f0c4442e.webp","legend-3":"assets/items/legend-3.c454b9e82671.webp","legend-4":"assets/items/legend-4.8f826278775f.webp","legend-5":"assets/items/legend-5.245802160b40.webp","legend-6":"assets/items/legend-6.8a4bf13b6192.webp","legend-7":"assets/items/legend-7.833367f9ddf2.webp","legend-8":"assets/items/legend-8.3a2f650ccc2c.webp","legend-9":"assets/items/legend-9.c50d1d416921.webp","legend-10":"assets/items/legend-10.d0819761da3d.webp","legend-11":"assets/items/legend-11.6b7763a52148.webp","legend-12":"assets/items/legend-12.677cbd9ed760.webp","legend-13":"assets/items/legend-13.76befd9e52e7.webp","legend-14":"assets/items/legend-14.e3841ef2573e.webp","legend-15":"assets/items/legend-15.c5cdb7fbf832.webp","legend-16":"assets/items/legend-16.9610f0cd656e.webp","legend-17":"assets/items/legend-17.9847939ae6e6.webp","legend-18":"assets/items/legend-18.143154426d44.webp","legend-19":"assets/items/legend-19.bdde58b9d027.webp","dish-0-0":"assets/items/dish-0-0.67ce14c2672f.webp","dish-1-0":"assets/items/dish-1-0.790ed5ea4837.webp","dish-2-0":"assets/items/dish-2-0.8d552e6690fa.webp","dish-3-0":"assets/items/dish-3-0.2a948891736c.webp","dish-4-0":"assets/items/dish-4-0.8d7b2a883af0.webp","dish-0-1":"assets/items/dish-0-1.dd9f9c6d893c.webp","dish-1-1":"assets/items/dish-1-1.41618d9ea795.webp","dish-2-1":"assets/items/dish-2-1.a7952feffa82.webp","dish-3-1":"assets/items/dish-3-1.ebbc51b97619.webp","dish-4-1":"assets/items/dish-4-1.326c1bf5003a.webp","dish-0-2":"assets/items/dish-0-2.a27c10753153.webp","dish-1-2":"assets/items/dish-1-2.f2251dbc8256.webp","dish-2-2":"assets/items/dish-2-2.a63ea058df09.webp","dish-3-2":"assets/items/dish-3-2.9ff9a69a3f02.webp","dish-4-2":"assets/items/dish-4-2.00ed022f293a.webp","dish-0-3":"assets/items/dish-0-3.7e07e64f200f.webp","dish-1-3":"assets/items/dish-1-3.534ceba65490.webp","dish-2-3":"assets/items/dish-2-3.2f54e8d69920.webp","dish-3-3":"assets/items/dish-3-3.8daa3043442f.webp","dish-4-3":"assets/items/dish-4-3.715d75a596cb.webp","dish-0-4":"assets/items/dish-0-4.ed8a175eed0b.webp","dish-1-4":"assets/items/dish-1-4.664dbbe88faf.webp","dish-2-4":"assets/items/dish-2-4.a6215ddb7b89.webp","dish-3-4":"assets/items/dish-3-4.cb69b3b60875.webp","dish-4-4":"assets/items/dish-4-4.35df5ef986e8.webp","dish-5-0":"assets/items/dish-5-0.c08213559958.webp","dish-6-0":"assets/items/dish-6-0.1d755e192355.webp","dish-7-0":"assets/items/dish-7-0.dde539f84101.webp","dish-8-0":"assets/items/dish-8-0.d868a5cb3821.webp","dish-9-0":"assets/items/dish-9-0.d4953b6e3bf7.webp","dish-5-1":"assets/items/dish-5-1.bc8170bddd5d.webp","dish-6-1":"assets/items/dish-6-1.d190b84e5c47.webp","dish-7-1":"assets/items/dish-7-1.0b6abce76bc2.webp","dish-8-1":"assets/items/dish-8-1.9772ea8a9c6c.webp","dish-9-1":"assets/items/dish-9-1.5efff2e9ea87.webp","dish-5-2":"assets/items/dish-5-2.bdae9d1b8b34.webp","dish-6-2":"assets/items/dish-6-2.95317360d249.webp","dish-7-2":"assets/items/dish-7-2.226cb4378d9e.webp","dish-8-2":"assets/items/dish-8-2.aed3e77a6ead.webp","dish-9-2":"assets/items/dish-9-2.c86a42a07e48.webp","dish-5-3":"assets/items/dish-5-3.40e5467d790b.webp","dish-6-3":"assets/items/dish-6-3.e65d15e77309.webp","dish-7-3":"assets/items/dish-7-3.6ffccc30fb42.webp","dish-8-3":"assets/items/dish-8-3.ca702ff54615.webp","dish-9-3":"assets/items/dish-9-3.54919e15dd8d.webp","dish-5-4":"assets/items/dish-5-4.bb8f0a2f9bd3.webp","dish-6-4":"assets/items/dish-6-4.c6b34c0a2446.webp","dish-7-4":"assets/items/dish-7-4.dada1d5b0b1e.webp","dish-8-4":"assets/items/dish-8-4.406fb51811e9.webp","dish-9-4":"assets/items/dish-9-4.5af75c7c01ec.webp","decor-tree-0":"assets/items/decor-tree-0.c8d4217dbedd.webp","decor-tree-1":"assets/items/decor-tree-1.28f612fd9189.webp","decor-tree-2":"assets/items/decor-tree-2.d61296767243.webp","decor-tree-3":"assets/items/decor-tree-3.3c165af605a6.webp","decor-lamp-0":"assets/items/decor-lamp-0.734ff56cd510.webp","decor-lamp-1":"assets/items/decor-lamp-1.aadae233b9fd.webp","decor-lamp-2":"assets/items/decor-lamp-2.3b1caeb2df17.webp","decor-lamp-3":"assets/items/decor-lamp-3.893e5215fdaa.webp","decor-bench":"assets/items/decor-bench.54c348f9e7f1.webp","decor-fountain":"assets/items/decor-fountain.572e29608da4.webp","decor-flowers":"assets/items/decor-flowers.66884c2da27b.webp","decor-fence":"assets/items/decor-fence.4ece39e794e1.webp","decor-cat":"assets/items/decor-cat.77fb3ede9847.webp","decor-dog":"assets/items/decor-dog.b96ea012b622.webp","decor-flowers-2":"assets/items/decor-flowers-2.dc6ad6fb3258.webp","decor-flowers-3":"assets/items/decor-flowers-3.2cae9a009c2d.webp","decor-sp-cherry":"assets/items/decor-sp-cherry.924ac04311ba.webp","decor-sp-tulips":"assets/items/decor-sp-tulips.8a479ed2f15b.webp","decor-sp-daisy":"assets/items/decor-sp-daisy.3c44c93146bb.webp","decor-sp-arch":"assets/items/decor-sp-arch.bfc984d29f50.webp","decor-sp-rabbit":"assets/items/decor-sp-rabbit.0dda61f53dab.webp","decor-sp-picnic":"assets/items/decor-sp-picnic.27c8038078ef.webp","decor-sp-windmill":"assets/items/decor-sp-windmill.f78ebaf5545d.webp","decor-sp-birdhouse":"assets/items/decor-sp-birdhouse.88844c0d89e1.webp","decor-sp-clover":"assets/items/decor-sp-clover.f122916ac4c5.webp","decor-sp-lantern":"assets/items/decor-sp-lantern.967f0d7193fd.webp","decor-night-sp-jar":"assets/items/decor-night-sp-jar.8cb4719d70a9.webp","decor-night-sp-petal":"assets/items/decor-night-sp-petal.53e3ab868f63.webp","decor-night-sp-moon":"assets/items/decor-night-sp-moon.2bfd81ee36fc.webp","decor-su-palm":"assets/items/decor-su-palm.965368d52d34.webp","decor-su-chair":"assets/items/decor-su-chair.3f6deac2d080.webp","decor-su-parasol":"assets/items/decor-su-parasol.811686dde146.webp","decor-su-watermelon":"assets/items/decor-su-watermelon.04d1a2fb1560.webp","decor-su-surf":"assets/items/decor-su-surf.9fa50a3f7b46.webp","decor-su-castle":"assets/items/decor-su-castle.f3a1b1e308d9.webp","decor-su-sunlamp":"assets/items/decor-su-sunlamp.cddd5db048c0.webp","decor-su-pond":"assets/items/decor-su-pond.29184bf5b145.webp","decor-su-sunflowers":"assets/items/decor-su-sunflowers.cdf73f2c52c2.webp","decor-su-tiki":"assets/items/decor-su-tiki.c317db1a7061.webp","decor-night-su-jelly":"assets/items/decor-night-su-jelly.35ea346610c5.webp","decor-night-su-shell":"assets/items/decor-night-su-shell.44cbee2fb57a.webp","decor-night-su-star":"assets/items/decor-night-su-star.26cfe7c7f81e.webp","decor-au-maple":"assets/items/decor-au-maple.8f78f8aa9124.webp","decor-au-pumpkin":"assets/items/decor-au-pumpkin.414dcd0adb1e.webp","decor-au-scarecrow":"assets/items/decor-au-scarecrow.096607415a89.webp","decor-au-cart":"assets/items/decor-au-cart.11a5467118e6.webp","decor-au-mushrooms":"assets/items/decor-au-mushrooms.8d56ceff39b5.webp","decor-au-basket":"assets/items/decor-au-basket.3e1f4cbf1f9a.webp","decor-au-leaves":"assets/items/decor-au-leaves.59804a5d7f58.webp","decor-au-acornbench":"assets/items/decor-au-acornbench.3b2a53886d75.webp","decor-au-owl":"assets/items/decor-au-owl.c45afb04b128.webp","decor-au-lantern":"assets/items/decor-au-lantern.d6de56440406.webp","decor-night-au-pumpkin":"assets/items/decor-night-au-pumpkin.eca5b9c57f1c.webp","decor-night-au-maple":"assets/items/decor-night-au-maple.84cf6d824907.webp","decor-night-au-harvest":"assets/items/decor-night-au-harvest.4665c73487b4.webp","decor-wi-pine":"assets/items/decor-wi-pine.b341d989f77b.webp","decor-wi-snowman":"assets/items/decor-wi-snowman.d5f6b461fa6d.webp","decor-wi-crystal":"assets/items/decor-wi-crystal.4d76f7e45167.webp","decor-wi-gifts":"assets/items/decor-wi-gifts.b9ceaefe3ce3.webp","decor-wi-sleigh":"assets/items/decor-wi-sleigh.7da32c9307d0.webp","decor-wi-reindeer":"assets/items/decor-wi-reindeer.2fd26a7f6eab.webp","decor-wi-cocoa":"assets/items/decor-wi-cocoa.c9bd3da9e099.webp","decor-wi-arch":"assets/items/decor-wi-arch.2747828a7f9e.webp","decor-wi-banner":"assets/items/decor-wi-banner.6cc77b6918de.webp","decor-wi-starlamp":"assets/items/decor-wi-starlamp.8d12baad33f9.webp","decor-night-wi-ice":"assets/items/decor-night-wi-ice.90480287c3f7.webp","decor-night-wi-snow":"assets/items/decor-night-wi-snow.d6d2f1d384d4.webp","decor-night-wi-aurora":"assets/items/decor-night-wi-aurora.401bf33a0dea.webp"};
+function cozySpriteSVG(key,size=64,extra='',attributes=''){
+ const src=cozyItemURL(key);return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+size+' '+size+'" shape-rendering="crispEdges" data-cozy-item="'+key+'" '+attributes+'><image href="'+src+'" width="'+size+'" height="'+size+'" preserveAspectRatio="xMidYMid meet" style="image-rendering:pixelated"/>'+extra+'</svg>';
+}
+function cozyItemURL(key){return cozyItemSnapshotAssets.get(key)||COZY_ITEM_ART[key]||'';}
+function syncCozyItemLook(){document.body.classList.toggle('cozy-items',sandboxSession);}
+function cozyOreClass(){return sandboxSession?' cozy-ore':'';}
+function cozyOreAttributes(t){return sandboxSession?' data-cozy-ore="'+t+'" data-ore-name="'+NM[t]+'"':'';}
+function cozyOreStyle(t){return sandboxSession?"--cozy-ore-art:url('"+cozyItemURL('ore-'+t)+"');":'';}
+function cozyOreMarkup(t,b=0,fill=false){return '<div class="'+(b?'t o':'q')+' cozy-ore"'+cozyOreAttributes(t)+' style="background-color:'+C[t]+';'+cozyOreStyle(t)+(fill?'width:100%;height:100%;':'')+'">'+NM[t]+'</div>';}
+function cozyPreparedSVG(item){
+ const key='dish-'+[0,6,9][item.s]+'-'+item.t,colors=kitchenTierPalette(item.t);
+ return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" data-cozy-prepared="'+item.s+'"><path fill="#342b24" d="M4 12h56v45H4z"/><path fill="#a37c4e" d="M6 14h52v40H6z"/><path fill="#d5b578" d="M7 15h50v3H7zM7 49h50v3H7z"/><path stroke="#805d3c" d="M8 23h48M8 42h48"/><image href="'+cozyItemURL(key)+'" x="6" y="6" width="52" height="45" preserveAspectRatio="xMidYMid meet" style="image-rendering:pixelated"/><path fill="'+colors.rim+'" d="M22 51h20v8H22z"/><path fill="#f5e7bc" d="M25 53h14v2H25z"/>'+kitchenTierMark(item.t)+'</svg>';
+}
+function cozyDecorKey(id,si){if(id==='tree'||id==='lamp')return 'decor-'+id+'-'+si;if(id==='flowers'&&si>=2)return 'decor-flowers-'+si;return 'decor-'+id;}
+function cozyDecorSVG(id,season=seasonIndex(),uid='preview'){
+ const d=DECOR_BY_ID.get(id),key=cozyDecorKey(id,season);if(!d||!COZY_ITEM_ART[key])return preview_decorSVG(id,season,uid);
+ const lamp=d.night||/lamp|lantern|candle|garland/.test(d.art),fountain=d.art==='fountain',w=d.w,h=d.h,glow=season===3?'#c7ebff':season===0?'#f5d5b0':'#ffd18c',name='cozy-glow-'+String(uid).replace(/[^a-zA-Z0-9_-]/g,'');
+ const halo=lamp?'<defs><radialGradient id="'+name+'"><stop stop-color="'+glow+'" stop-opacity=".35"/><stop offset="1" stop-color="'+glow+'" stop-opacity="0"/></radialGradient></defs><ellipse class="cozy-decor-halo" cx="'+w*.5+'" cy="'+h*.32+'" rx="'+w*.46+'" ry="'+h*.3+'" fill="url(#'+name+')"/>':'';
+ const water=fountain?'<g class="cozy-fountain-water"><ellipse cx="'+w*.5+'" cy="'+h*.7+'" rx="'+w*.23+'" ry="'+h*.055+'" fill="none" stroke="#bbf5ed" stroke-width=".9"/><path fill="#e4fffa" d="M'+w*.38+' '+h*.54+'h1v3h-1zM'+w*.64+' '+h*.53+'h1v3h-1z"/></g>':'';
+ return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+w+' '+h+'" data-cozy-decor="'+id+'" aria-hidden="true">'+halo+'<g'+(['cat','dog'].includes(id)?' class="pet-body"':'')+'><image href="'+cozyItemURL(key)+'" width="'+w+'" height="'+h+'" preserveAspectRatio="xMidYMax meet" style="image-rendering:pixelated"/></g>'+water+'</svg>';
+}
+const cozyItemSnapshotAssets=new Map(),cozyItemSnapshotRequests=new Map();
+async function prepareCozyItemSnapshot(items,si){
+ const keys=[...new Set(items.map(i=>cozyDecorKey(i.id,si)).filter(k=>COZY_ITEM_ART[k]))],epoch=sandboxEpoch;
+ await Promise.all(keys.map(async key=>{const src=COZY_ITEM_ART[key];if(src.startsWith('data:')||cozyItemSnapshotAssets.has(key))return;const token=epoch+':'+key;if(cozyItemSnapshotRequests.has(token))return cozyItemSnapshotRequests.get(token);
+  const job=(async()=>{const response=await fetch(src);if(!response.ok)throw new Error('Decoration art unavailable');const blob=await response.blob(),data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error('Decoration art unreadable'));reader.readAsDataURL(blob);});if(sandboxSession&&sandboxEpoch===epoch)cozyItemSnapshotAssets.set(key,data);})();
+  cozyItemSnapshotRequests.set(token,job);try{await job;}finally{cozyItemSnapshotRequests.delete(token);}
+ }));
+}
+function cozyLegacy_kitchenIngredientArt(t){
+ const p=kitchenTierPalette(t),dark='#293237';let s='';
+ // Each grade has a different silhouette, closure and ingredient arrangement.
+ if(t===0)s='<path fill="'+dark+'" d="M13 23h38v31H13zM20 16h24v10H20z"/><path fill="#b58b60" d="M15 26h34v25H15zM21 18h22v10H21z"/><path fill="#e3c597" d="M18 29h28v3H18zM19 33h3v15h-3z"/><path fill="#7f5d41" d="M16 46h32v6H16zM24 22h16v4H24z"/><path fill="#e7d6a6" d="M23 35h18v9H23z"/><path fill="#b0864b" d="M27 37h10v2H27zM31 34h2v11h-2z"/>';
+ if(t===1)s='<path fill="'+dark+'" d="M14 27h38v26H14zM19 18h27v4H19zM16 22h4v10h-4zM45 22h4v10h-4z"/><path fill="#b88a4e" d="M16 29h34v22H16z"/><path fill="#e0bc7d" d="M16 30h34v4H16zM18 39h30v3H18zM20 47h26v3H20zM23 32h3v18h-3zM36 32h3v18h-3z"/><path fill="#467d50" d="M16 24h5v-7h6v-5h5v12h-6v8H16zM33 20h5v-8h6v5h6v15H33z"/><path fill="#91bb62" d="M19 22h5v-6h5v10H19zM37 21h5v-5h3v11h-8z"/><path fill="#e29a4e" d="M28 25h7v14h-4v5h-3z"/>';
+ if(t===2)s='<path fill="'+dark+'" d="M10 22h44v32H10z"/><path fill="#95704a" d="M12 26h40v26H12z"/><path fill="#ceaa71" d="M12 25h40v5H12zM12 46h40v5H12zM15 29h5v18h-5zM43 29h5v18h-5z"/><path fill="#536c7b" d="M11 23h6v5h-6zM47 23h6v5h-6zM12 48h5v5h-5zM47 48h5v5h-5z"/><path fill="#f2e3b6" d="M22 29h20v16H22z"/><path fill="#9c4f40" d="M23 22h17v17H23z"/><path fill="#d57e62" d="M25 23h13v12H25z"/><path fill="#f0c39b" d="M26 24h4v8h-4zM33 25h3v7h-3z"/><path fill="#629552" d="M20 17h5v9h-5zM38 16h5v11h-5z"/>';
+ if(t===3)s='<path fill="'+dark+'" d="M10 24h44v30H10zM15 15h34v11H15z"/><path fill="#e5e8dc" d="M12 27h40v23H12zM17 17h30v9H17z"/><path fill="#80b4bf" d="M13 37h38v11H13zM17 18h30v3H17z"/><path fill="#d2b166" d="M13 28h4v23h-4zM47 28h4v23h-4zM12 48h40v4H12z"/><path fill="#527d8b" d="M19 29h19v6H19zM38 27h5v10h-5z"/><path fill="#c5dfda" d="M21 29h14v2H21z"/><path fill="#283c48" d="M22 31h2v2h-2z"/><path fill="#e69a76" d="M28 37h14v8H28z"/><path fill="#fbd0a0" d="M30 38h2v6h-2zM35 38h2v6h-2zM40 38h2v6h-2z"/><path fill="#eff4e1" d="M17 39h7v7h-7z"/>';
+ if(t===4)s='<path fill="'+dark+'" d="M9 25h46v30H9zM15 17h34v10H15zM20 12h24v5H20z"/><path fill="#5c4a75" d="M11 28h42v24H11z"/><path fill="#b69cc1" d="M13 31h38v16H13z"/><path fill="#dfbf73" d="M10 27h44v4H10zM10 49h44v4H10zM13 28h4v24h-4zM47 28h4v24h-4zM25 49v-5h14v5z"/><path fill="#f4e8bf" d="M20 20h8v17h-8zM35 18h8v19h-8z"/><path fill="#9d6550" d="M17 21h14v6H17zM32 18h14v7H32z"/><path fill="#e4b965" d="M20 22h7v2h-7zM35 19h7v2h-7z"/><path fill="#6f9f65" d="M25 31h13v8H25z"/><path fill="#d77853" d="M25 36h14v7H25z"/><path fill="#f4dc85" d="M28 38h3v3h-3zM34 38h3v3h-3z"/><path fill="#fff2bb" d="M49 11h2v6h-2zM47 13h6v2h-6z"/>';
+ return kitchenSVG('<ellipse fill="#101b24" opacity=".45" cx="32" cy="55" rx="23" ry="4"/>'+s+kitchenTierMark(t));
+}
+function cozyLegacy_kitchenDishArt(c,t){
+ const p=kitchenTierPalette(t),dark='#26343d';let ware='',food='';
+ // Wood, glazed earthenware, porcelain, gold service and a cut-crystal banquet tray.
+ if(t===0)ware='<path fill="'+dark+'" d="M7 39h50v13H7zM13 35h38v5H13z"/><path fill="'+p.rim+'" d="M9 39h46v10H9z"/><path fill="'+p.plate+'" d="M13 36h38v10H13z"/><path fill="'+p.dark+'" d="M13 49h38v3H13z"/>';
+ if(t===1)ware='<path fill="'+dark+'" d="M6 37h52v12h-5v5H11v-5H6z"/><path fill="'+p.rim+'" d="M8 38h48v10h-6v4H14v-4H8z"/><path fill="'+p.plate+'" d="M12 35h40v9H12z"/><path fill="'+p.light+'" d="M13 46h38v2H13z"/>';
+ if(t===2)ware='<path fill="'+dark+'" d="M5 36h54v13h-5v5H10v-5H5z"/><path fill="'+p.rim+'" d="M7 37h50v10h-5v5H12v-5H7z"/><path fill="'+p.plate+'" d="M10 34h44v11H10z"/><path fill="'+p.light+'" d="M12 47h40v3H12z"/><path fill="'+p.dark+'" d="M13 48h3v2h-3zM23 48h3v2h-3zM34 48h3v2h-3zM45 48h3v2h-3z"/>';
+ if(t===3)ware='<path fill="'+dark+'" d="M4 34h56v17h-6v4H10v-4H4z"/><path fill="#a77d3f" d="M6 37h52v12h-6v4H12v-4H6z"/><path fill="'+p.light+'" d="M7 35h50v4H7zM12 49h40v2H12z"/><path fill="'+p.plate+'" d="M11 36h42v10H11z"/><path fill="#b78a43" d="M9 39h3v5H9zM52 39h3v5h-3z"/>';
+ if(t===4)ware='<path fill="'+dark+'" d="M2 34h60v15h-5v7H7v-7H2z"/><path fill="#80719f" d="M4 36h56v11h-5v7H9v-7H4z"/><path fill="#e9c981" d="M5 34h54v3H5zM9 51h46v3H9z"/><path fill="'+p.plate+'" d="M9 35h46v10H9z"/><path fill="#d5bddc" d="M11 46h5v3h-5zM22 46h5v3h-5zM34 46h5v3h-5zM47 46h5v3h-5z"/><path fill="#fff1c6" d="M6 38h2v6H6zM56 38h2v6h-2z"/>';
+ if(c===0){food='<path fill="#bdb58d" d="M11 42v-6h3v-7h4v-6h5v6h4v7h3v6zM32 42v-7h3v-7h4v-5h5v7h4v6h4v6z"/><path fill="#fff0ca" d="M13 40v-5h3v-7h4v-4h2v6h4v10zM34 40v-5h3v-6h4v-5h2v6h4v10z"/><path fill="#254e40" d="M17 35h8v9h-8zM38 35h8v9h-8z"/><path fill="#d6c493" d="M18 31h2v2h-2zM40 30h2v2h-2z"/>';if(t>=1)food+='<path fill="#d97d61" d="M21 29h4v3h-4zM44 29h4v3h-4z"/>';if(t>=3)food+='<path fill="#cfa755" d="M12 43h3v2h-3zM48 42h3v2h-3z"/>';}
+ else if(c===1)food=kitchenRice(t)+'<path fill="#78442f" d="M15 36h15v9H15zM34 30h13v9H34z"/><path fill="#b67544" d="M17 36h6v3h-6zM24 39h4v4h-4zM36 31h8v4h-8z"/><path fill="#dbad68" d="M18 37h2v2h-2zM38 32h3v2h-3z"/>';
+ else if(c===2)food=kitchenRice(t)+'<path fill="#699453" d="M15 33h5v6h-5zM34 29h6v5h-6zM39 38h5v4h-5z"/><path fill="#df9d4f" d="M23 35h4v4h-4zM31 40h4v4h-4z"/><path fill="#c7a05d" d="M29 32h3v3h-3z"/>';
+ else if(c===3)food=kitchenRice(t)+'<g transform="translate(0 -2)">'+kitchenMeat(t)+'</g>';
+ else if(c===4){ware='<path fill="#23333a" d="M5 17h54v37H5z"/><path fill="'+p.dark+'" d="M7 19h50v33H7z"/><path fill="'+p.rim+'" d="M9 21h46v29H9z"/><path fill="'+p.plate+'" d="M11 23h17v24H11zM31 23h21v11H31zM31 37h21v10H31z"/><path fill="'+p.light+'" d="M8 19h48v2H8zM8 50h48v2H8z"/>';food='<path fill="#e7d8ac" d="M13 27h13v17H13z"/><path fill="#fff1cc" d="M15 25h10v17H15z"/><path fill="#d4bf8a" d="M17 29h3v2h-3zM22 35h2v2h-2z"/><path fill="#7e4935" d="M33 25h16v7H33z"/><path fill="#d1975f" d="M34 25h3v5h-3zM40 25h3v5h-3zM46 25h3v5h-3z"/><path fill="#638d4b" d="M33 39h16v6H33z"/><path fill="#d78c4d" d="M39 39h4v5h-4z"/>';if(t>=2)food+='<path fill="#d77859" d="M19 27h4v4h-4z"/><path fill="#acc578" d="M34 39h3v3h-3z"/>';if(t>=3)food+='<path fill="#f4d98b" d="M50 23h2v4h-2zM49 47h3v2h-3z"/>';}
+ else if(c===5)food=kitchenRice(t)+kitchenVegetables(t);
+ else if(c===6)food=kitchenMeat(t)+'<path fill="#72914f" d="M10 37h6v7h-6zM49 35h5v10h-5z"/><path fill="#e1be60" d="M48 29h7v5h-7z"/>';
+ else if(c===7){ware+='<path fill="#273b40" d="M11 26h42v21H11zM5 29h8v5H5zM51 29h8v5h-8z"/><path fill="#6b8583" d="M13 27h38v3H13z"/><path fill="#9f6842" d="M15 30h34v13H15z"/>';food='<path fill="#bc784c" d="M19 31h9v7h-9zM35 35h10v7H35z"/><path fill="#e5b275" d="M20 31h4v2h-4zM37 35h4v2h-4z"/><path fill="#80a45b" d="M31 30h6v6h-6zM17 39h6v5h-6z"/><path fill="#dda05a" d="M27 38h5v6h-5z"/>';}
+ else if(c===8){ware+='<path fill="'+p.dark+'" d="M12 26h40v20h-6v5H18v-5h-6z"/><path fill="'+p.rim+'" d="M14 28h36v15h-5v5H19v-5h-5z"/><path fill="#efcf8d" d="M15 26h34v13H15z"/><path fill="#f9e9ba" d="M17 27h30v8H17z"/>';food='<path fill="#729855" d="M21 29h4v3h-4zM35 32h4v3h-4z"/><path fill="#d59852" d="M29 29h4v3h-4zM23 34h3v2h-3z"/><path fill="#fff2d1" d="M38 28h4v2h-4z"/>';}
+ else food=kitchenVegetables(t)+'<path fill="#cf6651" d="M23 28h7v6h-7zM33 40h7v5h-7z"/><path fill="#f3ce78" d="M27 35h5v4h-5z"/>';
+ let finish='';
+ // Recipe-specific upgrades retain the dish silhouette while making higher service visibly richer.
+ if(t>=2){
+  if(c===0)finish+='<path fill="#d87b48" d="M17 25h6v3h-6zM39 25h6v3h-6z"/><path fill="#f5c282" d="M18 25h2v2h-2zM42 25h2v2h-2z"/>';
+  if(c===1)finish+='<path fill="#527d43" d="M14 30h3v-4h4v9h-7z"/><path fill="#e7b26b" d="M36 39h9v3h-9z"/>';
+  if(c===2)finish+='<path fill="#6d4a32" d="M19 27h7v4h-7zM39 32h8v3h-8z"/><path fill="#d1af77" d="M21 31h3v4h-3zM41 35h3v4h-3z"/>';
+  if(c===3)finish+='<path fill="#ffefcb" d="M43 31h8v10h-8z"/><path fill="#e6ad4c" d="M45 33h5v5h-5z"/>';
+  if(c===4)finish+='<path fill="#6a9b59" d="M23 23h3v4h-3z"/><path fill="#dfb45c" d="M34 38h3v3h-3zM44 40h3v3h-3z"/>';
+  if(c===5)finish+='<path fill="#a26040" d="M33 26h8v4h-8z"/><path fill="#f2d3a1" d="M35 30h3v6h-3z"/>';
+  if(c===6)finish+='<path fill="#5b382e" d="M32 29h2v13h-2zM38 31h2v11h-2z"/><path fill="#e2a170" d="M30 29h2v11h-2zM36 30h2v12h-2z"/>';
+  if(c===7)finish+='<path fill="#4c7b48" d="M27 27h7v6h-7z"/><path fill="#e3ad65" d="M40 29h6v5h-6zM19 39h5v3h-5z"/>';
+  if(c===8)finish+='<path fill="#f7eccb" d="M25 30h12v2H25zM23 32h3v3h-3zM35 33h3v3h-3zM27 35h8v2h-8z"/>';
+  if(c===9)finish+='<path fill="#c6dc91" d="M34 24h5v8h-5zM42 28h5v7h-5z"/><path fill="#faf0ca" d="M19 37h4v4h-4zM37 35h4v4h-4z"/>';
+ }
+ if(t>=3){
+  if(c===0)finish+='<path fill="#fff0c8" d="M28 39v-6h3v-6h3v6h3v6z"/><path fill="#2f5542" d="M30 35h5v7h-5z"/>';
+  if(c===1||c===2||c===5)finish+='<path fill="#e9bb63" d="M44 37h7v6h-7z"/><path fill="#fff0bc" d="M46 38h3v3h-3z"/>';
+  if(c===3||c===6)finish+='<path fill="#53854a" d="M17 25h5v-5h3v10h-8z"/><path fill="#b9ce7c" d="M18 23h3v3h-3z"/>';
+  if(c===4)finish+='<path fill="#b96849" d="M33 29h16v2H33z"/><path fill="#f1c382" d="M35 25h2v3h-2zM42 25h2v3h-2z"/>';
+  if(c===7)finish+='<path fill="#e3d5b2" d="M28 32h6v4h-6z"/><path fill="#a46f43" d="M29 31h5v2h-5z"/>';
+  if(c===8)finish+='<path fill="#668f52" d="M29 25h2v7h-2zM31 27h3v2h-3z"/>';
+  if(c===9)finish+='<path fill="#b87c45" d="M28 23h7v4h-7z"/><path fill="#edd2a2" d="M30 27h3v6h-3z"/>';
+ }
+ if(t===4){
+  if(c===0)finish+='<path fill="#bd674c" d="M16 26h10v3H16zM37 26h11v3H37z"/><path fill="#f3b571" d="M17 25h2v2h-2zM22 25h2v2h-2zM39 25h2v2h-2zM44 25h2v2h-2z"/>';
+  if(c===1||c===3||c===6)finish+='<path fill="#73412e" d="M24 32h15v2H24zM28 37h15v2H28z"/><path fill="#efbc7b" d="M24 31h6v1h-6zM33 36h7v1h-7z"/><path fill="#eed886" d="M33 26h4v3h-4z"/>';
+  if(c===2||c===5||c===9)finish+='<path fill="#65974e" d="M29 24h4v-5h3v10h-7z"/><path fill="#d9e7ad" d="M30 21h2v4h-2z"/><path fill="#f6e4b6" d="M23 39h3v3h-3zM38 38h3v3h-3z"/>';
+  if(c===4)finish+='<path fill="#a05239" d="M33 38h6v6h-6z"/><path fill="#f3d79e" d="M34 38h3v2h-3z"/><path fill="#f0c765" d="M18 30h4v2h-4z"/>';
+  if(c===7)finish+='<path fill="#e4d7b2" d="M17 28h6v5h-6zM37 37h6v4h-6z"/><path fill="#875f3d" d="M18 27h5v2h-5z"/><path fill="#cbd99c" d="M31 26h3v3h-3z"/>';
+  if(c===8)finish+='<path fill="#fff4d8" d="M20 28h3v2h-3zM39 31h3v2h-3zM28 34h3v2h-3z"/><path fill="#c89558" d="M45 34h6v7h-6z"/><path fill="#f0d29b" d="M46 34h4v2h-4z"/>';
+ }
+ if(t>=1)finish+='<path fill="#4e814b" d="M13 43h3v-4h2v4h3v2h-8z"/>';
+ if(t>=2)finish+='<path fill="#e4c06b" d="M45 43h7v2h-7z"/><path fill="#a36a43" d="M46 45h6v2h-6z"/>';
+ if(t>=3)finish+='<path fill="#f2e2ad" d="M27 23h2v3h-2zM33 25h2v2h-2zM42 28h2v2h-2z"/><path fill="#e49e5c" d="M7 42h3v4H7z"/>';
+ if(t===4)finish+='<path fill="#86558e" d="M49 25h4v-4h3v4h4v3h-4v4h-3v-4h-4z"/><path fill="#ffe5a3" d="M53 25h3v3h-3z"/><path fill="#f0d074" d="M31 23h3v2h-3zM39 26h2v2h-2z"/><path fill="#fff6cf" d="M55 12h2v6h-2zM53 14h6v2h-6z"/>';
+ const steam=t>=2&&c!==9?'<g fill="#ece4ce" opacity=".38"><path d="M25 21v-5h2v-5h2v5h-2v5zM36 19v-5h2v-5h2v5h-2v5z"/></g>':'';
+ return kitchenSVG('<g data-dish="'+c+'" data-grade="'+t+'"><ellipse fill="#101d28" opacity=".4" cx="32" cy="55" rx="26" ry="4"/>'+ware+food+finish+steam+kitchenTierMark(t)+'</g>');
 }
 const SEASONS=[
   {id:'spring',name:'春天',icon:'🌱',description:'春回大地！鍛造格過熱 50 步。春季持續 3 天。'},
@@ -2723,10 +2769,12 @@ function elementChartHTML(){
 }
 
 const pat=()=>1;
-const svg=(c,t=0)=>`<svg viewBox="0 0 48 48" shape-rendering="crispEdges"><image href="${UNITY_ART['weapon'+c+'_'+t]}" width="48" height="48" style="image-rendering:pixelated"/></svg>`;
+const cozyLegacySvg=(c,t=0)=>`<svg viewBox="0 0 48 48" shape-rendering="crispEdges"><image href="${UNITY_ART['weapon'+c+'_'+t]}" width="48" height="48" style="image-rendering:pixelated"/></svg>`;
+const svg=(c,t=0)=>sandboxSession?cozySpriteSVG('weapon-'+c+'-'+t,48):cozyLegacySvg(c,t);
 const hex=(c,bg,cls="",t=0,w=null)=>`<div class="hxo ${cls}${isLegend(w)?" legendary":""}"><div class="hxi" style="background:${bg}">${isLegend(w)?legendWeaponSVG(w.legendId):svg(c,t)}</div>${weaponStarsHTML(w)}${w?.protected?'<span class="weapon-protected" aria-label="受保護武器">🔒</span>':''}${validElement(w?.element)?'<span class="weapon-element-icon" style="--element:'+ELEMENTS[w.element].color+'" aria-label="'+ELEMENTS[w.element].name+'屬性">'+elementIcon(w.element)+'</span>':''}</div>`;
 const price=(t,c)=>Math.round(PR[t]*MUL[c]);
-const tok=(bg,tx,b)=>`<div class="${b?"t o":"q"}" style="background-color:${bg}">${tx}</div>`;
+const cozyLegacyTok=(bg,tx,b)=>`<div class="${b?"t o":"q"}" style="background-color:${bg}">${tx}</div>`;
+const tok=(bg,tx,b)=>sandboxSession&&C.includes(bg)?cozyOreMarkup(C.indexOf(bg),b):cozyLegacyTok(bg,tx,b);
 const itemH=(h,b)=>h.k==='ess'?'<span class="essence-icon">'+essenceArt(h.element)+'</span>':h.k==='seed'?'<span class="seed-icon">'+seedPacketArt(h.element)+'</span>':h.k==='bp'?'<span class="bp-item-icon">'+legendBlueprintSVG(h.id)+'</span>':h.k==='m'?mold(h.s,"","f")
   :h.k==='d'?gem(h.t,"f")
   :h.k==='f'?tok("#c0392b","🔥",b)
@@ -2997,7 +3045,7 @@ function render(){
     if(c){
       const nw=flyI===i?" land":(fresh===i||pop.has(i))?" new":"";
       if(c.k==='o')
-        h=`<div class="t o${nw}" style="background-color:${C[c.t]}">${NM[c.t]}${mb(c)}</div>`;
+        h=`<div class="t o${nw}${cozyOreClass()}"${cozyOreAttributes(c.t)} style="background-color:${C[c.t]};${cozyOreStyle(c.t)}">${NM[c.t]}${mb(c)}</div>`;
       else if(c.k==='p')
         h=`<div class="t2${nw}">${mold(c.s,C[c.t])}${mb(c)}</div>`;
       else if(c.k==='d')
@@ -3024,7 +3072,7 @@ function render(){
     :'<div class="tl2">道具箱</div><button class="dm hand-bag" onclick="openHandBag()" aria-label="開啟道具箱" title="道具箱"><span aria-hidden="true">🎒</span></button>';
 
   $("q").innerHTML="<small>接下來</small>"+Q.map((t,k)=>
-    `<div class="q${k?"":" first"}" data-step="${k+1}" aria-label="第${k+1}顆：${NM[t]}礦" style="background-color:${C[t]}">${NM[t]}</div>`
+    `<div class="q${k?"":" first"}${cozyOreClass()}"${cozyOreAttributes(t)} data-step="${k+1}" aria-label="第${k+1}顆：${NM[t]}礦" style="background-color:${C[t]};${cozyOreStyle(t)}">${NM[t]}</div>`
   ).join("");
 
   const toolItems=[
@@ -4256,7 +4304,7 @@ function autumnLeafArt(){return '<svg viewBox="0 0 32 32" shape-rendering="crisp
 EXPEDITIONS.forEach((m,id)=>m.loot={k:'bp',id});
 
 
-function legendWeaponSVG(id){if(id>=10)return ultimatePixelArt(id);return '<svg viewBox="0 0 64 64" role="img" aria-label="'+LEGENDS[id].name+'" shape-rendering="crispEdges"><image href="'+UNITY_ART['legend'+id]+'" width="64" height="64" style="image-rendering:pixelated"/></svg>';}
+function legendWeaponSVG(id){if(sandboxSession)return cozySpriteSVG('legend-'+id,64,'','role="img" aria-label="'+LEGENDS[id].name+'"');if(id>=10)return ultimatePixelArt(id);return '<svg viewBox="0 0 64 64" role="img" aria-label="'+LEGENDS[id].name+'" shape-rendering="crispEdges"><image href="'+UNITY_ART['legend'+id]+'" width="64" height="64" style="image-rendering:pixelated"/></svg>';}
 function legendBlueprintSVG(id){return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" aria-label="'+LEGENDS[id].name+'藍圖"><path fill="#263a51" d="M7 6h45v5h6v46H11v-5H5V12h2z"/><path fill="#4c7295" d="M11 10h37v5h6v37H15v-5h-4z"/><path stroke="#87b6cb" stroke-width="1" opacity=".35" d="M15 19h35M15 28h35M15 37h35M15 46h35M20 14v34M29 14v34M38 14v34M47 14v34"/><path fill="#e1cc90" d="M5 8h9v40H5zM12 48h43v9H12z"/><path fill="#fff0bd" d="M7 10h4v34H7zM15 50h37v3H15z"/><svg x="17" y="12" width="35" height="35" viewBox="0 0 64 64" style="filter:grayscale(1) brightness(1.6)">'+legendWeaponSVG(id).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'')+'</svg><path fill="#e6c875" d="M43 46h11v9H43z"/></svg>';}
 
 const AVATAR_OPTIONS={
@@ -5106,7 +5154,7 @@ const DECOR_CATALOG=[
  ['wi-pine','積雪松樹',550,'winter','snowpine',52,76],['wi-snowman','雪人',220,'winter','snowman',37,52],['wi-crystal','冰晶叢',380,'winter','icecrystal',43,47],['wi-gifts','禮物堆',300,'winter','gifts',44,37],['wi-sleigh','冬日雪橇',500,'winter','sleigh',64,41],['wi-reindeer','小麋鹿',650,'winter','reindeer',47,52],['wi-cocoa','熱可可攤',600,'winter','cocoastall',58,54],['wi-arch','冰晶拱門',800,'winter','icearch',67,77],['wi-banner','雪花旗',260,'winter','snowbanner',37,61],['wi-starlamp','星光燈',450,'winter','starlamp',36,64]
 ].map(([id,name,price,season,art,w,h])=>({id,name,price,season,art,w,h}));
 const DECOR_BY_ID=new Map(DECOR_CATALOG.map(d=>[d.id,d]));
-function decorSVG(){return sandboxSession?preview_decorSVG(...arguments):stable_decorSVG(...arguments);}
+function decorSVG(){return sandboxSession?cozyDecorSVG(...arguments):stable_decorSVG(...arguments);}
 function stable_decorSVG(id,season=seasonIndex(),uid='preview'){
  const d=DECOR_BY_ID.get(id);if(!d)return '';const type=d.art,p=TOWN_SEASONS[season],winter=season===3;if(type==='icearch')return iceCrystalArchArt();
  const O='#273740',wood='#85613e',gold='#e7c47a',cream='#f4dfac',green=season===2?'#ca763c':winter?'#5f8894':'#6f9c68',leaf=season===2?'#edb057':winter?'#c6e3e4':'#a6c582',pink='#e7a3b4',blue='#80b8d1';
@@ -5497,7 +5545,7 @@ function geminiOriginalCaptureCityLayout(items,si,options={}){
   }catch(e){finish(fallback);}};image.onerror=()=>finish(fallback);image.src=fallback;
  });
 }
-async function captureCityLayout(items,si,options={}){if(sandboxSession)await prepareGeminiSnapshot(si);return geminiOriginalCaptureCityLayout(items,si,options);}
+async function captureCityLayout(items,si,options={}){if(sandboxSession){await prepareGeminiSnapshot(si);await prepareCozyItemSnapshot(items,si);}return geminiOriginalCaptureCityLayout(items,si,options);}
 function safeCityThumbnail(value){return typeof value==='string'&&/^data:image\/(?:png|webp|jpeg);base64,/.test(value)||typeof value==='string'&&value.startsWith('data:image/svg+xml;charset=utf-8,')?value:'';}
 async function cityPresetThumbnail(p){
  const saved=safeCityThumbnail(p.thumbnail);if(saved)return saved;
@@ -5814,7 +5862,7 @@ function installKitchenPreviewCatalog(enabled){
  DECOR_CATALOG.splice(0,DECOR_CATALOG.length,...rows);DECOR_BY_ID.clear();DECOR_CATALOG.forEach(d=>DECOR_BY_ID.set(d.id,d));
 }
 function clearKitchenPreviewScene(){
- clearKitchenIngredientFlights();syncWorkshopLook();cancelKitchenDrag();clearKitchenDepartures();for(const id of ['townKitchen','sandboxNightToggle','kitchenP','kitchenModal'])$(id).hidden=true;
+ cozyItemSnapshotAssets.clear();clearKitchenIngredientFlights();syncWorkshopLook();cancelKitchenDrag();clearKitchenDepartures();for(const id of ['townKitchen','sandboxNightToggle','kitchenP','kitchenModal'])$(id).hidden=true;
  $('townP').dataset.previewKitchen='false';$('townP').dataset.time='day';$('townNightSky').innerHTML='';$('townNightSky').dataset.key='';
  $('townScenery').dataset.season='';$('townWeather').dataset.season='';$('townQueue').dataset.visitors='';$('townDecorFront').dataset.key='';
  for(const id of ['townArchive','townForge','townShop','townTraining','townDecorShop','townGreenhouse']){const el=$(id);el.dataset.artSeason='';el.dataset.greenhouseArt='';el.dataset.harvestKey='';el.querySelector('.night-house-glow')?.remove();}
