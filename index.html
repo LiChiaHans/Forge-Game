@@ -1058,6 +1058,51 @@ body::before{filter:brightness(.68) saturate(.78)}
 #townP[data-preview-kitchen="true"] #townForge{left:59%;top:43%;width:41%;height:27%}
 
 </style>
+<style>
+/* An art-only prototype, gated to the isolated backend session. */
+#geminiTownScene,#geminiTownEffects{display:none;position:absolute;inset:0;pointer-events:none}
+#townP[data-gemini-town="true"] #geminiTownScene,#townP[data-gemini-town="true"] #geminiTownEffects{display:block}
+#geminiTownScene{z-index:0;background:#5f8150;overflow:hidden}
+#geminiTownImage{display:block;width:100%;height:100%;object-fit:fill;image-rendering:auto}
+#townP[data-gemini-town="true"][data-time="night"] #geminiTownImage{filter:url(#geminiTownNightFilter)}
+#townP[data-gemini-town="true"] #townScenery,#townP[data-gemini-town="true"] #townPlaza,#townP[data-gemini-town="true"] #townNightSky{visibility:hidden}
+#townP[data-gemini-town="true"] .town-building>svg,#townP[data-gemini-town="true"] .town-building>.night-house-glow,#townP[data-gemini-town="true"] #townExpedition>.town-expedition-sign{display:none}
+.gemini-building-sign{display:none;position:absolute;pointer-events:none;transform:rotate(var(--sign-angle));transform-origin:center;filter:drop-shadow(1px 2px 0 #18242988);z-index:4}
+#townP[data-gemini-town="true"] .gemini-building-sign{display:block}
+#townP[data-gemini-town="true"] .gemini-building-sign svg{width:100%;height:100%;display:block;filter:none;overflow:visible}
+#townP[data-gemini-town="true"] .town-building,#townP[data-gemini-town="true"] #townExpedition{z-index:2;filter:none;border:0;background:transparent;box-shadow:none;min-width:0;min-height:0;padding:0}
+#townP[data-gemini-town="true"] .town-building:focus-visible,#townP[data-gemini-town="true"] #townExpedition:focus-visible{outline:3px solid #ffe4a0;outline-offset:-5px;border-radius:8px}
+#townP[data-gemini-town="true"] .town-building:active .gemini-building-sign,#townP[data-gemini-town="true"] #townExpedition:active .gemini-building-sign{filter:brightness(1.2) drop-shadow(0 0 4px #f6d590)}
+#townP[data-gemini-town="true"] #townTraining .town-skill-star{left:54%;top:2%;width:35%;max-width:66px;min-width:40px;filter:drop-shadow(1px 2px 0 #3e3022)}
+#townP[data-gemini-town="true"] #townTraining .town-skill-star b{font-size:clamp(18px,5vw,26px)}
+#townP[data-gemini-town="true"] #townGreenhouse .greenhouse-ready{left:54%;top:-3%;width:23%;height:24%}
+#townP[data-gemini-town="true"] #townChest{left:36%;top:46%;width:11%;height:auto;aspect-ratio:1;z-index:4}
+#townP[data-gemini-town="true"] #townQueue{z-index:3}
+#townP[data-gemini-town="true"] #townDecorBack{z-index:1}
+#townP[data-gemini-town="true"] #townDecorFront{z-index:3}
+#geminiTownEffects{z-index:1;overflow:hidden;contain:layout paint}
+.gemini-night-lights{display:none;position:absolute;inset:0;mix-blend-mode:screen}
+.gemini-night-lights svg{width:100%;height:100%}
+#townP[data-gemini-town="true"][data-time="night"] .gemini-night-lights{display:block}
+.gemini-lamp-light{animation:gemini-light-breathe 4.8s ease-in-out infinite}
+.gemini-sea-shimmer{display:none;position:absolute;left:45%;right:0;top:4%;height:5%;background:repeating-linear-gradient(173deg,transparent 0 7px,#e9ffff88 8px 9px,transparent 10px 17px);clip-path:polygon(0 50%,20% 40%,25% 15%,50% 35%,60% 0,85% 35%,100% 20%,100% 100%,0 100%);animation:gemini-sea-sparkle 4s steps(6) infinite;opacity:.2}
+#townP[data-gemini-town="true"][data-season="summer"] .gemini-sea-shimmer{display:block}
+.gemini-fountain-water{position:absolute;left:47%;top:42%;width:7%;height:7%;pointer-events:none}
+.gemini-fountain-water i{position:absolute;width:2px;height:5px;left:42%;top:32%;background:#e2ffffb0;animation:gemini-water-drop 2.1s linear infinite}
+.gemini-fountain-water i:nth-child(2){left:20%;animation-delay:-.7s}.gemini-fountain-water i:nth-child(3){left:74%;animation-delay:-1.4s}
+.gemini-chimney-smoke{position:absolute;left:86.5%;top:46.7%;width:7%;height:7%;opacity:.48}
+.gemini-chimney-smoke i{position:absolute;left:30%;bottom:0;width:45%;height:26%;background:#e3e4d8;clip-path:polygon(20% 0,80% 0,80% 20%,100% 20%,100% 80%,80% 80%,80% 100%,20% 100%,20% 80%,0 80%,0 20%,20% 20%);animation:gemini-smoke-rise 4.5s ease-out infinite}
+.gemini-chimney-smoke i:nth-child(2){animation-delay:-1.5s}.gemini-chimney-smoke i:nth-child(3){animation-delay:-3s}
+.gemini-forge-fire{position:absolute;left:84%;top:59%;width:12%;height:7%;background:radial-gradient(ellipse,#ffad4a55,transparent 70%);mix-blend-mode:screen;animation:gemini-light-breathe 2.4s steps(5) infinite}
+#townP[data-time="night"] .gemini-fountain-water{opacity:.45}
+@keyframes gemini-light-breathe{50%{opacity:.55}}
+@keyframes gemini-sea-sparkle{50%{opacity:.48;transform:translateX(3px)}}
+@keyframes gemini-water-drop{0%{opacity:0;transform:translateY(0)}15%{opacity:.9}100%{opacity:0;transform:translateY(16px)}}
+@keyframes gemini-smoke-rise{0%{opacity:0;transform:translate(0,0) scale(.4)}15%{opacity:.7}100%{opacity:0;transform:translate(9px,-35px) scale(1.8)}}
+@media(prefers-reduced-motion:reduce){#geminiTownEffects *{animation:none!important}.gemini-chimney-smoke{opacity:.2}}
+.low-effects #geminiTownEffects *{animation:none!important}
+
+</style>
 </head>
 <body>
 <div id="portraitGuard" hidden role="dialog" aria-modal="true" aria-hidden="true" aria-label="請直向遊玩"><svg viewBox="0 0 40 52" aria-hidden="true" shape-rendering="crispEdges"><path fill="#0c1726" d="M7 0h26v3h3v46h-3v3H7v-3H4V3h3z"/><path fill="#b8a577" d="M8 3h24v46H8z"/><path fill="#293e51" d="M10 8h20v34H10z"/><path fill="#e8d696" d="M16 4h8v2h-8zM17 45h6v2h-6z"/><path fill="#84b6b0" d="M19 14h3v16h-3zM13 21h3v3h-3zM16 18h3v3h-3zM22 18h3v3h-3zM25 21h3v3h-3z"/></svg><b>請直向遊玩</b><p>將手機轉回直向<br>即可繼續遊戲</p></div>
@@ -1088,7 +1133,7 @@ body::before{filter:brightness(.68) saturate(.78)}
 
 <div id="chestP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('chestP')">×</button><h2>📦 武器箱</h2><p id="chestInfo"></p><button class="exp-wide" onclick="openBlueprintGoal()">📋 查看製作計畫</button><div id="chestItems"></div><button class="legend-chest-button" onclick="openLegendRecipes()">🌟 藍圖收藏</button><button  style="width:100%;margin-top:14px" onclick="closeP('chestP')" class="legacy-modal-close" hidden>關閉</button></div></div>
 <div id="townP"><header class="town-header"><div><span class="town-player-heading"><button id="townAvatar" class="player-avatar" onclick="openAvatarCreator('edit')" title="調整角色外觀" aria-label="調整角色外觀"></button><b>🏘 鍛造小鎮</b></span><span class="town-header-actions"><button id="sandboxNightToggle" hidden onclick="toggleSandboxNight()">🌙 夜晚</button><button id="sandboxNextDay" hidden onclick="nextSandboxDay()">下一天 ▶</button><button id="townArchitectBtn" aria-label="開啟建築師" title="建築師" aria-pressed="false">🏗</button><button id="townMute" onclick="toggleMute()" aria-label="切換靜音">🔊</button><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></span></div><div id="townStats"></div><div id="townSeason"></div><span id="sandboxTag" hidden></span><div id="architectBar" hidden><div class="architect-season-picker"><button id="architectSeasonPrev" aria-label="上一個季節">◀</button><output id="architectSeasonName">春天</output><button id="architectSeasonNext" aria-label="下一個季節">▶</button></div><button id="architectInventoryTop">📦 收藏</button><button id="architectLayoutsTop">🖼 版型</button><div id="architectPlacementBar" hidden><span id="architectPlacementHint" aria-live="polite"></span><button id="architectCancelTop">取消放置</button></div></div>
-</header><div id="townMap"><div id="townScenery"></div><div id="townDecorBack"></div><div id="townDecorFront"></div><div id="townPlaza" aria-hidden="true"></div><div id="townFurniture" aria-hidden="true"></div><button id="townExpedition" onclick="openExpedition()" aria-label="城門遠征"><span class="town-sign">⚔ 遠征</span></button><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townGreenhouse" class="town-building" onclick="openP('greenhouseP')" aria-label="溫室"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><button id="townKitchen" hidden class="town-building" onclick="openKitchen()" aria-label="廚房餐廳"></button><button id="townDecorShop" class="town-building" onclick="openDecorationShop()" aria-label="裝飾行"></button><div id="townFountain" aria-label="城鎮噴水池"></div><div id="townQueue"></div><div id="townPets"><button id="townPet-cat" class="town-pet" onclick="petLove('cat')" aria-label="摸摸小貓"></button><button id="townPet-dog" class="town-pet" onclick="petLove('dog')" aria-label="摸摸小狗"></button></div><div id="townBirds" aria-hidden="true"></div><button id="townChest" onclick="openTownChest()" hidden></button><div id="townNightSky" aria-hidden="true"></div><div id="townWeather" aria-hidden="true"></div></div><section id="architectPanel" hidden><div class="architect-panel-heading"><b id="architectSelected"></b><button id="architectDeselect" aria-label="關閉裝飾工具">×</button></div><div id="architectActions"><div class="architect-scale-row"><label for="architectScale">大小</label><input type="range" id="architectScale" min="30" max="200" step="1" value="100"><output id="architectScaleValue">100%</output></div><div class="architect-scale-row"><label for="architectRotation">旋轉</label><input type="range" id="architectRotation" min="0" max="360" step="1" value="0"><output id="architectRotationValue">0°</output></div><div class="architect-transform-tools"><button data-city-action="flip">水平翻轉</button><button data-city-action="flipY">上下翻轉</button><button data-city-action="depth" id="architectDepth">移到後方</button><button data-city-action="roam" id="architectRoam">散步</button><button data-city-action="stow">📦 收起來</button></div></div></section></div>
+</header><div id="townMap"><div id="geminiTownScene" aria-hidden="true"><img id="geminiTownImage" alt="" decoding="async"></div><div id="geminiTownEffects" aria-hidden="true"></div><div id="townScenery"></div><div id="townDecorBack"></div><div id="townDecorFront"></div><div id="townPlaza" aria-hidden="true"></div><div id="townFurniture" aria-hidden="true"></div><button id="townExpedition" onclick="openExpedition()" aria-label="城門遠征"><span class="town-sign">⚔ 遠征</span></button><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townGreenhouse" class="town-building" onclick="openP('greenhouseP')" aria-label="溫室"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><button id="townKitchen" hidden class="town-building" onclick="openKitchen()" aria-label="廚房餐廳"></button><button id="townDecorShop" class="town-building" onclick="openDecorationShop()" aria-label="裝飾行"></button><div id="townFountain" aria-label="城鎮噴水池"></div><div id="townQueue"></div><div id="townPets"><button id="townPet-cat" class="town-pet" onclick="petLove('cat')" aria-label="摸摸小貓"></button><button id="townPet-dog" class="town-pet" onclick="petLove('dog')" aria-label="摸摸小狗"></button></div><div id="townBirds" aria-hidden="true"></div><button id="townChest" onclick="openTownChest()" hidden></button><div id="townNightSky" aria-hidden="true"></div><div id="townWeather" aria-hidden="true"></div></div><section id="architectPanel" hidden><div class="architect-panel-heading"><b id="architectSelected"></b><button id="architectDeselect" aria-label="關閉裝飾工具">×</button></div><div id="architectActions"><div class="architect-scale-row"><label for="architectScale">大小</label><input type="range" id="architectScale" min="30" max="200" step="1" value="100"><output id="architectScaleValue">100%</output></div><div class="architect-scale-row"><label for="architectRotation">旋轉</label><input type="range" id="architectRotation" min="0" max="360" step="1" value="0"><output id="architectRotationValue">0°</output></div><div class="architect-transform-tools"><button data-city-action="flip">水平翻轉</button><button data-city-action="flipY">上下翻轉</button><button data-city-action="depth" id="architectDepth">移到後方</button><button data-city-action="roam" id="architectRoam">散步</button><button data-city-action="stow">📦 收起來</button></div></div></section></div>
 <div id="decorShopP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('decorShopP')">×</button><h2>🎨 裝飾行</h2><p id="decorShopSummary"></p><div id="decorShopTabs" class="city-season-tabs"></div><p id="decorShopNotice" class="city-note"></p><div id="decorShopGrid" class="decor-grid"></div></div></div>
 <div id="decorInventoryP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('decorInventoryP')">×</button><h2 id="decorInventoryTitle">裝飾收藏</h2><p class="city-note">收起的裝飾會留在收藏；同一件四季通用裝飾可用於各季的配置。</p><div class="decor-inventory-toolbar"><button id="decorInventoryShop">🎨 前往裝飾行</button><button id="decorReturnAll">📦 全部收回</button></div><div id="decorInventoryGrid" class="decor-grid"></div></div></div>
 <div id="cityLayoutPreviewP" class="city-modal city-layout-preview"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('cityLayoutPreviewP')">×</button><h2 id="cityLayoutPreviewTitle">城鎮版型預覽</h2><p id="cityLayoutPreviewMeta"></p><p id="cityLayoutPreviewStatus" role="status" hidden></p><img id="cityLayoutPreviewImage" alt="城鎮截圖"></div></div>
@@ -2080,7 +2125,7 @@ function kitchenTownRoads(){return [
  {id:'training',w:15,p:[[188,574],[225,604],townMasterDoor('townTraining')]}
 ];}
 function kitchenTownGuestPoint(i,night=isSandboxNight()){
- const line=night?[[264,224],[246,229],[228,234],[208,246],[188,264],[188,286],[188,308],[188,330]]:[[264,440],[246,450],[226,462],[205,475],[188,493],[188,514],[188,535],[188,556]];
+ if(sandboxSession)return geminiTownGuestPoint(i,night);const line=night?[[264,224],[246,229],[228,234],[208,246],[188,264],[188,286],[188,308],[188,330]]:[[264,440],[246,450],[226,462],[205,475],[188,493],[188,514],[188,535],[188,556]];
  return i<line.length?line[i]:[174+(i%2)*22,500+Math.floor((i-8)/2)*20];
 }
 function kitchenSnapshotPlazaSVG(svg){return isSandboxNight()?svg.replace('<svg ','<svg style="filter:brightness(.66) saturate(.76)" '):svg;}
@@ -2109,9 +2154,9 @@ function townMasterPlazaArt(p){
  return '<svg viewBox="0 0 160 160" shape-rendering="crispEdges" preserveAspectRatio="none" data-town-plaza="masonry-ring"><circle cx="80" cy="80" r="79" fill="'+c.edge+'"/><circle cx="80" cy="80" r="76" fill="'+c.kerb+'"/><circle cx="80" cy="80" r="73" fill="'+c.base+'"/>'+joints+'<circle cx="80" cy="80" r="65" fill="none" stroke="'+c.seam+'" opacity=".35"/><circle cx="80" cy="80" r="57" fill="'+c.kerb+'"/><circle cx="80" cy="80" r="54" fill="'+p.ground+'"/><path fill="'+c.glint+'" opacity=".6" d="M76 3h8v2h-8zM3 76h2v8H3z"/>'+townPlazaLawn(p)+'</svg>';
 }
 function townGuestRoute(i,night=isSandboxNight()){
- const [x,y]=kitchenTownGuestPoint(i,night);return night?[[188,650],[188,495],[188,472],[150,452],[128,432],[124,403],[132,375],[159,345],[188,334],[188,252],[224,228],[x,y]]:[[188,650],[188,536],[188,495],[188,472],[224,452],[x,y]];
+ if(sandboxSession)return geminiTownGuestRoute(i,night);const [x,y]=kitchenTownGuestPoint(i,night);return night?[[188,650],[188,495],[188,472],[150,452],[128,432],[124,403],[132,375],[159,345],[188,334],[188,252],[224,228],[x,y]]:[[188,650],[188,536],[188,495],[188,472],[224,452],[x,y]];
 }
-function townMasterBlocks(){return [[0,174,139,324],[210,89,360,216],[211,282,360,429],[0,337,112,442],[0,481,151,620],[205,492,360,620]];}
+function townMasterBlocks(){return sandboxSession?[[0,5,153,155],[0,165,133,279],[229,53,360,194],[3,296,128,402],[220,297,360,419],[3,430,132,558],[222,447,360,581]]:[[0,174,139,324],[210,89,360,216],[211,282,360,429],[0,337,112,442],[0,481,151,620],[205,492,360,620]];}
 function townMasterBuildingArt(kind,p){return kind==='kitchen'?kitchenHouseArt(p):kind==='forge'?townForgeWorkshopArt(p):kind==='greenhouse'?townGreenhouseArt(p):townHouse(kind,p);}
 let townMasterResizeFrame=0;
 window.addEventListener('resize',()=>{if(!sandboxSession||$('townP').style.display!=='flex'||townMasterResizeFrame)return;townMasterResizeFrame=requestAnimationFrame(()=>{townMasterResizeFrame=0;renderTown();});});
@@ -2152,6 +2197,62 @@ function townCivicBuildingArt(kind,p){
  }
  const label=archive?'圖鑑館':training?'訓練所':'裝飾行',signColor=archive?'#4b506d':training?'#3c546d':'#6c557a',textTransform=flip?'translate(132 0) scale(-1 1)':'';
  return '<svg viewBox="0 -28 192 212" shape-rendering="crispEdges" aria-hidden="true" data-building-identity="'+(archive?'library':training?'academy':'artisan')+'"><g'+(flip?' transform="translate(192 0) scale(-1 1)"':'')+'><path fill="#25392f" opacity=".3" d="M8 148l114 31 65-23v9l-65 22L8 157z"/><path fill="#667064" d="M16 145l106 28 62-21v11l-62 22-106-29z"/><path fill="#b9b18f" d="M16 145l106 28 62-21-7-5-55 18-99-25z"/><path fill="'+wood+'" stroke="#344236" stroke-width="3" d="M22 79l101 26 57-17v65l-57 20-101-26z"/><path fill="'+light+'" d="M26 87l92 24v54l-92-23z"/><path fill="'+shade+'" d="M127 110l49-15v56l-49 16z"/><path fill="'+wood+'" d="M26 91l91 23v6L26 97zM26 133l91 24v6l-91-24zM27 87h6v58h-6zM112 109h7v59h-7zM125 111l50-15v6l-50 14zM173 95h6v58h-6z"/>'+face+'<path fill="#3c3831" d="M81 121l24 6v36l-24-6z"/><path fill="'+(training?'#687d84':'#9c764a')+'" d="M84 124l18 5v31l-18-5z"/><path fill="#ddc18c" d="M88 128l10 3v14l-10-3z"/><path fill="#f3dda1" d="M98 149h2v3h-2z"/><path fill="'+light+'" stroke="'+wood+'" stroke-width="3" d="M126 102l46-50 17 37z"/><path fill="'+wood+'" d="M168 58h4v31h-4zM149 82l30 8v4l-32-8z"/>'+townWorkshopRoof('civic-roof-'+kind,roof,training)+(archive?extra:'')+badge+'<g class="town-house-sign" data-sign-plane="front-wall" transform="matrix(1 .245 0 1 0 0)"><path fill="#cab07a" d="M28 86h79v23H28z"/><path fill="'+signColor+'" d="M31 89h73v17H31z"/><path stroke="#e7cb8c" d="M33 91h69M33 104h69"/><text'+(textTransform?' transform="'+textTransform+'"':'')+' x="66" y="102" font-size="15" font-family="serif" font-weight="bold" text-anchor="middle" fill="#fff0bd">'+label+'</text></g>'+(!archive?extra:'')+'<path fill="#a59b7c" d="M79 158l29 8 5 5-32-8z"/><path fill="#e2c78d" d="M84 158l20 5v3l-20-5z"/>'+(p.snow?'<path fill="#edf5ed" d="M13 75l50-50 110 27-4 4L63 31 19 77zM124 101l10-10 9 2-16 15z"/>':'')+'</g></svg>';
+}
+const GEMINI_TOWN_ART=["assets/town/0.ce3ce9d639bb.webp","assets/town/1.e66463ca4058.webp","assets/town/2.0a73b8a46fbe.webp","assets/town/3.ff18b8000d82.webp"];
+const GEMINI_TOWN_BUILDINGS=[
+ {id:'townExpedition',kind:'expedition',name:'遠征城堡',label:'遠征城堡，挑戰怪物',box:[.005,.01,.445,.245],sign:[.13,.58,.69,.17],angle:-2},
+ {id:'townArchive',kind:'archive',name:'星頁圖鑑館',label:'星頁圖鑑館，查看武器收藏',box:[0,.25,.385,.205],sign:[.18,.44,.78,.19],angle:-5},
+ {id:'townKitchen',kind:'kitchen',name:'暖爐餐廳',label:'暖爐餐廳，晚間料理營業',box:[.63,.085,.37,.245],sign:[.055,.48,.82,.16],angle:5},
+ {id:'townGreenhouse',kind:'greenhouse',name:'晨露溫室',label:'晨露溫室，種植與收成',box:[.015,.465,.345,.195],sign:[.09,.42,.85,.20],angle:5},
+ {id:'townForge',kind:'forge',name:'鐵火冶煉廠',label:'鐵火冶煉廠，進入鍛造棋盤',box:[.605,.465,.395,.205],sign:[.08,.38,.82,.19],angle:-5},
+ {id:'townDecorShop',kind:'decor',name:'彩匠裝飾行',label:'彩匠裝飾行，購買城鎮裝飾',box:[.015,.675,.37,.225],sign:[.055,.40,.88,.18],angle:-5},
+ {id:'townTraining',kind:'training',name:'星盾訓練所',label:'星盾訓練所，提升技能',box:[.61,.695,.39,.24],sign:[.13,.39,.82,.17],angle:5}
+];
+function geminiTownSignArt(kind,name){
+ const colors={expedition:['#343e53','#8297ae','#d7c68c'],archive:['#42384e','#967d9f','#ead8a4'],kitchen:['#734332','#c48b55','#ffe0a0'],greenhouse:['#28564b','#6b9b73','#e8dd9c'],forge:['#333e45','#899ca0','#e9bd72'],decor:['#5b425e','#aa87a3','#f4dba4'],training:['#2e4b63','#799fb8','#edd080']},[wood,rim,gold]=colors[kind];
+ const icons={expedition:'<path stroke="#e8e5ce" stroke-width="3" d="M20 14l19 21M38 14L20 35"/><path stroke="#e0ad56" stroke-width="3" d="M17 28l9-7M32 29l9-7"/>',archive:'<path fill="#f1e3b5" d="M17 15l11 3v20l-11-4zM30 18l12-3v19l-12 4z"/><path stroke="#9c8153" d="M20 20l6 2M20 25l6 2M32 22l7-2M32 27l7-2"/>',kitchen:'<path stroke="#f4dfad" stroke-width="3" d="M21 13v25M17 13v10h8V13M36 26v12"/><ellipse fill="#f4dfad" cx="36" cy="19" rx="5" ry="8"/>',greenhouse:'<path stroke="#d8d799" stroke-width="3" d="M29 38V21l-8-5M29 28l9-9"/><path fill="#98be79" d="M15 13h9v10h-9zM32 13h12v10H32z"/><path fill="#d4df96" d="M18 14h3v7h-3zM35 14h4v7h-4z"/>',forge:'<path fill="#b3c2bd" d="M16 17h26v8H16zM23 25h12v6H23zM20 31h18v6H20z"/><path fill="#f2c982" d="M16 17h26v3H16z"/>',decor:'<path fill="#e9c590" d="M16 14h25v22H16z"/><path fill="#b26878" d="M19 17h8v7h-8z"/><path fill="#71a58c" d="M30 17h8v7h-8z"/><path fill="#7c9cc1" d="M19 27h8v6h-8z"/><path fill="#e0b557" d="M30 27h8v6h-8z"/>',training:'<path fill="#7796af" stroke="#e8cd83" stroke-width="2" d="M17 13h24v18l-12 9-12-9z"/><path fill="#f5d978" d="M27 17h4v5h6l-4 5 2 6-6-4-5 4 1-6-4-5h6z"/>'};
+ return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 50" aria-hidden="true" shape-rendering="crispEdges" data-sign-kind="'+kind+'"><path fill="#20292b" d="M8 2h164v5h6v36h-6v5H8v-5H2V7h6z"/><path fill="'+rim+'" d="M9 5h162v5h4v30h-4v5H9v-5H5V10h4z"/><path fill="'+gold+'" d="M11 7h158v3H11zM8 11h3v27H8z"/><path fill="'+wood+'" d="M12 12h156v27H12z"/><path stroke="'+rim+'" opacity=".45" d="M51 17h110M51 34h110"/><path fill="#1d303b" d="M15 11h29v29H15z"/>'+icons[kind]+'<path fill="'+gold+'" d="M9 10h3v3H9zM168 10h3v3h-3zM9 37h3v3H9zM168 37h3v3h-3z"/><text x="106" y="33" text-anchor="middle" font-size="'+(name.length>4?21:23)+'" font-weight="900" font-family="Noto Sans TC,Microsoft JhengHei,sans-serif" fill="#fff0c8" stroke="#20282a" stroke-width="1.5" paint-order="stroke">'+name+'</text></svg>';
+}
+function geminiTownNightArt(){
+ const windows=[[.445,.212,.020,.027],[.743,.255,.027,.028],[.829,.263,.022,.026],[.91,.252,.026,.025],[.883,.608,.028,.035],[.842,.632,.040,.028],[.434,.832,.018,.025],[.725,.827,.025,.025],[.868,.826,.032,.028],[.892,.87,.022,.020],[.265,.816,.035,.030],[.248,.345,.025,.033],[.287,.366,.023,.026]],lamps=[[.274,.242],[.385,.244],[.711,.31],[.581,.868],[.425,.919]];
+ return '<svg viewBox="0 0 572 1024" preserveAspectRatio="none" aria-hidden="true"><defs><filter id="geminiTownNightFilter" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values=".30 0 0 0 .015 0 .40 0 0 .025 0 0 .64 0 .065 0 0 0 1 0"/></filter><radialGradient id="gemini-lamp"><stop stop-color="#ffdf9a" stop-opacity=".8"/><stop offset=".25" stop-color="#ffbe60" stop-opacity=".32"/><stop offset="1" stop-color="#f6af53" stop-opacity="0"/></radialGradient></defs><path fill="#cfe5ef" opacity=".7" d="M494 17h8v3h-5v6h-3z"/><path fill="#c9deea" opacity=".6" d="M344 13h2v2h-2zM390 24h2v2h-2zM452 9h2v2h-2zM537 36h2v2h-2z"/><g class="gemini-window-light">'+windows.map(([x,y,w,h])=>'<ellipse fill="url(#gemini-lamp)" cx="'+x*572+'" cy="'+y*1024+'" rx="'+w*850+'" ry="'+h*1300+'"/>').join('')+'</g>'+lamps.map(([x,y],i)=>'<ellipse class="gemini-lamp-light" style="animation-delay:-'+i+'s" fill="url(#gemini-lamp)" cx="'+x*572+'" cy="'+y*1024+'" rx="22" ry="37"/>').join('')+'</svg>';
+}
+function geminiTownEffects(){
+ return '<div class="gemini-sea-shimmer" aria-hidden="true"></div><div class="gemini-night-lights">'+geminiTownNightArt()+'</div><div class="gemini-fountain-water" aria-hidden="true"><i></i><i></i><i></i></div><div class="gemini-chimney-smoke" aria-hidden="true"><i></i><i></i><i></i></div><i class="gemini-forge-fire" aria-hidden="true"></i>';
+}
+function renderGeminiTown(){
+ if(!sandboxSession)return;const si=townVisualSeason(),night=isSandboxNight(),p=$('townP'),image=$('geminiTownImage');p.dataset.geminiTown='true';
+ const key=String(si);if(image.dataset.art!==key){image.src=GEMINI_TOWN_ART[si];image.dataset.art=key;image.alt=SEASONS[si].name+'鍛造小鎮';}
+ $('geminiTownScene').dataset.season=SEASONS[si].id;$('geminiTownScene').dataset.time=night?'night':'day';
+ const rear=$('townDecorBack');if(!rear.dataset.geminiMask){const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="none"><rect width="1000" height="1000" fill="white"/>'+GEMINI_TOWN_BUILDINGS.map(b=>'<rect x="'+b.box[0]*1000+'" y="'+b.box[1]*1000+'" width="'+b.box[2]*1000+'" height="'+b.box[3]*1000+'" fill="black"/>').join('')+'</svg>';rear.style.maskImage='url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';rear.style.maskSize='100% 100%';rear.style.maskMode='luminance';rear.dataset.geminiMask='true';}
+ if(!$('geminiTownEffects').dataset.built){$('geminiTownEffects').innerHTML=geminiTownEffects();$('geminiTownEffects').dataset.built='1';}
+ GEMINI_TOWN_BUILDINGS.forEach(b=>{const el=$(b.id),[x,y,w,h]=b.box;el.style.left=x*100+'%';el.style.top=y*100+'%';el.style.width=w*100+'%';el.style.height=h*100+'%';el.setAttribute('aria-label',b.label);el.title=b.name;
+  if(!el.innerHTML.includes('data-gemini-sign="true"')){const [sx,sy,sw,sh]=b.sign;el.innerHTML+='<span class="gemini-building-sign" data-gemini-sign="true" style="left:'+sx*100+'%;top:'+sy*100+'%;width:'+sw*100+'%;height:'+sh*100+'%;--sign-angle:'+b.angle+'deg">'+geminiTownSignArt(b.kind,b.name)+'</span>';}
+ });
+}
+function clearGeminiTown(){
+ $('townP').dataset.geminiTown='false';geminiSnapshotAssets.clear();const rear=$('townDecorBack');rear.style.maskImage='';rear.dataset.geminiMask='';GEMINI_TOWN_BUILDINGS.forEach(b=>{const el=$(b.id);for(const key of ['left','top','width','height'])el.style[key]='';el.title='';});
+}
+function geminiTownGuestPoint(i,night){
+ const line=night?[[282,213],[269,224],[255,236],[244,250],[232,265],[225,281],[222,299],[218,317]]:[[272,408],[255,417],[238,426],[220,436],[202,445],[183,454],[177,474],[177,494]];
+ return line[i]||[177,Math.min(600,514+(i-line.length)*18)];
+}
+function geminiTownGuestRoute(i,night){const [x,y]=geminiTownGuestPoint(i,night);return night?[[177,650],[177,454],[177,348],[211,322],[225,294],[225,267],[x,y]]:[[177,650],[177,500],[177,463],[x,y]];}
+function geminiTownSnapshot(items,si,savedHeight){
+ const rect=$('townMap').getBoundingClientRect(),H=Number.isFinite(savedHeight)&&savedHeight>=360&&savedHeight<=1000?savedHeight:rect.width>100&&rect.height>200?Math.max(360,Math.min(1000,360*rect.height/rect.width)):620,night=isSandboxNight();
+ let out='<image href="'+(geminiSnapshotAssets.get(si)||GEMINI_TOWN_ART[si])+'" width="360" height="'+H+'" preserveAspectRatio="none"'+(night?' filter="url(#gemini-snapshot-night)"':'')+'/>';
+ const decor=z=>items.filter(i=>i.z===z).slice().sort((a,b)=>a.y-b.y).map((i,k)=>{const d=DECOR_BY_ID.get(i.id);return !d?'':'<g transform="translate('+i.x*3.6+' '+i.y*H/100+') rotate('+i.r+') scale('+(i.fx?-i.s:i.s)+' '+(i.fy?-i.s:i.s)+')">'+snapshotNestedSVG(kitchenSnapshotDecorSVG(decorSVG(i.id,si,'gemini-snapshot-'+z+'-'+k),d),-d.w/2,-d.h,d.w,d.h)+'</g>';}).join('');
+ out+='<g mask="url(#gemini-snapshot-buildings)">'+decor(0)+'</g>';
+ for(const b of GEMINI_TOWN_BUILDINGS){const [x,y,w,h]=b.box,[sx,sy,sw,sh]=b.sign;out+=snapshotNestedSVG(geminiTownSignArt(b.kind,b.name),(x+w*sx)*360,(y+h*sy)*H,w*sw*360,h*sh*H);}
+ if(night)out+=snapshotNestedSVG(geminiTownNightArt(),0,0,360,H);out+=decor(1);
+ return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 '+H+'" width="360" height="'+H+'"><defs><filter id="gemini-snapshot-night" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values=".34 0 0 0 .01 0 .41 0 0 .02 0 0 .62 0 .04 0 0 0 1 0"/></filter><mask id="gemini-snapshot-buildings" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="white"/>'+GEMINI_TOWN_BUILDINGS.map(b=>'<rect x="'+b.box[0]+'" y="'+b.box[1]+'" width="'+b.box[2]+'" height="'+b.box[3]+'" fill="black"/>').join('')+'</mask></defs>'+out+'</svg>';
+}
+const geminiSnapshotAssets=new Map(),geminiSnapshotRequests=new Map();
+async function prepareGeminiSnapshot(si){
+ if(GEMINI_TOWN_ART[si].startsWith('data:')||geminiSnapshotAssets.has(si))return;
+ if(geminiSnapshotRequests.has(si))return geminiSnapshotRequests.get(si);
+ const epoch=sandboxEpoch,job=(async()=>{const response=await fetch(GEMINI_TOWN_ART[si]);if(!response.ok)throw new Error('Town background unavailable');const blob=await response.blob(),data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error('Town image unreadable'));reader.readAsDataURL(blob);});if(sandboxSession&&epoch===sandboxEpoch)geminiSnapshotAssets.set(si,data);})();
+ geminiSnapshotRequests.set(si,job);try{await job;}finally{geminiSnapshotRequests.delete(si);}
 }
 const SEASONS=[
   {id:'spring',name:'春天',icon:'🌱',description:'春回大地！鍛造格過熱 50 步。春季持續 3 天。'},
@@ -3459,7 +3560,7 @@ function preview_renderTown(){
  if(!$('townFountain').innerHTML)$('townFountain').innerHTML=townFountainArt();
  if(!$('townExpedition').dataset.built){$('townExpedition').innerHTML=townExpeditionSign();$('townExpedition').dataset.built='1';}
  renderGreenhouse(p,s.id);
- renderTownPlaza(p,s.id);renderCityDecor();renderArchitect();renderHarvestAlert();scheduleTownBirds();renderTownChest();renderTownWeather(si);renderTownNight();
+ renderTownPlaza(p,s.id);renderCityDecor();renderArchitect();renderHarvestAlert();scheduleTownBirds();renderTownChest();renderTownWeather(si);renderTownNight();renderGeminiTown();
 }
 function showTown(){clearForgeFeedback();
  if(day<=0)return;phase='town';$('townP').style.display='flex';renderTown();syncTownMotion();saveNow();
@@ -5293,19 +5394,8 @@ function stable_citySnapshotSVG(items,si,savedHeight){
  parts.push(decorLayer(1));
  return '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'"><style>image{image-rendering:pixelated}.town-lamp-glow{opacity:.55}.forge-smoke{opacity:.45}.town-house-sign text{font-family:sans-serif}</style>'+parts.join('')+'</svg>';
 }
-function preview_citySnapshotSVG(items,si,savedHeight){
- const rect=$('townMap').getBoundingClientRect(),W=360,H=Number.isFinite(savedHeight)&&savedHeight>=360&&savedHeight<=1000?savedHeight:rect.width>100&&rect.height>200?Math.max(360,Math.min(1000,360*rect.height/rect.width)):620,p=nightTownPalette(TOWN_SEASONS[si]);
- const parts=[snapshotNestedSVG(townScene(p),0,0,W,H)];if(isSandboxNight())parts.push(snapshotNestedSVG(nightSkyArt(si),0,0,W,H));
- function decorLayer(z){return items.filter(i=>i.z===z).slice().sort((a,b)=>a.y-b.y).map((i,k)=>{const d=DECOR_BY_ID.get(i.id);if(!d)return '';return '<g transform="translate('+(i.x*3.6)+' '+(i.y*H/100)+') rotate('+i.r+') scale('+(i.fx?-i.s:i.s)+' '+(i.fy?-i.s:i.s)+')">'+snapshotNestedSVG(kitchenSnapshotDecorSVG(decorSVG(i.id,si,'snapshot-'+k+'-'+i.uid),d),-d.w/2,-d.h,d.w,d.h)+'</g>';}).join('');}
- parts.push(decorLayer(0));
- const plaza=$('townPlaza').querySelector('svg');if(plaza)parts.push(snapshotNestedSVG(kitchenSnapshotPlazaSVG(plaza.outerHTML),360*(188/360-64/360),H*(.65-64/620),128,H*128/620));
- const buildings=TOWN_MASTER_BUILDINGS;
- for(const [id,kind,x,y,w,h]of buildings){const el=$(id),box=el.getBoundingClientRect(),valid=rect.width>100&&box.width>0;let art=townMasterBuildingArt(kind,p);parts.push(snapshotNestedSVG(art,valid?(box.left-rect.left)/rect.width*360:x*360,valid?(box.top-rect.top)/rect.height*H:y*H,valid?box.width/rect.width*360:w*360,valid?box.height/rect.height*H:h*H));}
- const sign=townExpeditionSign().match(/<svg[\s\S]*?<\/svg>/)?.[0];if(sign)parts.push(snapshotNestedSVG(sign,360*(.02+.48*.02),H*(.01+.25*.82),360*.48*.96,360*.48*.96*46/180));
- parts.push(decorLayer(1));
- return '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'"><style>image{image-rendering:pixelated}.town-lamp-glow{opacity:.55}.forge-smoke{opacity:.45}.town-house-sign text{font-family:sans-serif}</style>'+parts.join('')+'</svg>';
-}
-function captureCityLayout(items,si,options={}){
+function preview_citySnapshotSVG(items,si,savedHeight){return geminiTownSnapshot(items,si,savedHeight);}
+function geminiOriginalCaptureCityLayout(items,si,options={}){
  const svg=citySnapshotSVG(items,si,options.worldHeight),fallback='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg),canvas=document.createElement('canvas');
  if(typeof window.Image!=='function'||typeof canvas.getContext!=='function')return Promise.resolve(fallback);
  return new Promise(resolve=>{
@@ -5317,6 +5407,7 @@ function captureCityLayout(items,si,options={}){
   }catch(e){finish(fallback);}};image.onerror=()=>finish(fallback);image.src=fallback;
  });
 }
+async function captureCityLayout(items,si,options={}){if(sandboxSession)await prepareGeminiSnapshot(si);return geminiOriginalCaptureCityLayout(items,si,options);}
 function safeCityThumbnail(value){return typeof value==='string'&&/^data:image\/(?:png|webp|jpeg);base64,/.test(value)||typeof value==='string'&&value.startsWith('data:image/svg+xml;charset=utf-8,')?value:'';}
 async function cityPresetThumbnail(p){
  const saved=safeCityThumbnail(p.thumbnail);if(saved)return saved;
@@ -5371,7 +5462,7 @@ function stable_nextSandboxDay(){
 function preview_nextSandboxDay(){
  if(!sandboxSession)return;setSandboxNight(false);$("kitchenP").hidden=true;$("kitchenModal").hidden=true;stopExpeditionPlayback();closeCityPanels();architect.active=false;architect.selected=null;architect.placing=null;pendingChests++;newDay();seasonNoticePending=false;closeP('seasonP');coins=1e12;sp=9999;lives=3;render();showTown();
 }
-function finishSandbox(){if(!sandboxSession)return;const result=preview_finishSandbox(...arguments);installKitchenPreviewCatalog(false);clearKitchenPreviewScene();cityState=freshCity();return result;}
+function finishSandbox(){if(!sandboxSession)return;const result=preview_finishSandbox(...arguments);installKitchenPreviewCatalog(false);clearKitchenPreviewScene();clearGeminiTown();cityState=freshCity();return result;}
 function stable_finishSandbox(){
  if(!sandboxSession)return;weaponMastery=new Map();stopCityAnimals();cancelCityPresetSave();sandboxEpoch++;sandboxStorage.clear();cityThumbnailCache.clear();cityPreviewCache.clear();cityPreviewRequest++;sandboxSession=false;
  if(sandboxProfile){playerName=sandboxProfile.playerName;playerAvatar=normalizeAvatar(sandboxProfile.avatar);muted=sandboxProfile.muted;hi=sandboxProfile.hi;recs=sandboxProfile.recs;saves=sandboxProfile.saves;weaponAlbum.clear();sandboxProfile.weapons.forEach(k=>weaponAlbum.add(k));legendBlueprints.clear();sandboxProfile.blueprints.forEach(k=>legendBlueprints.add(k));legendCollection.clear();sandboxProfile.legends.forEach(k=>legendCollection.add(k));}sandboxProfile=null;
