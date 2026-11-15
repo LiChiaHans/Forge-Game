@@ -1103,6 +1103,59 @@ body::before{filter:brightness(.68) saturate(.78)}
 .low-effects #geminiTownEffects *{animation:none!important}
 
 </style>
+<style>
+/* Material, color and lighting only: preserve every existing layout measurement. */
+#app[data-workshop="forge"]{background-color:#24191a;background-image:linear-gradient(#0c10191a,#130a0d22),var(--workshop-wall);background-size:cover;background-position:center;--studio-rim:#ab8756;--studio-panel:#343d43;--studio-paper:#ead4a6}
+#app[data-workshop="forge"] .bar>span,#app[data-workshop="forge"] .bar>button,#app[data-workshop="forge"] #srv{background-color:#e1ca99;background-image:linear-gradient(120deg,#fff0c444,#bd975826),repeating-linear-gradient(0deg,transparent 0 7px,#8b643209 8px 9px);background-size:auto;color:#4b3528;border-color:#a88856;box-shadow:inset 0 1px #fff2c9,inset 0 -2px #aa805d66,0 2px #120f1599;border-radius:3px}
+#app[data-workshop="forge"] #coin,#app[data-workshop="forge"] #sc{color:#573924}
+#app[data-workshop="forge"] #srv .season-info{color:#335636}
+#app[data-workshop="forge"][data-season="summer"] #srv .season-info{color:#974a2c}
+#app[data-workshop="forge"][data-season="autumn"] #srv .season-info{color:#8e5b22}
+#app[data-workshop="forge"][data-season="winter"] #srv .season-info{color:#31577e}
+#app[data-workshop="forge"] .bar2>button{background-color:#564336;background-image:radial-gradient(circle at 5px 5px,#ded2a6 0 1px,#746d64 1px 3px,transparent 3px),radial-gradient(circle at calc(100% - 5px) 5px,#ded2a6 0 1px,#746d64 1px 3px,transparent 3px),linear-gradient(#79563c,#4b382e);background-size:auto;color:#fff0c9;border-color:#a78f6b;box-shadow:inset 0 2px #c7a17466,inset 0 -3px #28272b99,0 2px #130e12;border-radius:3px;text-shadow:1px 1px #241c1c}
+#app[data-workshop="forge"] #orders{background-color:#130f17aa;border-color:#816c4c;box-shadow:inset 0 0 0 1px #17181b,inset 0 3px 9px #08070b80;border-radius:4px}
+#app[data-workshop="forge"] .od{box-shadow:inset 0 2px #f5dfaa44,inset 0 -3px #111c2088,0 2px #100d13aa;border-radius:4px}
+#app[data-workshop="forge"] .wt{color:#fff0c9;text-shadow:1px 1px #1e2424}
+#app[data-workshop="forge"] .qc{background-color:#ecd7aa;background-image:linear-gradient(125deg,#fff0c766,#bc94501f);background-size:auto;color:#523e2e;border-color:#b18d56;box-shadow:inset 0 1px #fff4d2,inset 0 -2px #b88d5555,0 2px #130e1299;border-radius:3px}
+#app[data-workshop="forge"] .qc small{color:#7a5637}
+#app[data-workshop="forge"] .qc.d{background-color:#cee0ad}#app[data-workshop="forge"] .qc.x{background-color:#bea88f}
+#app[data-workshop="forge"] #grid{background-image:linear-gradient(140deg,#ead7a322,#14242d44),var(--season-frame);background-size:auto;box-shadow:inset 0 0 0 2px #303533,inset 0 0 0 3px #ddc28a88,inset 0 -5px #19201e66,0 6px 12px #07090b99;border-radius:5px}
+#app[data-workshop="forge"] .c{background-color:#1c222b;background-image:linear-gradient(150deg,#202a34,#111822);background-size:auto;box-shadow:inset 0 0 0 1px #78858655,inset 0 3px 2px #090e17bb,inset 0 -1px #b3a67922;border-radius:4px}
+#app[data-workshop="forge"] #play #q,#app[data-workshop="forge"] #side #tools,#app[data-workshop="forge"] #side #handSlot,#app[data-workshop="forge"] #side #pack{background-color:#30383e;background-image:linear-gradient(135deg,#58646655,#243038aa),repeating-linear-gradient(0deg,transparent 0 8px,#10182118 9px 10px);background-size:auto;border-color:#998160;box-shadow:inset 0 2px #cfb98a66,inset 0 -3px #121c26aa,0 2px #100e15;border-radius:4px}
+#app[data-workshop="forge"] #q small,#app[data-workshop="forge"] #side .tl2{color:#ffe1a1;text-shadow:1px 1px #1d2529}
+#app[data-workshop="forge"] #msg{background-color:#171b24e8;background-image:linear-gradient(90deg,#4c39384d,transparent);background-size:auto;color:#f4e3bd;border-color:#9f835c;box-shadow:inset 0 1px #a0885944;border-radius:3px}
+body.workshop-backend #shopP .hp{background-color:#2d3035;background-image:linear-gradient(140deg,#51423788,#202a34aa);border-color:#b49565;box-shadow:inset 0 0 0 2px #171e27,0 8px 30px #0009}
+body.workshop-backend #shop .si{background-color:#3a3834;background-image:linear-gradient(#6d523755,#292f37aa);background-size:auto;border-color:#9d835e;box-shadow:inset 0 1px #c9b48666,inset 0 -2px #141a24aa}
+
+#kitchenP[data-workshop="kitchen"]{background-color:#5c412b;background-image:linear-gradient(#2b1c0810,#21150620),var(--workshop-wall);background-size:cover;background-position:center;color:#fff0c9}
+#kitchenP[data-workshop="kitchen"] header>b,#kitchenP[data-workshop="kitchen"] header>span{background-color:#f0ddb3;background-image:linear-gradient(120deg,#fff4d266,#d7b57d26);background-size:auto;border-color:#ad874f;color:#503a29;box-shadow:inset 0 1px #fff6d5,inset 0 -2px #b78b5966,0 2px #24190f88;border-radius:3px}
+#kitchenP[data-workshop="kitchen"] header>button,#kitchenP[data-workshop="kitchen"] nav>button{background-color:#785035;background-image:radial-gradient(circle at 5px 5px,#f5dfa7 0 1px,#ad8a56 1px 3px,transparent 3px),radial-gradient(circle at calc(100% - 5px) 5px,#f5dfa7 0 1px,#ad8a56 1px 3px,transparent 3px),linear-gradient(#97643e,#644530);background-size:auto;border-color:#c09a5f;color:#fff1ca;box-shadow:inset 0 2px #d8b77d88,inset 0 -3px #412b2199,0 2px #33261daa;text-shadow:1px 1px #38271e;border-radius:3px}
+#kitchenP[data-workshop="kitchen"] .kitchen-order{background-color:#e7d3a8;background-image:linear-gradient(140deg,#f6e6bf,#c8b082);background-size:auto;border-color:#93744b;box-shadow:inset 0 2px #fff1cb,inset 0 -3px #a5834d66,0 3px #33271f88;color:#473f2d;border-radius:4px}
+#kitchenP[data-workshop="kitchen"] .kitchen-order>span{color:#684b2d}
+#kitchenP[data-workshop="kitchen"] .kitchen-any{color:#80572d;text-shadow:none}
+#kitchenP[data-workshop="kitchen"] .kitchen-any-recipe,#kitchenP[data-workshop="kitchen"] .kitchen-recipe-strip em{color:#71593b}
+#kitchenP[data-workshop="kitchen"] #kitchenChallenge{background-color:#e4d3a7;background-image:linear-gradient(120deg,#fff0c633,#a7865522);background-size:auto;color:#51422d;border-color:#9e7a47;box-shadow:inset 0 1px #fff3ce,inset 0 -2px #a7834e66,0 2px #241b1488;border-radius:3px}
+#kitchenP[data-workshop="kitchen"] #kitchenQueue{background-color:#384a3c;background-image:linear-gradient(135deg,#6f806444,#28372eaa);background-size:auto;border-color:#b39562;box-shadow:inset 0 2px #c8bb8b88,inset 0 -3px #1d3025aa,0 2px #251c1b99;border-radius:4px}
+#kitchenP[data-workshop="kitchen"] #kitchenQueue>small{color:#ffdf9b}
+#kitchenP[data-workshop="kitchen"] .kitchen-queue-grade{color:#f4e5b9;text-shadow:1px 1px #26322b}
+#kitchenP[data-workshop="kitchen"] #kitchenGrid{background-color:#94835c;background-image:linear-gradient(140deg,#bcad7b,#7d7756 55%,#ad9869);background-size:auto;border-color:#4b533b;box-shadow:inset 0 0 0 1px #e4d49b,inset 0 -3px #4b4c36aa,0 6px 12px #35211599;border-radius:5px}
+#kitchenP[data-workshop="kitchen"] .kc{background-color:#1c2e2c;background-image:linear-gradient(145deg,#263a35,#162625);background-size:auto;box-shadow:inset 0 0 0 1px #7f927355,inset 0 3px 3px #091b1bc9,inset 0 -1px #c4bc862b;border-radius:4px}
+#kitchenP[data-workshop="kitchen"] #kitchenProcesses,#kitchenP[data-workshop="kitchen"] #kitchenHand,#kitchenP[data-workshop="kitchen"] #kitchenFridge{background-color:#684d36;background-image:linear-gradient(125deg,#916e4544,#342e28aa),repeating-linear-gradient(0deg,transparent 0 9px,#251b1520 10px 11px);background-size:auto;border-color:#c0a16d;box-shadow:inset 0 2px #dfc28a88,inset 0 -3px #36291eaa,0 2px #2b211a99;border-radius:4px}
+#kitchenP[data-workshop="kitchen"] #kitchenProcesses>small,#kitchenP[data-workshop="kitchen"] #kitchenHand>small{color:#ffe3a7;text-shadow:1px 1px #37291d}
+#kitchenP[data-workshop="kitchen"] #kitchenMessage{background-color:#302a25ed;background-image:linear-gradient(110deg,#78604744,transparent);background-size:auto;color:#fff0ca;box-shadow:inset 0 1px #ccb27b66,inset 0 -1px #151e1c;border-radius:3px}
+body.workshop-backend #kitchenModal>div{background-color:#333a30;background-image:linear-gradient(125deg,#6c543988,#27392fbb);border-color:#ccb17b;box-shadow:inset 0 0 0 2px #30291e,0 10px 30px #0009;color:#f6e9c8}
+body.workshop-backend #kitchenModal button{background-color:#65503a;background-image:linear-gradient(135deg,#8c6c4755,#38433399);background-size:auto;border-color:#b59a69;box-shadow:inset 0 1px #d5bd8899,inset 0 -2px #25352aaa;color:#fff0c4;border-radius:4px}
+body.workshop-backend #kitchenModal .kitchen-grade-tabs [aria-pressed="true"],body.workshop-backend #kitchenModal .kitchen-tier-gallery [aria-pressed="true"]{background-color:#9b7841;border-color:#ffe0a0}
+
+.kitchen-ingredient-flight{position:fixed;z-index:149;pointer-events:none;contain:layout style;transform-origin:center;filter:drop-shadow(0 4px 3px #1c271b88);will-change:transform,width,height}
+.kitchen-ingredient-flight svg{display:block;width:100%;height:100%}
+.kitchen-flight-target>svg{visibility:hidden}
+.kitchen-ingredient-land>svg{animation:kitchen-ingredient-arrive .26s ease-out}
+@keyframes kitchen-ingredient-arrive{0%{transform:scale(.91)}55%{transform:scale(1.05)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.kitchen-ingredient-land>svg{animation:none}}
+.low-effects .kitchen-ingredient-land>svg{animation:none}
+
+</style>
 </head>
 <body>
 <div id="portraitGuard" hidden role="dialog" aria-modal="true" aria-hidden="true" aria-label="請直向遊玩"><svg viewBox="0 0 40 52" aria-hidden="true" shape-rendering="crispEdges"><path fill="#0c1726" d="M7 0h26v3h3v46h-3v3H7v-3H4V3h3z"/><path fill="#b8a577" d="M8 3h24v46H8z"/><path fill="#293e51" d="M10 8h20v34H10z"/><path fill="#e8d696" d="M16 4h8v2h-8zM17 45h6v2h-6z"/><path fill="#84b6b0" d="M19 14h3v16h-3zM13 21h3v3h-3zM16 18h3v3h-3zM22 18h3v3h-3zM25 21h3v3h-3z"/></svg><b>請直向遊玩</b><p>將手機轉回直向<br>即可繼續遊戲</p></div>
@@ -1815,7 +1868,7 @@ function kitchenFood(t=0){return {k:'o',t,fresh:14+6*kitchenLevel('fresh'),born:
 function kitchenOrder(generic=false){const c=generic?null:rnd(10),t=Math.min(3,Math.max(0,Math.floor((day-1)/6))),patience=(kitchen.challenge===0?50:70)+8*kitchenLevel('patience');return {c,t,max:patience,wait:patience};}
 function startKitchenNight(force=false){
  if(!sandboxSession)return;if(!kitchen)kitchen=freshKitchen();if(kitchen.day===day&&!force)return;
- clearKitchenDepartures();kitchen.day=day;kitchen.heat.fill(0);kitchen.tiles={};kitchen.q=Array.from({length:5},()=>kitchenRollFood());kitchen.mq=[0,1,2];kitchen.served=0;kitchen.missed=0;kitchen.earned=0;kitchen.progress=0;kitchen.done=false;kitchen.settlement=null;kitchen.stock={m:0,tool:0,o:0};kitchen.challenge=day===1?0:rnd(3);kitchen.mode='ore';
+ clearKitchenIngredientFlights();clearKitchenDepartures();kitchen.day=day;kitchen.heat.fill(0);kitchen.tiles={};kitchen.q=Array.from({length:5},()=>kitchenRollFood());kitchen.mq=[0,1,2];kitchen.served=0;kitchen.missed=0;kitchen.earned=0;kitchen.progress=0;kitchen.done=false;kitchen.settlement=null;kitchen.stock={m:0,tool:0,o:0};kitchen.challenge=day===1?0:rnd(3);kitchen.mode='ore';
  const list=Array.from({length:6},(_,i)=>kitchenOrder(i<2||kitchen.challenge!==0));kitchen.orders=list.splice(0,3);kitchen.queue=list;kitchen.message='晚餐營業開始！點空格放食材，拖曳工序卡備料，第三份工序相連就會自動完成料理。';
 }
 function kitchenRollFood(){const r=Math.random();return r<.04?2:r<.18?1:0;}
@@ -1862,9 +1915,9 @@ function kitchenUseHand(i){
  kitchen.hand=null;if(item.k==='o')kitchenAuto(i);return true;
 }
 function kitchenClick(i){
- if(!sandboxSession||!kitchen||kitchen.done||Date.now()<kitchenSuppressClick)return;let used=false;const organizing=kitchen.hand?.k==='w';
+ if(!sandboxSession||!kitchen||kitchen.done||Date.now()<kitchenSuppressClick)return;const launch=kitchenIngredientLaunch(i);let used=false;const organizing=kitchen.hand?.k==='w';
  if(kitchen.hand)used=kitchenUseHand(i);else if(kitchen.mode==='prep')used=kitchenPrepare(i);else if(kitchen.g[i]?.k==='w'){inspectKitchenDish(kitchen.g[i]);return;}else if(kitchen.g[i]?.k==='p')used=kitchenCraft(i);else if(kitchen.g[i]?.k==='o'){used=kitchenAuto(i);if(!used)kitchen.message='相連同階食材達三包可合成，五包可在落點升兩階。';}else if(kitchen.heat[i]>0)kitchen.message='餘熱還有 '+kitchen.heat[i]+' 步。';else{kitchen.g[i]=kitchenFood(kitchen.q.shift());kitchen.q.push(kitchenRollFood());kitchenAuto(i);used=true;}
- if(used&&!organizing)kitchenStep();renderKitchen();
+ if(used&&!organizing)kitchenStep();renderKitchen();if(used&&launch)flyKitchenIngredient(i,launch);
 }
 function kitchenSell(w,index,clear){
  if(!sandboxSession||!kitchen||kitchen.done)return false;const order=kitchen.orders[index];if(!order||w?.k!=='w')return false;if(order.c!==null&&order.c!==w.c){kitchen.message='這位客人需要'+KITCHEN_NAMES[order.c]+'。';return false;}if(w.t<order.t){kitchen.message='品質需要'+KITCHEN_GRADES[order.t]+'級以上。';return false;}
@@ -1905,14 +1958,14 @@ function kitchenHouseArt(p=TOWN_SEASONS[townVisualSeason()]){
 function kitchenItemName(w){return w.k==='o'?KITCHEN_GRADES[w.t]+'食材包':w.k==='p'?KITCHEN_GRADES[w.t]+KITCHEN_TYPES[w.s]:w.k==='w'?KITCHEN_GRADES[w.t]+KITCHEN_NAMES[w.c]:w.k==='m'?KITCHEN_PROCESS[w.s]:w.k==='spice'?KITCHEN_SPICES[w.spice].name+'調味包':({z:'冰水桶',f:'清潔工具',u:'精選食材券'}[w.k]||'道具');}
 function kitchenModal(title,html){$('kitchenModalTitle').textContent=title;$('kitchenModalContent').innerHTML=html;$('kitchenModal').hidden=false;}
 function renderKitchen(){
- if(!kitchen)return;$('kitchenDate').textContent=SEASONS[seasonIndex()].icon+' '+SEASONS[seasonIndex()].name+' · 第 '+day+' 天夜晚';$('kitchenMoney').textContent='💰 '+(sandboxSession?'∞':coins)+'　❤️'+lives;$('kitchenMute').textContent=muted?'🔇':'🔊';
+ if(!kitchen)return;syncWorkshopLook();$('kitchenDate').textContent=SEASONS[seasonIndex()].icon+' '+SEASONS[seasonIndex()].name+' · 第 '+day+' 天夜晚';$('kitchenMoney').textContent='💰 '+(sandboxSession?'∞':coins)+'　❤️'+lives;$('kitchenMute').textContent=muted?'🔇':'🔊';
  $('kitchenOrders').innerHTML=kitchen.orders.map((o,i)=>'<button class="kitchen-order" data-ko="'+i+'" onclick="kitchenOrderHelp('+i+')"><span>⏳ '+o.wait+'</span><div>'+ (o.c===null?'<b class="kitchen-any">任意</b>':kitchenArt({k:'w',c:o.c,t:o.t}))+'</div><b>'+'≥'+kitchenGradeName(o.t)+(o.c===null?'任意料理':KITCHEN_NAMES[o.c])+'</b>'+kitchenRecipeStrip(o.c)+'</button>').join('');
  const ch=KITCHEN_CHALLENGES[kitchen.challenge],progress=ch.kind==='rush'?kitchen.served:kitchen.progress;$('kitchenChallenge').textContent=kitchen.done?'晚餐營業完成 · 點此查看結算':ch.icon+' '+ch.name+' '+progress+'/'+ch.goal+' · 出餐 '+kitchen.served+'/6';$('kitchenChallenge').title=ch.text;
  $('kitchenQueue').innerHTML='<small>接下來</small>'+kitchen.q.map((t,i)=>'<span class="kitchen-next" '+(i===0?'data-kdrag="ore"':'')+'>'+kitchenArt({k:'o',t})+'<b>'+(i+1)+'</b><b class="kitchen-queue-grade">'+(t+1)+'階 '+KITCHEN_GRADES[t]+'</b></span>').join('');
  $('kitchenGrid').innerHTML=kitchen.g.map((w,i)=>'<button class="kc '+(w?.k==='w'?'kitchen-dish':'')+(w?.k==='w'&&Date.now()-(kitchen.forgedAt?.[i]||0)<650?' kitchen-complete':'')+'" data-ki="'+i+'" '+(w?.k==='w'?'data-kdrag="dish"':'')+' onclick="kitchenClick('+i+')" aria-label="第'+(i+1)+'格 '+esc(w?kitchenItemName(w):kitchen.heat[i]?'餘熱':'空格')+'" style="'+(kitchen.heat[i]?'background:#8a4437;':'')+(kitchen.tiles[i]?'box-shadow:inset 0 0 0 2px '+KITCHEN_SPICES[kitchen.tiles[i]].color+';':'')+'">'+(w?kitchenArt(w):'')+(w?.k==='w'?'<small class="kitchen-star">'+('★'.repeat(kitchenStars(w)))+('☆'.repeat(3-kitchenStars(w)))+'</small><span class="kitchen-food-label">'+(w.t+1)+'階 '+KITCHEN_NAMES[w.c]+'</span>':'')+(w?.k==='o'?'<small class="kitchen-fresh">'+(w.fresh||'待處理')+'</small>':'')+(kitchen.heat[i]?'<small class="kitchen-heat">'+kitchen.heat[i]+'</small>':'')+(kitchen.tiles[i]?'<span class="kitchen-seasoning">'+KITCHEN_SPICES[kitchen.tiles[i]].icon+'</span>':'')+'</button>').join('');
  $('kitchenProcesses').innerHTML='<small>工序卡</small>'+kitchen.mq.map((s,i)=>'<button '+(i===0?'data-kdrag="process" onclick="kitchen.mode=kitchen.mode===\'prep\'?\'ore\':\'prep\';renderKitchen()"':'disabled')+' class="'+(i===0?'kitchen-process-ready ':'')+(i===0&&kitchen.mode==='prep'?'selected':'')+'">'+kitchenProcessArt(s)+'<b>'+KITCHEN_PROCESS[s]+'</b></button>').join('');
  $('kitchenHand').innerHTML=kitchen.hand?'<small>手持</small><span data-kdrag="hand">'+kitchenArt(kitchen.hand)+'</span><button class="kitchen-stow" onclick="kitchenStow()" aria-label="收回手持物品">×</button>':'<small>道具箱</small><button onclick="openKitchenBag()" aria-label="廚房道具箱">🎒</button>';
- $('kitchenFridge').innerHTML='🥡<small>'+kitchen.pack.length+'/'+(2*kitchenLevel('pack'))+'</small>';$('kitchenMessage').textContent=kitchen.message;requestAnimationFrame(fitKitchen);
+ $('kitchenFridge').innerHTML='🥡<small>'+kitchen.pack.length+'/'+(2*kitchenLevel('pack'))+'</small>';$('kitchenMessage').textContent=kitchen.message;syncKitchenFlightTargets();requestAnimationFrame(fitKitchen);
 }
 function fitKitchen(){const screen=$('kitchenP');if(screen.hidden)return;const main=screen.querySelector('main');if(!main||main.clientHeight<1)return;const grid=$('kitchenGrid'),cell=Math.max(24,Math.floor(Math.min((main.clientWidth-54-30)/5,(main.clientHeight-34)/6)));grid.style.width=(cell*5+30)+'px';grid.style.height=(cell*6+34)+'px';grid.style.gridTemplateColumns='repeat(5,'+cell+'px)';grid.style.gridTemplateRows='repeat(6,'+cell+'px)';}
 function kitchenOrderHelp(i){
@@ -1953,13 +2006,13 @@ function startKitchenDrag(e){
 }
 function moveKitchenDrag(e){const d=kitchenDrag;if(!d||d.pointer!==e.pointerId)return;d.moved=d.moved||Math.hypot(e.clientX-d.x,e.clientY-d.y)>5;d.ghost.style.left=e.clientX-30+'px';d.ghost.style.top=e.clientY-30+'px';}
 function finishKitchenDrag(e){
- const d=kitchenDrag;if(!d||d.pointer!==e.pointerId)return;kitchenSuppressClick=Date.now()+250;cancelKitchenDrag();if(!d.moved){if(d.kind==='process'){kitchen.mode=kitchen.mode==='prep'?'ore':'prep';renderKitchen();}else if(d.kind==='dish')inspectKitchenDish(d.w);return;}
+ const d=kitchenDrag;if(!d||d.pointer!==e.pointerId)return;const launch=kitchenDraggedIngredientLaunch(d,e);kitchenSuppressClick=Date.now()+250;cancelKitchenDrag();if(!d.moved){if(d.kind==='process'){kitchen.mode=kitchen.mode==='prep'?'ore':'prep';renderKitchen();}else if(d.kind==='dish')inspectKitchenDish(d.w);return;}
  const hit=document.elementFromPoint(e.clientX,e.clientY),cell=hit?.closest('.kc'),order=hit?.closest('[data-ko]'),fridge=hit?.closest('#kitchenFridge'),clear=()=>{if(d.kind==='dish')kitchen.g[d.index]=null;else if(d.kind==='hand')kitchen.hand=null;};
  if(d.w.k==='w'&&order){kitchenSell(d.w,+order.dataset.ko,clear);return;}if(d.w.k==='w'&&fridge){if(kitchen.pack.length>=2*kitchenLevel('pack'))kitchen.message='餐盒櫃已滿或尚未解鎖，請提升餐盒管理。';else{clear();kitchen.pack.push(d.w);kitchen.message='料理已放入餐盒櫃。';}renderKitchen();return;}
  if(!cell){renderKitchen();return;}const i=+cell.dataset.ki;let used=false;
  if(d.kind==='process')used=kitchenPrepare(i);else if(d.kind==='ore'){if(!kitchen.g[i]&&!kitchen.heat[i]){kitchen.g[i]=kitchenFood(kitchen.q.shift());kitchen.q.push(kitchenRollFood());kitchenAuto(i);used=true;}}
  else if(d.kind==='hand')used=kitchenUseHand(i);else if(d.kind==='dish'&&!kitchen.g[i]&&!kitchen.heat[i]){clear();kitchen.g[i]=d.w;kitchen.message='已移動料理。';}
- if(used&&!(d.kind==='hand'&&d.w.k==='w'))kitchenStep();renderKitchen();
+ if(used&&!(d.kind==='hand'&&d.w.k==='w'))kitchenStep();renderKitchen();if(used&&launch)flyKitchenIngredient(i,launch);
 }
 function installKitchenControls(){const p=$('kitchenP');p.addEventListener('pointerdown',startKitchenDrag);document.addEventListener('pointermove',moveKitchenDrag,{passive:true});document.addEventListener('pointerup',finishKitchenDrag);document.addEventListener('pointercancel',cancelKitchenDrag);document.addEventListener('keydown',e=>{if(e.key==='Escape'){cancelKitchenDrag();$('kitchenModal').hidden=true;}});}
 
@@ -2253,6 +2306,43 @@ async function prepareGeminiSnapshot(si){
  if(geminiSnapshotRequests.has(si))return geminiSnapshotRequests.get(si);
  const epoch=sandboxEpoch,job=(async()=>{const response=await fetch(GEMINI_TOWN_ART[si]);if(!response.ok)throw new Error('Town background unavailable');const blob=await response.blob(),data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error('Town image unreadable'));reader.readAsDataURL(blob);});if(sandboxSession&&epoch===sandboxEpoch)geminiSnapshotAssets.set(si,data);})();
  geminiSnapshotRequests.set(si,job);try{await job;}finally{geminiSnapshotRequests.delete(si);}
+}
+const WORKSHOP_ART={"forge":"assets/interiors/forge.4296ba06a3b2.webp","kitchen":"assets/interiors/kitchen.957bd2e9fd2b.webp"};
+function syncWorkshopLook(){
+ const enabled=sandboxSession&&day>0,app=$('app'),screen=$('kitchenP');
+ app.dataset.workshop=enabled?'forge':'';screen.dataset.workshop=enabled?'kitchen':'';document.body.classList.toggle('workshop-backend',enabled);
+ if(enabled){if(app.dataset.wallArt!=='forge17'){app.style.setProperty('--workshop-wall','url("'+WORKSHOP_ART.forge+'")');app.dataset.wallArt='forge17';}if(screen.dataset.wallArt!=='kitchen17'){screen.style.setProperty('--workshop-wall','url("'+WORKSHOP_ART.kitchen+'")');screen.dataset.wallArt='kitchen17';}}
+ else{app.style.setProperty('--workshop-wall','none');screen.style.setProperty('--workshop-wall','none');app.dataset.wallArt='';screen.dataset.wallArt='';}
+}
+const kitchenIngredientFlights=new Set();
+let kitchenIngredientFlightEpoch=0;
+function clearKitchenIngredientFlights(){
+ kitchenIngredientFlightEpoch++;for(const entry of [...kitchenIngredientFlights]){entry.animation?.cancel?.();entry.node.remove();}kitchenIngredientFlights.clear();syncKitchenFlightTargets();
+}
+function syncKitchenFlightTargets(){
+ const cells=$('kitchenGrid').children;for(let i=0;i<cells.length;i++){const hidden=[...kitchenIngredientFlights].some(f=>f.index===i&&f.item&&kitchen?.g[i]===f.item);cells[i].classList.toggle('kitchen-flight-target',hidden);}
+}
+function kitchenIngredientLaunch(i){
+ if(!sandboxSession||!kitchen||kitchen.done||kitchen.g[i]||kitchen.heat[i])return null;
+ const item=kitchen.hand;if(item&&item.k!=='o'||!item&&kitchen.mode==='prep')return null;
+ const source=item?$('kitchenHand').querySelector('[data-kdrag="hand"]'):$('kitchenQueue').querySelector('.kitchen-next');
+ return source?{item:item?{...item}:{k:'o',t:kitchen.q[0]},rect:source.getBoundingClientRect()}:null;
+}
+function kitchenDraggedIngredientLaunch(d,e){
+ if(!d?.moved||!(d.kind==='ore'||d.kind==='hand'&&d.w.k==='o'))return null;
+ return {item:{...d.w},rect:{left:e.clientX-30,top:e.clientY-30,width:60,height:60}};
+}
+function flyKitchenIngredient(i,launch){
+ if(!sandboxSession||!kitchen||$('kitchenP').hidden||!launch||lowEffects||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return false;
+ const dst=$('kitchenGrid').children[i],a=launch.rect,b=dst?.getBoundingClientRect();if(!b||a.width<=0||b.width<=0||!Number.isFinite(a.left+b.left))return false;
+ while(kitchenIngredientFlights.size>=8){const oldest=kitchenIngredientFlights.values().next().value;oldest.animation?.cancel?.();oldest.node.remove();kitchenIngredientFlights.delete(oldest);}
+ const size=Math.min(b.width,b.height)*.94,x=b.left+(b.width-size)/2,y=b.top+(b.height-size)/2,dx=x-a.left,dy=y-a.top,lift=Math.min(80,18+Math.hypot(dx,dy)*.2),node=document.createElement('div');
+ node.className='kitchen-ingredient-flight';node.setAttribute('aria-hidden','true');node.innerHTML=kitchenArt(launch.item);node.style.cssText='left:'+a.left+'px;top:'+a.top+'px;width:'+a.width+'px;height:'+a.height+'px;';document.body.appendChild(node);
+ const epoch=kitchenIngredientFlightEpoch,entry={node,index:i,item:kitchen.g[i],animation:null};kitchenIngredientFlights.add(entry);syncKitchenFlightTargets();
+ const finish=(land=false)=>{node.remove();kitchenIngredientFlights.delete(entry);if(epoch!==kitchenIngredientFlightEpoch)return;syncKitchenFlightTargets();const cell=$('kitchenGrid').children[i];if(land&&kitchen?.g[i]===entry.item&&cell){cell.classList.remove('kitchen-ingredient-land');cell.classList.add('kitchen-ingredient-land');}};
+ if(!node.animate){finish();return false;}
+ entry.animation=node.animate([{width:a.width+'px',height:a.height+'px',transform:'translate(0,0) rotate(-6deg)',opacity:.9},{width:Math.max(size,a.width)*1.08+'px',height:Math.max(size,a.height)*1.08+'px',transform:'translate('+dx*.5+'px,'+(dy*.5-lift)+'px) rotate(5deg)',opacity:1,offset:.5},{width:size+'px',height:size+'px',transform:'translate('+dx+'px,'+dy+'px) rotate(0deg)',opacity:1}],{duration:Math.min(420,280+Math.hypot(dx,dy)*.18),easing:'cubic-bezier(.22,.65,.38,1)',fill:'forwards'});
+ entry.animation.onfinish=()=>finish(true);entry.animation.oncancel=()=>finish();return true;
 }
 const SEASONS=[
   {id:'spring',name:'春天',icon:'🌱',description:'春回大地！鍛造格過熱 50 步。春季持續 3 天。'},
@@ -2855,7 +2945,7 @@ $("qC").onclick=e=>{
 };
 
 function render(){
-  syncSeasonMusic();
+  syncWorkshopLook();syncSeasonMusic();
   renderAvatarBadges();
   const currentSeason=SEASONS[seasonIndex()];
   $("app").dataset.season=currentSeason.id;
@@ -3562,7 +3652,7 @@ function preview_renderTown(){
  renderGreenhouse(p,s.id);
  renderTownPlaza(p,s.id);renderCityDecor();renderArchitect();renderHarvestAlert();scheduleTownBirds();renderTownChest();renderTownWeather(si);renderTownNight();renderGeminiTown();
 }
-function showTown(){clearForgeFeedback();
+function showTown(){clearKitchenIngredientFlights();clearForgeFeedback();
  if(day<=0)return;phase='town';$('townP').style.display='flex';renderTown();syncTownMotion();saveNow();
 }
 function returnToTown(){if(day<=0){goHome();return;}showTown();}
@@ -5724,12 +5814,13 @@ function installKitchenPreviewCatalog(enabled){
  DECOR_CATALOG.splice(0,DECOR_CATALOG.length,...rows);DECOR_BY_ID.clear();DECOR_CATALOG.forEach(d=>DECOR_BY_ID.set(d.id,d));
 }
 function clearKitchenPreviewScene(){
- cancelKitchenDrag();clearKitchenDepartures();for(const id of ['townKitchen','sandboxNightToggle','kitchenP','kitchenModal'])$(id).hidden=true;
+ clearKitchenIngredientFlights();syncWorkshopLook();cancelKitchenDrag();clearKitchenDepartures();for(const id of ['townKitchen','sandboxNightToggle','kitchenP','kitchenModal'])$(id).hidden=true;
  $('townP').dataset.previewKitchen='false';$('townP').dataset.time='day';$('townNightSky').innerHTML='';$('townNightSky').dataset.key='';
  $('townScenery').dataset.season='';$('townWeather').dataset.season='';$('townQueue').dataset.visitors='';$('townDecorFront').dataset.key='';
  for(const id of ['townArchive','townForge','townShop','townTraining','townDecorShop','townGreenhouse']){const el=$(id);el.dataset.artSeason='';el.dataset.greenhouseArt='';el.dataset.harvestKey='';el.querySelector('.night-house-glow')?.remove();}
 }
 
+window.addEventListener('resize',clearKitchenIngredientFlights);
 installKitchenControls();window.addEventListener('resize',()=>{if(!$('kitchenP').hidden)requestAnimationFrame(fitKitchen);});
 syncPortraitGuard();requestPortraitLock();
 
