@@ -1,0 +1,7 @@
+// Optional export only. Normal editing/building never reads or generates 35 MB HTML.
+const path=require('node:path'),fs=require('node:fs'),assert=require('node:assert/strict'),vm=require('node:vm'),{root,load}=require('./build.cjs');
+const target=process.argv[2];if(!target)throw new Error('Usage: node tools/standalone.cjs <output.html>');
+let {js,css,template}=load();const manifest=JSON.parse(fs.readFileSync(path.join(root,'src/assets-manifest.json'),'utf8')),groups=new Map();
+for(const a of manifest){const mime={webp:'image/webp',jpg:'image/jpeg',mp3:'audio/mpeg'}[a.url.split('.').pop()];assert.ok(mime,a.url);if(!groups.has(a.variable))groups.set(a.variable,[]);groups.get(a.variable).push({...a,data:'data:'+mime+';base64,'+fs.readFileSync(path.join(root,a.url)).toString('base64')});}
+for(const [name,assets]of groups){const re=new RegExp('(^const '+name+'=)([^\\r\\n]*)','m'),match=js.match(re);assert.ok(match,name);const original=JSON.parse(match[2].trim().replace(/;$/,'')),out=Array.isArray(original)?[]:{};for(const a of assets)out[a.id]=a.data;js=js.replace(re,()=>match[1]+JSON.stringify(out)+';');}
+new vm.Script(js);const html=template.replace('<!-- GAME_STYLES -->',()=>'<style>'+css+'</style>').replace('<!-- GAME_SCRIPT -->',()=>'<script>'+js+'</script>');fs.writeFileSync(path.resolve(target),html);console.log(JSON.stringify({output:path.resolve(target),bytes:Buffer.byteLength(html)}));

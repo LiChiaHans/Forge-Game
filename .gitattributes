@@ -1,0 +1,8 @@
+# Preserve the audited source bytes across Windows/Linux checkouts.
+# Source order is also significant to classic-script initialization and CSS cascade.
+src/** -text
+game.js -text
+game.css -text
+index.html -text
+assets/** -text
+tests/extraction-reference.json -text

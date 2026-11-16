@@ -1,0 +1,54 @@
+# Forge Master
+
+正式遊戲：https://lichiahans.github.io/Forge-Game/
+
+這是直接發布到 GitHub Pages 的 HTML 遊戲。原始碼已依功能分區，不需讀取或修改 35 MB 的下載版 HTML。玩法、介面尺寸、存檔格式與素材均沿用整理前的版本。
+
+## 從哪裡修改
+
+| 內容 | 位置 |
+| --- | --- |
+| 畫面結構、按鈕與視窗 | `src/index.template.html` |
+| 餐廳、食材、工序、訂單、保鮮 | `src/js/kitchen/` |
+| 冶煉、礦石、模具、合成、武器星級 | `src/js/forge/` |
+| 城鎮、道路、四季夜景、客人 | `src/js/town/` |
+| 建築師、裝飾、版型、縮圖 | `src/js/decorations/` |
+| 遠征、Boss、料理補給 | `src/js/expedition/` |
+| 傳說與終極藍圖 | `src/js/blueprints/` |
+| 技能、溫室、季節、圖鑑 | `src/js/skills/`、`garden/`、`seasons/`、`collections/` |
+| 存檔與備份、後台、排行榜 | `src/js/saves/`、`admin/`、`online/` |
+| 角色、音效、共用初始化與視窗 | `src/js/avatar/`、`audio/`、`core/`、`ui/` |
+| CSS 外觀與手機排版 | `src/styles/`，依數字維持原覆蓋順序 |
+| 圖片、音樂檔案 | `assets/`；素材對照 `src/assets-manifest.json` |
+| 函式名稱→檔案與行號 | `docs/function-index.tsv`，由建置工具產生 |
+
+先讀 `docs/PROJECT_CONTEXT.md`，再搜尋需要的函式或功能。例：`rg "cancelKitchenOrder|kitchenRollFood" docs/function-index.tsv`。不需整份載入生成檔、素材清單或歷次更新備份。
+
+## 建置與檢查
+
+只需要 Node.js，沒有安裝套件步驟：
+
+```text
+node tools/build.cjs
+node tools/check.cjs
+```
+
+工具依 `src/build-order.json` 原順序合併，生成 `index.html`、`game.js`、`game.css`，並更新函式索引。腳本仍在原位置執行，沒有改成非同步載入或重排初始化。程式與樣式連結帶內容指紋，更新相關檔案時才變更指紋。
+
+使用本機靜態網頁伺服器預覽此目錄；`.build/combined.html` 提供本機自動檢查使用，不發布。`node tools/check.cjs --extraction` 額外確認最初拆分與 337494c 版本的腳本及 CSS 內容完全相同；未來改玩法後不再使用此參數。
+
+## 發布
+
+先建置、檢查、預覽，再將相關 `src/`、工具、測試、函式索引以及生成的 `index.html`、`game.js`、`game.css` 提交到原本的 `main`。素材未改時不用重新產生素材。沿用既有 GitHub Pages 發布，不更動排行榜服務。
+
+不要使用舊的 `work/progression/publish.ps1` 覆蓋此版本；該腳本只適用於過去單檔開發方式。歷史版本由 Git 保存，不再複製大型 baseline HTML。
+
+## 下載單檔
+
+需要可直接開啟的單檔時才匯出：
+
+```text
+node tools/standalone.cjs Forge_Master_下載版.html
+```
+
+這會將素材內嵌回約35 MB的單一HTML，是交付用途，不是編輯來源。一般程式更新不需重新匯出、讀取或提交這份大檔。

@@ -1,0 +1,29 @@
+
+/* Keep the board and items brighter than the forge's tiled backdrop. */
+body::before{filter:brightness(.68) saturate(.78)}
+#grid .c.wc .hxi svg{filter:drop-shadow(1px 0 #0b1220) drop-shadow(-1px 0 #0b1220) drop-shadow(0 1px #0b1220)}
+.weapon-kind-label,.weapon-tier-label{position:absolute;z-index:4;pointer-events:none;color:#fff2cf;text-shadow:1px 1px #080d14;background:#111b29db;font-weight:800;line-height:1.25;border-radius:2px;padding:1px 3px}
+.weapon-kind-label{bottom:1px;left:50%;transform:translateX(-50%);font-size:clamp(9px,2.25vw,12px);white-space:nowrap}
+.weapon-tier-label{top:2px;left:2px;font-size:clamp(8px,2vw,10px);color:#ecd299}
+.season-benefit{margin:12px 0;padding:12px;border:1px solid #b5b77b;background:#32433e;color:#f2f3c5;font-size:16px;line-height:1.6}
+.season-charge{font-size:10px;color:#ffd084;margin-left:2px}
+#forgeCelebration{position:fixed;z-index:64;left:50%;top:45%;transform:translate(-50%,-50%);width:min(76vw,290px);pointer-events:none;text-align:center;isolation:isolate}
+#forgeCelebration[hidden]{display:none}
+.forge-reveal{display:flex;align-items:center;flex-direction:column;gap:7px;padding:17px 14px;background:linear-gradient(135deg,#19202ff5,#2f2c3ef5);border:3px solid var(--forge-color,#e2c47d);box-shadow:0 0 0 3px #17202a,0 6px 0 #070b15b0,0 0 28px #e3c87b55;animation:forge-reveal .42s steps(5,end) both}
+.forge-rarity{letter-spacing:3px;font-size:13px;color:var(--forge-color)}
+.forge-trophy{width:98px;height:98px;filter:drop-shadow(0 0 9px var(--forge-color));animation:forge-trophy .45s steps(5,end) both}
+.forge-trophy>.hxo{width:100%;height:100%}
+.forge-reveal strong{font-size:23px;line-height:1.3;color:#fff4d6}
+.forge-kind{color:var(--forge-color);font-size:13px}
+.forge-values{font-size:16px;color:#f2e6c9;white-space:nowrap}
+.forge-reveal small{font-size:12px;color:#bdb6a6}
+#forgeCelebration[data-rank="2"] .forge-reveal{background:linear-gradient(135deg,#171e36f7,#3c2e48f7);box-shadow:0 0 0 3px #17202a,0 6px 0 #070b15b0,0 0 34px #dec1ff77}
+.forge-complete{animation:forge-cell .65s ease-out both}
+.forge-sparks{position:absolute;z-index:8;left:50%;top:50%;width:4px;height:4px;background:#fff5c1;box-shadow:0 -14px #ffe184,14px -7px #ffc05c,14px 9px #ffe184,0 16px #ffe184,-14px 7px #ffc05c,-14px -9px #ffe184;pointer-events:none;animation:forge-sparks .65s steps(6,end) both}
+@keyframes forge-reveal{0%,30%{opacity:0;transform:scale(.96)}45%{opacity:1;transform:scale(1.035)}100%{opacity:1;transform:scale(1)}}
+@keyframes forge-trophy{0%,35%{transform:scale(.92)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
+@keyframes forge-cell{0%{box-shadow:inset 0 0 0 3px #fff8bd,0 0 16px #ffd87d}100%{box-shadow:inset 0 0 0 1px #dcc28444}}
+@keyframes forge-sparks{from{transform:scale(.3);opacity:1}to{transform:scale(1.7) rotate(25deg);opacity:0}}
+.low-effects .forge-sparks{display:none}.low-effects .forge-reveal,.low-effects .forge-trophy,.low-effects .forge-complete{animation:none}
+@media(prefers-reduced-motion:reduce){.forge-sparks{display:none}.forge-reveal,.forge-trophy,.forge-complete{animation:none}}
+

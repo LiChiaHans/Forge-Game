@@ -1,0 +1,457 @@
+[
+  {
+    "id": 1794809601249,
+    "name": "玩家",
+    "date": "2026/11/16",
+    "time": "14:13",
+    "avatar": {
+      "skin": 1,
+      "hairStyle": 0,
+      "hairColor": 1,
+      "brows": 0,
+      "eyes": 0,
+      "eyeColor": 1,
+      "nose": 0,
+      "mouth": 0
+    },
+    "coins": 0,
+    "score": 0,
+    "day": 1,
+    "updated": 1794809601258,
+    "state": {
+      "restaurant": {
+        "version": 1,
+        "night": true,
+        "kitchen": {
+          "day": 1,
+          "g": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "k": "o",
+              "t": 2,
+              "fresh": 14,
+              "born": 1
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "heat": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "tiles": {},
+          "q": [
+            2,
+            1,
+            0,
+            2,
+            0
+          ],
+          "mq": [
+            0,
+            1,
+            2
+          ],
+          "hand": {
+            "k": "u"
+          },
+          "bag": [],
+          "pack": [],
+          "skills": {
+            "merge": 0,
+            "cool": 0,
+            "fresh": 0,
+            "spice": 0,
+            "pack": 1,
+            "patience": 0
+          },
+          "sp": 2,
+          "xp": {},
+          "orders": [
+            {
+              "guest": {
+                "id": 4,
+                "role": "遊俠",
+                "gender": "男"
+              },
+              "c": null,
+              "t": 0,
+              "max": 100,
+              "wait": 100,
+              "uid": 1,
+              "slot": 0,
+              "enteredAt": 1794809601256
+            },
+            {
+              "guest": {
+                "id": 5,
+                "role": "遊俠",
+                "gender": "女"
+              },
+              "c": 6,
+              "t": 0,
+              "max": 100,
+              "wait": 100,
+              "uid": 2,
+              "slot": 1,
+              "enteredAt": 1794809601346
+            },
+            {
+              "guest": {
+                "id": 6,
+                "role": "僧侶",
+                "gender": "男"
+              },
+              "c": null,
+              "t": 0,
+              "max": 100,
+              "wait": 100,
+              "uid": 3,
+              "slot": 2,
+              "enteredAt": 1794809601436
+            }
+          ],
+          "queue": [],
+          "served": 0,
+          "missed": 0,
+          "earned": 0,
+          "crafted": 0,
+          "turn": 0,
+          "challenge": 0,
+          "progress": 0,
+          "mode": "ore",
+          "done": false,
+          "lastRewarded": 0,
+          "stock": {
+            "m": 0,
+            "tool": 0,
+            "o": 0
+          },
+          "message": "晚餐營業開始！點空格放食材，拖曳工序卡備料，第三份工序相連就會自動完成料理。",
+          "justHeated": [],
+          "settlement": null,
+          "total": 3,
+          "forgedAt": {}
+        },
+        "metrics": {
+          "activeMs": 9,
+          "lastActive": 1794809601258,
+          "crafted": 0,
+          "served": 0,
+          "spoiled": 0,
+          "supplies": 0,
+          "supplyTypes": {},
+          "battles": [],
+          "nights": 0,
+          "nightTurns": 0
+        }
+      },
+      "g": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "coins": 0,
+      "earned": 0,
+      "all": 0,
+      "day": 1,
+      "dTot": 3,
+      "dServed": 0,
+      "dEarn": 0,
+      "dLeft": 0,
+      "orders": [],
+      "dq": [],
+      "best": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "Q": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "MQ": [
+        2,
+        2,
+        2
+      ],
+      "heat": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hand": null,
+      "shopD": [
+        0,
+        0,
+        1
+      ],
+      "magic": 0,
+      "magicSet": [],
+      "dMagic": 0,
+      "dSold": 0,
+      "lives": 3,
+      "skills": {
+        "mm": 0,
+        "gc": 0,
+        "mg": 0,
+        "wb": 0,
+        "mc": 0,
+        "mn": 0,
+        "cd": 0
+      },
+      "pack": [],
+      "sp": 1,
+      "bag": [],
+      "gachaUsed": false,
+      "skillDone": false,
+      "spentToday": 0,
+      "phase": "town",
+      "quests": [
+        {
+          "t": "big",
+          "s": "a",
+          "p": 0,
+          "n": 1,
+          "x": 120,
+          "r": 100
+        },
+        {
+          "t": "stat_spd",
+          "s": "a",
+          "p": 0,
+          "n": 1,
+          "x": 16,
+          "r": 150
+        },
+        {
+          "t": "stat_atk",
+          "s": "a",
+          "p": 0,
+          "n": 1,
+          "x": 20,
+          "r": 150
+        }
+      ],
+      "qDone": 0,
+      "dLv": 3,
+      "pendingChests": 1,
+      "lastCompletedDay": 1,
+      "expedition": {
+        "day": 1,
+        "attempts": 0,
+        "unlocked": 0,
+        "cleared": [],
+        "wonToday": [],
+        "victories": 0,
+        "endless": 0,
+        "lastBattle": null
+      },
+      "legendProjects": [],
+      "blueprintGoalId": null,
+      "collections": {
+        "version": 1,
+        "weapons": [],
+        "blueprints": [],
+        "legends": []
+      },
+      "ecology": {
+        "version": 1,
+        "beds": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "seeds": {},
+        "tiles": [],
+        "elementDay": 1,
+        "monsterDay": 1,
+        "monsters": [
+          "water",
+          "thunder",
+          "none",
+          "stone",
+          "wind",
+          "fire",
+          "thunder",
+          "thunder",
+          "stone",
+          "light",
+          "wind",
+          "dark",
+          "fire",
+          "dark",
+          "stone",
+          "none",
+          "stone",
+          "wind",
+          "dark",
+          "wind"
+        ]
+      },
+      "orderCapVersion": 1,
+      "city": {
+        "version": 1,
+        "owned": {},
+        "layouts": {
+          "spring": [],
+          "summer": [],
+          "autumn": [],
+          "winter": []
+        },
+        "next": 1,
+        "nightLayouts": {
+          "spring": []
+        }
+      },
+      "avatar": {
+        "skin": 1,
+        "hairStyle": 0,
+        "hairColor": 1,
+        "brows": 0,
+        "eyes": 0,
+        "eyeColor": 1,
+        "nose": 0,
+        "mouth": 0
+      },
+      "shopBought": {
+        "m": 0,
+        "tool": 0,
+        "o": 0
+      },
+      "leaves": [],
+      "frozen": [],
+      "seasonVersion": 1,
+      "seasonNoticePending": true,
+      "seasonCraft": {
+        "day": 1,
+        "charges": 0
+      },
+      "weaponMastery": {
+        "version": 1,
+        "counts": []
+      }
+    }
+  }
+]

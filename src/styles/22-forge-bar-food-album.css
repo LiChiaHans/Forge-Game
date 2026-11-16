@@ -1,0 +1,12 @@
+
+#app[data-workshop="forge"] .bar2{display:grid;grid-template-columns:26px repeat(3,minmax(0,1fr)) 32px 64px;gap:4px;align-items:stretch;min-width:0}
+#app[data-workshop="forge"] .bar2>button{min-width:0!important;width:auto;padding-left:2px!important;padding-right:2px!important;white-space:nowrap;font-size:15px!important;overflow:hidden;text-overflow:clip}
+#app[data-workshop="forge"] .bar2 #mu{font-size:18px!important}#app[data-workshop="forge"] .bar2 #lv{display:flex;align-items:center;justify-content:center;min-width:0;width:64px;white-space:nowrap;margin:0;padding:0!important;font-size:16px;letter-spacing:-2px;box-sizing:border-box}
+#kitchenP[data-workshop="kitchen"] #kitchenMessage{height:29px;min-height:29px;max-height:29px;flex:0 0 29px;line-height:21px;padding:4px 8px;white-space:nowrap;overflow:hidden;box-sizing:border-box;font-size:14px}
+.kitchen-message-track{display:inline-flex;width:max-content;max-width:none;gap:40px;vertical-align:top}.kitchen-message-track>span{flex:none;white-space:nowrap}.scrolling-message .kitchen-message-track{animation:kitchen-message-scroll var(--message-duration,15s) linear infinite;will-change:transform}
+@keyframes kitchen-message-scroll{0%,7%{transform:translateX(0)}100%{transform:translateX(var(--message-distance))}}
+#archiveCategories{display:flex;gap:8px;margin-bottom:12px}#archiveCategories[hidden]{display:none!important}#archiveCategories button{flex:1;font-size:17px;padding:9px}#archiveCategories [aria-pressed=true]{background:#786345;border-color:#f0d18d;color:#fff1c4}.dish-album-section .album-card b{font-size:10px;min-height:2.4em;line-height:1.2}.dish-album-section .album-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+.exp-food-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.exp-food-list>button{display:flex;align-items:center;gap:5px;text-align:left;padding:6px;min-width:0}.exp-food-list svg{width:45px;height:45px;flex:none}.exp-food-list small{display:block;font-size:11px;line-height:1.45}.exp-food-list b{font-size:12px}.food-toggle{margin-bottom:3px}.food-effect-note{color:#e4d697;background:#202d32;padding:9px;border:1px solid #9d8b60}
+#townP[data-preview-kitchen="true"][data-time="night"] #townQueue .town-visitor svg{filter:brightness(.7) saturate(.85)}
+@media(prefers-reduced-motion:reduce){.scrolling-message .kitchen-message-track{animation:none}.scrolling-message{overflow-x:auto!important;scrollbar-width:none}.kitchen-message-repeat{display:none}}
+

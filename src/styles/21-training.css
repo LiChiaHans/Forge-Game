@@ -1,0 +1,6 @@
+
+#trainingTabs{display:flex;gap:8px;margin:0 0 12px}#trainingTabs[hidden]{display:none!important}#trainingTabs button{flex:1;font-size:17px;padding:10px 5px}#trainingTabs button[aria-pressed=true]{border-color:#f3d175;background:#736345;color:#fff2c3}
+#sk.training-readonly #skc .skr{display:block}#sk.training-readonly #skc{line-height:1.65}#sk.training-readonly #skc small{font-size:16px}
+.pet-facing{transform-box:view-box;transform-origin:center;will-change:transform}
+@media(prefers-reduced-motion:reduce){.pet-facing{will-change:auto}}
+

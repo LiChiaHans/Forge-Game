@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#1f2531">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Forge Master">
+<title>Forge Master</title>
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Forge%20Master%22%2C%22short_name%22%3A%22Forge%20Master%22%2C%22display%22%3A%22standalone%22%2C%22orientation%22%3A%22portrait%22%2C%22background_color%22%3A%22%2318232f%22%2C%22theme_color%22%3A%22%231f2531%22%7D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
+<!-- GAME_STYLES -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+<div id="portraitGuard" hidden role="dialog" aria-modal="true" aria-hidden="true" aria-label="請直向遊玩"><svg viewBox="0 0 40 52" aria-hidden="true" shape-rendering="crispEdges"><path fill="#0c1726" d="M7 0h26v3h3v46h-3v3H7v-3H4V3h3z"/><path fill="#b8a577" d="M8 3h24v46H8z"/><path fill="#293e51" d="M10 8h20v34H10z"/><path fill="#e8d696" d="M16 4h8v2h-8zM17 45h6v2h-6z"/><path fill="#84b6b0" d="M19 14h3v16h-3zM13 21h3v3h-3zM16 18h3v3h-3zM22 18h3v3h-3zM25 21h3v3h-3z"/></svg><b>請直向遊玩</b><p>將手機轉回直向<br>即可繼續遊戲</p></div>
+<div id="app">
+  <div class="bar">
+    <span id="coin"></span><span id="sc"></span><button id="srv" onclick="showSeasonNotice()" aria-label="日期、客人與季節資訊"></button>
+    <button onclick="returnToTown()" aria-label="回到城鎮" title="回到城鎮">🏘 回城鎮</button>
+  </div>
+  <div class="bar bar2">
+    <button onclick="showHelp()">?</button>
+    <button onclick="openP('shopP')">🛒商店</button>
+    <button onclick="openP('colP')">📖圖鑑</button>
+    <button id="spb" onclick="visitTrainingFromGame()">🌟技能</button>
+    <button id="mu" onclick="toggleMute()">🔊</button>
+    <span id="lv"></span>
+  </div>
+  <div id="tut"><span id="tutt"></span><button onclick="skipTut()">略過教學</button></div>
+  <div id="orders"></div>
+  <div id="qbar" style="display:none"></div>
+  <div id="play">
+    <div id="q"></div>
+    <div id="workbench"><div id="grid"></div></div>
+    <div id="fx"></div>
+  </div>
+  <div id="side"><div id="tools"></div><div id="handSlot"></div><button id="pack" onclick="openChest()" aria-label="開啟武器箱"></button></div>
+  <div id="msg"></div>
+</div>
+
+<div id="chestP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('chestP')">×</button><h2>📦 武器箱</h2><p id="chestInfo"></p><button class="exp-wide" onclick="openBlueprintGoal()">📋 查看製作計畫</button><div id="chestItems"></div><button class="legend-chest-button" onclick="openLegendRecipes()">🌟 藍圖收藏</button><button  style="width:100%;margin-top:14px" onclick="closeP('chestP')" class="legacy-modal-close" hidden>關閉</button></div></div>
+<div id="townP"><header class="town-header"><div><span class="town-player-heading"><button id="townAvatar" class="player-avatar" onclick="openAvatarCreator('edit')" title="調整角色外觀" aria-label="調整角色外觀"></button><b>🏘 鍛造小鎮</b></span><span class="town-header-actions"><button id="sandboxNightToggle" hidden onclick="toggleSandboxNight()">🌙 夜晚</button><button id="sandboxNextDay" hidden onclick="nextSandboxDay()">下一天 ▶</button><button id="townArchitectBtn" aria-label="開啟建築師" title="建築師" aria-pressed="false">🏗</button><button id="townMute" onclick="toggleMute()" aria-label="切換靜音">🔊</button><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></span></div><button id="townReviewSave22" hidden aria-label="後台測試進度" onclick="openReviewProgress()">💾</button><div id="townStats"></div><div id="townSeason"></div><span id="sandboxTag" hidden></span><div id="architectBar" hidden><div class="architect-season-picker"><button id="architectSeasonPrev" aria-label="上一個季節">◀</button><output id="architectSeasonName">春天</output><button id="architectSeasonNext" aria-label="下一個季節">▶</button></div><button id="architectInventoryTop">📦 收藏</button><button id="architectLayoutsTop">🖼 版型</button><div id="architectPlacementBar" hidden><span id="architectPlacementHint" aria-live="polite"></span><button id="architectCancelTop">取消放置</button></div></div>
+</header><div id="townMap"><div id="geminiTownScene" aria-hidden="true"><img id="geminiTownImage" alt="" decoding="async"></div><div id="geminiTownEffects" aria-hidden="true"></div><div id="townScenery"></div><div id="townDecorBack"></div><div id="townDecorFront"></div><div id="townPlaza" aria-hidden="true"></div><div id="townFurniture" aria-hidden="true"></div><button id="townExpedition" onclick="openExpedition()" aria-label="城門遠征"><span class="town-sign">⚔ 遠征</span></button><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townGreenhouse" class="town-building" onclick="openP('greenhouseP')" aria-label="溫室"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><button id="townKitchen" hidden class="town-building" onclick="openKitchen()" aria-label="廚房餐廳"></button><button id="townDecorShop" class="town-building" onclick="openDecorationShop()" aria-label="裝飾行"></button><div id="townFountain" aria-label="城鎮噴水池"></div><div id="townQueue"></div><div id="townPets"><button id="townPet-cat" class="town-pet" onclick="petLove('cat')" aria-label="摸摸小貓"></button><button id="townPet-dog" class="town-pet" onclick="petLove('dog')" aria-label="摸摸小狗"></button></div><div id="townBirds" aria-hidden="true"></div><button id="townChest" onclick="openTownChest()" hidden></button><div id="townNightSky" aria-hidden="true"></div><div id="townWeather" aria-hidden="true"></div></div><section id="architectPanel" hidden><div class="architect-panel-heading"><b id="architectSelected"></b><button id="architectDeselect" aria-label="關閉裝飾工具">×</button></div><div id="architectActions"><div class="architect-scale-row"><label for="architectScale">大小</label><input type="range" id="architectScale" min="30" max="200" step="1" value="100"><output id="architectScaleValue">100%</output></div><div class="architect-scale-row"><label for="architectRotation">旋轉</label><input type="range" id="architectRotation" min="0" max="360" step="1" value="0"><output id="architectRotationValue">0°</output></div><div class="architect-transform-tools"><button data-city-action="flip">水平翻轉</button><button data-city-action="flipY">上下翻轉</button><button data-city-action="depth" id="architectDepth">移到後方</button><button data-city-action="roam" id="architectRoam">散步</button><button data-city-action="stow">📦 收起來</button></div></div></section></div>
+<div id="decorShopP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('decorShopP')">×</button><h2>🎨 裝飾行</h2><p id="decorShopSummary"></p><div id="decorShopTabs" class="city-season-tabs"></div><p id="decorShopNotice" class="city-note"></p><div id="decorShopGrid" class="decor-grid"></div></div></div>
+<div id="decorInventoryP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('decorInventoryP')">×</button><h2 id="decorInventoryTitle">裝飾收藏</h2><p class="city-note">收起的裝飾會留在收藏；同一件四季通用裝飾可用於各季的配置。</p><div class="decor-inventory-toolbar"><button id="decorInventoryShop">🎨 前往裝飾行</button><button id="decorReturnAll">📦 全部收回</button></div><div id="decorInventoryGrid" class="decor-grid"></div></div></div>
+<div id="cityLayoutPreviewP" class="city-modal city-layout-preview"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('cityLayoutPreviewP')">×</button><h2 id="cityLayoutPreviewTitle">城鎮版型預覽</h2><p id="cityLayoutPreviewMeta"></p><p id="cityLayoutPreviewStatus" role="status" hidden></p><img id="cityLayoutPreviewImage" alt="城鎮截圖"></div></div>
+
+<div id="cityLayoutsP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('cityLayoutsP')">×</button><h2 id="cityLayoutsTitle">城鎮版型</h2><p class="city-note">版型包含城鎮截圖與作者資訊。缺少的裝飾可付費補齊並套用；預設版型可隨時還原原始佈置。</p><div class="city-layout-save"><input id="cityLayoutName" maxlength="28" aria-label="城鎮版型名稱" placeholder="幫版型取個名字"><button id="cityLayoutSave">儲存目前版型</button></div><div id="cityLayoutsList"></div></div></div>
+
+<div id="townLootP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('townLootP')">×</button><h2>每日寶箱</h2><div id="townLootArt"></div><h3 id="townLootName"></h3><p id="townLootRemaining" aria-live="polite"></p><div class="town-dialog-actions"><button  id="townLootClose" onclick="if(!chestOpening)closeP('townLootP')" class="legacy-modal-close" hidden>稍後再開</button><button id="townLootOpen" class="pri" onclick="claimTownChest()">開啟寶箱</button></div></div></div>
+<div id="townSkillP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('townSkillP')">×</button><h2>⭐ 還有技能點可以使用</h2><p id="townSkillCount"></p><div class="town-dialog-actions"><button onclick="startTownForge()">仍要進入</button><button class="pri" onclick="closeP('townSkillP');openSkills(false)">前往訓練所</button></div></div></div>
+<div id="weaponStatsP" class="exp-overlay"><div class="hp weapon-stat-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('weaponStatsP')">×</button>
+ <small id="weaponStatsSource"></small><h2 id="weaponStatsTitle"></h2><div id="weaponStatsArt"></div><div id="weaponStatsValues"></div>
+ <button id="weaponProtection" class="exp-wide" onclick="toggleWeaponProtection()" hidden></button><div id="weaponStatsParts"></div><p id="weaponStatsNote" class="exp-note"></p><p id="weaponStatsPrice"></p>
+ <button  class="pri exp-wide legacy-modal-close" onclick="closeP('weaponStatsP')" hidden>關閉</button>
+</div></div>
+<div id="expeditionP" class="exp-overlay"><div class="hp exp-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('expeditionP')">×</button>
+ <header class="exp-header"><div class="exp-player-heading"><span id="expeditionAvatar" class="player-avatar"></span><div><small>鍛造之後，向城外出發</small><h2>⚔ 遠征</h2></div></div><button hidden class="legacy-modal-close" onclick="closeExpedition()">回城鎮</button></header>
+ <p id="expeditionAttempts"></p>
+ <div id="expeditionSetup">
+  <section id="expeditionLab" hidden><h3>🧪 遠征測試台</h3><div class="exp-lab-fields"><label>武器<select id="labWeapon" onchange="updateExpeditionLab()"></select></label><label>材料階級<select id="labTier" onchange="updateExpeditionLab()"></select></label><label>星級<select id="labStars" onchange="updateExpeditionLab()"><option value="0">零星</option><option value="1">一星</option><option value="2">二星</option><option value="3">三星</option></select></label><label>附魔層數（0～20）<label>附魔層數（0～20）<input id="labStacks" type="number" min="0" max="20" value="0" onchange="updateExpeditionLab()"></label><label>屬性<select id="labElement" onchange="updateExpeditionLab()"></select></label><label>挑戰關卡（21 起為無限）<input id="labStage" type="number" min="1" max="1000000" value="1" onchange="updateExpeditionLab()"></label></div><p class="exp-note">直接產生測試武器，不占物品欄、不扣愛心。可自由選關，所有結果僅供本次後台測試。</p></section>
+
+  <div id="expeditionStages" aria-label="選擇遠征關卡"></div><div id="expeditionMonster"></div><p id="expeditionBossRule" class="exp-note"></p><p id="expeditionReward"></p>
+  <h3>選擇出戰武器</h3><div id="expeditionWeapons"></div><div id="expeditionSelectedStats"></div>
+  <button id="expeditionFight" class="pri exp-wide" onclick="beginExpedition()">開始挑戰</button>
+  <p class="exp-note">出戰時消耗一把武器，勝負、撤退或中途離開都不退回。落敗扣一顆愛心，未通關可不限次重試；勝利自動前往下一關。第 1～10 關解鎖傳說藍圖，第 11～20 關解鎖終極藍圖。</p>
+  <details class="exp-rules"><summary>能力與戰鬥規則</summary><p>每個胚分別提供能力：刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度。銅、鐵、鋼、金、秘銀的材料強度為 1、1.7、2.8、4.4、6.8 倍。</p><p>出戰生命＝100＋防禦×2。速度決定先後與行動頻率；物理傷害＝攻擊×屬性倍率－對方防禦的 60%，至少造成 1 傷害。奧術傷害無視防禦，護盾先吸收傷害。120 次行動後仍未分勝負則撤退。終極武器的主動技能每場可施放一次；按「顯示戰果」會直接完成剩餘戰鬥，不會自動施放技能或防禦。防禦架勢每場一次，讓下一次敵方攻擊減少 60% 傷害，蓄力不會消耗已準備的防禦。</p></details>
+  <p id="expeditionFoodSetup" class="exp-note" hidden></p><p id="expeditionLast" class="exp-note"></p><section class="element-chart-panel"><h3>屬性相剋</h3><div id="elementChart"></div></section>
+ </div>
+ <div id="expeditionBattle" hidden><div id="expeditionArena"></div><p id="expeditionIntent" role="status"></p><button id="expeditionGuard" class="exp-wide" onclick="useExpeditionGuard()">🛡 防禦架勢（每場一次）</button><button id="expeditionPause22" class="exp-wide" hidden onclick="toggleBattlePause()">⏸ 暫停戰鬥</button><p id="expeditionPace22" class="exp-note" hidden></p><div id="expeditionFood" hidden></div><div id="expeditionLog" aria-live="polite"></div><button id="expeditionSkill" class="exp-wide" onclick="useExpeditionSkill()" hidden></button><div id="expeditionResult" aria-live="polite"></div><button id="expeditionSkip" class="exp-wide" onclick="finishExpeditionPlayback()">顯示戰果</button><button id="expeditionAgain" class="pri exp-wide" hidden>選擇下一場</button></div>
+</div></div>
+
+<div id="ultimateArtP" class="exp-overlay"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="closeP('ultimateArtP')">×</button><h2 id="ultimateArtTitle"></h2><img id="ultimateArtImage" alt="" decoding="async"><p id="ultimateArtInfo"></p></div></div>
+<div id="blueprintGoalP" class="exp-overlay"><div class="hp"><button class="modal-x" aria-label="關閉視窗" onclick="closeP('blueprintGoalP')">×</button><h2 id="blueprintGoalTitle"></h2><div id="blueprintGoalInfo"></div><div id="blueprintGoalTree" onclick="const b=event.target.closest('[data-plan-inspect]');if(b)inspectPlannerWeapon(+b.dataset.planInspect)"></div><button id="blueprintGoalClear" onclick="clearBlueprintGoal()">取消製作目標</button></div></div>
+<div id="legendBlueprintP" class="exp-overlay"><div class="hp legend-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('legendBlueprintP')">×</button><h2 id="legendBlueprintTitle"></h2><div id="legendBlueprintStats"></div><div id="legendBlueprintArt" class="legend-large-art"></div><button class="bp-rotate" onclick="rotateBlueprint()">↻ 旋轉樣式</button><p id="legendBlueprintState"></p><button id="blueprintGoalSet" class="exp-wide" onclick="setBlueprintGoal(blueprintInspectId)">📋 設為製作目標</button><div id="legendBlueprintRecipe"></div><button id="legendBlueprintForge" class="pri exp-wide" onclick="prepareBlueprintHand()">確認放置 · 移到手持欄</button><button  class="exp-wide legacy-modal-close" onclick="closeP('legendBlueprintP')" hidden>返回圖鑑</button></div></div>
+<div id="blueprintProjectP" class="exp-overlay"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('blueprintProjectP')">×</button><h2 id="blueprintProjectTitle"></h2><div id="blueprintProjectInfo"></div><button class="exp-wide bp-cancel" onclick="cancelBlueprintProject()">撤回藍圖與原料</button><button  class="exp-wide legacy-modal-close" onclick="closeP('blueprintProjectP')" hidden>繼續製作</button></div></div>
+<div id="avatarCreatorP" class="exp-overlay"><div class="hp avatar-editor"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('avatarCreatorP')">×</button>
+ <header class="avatar-editor-header"><div><h2 id="avatarCreatorTitle">設計你的角色</h2><p id="avatarCreatorName"></p></div><button class="avatar-dice" onclick="randomizeAvatar()" aria-label="隨機搭配角色外觀">🎲 隨機搭配</button></header>
+ <div class="avatar-preview-area"><div id="avatarPreview"></div><p>選擇喜歡的樣式與顏色</p></div><div id="avatarControls"></div>
+ <footer class="avatar-editor-actions"><button onclick="cancelAvatar()">取消</button><button class="pri" id="avatarCreatorConfirm" onclick="confirmAvatar()">完成角色，開始遊戲</button></footer>
+</div></div>
+
+<div id="greenhouseP" class="exp-overlay"><div class="hp greenhouse-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('greenhouseP')">×</button><h2>🌿 溫室</h2><p class="greenhouse-intro">種下元素之花，三天後收成附魔精華。</p><div id="greenhouseSeeds"></div><div id="greenhouseBeds" class="greenhouse-beds"></div><div id="kitchenCompost22" hidden></div><p id="greenhouseDetail"></p></div></div>
+<div id="seedP" class="exp-overlay"><div class="hp seed-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('seedP')">×</button><h2 id="seedTitle">選擇花種</h2><p id="seedCoins"></p><div id="seedChoices"></div><p class="exp-note">庫存種子免費播種；沒有庫存時購買一顆並立即播種。播種當天為種子，第四天開花。</p></div></div>
+
+<div id="leaderboardP" class="exp-overlay"><div class="hp leaderboard-panel"><button class="modal-x" aria-label="關閉視窗" onclick="onlineRequestVersion++;closeP('leaderboardP')">×</button><h2>🏆 全球排行榜</h2><p id="leaderboardTotal"></p><p id="leaderboardIdentity"></p><p id="leaderboardLocalOnly" hidden>教學與後台測試不會上傳成績。</p>
+ <section id="leaderboardRegisterForm"><label for="leaderboardName">玩家名稱（2～16 個字，全站唯一）</label><div class="lb-form-row"><input id="leaderboardName" maxlength="32" autocomplete="nickname" placeholder="輸入你的排行榜名稱"><button id="leaderboardRegister" class="pri" onclick="registerLeaderboardPlayer()">建立玩家</button></div><p>名稱、頭像與最高紀錄會公開在排行榜。</p><details><summary>已有玩家識別碼？取回原本身份</summary><div class="lb-form-row"><input id="leaderboardRestoreKey" type="password" autocomplete="off" placeholder="貼上玩家識別碼"><button id="leaderboardRestore" onclick="restoreLeaderboardPlayer()">取回</button></div></details></section>
+ <div id="leaderboardAccountActions" class="lb-actions" hidden><button id="leaderboardSync" onclick="syncLeaderboardNow()">同步最高紀錄</button><button onclick="$('leaderboardKeyBox').hidden=!$('leaderboardKeyBox').hidden;$('leaderboardKey').value=onlinePlayer.key">玩家識別碼</button><button id="leaderboardSwitch" onclick="switchLeaderboardPlayer()">切換玩家</button></div>
+ <div id="leaderboardKeyBox" hidden><p>請自行保管；這是取回身份的憑證，勿分享給其他玩家。</p><input id="leaderboardKey" readonly aria-label="玩家識別碼" onclick="this.select()"></div><p id="leaderboardStatus" role="status"></p><div class="lb-actions"><button class="lb-refresh" onclick="openLeaderboard()">↻ 重新整理</button><button onclick="closeP('leaderboardP');openRec()">個人歷史紀錄</button></div><div id="leaderboardList"></div>
+</div></div>
+<div id="leaderboardDetailP" class="exp-overlay"><div class="hp leaderboard-detail"><button class="modal-x" aria-label="關閉視窗" onclick="closeP('leaderboardDetailP')">×</button><h2 id="leaderboardDetailTitle"></h2><div id="leaderboardDetailProfile"></div><h3>最佳作品</h3><div id="leaderboardDetailWeapons"></div><p id="leaderboardDetailSkills"></p></div></div>
+
+<div id="backupP" class="exp-overlay"><div class="hp"><button class="modal-x" aria-label="關閉視窗" onclick="closeP('backupP')">×</button><h2>💾 存檔備份與顯示</h2><p>備份檔只保存在你選擇的位置，不會上傳到排行榜。</p><button id="backupDownload" class="pri exp-wide" onclick="downloadBackup()">下載目前進度備份</button><label class="backup-file-label">選擇備份檔<input id="backupFile" type="file" accept=".json,application/json" onchange="readBackupFile(this)"></label><button id="backupRestore" class="exp-wide" onclick="confirmBackupRestore()" disabled>還原這份備份</button><p id="backupStatus" role="status"></p><hr><label class="low-effects-label"><input id="lowEffectsToggle" type="checkbox" onchange="setLowEffects(this.checked)">低特效模式（減少飄動、粒子與動物動畫）</label><p class="exp-note">網頁版的音樂和高清原畫按需載入。下載版 HTML 仍包含完整素材，可單檔保存。</p></div></div>
+
+<div id="forgeCelebration" role="status" aria-live="polite" hidden></div>
+<div id="kitchenP" class="kitchen-screen" hidden>
+ <header><b id="kitchenDate"></b><span id="kitchenMoney"></span><button id="kitchenMute" onclick="toggleMute();renderKitchen()" aria-label="切換廚房音效">🔊</button><button onclick="closeKitchen()" aria-label="回到夜間城鎮">🏘</button></header>
+ <nav><button onclick="kitchenHelp()">？</button><button onclick="openKitchenMarket()">🥕菜市場</button><button onclick="openKitchenRecipes()">📖食譜</button><button onclick="openKitchenSkills()">👨‍🍳技能</button></nav>
+ <section id="kitchenOrders"></section><button id="kitchenChallenge" onclick="openKitchenChallenge()"></button>
+ <main><aside id="kitchenQueue"></aside><div id="kitchenGrid"></div></main>
+ <footer><div id="kitchenProcesses"></div><div id="kitchenHand"></div><button id="kitchenFridge" onclick="openKitchenFridge()" aria-label="開啟冰箱"></button></footer><div id="kitchenMessage" role="status"></div>
+</div>
+<div id="kitchenModal" class="kitchen-modal" hidden><div><button class="modal-x" aria-label="關閉廚房視窗" onclick="document.getElementById('kitchenModal').hidden=true">×</button><h2 id="kitchenModalTitle"></h2><div id="kitchenModalContent"></div></div></div>
+
+<div id="title">
+  <div class="tl" id="tl"></div>
+  <h1>Forge Master</h1>
+  <p id="hs"></p>
+  <p>放礦石 · 合成升階 · 鍛造武器 · 賣給客人</p>
+  <button class="pri" onclick="beginNewCharacter()">開始遊戲</button>
+  <button id="ctn" onclick="openSaves('load')">▶ 繼續遊戲</button>
+  <button onclick="$('title').style.display='none';start('tut')">教學關卡</button>
+  
+  
+  <button id="homeAlbum" onclick="openWeaponAlbum()">📖 武器圖鑑</button>
+  <button id="homeLeaderboard" onclick="openLeaderboard()">🏆 全球排行榜</button>
+  <button onclick="showHelp()">遊戲說明</button>
+  <p class="cr">製作人: LiChia</p>
+  <p class="cr" id="upd">更新日期: 2026/11/16</p>
+</div>
+
+<div id="weaponAlbumP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('weaponAlbumP')">×</button>
+  <h2>📖 武器圖鑑</h2><div id="archiveCategories" hidden><button id="archiveWeapons" onclick="setArchiveCategory('weapons')">⚔ 武器</button><button id="archiveDishes" onclick="setArchiveCategory('dishes')">🍽 料理</button></div><p id="albumProgress"></p>
+  <div id="albumTabs" role="group" aria-label="依武器階級篩選"></div>
+  <div id="albumWeapons"></div>
+  <button  style="width:100%;margin-top:14px" onclick="closeP('weaponAlbumP')" class="legacy-modal-close" hidden>關閉圖鑑</button>
+</div></div>
+<div id="weaponInspectP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('weaponInspectP')">×</button><h2 id="inspectName"></h2><div id="inspectArt"></div><p id="inspectState"></p><div id="inspectStats"></div><div class="inspect-tiers"><button id="inspectPrev">上一階</button><button id="inspectNext">下一階</button></div><button  style="width:100%;margin-top:12px" onclick="closeP('weaponInspectP')" class="legacy-modal-close" hidden>回到圖鑑</button></div></div>
+<div id="seasonP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('seasonP')">×</button><h2 id="seasonTitle"></h2><div id="seasonBenefit" class="season-benefit"></div><p id="seasonDescription" style="line-height:1.8"></p><button class="pri" style="width:100%" onclick="closeP('seasonP')">開始鍛造</button></div></div>
+
+<div id="reviewProgressP" class="exp-overlay"><div class="hp"><button class="modal-x" aria-label="關閉測試進度" onclick="closeP('reviewProgressP')">×</button><h2>💾 後台測試進度</h2><div id="reviewProgressBody"></div></div></div><div id="help"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('help')">×</button>
+  <h2>遊戲說明</h2>
+  <p><b>目標：</b>完成客人訂單、累積最高分。分數＝（出售武器＋完成任務＋遠征）所得金幣 ×10。購買道具不扣分。計分板會顯示累計服務客人數與完成任務數。</p>
+  <h3>放礦石與模具</h3>
+  <p>點空格放下上方佇列的礦石。拖曳模具到至少兩顆同階礦石旁，消耗相連材料，製成刃、柄或盾胚。學會合成大師後，三顆相連同階礦石可以升階；四顆可產生兩顆升階礦石，五顆可升兩階。</p>
+  <h3>鍛造武器</h3>
+  <p>三個相連、排成直線或彎線的胚會合成武器。配方由胚的種類決定，品質為三個胚階級的平均值，無條件捨去，仍用來判定能否符合訂單。售價則另外計算「材料基價」：取三個胚各自階級對應的武器基本售價平均，四捨五入，且不低於原品質的基本售價。例如銅＋銅＋銅為 30 金幣；鐵＋銅＋銅仍是銅級，但材料基價為 38 金幣。鑽石、指定訂單與大商人加成再套用在這個基價上。四個、五個胚可以同時鍛造兩把、三把武器，每把依自己的三個胚分別計價。混合材料的武器底色會分層顯示。</p>
+  <h3>傳說藍圖與棋盤鍛造</h3><p>本局遠征首次勝利取得藍圖，收藏在武器箱的藍圖收藏。每局需重新取得；首頁圖鑑保留跨局紀錄。點擊藍圖查看每格需求與樣式，可旋轉後確認移到手持欄，再拖至棋盤空格部署。黃色格會顯示暗色原料武器，原料種類與階級必須完全符合該格指定值，更高或更低階皆不能替代。放入最後一件時，傳說武器出現在該格，其他藍圖格釋放並過熱。藍圖完成後回藍圖收藏，可重複使用。點黃色格可撤回藍圖及原料；手持欄的小叉叉可將物品收回道具箱。</p><h3>武器能力與遠征</h3><p>點擊棋盤或歷史紀錄中的完成武器，可查看攻擊力、防禦力與速度。刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度；每個胚使用的材料會分別影響能力。城鎮城門可進行遠征，未通關可不限次重試，落敗扣一顆愛心；每次出戰消耗一把武器，撤退及中途離開也不退回。勝利自動前往下一關，首次過關取得金幣與藍圖。第 1～10 關為一周目；第 11～20 關為更強的二周目，掉落終極藍圖與對應的高清寫實武器美術。第 11～15 關的配方需要兩把指定傳說武器，第 16～20 關需要三把。在棋盤完成終極武器後，遠征可手動施放一次主動技能。</p><h3>拖曳預覽</h3>
+  <p>拖曳模具到棋盤，可以預覽消耗材料、製胚與鍛造結果。金框是消耗材料，紫框是參與鍛造的胚，綠框是放置位置。紅框會說明無法操作的原因。拖曳武器到客人身上，可以先看成交價。</p>
+  <h3>溫室與屬性精華</h3><p>七種屬性之花的種子均為 350 金幣。寶箱也可能取得種子，直接存入溫室並優先免費使用。播種當天為種子，第二天發芽，第三天長出屬性葉，第四天開花；點開花盆栽可收成一份精華，盆栽隨即空出。精華放入道具箱，拖到棋盤可設置當天有效的屬性附魔格。藍圖不會蓋掉附魔格；武器在附魔格生成時取得該屬性，售價增加 20%。</p><p>遠征怪物每天隨機取得一種屬性，也可能無屬性。風剋雷、雷剋石、石剋水、水剋火、火剋風，光闇互剋；剋制攻擊×2.0，被剋制×0.5，有屬性對無屬性×1.5，無屬性對有屬性×0.75，其餘×1.0。倍率套用在攻擊力後再扣防禦，奧術傷害另外加計。</p><h3>鑽石與魔法</h3>
+  <p>學會寶石匠後會出現鑽石模具與商品。胚旁的鑽石在鍛造時自動鑲嵌，最多三顆；每顆讓售價增加 30%×（階級＋1）。武器圖示上的裝飾寶石不等於實際鑲鑽，實際加成以 💎 標記為準。</p>
+  <p>魔法師技能每天提供 1～3 個紫色魔法格。放置在上面的物品累積 +5 金幣，隨合成保留，最後賣出時結算。每 +5 魔法值同時算 1 層附魔，遠征每層增加 2 奧術傷害與 3 點開戰護盾，最多計算 20 層。</p>
+  <h3>過熱與出售</h3>
+  <p>鍛造消耗的胚格通常過熱 50 步，夏天為 60 步；吸收鑽石後的格子不會過熱。每次成功放下礦石、模具或鑽石減少一步。武器拖給種類與品質符合的客人即可出售；指定種類訂單付 1.3 倍價格。</p>
+  <h3>客人與生命</h3>
+  <p>開始有三條生命。銅級客人等待 100 步，其後每階增加 60 步；任意武器客人不限步數。客人逾時離開或主動取消訂單，扣一條生命。生命歸零，或棋盤滿且無法操作，遊戲結束。</p>
+  <h3>商店與技能</h3><p>全部技能升滿三級後，進入隔天時，每個剩餘技能點轉換為 1000 金幣；後台模式不進行換金。</p>
+  <p>商店購買的商品進入道具箱。點道具移到手持欄，再拖到棋盤使用。焚燒工具清除非武器物件，不能焚燒武器；升級工具提升礦石一階；暴風雪售價 750 金幣，拖到棋盤任意格（包含已有物品或過熱格），即可消耗道具將全盤過熱歸零，不清除物品、不消耗步數。每日結束獲得技能點與一次抽卡，完成分配、抽卡後進入下一天。首次技能只能選合成大師。</p>
+  <p>棋盤為 5 欄 × 6 列，礦石佇列在左側，模具、手持欄與武器箱圖示在下方。點擊武器箱可查看六格收納空間，未解鎖格呈暗色，武器箱技能 Lv1／Lv2／Lv3 分別解鎖 2／4／6 格。武器箱可存放武器；拖到箱子圖示收納，點擊箱子後選擇武器可取到空的手持欄，再拖回棋盤或賣給客人。大商人增加成交價，專業礦工提高高階礦石出現機率。</p>
+  <h3>任務</h3>
+  <p>畫面上方同時有 3 個任務，不需要接取，達成就自動領取 100～1000 金幣獎勵（同時換算成分數）。點任務卡可查看詳情；太困難可以放棄，該格會在隔天換成新任務，已完成的也會在隔天換新。魔法格每放一次物品 +5💰，算 1 個魔法附魔。「一步」指放下一次礦石、模具或鑽石；賣武器不算步數。</p>
+  <h3>商店限購與生命藥水</h3>
+  <p>每天同類商品合計限購：模具 3 個、工具 1 個、礦石 3 個，隔天重置。鑽石依當天庫存各限購一次。工具都有功能說明；生命藥水每個 3000 金幣，放入手持欄後拖到棋盤使用，恢復一顆愛心；滿血時會顯示不能使用的提示，且不消耗藥水。</p>
+  <h3>四季</h3>
+  <p>從春天開始，春、夏、秋、冬依序輪替，每季持續三天。春天是綠色棋盤，規則不變；夏天是紅色棋盤，鍛造過熱增加為 60 步；秋天是黃橘色棋盤，每天在三個空格落下落葉，必須利用上下左右相鄰的過熱格燒掉才能重新使用；冬天是深藍色棋盤，每天維持 1 格冰凍，不再逐日增加，過熱與暴風雪都不能解除。落葉及冰凍在換季時清除。出現位置以空格為限，不覆蓋既有物品。</p><p>季節好處：春季每盆成熟花朵收成 2 份精華；夏季火屬性武器、冬季水屬性武器成交價 +25%；秋季每燒掉 1 格落葉，下一把武器鍛造獎金 +100 金幣（最多儲存 3 次，當天有效，不計分）。</p>
+  <h3>武器星級</h3><p>每局內，同名稱、同階級的普通武器分開累計鍛造經驗；傳說及終極武器則依各自名稱累計。累計 3／6／9 把升為一／二／三星，基礎售價與攻擊、防禦、速度提高 5%／10%／20%。已持有的同款武器同步升星；投入藍圖的原料與過往歷史保留當時數值。每天保留進度，新的一局重新累計。</p>
+  <h3>每天與存檔</h3>
+  <p>第 1～3 天分別有 3、4、5 位客人，之後每天 5～8 位，其中兩位接受任意武器。第 4 天起逐步增加品質要求。隔天保留棋盤並清除過熱。遊戲自動儲存在目前瀏覽器，最多三個存檔。載入舊版 5×7 存檔時，原第七排及超出新版容量的武器箱物品會完整移入道具箱，可取到手持欄後放回棋盤。清除瀏覽器資料會一併清除存檔。</p>
+  <button  class="pri legacy-modal-close" style="width:100%" onclick="$('help').style.display='none'" hidden>知道了</button>
+</div></div>
+
+<div id="shopP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('shopP')">×</button>
+  <h2>🛒 商店</h2><div id="shop"></div>
+  <button  class="pri legacy-modal-close" style="width:100%;margin-top:12px" onclick="closeP('shopP')" hidden>關閉</button>
+</div></div>
+
+<div id="qP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('qP')">×</button>
+  <h2>📋 任務</h2><p id="qS"></p><div id="qC"></div>
+  <p style="font-size:12px;color:var(--mute);margin:6px 0 0">三個任務同時進行，不用接任務，達成就自動領取獎勵（金幣與分數）。太困難可以放棄，該格任務會在隔天換新；已完成的任務也會在隔天換新。</p>
+  <button  class="pri legacy-modal-close" style="width:100%;margin-top:12px" onclick="closeP('qP')" hidden>關閉</button>
+</div></div>
+
+<div id="colP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('colP')">×</button>
+  <h2>📖 最佳作品 / 配方圖鑑</h2>
+  <div id="skl"></div><div id="lg"></div><div id="col"></div>
+  <button  class="pri legacy-modal-close" style="width:100%;margin-top:12px" onclick="closeP('colP')" hidden>關閉</button>
+</div></div>
+
+<div id="sk"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('sk')">×</button>
+  <h2 id="trainingTitle">🌟 技能</h2><div id="trainingTabs" hidden><button onclick="switchTrainingBranch('forge')" id="trainingForge">⚒ 冶煉廠</button><button onclick="switchTrainingBranch('kitchen')" id="trainingKitchen">🍲 餐廳</button></div><p id="skp"></p><div id="skc"></div>
+  <button id="skb" class="pri" style="width:100%"></button>
+</div></div>
+
+<div id="bagP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('bagP')">×</button>
+  <h2>🎒 道具箱</h2>
+  <p>點選道具，放到「手持」欄後就能拖到棋盤使用。</p>
+  <div id="bagC" class="sg sg4"></div>
+  <button  class="pri legacy-modal-close" style="width:100%;margin-top:12px" onclick="closeP('bagP')" hidden>關閉</button>
+</div></div>
+
+<div id="rw"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('rw')">×</button>
+  <h2>每日獎勵</h2><p id="rwp"></p>
+  <button class="pri" id="rwk" style="width:100%;margin-bottom:8px"></button>
+  <button class="pri" id="rwg" style="width:100%;margin-bottom:8px"></button>
+  <button id="rwn" style="width:100%"></button>
+</div></div>
+
+<div id="gcP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('gcP')">×</button>
+  <h2>🎴 抽道具卡</h2><p id="gcp"></p>
+  <div id="gcc" style="display:flex;gap:8px"></div>
+  <button id="gcb" class="pri" style="width:100%;margin-top:12px" disabled>收下</button>
+</div></div>
+
+<div id="recP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('recP')">×</button>
+  <h2>🏆 歷史紀錄</h2><button onclick="openLeaderboard()">🏆 全球排行榜</button><button onclick="openBackup()">💾 備份與還原</button><p id="recS"></p><div id="recC"></div>
+  <button id="recClr" style="width:100%;margin-top:12px;background:#c0392b">🗑 清除紀錄</button>
+  <button  class="pri legacy-modal-close" style="width:100%;margin-top:8px" onclick="$('recP').style.display='none'" hidden>關閉</button>
+</div></div>
+
+<div id="nm"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('nm')">×</button>
+  <h2>輸入玩家名稱</h2>
+  <input id="nmi" maxlength="32" placeholder="你的名字（2～16 字）" autocomplete="off">
+  <p id="onlineNameStatus" role="status"></p><button id="onlineNameOffline" hidden>離線遊玩，稍後再加入排行榜</button><button id="nmb" class="pri" style="width:100%;margin-top:10px">開始遊戲</button>
+  <button hidden class="legacy-modal-close" id="nmq" style="width:100%;margin-top:8px">退出</button>
+</div></div>
+
+<div id="svP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('svP')">×</button>
+  <button class="exp-wide" onclick="openBackup()">💾 存檔備份與還原</button><h2 id="svT"></h2><p id="svS"></p><div id="svC"></div>
+  <button  class="pri legacy-modal-close" style="width:100%;margin-top:12px" onclick="$('svP').style.display='none'" hidden>關閉</button>
+</div></div>
+
+<div id="pw"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('pw')">×</button>
+  <h2>🔧 後台密碼</h2>
+  <input id="pwi" type="password" inputmode="numeric" placeholder="請輸入密碼" autocomplete="off">
+  <p id="pwe" style="color:#ff8a8a;min-height:18px"></p>
+  <button id="pwb" class="pri" style="width:100%">確認</button>
+  <button hidden class="legacy-modal-close" id="pwc" style="width:100%;margin-top:8px">取消</button>
+</div></div>
+
+
+<div id="cf"><div><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('cf')">×</button>
+  <h3 id="cft"></h3><p id="cfp"></p>
+  <button id="cfy">確認</button>
+  <button id="cfn">保留</button>
+</div></div>
+
+<div id="ov"><div><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('ov')">×</button>
+  <h2 id="ovt"></h2><p id="ovp"></p><button id="ovb"></button>
+</div></div>
+
+<div id="prediction" role="status" aria-live="polite" hidden></div>
+<div id="toasts"></div>
+
+<!-- GAME_SCRIPT -->
+</body>
+</html>

@@ -1,0 +1,10 @@
+
+/* A single portrait layout on desktop and phone; no transform-based scaling,
+   so drag/drop coordinates retain the browser's native coordinate system. */
+@media(min-width:601px){
+ :root{--portrait-layout-width:clamp(380px,calc(var(--viewport-height,100dvh)*.4614),430px)}
+ #app{width:var(--portrait-layout-width);max-width:var(--portrait-layout-width)}
+ #townP,#title{width:var(--portrait-layout-width);max-width:var(--portrait-layout-width);left:0;right:0;margin-left:auto;margin-right:auto}
+ body>div:not(#app):not(#townP):not(#title):not(#portraitGuard):not(#forgeCelebration)>div{max-width:min(100%,calc(var(--portrait-layout-width) - 24px))!important}
+ #app .weapon-kind-label{font-size:10px}#app .weapon-tier-label{font-size:9px}
+}

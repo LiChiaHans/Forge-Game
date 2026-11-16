@@ -1,0 +1,1885 @@
+[
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "0",
+    "url": "assets/monsters/0.58497d0b41cd.webp",
+    "bytes": 23710,
+    "sha256": "58497d0b41cdea778de88a52991c55d0126d1d4faacf8b036eca84d596d15d12"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "1",
+    "url": "assets/monsters/1.ffccc9cc0e1e.webp",
+    "bytes": 32750,
+    "sha256": "ffccc9cc0e1e1c08d1e8ceb2aeaf68930b3f5dbd3b5d1bac9b1e6b70d6b48879"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "2",
+    "url": "assets/monsters/2.b39078888b50.webp",
+    "bytes": 33258,
+    "sha256": "b39078888b50786732512550cb64d7c171f46f3fec19237a1d2fdc191b7c63a7"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "3",
+    "url": "assets/monsters/3.418f6068ce70.webp",
+    "bytes": 29362,
+    "sha256": "418f6068ce704e70e8d74143188a3596907e4975df853b668ec7a74f57048837"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "4",
+    "url": "assets/monsters/4.17e079d9bcb0.webp",
+    "bytes": 38662,
+    "sha256": "17e079d9bcb09f31db3e5a5f2be294d2d91dc9b4ce21aff968c82c85970e562a"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "5",
+    "url": "assets/monsters/5.882215b65c91.webp",
+    "bytes": 38164,
+    "sha256": "882215b65c91f423742cdd5cdbf405374d4914d5241e00e46d3829ee9ebdbf74"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "6",
+    "url": "assets/monsters/6.813a1bff14b2.webp",
+    "bytes": 25430,
+    "sha256": "813a1bff14b20911d3b65488bb77298c0d859f24f71ba2e91612c2d871cf9023"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "7",
+    "url": "assets/monsters/7.14988078e7e7.webp",
+    "bytes": 37878,
+    "sha256": "14988078e7e7a1fe75bd2ebe5ba2bc97b2ade7fde603b6c9de8e56d71c9f293f"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "8",
+    "url": "assets/monsters/8.b002150ac64d.webp",
+    "bytes": 41028,
+    "sha256": "b002150ac64dd0039510961fa05efa9a717048fc2112a982822b0aa6635c8649"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "9",
+    "url": "assets/monsters/9.832b123dc8c3.webp",
+    "bytes": 31566,
+    "sha256": "832b123dc8c35cf357dd67e003750f386273183e341226582b20a6ede216b051"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "10",
+    "url": "assets/monsters/10.3f7f336d8b4c.webp",
+    "bytes": 34854,
+    "sha256": "3f7f336d8b4cf7a9ccfbadc9476f21a182dd319700f391ac9735d8d7ecaab38b"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "11",
+    "url": "assets/monsters/11.ab260a5ab655.webp",
+    "bytes": 36732,
+    "sha256": "ab260a5ab655b1dfd9b2a04b9030d129fd37dc584d32bf19a285aef6acd3903a"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "12",
+    "url": "assets/monsters/12.2c19bd176515.webp",
+    "bytes": 38466,
+    "sha256": "2c19bd1765155b98bd016d0a1cad371251b0b3d0b3b1ac419f476119ab974238"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "13",
+    "url": "assets/monsters/13.87b38a1d9693.webp",
+    "bytes": 35052,
+    "sha256": "87b38a1d9693b78b2193d7d8ec2f9289ffdc9ae3fd16f98e3259750139fcc829"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "14",
+    "url": "assets/monsters/14.b603fe489b73.webp",
+    "bytes": 35416,
+    "sha256": "b603fe489b736055ef7e0b0e4a8fc36581dc4a539e7c2cf73a32dc296749adfd"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "15",
+    "url": "assets/monsters/15.09685802dd0a.webp",
+    "bytes": 46584,
+    "sha256": "09685802dd0a4be16c0e10d9ba5d81c41e6ccda9ca8c65b580d8f5ec20db615c"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "16",
+    "url": "assets/monsters/16.277e04f5d27d.webp",
+    "bytes": 34926,
+    "sha256": "277e04f5d27db8c6eb46f0aa105ab271966820992298244572132ead1bf1f2a0"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "17",
+    "url": "assets/monsters/17.89233aba09af.webp",
+    "bytes": 41696,
+    "sha256": "89233aba09afc460178e8b28eb55bfa7a08f0bb53bf67d0fb816c8fc9811a950"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "18",
+    "url": "assets/monsters/18.fa712caae1dd.webp",
+    "bytes": 44756,
+    "sha256": "fa712caae1dd793e3ca4c73054fcf72053586c4aa32a589aec0347e9ab39f545"
+  },
+  {
+    "variable": "REVIEW_MONSTER_ART",
+    "id": "19",
+    "url": "assets/monsters/19.c54ae8d898de.webp",
+    "bytes": 38554,
+    "sha256": "c54ae8d898dea6cf8b3aef093f5b92fd1e9f9426b619482ee6832b54b17cbe26"
+  },
+  {
+    "variable": "SEASON_MUSIC_DATA",
+    "id": "spring",
+    "url": "assets/music/spring.0b5a6ee3a097.mp3",
+    "bytes": 2289408,
+    "sha256": "0b5a6ee3a09796f78a9791daaeac71eb09527491a778ab5a79ede03d03b35124"
+  },
+  {
+    "variable": "SEASON_MUSIC_DATA",
+    "id": "summer",
+    "url": "assets/music/summer.21c0e5ecb503.mp3",
+    "bytes": 4785408,
+    "sha256": "21c0e5ecb503f922f10247d795d9bec51ff53ec8dcc629ecae7d671c8340069a"
+  },
+  {
+    "variable": "SEASON_MUSIC_DATA",
+    "id": "autumn",
+    "url": "assets/music/autumn.410f304ae451.mp3",
+    "bytes": 3994853,
+    "sha256": "410f304ae451049d85eb0475de5d8bdae887be014b896bda454945eb87f9b902"
+  },
+  {
+    "variable": "SEASON_MUSIC_DATA",
+    "id": "winter",
+    "url": "assets/music/winter.e3da5cc9a782.mp3",
+    "bytes": 4264019,
+    "sha256": "e3da5cc9a7821ce6e86c9a98c1111da8b55d4eea8d2b9ca96dccd3a2229f99e1"
+  },
+  {
+    "variable": "ULTIMATE_ART",
+    "id": "0",
+    "url": "assets/ultimate/0.9ffd61a6ed70.jpg",
+    "bytes": 151322,
+    "sha256": "9ffd61a6ed70a0e7ee20b11f60fa6bddc18e9ae5d5e2d4195d67e96def25296d"
+  },
+  {
+    "variable": "ULTIMATE_ART",
+    "id": "1",
+    "url": "assets/ultimate/1.dfe50648d0f3.jpg",
+    "bytes": 235444,
+    "sha256": "dfe50648d0f35557662fa56d407e7f0e1f4808fbf714dcf8d7d7251930526b0a"
+  },
+  {
+    "variable": "ULTIMATE_ART",
+    "id": "2",
+    "url": "assets/ultimate/2.01b0f2c37981.jpg",
+    "bytes": 235985,
+    "sha256": "01b0f2c3798162df8471629356f6210bc003eb7cf4a4c294f3d9e5ea4fc68206"
+  },
+  {
+    "variable": "ULTIMATE_ART",
+    "id": "3",
+    "url": "assets/ultimate/3.bef7b35d37e7.jpg",
+    "bytes": 167118,
+    "sha256": "bef7b35d37e772aa4ec6530132bbe0ff056896f0bdc5885df27498f0f6275061"
+  },
+  {
+    "variable": "ULTIMATE_ART",
+    "id": "4",
+    "url": "assets/ultimate/4.1c5c214e9a34.jpg",
+    "bytes": 300998,
+    "sha256": "1c5c214e9a34e308849b429533dbf6576b077a8c6636b69ead1689ef82c1094d"
+  },
+  {
+    "variable": "ULTIMATE_ART",
+    "id": "5",
+    "url": "assets/ultimate/5.a6ed0adc72d4.jpg",
+    "bytes": 192358,
+    "sha256": "a6ed0adc72d4b35479b7caa6bc9271d6f74fef7aae8a1fb65f3d167ade37653a"
+  },
+  {
+    "variable": "ULTIMATE_ART",
+    "id": "6",
+    "url": "assets/ultimate/6.30c9ced58943.jpg",
+    "bytes": 222712,
+    "sha256": "30c9ced58943015b12d3d1a54868ddde4b936aed6e38c0107f5175b6852b3aea"
+  },
+  {
+    "variable": "ULTIMATE_ART",
+    "id": "7",
+    "url": "assets/ultimate/7.1da0b99ac4a9.jpg",
+    "bytes": 289105,
+    "sha256": "1da0b99ac4a983941c093c53a62fc4ce162d58d8ff9f1b827dea4ce1d8053f5a"
+  },
+  {
+    "variable": "ULTIMATE_ART",
+    "id": "8",
+    "url": "assets/ultimate/8.49b26f45cb33.jpg",
+    "bytes": 275011,
+    "sha256": "49b26f45cb3324880754a83fe86b2bcdecad3f929a2d149628704d51982713ff"
+  },
+  {
+    "variable": "ULTIMATE_ART",
+    "id": "9",
+    "url": "assets/ultimate/9.dffb97620ad4.jpg",
+    "bytes": 356101,
+    "sha256": "dffb97620ad4fc04938d885d95d30f2dcb5eb784ca3b0da01ea0cfb4e6ebab8a"
+  },
+  {
+    "variable": "GEMINI_TOWN_ART",
+    "id": "0",
+    "url": "assets/town/0.ce3ce9d639bb.webp",
+    "bytes": 169962,
+    "sha256": "ce3ce9d639bb0eee1bcab099f2febd95e9ed2982128f48f5cac59448c7bf33a2"
+  },
+  {
+    "variable": "GEMINI_TOWN_ART",
+    "id": "1",
+    "url": "assets/town/1.e66463ca4058.webp",
+    "bytes": 573398,
+    "sha256": "e66463ca40584adfe716ae8cf821b17ea49776175fbf38a4f5959fc980ea99fd"
+  },
+  {
+    "variable": "GEMINI_TOWN_ART",
+    "id": "2",
+    "url": "assets/town/2.0a73b8a46fbe.webp",
+    "bytes": 605470,
+    "sha256": "0a73b8a46fbe6c8580124f4aeca6a71dfc25b966cd7cbb3de90bcf228b96df5e"
+  },
+  {
+    "variable": "GEMINI_TOWN_ART",
+    "id": "3",
+    "url": "assets/town/3.ff18b8000d82.webp",
+    "bytes": 594226,
+    "sha256": "ff18b8000d8207768870140f109eb69e09779599411dfa49926165329cd7f6b8"
+  },
+  {
+    "variable": "WORKSHOP_ART",
+    "id": "forge",
+    "url": "assets/interiors/forge.4296ba06a3b2.webp",
+    "bytes": 137940,
+    "sha256": "4296ba06a3b2824a3ed8cae95557a0575c6666061110afa1f2d20609bacfc051"
+  },
+  {
+    "variable": "WORKSHOP_ART",
+    "id": "kitchen",
+    "url": "assets/interiors/kitchen.957bd2e9fd2b.webp",
+    "bytes": 207214,
+    "sha256": "957bd2e9fd2b63c3356ae4732ef12915119e44dba32529fa2917b34883397d7e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "ore-0",
+    "url": "assets/items/ore-0.cca4c91fe673.webp",
+    "bytes": 17740,
+    "sha256": "cca4c91fe6733e5f5db4ada1e588378c5dae4ea30296bcbe87ab4caa9f9c987d"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "ore-1",
+    "url": "assets/items/ore-1.5edbbcf9003b.webp",
+    "bytes": 18546,
+    "sha256": "5edbbcf9003b9c258e9a15a3c2f757ff5fb27c92a04e7b5b36f513e3b3f028de"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "ore-2",
+    "url": "assets/items/ore-2.92997a428a49.webp",
+    "bytes": 18388,
+    "sha256": "92997a428a4911eef31f4cce99b79a7f1fba9d70b82da33191c4517c92baaed7"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "ore-3",
+    "url": "assets/items/ore-3.7415628f0a64.webp",
+    "bytes": 18322,
+    "sha256": "7415628f0a64a6f365a982cc75e4a1eada515c44baffb9a29eb9c29d3dd3ebcc"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "ore-4",
+    "url": "assets/items/ore-4.4a50f81b96a1.webp",
+    "bytes": 19338,
+    "sha256": "4a50f81b96a1413a6c82d817f2db28289c8905c9b770a6e677c4bc3019d96b76"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "ingredient-0",
+    "url": "assets/items/ingredient-0.10dcd7936bb9.webp",
+    "bytes": 20026,
+    "sha256": "10dcd7936bb9a38b3563f6eab1f00768e721c98663c5a28732add32215a19aef"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "ingredient-1",
+    "url": "assets/items/ingredient-1.b772f4bd2b1f.webp",
+    "bytes": 23682,
+    "sha256": "b772f4bd2b1f0b5ff962fca0e514d3b90b79841da2dd053e1d74071c079b2387"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "ingredient-2",
+    "url": "assets/items/ingredient-2.96fa05ced1ba.webp",
+    "bytes": 21804,
+    "sha256": "96fa05ced1ba9bf30d25537db25492fe1ccde9de27aa503be580c421aea6c443"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "ingredient-3",
+    "url": "assets/items/ingredient-3.542ceba53b97.webp",
+    "bytes": 19486,
+    "sha256": "542ceba53b97c0d31fe1c268714a9eaae522e96f6bb610e852259e43388c33b2"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "ingredient-4",
+    "url": "assets/items/ingredient-4.b2524b412a65.webp",
+    "bytes": 23568,
+    "sha256": "b2524b412a6545e0b0dca576f99161f1f841befdaa25f3e554f09b7c0f232bb1"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-0-0",
+    "url": "assets/items/weapon-0-0.7ddb98af2e8f.webp",
+    "bytes": 19136,
+    "sha256": "7ddb98af2e8fbef62f920b7add061b43e1e97e3f5d0ac49a469a497badda8203"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-1-0",
+    "url": "assets/items/weapon-1-0.182baed499ca.webp",
+    "bytes": 9668,
+    "sha256": "182baed499ca0b4f1d4bd1fcb388d64ceeb8876f4e1d5f63e6bb5091335fee43"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-2-0",
+    "url": "assets/items/weapon-2-0.4305d94b8fa0.webp",
+    "bytes": 19612,
+    "sha256": "4305d94b8fa0e604a4174d61c9f60a507a79b3e94d66675ebc5268066765012e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-3-0",
+    "url": "assets/items/weapon-3-0.d9eb3fee6652.webp",
+    "bytes": 5458,
+    "sha256": "d9eb3fee6652d9efa89f1c13e097f5e1b825b88fce04ad06c6eb24309ce4b544"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-4-0",
+    "url": "assets/items/weapon-4-0.a8d9f2e8dde0.webp",
+    "bytes": 18128,
+    "sha256": "a8d9f2e8dde0df5635104e3dcd9dfffacf141ec3fb0b6d5d074b93047caeae9d"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-0-1",
+    "url": "assets/items/weapon-0-1.94d74b6a137b.webp",
+    "bytes": 18048,
+    "sha256": "94d74b6a137b309943551a3104aad2c13997f68db45108ca04a8f23b129d01ce"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-1-1",
+    "url": "assets/items/weapon-1-1.c43ffab2e361.webp",
+    "bytes": 8916,
+    "sha256": "c43ffab2e361ce362602e3e5fdce25d0d5a9ab272676d2b89a04b2bd7674cc86"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-2-1",
+    "url": "assets/items/weapon-2-1.8f5c3fccc7d2.webp",
+    "bytes": 17916,
+    "sha256": "8f5c3fccc7d2fc960a7ad5f3fa2f65bea9adc15010ad0212ea871372a3e20d28"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-3-1",
+    "url": "assets/items/weapon-3-1.d7be690a9732.webp",
+    "bytes": 5014,
+    "sha256": "d7be690a97324de3b3a73bce87d828f28262e72f4491834f4f934663f8aced8d"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-4-1",
+    "url": "assets/items/weapon-4-1.712686279290.webp",
+    "bytes": 17092,
+    "sha256": "71268627929092ff4e3bec6ffc54a01557da278a30463f62d2b52a02c72cd262"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-0-2",
+    "url": "assets/items/weapon-0-2.19de4b67ee08.webp",
+    "bytes": 19244,
+    "sha256": "19de4b67ee088740ffed6bf739c7e127628e933f1c4f4f35529f345a47a19fa6"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-1-2",
+    "url": "assets/items/weapon-1-2.fcf0bf5c0044.webp",
+    "bytes": 10070,
+    "sha256": "fcf0bf5c0044632466b1867474709c011acab7ce55b497bc6ad468b5b55261ea"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-2-2",
+    "url": "assets/items/weapon-2-2.b44c13d2e868.webp",
+    "bytes": 18180,
+    "sha256": "b44c13d2e868ad63aab2f54a7e0f663a48606e5ca4322bade27aff731f346389"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-3-2",
+    "url": "assets/items/weapon-3-2.4626e70712d5.webp",
+    "bytes": 5028,
+    "sha256": "4626e70712d50d38eb2f99c5d705bae17b298c693c5ad01693cdbb22198adf80"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-4-2",
+    "url": "assets/items/weapon-4-2.3fa44438e12e.webp",
+    "bytes": 18464,
+    "sha256": "3fa44438e12e121745c50510ada617ec7b7b86dfac7ce67e02bb50e68f131fa2"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-0-3",
+    "url": "assets/items/weapon-0-3.fd556bea4ef0.webp",
+    "bytes": 24506,
+    "sha256": "fd556bea4ef0f5c406f79dc0b686d01eca1b85413a84ee9f1b495162eea43548"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-1-3",
+    "url": "assets/items/weapon-1-3.6b459013dd3e.webp",
+    "bytes": 12150,
+    "sha256": "6b459013dd3eadfc11dd42e660904b0691edc6b4d2397679c59ea8ae35cd6575"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-2-3",
+    "url": "assets/items/weapon-2-3.ba2004e17850.webp",
+    "bytes": 20464,
+    "sha256": "ba2004e17850ef1e862ff09e7cbae974257e6161bb0dcccc0fcb1dfeb3fce936"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-3-3",
+    "url": "assets/items/weapon-3-3.e03005c7a59c.webp",
+    "bytes": 5676,
+    "sha256": "e03005c7a59c066f09e0bd209eb32e39f116c553ef4a9ee597c811c5a16eaac5"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-4-3",
+    "url": "assets/items/weapon-4-3.8c11f042118d.webp",
+    "bytes": 19574,
+    "sha256": "8c11f042118d0cc6a8ae140752270cca38a3392386c988182ebe9164b83949b8"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-0-4",
+    "url": "assets/items/weapon-0-4.4759ae1b713c.webp",
+    "bytes": 22864,
+    "sha256": "4759ae1b713c8ec615c1ed55d76a39b12699cc53926f693d1ef9c858844d0149"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-1-4",
+    "url": "assets/items/weapon-1-4.2e9b2ddb9c9a.webp",
+    "bytes": 14772,
+    "sha256": "2e9b2ddb9c9abf4b602227c6e05b7f89a09abbcf6c9bc36fffeb89333012ea07"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-2-4",
+    "url": "assets/items/weapon-2-4.f3b6b693ca3e.webp",
+    "bytes": 19630,
+    "sha256": "f3b6b693ca3edd889c3f6a3e6b3b06a2cc15e964244335ae370431988eb18542"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-3-4",
+    "url": "assets/items/weapon-3-4.09e33682c81d.webp",
+    "bytes": 5878,
+    "sha256": "09e33682c81db52a560e66bd5e38cabfff10447ead9034833c14b33563a5c34e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-4-4",
+    "url": "assets/items/weapon-4-4.22786aa00616.webp",
+    "bytes": 20330,
+    "sha256": "22786aa0061653c0f066924a88906aeafaec36bc8c4776a9f6d81e19422c4a01"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-5-0",
+    "url": "assets/items/weapon-5-0.0ee357e9ba26.webp",
+    "bytes": 14168,
+    "sha256": "0ee357e9ba26c3f2b81c54a63bd99234fd9ae50503aecf9060f337b13a262edc"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-6-0",
+    "url": "assets/items/weapon-6-0.312504d74730.webp",
+    "bytes": 9650,
+    "sha256": "312504d747305f993944a64731a7733861a91153f281e1942399369f7a4a36d6"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-7-0",
+    "url": "assets/items/weapon-7-0.9c6e8b8d05bf.webp",
+    "bytes": 11894,
+    "sha256": "9c6e8b8d05bf7d33c8be1dc891429035b8107385f18ca5e3465d080b361a61a5"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-8-0",
+    "url": "assets/items/weapon-8-0.56a1af24081b.webp",
+    "bytes": 14508,
+    "sha256": "56a1af24081b9537d4dc904e0cfafb06ffd3fcfe8ba60d7e47fb764d9b117db5"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-9-0",
+    "url": "assets/items/weapon-9-0.06f693fd259a.webp",
+    "bytes": 15668,
+    "sha256": "06f693fd259ad6df8c5581a7d7f87885c26ea55f0909701e262b009477addd02"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-5-1",
+    "url": "assets/items/weapon-5-1.a4d13eadc07e.webp",
+    "bytes": 13356,
+    "sha256": "a4d13eadc07ef14cc651663866e788b9aa257f5d25fb3db53df24766708814a0"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-6-1",
+    "url": "assets/items/weapon-6-1.0bf12e113188.webp",
+    "bytes": 9248,
+    "sha256": "0bf12e113188710eba625081ed0f92f1f98e2315f3254764045dff482783ae7b"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-7-1",
+    "url": "assets/items/weapon-7-1.76115b660619.webp",
+    "bytes": 10878,
+    "sha256": "76115b66061994bda9c799454d17fe856d34d6ce3a923523f36bc085f8539ac1"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-8-1",
+    "url": "assets/items/weapon-8-1.56606796056a.webp",
+    "bytes": 14154,
+    "sha256": "56606796056ade0352aa54928c7523637a75c056658f97604c22ef34f5422875"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-9-1",
+    "url": "assets/items/weapon-9-1.1c3a00516de8.webp",
+    "bytes": 15074,
+    "sha256": "1c3a00516de8e9a1d2eef43960360c074518f7d0526ca87dc3accde2c6f37df6"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-5-2",
+    "url": "assets/items/weapon-5-2.bbcffc441eb7.webp",
+    "bytes": 14658,
+    "sha256": "bbcffc441eb7e7a595f51910dc90f2f7572fed3e4ccffb25db9c4c31262f572c"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-6-2",
+    "url": "assets/items/weapon-6-2.53ea761b82cb.webp",
+    "bytes": 9834,
+    "sha256": "53ea761b82cb0a631f492c9ec4dcb3d61032f9b0b38e053ff39de48bbfd0d93d"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-7-2",
+    "url": "assets/items/weapon-7-2.e18dd2220ddd.webp",
+    "bytes": 12008,
+    "sha256": "e18dd2220dddea04bdf3c5e48206675703d51672ff09d48865aa5f1c97ef1d8d"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-8-2",
+    "url": "assets/items/weapon-8-2.7cf41e15dc3e.webp",
+    "bytes": 15732,
+    "sha256": "7cf41e15dc3ea18140879335f75bd2e55d284b5300261b7da0bc697034bfe896"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-9-2",
+    "url": "assets/items/weapon-9-2.b50921962091.webp",
+    "bytes": 16576,
+    "sha256": "b50921962091374cc014cbccd2e88850765613de1ee129715c306e008796439f"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-5-3",
+    "url": "assets/items/weapon-5-3.813635e3dff3.webp",
+    "bytes": 16396,
+    "sha256": "813635e3dff31a1029c4feee5a7f57fb88a5c581651bf6bfed88a1b314a16c2d"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-6-3",
+    "url": "assets/items/weapon-6-3.2354444bf4dc.webp",
+    "bytes": 10596,
+    "sha256": "2354444bf4dcd9d0da9ae8a3c3605fa11d35d7f090fe6d699515b96d2654f4df"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-7-3",
+    "url": "assets/items/weapon-7-3.599e4c5ce1fd.webp",
+    "bytes": 12832,
+    "sha256": "599e4c5ce1fd7ea54ab09ab0c12e9e9440e4caa61ccf9193f27b2942d0aba60d"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-8-3",
+    "url": "assets/items/weapon-8-3.5255b5cf776e.webp",
+    "bytes": 17890,
+    "sha256": "5255b5cf776e4dcd3049c99191324a24f6937a4a3bac2ccca2e4de1c8ce7035b"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-9-3",
+    "url": "assets/items/weapon-9-3.c5602bd7764d.webp",
+    "bytes": 17128,
+    "sha256": "c5602bd7764d454ce5f8683d6510ee06512ea7f4eb3f9bc900d5ac4133682ad7"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-5-4",
+    "url": "assets/items/weapon-5-4.12b09c6e0584.webp",
+    "bytes": 17220,
+    "sha256": "12b09c6e058413fef25bdaa7883b904dd2b01ad86aaefbf106a48ea3d952b4eb"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-6-4",
+    "url": "assets/items/weapon-6-4.70ff82c0e244.webp",
+    "bytes": 11622,
+    "sha256": "70ff82c0e244d9875b9a34dd0a28ac49448394c60a82fdbb61e0dfba308e84dd"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-7-4",
+    "url": "assets/items/weapon-7-4.93238073256d.webp",
+    "bytes": 14496,
+    "sha256": "93238073256d02bc5c8e163326e436a022e77cc5f00ed14f67c574c9187fbda8"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-8-4",
+    "url": "assets/items/weapon-8-4.56f754dd3ff1.webp",
+    "bytes": 18232,
+    "sha256": "56f754dd3ff117c3a2f0404d0802ee5ba0ec7092a80cd40ebca3763f1f86a572"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "weapon-9-4",
+    "url": "assets/items/weapon-9-4.402e9ac401f2.webp",
+    "bytes": 18314,
+    "sha256": "402e9ac401f200c5aad7c8946ec65b39a24c4e2df4128a16a72549e3569baf44"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-0",
+    "url": "assets/items/legend-0.cbf4e7f6f846.webp",
+    "bytes": 43442,
+    "sha256": "cbf4e7f6f84685b8ab8fe7ede3b2c451220281b3bfebfc94c16e2712a1d14bf6"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-1",
+    "url": "assets/items/legend-1.c1d54f24582f.webp",
+    "bytes": 11832,
+    "sha256": "c1d54f24582ff81520b25dba605165107933f737756ce27de1e72a07e5e59b9e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-2",
+    "url": "assets/items/legend-2.d091f0c4442e.webp",
+    "bytes": 35452,
+    "sha256": "d091f0c4442e2756e2e7be00f3abf3d89d74a96c0f8f0341fc7e4597e7514094"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-3",
+    "url": "assets/items/legend-3.c454b9e82671.webp",
+    "bytes": 19986,
+    "sha256": "c454b9e8267146cc9900ef1eadb8bea9790cfcfce8e6316161e56affa41d37a6"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-4",
+    "url": "assets/items/legend-4.8f826278775f.webp",
+    "bytes": 37376,
+    "sha256": "8f826278775f1cb5c4e003a88b842b66a90fc578c3433eab8d9cf0e67a8b65a2"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-5",
+    "url": "assets/items/legend-5.245802160b40.webp",
+    "bytes": 29896,
+    "sha256": "245802160b40980704c590381e962a040aaad483578804a5e0f537a147f1417e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-6",
+    "url": "assets/items/legend-6.8a4bf13b6192.webp",
+    "bytes": 17370,
+    "sha256": "8a4bf13b619243d88b2fcf70861b05d5c2a3d9c10f51aadae5709b588101b58f"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-7",
+    "url": "assets/items/legend-7.833367f9ddf2.webp",
+    "bytes": 22318,
+    "sha256": "833367f9ddf20ebf8389ed6c0f8645489aa82cdfc2d54cc6c6124ffd8c96a04e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-8",
+    "url": "assets/items/legend-8.3a2f650ccc2c.webp",
+    "bytes": 31626,
+    "sha256": "3a2f650ccc2c45e0ca97b5805584150c8bf33d831042c6b18665ff81df8854a8"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-9",
+    "url": "assets/items/legend-9.c50d1d416921.webp",
+    "bytes": 35006,
+    "sha256": "c50d1d41692109e1dd1ef8caa317a1fd2757ddab8a71b0cbca561c3d38d575b3"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-10",
+    "url": "assets/items/legend-10.d0819761da3d.webp",
+    "bytes": 12944,
+    "sha256": "d0819761da3d1bd38b74f8244c411be1f5e7275216bd239e4e91bd2b35633174"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-11",
+    "url": "assets/items/legend-11.6b7763a52148.webp",
+    "bytes": 17298,
+    "sha256": "6b7763a521488471530226cfd11da99710aaed70cf0d4584641e59538b93af17"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-12",
+    "url": "assets/items/legend-12.677cbd9ed760.webp",
+    "bytes": 27610,
+    "sha256": "677cbd9ed760bc26cdcc8d32aa9d1872724ac068315e1926338510cff568f8b8"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-13",
+    "url": "assets/items/legend-13.76befd9e52e7.webp",
+    "bytes": 12634,
+    "sha256": "76befd9e52e78cf474a05c78a26b21d869123090d604638cd46416c2e837daf2"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-14",
+    "url": "assets/items/legend-14.e3841ef2573e.webp",
+    "bytes": 28030,
+    "sha256": "e3841ef2573ea64e976c76dc14cc2a866f56eadc4b590852994e0c8f888b1f73"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-15",
+    "url": "assets/items/legend-15.c5cdb7fbf832.webp",
+    "bytes": 13670,
+    "sha256": "c5cdb7fbf8328566ee1d15758defde97cf0f237c95cea913867a99aeb2734cb0"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-16",
+    "url": "assets/items/legend-16.9610f0cd656e.webp",
+    "bytes": 20404,
+    "sha256": "9610f0cd656ee65b37fa0bf3672ece66aa9b66a2e5ab895d781ee6806e015c87"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-17",
+    "url": "assets/items/legend-17.9847939ae6e6.webp",
+    "bytes": 23862,
+    "sha256": "9847939ae6e63ebff0b244f526f8f70571df20d4149fd41cf6a75a17fe9c6f27"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-18",
+    "url": "assets/items/legend-18.143154426d44.webp",
+    "bytes": 31720,
+    "sha256": "143154426d443590c80af3bffdbed33bc7921b0d8eb1a9c83185f05e6c3939ed"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "legend-19",
+    "url": "assets/items/legend-19.bdde58b9d027.webp",
+    "bytes": 26494,
+    "sha256": "bdde58b9d027754df7643f1d4d79c870baf855d01f55e65ca51fd3a08550adc8"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-0-0",
+    "url": "assets/items/dish-0-0.67ce14c2672f.webp",
+    "bytes": 14196,
+    "sha256": "67ce14c2672fd36d82ddf83524d5a7f841317980c93ce8648d12a83feb121372"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-1-0",
+    "url": "assets/items/dish-1-0.790ed5ea4837.webp",
+    "bytes": 14730,
+    "sha256": "790ed5ea4837928939633d64bb129c28c3a3f4909b4095b4cc21b9df1174d773"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-2-0",
+    "url": "assets/items/dish-2-0.8d552e6690fa.webp",
+    "bytes": 14364,
+    "sha256": "8d552e6690fa3217996189762b8869f1a5dae8f53c2b65f786a2a87be8e8f50b"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-3-0",
+    "url": "assets/items/dish-3-0.2a948891736c.webp",
+    "bytes": 15354,
+    "sha256": "2a948891736c0213f8a305c067cb7c6f6cf6d98b8bc1df88fd83d2cd66447e3c"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-4-0",
+    "url": "assets/items/dish-4-0.8d7b2a883af0.webp",
+    "bytes": 16292,
+    "sha256": "8d7b2a883af01246c67951823ea7561415d2f462f3717d828626b964b6be2afa"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-0-1",
+    "url": "assets/items/dish-0-1.dd9f9c6d893c.webp",
+    "bytes": 14600,
+    "sha256": "dd9f9c6d893cbcaa7686c4d5054815c95c7f8bdb210c74b2c39f57803a36a46d"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-1-1",
+    "url": "assets/items/dish-1-1.41618d9ea795.webp",
+    "bytes": 15100,
+    "sha256": "41618d9ea79595fba98ef7dedc8a3b67e12b7d7589f04ae392e952254a292748"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-2-1",
+    "url": "assets/items/dish-2-1.a7952feffa82.webp",
+    "bytes": 15434,
+    "sha256": "a7952feffa824f1e853d504566061372eb874648adbdda941cb47d679f5abaa7"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-3-1",
+    "url": "assets/items/dish-3-1.ebbc51b97619.webp",
+    "bytes": 16382,
+    "sha256": "ebbc51b976191e96ff0086da0c31d2f76dbd01bb211c65bc1f6438c6a6ab01fa"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-4-1",
+    "url": "assets/items/dish-4-1.326c1bf5003a.webp",
+    "bytes": 18108,
+    "sha256": "326c1bf5003a6885fef25c6ee95f95f0dd14cc315f8e9f48557d4b44f8842196"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-0-2",
+    "url": "assets/items/dish-0-2.a27c10753153.webp",
+    "bytes": 17772,
+    "sha256": "a27c10753153243a88a29600969ecc94fd769f64b7da8e93e2a450d99b818e2b"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-1-2",
+    "url": "assets/items/dish-1-2.f2251dbc8256.webp",
+    "bytes": 18214,
+    "sha256": "f2251dbc825695051885db8b38dcc7d10d27e172a187ffa92281877977c51945"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-2-2",
+    "url": "assets/items/dish-2-2.a63ea058df09.webp",
+    "bytes": 17882,
+    "sha256": "a63ea058df099054a0932860100fec68d855adfbb7fa913ad721e0c901161b67"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-3-2",
+    "url": "assets/items/dish-3-2.9ff9a69a3f02.webp",
+    "bytes": 15866,
+    "sha256": "9ff9a69a3f02acb5a4d71996ac8f39a9902c3cedea40526537485ce3ad0b6af7"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-4-2",
+    "url": "assets/items/dish-4-2.00ed022f293a.webp",
+    "bytes": 20484,
+    "sha256": "00ed022f293ad59a81922b63ca9b826ba513272266ecc1b88df7dbd6b82ec9ae"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-0-3",
+    "url": "assets/items/dish-0-3.7e07e64f200f.webp",
+    "bytes": 17332,
+    "sha256": "7e07e64f200fa7c1230497bb95cda7cd20be0fe97025a8a0cf5ce219d2182a89"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-1-3",
+    "url": "assets/items/dish-1-3.534ceba65490.webp",
+    "bytes": 17408,
+    "sha256": "534ceba654909d525889791f844a04c0b23eb5e4b00e7de29f59cf696d3c3a24"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-2-3",
+    "url": "assets/items/dish-2-3.2f54e8d69920.webp",
+    "bytes": 18328,
+    "sha256": "2f54e8d69920b1a7ca4d706efac254c0c266bd3c605977f799cd63e99c03d0da"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-3-3",
+    "url": "assets/items/dish-3-3.8daa3043442f.webp",
+    "bytes": 19022,
+    "sha256": "8daa3043442f0cfc862f6c708ecc5a67af4cea7a49afbbf823190a73804ff733"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-4-3",
+    "url": "assets/items/dish-4-3.715d75a596cb.webp",
+    "bytes": 20276,
+    "sha256": "715d75a596cbd21a98b831d88f1f07db1f44fe80bc94bc1a696d157fea1b03d1"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-0-4",
+    "url": "assets/items/dish-0-4.ed8a175eed0b.webp",
+    "bytes": 18386,
+    "sha256": "ed8a175eed0b8bd9892a2e46d543743e9a0fffd1909b644ac0ee99f8fc9b203e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-1-4",
+    "url": "assets/items/dish-1-4.664dbbe88faf.webp",
+    "bytes": 18566,
+    "sha256": "664dbbe88fafa8418d9aa18b4904a2a3c675b12f5bf030e6948652c86ba619cd"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-2-4",
+    "url": "assets/items/dish-2-4.a6215ddb7b89.webp",
+    "bytes": 18660,
+    "sha256": "a6215ddb7b895badcadff3c1a33c8f800009ed15286e84b315c9843343b8b455"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-3-4",
+    "url": "assets/items/dish-3-4.cb69b3b60875.webp",
+    "bytes": 19640,
+    "sha256": "cb69b3b60875cc8c6b98420f8def714cecd6d50720644270723c4c37d0c99e2b"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-4-4",
+    "url": "assets/items/dish-4-4.35df5ef986e8.webp",
+    "bytes": 20126,
+    "sha256": "35df5ef986e8e5a94fdf8a1f13fb8732e96412b020db14e9bb8a3921d9fcb908"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-5-0",
+    "url": "assets/items/dish-5-0.c08213559958.webp",
+    "bytes": 15826,
+    "sha256": "c08213559958a2522c65c40a44590d6d4aaa4e9148afedd2a937712096b8713b"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-6-0",
+    "url": "assets/items/dish-6-0.1d755e192355.webp",
+    "bytes": 15888,
+    "sha256": "1d755e192355ace65d28b04a3f0703112f5c55ec55fc13da71a5285b9715eb3e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-7-0",
+    "url": "assets/items/dish-7-0.dde539f84101.webp",
+    "bytes": 15534,
+    "sha256": "dde539f8410176b5219fdef81badc18ef110906d53c1f8bdb34049487832f808"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-8-0",
+    "url": "assets/items/dish-8-0.d868a5cb3821.webp",
+    "bytes": 15266,
+    "sha256": "d868a5cb38213084f451c48f0e5837d17ced6cc50586a582a53c6dbdef47ee9e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-9-0",
+    "url": "assets/items/dish-9-0.d4953b6e3bf7.webp",
+    "bytes": 15714,
+    "sha256": "d4953b6e3bf7650e28ac52f66847ef063d23747990e0aa180a108a571a9470e0"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-5-1",
+    "url": "assets/items/dish-5-1.bc8170bddd5d.webp",
+    "bytes": 16372,
+    "sha256": "bc8170bddd5db9477425e57f1677667a6e694b74f3d419d89bd283d1171b65d5"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-6-1",
+    "url": "assets/items/dish-6-1.d190b84e5c47.webp",
+    "bytes": 15906,
+    "sha256": "d190b84e5c4766eaeb0d2beae5e0bf0c5b461b9623fb60eb3b1fdd1c92f8b258"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-7-1",
+    "url": "assets/items/dish-7-1.0b6abce76bc2.webp",
+    "bytes": 15850,
+    "sha256": "0b6abce76bc2a808eec89a69dc6122ae90d7234b56e4596da91a86eec742f815"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-8-1",
+    "url": "assets/items/dish-8-1.9772ea8a9c6c.webp",
+    "bytes": 15540,
+    "sha256": "9772ea8a9c6ce91150b10940d215b59f70a43a78d41efd6836952489a9424b88"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-9-1",
+    "url": "assets/items/dish-9-1.5efff2e9ea87.webp",
+    "bytes": 16704,
+    "sha256": "5efff2e9ea87cb1e8f53544e03eb02a861868c1004e2c882e37732cbf6a00921"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-5-2",
+    "url": "assets/items/dish-5-2.bdae9d1b8b34.webp",
+    "bytes": 17560,
+    "sha256": "bdae9d1b8b34b2796e83f5a0eea9616d2c0a8de19b67fe67abc9b69ed89ad27b"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-6-2",
+    "url": "assets/items/dish-6-2.95317360d249.webp",
+    "bytes": 17854,
+    "sha256": "95317360d249befb7c394acbaaea2b5ce5886426d9ddbb1180557f81749efa61"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-7-2",
+    "url": "assets/items/dish-7-2.226cb4378d9e.webp",
+    "bytes": 16948,
+    "sha256": "226cb4378d9e8e26e6814914b58a1f6ada057b0a008ae3dc502a54b40b5af5ee"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-8-2",
+    "url": "assets/items/dish-8-2.aed3e77a6ead.webp",
+    "bytes": 16278,
+    "sha256": "aed3e77a6ead56c19cf6b7b61d23f02468375f604a2ae4221324ebb85fdd1c48"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-9-2",
+    "url": "assets/items/dish-9-2.c86a42a07e48.webp",
+    "bytes": 17380,
+    "sha256": "c86a42a07e4857f56a8edfe41e9caa31a03466af0e428f783530fc010142ac89"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-5-3",
+    "url": "assets/items/dish-5-3.40e5467d790b.webp",
+    "bytes": 17498,
+    "sha256": "40e5467d790b771193d4e0b210173215fc56d6ae04425dfc54804262ce857490"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-6-3",
+    "url": "assets/items/dish-6-3.e65d15e77309.webp",
+    "bytes": 19330,
+    "sha256": "e65d15e7730905edbd00f8e245392f6b6d171ec21a55f29dc3b5f16e3379190e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-7-3",
+    "url": "assets/items/dish-7-3.6ffccc30fb42.webp",
+    "bytes": 19642,
+    "sha256": "6ffccc30fb427b5cafcaa52e9e737dc5504b47803c2573113696114423fbd829"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-8-3",
+    "url": "assets/items/dish-8-3.ca702ff54615.webp",
+    "bytes": 17518,
+    "sha256": "ca702ff54615f602c40ee220389612c9448cf062f9fb6b2b72c7903eb19cc90d"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-9-3",
+    "url": "assets/items/dish-9-3.54919e15dd8d.webp",
+    "bytes": 18068,
+    "sha256": "54919e15dd8d59d5c94988a2f597405fb76eed31f6b48ee22fd1fede8a0d140c"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-5-4",
+    "url": "assets/items/dish-5-4.bb8f0a2f9bd3.webp",
+    "bytes": 20010,
+    "sha256": "bb8f0a2f9bd3f7297e491a2975d2dcedc241e071220532325b3780e631f01af7"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-6-4",
+    "url": "assets/items/dish-6-4.c6b34c0a2446.webp",
+    "bytes": 19802,
+    "sha256": "c6b34c0a2446f46b336ae21a95208059c3af0920384650715b0752f05f2ca1b9"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-7-4",
+    "url": "assets/items/dish-7-4.dada1d5b0b1e.webp",
+    "bytes": 17988,
+    "sha256": "dada1d5b0b1eaf93caa2b1a97db6dc8e65ebf797b98f49aeed3c54c87bc3e79a"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-8-4",
+    "url": "assets/items/dish-8-4.406fb51811e9.webp",
+    "bytes": 17662,
+    "sha256": "406fb51811e9e3290f9b59c3a2c604f5bb4fe28eb08d12e2f7e6d5dc12f3ed68"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "dish-9-4",
+    "url": "assets/items/dish-9-4.5af75c7c01ec.webp",
+    "bytes": 19992,
+    "sha256": "5af75c7c01ecfacbb65f9a951b24efe6cdf2843a3ce6c6519bfab01921709230"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-tree-0",
+    "url": "assets/items/decor-tree-0.c8d4217dbedd.webp",
+    "bytes": 37148,
+    "sha256": "c8d4217dbeddd7696055046b10d61bcadc3a7f3bf9eca0a076f2f4221e55a39a"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-tree-1",
+    "url": "assets/items/decor-tree-1.28f612fd9189.webp",
+    "bytes": 36334,
+    "sha256": "28f612fd91896abf2a431cc06a54726b9622efa5aa7c359a7d6c52f52ea4ac0e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-tree-2",
+    "url": "assets/items/decor-tree-2.d61296767243.webp",
+    "bytes": 38056,
+    "sha256": "d6129676724372e8f3dab38a6328e6309d7ec36870a76cbce07e37c510be0a5b"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-tree-3",
+    "url": "assets/items/decor-tree-3.3c165af605a6.webp",
+    "bytes": 36144,
+    "sha256": "3c165af605a66786007e793022debf70bdd897571fdc0b567cc1dc185ca13e24"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-lamp-0",
+    "url": "assets/items/decor-lamp-0.734ff56cd510.webp",
+    "bytes": 18836,
+    "sha256": "734ff56cd5105cbe98ca592ba88bcfc67ee8e09dc4e377cb814315e85fb8907e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-lamp-1",
+    "url": "assets/items/decor-lamp-1.aadae233b9fd.webp",
+    "bytes": 19336,
+    "sha256": "aadae233b9fd495564a6ad2bbff058c0e695225180ea3c2495ff294d2bf286ca"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-lamp-2",
+    "url": "assets/items/decor-lamp-2.3b1caeb2df17.webp",
+    "bytes": 18848,
+    "sha256": "3b1caeb2df170d1555f348e5c4229e29f0f86977fda0d792b95e0fba8d5249da"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-lamp-3",
+    "url": "assets/items/decor-lamp-3.893e5215fdaa.webp",
+    "bytes": 19904,
+    "sha256": "893e5215fdaaceed95927e7c596b9cd3d905da686061ff78a6369c770ccb579c"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-bench",
+    "url": "assets/items/decor-bench.54c348f9e7f1.webp",
+    "bytes": 33886,
+    "sha256": "54c348f9e7f1685caa96652716bc6f46b2679a1b1da4af9884a960c98215d2c0"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-fountain",
+    "url": "assets/items/decor-fountain.572e29608da4.webp",
+    "bytes": 32744,
+    "sha256": "572e29608da455a64cb57c3f7add6e5da86b729cecffa89ced0dfeeb8a04a9c0"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-flowers",
+    "url": "assets/items/decor-flowers.66884c2da27b.webp",
+    "bytes": 33692,
+    "sha256": "66884c2da27b317b01c642c6f20da8ba72a69602165e9ab258103eb32a0e3c3f"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-fence",
+    "url": "assets/items/decor-fence.4ece39e794e1.webp",
+    "bytes": 31228,
+    "sha256": "4ece39e794e1be91cd5b4b167cb6ffbdbbf18598081b5d36b0d0ba485fae2e83"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-cat",
+    "url": "assets/items/decor-cat.3d86ef46865d.webp",
+    "bytes": 26682,
+    "sha256": "3d86ef46865da222964e5eaa410ace64baa59ccb94d7353ab64d79a5f05e4bb5"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-dog",
+    "url": "assets/items/decor-dog.cffae892b9c6.webp",
+    "bytes": 25160,
+    "sha256": "cffae892b9c67e45a294307ff3e858d4c09405dacb331eaccd60f32bf65820b4"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-flowers-2",
+    "url": "assets/items/decor-flowers-2.dc6ad6fb3258.webp",
+    "bytes": 33540,
+    "sha256": "dc6ad6fb325886404ecb17f4d2628e75fcbf90af39576d8884ccfab075fad26e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-flowers-3",
+    "url": "assets/items/decor-flowers-3.2cae9a009c2d.webp",
+    "bytes": 34290,
+    "sha256": "2cae9a009c2d232eb17af9736be16dd847dba92aa80dffece8097f93deba0661"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-sp-cherry",
+    "url": "assets/items/decor-sp-cherry.924ac04311ba.webp",
+    "bytes": 43442,
+    "sha256": "924ac04311ba4d21a1df7acb71ddd8ec8eecc4c2d9caa46537509acf79600730"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-sp-tulips",
+    "url": "assets/items/decor-sp-tulips.8a479ed2f15b.webp",
+    "bytes": 35548,
+    "sha256": "8a479ed2f15b20be2970a65d2191428b0f07c148a1357f2f035086b82570738f"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-sp-daisy",
+    "url": "assets/items/decor-sp-daisy.3c44c93146bb.webp",
+    "bytes": 34546,
+    "sha256": "3c44c93146bbc4bdd2a5ecc59fb70c796a8f3e436e7d7a7532752929fa89e791"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-sp-arch",
+    "url": "assets/items/decor-sp-arch.bfc984d29f50.webp",
+    "bytes": 45656,
+    "sha256": "bfc984d29f509e63aaa7f178a27f6aea18a21ca5d3022793c3a07efa17f5d397"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-sp-rabbit",
+    "url": "assets/items/decor-sp-rabbit.0dda61f53dab.webp",
+    "bytes": 26954,
+    "sha256": "0dda61f53dab7a39673e2ed1c79fa7b997faccf9e4e8b76eaa5529a13aaa7e62"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-sp-picnic",
+    "url": "assets/items/decor-sp-picnic.27c8038078ef.webp",
+    "bytes": 38510,
+    "sha256": "27c8038078ef8a45a7ec1760c90c5f6b6b48c205c98b5fd996865b033029cc8f"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-sp-windmill",
+    "url": "assets/items/decor-sp-windmill.f78ebaf5545d.webp",
+    "bytes": 31962,
+    "sha256": "f78ebaf5545dc134ed35b2371edbb769fb275215b564a6b3c4c816221ba43afa"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-sp-birdhouse",
+    "url": "assets/items/decor-sp-birdhouse.88844c0d89e1.webp",
+    "bytes": 24446,
+    "sha256": "88844c0d89e1d471fcca2bb1376512e83c09071bc08cd52a075e8a7245ddaa3e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-sp-clover",
+    "url": "assets/items/decor-sp-clover.f122916ac4c5.webp",
+    "bytes": 36264,
+    "sha256": "f122916ac4c50583af735250568b69ff80575f30352d4093510de990d084c8d5"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-sp-lantern",
+    "url": "assets/items/decor-sp-lantern.967f0d7193fd.webp",
+    "bytes": 29658,
+    "sha256": "967f0d7193fd9f934228515a342615d08a83671f731d31495621c94fb86d7e0c"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-night-sp-jar",
+    "url": "assets/items/decor-night-sp-jar.8cb4719d70a9.webp",
+    "bytes": 28800,
+    "sha256": "8cb4719d70a9dafaa349c5d7c12c31fc228cf16e070c1310d55dddf8b304a2f4"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-night-sp-petal",
+    "url": "assets/items/decor-night-sp-petal.53e3ab868f63.webp",
+    "bytes": 28774,
+    "sha256": "53e3ab868f63c0cee526015dbab58d2e781992b469dc04ea53f592835f20896b"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-night-sp-moon",
+    "url": "assets/items/decor-night-sp-moon.2bfd81ee36fc.webp",
+    "bytes": 39980,
+    "sha256": "2bfd81ee36fc238de3185aefbdfce534f0250e16071a55c34d392151b09e57cc"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-su-palm",
+    "url": "assets/items/decor-su-palm.965368d52d34.webp",
+    "bytes": 40924,
+    "sha256": "965368d52d3423d97627aff9570a36f90a9b1d419c957df9d6ab33857fd67a71"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-su-chair",
+    "url": "assets/items/decor-su-chair.3f6deac2d080.webp",
+    "bytes": 28416,
+    "sha256": "3f6deac2d08066b367c44b6d200df8fc57614ab09e7cc03cb7eb547ffa6aab7e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-su-parasol",
+    "url": "assets/items/decor-su-parasol.811686dde146.webp",
+    "bytes": 28122,
+    "sha256": "811686dde146f320db0ee7f9cf1ab91ba40ffac247df72cc51c84203720bf632"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-su-watermelon",
+    "url": "assets/items/decor-su-watermelon.04d1a2fb1560.webp",
+    "bytes": 42486,
+    "sha256": "04d1a2fb15609be2c2bf408a2a594c61e3f19351a246c812253db83a28b5673b"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-su-surf",
+    "url": "assets/items/decor-su-surf.9fa50a3f7b46.webp",
+    "bytes": 33884,
+    "sha256": "9fa50a3f7b46e1934756fc6346dd319af79866ecb144f1ff06c399b47dba8f00"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-su-castle",
+    "url": "assets/items/decor-su-castle.f3a1b1e308d9.webp",
+    "bytes": 33716,
+    "sha256": "f3a1b1e308d9d3590968315f725598d95bc8433e51cc826e50093c702f7407a3"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-su-sunlamp",
+    "url": "assets/items/decor-su-sunlamp.cddd5db048c0.webp",
+    "bytes": 28970,
+    "sha256": "cddd5db048c0776a8b78420f79e3c86517d6dc5c857e5a7c15edbdc0adb255c3"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-su-pond",
+    "url": "assets/items/decor-su-pond.29184bf5b145.webp",
+    "bytes": 33710,
+    "sha256": "29184bf5b1453ace9996c80e1cadb85fddbba384b46a0703857d564f84e1811f"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-su-sunflowers",
+    "url": "assets/items/decor-su-sunflowers.cdf73f2c52c2.webp",
+    "bytes": 40054,
+    "sha256": "cdf73f2c52c220f22fbb396b16ead07c8a0cb411b5d71132fd1cb869b7e1644e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-su-tiki",
+    "url": "assets/items/decor-su-tiki.c317db1a7061.webp",
+    "bytes": 32966,
+    "sha256": "c317db1a7061f91bcf8c1b1fba0702dfa8370512beaa1c629a310ee69fe9521b"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-night-su-jelly",
+    "url": "assets/items/decor-night-su-jelly.35ea346610c5.webp",
+    "bytes": 25852,
+    "sha256": "35ea346610c56d6c7a80bdb97e7378e97de9ab870ead529ef23cedc0cc37e545"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-night-su-shell",
+    "url": "assets/items/decor-night-su-shell.44cbee2fb57a.webp",
+    "bytes": 33856,
+    "sha256": "44cbee2fb57adedcd432519f23a0a350e13e79e07b7b343f6f737106b0c057e7"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-night-su-star",
+    "url": "assets/items/decor-night-su-star.26cfe7c7f81e.webp",
+    "bytes": 30122,
+    "sha256": "26cfe7c7f81e70e98904912adcba1e40f785d0933fdd691b6a97b883748cee0b"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-au-maple",
+    "url": "assets/items/decor-au-maple.8f78f8aa9124.webp",
+    "bytes": 41516,
+    "sha256": "8f78f8aa912497369125476e24e568db67e1a78ed0ca44052038c247e53e5484"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-au-pumpkin",
+    "url": "assets/items/decor-au-pumpkin.414dcd0adb1e.webp",
+    "bytes": 32308,
+    "sha256": "414dcd0adb1e9af95bb5be8fb93b5bb2fcfba9d815f819431a9ac3d95381c280"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-au-scarecrow",
+    "url": "assets/items/decor-au-scarecrow.096607415a89.webp",
+    "bytes": 29624,
+    "sha256": "096607415a89085df9c417a77152112e66f73061e5c3011c05ad52df455535bf"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-au-cart",
+    "url": "assets/items/decor-au-cart.11a5467118e6.webp",
+    "bytes": 38804,
+    "sha256": "11a5467118e61d510c8bb7ded627406ddd97fbc46f5570221a7f218ebfa11acc"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-au-mushrooms",
+    "url": "assets/items/decor-au-mushrooms.8d56ceff39b5.webp",
+    "bytes": 38664,
+    "sha256": "8d56ceff39b5136b3d87e6a0697a20b4540a93859a5bd258151fb338001b3705"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-au-basket",
+    "url": "assets/items/decor-au-basket.3e1f4cbf1f9a.webp",
+    "bytes": 40844,
+    "sha256": "3e1f4cbf1f9ae21ba3b8eef3b80099b6ca49db3cdb9fdc95e90f4b34974e2a1d"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-au-leaves",
+    "url": "assets/items/decor-au-leaves.59804a5d7f58.webp",
+    "bytes": 27122,
+    "sha256": "59804a5d7f5837a239c6d3f434ca2e1121ad093725f6778965ce1db697375e38"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-au-acornbench",
+    "url": "assets/items/decor-au-acornbench.3b2a53886d75.webp",
+    "bytes": 36444,
+    "sha256": "3b2a53886d75dc190a7a80006a67b0736176472f281d48c3d65707bf763a6319"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-au-owl",
+    "url": "assets/items/decor-au-owl.c45afb04b128.webp",
+    "bytes": 29292,
+    "sha256": "c45afb04b1286ba8b45832052f76cbad8336df7288589501b7f0ef6530097b1a"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-au-lantern",
+    "url": "assets/items/decor-au-lantern.d6de56440406.webp",
+    "bytes": 23210,
+    "sha256": "d6de56440406e4bd87b476da766e0b9970a94186d7b3c6afc910fe2da5e7283f"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-night-au-pumpkin",
+    "url": "assets/items/decor-night-au-pumpkin.eca5b9c57f1c.webp",
+    "bytes": 29278,
+    "sha256": "eca5b9c57f1c7dc862179fc727e9b03816e4ac6ccfbc7d6ba00864a90e367945"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-night-au-maple",
+    "url": "assets/items/decor-night-au-maple.84cf6d824907.webp",
+    "bytes": 35200,
+    "sha256": "84cf6d824907e06002da11bba878bfb8647a910586689f8225ef5cfd7ee62af5"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-night-au-harvest",
+    "url": "assets/items/decor-night-au-harvest.4665c73487b4.webp",
+    "bytes": 36128,
+    "sha256": "4665c73487b45e3c9b6a7126c18a4d90ad344108099f750384a140ef0ffd7907"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-wi-pine",
+    "url": "assets/items/decor-wi-pine.b341d989f77b.webp",
+    "bytes": 34302,
+    "sha256": "b341d989f77bf486c1a165ce3b87d4a35290be1447f48e8fd090de750c64a21e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-wi-snowman",
+    "url": "assets/items/decor-wi-snowman.d5f6b461fa6d.webp",
+    "bytes": 34606,
+    "sha256": "d5f6b461fa6d1fd0b8096b55467c80319097e1197492b642cac525e02e7b46e9"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-wi-crystal",
+    "url": "assets/items/decor-wi-crystal.4d76f7e45167.webp",
+    "bytes": 27502,
+    "sha256": "4d76f7e45167c3cf0586ce1aca1c0253123a7b3d26f3def8e5c4e8836ceba68e"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-wi-gifts",
+    "url": "assets/items/decor-wi-gifts.b9ceaefe3ce3.webp",
+    "bytes": 35306,
+    "sha256": "b9ceaefe3ce3a6526f5a5968ba7d8e4878ce6d4929c9fc126b5414c3452508d1"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-wi-sleigh",
+    "url": "assets/items/decor-wi-sleigh.7da32c9307d0.webp",
+    "bytes": 33580,
+    "sha256": "7da32c9307d066f34f97f62fb51c94e451a9190fbfa9ea784be81793b8da61d7"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-wi-reindeer",
+    "url": "assets/items/decor-wi-reindeer.2fd26a7f6eab.webp",
+    "bytes": 32770,
+    "sha256": "2fd26a7f6eabb4dad2a9b379001269c02a52a27245cd9bf743a9a6f395fecf97"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-wi-cocoa",
+    "url": "assets/items/decor-wi-cocoa.c9bd3da9e099.webp",
+    "bytes": 44342,
+    "sha256": "c9bd3da9e099ffe9ee27b7cdba39ec7248911f65674c7cfbf4521be08dd95880"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-wi-arch",
+    "url": "assets/items/decor-wi-arch.2747828a7f9e.webp",
+    "bytes": 35632,
+    "sha256": "2747828a7f9e9b93f43111aab4b49fc55309eaef23bd8193f57439d29e661477"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-wi-banner",
+    "url": "assets/items/decor-wi-banner.6cc77b6918de.webp",
+    "bytes": 27174,
+    "sha256": "6cc77b6918de08f3bd0d055520604c7ee7cabc1955c4cb65f7ab3323eea00af1"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-wi-starlamp",
+    "url": "assets/items/decor-wi-starlamp.8d12baad33f9.webp",
+    "bytes": 27268,
+    "sha256": "8d12baad33f996ae4e75bfca951c5f5d6716403d5d41b2ab00811527526b7da9"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-night-wi-ice",
+    "url": "assets/items/decor-night-wi-ice.90480287c3f7.webp",
+    "bytes": 30966,
+    "sha256": "90480287c3f73832d8985c516b16ee5f3f49246ba4efe5d5dddeaa61f736eec4"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-night-wi-snow",
+    "url": "assets/items/decor-night-wi-snow.d6d2f1d384d4.webp",
+    "bytes": 30816,
+    "sha256": "d6d2f1d384d402dbc97ce772448257ae2f9a558fc2d77634013f5ea796e3339f"
+  },
+  {
+    "variable": "COZY_ITEM_ART",
+    "id": "decor-night-wi-aurora",
+    "url": "assets/items/decor-night-wi-aurora.401bf33a0dea.webp",
+    "bytes": 32884,
+    "sha256": "401bf33a0dea5ed2c06c854c673296125adbc6cb23f440988d1757c567cb16f8"
+  },
+  {
+    "variable": "KITCHEN_PREP_ART",
+    "id": "0-0",
+    "url": "assets/prepared/0-0.f0f3a8b1c337.webp",
+    "bytes": 16788,
+    "sha256": "f0f3a8b1c337b471968d5e1fd027f1b0cccdcc6bc817c7ed789219b6d9113ab0"
+  },
+  {
+    "variable": "KITCHEN_PREP_ART",
+    "id": "0-1",
+    "url": "assets/prepared/0-1.7774b3543bd5.webp",
+    "bytes": 15072,
+    "sha256": "7774b3543bd5e0280fe3a88180b9a35b321e72cdf4f74c2a74c5b1aa49c4d871"
+  },
+  {
+    "variable": "KITCHEN_PREP_ART",
+    "id": "0-2",
+    "url": "assets/prepared/0-2.a6dc53e38445.webp",
+    "bytes": 14084,
+    "sha256": "a6dc53e384457ff2c3896179bc607c3bbefdedbad59f757430fe077d75d8873f"
+  },
+  {
+    "variable": "KITCHEN_PREP_ART",
+    "id": "0-3",
+    "url": "assets/prepared/0-3.948b1ee64247.webp",
+    "bytes": 15836,
+    "sha256": "948b1ee64247af82a6efa076235093b998592b446bd603157d6435fd2e265bd5"
+  },
+  {
+    "variable": "KITCHEN_PREP_ART",
+    "id": "0-4",
+    "url": "assets/prepared/0-4.92ec1bb49f0f.webp",
+    "bytes": 18214,
+    "sha256": "92ec1bb49f0fa2b1c642a5c1083b17da7bb42de2d0e27e59b6a59c6b97a27537"
+  },
+  {
+    "variable": "KITCHEN_PREP_ART",
+    "id": "1-0",
+    "url": "assets/prepared/1-0.50b8cafb33c5.webp",
+    "bytes": 16626,
+    "sha256": "50b8cafb33c5079463807e270b172c1b734793641b98eb7bf502f9e99dcade83"
+  },
+  {
+    "variable": "KITCHEN_PREP_ART",
+    "id": "1-1",
+    "url": "assets/prepared/1-1.f08e5a07f395.webp",
+    "bytes": 14884,
+    "sha256": "f08e5a07f39540dc53580973bdad83d10b25480f6f9a188e56c000adb4745360"
+  },
+  {
+    "variable": "KITCHEN_PREP_ART",
+    "id": "1-2",
+    "url": "assets/prepared/1-2.8b857bd785b4.webp",
+    "bytes": 15116,
+    "sha256": "8b857bd785b4b20d0a01b05e50cf32f0f018580cfee4f689b500eba430a66290"
+  },
+  {
+    "variable": "KITCHEN_PREP_ART",
+    "id": "1-3",
+    "url": "assets/prepared/1-3.99e8866e9554.webp",
+    "bytes": 16168,
+    "sha256": "99e8866e95549a56935d34725a8e1da5008b281cd0a10e79a50210f29b43b255"
+  },
+  {
+    "variable": "KITCHEN_PREP_ART",
+    "id": "1-4",
+    "url": "assets/prepared/1-4.a9446b8f082a.webp",
+    "bytes": 19022,
+    "sha256": "a9446b8f082adb0ad1e567344cf1e9d0276a77e85688e3b45187838c0cacd4bc"
+  },
+  {
+    "variable": "KITCHEN_PREP_ART",
+    "id": "2-0",
+    "url": "assets/prepared/2-0.a652c2a86125.webp",
+    "bytes": 15358,
+    "sha256": "a652c2a86125a71227dd88b8cdd496d56408bdca989fac16f705789c610eb3a3"
+  },
+  {
+    "variable": "KITCHEN_PREP_ART",
+    "id": "2-1",
+    "url": "assets/prepared/2-1.98e490de971f.webp",
+    "bytes": 14614,
+    "sha256": "98e490de971f01202129757afbfaa7e371fe1c16d24fdedfaa7871a9a65e3232"
+  },
+  {
+    "variable": "KITCHEN_PREP_ART",
+    "id": "2-2",
+    "url": "assets/prepared/2-2.6782859e5e67.webp",
+    "bytes": 14130,
+    "sha256": "6782859e5e67d996d7bac250ee78cd4a4402bee4e35c7c119eb6a66499ef2a7f"
+  },
+  {
+    "variable": "KITCHEN_PREP_ART",
+    "id": "2-3",
+    "url": "assets/prepared/2-3.26904435b85f.webp",
+    "bytes": 14914,
+    "sha256": "26904435b85fa242f0e3e2a659d8a6e225d7b139176460ea3040e8dfc52a9a16"
+  },
+  {
+    "variable": "KITCHEN_PREP_ART",
+    "id": "2-4",
+    "url": "assets/prepared/2-4.1dacb206cb0a.webp",
+    "bytes": 17308,
+    "sha256": "1dacb206cb0ad7bd0081ef4a603b3874a613ef059e2f7c794371701cce4d44c6"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "0",
+    "url": "assets/guests/0.44c205fa7b0f.webp",
+    "bytes": 12862,
+    "sha256": "44c205fa7b0f6007b87ce659463536d2b479ca7a160546dec511fe834a4564e5"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "1",
+    "url": "assets/guests/1.3b37ce4458e9.webp",
+    "bytes": 12810,
+    "sha256": "3b37ce4458e9f1cdced1d756f0230278e6fba682f90ba6e1aa759fbd66acfaa9"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "2",
+    "url": "assets/guests/2.c7131275b75a.webp",
+    "bytes": 14506,
+    "sha256": "c7131275b75aa24f2599d13e254999c0083b3b608d59991515a89a627fcffc7a"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "3",
+    "url": "assets/guests/3.7c053df81670.webp",
+    "bytes": 14810,
+    "sha256": "7c053df81670b50699f5ee11f1f08744a80fbd1e5fd2791bd04cb3c0e2fda50f"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "4",
+    "url": "assets/guests/4.60ef3cb0a499.webp",
+    "bytes": 14384,
+    "sha256": "60ef3cb0a499036ef3b49bb516b52213159e6be4e36e32877e625786eefd8977"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "5",
+    "url": "assets/guests/5.94f981128059.webp",
+    "bytes": 14990,
+    "sha256": "94f981128059c5fadf8ff1357a3af335f4229f51d6aa2621f43939fd452cecf9"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "6",
+    "url": "assets/guests/6.34bfdbeeeb73.webp",
+    "bytes": 12344,
+    "sha256": "34bfdbeeeb732a124ad0d3ea6ee38175d1f4407f8670bd356e023335d9c804a0"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "7",
+    "url": "assets/guests/7.f6a92bfb84ea.webp",
+    "bytes": 12238,
+    "sha256": "f6a92bfb84eaadcb1ee09a05e85e38debd72a3632508815c783fca2e3494f728"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "8",
+    "url": "assets/guests/8.c09128253563.webp",
+    "bytes": 12220,
+    "sha256": "c091282535637eb00d0e20c4858d22cde69f4fefdc986b4499f174a85c9d16d3"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "9",
+    "url": "assets/guests/9.178d64be4011.webp",
+    "bytes": 12250,
+    "sha256": "178d64be4011906749e71d0074aa2193e94d0c653d6011b87e1f70b5c7108769"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "10",
+    "url": "assets/guests/10.858dcc8aacff.webp",
+    "bytes": 13788,
+    "sha256": "858dcc8aacff5c229605ad260094ac04fd5546487bcaab341ab35c188292cf5d"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "11",
+    "url": "assets/guests/11.51c47fd4e9f3.webp",
+    "bytes": 14122,
+    "sha256": "51c47fd4e9f3fb677cc5208ed6369268a41791b0ce8e5cd7a5de26a43b58e864"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "12",
+    "url": "assets/guests/12.919873b5435c.webp",
+    "bytes": 13356,
+    "sha256": "919873b5435c221f32c18f513dec3eb48d12d5d2a7d0ea732be03a8e9bb3f3aa"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "13",
+    "url": "assets/guests/13.b86e3bcee084.webp",
+    "bytes": 14502,
+    "sha256": "b86e3bcee084d7346840e4701704a48ebce283768fc31e1d9b1e221886c3b27b"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "14",
+    "url": "assets/guests/14.6227110c34fd.webp",
+    "bytes": 14014,
+    "sha256": "6227110c34fda1e63d7d41b9ffde2878a3d5ba22c09f4ddb622b5ce493799a51"
+  },
+  {
+    "variable": "TOWN_GUEST_ART",
+    "id": "15",
+    "url": "assets/guests/15.88c3d8837176.webp",
+    "bytes": 13230,
+    "sha256": "88c3d88371762da29269f0d98be632d749ea72e3e60e32ed08c88a75395de96b"
+  }
+]

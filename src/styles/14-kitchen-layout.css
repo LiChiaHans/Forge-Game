@@ -1,0 +1,20 @@
+
+/* Match the forge's left-hand vertical labels and three-card tool rail. */
+.kitchen-screen header{display:grid;grid-template-columns:minmax(0,1fr) auto 32px 32px;gap:4px;min-height:33px}.kitchen-screen header>b,.kitchen-screen header>span{display:flex;align-items:center;height:33px;margin:0;padding:0 7px;border:1px solid #58677b;border-radius:9px;background:linear-gradient(#394759,#2d3849);white-space:nowrap;font-size:12px}.kitchen-screen header>button{height:33px;min-width:0;padding:2px;border-radius:9px;font-size:20px}.kitchen-screen nav button{font-size:16px}
+.kitchen-screen footer{grid-template-columns:minmax(0,1.8fr) minmax(0,.9fr) 55px;min-height:93px;gap:5px}
+#kitchenProcesses,#kitchenHand{padding:6px 5px 6px 23px;gap:5px;background:linear-gradient(#394759,#2d3849);border-color:#58677b;border-radius:11px}
+#kitchenProcesses>small,#kitchenHand>small{position:absolute;left:5px;top:50%;bottom:auto;transform:translateY(-50%);writing-mode:vertical-rl;text-orientation:upright;letter-spacing:2px;line-height:1.05;font-size:13px;color:#e9ca7d}
+#kitchenProcesses>button.kitchen-process-ready:after{content:none}#kitchenProcesses>button.kitchen-process-ready{outline:2px dashed #e7c36d;outline-offset:1px}#kitchenProcesses svg{max-height:66px}#kitchenProcesses>button:not(.kitchen-process-ready) svg{max-height:48px}#kitchenHand>span{width:58px;height:58px;min-width:0;max-width:100%}#kitchenHand>button:not(.kitchen-stow){padding:2px;font-size:40px}#kitchenHand .kitchen-stow{top:2px;right:2px}
+.kitchen-screen nav button{border-radius:10px}.kitchen-order{border-radius:10px}.kitchen-screen main{gap:5px}#kitchenQueue{border-radius:11px;border-color:#5e6a7c;background:linear-gradient(#394759,#2b3645)}#kitchenGrid{border-radius:12px;border-color:#99875e;background:#6b674f}.kc{border-radius:8px}.kitchen-customer-exit{box-sizing:border-box;overflow:hidden;contain:layout style}
+#kitchenP .kitchen-complete{animation:kitchen-finished .65s ease-out}@keyframes kitchen-finished{0%{box-shadow:inset 0 0 0 3px #fff1bc,0 0 10px #f5c96b}100%{box-shadow:inset 0 2px 5px #0d1625}}
+#townP[data-preview-kitchen="true"] #townExpedition{left:2%;top:1%;width:48%;height:25%}
+#townP[data-preview-kitchen="true"] #townForge{left:58%;top:11%;width:42%;height:25%}
+#townP[data-preview-kitchen="true"] #townKitchen{left:59%;top:36%;width:41%;height:27%}
+#townP[data-preview-kitchen="true"] #townDecorShop{left:76%;top:64%;width:24%;height:15%}
+#townP[data-preview-kitchen="true"] #townTraining{top:79%;height:21%}
+#townP[data-time="night"] #townPlaza{filter:brightness(.59) saturate(.75)}
+#townP[data-time="night"] .town-sticker[data-decor-kind="fountain"] .sticker-transform>svg{filter:brightness(.58) saturate(.8)}
+#townP[data-time="night"] #townFountain{filter:brightness(.58) saturate(.8)}
+@media(max-height:760px){.kitchen-screen footer{min-height:80px}#kitchenProcesses svg{max-height:54px}#kitchenProcesses>button:not(.kitchen-process-ready) svg{max-height:40px}#kitchenProcesses>small,#kitchenHand>small{font-size:12px}#kitchenHand>span{width:49px;height:49px}}
+@media(prefers-reduced-motion:reduce){#kitchenP .kitchen-complete{animation:none}}.low-effects #kitchenP .kitchen-complete{animation:none}
+

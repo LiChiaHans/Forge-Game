@@ -1,0 +1,13 @@
+
+/* Keep original boxes, overlays and hit areas; only replace their artwork. */
+body.cozy-items .cozy-ore{background-color:transparent!important;background-image:var(--cozy-ore-art)!important;background-position:center!important;background-size:contain!important;background-repeat:no-repeat!important;color:transparent!important;text-shadow:none!important;box-shadow:none!important;border-color:transparent!important;border-radius:0!important;position:relative;image-rendering:pixelated}
+body.cozy-items .cozy-ore::before{content:attr(data-ore-name);position:absolute;left:50%;bottom:0;transform:translateX(-50%);padding:0 3px;border-radius:2px;background:#26312bc9;color:#fff1cb;text-shadow:1px 1px #1b2325;white-space:nowrap;font-size:clamp(9px,2.6vw,12px);font-weight:900;line-height:1.2;z-index:2;pointer-events:none}
+body.cozy-items #q .cozy-ore::before{font-size:10px}
+body.cozy-items [data-cozy-item],body.cozy-items [data-cozy-decor]{overflow:visible}
+.cozy-decor-halo{animation:cozy-lamp-breathe 4.6s ease-in-out infinite;pointer-events:none}
+.cozy-fountain-water{animation:cozy-water-shimmer 2.2s ease-in-out infinite;pointer-events:none}
+@keyframes cozy-lamp-breathe{50%{opacity:.42}}
+@keyframes cozy-water-shimmer{50%{opacity:.35;transform:translateY(.5px)}}
+.low-effects .cozy-decor-halo,.low-effects .cozy-fountain-water{animation:none}
+@media(prefers-reduced-motion:reduce){.cozy-decor-halo,.cozy-fountain-water{animation:none}}
+

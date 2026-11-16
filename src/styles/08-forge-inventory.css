@@ -1,0 +1,7 @@
+
+#app #side #handSlot .hand-bag{padding:0;margin:0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:32px;line-height:1;background:linear-gradient(#49566b,#273447);border:1px solid #b9a36d;box-shadow:inset 0 0 0 2px #1a2433,0 2px 4px #0005;touch-action:manipulation}
+#app #side #handSlot .hand-bag:active{background:#6b5938}
+#bagC .si{min-width:0;padding:8px 4px;gap:6px}
+#bagC .bag-item-art{display:flex;align-items:center;justify-content:center;min-height:54px;width:100%;flex:none}
+#bagC .bag-item-large>.q,#bagC .bag-item-large>.mo,#bagC .bag-item-large>.gm,#bagC .bag-item-large>.hxo,#bagC .bag-item-large>.seed-icon,#bagC .bag-item-large>.bp-item-icon{width:52px;height:52px;flex:none}
+#bagC .bag-item-large>.q{font-size:25px}

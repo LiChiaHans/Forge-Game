@@ -1,0 +1,159 @@
+
+
+/* Full-screen canvas and horizontal supplies above the board. */
+html{background-color:#171b23;min-height:100%;touch-action:pan-x pan-y}
+body{position:fixed;inset:0;width:100%;height:100%;min-height:100dvh;background:none;isolation:isolate;touch-action:pan-x pan-y}
+body::before{content:"";position:fixed;inset:-100px;z-index:-1;pointer-events:none;background:radial-gradient(130% 55% at 50% 108%,#ff782833,transparent 62%),linear-gradient(#1f2531,#171b23)}
+#app{max-width:500px}
+#app>.bar:first-child{display:grid;grid-template-columns:max-content minmax(0,1fr) max-content 32px;gap:4px;min-height:38px}
+#app>.bar:first-child>span{min-width:0;padding:4px 6px;font-size:11px;overflow:hidden;text-overflow:ellipsis}
+#app>.bar:first-child>button:last-child{width:32px;height:32px;padding:2px;font-size:0;margin:0}
+#app>.bar:first-child>button:last-child::before{content:'🏠';font-size:17px}
+#app .bar #srv{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:auto;height:38px;padding:3px 7px;font-size:10px;line-height:13px;margin:0}
+#app #srv::before{content:none}
+#app #srv span{display:block;font-size:10px;line-height:13px;padding:0;border:0;background:none;border-radius:0}
+#app #srv .season-info{color:#cae5b5;font-size:9px}
+#app[data-season="summer"] #srv .season-info{color:#ffb9a3}
+#app[data-season="autumn"] #srv .season-info{color:#ffd68e}
+#app[data-season="winter"] #srv .season-info{color:#b6d6ff}
+#side{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1.2fr) minmax(0,.7fr);width:100%;height:76px;gap:5px}
+#side #q,#side #tools,#side #handSlot{position:relative;display:flex;flex-direction:row;justify-content:center;align-items:center;gap:4px;width:100%;height:76px;min-width:0;padding:22px 5px 6px;border-radius:12px;overflow:visible}
+#side #q small,#side .tl2{position:absolute;top:3px;left:0;width:100%;text-align:center;font-size:10px;line-height:13px}
+#side #q .q{position:relative;flex:none;grid-column:auto;width:clamp(19px,4.8vw,24px);height:clamp(19px,4.8vw,24px);font-size:10px}
+#side #q .q.first{grid-column:auto;width:clamp(26px,6.7vw,32px);height:clamp(26px,6.7vw,32px);font-size:12px;outline-width:2px;margin-right:2px}
+#side #q .q::after{content:attr(data-step);position:absolute;right:-2px;top:-6px;font-size:8px;line-height:11px;min-width:11px;border-radius:6px;background:#17212d;color:#dfe8f3}
+#side .dm{flex:none;width:38px;height:38px;padding:2px}
+#side .dm .mo.f,#side .dm .q{width:34px;height:34px}
+#side .dm .gm.f{width:18px;height:18px}
+#side .mq{flex-direction:column;gap:2px}
+#side .mq .mo{width:18px;height:18px}
+#play{justify-content:center}
+#workbench{gap:6px}
+@media(min-width:0px){
+ #app{max-width:500px;padding-left:max(6px,env(safe-area-inset-left));padding-right:max(6px,env(safe-area-inset-right))}
+ #app .bar #srv{min-height:38px}
+ #app[data-compact="true"] #side,#app[data-compact="true"] #side #q,#app[data-compact="true"] #side #tools,#app[data-compact="true"] #side #handSlot{height:70px}
+}
+
+/* Fill the screen and anchor storage and messages above the home indicator. */
+html,body{background:#1f2531}
+body::before{background:#1f2531}
+#app>.bar:first-child{min-height:30px;grid-template-columns:max-content minmax(0,1fr) max-content 30px}
+#app .bar #srv{height:30px;min-height:30px;flex-direction:row;gap:4px;padding:3px 5px;white-space:nowrap}
+#app #srv span,#app #srv .season-info{font-size:10px;line-height:16px}
+#app>.bar:first-child>button:last-child{height:30px;width:30px}
+#side{grid-template-columns:minmax(0,1.65fr) minmax(0,1.3fr) minmax(0,.55fr)}
+#side #q{gap:5px;padding-left:5px;padding-right:5px}
+#side #q .q{width:clamp(22px,5.7vw,28px);height:clamp(22px,5.7vw,28px);font-size:11px}
+#side #q .q.first{width:clamp(30px,7.6vw,36px);height:clamp(30px,7.6vw,36px);font-size:13px;margin-right:1px}
+#side #q .q::after{display:flex;align-items:center;justify-content:center;width:13px;height:13px;min-width:13px;line-height:1;padding:0;top:-6px;right:-3px;border-radius:50%;font-family:system-ui,sans-serif;font-size:8px;text-shadow:none;box-shadow:none;text-align:center}
+#side #tools{gap:5px}
+#side .mq{flex-direction:row;gap:4px}
+#side .mq .mo{width:25px;height:25px}
+#play{flex:1 1 0;min-height:0}
+#workbench{width:100%;height:auto}
+#grid{width:100%;grid-auto-rows:var(--ch,var(--cs,56px))}
+#grid .t{width:calc(min(var(--cs),var(--ch))*.88);height:calc(min(var(--cs),var(--ch))*.88)}
+#grid .t.o{width:calc(min(var(--cs),var(--ch))*.72);height:calc(min(var(--cs),var(--ch))*.72)}
+#grid .t2{width:calc(min(var(--cs),var(--ch))*.94);height:calc(min(var(--cs),var(--ch))*.94)}
+#pack{flex:none;width:100%;margin-top:5px;padding:8px;gap:4px}
+#msg{flex:none}
+@media(min-width:0px){#app .bar #srv{min-height:30px}#app{padding-bottom:max(6px,env(safe-area-inset-bottom))}}
+
+/* Square cells, edge-to-edge bottom, and vertical supply labels. */
+#app{padding-bottom:0}
+#app>.bar:first-child{height:30px;min-height:30px;align-items:stretch}
+#app>.bar:first-child>span,#app>.bar:first-child>button{height:30px;min-height:30px;display:flex;align-items:center;justify-content:center;margin:0;padding-top:0;padding-bottom:0}
+#app>.bar:first-child>#sc{justify-content:flex-start}
+#workbench{width:auto;flex:none}
+#grid{width:calc(5 * var(--cs,56px) + 36px);grid-auto-rows:var(--cs,56px)}
+#side{height:58px;grid-template-columns:minmax(0,1.75fr) minmax(0,1.35fr) minmax(0,.6fr);gap:4px}
+#side #q,#side #tools,#side #handSlot{height:58px;padding:5px 4px 5px 20px;gap:4px}
+#side #q small,#side .tl2{position:absolute;top:0;bottom:0;left:3px;width:13px;height:100%;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;text-orientation:upright;font-size:10px;line-height:13px;letter-spacing:1px}
+#side #q .q{width:clamp(20px,5.2vw,26px);height:clamp(20px,5.2vw,26px)}
+#side #q .q.first{width:clamp(28px,7.1vw,34px);height:clamp(28px,7.1vw,34px)}
+#side #tools{padding-left:19px;gap:4px}
+#side #tools .dm{width:38px;height:38px}
+#side #tools .dm .mo.f{width:34px;height:34px}
+#side .mq{gap:3px}
+#side .mq .mo{width:31px;height:31px}
+#side #handSlot{padding-left:18px}
+#side #handSlot .dm{width:31px;height:36px;font-size:10px}
+#side #handSlot .dm .q,#side #handSlot .dm .mo.f{width:27px;height:27px}
+.od .wt{font-size:14px;line-height:18px;top:2px;left:4px;font-weight:900;text-shadow:0 1px 2px #000}
+#pack{padding:7px 8px;margin-top:4px}
+#pack .pk{height:auto;aspect-ratio:1}
+#msg{height:28px;min-height:28px;border-bottom-left-radius:0;border-bottom-right-radius:0}
+@media(min-width:0px){
+ #app,#app[data-compact="true"]{padding-bottom:0;gap:4px}
+ #app[data-compact="true"] #side,#app[data-compact="true"] #side #q,#app[data-compact="true"] #side #tools,#app[data-compact="true"] #side #handSlot{height:58px}
+ #orders{height:110px;min-height:110px;max-height:110px}
+ .od{height:98px;min-height:98px;max-height:98px;line-height:14px}
+ .od .hxo{width:30px;height:30px;margin-bottom:1px}
+ .od .rc{height:19px;margin:1px 0}
+ .od .rc .mo{width:18px;height:18px}
+ .od>small{font-size:9px;line-height:11px;height:22px}
+ #app[data-compact="true"] #msg{height:28px;min-height:28px}
+}
+
+/* Square weapon storage and clearer customer requests. */
+#pack .pk{height:auto;aspect-ratio:1}
+#app #orders .od{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+#app #orders .od .hxo{flex:none;width:42px;height:42px;margin:0}
+#app #orders .od .order-name{flex:none;width:100%;font-size:12px;line-height:16px;font-weight:900;white-space:nowrap}
+#app #orders .od .rc{flex:none;height:26px;margin:0;gap:2px}
+#app #orders .od .rc .mo{width:26px;height:26px}
+#app #orders .od .rc small{font-size:11px;line-height:26px}
+@media(min-width:0px){
+ #app .bar2>button:nth-child(n+2):nth-child(-n+5){font-size:14px;padding-left:1px;padding-right:1px;letter-spacing:0}
+}
+
+/* Left ore queue, right square board, and enlarged lower controls. */
+#play{justify-content:flex-end;align-items:flex-start;gap:6px}
+#play>#q{position:relative;display:flex;flex-direction:column;flex:none;width:64px;gap:12px;padding:27px 4px 12px;min-height:0}
+#play #q small{position:absolute;top:5px;left:0;width:100%;height:auto;writing-mode:horizontal-tb;text-align:center;font-size:11px;line-height:16px;letter-spacing:0}
+#play #q .q{position:relative;flex:none;width:36px;height:36px;font-size:13px}
+#play #q .q.first{width:42px;height:42px;font-size:15px;grid-column:auto;margin:0;outline-width:2px}
+#play #q .q::after{content:attr(data-step);position:absolute;right:-3px;top:-5px;width:14px;height:14px;display:flex;align-items:center;justify-content:center;background:#17212d;color:#dfe8f3;border-radius:50%;font:9px/1 system-ui,sans-serif;text-shadow:none}
+#app #side,#app[data-compact="true"] #side{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(0,1fr) 66px;height:88px;gap:5px;width:100%}
+#app #side #tools,#app #side #handSlot,#app[data-compact="true"] #side #tools,#app[data-compact="true"] #side #handSlot{height:88px;padding:8px 5px 8px 22px;gap:7px}
+#app #side .tl2{left:4px;font-size:12px;line-height:15px;width:15px}
+#app #side #tools .dm{width:56px;height:56px}
+#app #side #tools .dm .mo.f{width:50px;height:50px}
+#app #side .mq{gap:5px}
+#app #side .mq .mo{width:36px;height:36px}
+#app #side #handSlot .dm{width:58px;height:58px;font-size:13px}
+#app #side #handSlot .dm .q,#app #side #handSlot .dm .mo.f{width:52px;height:52px}
+#app #side #pack{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:66px;height:88px;margin:0;padding:4px;border-radius:12px;touch-action:manipulation}
+#pack .chest-icon{font-size:36px;line-height:42px}#pack small{font-size:13px;line-height:18px}
+#pack.all-locked .chest-icon{opacity:.4}
+#chestP{position:fixed;inset:0;z-index:76;display:none;align-items:center;justify-content:center;padding:12px;background:#0009;backdrop-filter:blur(3px)}
+#chestItems{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.chest-slot{position:relative;aspect-ratio:1;min-width:0;padding:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.chest-weapon{position:relative;width:68%;aspect-ratio:1}
+.chest-slot small{font-size:12px;line-height:16px}.chest-slot.locked{opacity:.3}
+#sk .hp{font-size:17px}#sk #skp{font-size:17px;line-height:1.6}
+#sk .skr{font-size:17px;line-height:1.55;padding:12px 10px;gap:8px;align-items:flex-start}
+#sk .skr small{font-size:15px;line-height:1.65}#sk .skr button{font-size:16px;padding:10px;white-space:nowrap}
+@media(max-width:380px){#app #side{grid-template-columns:minmax(0,1.65fr) minmax(0,1fr) 58px}#app #side #pack{width:58px}#app #side #tools .dm{width:44px;height:44px}#app #side #tools .dm .mo.f{width:38px;height:38px}#app #side .mq .mo{width:28px;height:28px}#app #side #handSlot .dm{width:45px;height:45px}}
+
+/* Larger phone text and lower controls. */
+#app>.bar:first-child{height:34px;min-height:34px}
+#app>.bar:first-child>span,#app>.bar:first-child>button{height:34px;min-height:34px;font-size:14px;line-height:20px}
+#app .bar #srv{height:34px;min-height:34px;padding:3px 5px;gap:3px}
+#app #srv span,#app #srv .season-info{font-size:12px;line-height:20px}
+#app>.bar:first-child>button:last-child{font-size:0;height:34px;min-height:34px}
+#app #qbar .qc{font-size:13px;line-height:1.4;padding:5px 6px 8px}
+#app #qbar .qc b{font-size:14px;line-height:19px}
+#app #qbar .qc small{font-size:12px;line-height:17px;gap:4px}
+#app #side,#app[data-compact="true"] #side,#app #side #tools,#app #side #handSlot,#app[data-compact="true"] #side #tools,#app[data-compact="true"] #side #handSlot{height:100px}
+#app #side .tl2{font-size:16px;line-height:20px;width:19px;left:4px;letter-spacing:2px}
+#app #side #tools,#app #side #handSlot{padding-left:28px;gap:7px}
+#app #side #tools .dm{width:68px;height:68px}
+#app #side #tools .dm .mo.f{width:62px;height:62px}
+#app #side .mq{gap:5px}
+#app #side .mq .mo{width:44px;height:44px}
+#app #side #pack{height:100px}
+#shopP .hp{font-size:17px;line-height:1.55}
+#shopP h2{font-size:24px}
+#shopP .sh{font-size:18px;line-height:1.5;margin-top:14px}

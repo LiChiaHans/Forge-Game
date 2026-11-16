@@ -1,0 +1,9 @@
+
+#townP[data-preview-kitchen="true"] #townKitchen{left:58%;top:11%;width:42%;height:25%}
+#townP[data-preview-kitchen="true"] #townForge{left:59%;top:36%;width:41%;height:27%}
+#townP[data-preview-kitchen="true"] #townPlaza{width:35.5556%;height:20.6452%;left:52.2222%;top:65%}
+#townP[data-preview-kitchen="true"][data-time="night"] #townPlaza{filter:brightness(.66) saturate(.76)}
+#townP[data-preview-kitchen="true"] .workshop-ember{animation:workshop-embers 3.6s ease-in-out infinite}
+@keyframes workshop-embers{0%,100%{opacity:.85}35%{opacity:1}64%{opacity:.72}82%{opacity:.95}}
+.low-effects .workshop-ember{animation:none!important}@media(prefers-reduced-motion:reduce){.workshop-ember{animation:none!important}}
+

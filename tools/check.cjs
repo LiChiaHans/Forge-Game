@@ -1,0 +1,8 @@
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{root,read,hash,build}=require('./build.cjs');
+const report=build(),manifest=JSON.parse(read('src/assets-manifest.json')),order=JSON.parse(read('src/build-order.json'));
+const sources=fs.readdirSync(path.join(root,'src'),{recursive:true}).filter(p=>/\.(js|css)$/.test(p)).map(p=>'src/'+p.replaceAll('\\','/')).sort();assert.deepEqual([...order.scripts,...order.styles].sort(),sources,'Unlisted source files or stale build order');
+assert.ok(report.htmlBytes<50000,'HTML should contain structure, not a bundled game');assert.equal(manifest.length,269);
+for(const a of manifest){const p=path.resolve(root,a.url);assert.ok(p.startsWith(root+path.sep));assert.equal(hash(fs.readFileSync(p)),a.sha256,a.url);}
+const html=read('index.html');assert.ok(!html.includes('openKitchenControlLab'));assert.ok(!html.includes(';base64,'));assert.ok(html.includes('game.js?v=')&&html.includes('game.css?v='));
+if(process.argv.includes('--extraction')){const reference=JSON.parse(read('tests/extraction-reference.json'));assert.equal(report.javascriptSha256,reference.javascriptSha256,'Extraction changed JS execution order/content');assert.equal(report.stylesSha256,reference.stylesSha256,'Extraction changed CSS cascade/content');}
+require('../tests/kitchen-progression.cjs');console.log(JSON.stringify({result:'PASS',assets:manifest.length,...report}));

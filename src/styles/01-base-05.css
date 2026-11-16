@@ -1,0 +1,70 @@
+
+.q[style*="#2f7de1"],.t.o[style*="#2f7de1"]{background-color:transparent!important;background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIiBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiPjxwYXRoIGZpbGw9IiMxMDIxMzIiIGQ9Ik0xMiAyaDh2NGg0djRoNHY4aC04djEyaC04VjE4SDR2LThoNFY2aDR6Ii8+PHBhdGggZmlsbD0iIzcwYTJjZCIgZD0iTTE0IDRoNHY0aDR2NGg0djRoLTh2MTJoLTRWMTZINnYtNGg0VjhoNHoiLz48cGF0aCBmaWxsPSIjYzVlM2UyIiBkPSJNMTQgNGg0djRoLTR2NGgtNHY0SDZ2LTRoNFY4aDR6Ii8+PC9zdmc+");background-repeat:no-repeat;background-position:center;background-size:contain;color:transparent;text-shadow:none;border-color:transparent;image-rendering:pixelated}
+.q[style*="#54a4cc"],.t.o[style*="#54a4cc"]{background-color:transparent!important;background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIiBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiPjxwYXRoIGZpbGw9IiMxNDI4M2IiIGQ9Ik0xMyAxaDZ2N2w1LTUgNSA1LTUgNWg3djZoLTdsNSA1LTUgNS01LTV2N2gtNnYtN2wtNSA1LTUtNSA1LTVIMXYtNmg3TDMgOGw1LTUgNSA1eiIvPjxwYXRoIGZpbGw9IiNiMmU3ZWUiIGQ9Ik0xNSAzaDJ2MTFoMTF2M0gxN3YxMWgtMlYxN0g0di0zaDExek03IDZsMTkgMTktMiAyTDUgOHpNMjQgNWwzIDNMOCAyN2wtMy0zeiIvPjxwYXRoIGZpbGw9IiNmZmYyZDYiIGQ9Ik0xMyAxM2g2djZoLTZ6Ii8+PC9zdmc+");background-repeat:no-repeat;background-position:center;background-size:contain;color:transparent;text-shadow:none;border-color:transparent;image-rendering:pixelated}
+.q[style*="#b94568"],.t.o[style*="#b94568"]{background-color:transparent!important;background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIiBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiPjxwYXRoIGZpbGw9IiMxNDFlMjkiIGQ9Ik0xMCAxaDEydjVoLTJ2NGgzdjNoM3YxNWgtM3YzSDl2LTNINlYxM2gzdi0zaDNWNmgtMnoiLz48cGF0aCBmaWxsPSIjYzQ5MjUxIiBkPSJNMTIgMmg4djRoLTh6Ii8+PHBhdGggZmlsbD0iI2IyZDVkNSIgZD0iTTE0IDZoNHY2aDR2M2gydjExaC0ydjNIMTB2LTNIOFYxNWgydi0zaDR6Ii8+PHBhdGggZmlsbD0iI2IzM2I1NyIgZD0iTTEwIDE3aDEydjloLTJ2MWgtOHYtMWgtMnoiLz48cGF0aCBmaWxsPSIjZTE2ODc5IiBkPSJNMTAgMTdoNHY3aC00eiIvPjxwYXRoIGZpbGw9IiNlZmY3ZGMiIGQ9Ik0xMSAxNGgzdjNoLTN6Ii8+PC9zdmc+");background-repeat:no-repeat;background-position:center;background-size:contain;color:transparent;text-shadow:none;border-color:transparent;image-rendering:pixelated}
+
+/* Refined object art; layout and game rules remain unchanged. */
+#grid .t.o{width:calc(var(--cs)*.90);height:calc(var(--cs)*.90)}
+.season-cell.ice{background-color:#4f8cbb55;background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0IiBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiPjxwYXRoIGZpbGw9IiM1MThhYjciIGZpbGwtb3BhY2l0eT0iLjU1IiBkPSJNNCAwaDU2djRoNHY1NmgtNHY0SDR2LTRIMFY0aDR6Ii8+PHBhdGggZmlsbD0iI2Q0ZjVmZiIgZmlsbC1vcGFjaXR5PSIuNCIgZD0iTTQgNGg1NnY1Nkg0eiIvPjxwYXRoIGZpbGw9IiNlZmZmZmYiIGZpbGwtb3BhY2l0eT0iLjciIGQ9Ik00IDBoNTZ2M0g2djNIM3Y0OEgwVjRoNHoiLz48cGF0aCBmaWxsPSIjMjA1NDgxIiBmaWxsLW9wYWNpdHk9Ii44IiBkPSJNNjEgOGgzdjUyaC00djRIOHYtM2g1MHYtM2gzeiIvPjxwYXRoIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iLjI0IiBkPSJNNiAzMGg2di02aDZ2LTZoNnYtNmg2VjZoMTJ2NmgtNnY2aC02djZoLTZ2NmgtNnY2aC02djZINnpNMjQgNTh2LTZoNnYtNmg2di02aDZ2LTZoNnYtNmgxMHY4aC02djZoLTZ2NmgtNnY2aC02djR6Ii8+PHBhdGggc3Ryb2tlPSIjZTFmYWZmIiBzdHJva2Utb3BhY2l0eT0iLjgiIGZpbGw9Im5vbmUiIGQ9Ik00IDE1aDEwdjRoNnY3aDh2NmgxMHY4aDh2N2gxNE0yMCAyNnYxM2gtNXY5TTM4IDQwdi05aDZ2LThoOE0xNCAxOXYtNmg1VjUiLz48cGF0aCBzdHJva2U9IiM0NDdmYTkiIHN0cm9rZS1vcGFjaXR5PSIuNjUiIGZpbGw9Im5vbmUiIGQ9Ik01IDE3aDh2NGg2djdoOHY2aDEwdjhoOHY3aDE0Ii8+PHBhdGggZmlsbD0iI2VlZmVmZiIgZD0iTTQ3IDVoM3Y2aDZ2M2gtNnY2aC0zdi02aC02di0zaDZ6TTggNDZoMnY0aDR2MmgtNHY0SDh2LTRINHYtMmg0eiIvPjxwYXRoIGZpbGw9IiNhNGQ5ZWYiIGQ9Ik01NCA0OGg0djdoLTR6TTQ5IDU0aDV2NGgtNXpNNCA2aDV2M0g0eiIvPjwvc3ZnPg==");background-size:100% 100%;box-shadow:inset 0 0 0 1px #dffaff99,inset 0 -3px 0 #285a85aa}
+.hxi svg,.mo,.gm{filter:drop-shadow(1px 1px 0 #0c1725c0)}
+/* UNITY_PIXEL_SKIN_END */
+
+/* Home weapon gallery; existing gameplay layout stays unchanged. */
+#weaponAlbumP,#weaponInspectP{position:fixed;inset:0;z-index:76;display:none;align-items:center;justify-content:center;padding:12px;background:#080e19dd;backdrop-filter:blur(3px)}
+#weaponInspectP{z-index:77}
+#weaponAlbumP .hp{max-width:560px}#weaponInspectP .hp{max-width:400px;text-align:center}
+#albumProgress{font-size:14px;line-height:1.6;color:var(--mute)}
+#albumTabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:12px 0}
+#albumTabs button{font-size:15px;padding:8px 4px}#albumTabs button[aria-pressed="true"]{border-color:#e7c16b;background:#655233;color:#fff1bf}
+.album-section h3{font-size:19px;margin:18px 0 10px}.album-section h3 small{font-size:13px;color:var(--mute);margin-left:8px}
+.album-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.album-card{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;padding:8px 5px;font-size:14px}
+.album-art{display:block;width:100%;aspect-ratio:1}
+.album-art .hxo{width:100%;height:100%}
+.album-card small{font-size:12px;color:var(--mute)}
+.uncollected .album-art,.uncollected#inspectArt{filter:grayscale(1) brightness(.28);opacity:.65}
+.collected .album-art,.collected#inspectArt{filter:drop-shadow(0 2px 2px #0008)}
+.album-card.collected{border-color:#b69b60}.album-card.collected small{color:#ecd397}
+#inspectArt{width:min(230px,65vw);aspect-ratio:1;margin:16px auto}
+#inspectArt .hxo{width:100%;height:100%}
+#inspectState{font-size:15px;line-height:1.6}.inspect-tiers{display:flex;gap:10px}.inspect-tiers button{flex:1;font-size:16px}
+/* Town has its own scene; board geometry stays unchanged. */
+#app>.bar:first-child>button:last-child::before{content:'🏘'}
+#townP{position:fixed;inset:0;z-index:54;display:none;flex-direction:column;max-width:540px;margin:auto;height:var(--viewport-height,100dvh);background:#263a39;color:#fff3d4;overflow:hidden}
+.town-header{flex:none;padding:max(8px,env(safe-area-inset-top)) 12px 9px;background:#202e3bf2;border-bottom:3px solid #b79c65;position:relative;z-index:8}
+.town-header>div:first-child{display:flex;align-items:center;justify-content:space-between;font-size:21px}.town-header button{padding:5px 10px;font-size:18px;min-width:42px}
+#townStats{font-size:16px;line-height:1.7;margin-top:4px}#townSeason{font-size:14px;line-height:1.6;color:#d7d8bf}
+#townMap{position:relative;flex:1;min-height:270px;overflow:hidden;isolation:isolate}
+#townScenery,#townScenery>svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#townP .town-building{position:absolute;display:block;appearance:none;padding:0;margin:0;border:0;border-radius:0;background:none;box-shadow:none;overflow:visible;touch-action:manipulation;z-index:2}
+.town-building svg{width:100%;height:100%;display:block;filter:drop-shadow(0 4px 0 #23322c44)}
+#townP .town-building:active{transform:translateY(2px)}
+#townArchive{left:-1%;top:26%;width:40%;height:29%}#townForge{left:39%;top:25%;width:59%;height:35%}
+#townShop{left:0%;top:64%;width:47%;height:31%}#townTraining{left:51%;top:65%;width:49%;height:32%}
+.town-sign{position:absolute;left:12%;top:65%;min-width:74%;padding:4px;background:#f4e4af;color:#392d24;border:2px solid #7a5e38;box-shadow:2px 3px #27322a55;font-size:clamp(15px,4.2vw,20px);line-height:1.2;font-weight:900;white-space:nowrap}
+.town-sign b{font-size:13px;color:#805127}.town-reward{position:absolute;left:25%;top:84%;padding:4px 8px;border:2px solid #f1d591;background:#34443c;color:#fff2be;font-size:14px;white-space:nowrap;box-shadow:2px 3px #15292480;animation:town-reward-glow 2.5s ease-in-out infinite}
+#townQueue{position:absolute;left:46%;top:57%;width:128px;height:74px;pointer-events:none;z-index:3}.town-person{position:absolute;width:24px;height:38px;image-rendering:pixelated;filter:drop-shadow(2px 2px 0 #26372e66)}
+#townWeather{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:5;contain:layout paint}
+.town-weather-particle{position:absolute;display:block;image-rendering:pixelated;animation-fill-mode:both;animation-iteration-count:infinite;animation-timing-function:linear;will-change:transform,opacity}
+.town-snow{width:4px;height:4px;background:#f4fcff;box-shadow:0 -3px #e1f1f8,0 3px #e1f1f8,-3px 0 #e1f1f8,3px 0 #e1f1f8;animation-name:town-snowfall}
+.town-leaf{width:9px;height:6px;background:#d68a37;clip-path:polygon(0 33%,22% 33%,22% 0,76% 0,76% 25%,100% 25%,100% 75%,70% 75%,70% 100%,25% 100%,25% 70%,0 70%);animation-name:town-leaffall}
+.town-sunray{top:-30%;height:160%;width:15%;background:linear-gradient(180deg,#fff4ae7a,#fff4ae2b 50%,#fff4ae00);transform:rotate(24deg);transform-origin:top center;animation-name:town-sunlight;animation-duration:13s;mix-blend-mode:screen;filter:blur(2px)}
+.town-flower{width:5px;height:5px;background:#f4d77e;box-shadow:-5px 0 var(--petal),5px 0 var(--petal),0 -5px var(--petal),0 5px var(--petal),0 10px #466a42,0 15px #466a42,5px 10px #729c57;transform-origin:50% 100%;animation-name:town-bloom;animation-duration:12s;animation-timing-function:ease-in-out}
+@keyframes town-snowfall{0%{transform:translate3d(0,-20px,0);opacity:0}7%{opacity:.85}65%{transform:translate3d(22px,65vh,0);opacity:.9}100%{transform:translate3d(-14px,105vh,0);opacity:0}}
+@keyframes town-leaffall{0%{transform:translate3d(0,-25px,0) rotate(0);opacity:0}8%{opacity:1}35%{transform:translate3d(38px,30vh,0) rotate(85deg)}70%{transform:translate3d(-28px,65vh,0) rotate(220deg);opacity:.9}100%{transform:translate3d(40px,105vh,0) rotate(340deg);opacity:0}}
+@keyframes town-sunlight{0%,100%{opacity:0;transform:rotate(24deg) translateX(-12px)}25%{opacity:.05}45%,58%{opacity:.75}78%{opacity:.1;transform:rotate(24deg) translateX(18px)}}
+@keyframes town-bloom{0%,10%,100%{opacity:0;transform:scale(.15)}22%,74%{opacity:1;transform:scale(1)}85%{opacity:.5;transform:scale(.85)}}
+@keyframes town-reward-glow{50%{filter:brightness(1.22)}}
+@media(prefers-reduced-motion:reduce){.town-weather-particle{animation:none;will-change:auto}.town-snow,.town-leaf{top:35%!important;opacity:.45}.town-sunray{opacity:.15}.town-flower{opacity:1;transform:none}.town-reward{animation:none}}
+@media(max-height:740px){.town-header>div:first-child{font-size:18px}#townStats{font-size:14px}#townSeason{font-size:12px}.town-sign{font-size:15px}.town-header{padding-bottom:5px}}
+
+/* Match the ten-item best-record grid: five columns, two rows per material tier. */
+.album-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px 6px}
+.album-card{gap:4px;padding:5px 2px;font-size:12px}.album-card small{font-size:10px}.album-card b{font-size:12px;white-space:nowrap}
+.town-skill-star{position:absolute;left:53%;top:14%;width:clamp(60px,16vw,80px);aspect-ratio:1;transform:translateX(-50%);z-index:3;filter:drop-shadow(2px 4px 0 #302e3280)}
+.town-skill-star svg{width:100%;height:100%;filter:none}.town-skill-star b{position:absolute;left:0;right:0;top:30%;font-family:monospace;font-size:clamp(23px,6vw,30px);line-height:1.2;color:#573b22;text-shadow:1px 1px #fff4b2}
+.town-skill-star.has-points{animation:town-star-shine 2.6s ease-in-out infinite}.town-skill-star:not(.has-points){filter:drop-shadow(2px 3px 0 #302e3255) saturate(.65)}
+#townP #townChest{position:absolute;left:34%;top:61%;width:80px;height:80px;z-index:4;background:none;border:0;padding:0;box-shadow:none;overflow:visible;touch-action:manipulation;filter:drop-shadow(0 0 8px #ffdd6b70)}
+#townP #townChest[hidden]{display:none}#townChest svg{width:100%;height:100%}.town-chest-count{position:absolute;right:2px;top:5px;min-width:25px;padding:2px 5px;background:#65432b;border:2px solid #f6d789;color:#fff2bd;box-shadow:2px 2px #26362c;font-family:monospace;font-size:18px;font-weight:900;line-height:1.15}
+#townLootP,#townSkillP{position:fixed;inset:0;z-index:79;display:none;align-items:center;justify-content:center;padding:16px;background:#080e19d9;backdrop-filter:blur(3px)}
+#townLootP .hp,#townSkillP .hp{width:100%;max-width:360px;text-align:center;padding:22px 18px}

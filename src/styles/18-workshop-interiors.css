@@ -1,0 +1,52 @@
+
+/* Material, color and lighting only: preserve every existing layout measurement. */
+#app[data-workshop="forge"]{background-color:#24191a;background-image:linear-gradient(#0c10191a,#130a0d22),var(--workshop-wall);background-size:cover;background-position:center;--studio-rim:#ab8756;--studio-panel:#343d43;--studio-paper:#ead4a6}
+#app[data-workshop="forge"] .bar>span,#app[data-workshop="forge"] .bar>button,#app[data-workshop="forge"] #srv{background-color:#e1ca99;background-image:linear-gradient(120deg,#fff0c444,#bd975826),repeating-linear-gradient(0deg,transparent 0 7px,#8b643209 8px 9px);background-size:auto;color:#4b3528;border-color:#a88856;box-shadow:inset 0 1px #fff2c9,inset 0 -2px #aa805d66,0 2px #120f1599;border-radius:3px}
+#app[data-workshop="forge"] #coin,#app[data-workshop="forge"] #sc{color:#573924}
+#app[data-workshop="forge"] #srv .season-info{color:#335636}
+#app[data-workshop="forge"][data-season="summer"] #srv .season-info{color:#974a2c}
+#app[data-workshop="forge"][data-season="autumn"] #srv .season-info{color:#8e5b22}
+#app[data-workshop="forge"][data-season="winter"] #srv .season-info{color:#31577e}
+#app[data-workshop="forge"] .bar2>button{background-color:#564336;background-image:radial-gradient(circle at 5px 5px,#ded2a6 0 1px,#746d64 1px 3px,transparent 3px),radial-gradient(circle at calc(100% - 5px) 5px,#ded2a6 0 1px,#746d64 1px 3px,transparent 3px),linear-gradient(#79563c,#4b382e);background-size:auto;color:#fff0c9;border-color:#a78f6b;box-shadow:inset 0 2px #c7a17466,inset 0 -3px #28272b99,0 2px #130e12;border-radius:3px;text-shadow:1px 1px #241c1c}
+#app[data-workshop="forge"] #orders{background-color:#130f17aa;border-color:#816c4c;box-shadow:inset 0 0 0 1px #17181b,inset 0 3px 9px #08070b80;border-radius:4px}
+#app[data-workshop="forge"] .od{box-shadow:inset 0 2px #f5dfaa44,inset 0 -3px #111c2088,0 2px #100d13aa;border-radius:4px}
+#app[data-workshop="forge"] .wt{color:#fff0c9;text-shadow:1px 1px #1e2424}
+#app[data-workshop="forge"] .qc{background-color:#ecd7aa;background-image:linear-gradient(125deg,#fff0c766,#bc94501f);background-size:auto;color:#523e2e;border-color:#b18d56;box-shadow:inset 0 1px #fff4d2,inset 0 -2px #b88d5555,0 2px #130e1299;border-radius:3px}
+#app[data-workshop="forge"] .qc small{color:#7a5637}
+#app[data-workshop="forge"] .qc.d{background-color:#cee0ad}#app[data-workshop="forge"] .qc.x{background-color:#bea88f}
+#app[data-workshop="forge"] #grid{background-image:linear-gradient(140deg,#ead7a322,#14242d44),var(--season-frame);background-size:auto;box-shadow:inset 0 0 0 2px #303533,inset 0 0 0 3px #ddc28a88,inset 0 -5px #19201e66,0 6px 12px #07090b99;border-radius:5px}
+#app[data-workshop="forge"] .c{background-color:#1c222b;background-image:linear-gradient(150deg,#202a34,#111822);background-size:auto;box-shadow:inset 0 0 0 1px #78858655,inset 0 3px 2px #090e17bb,inset 0 -1px #b3a67922;border-radius:4px}
+#app[data-workshop="forge"] #play #q,#app[data-workshop="forge"] #side #tools,#app[data-workshop="forge"] #side #handSlot,#app[data-workshop="forge"] #side #pack{background-color:#30383e;background-image:linear-gradient(135deg,#58646655,#243038aa),repeating-linear-gradient(0deg,transparent 0 8px,#10182118 9px 10px);background-size:auto;border-color:#998160;box-shadow:inset 0 2px #cfb98a66,inset 0 -3px #121c26aa,0 2px #100e15;border-radius:4px}
+#app[data-workshop="forge"] #q small,#app[data-workshop="forge"] #side .tl2{color:#ffe1a1;text-shadow:1px 1px #1d2529}
+#app[data-workshop="forge"] #msg{background-color:#171b24e8;background-image:linear-gradient(90deg,#4c39384d,transparent);background-size:auto;color:#f4e3bd;border-color:#9f835c;box-shadow:inset 0 1px #a0885944;border-radius:3px}
+body.workshop-backend #shopP .hp{background-color:#2d3035;background-image:linear-gradient(140deg,#51423788,#202a34aa);border-color:#b49565;box-shadow:inset 0 0 0 2px #171e27,0 8px 30px #0009}
+body.workshop-backend #shop .si{background-color:#3a3834;background-image:linear-gradient(#6d523755,#292f37aa);background-size:auto;border-color:#9d835e;box-shadow:inset 0 1px #c9b48666,inset 0 -2px #141a24aa}
+
+#kitchenP[data-workshop="kitchen"]{background-color:#5c412b;background-image:linear-gradient(#2b1c0810,#21150620),var(--workshop-wall);background-size:cover;background-position:center;color:#fff0c9}
+#kitchenP[data-workshop="kitchen"] header>b,#kitchenP[data-workshop="kitchen"] header>span{background-color:#f0ddb3;background-image:linear-gradient(120deg,#fff4d266,#d7b57d26);background-size:auto;border-color:#ad874f;color:#503a29;box-shadow:inset 0 1px #fff6d5,inset 0 -2px #b78b5966,0 2px #24190f88;border-radius:3px}
+#kitchenP[data-workshop="kitchen"] header>button,#kitchenP[data-workshop="kitchen"] nav>button{background-color:#785035;background-image:radial-gradient(circle at 5px 5px,#f5dfa7 0 1px,#ad8a56 1px 3px,transparent 3px),radial-gradient(circle at calc(100% - 5px) 5px,#f5dfa7 0 1px,#ad8a56 1px 3px,transparent 3px),linear-gradient(#97643e,#644530);background-size:auto;border-color:#c09a5f;color:#fff1ca;box-shadow:inset 0 2px #d8b77d88,inset 0 -3px #412b2199,0 2px #33261daa;text-shadow:1px 1px #38271e;border-radius:3px}
+#kitchenP[data-workshop="kitchen"] .kitchen-order{background-color:#e7d3a8;background-image:linear-gradient(140deg,#f6e6bf,#c8b082);background-size:auto;border-color:#93744b;box-shadow:inset 0 2px #fff1cb,inset 0 -3px #a5834d66,0 3px #33271f88;color:#473f2d;border-radius:4px}
+#kitchenP[data-workshop="kitchen"] .kitchen-order>span{color:#684b2d}
+#kitchenP[data-workshop="kitchen"] .kitchen-any{color:#80572d;text-shadow:none}
+#kitchenP[data-workshop="kitchen"] .kitchen-any-recipe,#kitchenP[data-workshop="kitchen"] .kitchen-recipe-strip em{color:#71593b}
+#kitchenP[data-workshop="kitchen"] #kitchenChallenge{background-color:#e4d3a7;background-image:linear-gradient(120deg,#fff0c633,#a7865522);background-size:auto;color:#51422d;border-color:#9e7a47;box-shadow:inset 0 1px #fff3ce,inset 0 -2px #a7834e66,0 2px #241b1488;border-radius:3px}
+#kitchenP[data-workshop="kitchen"] #kitchenQueue{background-color:#384a3c;background-image:linear-gradient(135deg,#6f806444,#28372eaa);background-size:auto;border-color:#b39562;box-shadow:inset 0 2px #c8bb8b88,inset 0 -3px #1d3025aa,0 2px #251c1b99;border-radius:4px}
+#kitchenP[data-workshop="kitchen"] #kitchenQueue>small{color:#ffdf9b}
+#kitchenP[data-workshop="kitchen"] .kitchen-queue-grade{color:#f4e5b9;text-shadow:1px 1px #26322b}
+#kitchenP[data-workshop="kitchen"] #kitchenGrid{background-color:#94835c;background-image:linear-gradient(140deg,#bcad7b,#7d7756 55%,#ad9869);background-size:auto;border-color:#4b533b;box-shadow:inset 0 0 0 1px #e4d49b,inset 0 -3px #4b4c36aa,0 6px 12px #35211599;border-radius:5px}
+#kitchenP[data-workshop="kitchen"] .kc{background-color:#1c2e2c;background-image:linear-gradient(145deg,#263a35,#162625);background-size:auto;box-shadow:inset 0 0 0 1px #7f927355,inset 0 3px 3px #091b1bc9,inset 0 -1px #c4bc862b;border-radius:4px}
+#kitchenP[data-workshop="kitchen"] #kitchenProcesses,#kitchenP[data-workshop="kitchen"] #kitchenHand,#kitchenP[data-workshop="kitchen"] #kitchenFridge{background-color:#684d36;background-image:linear-gradient(125deg,#916e4544,#342e28aa),repeating-linear-gradient(0deg,transparent 0 9px,#251b1520 10px 11px);background-size:auto;border-color:#c0a16d;box-shadow:inset 0 2px #dfc28a88,inset 0 -3px #36291eaa,0 2px #2b211a99;border-radius:4px}
+#kitchenP[data-workshop="kitchen"] #kitchenProcesses>small,#kitchenP[data-workshop="kitchen"] #kitchenHand>small{color:#ffe3a7;text-shadow:1px 1px #37291d}
+#kitchenP[data-workshop="kitchen"] #kitchenMessage{background-color:#302a25ed;background-image:linear-gradient(110deg,#78604744,transparent);background-size:auto;color:#fff0ca;box-shadow:inset 0 1px #ccb27b66,inset 0 -1px #151e1c;border-radius:3px}
+body.workshop-backend #kitchenModal>div{background-color:#333a30;background-image:linear-gradient(125deg,#6c543988,#27392fbb);border-color:#ccb17b;box-shadow:inset 0 0 0 2px #30291e,0 10px 30px #0009;color:#f6e9c8}
+body.workshop-backend #kitchenModal button{background-color:#65503a;background-image:linear-gradient(135deg,#8c6c4755,#38433399);background-size:auto;border-color:#b59a69;box-shadow:inset 0 1px #d5bd8899,inset 0 -2px #25352aaa;color:#fff0c4;border-radius:4px}
+body.workshop-backend #kitchenModal .kitchen-grade-tabs [aria-pressed="true"],body.workshop-backend #kitchenModal .kitchen-tier-gallery [aria-pressed="true"]{background-color:#9b7841;border-color:#ffe0a0}
+
+.kitchen-ingredient-flight{position:fixed;z-index:149;pointer-events:none;contain:layout style;transform-origin:center;filter:drop-shadow(0 4px 3px #1c271b88);will-change:transform,width,height}
+.kitchen-ingredient-flight svg{display:block;width:100%;height:100%}
+.kitchen-flight-target>svg{visibility:hidden}
+.kitchen-ingredient-land>svg{animation:kitchen-ingredient-arrive .26s ease-out}
+@keyframes kitchen-ingredient-arrive{0%{transform:scale(.91)}55%{transform:scale(1.05)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.kitchen-ingredient-land>svg{animation:none}}
+.low-effects .kitchen-ingredient-land>svg{animation:none}
+

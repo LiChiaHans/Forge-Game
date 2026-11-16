@@ -1,0 +1,10 @@
+
+.hxo{position:relative}.hxo>.weapon-stars{position:absolute;bottom:16%;left:50%;transform:translateX(-50%);display:flex;white-space:nowrap;line-height:1;gap:0;font:900 clamp(7px,1.9vw,11px)/1 monospace;letter-spacing:-1px;padding:1px 2px;background:#111a27dc;color:#ffe088;z-index:5;pointer-events:none;text-shadow:1px 1px #1b1520}
+.weapon-stars i{font-style:normal;opacity:.5;color:#bfc1ca}.weapon-stars>span{color:#ffe088}
+.weapon-mastery{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 5px;margin:9px 0;border:1px solid #998452;background:#272b32;border-radius:3px;text-align:center}
+.weapon-mastery>.stars-large{position:static;display:block;font:900 24px/1 monospace;letter-spacing:3px;background:none;padding:0;transform:none}
+.weapon-mastery b{font-size:15px;color:#f8e6bb}.weapon-mastery small{font-size:13px;color:#d9d0bc;line-height:1.5}.weapon-mastery>span:last-child{font-size:11px;color:#aaaeb9;line-height:1.4}
+.album-art{position:relative}.album-art>.weapon-stars{position:absolute;bottom:5%;left:50%;transform:translateX(-50%);font-size:11px;line-height:1;background:#15202ce8;white-space:nowrap}
+.forge-reveal>.stars-large{font:900 22px/1 monospace;letter-spacing:3px}
+@media(min-width:601px){.hxo>.weapon-stars{font-size:9px}}
+

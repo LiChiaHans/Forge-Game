@@ -1,0 +1,13 @@
+
+#kitchenOrders{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:100%;align-items:stretch}
+#kitchenOrders>.kitchen-order{width:100%;box-sizing:border-box;transform-origin:center center;min-width:0}
+@keyframes kitchen-guest-enter{0%{transform:scale(.08);opacity:0}65%{transform:scale(1.04);opacity:1}100%{transform:scale(1);opacity:1}}
+.kitchen-merge-flight{position:fixed;z-index:150;pointer-events:none;contain:layout style;transform-origin:center;filter:drop-shadow(0 3px 2px #17261999);will-change:transform,opacity}
+.kitchen-merge-flight svg{width:100%;height:100%;display:block}
+.kc.kitchen-waste{background:#4b4936!important;box-shadow:inset 0 0 0 2px #8b8058!important}
+.kitchen-waste-label{position:absolute;left:0;right:0;bottom:2px;font-size:11px;font-weight:bold;color:#f0dfb4;text-shadow:0 1px #24291c}
+.kitchen-waste-preview{width:100px;height:100px;margin:auto}.kitchen-waste-preview svg{width:100%;height:100%}
+.kitchen-fresh.urgent{background:#803d29;color:#fff1b9;font-weight:bold;padding:0 3px;border-radius:3px}
+#kitchenFridge>svg{width:38px;height:48px;max-height:90%;display:block}#kitchenFridge{padding-top:4px!important;padding-bottom:15px!important}
+@media(prefers-reduced-motion:reduce){#kitchenOrders>.kitchen-order{animation:none!important}.kitchen-merge-flight{display:none}}
+

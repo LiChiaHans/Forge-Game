@@ -1,0 +1,17 @@
+
+function cancelKitchenDrag(){clearKitchenPreview();kitchenDrag?.ghost?.remove();kitchenDrag=null;}
+function startKitchenDrag(e){
+ if(!expandedGameEnabled()||e.button>0)return;const target=e.target.closest('[data-kdrag]');if(!target)return;const kind=target.dataset.kdrag,index=+(target.dataset.ki||0),w=kind==='dish'?kitchen.g[index]:kind==='hand'?kitchen.hand:kind==='process'?{k:'m',s:kitchen.mq[0]}:kitchenFood(kitchen.q[0]);if(!w||kitchen.done&&!(kind==='dish'||kind==='hand'&&w.k==='w'))return;
+ e.preventDefault();const ghost=document.createElement('div');ghost.className='kitchen-drag-ghost';ghost.innerHTML=kitchenArt(w);ghost.style.left=e.clientX-30+'px';ghost.style.top=e.clientY-30+'px';document.body.appendChild(ghost);kitchenDrag={kind,index,w,ghost,x:e.clientX,y:e.clientY,moved:false,pointer:e.pointerId};
+}
+function moveKitchenDrag(e){const d=kitchenDrag;if(!d||d.pointer!==e.pointerId)return;d.moved=d.moved||Math.hypot(e.clientX-d.x,e.clientY-d.y)>5;d.ghost.style.left=e.clientX-30+'px';d.ghost.style.top=e.clientY-30+'px';updateKitchenDragPreview(e);}
+function finishKitchenDrag(e){
+ const d=kitchenDrag;if(!d||d.pointer!==e.pointerId)return;clearKitchenMerges();const launch=kitchenDraggedIngredientLaunch(d,e);kitchenSuppressClick=Date.now()+250;cancelKitchenDrag();if(kitchen.done&&d.moved){finishKitchenOrganizingDrag(d,e);return;}if(!d.moved){if(d.kind==='process')selectKitchenProcess();else if(d.kind==='ore')selectKitchenIngredients();else if(d.kind==='hand')selectKitchenHeld();else if(d.kind==='dish')inspectKitchenDish(d.w);return;}
+ const hit=document.elementFromPoint(e.clientX,e.clientY),cell=hit?.closest('.kc'),order=hit?.closest('[data-ko]'),fridge=hit?.closest('#kitchenFridge'),clear=()=>{if(d.kind==='dish')kitchen.g[d.index]=null;else if(d.kind==='hand')kitchen.hand=null;};
+ if(d.w.k==='w'&&order){kitchenSell(d.w,+order.dataset.ko,clear);return;}if(d.w.k==='w'&&fridge){if(kitchen.pack.length>=2*kitchenLevel('pack'))kitchen.message='冰箱已滿或尚未解鎖，請提升冰箱管理。';else{clear();kitchen.pack.push(d.w);kitchen.message='料理已放入冰箱。';}renderKitchen();return;}
+ if(!cell){renderKitchen();return;}const i=+cell.dataset.ki;let used=false;
+ if(d.kind==='process'){kitchen.useHeld=false;used=kitchenPrepare(i,'queue');}else if(d.kind==='ore'){kitchen.useHeld=false;kitchen.mode='ore';if(!kitchen.g[i]&&!kitchen.heat[i]){kitchen.g[i]=kitchenFood(kitchen.q.shift());kitchen.q.push(kitchenRollFood());kitchenAuto(i);used=true;}}
+ else if(d.kind==='hand')used=kitchenUseHand(i);else if(d.kind==='dish'&&!kitchen.g[i]&&!kitchen.heat[i]){clear();kitchen.g[i]=d.w;kitchen.message='已移動料理。';}
+ if(used&&!(d.kind==='hand'&&d.w.k==='w'))kitchenStep();renderKitchen();if(!playKitchenMerges(launch,i)&&used&&launch)flyKitchenIngredient(i,launch);
+}
+function installKitchenControls(){const p=$('kitchenP');$('kitchenGrid').addEventListener('pointerover',kitchenHoverPreview);$('kitchenGrid').addEventListener('pointerleave',()=>{if(!kitchenDrag)clearKitchenPreview();});p.addEventListener('pointerdown',startKitchenDrag);document.addEventListener('pointermove',moveKitchenDrag,{passive:true});document.addEventListener('pointerup',finishKitchenDrag);document.addEventListener('pointercancel',cancelKitchenDrag);document.addEventListener('keydown',e=>{if(e.key==='Escape'){cancelKitchenDrag();$('kitchenModal').hidden=true;}});}
