@@ -316,7 +316,15 @@ function leave(gh,r){
     {transform:"scale(.05)",opacity:0}
   ],{duration:600,easing:"ease-in"}).onfinish=()=>gh.remove();
 }
-const gem=(t,x="")=>`<svg class="gm ${x}" viewBox="0 0 24 24" shape-rendering="crispEdges"><path fill="#10202c" d="M6 1h12v3h3v3h2v6h-3v3h-3v3h-3v3h-4v-3H7v-3H4v-3H1V7h2V4h3z"/><path fill="${C[t]}" d="M6 3h12v3h3v6h-3v3h-3v3h-3v3h-1v-3H8v-3H5v-3H3V7h3z"/><path fill="#fff" opacity=".6" d="M7 4h10v3H7zM4 8h5v4H4z"/><path fill="#fff" opacity=".3" d="M10 8h4v8h-4z"/><path fill="#000" opacity=".2" d="M17 7h3v5h-3v3h-3v3h-2v-3h2v-3h3z"/><path class="sp" fill="#fff5d7" d="M6 5h2v2h2v2H8v2H6V9H4V7h2z"/></svg>`;
+const gem=(t,x="")=>`<svg class="gm ${x}" viewBox="0 0 24 24" shape-rendering="crispEdges"><path fill="#10202c" d="M6 1h12v3h3v3h2v6h-3v3h-3v3h-3v3h-4v-3H7v-3H4v-3H1V7h2V4h3z"/><path fill="${C[t]}" d="M6 3h12v3h3v6h-3v3h-3v3h-3v3h-1v-3H8v-3H5v-3H3V7h3z"/><path fill="#fff" opacity=".6" d="M7 4h10v3H7zM4 8h5v4H4z"/><path fill="#fff" opacity=".3" d="M10 8h4v8h-4z"/><path fill="#000" opacity=".2" d="M17 7h3v5h-3v3h-3v3h-2v-3h2v-3h3z"/><path class="sp" fill="#fff5d7" d="M6 5h2v2h2v2H8v2H6V9H4V7h2z"/></svg>`;function workshopSoundProfile(kind,phase){
+ if(kind==='kitchen')return phase==='gather'?[{type:'sine',hz:240,end:130,delay:0,time:.07,volume:.04},{type:'triangle',hz:320,end:190,delay:.055,time:.055,volume:.025}]:[{type:'triangle',hz:330,end:250,delay:0,time:.09,volume:.035},{type:'sine',hz:720,end:920,delay:.04,time:.16,volume:.025},{type:'sine',hz:1080,end:1080,delay:.07,time:.12,volume:.012}];
+ return phase==='gather'?[{type:'triangle',hz:1050,end:820,delay:0,time:.09,volume:.027},{type:'sine',hz:1480,end:1220,delay:.045,time:.1,volume:.02}]:[{type:'sine',hz:155,end:62,delay:0,time:.09,volume:.055},{type:'triangle',hz:1850,end:1720,delay:.015,time:.2,volume:.027},{type:'sine',hz:2620,end:2490,delay:.025,time:.17,volume:.013}];
+}
+function workshopMergeSound(kind,phase='complete'){
+ if(muted)return;const a=actx();if(!a||a.state!=='running')return;
+ for(const voice of workshopSoundProfile(kind,phase)){const oscillator=a.createOscillator(),gain=a.createGain(),at=a.currentTime+voice.delay;oscillator.type=voice.type;oscillator.frequency.setValueAtTime(voice.hz,at);oscillator.frequency.exponentialRampToValueAtTime(voice.end,at+voice.time);gain.gain.setValueAtTime(.0001,at);gain.gain.linearRampToValueAtTime(voice.volume,at+.006);gain.gain.exponentialRampToValueAtTime(.0001,at+voice.time);oscillator.connect(gain);gain.connect(a.destination);oscillator.onended=()=>{oscillator.disconnect();gain.disconnect();};oscillator.start(at);oscillator.stop(at+voice.time+.015);}
+}
+
 
 let hi=0;
 try{hi=+gameStorage.getItem("forgeHi")||0}catch(e){}
@@ -437,12 +445,12 @@ function startWorkshopMerge(kind,events,delay=0,onLand=null){
  job.promise=(async()=>{try{
   if(delay)await workshopAnimationWait(delay,job);
   for(let k=0;k<events.length&&!job.cancelled;k++){
-   const e=events[k],center=rects.get(e.tg),cx=center.left+center.width/2,cy=center.top+center.height/2;grid.dataset.mergeStep=String(k+1);grid.dataset.mergePhase='gather';
+   const e=events[k],center=rects.get(e.tg),cx=center.left+center.width/2,cy=center.top+center.height/2;grid.dataset.mergeStep=String(k+1);grid.dataset.mergePhase='gather';workshopMergeSound(kind,'gather');
    const inputs=e.from.map(f=>{const old=results.get(f.i);if(old&&f.key&&old.key===f.key){old.node.remove();results.delete(f.i);if(!previews.has(f.i))previews.set(f.i,workshopAnimationNode(f.h,rects.get(f.i),job,'merge-preview'));}const rect=rects.get(f.i),node=workshopAnimationNode(f.h,rect,job,'merge-input');return {node,dx:cx-rect.left-rect.width/2,dy:cy-rect.top-rect.height/2};});
    await Promise.all(inputs.map(({node,dx,dy})=>workshopAnimate(node,[{transform:'translate(0,0) scale(1)',opacity:.38},{transform:'translate(0,-14px) scale(1.06)',opacity:.9,offset:.32},{transform:'translate('+dx+'px,'+(dy-12)+'px) scale(.8)',opacity:.9,offset:.82},{transform:'translate('+dx+'px,'+(dy-8)+'px) scale(.18)',opacity:0}],WORKSHOP_MERGE_TIME.gather,job)));inputs.forEach(({node})=>node.remove());
    if(job.cancelled)break;e.from.forEach(f=>{if(lastUse.get(f.i+'|'+(f.key||''))===k){previews.get(f.i)?.remove();previews.delete(f.i);}});grid.dataset.mergePhase='drop';
    await Promise.all(e.to.filter(i=>e.res[i]).map(i=>{results.get(i)?.node.remove();const node=workshopAnimationNode(e.res[i],rects.get(i),job,'merge-result');results.set(i,{node,key:e.keys?.[i]});return workshopAnimate(node,[{transform:'translateY(-12px) scale(.22)',opacity:0,filter:'brightness(1.8)'},{transform:'translateY(-15px) scale(1.1)',opacity:1,filter:'brightness(1.18)',offset:.5},{transform:'translateY(0) scale(1)',opacity:1,filter:'brightness(1)'}],WORKSHOP_MERGE_TIME.drop,job);}));
-   if(job.cancelled)break;onLand?.(e);await workshopAnimationWait(WORKSHOP_MERGE_TIME.pause,job);
+   if(job.cancelled)break;workshopMergeSound(kind,'complete');onLand?.(e);await workshopAnimationWait(WORKSHOP_MERGE_TIME.pause,job);
   }
  }finally{cleanup();}})();return job;
 }
@@ -465,7 +473,7 @@ function forgeSound(rank){
  notes.forEach((hz,i)=>{const t=now+i*.085,o=a.createOscillator(),gain=a.createGain();o.type='triangle';o.frequency.setValueAtTime(hz,t);gain.gain.setValueAtTime(.0001,t);gain.gain.linearRampToValueAtTime(rank?.065:.035,t+.009);gain.gain.exponentialRampToValueAtTime(.0001,t+(rank?.46:.16));o.connect(gain);gain.connect(a.destination);o.start(t);o.stop(t+(rank?.5:.2));});
  const hammer=a.createOscillator(),hit=a.createGain();hammer.type='sine';hammer.frequency.setValueAtTime(1900,now);hammer.frequency.exponentialRampToValueAtTime(230,now+.065);hit.gain.setValueAtTime(.06,now);hit.gain.exponentialRampToValueAtTime(.0001,now+.11);hammer.connect(hit);hit.connect(a.destination);hammer.start(now);hammer.stop(now+.12);
 }
-function presentForgeResults(results){
+function presentForgeResults(results,playSound=true){
  const live=(results||[]).filter(x=>x.w&&g[x.i]===x.w);
  if(!live.length||$('title').style.display!=='none'||$('townP').style.display==='flex')return;
  const epoch=forgeFeedbackEpoch;live.forEach(({w,i})=>{
@@ -474,7 +482,7 @@ function presentForgeResults(results){
   gameTimeout(()=>{if(epoch!==forgeFeedbackEpoch||forgeFlashes.get(i)!==w)return;forgeFlashes.delete(i);const current=$('grid').children[i];current?.classList.remove('forge-complete');current?.querySelector('.forge-sparks')?.remove();},700);
  });
  const chosen=live.find(x=>forgeLevelUps.has(x.w))||live.reduce((best,x)=>rankOf(x.w)>rankOf(best.w)?x:best,live[0]),w=chosen.w,rank=isUltimate(w)?2:isLegend(w)?1:0;
- const leveled=forgeLevelUps.has(w);forgeSound(rank||(leveled?1:0));if(!rank&&!leveled)return;forgeLevelUps.delete(w);
+ const leveled=forgeLevelUps.has(w);if(playSound||rank||leveled)forgeSound(rank||(leveled?1:0));if(!rank&&!leveled)return;forgeLevelUps.delete(w);
  const color=isLegend(w)?LEGENDS[w.legendId].color:C[w.t],stats=weaponStats(w),box=$('forgeCelebration');
  if(forgeFeedbackTimer!==null)clearTimeout(forgeFeedbackTimer);
  box.dataset.rank=String(rank);box.style.setProperty('--forge-color',color);box.innerHTML='<div class="forge-reveal"><span class="forge-rarity">'+(rank===2?'終極鍛造':rank===1?'傳說鍛造':'工藝升星')+' · 完成</span><div class="forge-trophy">'+hex(w.c,bands(w),'',w.t,w)+'</div><strong>'+esc(itemName(w))+'</strong><span class="forge-kind">'+esc(weaponKindLabel(w))+(validElement(w.element)?' · '+esc(elementName(w.element))+'屬性':'')+'</span>'+weaponStarsHTML(w,true)+'<span class="forge-values">⚔ '+stats.atk+'　🛡 '+stats.def+'　💨 '+stats.spd+'</span><small>已加入本局收藏</small></div>';
@@ -1070,7 +1078,7 @@ function kitchenCreateOrders(){
 function kitchenOrderPatience(t){return 100+60*t+8*kitchenLevel('patience')-(kitchen.challenge===0&&day>3?10:0);}
 function kitchenEntryStyle(o){const elapsed=Date.now()-(o.enteredAt||0);return 'grid-column:'+((o.slot??0)+1)+';'+(elapsed<480&&!lowEffects?'animation:kitchen-guest-enter 480ms cubic-bezier(.2,.8,.3,1) both;animation-delay:'+(-elapsed)+'ms;':'');}
 function kitchenRecordMerge(cells,parts,dest,target=dest[0]){
- if(!expandedGameEnabled()||$('kitchenP').hidden||lowEffects||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
+ if(!expandedGameEnabled()||$('kitchenP').hidden)return;
  const rects=cells.map(i=>$('kitchenGrid').children[i]?.getBoundingClientRect());if(rects.some(r=>!r?.width))return;
  kitchenMergeQueue.push({target,center:$('kitchenGrid').children[target]?.getBoundingClientRect(),cells:cells.slice(),parts:parts.map(w=>({...w})),rects:rects.map(r=>({left:r.left,top:r.top,width:r.width,height:r.height})),dest:dest.map(i=>({index:i,item:kitchen.g[i],rect:$('kitchenGrid').children[i].getBoundingClientRect()}))});
 }
@@ -1079,7 +1087,7 @@ function playKitchenMerges(launch=null,placed=-1){
  if(!kitchenMergeQueue.length)return false;const batches=kitchenMergeQueue.splice(0);if($('kitchenP').hidden)return false;
  clearKitchenIngredientFlights();const events=batches.map(b=>({tg:b.target,from:b.cells.map((i,k)=>({i,h:kitchenArt(b.parts[k]),key:workshopItemKey(b.parts[k])})),to:b.dest.map(d=>d.index),res:Object.fromEntries(b.dest.map(d=>[d.index,kitchenArt(d.item)])),keys:Object.fromEntries(b.dest.map(d=>[d.index,workshopItemKey(d.item)]))}));
  const delay=launch&&batches[0].cells.includes(placed)&&flyKitchenIngredient(placed,launch)?420:0;
- const job=startWorkshopMerge('kitchen',events,delay);if(!job)return false;job.outputs=batches.flatMap(b=>b.dest);kitchenMergeJobs.add(job);syncKitchenFlightTargets();job.promise.finally(()=>{kitchenMergeJobs.delete(job);syncKitchenFlightTargets();});return true;
+ const job=startWorkshopMerge('kitchen',events,delay);if(!job){workshopMergeSound('kitchen','complete');return false;}job.outputs=batches.flatMap(b=>b.dest);kitchenMergeJobs.add(job);syncKitchenFlightTargets();job.promise.finally(()=>{kitchenMergeJobs.delete(job);syncKitchenFlightTargets();});return true;
 }
 function kitchenTriples(at,board=kitchen.g){
  const remaining=board.slice(),result=[],starts=[at,...board.map((_,i)=>i)];
@@ -1166,9 +1174,9 @@ function townGuestIdentity(i){if(expandedGameEnabled()){const list=isSandboxNigh
 function townGuestArt(id){return '<svg viewBox="0 0 32 52" shape-rendering="crispEdges" aria-hidden="true" data-town-guest-art="'+id+'"><image href="'+TOWN_GUEST_ART[id]+'" x="0" y="0" width="32" height="52" preserveAspectRatio="xMidYMax meet" style="image-rendering:pixelated"/></svg>';}
 let expeditionFoodOpen=false,expeditionFoodSelected=null;
 const DISH_SUPPLY_BASE=[[.30,0,0],[.23,.10,0],[.23,0,.08],[.18,.16,0],[.24,.08,.06],[.22,0,.12],[.14,.20,0],[.20,.12,.06],[.26,0,.08],[.18,0,.18]];
-function dishSupplyEffect(w){
- const base=DISH_SUPPLY_BASE[w.c],stars=kitchenStars(w),tier=Math.max(0,Math.min(4,w.t||0));if(!base)return null;
- return {heal:Math.min(.5,base[0]+tier*.025+stars*.01+(w.spice==='milk'?.03:0)),attack:base[1]?Math.min(.35,base[1]+tier*.02+stars*.01+(w.spice==='spicy'?.03:0)):0,shield:base[2]?Math.min(.3,base[2]+tier*.015+stars*.01+(w.spice==='herb'?.03:0)):0};
+function dishSupplyEffect(w,baseOnly=false){
+ const base=DISH_SUPPLY_BASE[w.c],stars=baseOnly?0:kitchenStars(w),tier=Math.max(0,Math.min(4,w.t||0)),spice=baseOnly?null:w.spice;if(!base)return null;
+ return {heal:Math.min(.5,base[0]+tier*.025+stars*.01+(spice==='milk'?.03:0)),attack:base[1]?Math.min(.35,base[1]+tier*.02+stars*.01+(spice==='spicy'?.03:0)):0,shield:base[2]?Math.min(.3,base[2]+tier*.015+stars*.01+(spice==='herb'?.03:0)):0};
 }
 function dishSupplyDescription(w){const e=dishSupplyEffect(w);if(!e)return '';return '恢復 '+Math.round(e.heal*100)+'% 本場生命'+(e.attack?' · 下兩次普通攻擊 +'+Math.round(e.attack*100)+'%':'')+(e.shield?' · 獲得 '+Math.round(e.shield*100)+'% 生命上限護盾':'');}
 function expeditionFoodOptions(){return expandedGameEnabled()&&kitchenLevel('pack')>0?kitchen.pack.map((w,index)=>({w,index})).filter(x=>x.w?.k==='w'&&Number.isFinite(x.w.fresh)&&x.w.fresh>0&&DISH_SUPPLY_BASE[x.w.c]):[];}
@@ -1189,13 +1197,13 @@ function renderExpeditionFood(){
  panel.innerHTML='<h3>🍱 本場攜帶料理 · 0/1</h3><div class="exp-food-list"><button data-exp-food="'+(option?.index??-1)+'" onclick="useExpeditionFood('+(option?.index??-1)+')" '+(!ready?'disabled':'')+'>'+kitchenArt(w)+'<span><b>使用 '+esc(kitchenItemName(w))+'</b>'+foodTags(w)+'<small>'+dishSupplyDescription(w)+'</small></span></button></div><p class="exp-note">'+(full?'目前生命全滿，受傷後才可使用這份回血料理。':!option?'這份料理已不在冰箱，無法使用。':'只能使用戰前選定的這一份；不恢復經營愛心。')+'</p>';
 }
 function toggleExpeditionFood(){expeditionFoodOpen=false;renderExpeditionFood();}
-function useExpeditionFood(index){const food=kitchen?.pack[index],b=expeditionState.lastBattle;if(!food||food!==b?.foodChoice||!expeditionFoodReady(b))return false;const ok=stage21_useExpeditionFood(index);if(ok){reviewMetrics.supplies++;const key=food.c+':'+food.t;reviewMetrics.supplyTypes[key]=(reviewMetrics.supplyTypes[key]||0)+1;saveNow();if(sandboxSession)saveReviewProgress();}return ok;}
+function useExpeditionFood(index){syncExpeditionEffects();const food=kitchen?.pack[index],b=expeditionState.lastBattle;if(!food||food!==b?.foodChoice||!expeditionFoodReady(b))return false;const ok=stage21_useExpeditionFood(index);if(ok){reviewMetrics.supplies++;const key=food.c+':'+food.t;reviewMetrics.supplyTypes[key]=(reviewMetrics.supplyTypes[key]||0)+1;saveNow();if(sandboxSession)saveReviewProgress();}return ok;}
 
 let archiveCategory='weapons';
 function setArchiveCategory(category){if(!expandedGameEnabled()||!['weapons','dishes'].includes(category)||albumTier===-2)return;archiveCategory=category;albumTier=-1;renderWeaponAlbum();}
 function renderDishAlbum(){
  $('albumProgress').textContent=(albumFromHome?'跨局料理收藏 · ':'本局料理收藏 · ')+KITCHEN_NAMES.reduce((n,_,c)=>n+KITCHEN_GRADES.filter((_,t)=>(albumFromHome?dishAlbum.has(c+':'+t):(kitchen?.xp[c+':'+t]||0)>0)).length,0)+'/50';
- $('albumWeapons').innerHTML=KITCHEN_GRADES.map((name,t)=>'<section class="album-section dish-album-section"><h3>'+kitchenGradeName(t)+' <small>'+KITCHEN_NAMES.filter((_,c)=>(albumFromHome?dishAlbum.has(c+':'+t):(kitchen?.xp[c+':'+t]||0)>0)).length+'/10</small></h3><div class="album-grid">'+archiveOrder('dishes',t).map(c=>{const name=KITCHEN_NAMES[c],found=(albumFromHome?dishAlbum.has(c+':'+t):(kitchen?.xp[c+':'+t]||0)>0);return '<button class="album-card '+(found?'collected':'uncollected')+'" data-album-dish="'+c+'" data-tier="'+t+'" aria-label="'+kitchenGradeName(t)+name+'，'+(found?'已製作':'未製作')+'"><span class="album-art">'+kitchenArt({k:'w',c,t})+'</span><b>'+name+'</b><small>'+(found?'已製作':'未製作')+'</small></button>';}).join('')+'</div></section>').join('');
+ $('albumWeapons').innerHTML=KITCHEN_GRADES.map((name,t)=>'<section class="album-section dish-album-section"><h3>'+kitchenGradeName(t)+' '+archiveTierPriceHTML('dishes',t)+' <small>'+KITCHEN_NAMES.filter((_,c)=>(albumFromHome?dishAlbum.has(c+':'+t):(kitchen?.xp[c+':'+t]||0)>0)).length+'/10</small></h3><div class="album-grid">'+archiveOrder('dishes',t).map(c=>{const name=KITCHEN_NAMES[c],found=(albumFromHome?dishAlbum.has(c+':'+t):(kitchen?.xp[c+':'+t]||0)>0);return '<button class="album-card '+(found?'collected':'uncollected')+'" data-album-dish="'+c+'" data-tier="'+t+'" aria-label="'+kitchenGradeName(t)+name+'，'+(found?'已製作':'未製作')+'">'+archiveSortValueHTML('dishes',c,t)+'<span class="album-art">'+kitchenArt({k:'w',c,t})+'</span><b>'+name+'</b><small>'+(found?'已製作':'未製作')+'</small></button>';}).join('')+'</div></section>').join('');
 }
 function inspectArchiveDish(c,t){if(!expandedGameEnabled()||!Number.isInteger(c)||!Number.isInteger(t)||c<0||c>=10||t<0||t>=5)return;inspectKitchenDish({k:'w',c,t});}
 function stage20_battleTick(b){
@@ -1206,7 +1214,7 @@ function stage20_battleTick(b){
  }else{
   b.enemyTurns=(b.enemyTurns||0)+1;const turn=b.enemyTurns,phase=(turn-1)%3,mult=elementMultiplier(enemyElement,heroElement),charge=m.kind==='dragon'&&phase===0,heavy=m.kind==='dragon'&&phase===1,hits=m.kind==='wolf'&&turn%3===0?2:1,power=heavy?2:hits===2?.6:1;
   let damage=0,absorbed=0;
-  if(!charge){for(let k=0;k<hits;k++){let raw=Math.max(1,Math.round(m.atk*mult*power)-Math.floor(s.def*.6));if(b.guarding)raw=Math.max(1,Math.ceil(raw*.4));const block=Math.min(b.shield,raw);b.shield-=block;absorbed+=block;const hit=Math.min(b.hp,raw-block);b.hp-=hit;damage+=hit;}const defended=b.guarding;b.guarding=false;row={actor:'enemy',damage,absorbed,element:enemyElement,multiplier:mult,text:m.name+(heavy?' 蓄力重擊':hits===2?' 雙段連擊':'攻擊')+'造成 '+damage+' 傷害'+(defended?' · 防禦架勢減傷 60%':'')+(absorbed?' · 護盾吸收 '+absorbed:'')};}
+  if(!charge){for(let k=0;k<hits;k++){let raw=Math.max(1,Math.round(m.atk*mult*power)-Math.floor(s.def*.6));if(b.guarding)raw=Math.max(1,Math.ceil(raw*.4));const block=Math.min(b.shield,raw);b.shield-=block;absorbed+=block;const hit=Math.min(b.hp,raw-block);b.hp-=hit;damage+=hit;}const defended=b.guarding;b.foodRecovered=Math.max(0,(b.foodRecovered||0)-damage);row={actor:'enemy',damage,absorbed,element:enemyElement,multiplier:mult,text:m.name+(heavy?' 蓄力重擊':hits===2?' 雙段連擊':'攻擊')+'造成 '+damage+' 傷害'+(defended?' · 防禦架勢減傷 60%':'')+(absorbed?' · 護盾吸收 '+absorbed:'')};}
   else row={actor:'enemy',damage:0,absorbed:0,charge:true,text:m.name+' 正在蓄力，下一次將使用雙倍重擊！'};
   if(m.kind==='golem'&&turn%3===0){b.bossHardened=true;row.text+=' · 進入硬化';}
   b.enemyClock+=1000/Math.max(1,m.spd);
@@ -1223,9 +1231,9 @@ function stage20_renderWeaponAlbum(){
   $('albumWeapons').innerHTML=NM.map((name,t)=>{
     if(albumTier!==-1&&albumTier!==t)return '';
     const total=WN.filter((_,c)=>albumWeapons().has(albumKey(c,t))).length;
-    return '<section class="album-section"><h3 style="color:'+C[t]+'">'+name+'級 <small>'+total+'/10</small></h3><div class="album-grid">'+archiveOrder('weapons',t).map(c=>{const n=WN[c];
+    return '<section class="album-section"><h3 style="color:'+C[t]+'">'+name+'級 '+archiveTierPriceHTML('weapons',t)+' <small>'+total+'/10</small></h3><div class="album-grid">'+archiveOrder('weapons',t).map(c=>{const n=WN[c];
       const found=albumWeapons().has(albumKey(c,t));
-      return '<button class="album-card '+(found?'collected':'uncollected')+'" data-album-weapon="'+c+'" data-tier="'+t+'" aria-label="'+name+'級'+n+'，'+(found?'已蒐集':'未蒐集')+'"><span class="album-art">'+hex(c,C[t],'',t,galleryWeapon(c,t))+'</span><b>'+n+'</b><small>'+(found?'已蒐集':'未蒐集')+'</small></button>';
+      return '<button class="album-card '+(found?'collected':'uncollected')+'" data-album-weapon="'+c+'" data-tier="'+t+'" aria-label="'+name+'級'+n+'，'+(found?'已蒐集':'未蒐集')+'">'+archiveSortValueHTML('weapons',c,t)+'<span class="album-art">'+hex(c,C[t],'',t,galleryWeapon(c,t))+'</span><b>'+n+'</b><small>'+(found?'已蒐集':'未蒐集')+'</small></button>';
     }).join('')+'</div></section>';
   }).join('')+legendAlbumSection();
 }
@@ -1261,7 +1269,7 @@ function foodTags(w){const e=dishSupplyEffect(w);return '<span class="food-tags"
 function foodViewControls(where,filter,sort){return '<div class="food-filter-row">'+[['all','全部'],['healing','回血主力'],['shield','護盾'],['attack','攻擊']].map(([id,name])=>'<button aria-pressed="'+(id===filter)+'" onclick="setFoodView(\''+where+'\',\''+id+'\',null)">'+name+'</button>').join('')+'</div><label class="food-sort">排序 <select aria-label="'+(where==='fridge'?'冰箱':'遠征補給')+'排序" onchange="setFoodView(\''+where+'\',null,this.value)">'+[['quality','品質'],['heal','回血效果'],['shield','護盾效果'],['attack','攻擊效果'],['freshness','保鮮剩餘']].map(([id,name])=>'<option value="'+id+'" '+(id===sort?'selected':'')+'>'+name+'</option>').join('')+'</select></label>';}
 function setFoodView(where,filter,sort){if(where==='fridge'){if(filter)fridgeFilter=filter;if(sort)fridgeSort=sort;openKitchenFridge();}else{if(filter)supplyFilter=filter;if(sort)supplySort=sort;$('expeditionFood').dataset.foodKey='';renderExpeditionFood();}}
 function updateBattlePace(){const b=expeditionState.lastBattle,button=$('expeditionPause22');button.hidden=!expandedGameEnabled()||!b||b.resolved;button.textContent=battleUserPaused?'▶ 繼續戰鬥':'⏸ 暫停戰鬥';$('expeditionPace22').textContent=battleUserPaused?'已暫停；可查看能力或使用戰前攜帶的料理。':'戰鬥顯示正常速度。';$('expeditionPace22').hidden=!expandedGameEnabled()||!b||b.resolved;}
-function toggleBattlePause(){const b=expeditionState.lastBattle;if(!expandedGameEnabled()||!b||b.resolved)return;battleUserPaused=!battleUserPaused;battleLastAdvance=Date.now();updateBattlePace();}
+function toggleBattlePause(){const b=expeditionState.lastBattle;if(!expandedGameEnabled()||!b||b.resolved)return;syncExpeditionEffects();battleUserPaused=!battleUserPaused;battleLastAdvance=Date.now();renderExpeditionProgress();updateBattlePace();}
 function clearBattleFeedback(){for(const n of battleFeedbackNodes)n.remove();battleFeedbackNodes.clear();}
 function showBattleFeedback(row){
  if(!expandedGameEnabled()||!row||lowEffects||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;const fighters=$('expeditionArena').querySelectorAll('.exp-fighter'),target=fighters[row.charge||row.actor==='hero'?1:0],source=fighters[row.actor==='hero'?0:1];if(!target)return;
@@ -1372,7 +1380,7 @@ function stage21_kitchenCraft(at,silent=false){
  }
  // Return one ingredient per consumed chain, as in embryo forging; never overwrite a dish.
  for(const path of paths.values()){const free=path.cells.filter(i=>!kitchen.g[i]);if(!free.length)continue;const target=free[rnd(free.length)],chance=[0,0,.25,.5][kitchenLevel('merge')],tier=Math.random()<chance?path.parts[rnd(path.parts.length)].t:0;kitchen.g[target]=kitchenFood(tier);kitchenAuto(target);}
- kitchen.message='料理完成：'+made.join('、')+'！拖曳到客人即可出餐。';forgeSound(0);return true;
+ kitchen.message='料理完成：'+made.join('、')+'！拖曳到客人即可出餐。';return true;
 }
 function stage21_completeKitchenNight(){
  if(kitchen.done)return;kitchen.done=true;const c=KITCHEN_CHALLENGES[kitchen.challenge],passed=c.kind==='rush'?kitchen.served>=kitchen.total&&kitchen.missed===0:kitchen.progress>=c.goal,paid=kitchen.lastRewarded!==day;
@@ -1387,20 +1395,17 @@ function stage21_kitchenSell(w,index,clear){
 function stage21_useExpeditionFood(index){
  const b=expeditionState.lastBattle;if(!expandedGameEnabled()||!expeditionFoodReady(b))return false;const option=expeditionFoodOptions().find(x=>x.index===index);if(!option||option.w!==b.foodChoice)return false;const w=option.w,e=dishSupplyEffect(w);
  if(b.hp>=b.hpMax&&!e.attack&&!e.shield){toast('生命已滿，這份回血料理先留在冰箱。');return false;}
- const restored=Math.min(b.hpMax-b.hp,Math.round(b.hpMax*e.heal)),shield=Math.round(b.hpMax*e.shield);kitchen.pack.splice(index,1);b.hp=Math.min(b.hpMax,b.hp+restored);b.shield+=shield;
+ const restored=Math.min(b.hpMax-b.hp,Math.round(b.hpMax*e.heal)),shield=Math.round(b.hpMax*e.shield);kitchen.pack.splice(index,1);b.hp=Math.min(b.hpMax,b.hp+restored);b.foodRecovered=Math.min(b.hp,(b.foodRecovered||0)+restored);b.shield+=shield;
  if(e.attack){b.foodAttack=Math.max(b.foodAttack||0,e.attack);b.foodAttackTurns=2;}b.foodUsed=(b.foodUsed||0)+1;b.foodCooldown=0;
- b.log.push({actor:'hero',supply:true,hp:b.hp,enemyHp:b.enemyHp,text:'🍱 使用'+kitchenItemName(w)+'：恢復 '+restored+' 生命'+(shield?'、護盾 +'+shield:'')+(e.attack?'、下兩次普通攻擊 +'+Math.round(e.attack*100)+'%':'')+'（料理已消耗）'});
+ b.log.push({actor:'hero',supply:true,healed:restored,addedShield:shield,hp:b.hp,shield:b.shield,enemyHp:b.enemyHp,text:'🍱 使用'+kitchenItemName(w)+'：恢復 '+restored+' 生命'+(shield?'、護盾 +'+shield:'')+(e.attack?'、下兩次普通攻擊 +'+Math.round(e.attack*100)+'%':'')+'（料理已消耗）'});
  renderExpeditionBattle();return true;
 }
 function stage21_settleExpeditionBattle(b){
- if(b.resolved||b.outcome==='ongoing')return;stopExpeditionPlayback();b.resolved=true;
+ if(b.resolved||b.outcome==='ongoing')return;stopExpeditionPlayback();b.resolved=true;b.guarding=false;b.guardRemainingMs=0;b.chargeName=null;b.chargeRemainingMs=0;
  if(b.outcome==='win'&&!expeditionCleared(b.stage)){
   b.gold=b.monster.gold;b.loot=b.stage<20?{k:'bp',id:b.stage}:null;coins+=b.gold;earned+=b.gold;dEarn+=b.gold;expeditionState.victories++;expeditionState.wonToday.push(b.stage);if(b.stage<20){expeditionState.cleared.push(b.stage);grantBlueprintItem(b.stage);}else expeditionState.endless=Math.max(expeditionState.endless||0,b.stage-19);expeditionState.unlocked=b.stage+1;
  }else if(b.outcome==='lose'&&!sandboxSession)lives=Math.max(0,lives-1);
  if(lives<=0)removeSave(runId);saveHi();render();saveNow();
- if(b.outcome==='win'){
-  const finished=b;expeditionAdvanceTimer=gameTimeout(()=>{expeditionAdvanceTimer=null;if(expeditionState.lastBattle!==finished||$('expeditionP').style.display==='none')return;expeditionStage=finished.stage+1;showExpeditionSetup();toast('已前往第 '+(expeditionStage+1)+' 關'+(expeditionStage===10?' · 二周目開啟！':expeditionStage>=20?' · 無限試煉 '+(expeditionStage-19):''));},2000);
- }
 }
 function stage21_saveNow(){
   if(!active||testRun||day<1||lives<=0||!runId)return;
@@ -1562,7 +1567,7 @@ function shopRemaining(type){return Math.max(0,SHOP_LIMIT[type]-(shopBought[type
 function useLifePotion(){
   if(lives>=3){toast('❤️ 愛心已滿，不能使用生命藥水。');say('❤️ 愛心已滿，不能使用生命藥水，藥水未消耗。');render();return;}
   lives=Math.min(3,lives+1);hand=null;say('🧪 生命藥水！恢復一顆愛心。');render();saveNow();
-}const ARCHIVE_SORT_FIELDS={weapons:{atk:'攻擊力',def:'防禦力',spd:'速度',price:'基礎價錢'},dishes:{taste:'滋味',fullness:'飽足',aroma:'香氣',price:'基礎價錢'}};
+}const ARCHIVE_SORT_FIELDS={weapons:{atk:'攻擊力',def:'防禦力',spd:'速度',price:'基礎價錢'},dishes:{taste:'滋味',fullness:'飽足',aroma:'香氣',heal:'恢復生命',shield:'額外護盾',attack:'額外攻擊'}};
 const archiveSortState={weapons:'default',dishes:'default'};
 function setArchiveSort(category,value){
  if(albumTier===-2||!Object.hasOwn(ARCHIVE_SORT_FIELDS,category))return false;const [key,direction]=String(value).split(':');
@@ -1574,10 +1579,17 @@ function sortArchiveIds(category,ids,valueFor){
  return ids.slice().sort((a,b)=>factor*(values.get(a)-values.get(b))||a-b);
 }
 function archiveWeaponSortValue(weapon,key){return key==='price'?wp(weapon):weaponStats(weapon)[key];}
+function archiveDishSortValue(id,tier,key){const w={k:'w',c:id,t:tier};return ['heal','shield','attack'].includes(key)?Math.round(dishSupplyEffect(w,true)[key]*1000)/10:kitchenDishStats(w,true)[key];}
 function archiveOrder(category,tier){
- return sortArchiveIds(category,Array.from({length:10},(_,i)=>i),(id,key)=>category==='weapons'?archiveWeaponSortValue(baseAlbumWeapon(id,tier),key):key==='price'?kitchenPrice({k:'w',c:id,t:tier},true):kitchenDishStats({k:'w',c:id,t:tier},true)[key]);
+ return sortArchiveIds(category,Array.from({length:10},(_,i)=>i),(id,key)=>category==='weapons'?archiveWeaponSortValue(baseAlbumWeapon(id,tier),key):archiveDishSortValue(id,tier,key));
 }
 function archiveLegendOrder(start){const ids=Array.from({length:10},(_,i)=>start+i);return albumTier===-2?ids:sortArchiveIds('weapons',ids,(id,key)=>archiveWeaponSortValue(baseLegendWeapon(id),key));}
+function archiveTierPriceHTML(category,tier){const amount=category==='weapons'?materialPrice(baseAlbumWeapon(0,tier)):kitchenPrice({k:'w',c:0,t:tier},true);return '<small class="album-tier-price" title="同階基礎售價">💰 '+amount+' 金幣</small>';}
+function archiveSortValueHTML(category,id,tier,legend=false){
+ const selection=archiveSortState[category];if(selection==='default'||albumTier===-2)return '';const key=selection.split(':')[0];if(category==='weapons'&&!legend&&key==='price')return '';
+ const value=category==='weapons'?archiveWeaponSortValue(legend?baseLegendWeapon(id):baseAlbumWeapon(id,tier),key):archiveDishSortValue(id,tier,key),percent=['heal','shield','attack'].includes(key),short={atk:'攻',def:'防',spd:'速',price:'💰',taste:'滋',fullness:'飽',aroma:'香',heal:'♥',shield:'盾',attack:'攻+'}[key],text=short+' '+value+(percent?'%':'');
+ return '<small class="album-sort-value" data-sort-field="'+key+'" data-sort-value="'+value+'" title="'+ARCHIVE_SORT_FIELDS[category][key]+' '+value+(percent?'%':'')+'">'+text+'</small>';
+}
 function renderArchiveSort(){
  const panel=$('archiveSort');panel.hidden=!expandedGameEnabled()||albumTier===-2;if(panel.hidden)return;const category=archiveCategory,select=$('archiveSortSelect');
  $('archiveSortLabel').textContent=category==='weapons'?'武器排序':'料理排序';select.setAttribute('aria-label',category==='weapons'?'武器排序':'料理排序');
@@ -3021,11 +3033,11 @@ function expeditionWeapons(){
 function monsterArt(m){if(!expandedGameEnabled())return stage21_monsterArt(m);const id=monsterSpriteIndex(m);return '<svg viewBox="0 0 64 64" role="img" aria-label="'+esc(m.name)+'" data-monster-art="'+id+'"><image href="'+REVIEW_MONSTER_ART[id]+'" width="64" height="64" preserveAspectRatio="xMidYMid meet" style="image-rendering:pixelated"/></svg>';}
 function bossRule(m){return m.kind==='dragon'?'巨龍循環：蓄力 → 雙倍重擊 → 普通攻擊。蓄力時不造成傷害，可準備防禦或延緩技能。':m.kind==='golem'?'魔像每第三次行動後硬化，下一次受到的物理傷害減少 60%；奧術與主動技能不受影響。':m.kind==='wolf'?'狼王每第三次行動使用兩段連擊，每段為 60% 攻擊；防禦分別抵擋兩段傷害。':'以普通攻擊交戰，速度決定出手頻率。';}
 function bossIntent(b){const next=(b.enemyTurns||0)+1,m=b.monster;if(m.kind==='dragon')return ['蓄力（本次不攻擊）','蓄力重擊 ×2','普通攻擊'][(next-1)%3];if(m.kind==='wolf'&&next%3===0)return '雙段連擊（各 60%）';if(m.kind==='golem'&&next%3===0)return '攻擊後硬化';return '普通攻擊';}
-function guardBattle(b){if(!b||b.resolved||b.outcome!=='ongoing'||b.guardUsed)return false;b.guardUsed=true;b.guarding=true;return true;}
-function useExpeditionGuard(){if(guardBattle(expeditionState.lastBattle))renderExpeditionBattle();}
+function guardBattle(b){if(!b||b.resolved||b.outcome!=='ongoing'||b.guardUsed)return false;b.guardUsed=true;b.guarding=true;b.guardRemainingMs=EXPEDITION_GUARD_MS;b.effectStamp=Date.now();return true;}
+function useExpeditionGuard(){syncExpeditionEffects();if(guardBattle(expeditionState.lastBattle))renderExpeditionBattle();}
 function expeditionBattleState(w,monster){
  const stats=weaponStats(w),hpMax=100+stats.def*2;
- return {weapon:JSON.parse(JSON.stringify(w)),monster:JSON.parse(JSON.stringify(monster)),stats,hpMax,hp:hpMax,shield:stats.ward,enemyHp:monster.hp,heroClock:1000/Math.max(1,stats.spd),enemyClock:1000/Math.max(1,monster.spd),enemyDef:monster.def,skillUsed:false,guardUsed:false,guarding:false,enemyTurns:0,bossHardened:false,outcome:'ongoing',resolved:false,log:[]};
+ return {weapon:JSON.parse(JSON.stringify(w)),monster:JSON.parse(JSON.stringify(monster)),stats,hpMax,hp:hpMax,shield:stats.ward,enemyHp:monster.hp,heroClock:1000/Math.max(1,stats.spd),enemyClock:1000/Math.max(1,monster.spd),enemyDef:monster.def,skillUsed:false,guardUsed:false,guarding:false,guardRemainingMs:0,foodRecovered:0,enemyTurns:0,bossHardened:false,outcome:'ongoing',resolved:false,log:[]};
 }
 function battleTick(b){
  if(!expandedGameEnabled())return stage20_battleTick(b);const start=b.log.length,attack=b.stats.atk,boost=b.foodAttackTurns>0?b.foodAttack||0:0;
@@ -3060,32 +3072,73 @@ function beginExpedition(confirmed=false){
  battleUserPaused=false;battleLastAdvance=0;expeditionFoodOpen=false;stopExpeditionPlayback();expeditionState.attempts++;expeditionState.lastBattle={...b,stage:expeditionStage,gold:0,loot:null,first:true,day};expeditionSelected='';expeditionBattleStep=0;
  // Save the consumed weapon before the first action. Reload/exit never refunds it or grants an unearned reward.
  saveNow();if(sandboxSession)saveReviewProgress();render();$('expeditionSetup').hidden=true;$('expeditionBattle').hidden=false;renderExpeditionBattle();
- expeditionTimer=setInterval(advanceExpeditionBattle,420);
+ expeditionTimer=setInterval(advanceExpeditionBattle,420);startExpeditionFeedbackClock();
 }
-function advanceExpeditionBattle(){if(!expandedGameEnabled())return stage21_advanceExpeditionBattle();const b=expeditionState.lastBattle;if(!b||b.resolved||b.outcome!=='ongoing')return stage21_advanceExpeditionBattle();const now=Date.now();if(battleUserPaused||battleLastAdvance&&now-battleLastAdvance<400)return;battleLastAdvance=now;const rows=b.log.length;stage21_advanceExpeditionBattle();if(b.log.length>rows)showBattleFeedback(b.log.at(-1));}
-function useExpeditionSkill(){const b=expeditionState.lastBattle;if(!b||!castBattleSkill(b))return;expeditionBattleStep=b.log.length;combatSound('hero');if(b.outcome!=='ongoing')settleExpeditionBattle(b);renderExpeditionBattle();}
+function advanceExpeditionBattle(){
+ if(!expandedGameEnabled())return stage21_advanceExpeditionBattle();const b=expeditionState.lastBattle;if(!b||b.resolved||b.outcome!=='ongoing')return stage21_advanceExpeditionBattle();const now=Date.now();syncExpeditionEffects(now);
+ if(battleUserPaused||document.hidden||battleLastAdvance&&now-battleLastAdvance<400)return;
+ if(b.heroClock>b.enemyClock&&b.chargeName&&b.chargeRemainingMs>0)return;
+ battleLastAdvance=now;const rows=b.log.length;stage21_advanceExpeditionBattle();if(b.log.length>rows)showBattleFeedback(b.log.at(-1));
+}
+function useExpeditionSkill(){syncExpeditionEffects();const b=expeditionState.lastBattle;if(!b||!castBattleSkill(b))return;expeditionBattleStep=b.log.length;combatSound('hero');if(b.outcome!=='ongoing')settleExpeditionBattle(b);renderExpeditionBattle();}
 function settleExpeditionBattle(b){const fresh=b&&!b.resolved&&b.outcome!=='ongoing';const result=stage21_settleExpeditionBattle(b);if(fresh){reviewMetrics.battles.push({stage:b.stage+1,result:b.outcome==='win'?'勝利':b.outcome==='lose'?'生命歸零':'回合上限或撤退',supplies:b.foodUsed||0});reviewMetrics.battles=reviewMetrics.battles.slice(-50);saveReviewProgress();}return result;}
-function stopExpeditionPlayback(){clearBattleFeedback();if(expeditionTimer!==null){clearInterval(expeditionTimer);expeditionTimer=null;}if(expeditionAdvanceTimer!==null){clearTimeout(expeditionAdvanceTimer);expeditionAdvanceTimer=null;}}
+function stopExpeditionPlayback(){stopExpeditionFeedbackClock();clearBattleFeedback();if(expeditionTimer!==null){clearInterval(expeditionTimer);expeditionTimer=null;}if(expeditionAdvanceTimer!==null){clearTimeout(expeditionAdvanceTimer);expeditionAdvanceTimer=null;}}
 function finishExpeditionPlayback(){
- const b=expeditionState.lastBattle;if(!b||b.resolved)return;while(b.outcome==='ongoing')battleTick(b);expeditionBattleStep=b.log.length;settleExpeditionBattle(b);renderExpeditionBattle();
+ const b=expeditionState.lastBattle;if(!b||b.resolved)return;while(b.outcome==='ongoing'){primeExpeditionCharge(b);advanceExpeditionEffects(b,420+(b.heroClock>b.enemyClock?b.chargeRemainingMs||0:0));battleTick(b);}expeditionBattleStep=b.log.length;settleExpeditionBattle(b);renderExpeditionBattle();
 }
 function showExpeditionSetup(){stopExpeditionPlayback();expeditionFoodSelected=null;$('expeditionSetup').hidden=false;$('expeditionBattle').hidden=true;renderExpedition();$('expeditionSetup').scrollIntoView?.({block:'start'});}
 function openExpedition(){
  syncExpeditionDay();const b=expeditionState.lastBattle;
- if(b&&b.outcome==='ongoing'&&!b.resolved){$('expeditionP').style.display='flex';$('expeditionSetup').hidden=true;$('expeditionBattle').hidden=false;renderExpeditionBattle();if(expeditionTimer===null)expeditionTimer=setInterval(advanceExpeditionBattle,420);return;}
+ if(b&&b.outcome==='ongoing'&&!b.resolved){$('expeditionP').style.display='flex';$('expeditionSetup').hidden=true;$('expeditionBattle').hidden=false;renderExpeditionBattle();if(expeditionTimer===null)expeditionTimer=setInterval(advanceExpeditionBattle,420);startExpeditionFeedbackClock();return;}
  expeditionStage=sandboxSession?Math.max(0,expeditionLab.stage-1):expeditionState.unlocked;saveNow();$('expeditionP').style.display='flex';showExpeditionSetup();
 }
 function closeExpedition(){
  const b=expeditionState.lastBattle;if(b?.outcome==='ongoing'&&!b.resolved){b.outcome='draw';settleExpeditionBattle(b);}stopExpeditionPlayback();$('expeditionP').style.display='none';if(lives<=0)gameOver('遠征落敗，最後一顆愛心已用完。');
 }
+const EXPEDITION_GUARD_MS=3000,EXPEDITION_CHARGE_MS=1500;let expeditionFeedbackTimer=null;
+function expeditionBossAbility(b){
+ const turn=(b.enemyTurns||0)+1,kind=(b.monster||expeditionMonster(b.stage||0)).kind;
+ return kind==='dragon'&&(turn-1)%3===1?'蓄力重擊 ×2':kind==='wolf'&&turn%3===0?'雙段連擊':kind==='golem'&&turn%3===0?'硬化攻擊':null;
+}
+function primeExpeditionCharge(b){
+ if(b.resolved||b.outcome!=='ongoing'){b.chargeRemainingMs=0;b.chargeName=null;b.chargeTurn=0;return;}
+ const ability=expeditionBossAbility(b),turn=(b.enemyTurns||0)+1;
+ if(!ability){b.chargeRemainingMs=0;b.chargeName=null;b.chargeTurn=0;return;}
+ if(b.chargeTurn!==turn){b.chargeTurn=turn;b.chargeRemainingMs=EXPEDITION_CHARGE_MS;}b.chargeName=ability;
+}
+function advanceExpeditionEffects(b,elapsed){
+ if(!b||b.resolved||b.outcome!=='ongoing')return;const dt=Math.max(0,elapsed||0);
+ b.guardRemainingMs=Math.max(0,(b.guardRemainingMs||0)-dt);b.guarding=b.guardRemainingMs>0;
+ if(b.chargeName)b.chargeRemainingMs=Math.max(0,(b.chargeRemainingMs||0)-dt);
+}
+function syncExpeditionEffects(now=Date.now()){
+ const b=expeditionState.lastBattle;if(!b)return;const elapsed=b.effectStamp?Math.max(0,now-b.effectStamp):0;b.effectStamp=now;
+ if(!battleUserPaused&&!document.hidden&&!$('expeditionBattle').hidden&&$('expeditionP').style.display!=='none')advanceExpeditionEffects(b,elapsed);
+ primeExpeditionCharge(b);renderExpeditionProgress();
+}
+function renderExpeditionProgress(){
+ const b=expeditionState.lastBattle,ongoing=b&&!b.resolved&&b.outcome==='ongoing',guard=ongoing&&(b.guardRemainingMs||0)>0,charge=ongoing&&!!b.chargeName;
+ $('expeditionGuardMeter').hidden=!guard;$('expeditionBossCharge').hidden=!charge;
+ if(guard){$('expeditionGuardProgress').max=EXPEDITION_GUARD_MS;$('expeditionGuardProgress').value=b.guardRemainingMs;$('expeditionGuardTime').textContent=(b.guardRemainingMs/1000).toFixed(1)+' 秒'+(battleUserPaused?' · 暫停':'');}
+ if(charge){$('expeditionChargeProgress').max=EXPEDITION_CHARGE_MS;$('expeditionChargeProgress').value=EXPEDITION_CHARGE_MS-b.chargeRemainingMs;$('expeditionChargeName').textContent=(b.monster||expeditionMonster(b.stage||0)).name+' · '+b.chargeName;$('expeditionChargeTime').textContent=battleUserPaused?'已暫停':b.chargeRemainingMs>0?'蓄力 '+(b.chargeRemainingMs/1000).toFixed(1)+' 秒':'蓄力完成';}
+}
+function startExpeditionFeedbackClock(){
+ if(expeditionFeedbackTimer!==null)return;const b=expeditionState.lastBattle;if(b)b.effectStamp=Date.now();syncExpeditionEffects();expeditionFeedbackTimer=setInterval(syncExpeditionEffects,50);
+}
+function stopExpeditionFeedbackClock(){if(expeditionFeedbackTimer!==null)clearInterval(expeditionFeedbackTimer);expeditionFeedbackTimer=null;}
+function expeditionHealthHTML(b){
+ const hp=Math.max(0,b.hp),shield=Math.max(0,b.shield||0),healed=Math.min(hp,Math.max(0,b.foodRecovered||0));b.healthShieldCapacity=Math.max(shield,b.healthShieldCapacity||0);const scale=Math.max(1,b.hpMax+b.healthShieldCapacity),width=n=>(Math.max(0,n)/scale*100).toFixed(3)+'%';
+ return '<div class="exp-health-meter" role="img" aria-label="生命 '+hp+' / '+b.hpMax+'，料理恢復剩餘 '+healed+'，護盾 '+shield+'"><span class="exp-health-base" style="width:'+width(hp-healed)+'"></span><span class="exp-health-food" style="width:'+width(healed)+'"></span><span class="exp-health-shield" style="width:'+width(shield)+'"></span></div><span class="exp-health-key"><i>生命</i><i>料理回復</i><i>護盾</i></span>';
+}
+document.addEventListener('visibilitychange',()=>{const b=expeditionState.lastBattle;if(b)b.effectStamp=Date.now();battleLastAdvance=Date.now();});
 
 function renderExpeditionBattle(){
- const b=expeditionState.lastBattle;if(!b)return;updateBattlePace();renderExpeditionFood();const m=b.monster||{...EXPEDITIONS[b.stage],element:'none'},done=b.resolved;
- $('expeditionArena').innerHTML='<div class="exp-fighter"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</div><b>'+itemName(b.weapon)+'</b><small>♥ '+b.hp+' / '+b.hpMax+(b.shield?'　護盾 '+b.shield:'')+'</small><progress max="'+b.hpMax+'" value="'+b.hp+'"></progress></div><strong>VS</strong><div class="exp-fighter"><div>'+monsterArt(m)+elementBadge(m.element,'battle-element')+'</div><b>'+m.name+'</b><small>♥ '+b.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+b.enemyHp+'"></progress></div>';
- $('expeditionLog').innerHTML=b.log.slice(-5).map(x=>'<p class="'+x.actor+(x.skill?' skill-hit':'')+'">'+esc(x.text)+'</p>').join('')||'<p>武器已投入遠征；可在戰鬥中施放終極武器技能。</p>';
- $('expeditionIntent').textContent='敵方下次：'+bossIntent(b)+(b.bossHardened?' · 現正硬化':'')+(b.guarding?' · 防禦架勢準備中':'');if(expandedGameEnabled()&&b.foodAttackTurns>0)$('expeditionIntent').textContent+=' · 🍖 攻擊 +'+Math.round((b.foodAttack||0)*100)+'%（剩 '+b.foodAttackTurns+' 次）';$('expeditionGuard').disabled=done||b.guardUsed;$('expeditionGuard').textContent=b.guardUsed?'🛡 已使用防禦架勢':'🛡 防禦架勢（每場一次）';const skill=ultimateSkill(b.weapon);$('expeditionSkill').hidden=!skill;$('expeditionSkill').disabled=done||b.skillUsed;$('expeditionSkill').textContent=skill?(b.skillUsed?'✓ 已施放 '+skill.name:'✦ 施放 '+skill.name):'';
- $('expeditionResult').innerHTML=done?'<h3>'+({win:'🏆 遠征勝利',lose:'已返回城鎮',draw:'已撤退'}[b.outcome])+'</h3><p>'+(b.outcome==='win'?'獲得 '+b.gold+' 金幣'+(b.loot?'＋'+itemName(b.loot):'')+'。即將前往第 '+(b.stage+2)+' 關。':b.outcome==='lose'?'失去一顆愛心，剩餘 '+lives+' 顆。':'未獲得獎勵，出戰武器已消耗。')+'</p>'+(b.outcome==='win'&&b.stage>=10&&b.stage<20?'<button class="ultimate-unlocked" onclick="openUltimateArt('+b.stage+')">'+ultimatePixelArt(b.stage)+'<span>終極藍圖已解鎖 · 查看高清美術 ↗</span></button>':''):'';
- $('expeditionAgain').textContent=lives<=0?'結束旅程':b.outcome==='win'?'前往下一關':'返回遠征';$('expeditionSkip').hidden=done;$('expeditionAgain').hidden=!done;
+ const b=expeditionState.lastBattle;if(!b)return;syncExpeditionEffects();updateBattlePace();renderExpeditionFood();const m=b.monster||{...EXPEDITIONS[b.stage],element:'none'},done=b.resolved;
+ $('expeditionArena').innerHTML='<div class="exp-fighter"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</div><b>'+itemName(b.weapon)+'</b><small>♥ '+b.hp+' / '+b.hpMax+(b.shield?'　護盾 '+b.shield:'')+'</small>'+expeditionHealthHTML(b)+'</div><strong>VS</strong><div class="exp-fighter"><div>'+monsterArt(m)+elementBadge(m.element,'battle-element')+'</div><b>'+m.name+'</b><small>♥ '+b.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+b.enemyHp+'"></progress></div>';
+ $('expeditionLog').innerHTML=(done?b.log:b.log.slice(-5)).map(x=>'<p class="'+x.actor+(x.skill?' skill-hit':'')+'">'+esc(x.text)+'</p>').join('')||'<p>武器已投入遠征；可在戰鬥中施放終極武器技能。</p>';
+ $('expeditionLog').dataset.complete=String(done);$('expeditionGuard').hidden=done;$('expeditionIntent').textContent=done?'本次戰鬥已結束':('敵方下次：'+bossIntent(b)+(b.bossHardened?' · 現正硬化':'')+(b.guarding?' · 防禦中（減傷60%）':''));if(!done&&expandedGameEnabled()&&b.foodAttackTurns>0)$('expeditionIntent').textContent+=' · 🍖 攻擊 +'+Math.round((b.foodAttack||0)*100)+'%（剩 '+b.foodAttackTurns+' 次）';$('expeditionGuard').disabled=done||b.guardUsed;$('expeditionGuard').textContent=b.guardUsed?'🛡 已使用防禦架勢':'🛡 防禦3秒 · 減傷60%（每場一次）';const skill=ultimateSkill(b.weapon);$('expeditionSkill').hidden=done||!skill;$('expeditionSkill').disabled=done||b.skillUsed;$('expeditionSkill').textContent=skill?(b.skillUsed?'✓ 已施放 '+skill.name:'✦ 施放 '+skill.name):'';
+ $('expeditionResult').innerHTML=done?'<h3>'+({win:'🏆 遠征勝利',lose:'遠征落敗',draw:'已撤退'}[b.outcome])+'</h3><p>'+(b.outcome==='win'?'獲得 '+b.gold+' 金幣'+(b.loot?'＋'+itemName(b.loot):'')+'。':b.outcome==='lose'?'失去一顆愛心，剩餘 '+lives+' 顆。':'未獲得獎勵，出戰武器已消耗。')+'</p>'+(b.outcome==='win'&&b.stage>=10&&b.stage<20?'<button class="ultimate-unlocked" onclick="openUltimateArt('+b.stage+')">'+ultimatePixelArt(b.stage)+'<span>終極藍圖已解鎖 · 查看高清美術 ↗</span></button>':''):'';
+ $('expeditionAgain').textContent=lives<=0?'結束旅程':'返回遠征';$('expeditionSkip').hidden=done;$('expeditionAgain').hidden=!done;
 }
 
 function renderExpedition(){
@@ -3242,7 +3295,7 @@ function blueprintShapeHTML(id,rotation=0){
  return '<span class="bp-shape" style="--bp-cols:'+s.w+';--bp-rows:'+s.h+';--bp-max:'+Math.max(s.w,s.h)+'">'+a+'</span>';
 }
 function legendAlbumSection(){
- return [0,10].map(start=>{const list=LEGENDS.slice(start,start+10),count=list.filter((_,i)=>albumHasBlueprint(start+i)).length;return '<section class="album-section legend-album-section '+(start?'legend-ultimate':'')+'"><h3>'+(start?'終極藍圖 · 二周目':'傳說藍圖 · 一周目')+' <small>'+count+'/10</small></h3><div class="album-grid">'+archiveLegendOrder(start).map(id=>{const l=LEGENDS[id];return '<button class="album-card '+(albumHasLegend(id)?'collected':albumHasBlueprint(id)?'blueprint-known':'uncollected')+'" data-legend="'+id+'"><span class="album-art">'+(albumHasLegend(id)?legendWeaponSVG(id):legendBlueprintSVG(id))+(albumHasLegend(id)&&!albumFromHome?weaponStarsHTML(masterySample({k:'w',c:l.c,t:l.tier,legendId:id,legendCore:{atk:1,def:1,spd:1}})):'')+'</span><b>'+l.name+'</b><small>'+(albumHasLegend(id)?'已鍛造':albumHasBlueprint(id)?'藍圖已取得':'第 '+(id+1)+' 關')+'</small></button>';}).join('')+'</div></section>';}).join('');
+ return [0,10].map(start=>{const list=LEGENDS.slice(start,start+10),count=list.filter((_,i)=>albumHasBlueprint(start+i)).length;return '<section class="album-section legend-album-section '+(start?'legend-ultimate':'')+'"><h3>'+(start?'終極藍圖 · 二周目':'傳說藍圖 · 一周目')+' <small>'+count+'/10</small></h3><div class="album-grid">'+archiveLegendOrder(start).map(id=>{const l=LEGENDS[id];return '<button class="album-card '+(albumHasLegend(id)?'collected':albumHasBlueprint(id)?'blueprint-known':'uncollected')+'" data-legend="'+id+'">'+archiveSortValueHTML('weapons',id,null,true)+'<span class="album-art">'+(albumHasLegend(id)?legendWeaponSVG(id):legendBlueprintSVG(id))+(albumHasLegend(id)&&!albumFromHome?weaponStarsHTML(masterySample({k:'w',c:l.c,t:l.tier,legendId:id,legendCore:{atk:1,def:1,spd:1}})):'')+'</span><b>'+l.name+'</b><small>'+(albumHasLegend(id)?'已鍛造':albumHasBlueprint(id)?'藍圖已取得':'第 '+(id+1)+' 關')+'</small></button>';}).join('')+'</div></section>';}).join('');
 }
 
 function renderLegendAlbum(){$('albumWeapons').innerHTML=legendAlbumSection();}
@@ -3574,8 +3627,8 @@ $("skb").onclick=()=>{
 
 
 function playFx(evs){
- const job=startWorkshopMerge('forge',evs,lead,e=>{if(e.forged)presentForgeResults(e.forged);});
- if(!job)for(const ev of evs)if(ev.forged)presentForgeResults(ev.forged);return job;
+ const job=startWorkshopMerge('forge',evs,lead,e=>{if(e.forged)presentForgeResults(e.forged,false);});
+ if(!job){workshopMergeSound('forge','complete');for(const ev of evs)if(ev.forged)presentForgeResults(ev.forged,false);}return job;
 }
 $("grid").onclick=e=>{
   const d=e.target.closest(".c");

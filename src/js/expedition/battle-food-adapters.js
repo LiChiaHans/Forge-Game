@@ -7,7 +7,7 @@ function stage20_battleTick(b){
  }else{
   b.enemyTurns=(b.enemyTurns||0)+1;const turn=b.enemyTurns,phase=(turn-1)%3,mult=elementMultiplier(enemyElement,heroElement),charge=m.kind==='dragon'&&phase===0,heavy=m.kind==='dragon'&&phase===1,hits=m.kind==='wolf'&&turn%3===0?2:1,power=heavy?2:hits===2?.6:1;
   let damage=0,absorbed=0;
-  if(!charge){for(let k=0;k<hits;k++){let raw=Math.max(1,Math.round(m.atk*mult*power)-Math.floor(s.def*.6));if(b.guarding)raw=Math.max(1,Math.ceil(raw*.4));const block=Math.min(b.shield,raw);b.shield-=block;absorbed+=block;const hit=Math.min(b.hp,raw-block);b.hp-=hit;damage+=hit;}const defended=b.guarding;b.guarding=false;row={actor:'enemy',damage,absorbed,element:enemyElement,multiplier:mult,text:m.name+(heavy?' 蓄力重擊':hits===2?' 雙段連擊':'攻擊')+'造成 '+damage+' 傷害'+(defended?' · 防禦架勢減傷 60%':'')+(absorbed?' · 護盾吸收 '+absorbed:'')};}
+  if(!charge){for(let k=0;k<hits;k++){let raw=Math.max(1,Math.round(m.atk*mult*power)-Math.floor(s.def*.6));if(b.guarding)raw=Math.max(1,Math.ceil(raw*.4));const block=Math.min(b.shield,raw);b.shield-=block;absorbed+=block;const hit=Math.min(b.hp,raw-block);b.hp-=hit;damage+=hit;}const defended=b.guarding;b.foodRecovered=Math.max(0,(b.foodRecovered||0)-damage);row={actor:'enemy',damage,absorbed,element:enemyElement,multiplier:mult,text:m.name+(heavy?' 蓄力重擊':hits===2?' 雙段連擊':'攻擊')+'造成 '+damage+' 傷害'+(defended?' · 防禦架勢減傷 60%':'')+(absorbed?' · 護盾吸收 '+absorbed:'')};}
   else row={actor:'enemy',damage:0,absorbed:0,charge:true,text:m.name+' 正在蓄力，下一次將使用雙倍重擊！'};
   if(m.kind==='golem'&&turn%3===0){b.bossHardened=true;row.text+=' · 進入硬化';}
   b.enemyClock+=1000/Math.max(1,m.spd);
@@ -24,9 +24,9 @@ function stage20_renderWeaponAlbum(){
   $('albumWeapons').innerHTML=NM.map((name,t)=>{
     if(albumTier!==-1&&albumTier!==t)return '';
     const total=WN.filter((_,c)=>albumWeapons().has(albumKey(c,t))).length;
-    return '<section class="album-section"><h3 style="color:'+C[t]+'">'+name+'級 <small>'+total+'/10</small></h3><div class="album-grid">'+archiveOrder('weapons',t).map(c=>{const n=WN[c];
+    return '<section class="album-section"><h3 style="color:'+C[t]+'">'+name+'級 '+archiveTierPriceHTML('weapons',t)+' <small>'+total+'/10</small></h3><div class="album-grid">'+archiveOrder('weapons',t).map(c=>{const n=WN[c];
       const found=albumWeapons().has(albumKey(c,t));
-      return '<button class="album-card '+(found?'collected':'uncollected')+'" data-album-weapon="'+c+'" data-tier="'+t+'" aria-label="'+name+'級'+n+'，'+(found?'已蒐集':'未蒐集')+'"><span class="album-art">'+hex(c,C[t],'',t,galleryWeapon(c,t))+'</span><b>'+n+'</b><small>'+(found?'已蒐集':'未蒐集')+'</small></button>';
+      return '<button class="album-card '+(found?'collected':'uncollected')+'" data-album-weapon="'+c+'" data-tier="'+t+'" aria-label="'+name+'級'+n+'，'+(found?'已蒐集':'未蒐集')+'">'+archiveSortValueHTML('weapons',c,t)+'<span class="album-art">'+hex(c,C[t],'',t,galleryWeapon(c,t))+'</span><b>'+n+'</b><small>'+(found?'已蒐集':'未蒐集')+'</small></button>';
     }).join('')+'</div></section>';
   }).join('')+legendAlbumSection();
 }

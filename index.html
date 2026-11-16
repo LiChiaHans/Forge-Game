@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="game.css?v=40df30b579d05444">
+<link rel="stylesheet" href="game.css?v=206683299612430e">
 
 
 
@@ -94,7 +94,7 @@
   <details class="exp-rules"><summary>能力與戰鬥規則</summary><p>每個胚分別提供能力：刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度。銅、鐵、鋼、金、秘銀的材料強度為 1、1.7、2.8、4.4、6.8 倍。</p><p>出戰生命＝100＋防禦×2。速度決定先後與行動頻率；物理傷害＝攻擊×屬性倍率－對方防禦的 60%，至少造成 1 傷害。奧術傷害無視防禦，護盾先吸收傷害。120 次行動後仍未分勝負則撤退。終極武器的主動技能每場可施放一次；按「顯示戰果」會直接完成剩餘戰鬥，不會自動施放技能或防禦。防禦架勢每場一次，讓下一次敵方攻擊減少 60% 傷害，蓄力不會消耗已準備的防禦。</p></details>
   <p id="expeditionLast" class="exp-note"></p><section class="element-chart-panel"><h3>屬性相剋</h3><div id="elementChart"></div></section>
  </div>
- <div id="expeditionBattle" hidden><div id="expeditionArena"></div><p id="expeditionIntent" role="status"></p><button id="expeditionGuard" class="exp-wide" onclick="useExpeditionGuard()">🛡 防禦架勢（每場一次）</button><button id="expeditionPause22" class="exp-wide" hidden onclick="toggleBattlePause()">⏸ 暫停戰鬥</button><p id="expeditionPace22" class="exp-note" hidden></p><div id="expeditionFood" hidden></div><div id="expeditionLog" aria-live="polite"></div><button id="expeditionSkill" class="exp-wide" onclick="useExpeditionSkill()" hidden></button><div id="expeditionResult" aria-live="polite"></div><button id="expeditionSkip" class="exp-wide" onclick="finishExpeditionPlayback()">顯示戰果</button><button id="expeditionAgain" class="pri exp-wide" hidden>選擇下一場</button></div>
+ <div id="expeditionBattle" hidden><div id="expeditionArena"></div><div id="expeditionBossCharge" class="exp-timed-effect" hidden><div><b id="expeditionChargeName"></b><span id="expeditionChargeTime"></span></div><progress id="expeditionChargeProgress" max="1500" value="0" aria-label="怪物技能蓄力進度"></progress></div><p id="expeditionIntent" role="status"></p><button id="expeditionGuard" class="exp-wide" onclick="useExpeditionGuard()">🛡 防禦架勢（每場一次）</button><div id="expeditionGuardMeter" class="exp-timed-effect" hidden><div><b>🛡 防禦中 · 減傷60%</b><span id="expeditionGuardTime"></span></div><progress id="expeditionGuardProgress" max="3000" value="3000" aria-label="防禦剩餘時間"></progress></div><button id="expeditionPause22" class="exp-wide" hidden onclick="toggleBattlePause()">⏸ 暫停戰鬥</button><p id="expeditionPace22" class="exp-note" hidden></p><div id="expeditionFood" hidden></div><h3 class="exp-log-title">戰鬥紀錄</h3><div id="expeditionLog" aria-live="polite" tabindex="0" aria-label="戰鬥過程紀錄"></div><button id="expeditionSkill" class="exp-wide" onclick="useExpeditionSkill()" hidden></button><div id="expeditionResult" aria-live="polite"></div><button id="expeditionSkip" class="exp-wide" onclick="finishExpeditionPlayback()">顯示戰果</button><button id="expeditionAgain" class="pri exp-wide" hidden>選擇下一場</button></div>
 </div></div>
 
 <div id="ultimateArtP" class="exp-overlay"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="closeP('ultimateArtP')">×</button><h2 id="ultimateArtTitle"></h2><img id="ultimateArtImage" alt="" decoding="async"><p id="ultimateArtInfo"></p></div></div>
@@ -144,7 +144,7 @@
   <button id="homeLeaderboard" onclick="openLeaderboard()">🏆 全球排行榜</button>
   <button onclick="showHelp()">遊戲說明</button>
   <p class="cr">製作人: LiChia</p>
-  <p class="cr" id="upd">更新日期: 2026/11/16</p>
+  <p class="cr" id="upd">更新日期: 2026/11/17</p>
 </div>
 
 <div id="weaponAlbumP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('weaponAlbumP')">×</button>
@@ -270,6 +270,6 @@
 <div id="toasts"></div>
 
 <div id="sceneTransition" role="status" aria-live="polite" tabindex="-1" hidden></div>
-<script src="game.js?v=5fbde764054e6d99"></script>
+<script src="game.js?v=2288f678f680c9d8"></script>
 </body>
 </html>

@@ -21,12 +21,12 @@ function startWorkshopMerge(kind,events,delay=0,onLand=null){
  job.promise=(async()=>{try{
   if(delay)await workshopAnimationWait(delay,job);
   for(let k=0;k<events.length&&!job.cancelled;k++){
-   const e=events[k],center=rects.get(e.tg),cx=center.left+center.width/2,cy=center.top+center.height/2;grid.dataset.mergeStep=String(k+1);grid.dataset.mergePhase='gather';
+   const e=events[k],center=rects.get(e.tg),cx=center.left+center.width/2,cy=center.top+center.height/2;grid.dataset.mergeStep=String(k+1);grid.dataset.mergePhase='gather';workshopMergeSound(kind,'gather');
    const inputs=e.from.map(f=>{const old=results.get(f.i);if(old&&f.key&&old.key===f.key){old.node.remove();results.delete(f.i);if(!previews.has(f.i))previews.set(f.i,workshopAnimationNode(f.h,rects.get(f.i),job,'merge-preview'));}const rect=rects.get(f.i),node=workshopAnimationNode(f.h,rect,job,'merge-input');return {node,dx:cx-rect.left-rect.width/2,dy:cy-rect.top-rect.height/2};});
    await Promise.all(inputs.map(({node,dx,dy})=>workshopAnimate(node,[{transform:'translate(0,0) scale(1)',opacity:.38},{transform:'translate(0,-14px) scale(1.06)',opacity:.9,offset:.32},{transform:'translate('+dx+'px,'+(dy-12)+'px) scale(.8)',opacity:.9,offset:.82},{transform:'translate('+dx+'px,'+(dy-8)+'px) scale(.18)',opacity:0}],WORKSHOP_MERGE_TIME.gather,job)));inputs.forEach(({node})=>node.remove());
    if(job.cancelled)break;e.from.forEach(f=>{if(lastUse.get(f.i+'|'+(f.key||''))===k){previews.get(f.i)?.remove();previews.delete(f.i);}});grid.dataset.mergePhase='drop';
    await Promise.all(e.to.filter(i=>e.res[i]).map(i=>{results.get(i)?.node.remove();const node=workshopAnimationNode(e.res[i],rects.get(i),job,'merge-result');results.set(i,{node,key:e.keys?.[i]});return workshopAnimate(node,[{transform:'translateY(-12px) scale(.22)',opacity:0,filter:'brightness(1.8)'},{transform:'translateY(-15px) scale(1.1)',opacity:1,filter:'brightness(1.18)',offset:.5},{transform:'translateY(0) scale(1)',opacity:1,filter:'brightness(1)'}],WORKSHOP_MERGE_TIME.drop,job);}));
-   if(job.cancelled)break;onLand?.(e);await workshopAnimationWait(WORKSHOP_MERGE_TIME.pause,job);
+   if(job.cancelled)break;workshopMergeSound(kind,'complete');onLand?.(e);await workshopAnimationWait(WORKSHOP_MERGE_TIME.pause,job);
   }
  }finally{cleanup();}})();return job;
 }

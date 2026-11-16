@@ -26,7 +26,7 @@ function stage21_kitchenCraft(at,silent=false){
  }
  // Return one ingredient per consumed chain, as in embryo forging; never overwrite a dish.
  for(const path of paths.values()){const free=path.cells.filter(i=>!kitchen.g[i]);if(!free.length)continue;const target=free[rnd(free.length)],chance=[0,0,.25,.5][kitchenLevel('merge')],tier=Math.random()<chance?path.parts[rnd(path.parts.length)].t:0;kitchen.g[target]=kitchenFood(tier);kitchenAuto(target);}
- kitchen.message='料理完成：'+made.join('、')+'！拖曳到客人即可出餐。';forgeSound(0);return true;
+ kitchen.message='料理完成：'+made.join('、')+'！拖曳到客人即可出餐。';return true;
 }
 function stage21_completeKitchenNight(){
  if(kitchen.done)return;kitchen.done=true;const c=KITCHEN_CHALLENGES[kitchen.challenge],passed=c.kind==='rush'?kitchen.served>=kitchen.total&&kitchen.missed===0:kitchen.progress>=c.goal,paid=kitchen.lastRewarded!==day;
@@ -41,20 +41,17 @@ function stage21_kitchenSell(w,index,clear){
 function stage21_useExpeditionFood(index){
  const b=expeditionState.lastBattle;if(!expandedGameEnabled()||!expeditionFoodReady(b))return false;const option=expeditionFoodOptions().find(x=>x.index===index);if(!option||option.w!==b.foodChoice)return false;const w=option.w,e=dishSupplyEffect(w);
  if(b.hp>=b.hpMax&&!e.attack&&!e.shield){toast('生命已滿，這份回血料理先留在冰箱。');return false;}
- const restored=Math.min(b.hpMax-b.hp,Math.round(b.hpMax*e.heal)),shield=Math.round(b.hpMax*e.shield);kitchen.pack.splice(index,1);b.hp=Math.min(b.hpMax,b.hp+restored);b.shield+=shield;
+ const restored=Math.min(b.hpMax-b.hp,Math.round(b.hpMax*e.heal)),shield=Math.round(b.hpMax*e.shield);kitchen.pack.splice(index,1);b.hp=Math.min(b.hpMax,b.hp+restored);b.foodRecovered=Math.min(b.hp,(b.foodRecovered||0)+restored);b.shield+=shield;
  if(e.attack){b.foodAttack=Math.max(b.foodAttack||0,e.attack);b.foodAttackTurns=2;}b.foodUsed=(b.foodUsed||0)+1;b.foodCooldown=0;
- b.log.push({actor:'hero',supply:true,hp:b.hp,enemyHp:b.enemyHp,text:'🍱 使用'+kitchenItemName(w)+'：恢復 '+restored+' 生命'+(shield?'、護盾 +'+shield:'')+(e.attack?'、下兩次普通攻擊 +'+Math.round(e.attack*100)+'%':'')+'（料理已消耗）'});
+ b.log.push({actor:'hero',supply:true,healed:restored,addedShield:shield,hp:b.hp,shield:b.shield,enemyHp:b.enemyHp,text:'🍱 使用'+kitchenItemName(w)+'：恢復 '+restored+' 生命'+(shield?'、護盾 +'+shield:'')+(e.attack?'、下兩次普通攻擊 +'+Math.round(e.attack*100)+'%':'')+'（料理已消耗）'});
  renderExpeditionBattle();return true;
 }
 function stage21_settleExpeditionBattle(b){
- if(b.resolved||b.outcome==='ongoing')return;stopExpeditionPlayback();b.resolved=true;
+ if(b.resolved||b.outcome==='ongoing')return;stopExpeditionPlayback();b.resolved=true;b.guarding=false;b.guardRemainingMs=0;b.chargeName=null;b.chargeRemainingMs=0;
  if(b.outcome==='win'&&!expeditionCleared(b.stage)){
   b.gold=b.monster.gold;b.loot=b.stage<20?{k:'bp',id:b.stage}:null;coins+=b.gold;earned+=b.gold;dEarn+=b.gold;expeditionState.victories++;expeditionState.wonToday.push(b.stage);if(b.stage<20){expeditionState.cleared.push(b.stage);grantBlueprintItem(b.stage);}else expeditionState.endless=Math.max(expeditionState.endless||0,b.stage-19);expeditionState.unlocked=b.stage+1;
  }else if(b.outcome==='lose'&&!sandboxSession)lives=Math.max(0,lives-1);
  if(lives<=0)removeSave(runId);saveHi();render();saveNow();
- if(b.outcome==='win'){
-  const finished=b;expeditionAdvanceTimer=gameTimeout(()=>{expeditionAdvanceTimer=null;if(expeditionState.lastBattle!==finished||$('expeditionP').style.display==='none')return;expeditionStage=finished.stage+1;showExpeditionSetup();toast('已前往第 '+(expeditionStage+1)+' 關'+(expeditionStage===10?' · 二周目開啟！':expeditionStage>=20?' · 無限試煉 '+(expeditionStage-19):''));},2000);
- }
 }
 function stage21_saveNow(){
   if(!active||testRun||day<1||lives<=0||!runId)return;

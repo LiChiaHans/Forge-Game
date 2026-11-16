@@ -26,7 +26,7 @@ function kitchenCreateOrders(){
 function kitchenOrderPatience(t){return 100+60*t+8*kitchenLevel('patience')-(kitchen.challenge===0&&day>3?10:0);}
 function kitchenEntryStyle(o){const elapsed=Date.now()-(o.enteredAt||0);return 'grid-column:'+((o.slot??0)+1)+';'+(elapsed<480&&!lowEffects?'animation:kitchen-guest-enter 480ms cubic-bezier(.2,.8,.3,1) both;animation-delay:'+(-elapsed)+'ms;':'');}
 function kitchenRecordMerge(cells,parts,dest,target=dest[0]){
- if(!expandedGameEnabled()||$('kitchenP').hidden||lowEffects||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
+ if(!expandedGameEnabled()||$('kitchenP').hidden)return;
  const rects=cells.map(i=>$('kitchenGrid').children[i]?.getBoundingClientRect());if(rects.some(r=>!r?.width))return;
  kitchenMergeQueue.push({target,center:$('kitchenGrid').children[target]?.getBoundingClientRect(),cells:cells.slice(),parts:parts.map(w=>({...w})),rects:rects.map(r=>({left:r.left,top:r.top,width:r.width,height:r.height})),dest:dest.map(i=>({index:i,item:kitchen.g[i],rect:$('kitchenGrid').children[i].getBoundingClientRect()}))});
 }
@@ -35,7 +35,7 @@ function playKitchenMerges(launch=null,placed=-1){
  if(!kitchenMergeQueue.length)return false;const batches=kitchenMergeQueue.splice(0);if($('kitchenP').hidden)return false;
  clearKitchenIngredientFlights();const events=batches.map(b=>({tg:b.target,from:b.cells.map((i,k)=>({i,h:kitchenArt(b.parts[k]),key:workshopItemKey(b.parts[k])})),to:b.dest.map(d=>d.index),res:Object.fromEntries(b.dest.map(d=>[d.index,kitchenArt(d.item)])),keys:Object.fromEntries(b.dest.map(d=>[d.index,workshopItemKey(d.item)]))}));
  const delay=launch&&batches[0].cells.includes(placed)&&flyKitchenIngredient(placed,launch)?420:0;
- const job=startWorkshopMerge('kitchen',events,delay);if(!job)return false;job.outputs=batches.flatMap(b=>b.dest);kitchenMergeJobs.add(job);syncKitchenFlightTargets();job.promise.finally(()=>{kitchenMergeJobs.delete(job);syncKitchenFlightTargets();});return true;
+ const job=startWorkshopMerge('kitchen',events,delay);if(!job){workshopMergeSound('kitchen','complete');return false;}job.outputs=batches.flatMap(b=>b.dest);kitchenMergeJobs.add(job);syncKitchenFlightTargets();job.promise.finally(()=>{kitchenMergeJobs.delete(job);syncKitchenFlightTargets();});return true;
 }
 function kitchenTriples(at,board=kitchen.g){
  const remaining=board.slice(),result=[],starts=[at,...board.map((_,i)=>i)];

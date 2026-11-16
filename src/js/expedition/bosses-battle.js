@@ -52,11 +52,11 @@ function expeditionWeapons(){
 function monsterArt(m){if(!expandedGameEnabled())return stage21_monsterArt(m);const id=monsterSpriteIndex(m);return '<svg viewBox="0 0 64 64" role="img" aria-label="'+esc(m.name)+'" data-monster-art="'+id+'"><image href="'+REVIEW_MONSTER_ART[id]+'" width="64" height="64" preserveAspectRatio="xMidYMid meet" style="image-rendering:pixelated"/></svg>';}
 function bossRule(m){return m.kind==='dragon'?'巨龍循環：蓄力 → 雙倍重擊 → 普通攻擊。蓄力時不造成傷害，可準備防禦或延緩技能。':m.kind==='golem'?'魔像每第三次行動後硬化，下一次受到的物理傷害減少 60%；奧術與主動技能不受影響。':m.kind==='wolf'?'狼王每第三次行動使用兩段連擊，每段為 60% 攻擊；防禦分別抵擋兩段傷害。':'以普通攻擊交戰，速度決定出手頻率。';}
 function bossIntent(b){const next=(b.enemyTurns||0)+1,m=b.monster;if(m.kind==='dragon')return ['蓄力（本次不攻擊）','蓄力重擊 ×2','普通攻擊'][(next-1)%3];if(m.kind==='wolf'&&next%3===0)return '雙段連擊（各 60%）';if(m.kind==='golem'&&next%3===0)return '攻擊後硬化';return '普通攻擊';}
-function guardBattle(b){if(!b||b.resolved||b.outcome!=='ongoing'||b.guardUsed)return false;b.guardUsed=true;b.guarding=true;return true;}
-function useExpeditionGuard(){if(guardBattle(expeditionState.lastBattle))renderExpeditionBattle();}
+function guardBattle(b){if(!b||b.resolved||b.outcome!=='ongoing'||b.guardUsed)return false;b.guardUsed=true;b.guarding=true;b.guardRemainingMs=EXPEDITION_GUARD_MS;b.effectStamp=Date.now();return true;}
+function useExpeditionGuard(){syncExpeditionEffects();if(guardBattle(expeditionState.lastBattle))renderExpeditionBattle();}
 function expeditionBattleState(w,monster){
  const stats=weaponStats(w),hpMax=100+stats.def*2;
- return {weapon:JSON.parse(JSON.stringify(w)),monster:JSON.parse(JSON.stringify(monster)),stats,hpMax,hp:hpMax,shield:stats.ward,enemyHp:monster.hp,heroClock:1000/Math.max(1,stats.spd),enemyClock:1000/Math.max(1,monster.spd),enemyDef:monster.def,skillUsed:false,guardUsed:false,guarding:false,enemyTurns:0,bossHardened:false,outcome:'ongoing',resolved:false,log:[]};
+ return {weapon:JSON.parse(JSON.stringify(w)),monster:JSON.parse(JSON.stringify(monster)),stats,hpMax,hp:hpMax,shield:stats.ward,enemyHp:monster.hp,heroClock:1000/Math.max(1,stats.spd),enemyClock:1000/Math.max(1,monster.spd),enemyDef:monster.def,skillUsed:false,guardUsed:false,guarding:false,guardRemainingMs:0,foodRecovered:0,enemyTurns:0,bossHardened:false,outcome:'ongoing',resolved:false,log:[]};
 }
 function battleTick(b){
  if(!expandedGameEnabled())return stage20_battleTick(b);const start=b.log.length,attack=b.stats.atk,boost=b.foodAttackTurns>0?b.foodAttack||0:0;
@@ -91,19 +91,24 @@ function beginExpedition(confirmed=false){
  battleUserPaused=false;battleLastAdvance=0;expeditionFoodOpen=false;stopExpeditionPlayback();expeditionState.attempts++;expeditionState.lastBattle={...b,stage:expeditionStage,gold:0,loot:null,first:true,day};expeditionSelected='';expeditionBattleStep=0;
  // Save the consumed weapon before the first action. Reload/exit never refunds it or grants an unearned reward.
  saveNow();if(sandboxSession)saveReviewProgress();render();$('expeditionSetup').hidden=true;$('expeditionBattle').hidden=false;renderExpeditionBattle();
- expeditionTimer=setInterval(advanceExpeditionBattle,420);
+ expeditionTimer=setInterval(advanceExpeditionBattle,420);startExpeditionFeedbackClock();
 }
-function advanceExpeditionBattle(){if(!expandedGameEnabled())return stage21_advanceExpeditionBattle();const b=expeditionState.lastBattle;if(!b||b.resolved||b.outcome!=='ongoing')return stage21_advanceExpeditionBattle();const now=Date.now();if(battleUserPaused||battleLastAdvance&&now-battleLastAdvance<400)return;battleLastAdvance=now;const rows=b.log.length;stage21_advanceExpeditionBattle();if(b.log.length>rows)showBattleFeedback(b.log.at(-1));}
-function useExpeditionSkill(){const b=expeditionState.lastBattle;if(!b||!castBattleSkill(b))return;expeditionBattleStep=b.log.length;combatSound('hero');if(b.outcome!=='ongoing')settleExpeditionBattle(b);renderExpeditionBattle();}
+function advanceExpeditionBattle(){
+ if(!expandedGameEnabled())return stage21_advanceExpeditionBattle();const b=expeditionState.lastBattle;if(!b||b.resolved||b.outcome!=='ongoing')return stage21_advanceExpeditionBattle();const now=Date.now();syncExpeditionEffects(now);
+ if(battleUserPaused||document.hidden||battleLastAdvance&&now-battleLastAdvance<400)return;
+ if(b.heroClock>b.enemyClock&&b.chargeName&&b.chargeRemainingMs>0)return;
+ battleLastAdvance=now;const rows=b.log.length;stage21_advanceExpeditionBattle();if(b.log.length>rows)showBattleFeedback(b.log.at(-1));
+}
+function useExpeditionSkill(){syncExpeditionEffects();const b=expeditionState.lastBattle;if(!b||!castBattleSkill(b))return;expeditionBattleStep=b.log.length;combatSound('hero');if(b.outcome!=='ongoing')settleExpeditionBattle(b);renderExpeditionBattle();}
 function settleExpeditionBattle(b){const fresh=b&&!b.resolved&&b.outcome!=='ongoing';const result=stage21_settleExpeditionBattle(b);if(fresh){reviewMetrics.battles.push({stage:b.stage+1,result:b.outcome==='win'?'勝利':b.outcome==='lose'?'生命歸零':'回合上限或撤退',supplies:b.foodUsed||0});reviewMetrics.battles=reviewMetrics.battles.slice(-50);saveReviewProgress();}return result;}
-function stopExpeditionPlayback(){clearBattleFeedback();if(expeditionTimer!==null){clearInterval(expeditionTimer);expeditionTimer=null;}if(expeditionAdvanceTimer!==null){clearTimeout(expeditionAdvanceTimer);expeditionAdvanceTimer=null;}}
+function stopExpeditionPlayback(){stopExpeditionFeedbackClock();clearBattleFeedback();if(expeditionTimer!==null){clearInterval(expeditionTimer);expeditionTimer=null;}if(expeditionAdvanceTimer!==null){clearTimeout(expeditionAdvanceTimer);expeditionAdvanceTimer=null;}}
 function finishExpeditionPlayback(){
- const b=expeditionState.lastBattle;if(!b||b.resolved)return;while(b.outcome==='ongoing')battleTick(b);expeditionBattleStep=b.log.length;settleExpeditionBattle(b);renderExpeditionBattle();
+ const b=expeditionState.lastBattle;if(!b||b.resolved)return;while(b.outcome==='ongoing'){primeExpeditionCharge(b);advanceExpeditionEffects(b,420+(b.heroClock>b.enemyClock?b.chargeRemainingMs||0:0));battleTick(b);}expeditionBattleStep=b.log.length;settleExpeditionBattle(b);renderExpeditionBattle();
 }
 function showExpeditionSetup(){stopExpeditionPlayback();expeditionFoodSelected=null;$('expeditionSetup').hidden=false;$('expeditionBattle').hidden=true;renderExpedition();$('expeditionSetup').scrollIntoView?.({block:'start'});}
 function openExpedition(){
  syncExpeditionDay();const b=expeditionState.lastBattle;
- if(b&&b.outcome==='ongoing'&&!b.resolved){$('expeditionP').style.display='flex';$('expeditionSetup').hidden=true;$('expeditionBattle').hidden=false;renderExpeditionBattle();if(expeditionTimer===null)expeditionTimer=setInterval(advanceExpeditionBattle,420);return;}
+ if(b&&b.outcome==='ongoing'&&!b.resolved){$('expeditionP').style.display='flex';$('expeditionSetup').hidden=true;$('expeditionBattle').hidden=false;renderExpeditionBattle();if(expeditionTimer===null)expeditionTimer=setInterval(advanceExpeditionBattle,420);startExpeditionFeedbackClock();return;}
  expeditionStage=sandboxSession?Math.max(0,expeditionLab.stage-1):expeditionState.unlocked;saveNow();$('expeditionP').style.display='flex';showExpeditionSetup();
 }
 function closeExpedition(){

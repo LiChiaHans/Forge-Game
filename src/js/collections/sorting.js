@@ -1,4 +1,4 @@
-const ARCHIVE_SORT_FIELDS={weapons:{atk:'攻擊力',def:'防禦力',spd:'速度',price:'基礎價錢'},dishes:{taste:'滋味',fullness:'飽足',aroma:'香氣',price:'基礎價錢'}};
+const ARCHIVE_SORT_FIELDS={weapons:{atk:'攻擊力',def:'防禦力',spd:'速度',price:'基礎價錢'},dishes:{taste:'滋味',fullness:'飽足',aroma:'香氣',heal:'恢復生命',shield:'額外護盾',attack:'額外攻擊'}};
 const archiveSortState={weapons:'default',dishes:'default'};
 function setArchiveSort(category,value){
  if(albumTier===-2||!Object.hasOwn(ARCHIVE_SORT_FIELDS,category))return false;const [key,direction]=String(value).split(':');
@@ -10,10 +10,17 @@ function sortArchiveIds(category,ids,valueFor){
  return ids.slice().sort((a,b)=>factor*(values.get(a)-values.get(b))||a-b);
 }
 function archiveWeaponSortValue(weapon,key){return key==='price'?wp(weapon):weaponStats(weapon)[key];}
+function archiveDishSortValue(id,tier,key){const w={k:'w',c:id,t:tier};return ['heal','shield','attack'].includes(key)?Math.round(dishSupplyEffect(w,true)[key]*1000)/10:kitchenDishStats(w,true)[key];}
 function archiveOrder(category,tier){
- return sortArchiveIds(category,Array.from({length:10},(_,i)=>i),(id,key)=>category==='weapons'?archiveWeaponSortValue(baseAlbumWeapon(id,tier),key):key==='price'?kitchenPrice({k:'w',c:id,t:tier},true):kitchenDishStats({k:'w',c:id,t:tier},true)[key]);
+ return sortArchiveIds(category,Array.from({length:10},(_,i)=>i),(id,key)=>category==='weapons'?archiveWeaponSortValue(baseAlbumWeapon(id,tier),key):archiveDishSortValue(id,tier,key));
 }
 function archiveLegendOrder(start){const ids=Array.from({length:10},(_,i)=>start+i);return albumTier===-2?ids:sortArchiveIds('weapons',ids,(id,key)=>archiveWeaponSortValue(baseLegendWeapon(id),key));}
+function archiveTierPriceHTML(category,tier){const amount=category==='weapons'?materialPrice(baseAlbumWeapon(0,tier)):kitchenPrice({k:'w',c:0,t:tier},true);return '<small class="album-tier-price" title="同階基礎售價">💰 '+amount+' 金幣</small>';}
+function archiveSortValueHTML(category,id,tier,legend=false){
+ const selection=archiveSortState[category];if(selection==='default'||albumTier===-2)return '';const key=selection.split(':')[0];if(category==='weapons'&&!legend&&key==='price')return '';
+ const value=category==='weapons'?archiveWeaponSortValue(legend?baseLegendWeapon(id):baseAlbumWeapon(id,tier),key):archiveDishSortValue(id,tier,key),percent=['heal','shield','attack'].includes(key),short={atk:'攻',def:'防',spd:'速',price:'💰',taste:'滋',fullness:'飽',aroma:'香',heal:'♥',shield:'盾',attack:'攻+'}[key],text=short+' '+value+(percent?'%':'');
+ return '<small class="album-sort-value" data-sort-field="'+key+'" data-sort-value="'+value+'" title="'+ARCHIVE_SORT_FIELDS[category][key]+' '+value+(percent?'%':'')+'">'+text+'</small>';
+}
 function renderArchiveSort(){
  const panel=$('archiveSort');panel.hidden=!expandedGameEnabled()||albumTier===-2;if(panel.hidden)return;const category=archiveCategory,select=$('archiveSortSelect');
  $('archiveSortLabel').textContent=category==='weapons'?'武器排序':'料理排序';select.setAttribute('aria-label',category==='weapons'?'武器排序':'料理排序');

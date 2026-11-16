@@ -1,8 +1,8 @@
 
 
 function playFx(evs){
- const job=startWorkshopMerge('forge',evs,lead,e=>{if(e.forged)presentForgeResults(e.forged);});
- if(!job)for(const ev of evs)if(ev.forged)presentForgeResults(ev.forged);return job;
+ const job=startWorkshopMerge('forge',evs,lead,e=>{if(e.forged)presentForgeResults(e.forged,false);});
+ if(!job){workshopMergeSound('forge','complete');for(const ev of evs)if(ev.forged)presentForgeResults(ev.forged,false);}return job;
 }
 $("grid").onclick=e=>{
   const d=e.target.closest(".c");

@@ -5,6 +5,7 @@
     "src/js/art/weapon-sprites.js",
     "src/js/forge/weapon-rendering.js",
     "src/js/audio/sounds-music.js",
+    "src/js/audio/workshop-sounds.js",
     "src/js/core/records.js",
     "src/js/core/game-state.js",
     "src/js/core/workshop-plans.js",
@@ -73,6 +74,7 @@
     "src/js/blueprints/planner.js",
     "src/js/saves/backup.js",
     "src/js/expedition/bosses-battle.js",
+    "src/js/expedition/timing-feedback.js",
     "src/js/expedition/rendering.js",
     "src/js/blueprints/legendary-data.js",
     "src/js/blueprints/ultimate-weapons.js",
@@ -140,7 +142,8 @@
     "src/styles/26-scene-transitions.css",
     "src/styles/27-greenhouse-archive.css",
     "src/styles/28-asset-loading.css",
-    "src/styles/29-workshop-polish.css"
+    "src/styles/29-workshop-polish.css",
+    "src/styles/30-battle-archive-feedback.css"
   ],
   "workers": [
     "src/workers/media-cache.js"

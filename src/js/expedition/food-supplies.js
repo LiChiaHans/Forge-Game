@@ -1,9 +1,9 @@
 
 let expeditionFoodOpen=false,expeditionFoodSelected=null;
 const DISH_SUPPLY_BASE=[[.30,0,0],[.23,.10,0],[.23,0,.08],[.18,.16,0],[.24,.08,.06],[.22,0,.12],[.14,.20,0],[.20,.12,.06],[.26,0,.08],[.18,0,.18]];
-function dishSupplyEffect(w){
- const base=DISH_SUPPLY_BASE[w.c],stars=kitchenStars(w),tier=Math.max(0,Math.min(4,w.t||0));if(!base)return null;
- return {heal:Math.min(.5,base[0]+tier*.025+stars*.01+(w.spice==='milk'?.03:0)),attack:base[1]?Math.min(.35,base[1]+tier*.02+stars*.01+(w.spice==='spicy'?.03:0)):0,shield:base[2]?Math.min(.3,base[2]+tier*.015+stars*.01+(w.spice==='herb'?.03:0)):0};
+function dishSupplyEffect(w,baseOnly=false){
+ const base=DISH_SUPPLY_BASE[w.c],stars=baseOnly?0:kitchenStars(w),tier=Math.max(0,Math.min(4,w.t||0)),spice=baseOnly?null:w.spice;if(!base)return null;
+ return {heal:Math.min(.5,base[0]+tier*.025+stars*.01+(spice==='milk'?.03:0)),attack:base[1]?Math.min(.35,base[1]+tier*.02+stars*.01+(spice==='spicy'?.03:0)):0,shield:base[2]?Math.min(.3,base[2]+tier*.015+stars*.01+(spice==='herb'?.03:0)):0};
 }
 function dishSupplyDescription(w){const e=dishSupplyEffect(w);if(!e)return '';return '恢復 '+Math.round(e.heal*100)+'% 本場生命'+(e.attack?' · 下兩次普通攻擊 +'+Math.round(e.attack*100)+'%':'')+(e.shield?' · 獲得 '+Math.round(e.shield*100)+'% 生命上限護盾':'');}
 function expeditionFoodOptions(){return expandedGameEnabled()&&kitchenLevel('pack')>0?kitchen.pack.map((w,index)=>({w,index})).filter(x=>x.w?.k==='w'&&Number.isFinite(x.w.fresh)&&x.w.fresh>0&&DISH_SUPPLY_BASE[x.w.c]):[];}
@@ -24,4 +24,4 @@ function renderExpeditionFood(){
  panel.innerHTML='<h3>🍱 本場攜帶料理 · 0/1</h3><div class="exp-food-list"><button data-exp-food="'+(option?.index??-1)+'" onclick="useExpeditionFood('+(option?.index??-1)+')" '+(!ready?'disabled':'')+'>'+kitchenArt(w)+'<span><b>使用 '+esc(kitchenItemName(w))+'</b>'+foodTags(w)+'<small>'+dishSupplyDescription(w)+'</small></span></button></div><p class="exp-note">'+(full?'目前生命全滿，受傷後才可使用這份回血料理。':!option?'這份料理已不在冰箱，無法使用。':'只能使用戰前選定的這一份；不恢復經營愛心。')+'</p>';
 }
 function toggleExpeditionFood(){expeditionFoodOpen=false;renderExpeditionFood();}
-function useExpeditionFood(index){const food=kitchen?.pack[index],b=expeditionState.lastBattle;if(!food||food!==b?.foodChoice||!expeditionFoodReady(b))return false;const ok=stage21_useExpeditionFood(index);if(ok){reviewMetrics.supplies++;const key=food.c+':'+food.t;reviewMetrics.supplyTypes[key]=(reviewMetrics.supplyTypes[key]||0)+1;saveNow();if(sandboxSession)saveReviewProgress();}return ok;}
+function useExpeditionFood(index){syncExpeditionEffects();const food=kitchen?.pack[index],b=expeditionState.lastBattle;if(!food||food!==b?.foodChoice||!expeditionFoodReady(b))return false;const ok=stage21_useExpeditionFood(index);if(ok){reviewMetrics.supplies++;const key=food.c+':'+food.t;reviewMetrics.supplyTypes[key]=(reviewMetrics.supplyTypes[key]||0)+1;saveNow();if(sandboxSession)saveReviewProgress();}return ok;}
