@@ -18,5 +18,5 @@ function performSceneTransition(name,action,force=false){
  };
  dark.oncancel=()=>finishSceneTransition(run);
 }
-// The opening transition runs after the complete asset preload, rather than behind it.
+window.addEventListener('load',()=>{if($('title').style.display!=='none')performSceneTransition('遊戲首頁',()=>{},true);});
 window.addEventListener('pagehide',()=>{if(sceneTransitionRun){sceneTransitionRun.next=null;finishSceneTransition(sceneTransitionRun);}});

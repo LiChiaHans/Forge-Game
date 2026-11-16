@@ -2,7 +2,7 @@
 
 正式遊戲：https://lichiahans.github.io/Forge-Game/
 
-開場會顯示完整素材載入進度，先備妥全部物品、四季場景、人物及音樂，再進入首頁。首次約25.7 MB，後續優先使用瀏覽器快取，只補齊新增或更新的素材；載入失敗可只重試缺少的項目。遊玩介面及存檔規則不變。
+首頁可直接操作，素材會隨遊玩時間在背景逐步下載；常用場景與物品先準備，較大的音樂與高清原畫較後準備。同時只進行兩項低優先背景下載，畫面正在使用的素材直接載入。沿用本機素材快取，之後優先讀取已下載內容；中斷後只補齊缺少部分。遊玩介面及存檔規則不變。
 
 2026/11/16：溫室更新木作玻璃屋背景、陶盆及七屬性花朵，餐廳備料改用砧板、原始食材縮小，廚餘改為木桶。首頁入口改為「圖鑑館」，武器與料理可各自按能力或基礎價錢升降排序，維持原本階級分區與5×2排列。同階料理基礎價錢相同時維持原順序。
 
@@ -24,6 +24,7 @@
 | 角色、音效、共用初始化與視窗 | `src/js/avatar/`、`audio/`、`core/`、`ui/` |
 | CSS 外觀與手機排版 | `src/styles/`，依數字維持原覆蓋順序 |
 | 圖片、音樂檔案 | `assets/`；素材對照 `src/assets-manifest.json` |
+| 背景下載與素材快取 | `src/js/core/asset-loading.js`、`src/workers/media-cache.js` |
 | 函式名稱→檔案與行號 | `docs/function-index.tsv`，由建置工具產生 |
 
 先讀 `docs/PROJECT_CONTEXT.md`，再搜尋需要的函式或功能。例：`rg "cancelKitchenOrder|kitchenRollFood" docs/function-index.tsv`。不需整份載入生成檔、素材清單或歷次更新備份。
@@ -38,6 +39,8 @@ node tools/check.cjs
 ```
 
 工具依 `src/build-order.json` 原順序合併，生成 `index.html`、`game.js`、`game.css`，並更新函式索引。腳本仍在原位置執行，沒有改成非同步載入或重排初始化。程式與樣式連結帶內容指紋，更新相關檔案時才變更指紋。
+
+`src/workers/media-cache.js`獨立生成為根目錄的`media-cache.js`，只處理本遊戲有內容指紋的媒體請求，不快取HTML／JS或排行榜。發布時須一起提交這個生成檔；一般功能仍在原本單一遊戲腳本執行。
 
 使用本機靜態網頁伺服器預覽此目錄；`.build/combined.html` 提供本機自動檢查使用，不發布。`node tools/check.cjs --extraction` 額外確認最初拆分與 337494c 版本的腳本及 CSS 內容完全相同；未來改玩法後不再使用此參數。
 

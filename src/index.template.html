@@ -8,7 +8,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Forge Master">
 <title>Forge Master</title>
-<style>#assetLoader{position:fixed;inset:0;z-index:2147483646;display:grid;place-items:center;background:#101e27;color:#f6e3b2;font-family:system-ui,sans-serif}#assetLoader[hidden]{display:none}</style>
 <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Forge%20Master%22%2C%22short_name%22%3A%22Forge%20Master%22%2C%22display%22%3A%22standalone%22%2C%22orientation%22%3A%22portrait%22%2C%22background_color%22%3A%22%2318232f%22%2C%22theme_color%22%3A%22%231f2531%22%7D">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,18 +38,6 @@
 
 </head>
 <body>
-<div id="assetLoader" role="dialog" aria-modal="true" aria-labelledby="assetLoadTitle" aria-busy="true">
- <div class="asset-load-card">
-  <div class="asset-load-emblem" aria-hidden="true">⚒</div><p class="asset-load-brand">Forge Master</p>
-  <h2 id="assetLoadTitle">正在準備鍛造小鎮</h2>
-  <p id="assetLoadStatus" role="status" aria-live="polite">準備完整遊戲素材…</p>
-  <progress id="assetLoadProgress" value="0" max="1" aria-label="遊戲素材載入進度"></progress>
-  <p id="assetLoadCount">0%</p>
-  <p class="asset-load-hint">首次會先下載四季場景、全部物品與音樂。<br>之後優先使用本機快取，更新時只補齊新素材。</p>
-  <div id="assetLoadActions" hidden><button id="assetLoadRetry" type="button">重試未完成素材</button><button id="assetLoadContinue" type="button">先進入遊戲</button></div>
-  <noscript>請開啟瀏覽器的 JavaScript 功能以遊玩。</noscript>
- </div>
-</div>
 <div id="portraitGuard" hidden role="dialog" aria-modal="true" aria-hidden="true" aria-label="請直向遊玩"><svg viewBox="0 0 40 52" aria-hidden="true" shape-rendering="crispEdges"><path fill="#0c1726" d="M7 0h26v3h3v46h-3v3H7v-3H4V3h3z"/><path fill="#b8a577" d="M8 3h24v46H8z"/><path fill="#293e51" d="M10 8h20v34H10z"/><path fill="#e8d696" d="M16 4h8v2h-8zM17 45h6v2h-6z"/><path fill="#84b6b0" d="M19 14h3v16h-3zM13 21h3v3h-3zM16 18h3v3h-3zM22 18h3v3h-3zM25 21h3v3h-3z"/></svg><b>請直向遊玩</b><p>將手機轉回直向<br>即可繼續遊戲</p></div>
 <div id="app">
   <div class="bar">
@@ -143,6 +130,7 @@
 <div id="kitchenModal" class="kitchen-modal" hidden><div><button class="modal-x" aria-label="關閉廚房視窗" onclick="document.getElementById('kitchenModal').hidden=true">×</button><h2 id="kitchenModalTitle"></h2><div id="kitchenModalContent"></div></div></div>
 
 <div id="title">
+  <small id="assetCacheStatus" class="asset-cache-status" aria-live="off">素材會在背景逐步準備</small>
   <div class="tl" id="tl"></div>
   <h1>Forge Master</h1>
   <p id="hs"></p>

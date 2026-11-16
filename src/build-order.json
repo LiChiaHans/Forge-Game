@@ -136,5 +136,8 @@
     "src/styles/26-scene-transitions.css",
     "src/styles/27-greenhouse-archive.css",
     "src/styles/28-asset-loading.css"
+  ],
+  "workers": [
+    "src/workers/media-cache.js"
   ]
 }

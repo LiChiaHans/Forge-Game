@@ -10,6 +10,7 @@ function load(){
 }
 function build(){
  const {order,js,css,template}=load(),jsHash=hash(js),cssHash=hash(css);
+ for(const file of order.workers||[]){assert.ok(/^src\/workers\/[\w-]+\.js$/.test(file));const worker=read(file);new vm.Script(worker,{filename:file});write(path.basename(file),worker);}
  const html=template.replace('<!-- GAME_STYLES -->','<link rel="stylesheet" href="game.css?v='+cssHash.slice(0,16)+'">').replace('<!-- GAME_SCRIPT -->','<script src="game.js?v='+jsHash.slice(0,16)+'"></script>');
  write('game.js',js);write('game.css',css);write('index.html',html);
  // Local regression harness consumes one inline HTML; no embedded pictures or music.
