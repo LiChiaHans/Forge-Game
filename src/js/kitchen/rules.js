@@ -34,7 +34,7 @@ function kitchenPrepare(i,source='auto'){
  kitchen.message='已備好'+KITCHEN_GRADES[mat.t]+KITCHEN_TYPES[s]+'。連成三份工序時會自動完成料理。';kitchenCraft(i,true);return true;
 }
 function kitchenStars(w){return Math.min(3,Math.floor((kitchen?.xp?.[w.c+':'+w.t]||0)/3));}
-function kitchenPrice(w){const quality=Array.isArray(w.cs)?w.cs.reduce((sum,t)=>sum+[35,65,105,160,235][t],0)/3:[35,65,105,160,235][w.t];return Math.round(quality*(1+[0,.05,.1,.2][kitchenStars(w)])*(w.spice?1.1+.05*kitchenLevel('spice'):1));}
+function kitchenPrice(w,baseOnly=false){const quality=Array.isArray(w.cs)?w.cs.reduce((sum,t)=>sum+[35,65,105,160,235][t],0)/3:[35,65,105,160,235][w.t];return baseOnly?Math.round(quality):Math.round(quality*(1+[0,.05,.1,.2][kitchenStars(w)])*(w.spice?1.1+.05*kitchenLevel('spice'):1));}
 function kitchenCraft(at,silent=false){const old=kitchen.crafted,result=stage21_kitchenCraft(at,silent);reviewMetrics.crafted+=kitchen.crafted-old;return result;}
 function kitchenStep(){
  kitchen.turn++;kitchen.heat=kitchen.heat.map((h,i)=>h>0&&!kitchen.justHeated.has(i)?h-1:h);kitchen.justHeated.clear();

@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="game.css?v=67f05cd07249a7bd">
+<link rel="stylesheet" href="game.css?v=d0d774c7a8823839">
 
 
 
@@ -139,7 +139,7 @@
   <button onclick="$('title').style.display='none';start('tut')">教學關卡</button>
   
   
-  <button id="homeAlbum" onclick="openWeaponAlbum()">📖 武器圖鑑</button>
+  <button id="homeAlbum" onclick="openWeaponAlbum()">📖 圖鑑館</button>
   <button id="homeLeaderboard" onclick="openLeaderboard()">🏆 全球排行榜</button>
   <button onclick="showHelp()">遊戲說明</button>
   <p class="cr">製作人: LiChia</p>
@@ -147,7 +147,7 @@
 </div>
 
 <div id="weaponAlbumP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('weaponAlbumP')">×</button>
-  <h2>📖 武器圖鑑</h2><div id="archiveCategories" hidden><button id="archiveWeapons" onclick="setArchiveCategory('weapons')">⚔ 武器</button><button id="archiveDishes" onclick="setArchiveCategory('dishes')">🍽 料理</button></div><p id="albumProgress"></p>
+  <h2>📚 圖鑑館</h2><div id="archiveCategories" hidden><button id="archiveWeapons" onclick="setArchiveCategory('weapons')">⚔ 武器</button><button id="archiveDishes" onclick="setArchiveCategory('dishes')">🍽 料理</button></div><div id="archiveSort" class="archive-sort" hidden><label id="archiveSortLabel" for="archiveSortSelect">武器排序</label><select id="archiveSortSelect" aria-label="武器排序" onchange="setArchiveSort(archiveCategory,this.value)"></select><small>各階級內依基礎數值排列</small></div><p id="albumProgress"></p>
   <div id="albumTabs" role="group" aria-label="依武器階級篩選"></div>
   <div id="albumWeapons"></div>
   <button  style="width:100%;margin-top:14px" onclick="closeP('weaponAlbumP')" class="legacy-modal-close" hidden>關閉圖鑑</button>
@@ -269,6 +269,6 @@
 <div id="toasts"></div>
 
 <div id="sceneTransition" role="status" aria-live="polite" tabindex="-1" hidden></div>
-<script src="game.js?v=b2159d4a02ba72b6"></script>
+<script src="game.js?v=fe91dbf666efb78b"></script>
 </body>
 </html>

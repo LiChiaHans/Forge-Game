@@ -24,7 +24,7 @@ function stage20_renderWeaponAlbum(){
   $('albumWeapons').innerHTML=NM.map((name,t)=>{
     if(albumTier!==-1&&albumTier!==t)return '';
     const total=WN.filter((_,c)=>albumWeapons().has(albumKey(c,t))).length;
-    return '<section class="album-section"><h3 style="color:'+C[t]+'">'+name+'級 <small>'+total+'/10</small></h3><div class="album-grid">'+WN.map((n,c)=>{
+    return '<section class="album-section"><h3 style="color:'+C[t]+'">'+name+'級 <small>'+total+'/10</small></h3><div class="album-grid">'+archiveOrder('weapons',t).map(c=>{const n=WN[c];
       const found=albumWeapons().has(albumKey(c,t));
       return '<button class="album-card '+(found?'collected':'uncollected')+'" data-album-weapon="'+c+'" data-tier="'+t+'" aria-label="'+name+'級'+n+'，'+(found?'已蒐集':'未蒐集')+'"><span class="album-art">'+hex(c,C[t],'',t,galleryWeapon(c,t))+'</span><b>'+n+'</b><small>'+(found?'已蒐集':'未蒐集')+'</small></button>';
     }).join('')+'</div></section>';

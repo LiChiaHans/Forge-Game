@@ -46,9 +46,11 @@
     "src/js/kitchen/selection-cancellation.js",
     "src/js/seasons/board.js",
     "src/js/forge/shop-limits.js",
+    "src/js/collections/sorting.js",
     "src/js/collections/weapons.js",
     "src/js/tutorial/forge-tutorial.js",
     "src/js/forge/inventory-skills.js",
+    "src/js/art/garden-workshop.js",
     "src/js/garden/elements-greenhouse.js",
     "src/js/forge/items-prices.js",
     "src/js/forge/orders-quests.js",
@@ -130,6 +132,7 @@
     "src/styles/23-progress-panels.css",
     "src/styles/24-kitchen-held-controls.css",
     "src/styles/25-town-kitchen-battle.css",
-    "src/styles/26-scene-transitions.css"
+    "src/styles/26-scene-transitions.css",
+    "src/styles/27-greenhouse-archive.css"
   ]
 }

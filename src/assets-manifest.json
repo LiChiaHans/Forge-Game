@@ -1666,111 +1666,6 @@
     "sha256": "401bf33a0dea5ed2c06c854c673296125adbc6cb23f440988d1757c567cb16f8"
   },
   {
-    "variable": "KITCHEN_PREP_ART",
-    "id": "0-0",
-    "url": "assets/prepared/0-0.f0f3a8b1c337.webp",
-    "bytes": 16788,
-    "sha256": "f0f3a8b1c337b471968d5e1fd027f1b0cccdcc6bc817c7ed789219b6d9113ab0"
-  },
-  {
-    "variable": "KITCHEN_PREP_ART",
-    "id": "0-1",
-    "url": "assets/prepared/0-1.7774b3543bd5.webp",
-    "bytes": 15072,
-    "sha256": "7774b3543bd5e0280fe3a88180b9a35b321e72cdf4f74c2a74c5b1aa49c4d871"
-  },
-  {
-    "variable": "KITCHEN_PREP_ART",
-    "id": "0-2",
-    "url": "assets/prepared/0-2.a6dc53e38445.webp",
-    "bytes": 14084,
-    "sha256": "a6dc53e384457ff2c3896179bc607c3bbefdedbad59f757430fe077d75d8873f"
-  },
-  {
-    "variable": "KITCHEN_PREP_ART",
-    "id": "0-3",
-    "url": "assets/prepared/0-3.948b1ee64247.webp",
-    "bytes": 15836,
-    "sha256": "948b1ee64247af82a6efa076235093b998592b446bd603157d6435fd2e265bd5"
-  },
-  {
-    "variable": "KITCHEN_PREP_ART",
-    "id": "0-4",
-    "url": "assets/prepared/0-4.92ec1bb49f0f.webp",
-    "bytes": 18214,
-    "sha256": "92ec1bb49f0fa2b1c642a5c1083b17da7bb42de2d0e27e59b6a59c6b97a27537"
-  },
-  {
-    "variable": "KITCHEN_PREP_ART",
-    "id": "1-0",
-    "url": "assets/prepared/1-0.50b8cafb33c5.webp",
-    "bytes": 16626,
-    "sha256": "50b8cafb33c5079463807e270b172c1b734793641b98eb7bf502f9e99dcade83"
-  },
-  {
-    "variable": "KITCHEN_PREP_ART",
-    "id": "1-1",
-    "url": "assets/prepared/1-1.f08e5a07f395.webp",
-    "bytes": 14884,
-    "sha256": "f08e5a07f39540dc53580973bdad83d10b25480f6f9a188e56c000adb4745360"
-  },
-  {
-    "variable": "KITCHEN_PREP_ART",
-    "id": "1-2",
-    "url": "assets/prepared/1-2.8b857bd785b4.webp",
-    "bytes": 15116,
-    "sha256": "8b857bd785b4b20d0a01b05e50cf32f0f018580cfee4f689b500eba430a66290"
-  },
-  {
-    "variable": "KITCHEN_PREP_ART",
-    "id": "1-3",
-    "url": "assets/prepared/1-3.99e8866e9554.webp",
-    "bytes": 16168,
-    "sha256": "99e8866e95549a56935d34725a8e1da5008b281cd0a10e79a50210f29b43b255"
-  },
-  {
-    "variable": "KITCHEN_PREP_ART",
-    "id": "1-4",
-    "url": "assets/prepared/1-4.a9446b8f082a.webp",
-    "bytes": 19022,
-    "sha256": "a9446b8f082adb0ad1e567344cf1e9d0276a77e85688e3b45187838c0cacd4bc"
-  },
-  {
-    "variable": "KITCHEN_PREP_ART",
-    "id": "2-0",
-    "url": "assets/prepared/2-0.a652c2a86125.webp",
-    "bytes": 15358,
-    "sha256": "a652c2a86125a71227dd88b8cdd496d56408bdca989fac16f705789c610eb3a3"
-  },
-  {
-    "variable": "KITCHEN_PREP_ART",
-    "id": "2-1",
-    "url": "assets/prepared/2-1.98e490de971f.webp",
-    "bytes": 14614,
-    "sha256": "98e490de971f01202129757afbfaa7e371fe1c16d24fdedfaa7871a9a65e3232"
-  },
-  {
-    "variable": "KITCHEN_PREP_ART",
-    "id": "2-2",
-    "url": "assets/prepared/2-2.6782859e5e67.webp",
-    "bytes": 14130,
-    "sha256": "6782859e5e67d996d7bac250ee78cd4a4402bee4e35c7c119eb6a66499ef2a7f"
-  },
-  {
-    "variable": "KITCHEN_PREP_ART",
-    "id": "2-3",
-    "url": "assets/prepared/2-3.26904435b85f.webp",
-    "bytes": 14914,
-    "sha256": "26904435b85fa242f0e3e2a659d8a6e225d7b139176460ea3040e8dfc52a9a16"
-  },
-  {
-    "variable": "KITCHEN_PREP_ART",
-    "id": "2-4",
-    "url": "assets/prepared/2-4.1dacb206cb0a.webp",
-    "bytes": 17308,
-    "sha256": "1dacb206cb0ad7bd0081ef4a603b3874a613ef059e2f7c794371701cce4d44c6"
-  },
-  {
     "variable": "TOWN_GUEST_ART",
     "id": "0",
     "url": "assets/guests/0.44c205fa7b0f.webp",
@@ -1881,5 +1776,33 @@
     "url": "assets/guests/15.88c3d8837176.webp",
     "bytes": 13230,
     "sha256": "88c3d88371762da29269f0d98be632d749ea72e3e60e32ed08c88a75395de96b"
+  },
+  {
+    "variable": "GREENHOUSE_ART",
+    "id": "interior",
+    "url": "assets/greenhouse/greenhouse.1631eba6d696.webp",
+    "bytes": 157112,
+    "sha256": "1631eba6d69657510686a6211229110cd9f6d6f00659d3c9c46bf0f666606c98"
+  },
+  {
+    "variable": "PREP_BOARD_ART",
+    "id": "0",
+    "url": "assets/prepared/grain-board.8a96f7ccff88.webp",
+    "bytes": 27444,
+    "sha256": "8a96f7ccff8813b2546ceb158ed39a0abcc8521fd56d13852442545c837b5983"
+  },
+  {
+    "variable": "PREP_BOARD_ART",
+    "id": "1",
+    "url": "assets/prepared/meat-board.65f743e73e52.webp",
+    "bytes": 29730,
+    "sha256": "65f743e73e528c816b0ef6d4eb0ff3a7c4ddae5a602c12acd90fe9060f3670b8"
+  },
+  {
+    "variable": "PREP_BOARD_ART",
+    "id": "2",
+    "url": "assets/prepared/vegetable-board.d930a25bad04.webp",
+    "bytes": 32448,
+    "sha256": "d930a25bad04400ba4ccd2f5ea5bee62c1836aed9482a3273efa20d0b94b5479"
   }
 ]

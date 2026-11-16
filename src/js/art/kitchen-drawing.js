@@ -2,7 +2,7 @@
 
 function kitchenTierPalette(t){return [{rim:'#b58b60',light:'#e4c398',dark:'#79583f',plate:'#e4d8bb'},{rim:'#619f8f',light:'#c0ddbb',dark:'#386960',plate:'#e7eee0'},{rim:'#73a9d0',light:'#d2e9f0',dark:'#3f637f',plate:'#eef3e6'},{rim:'#d4ab4f',light:'#ffedb0',dark:'#8b6634',plate:'#fff2d6'},{rim:'#b493d3',light:'#f6dfef',dark:'#5c4a83',plate:'#f3e9f6'}][t];}
 function kitchenTierMark(t){const p=kitchenTierPalette(t);return '<g class="kitchen-tier-mark" data-grade="'+t+'"><path fill="#202d35" d="M2 2h14v14H2z"/><path fill="'+p.rim+'" d="M3 3h12v12H3z"/><path fill="'+p.light+'" d="M4 4h10v2H4z"/><text x="9" y="13" fill="#172a32" font-size="10" font-family="monospace" font-weight="bold" text-anchor="middle">'+(t+1)+'</text></g>';}
-function kitchenIngredientArt(t){return expandedGameEnabled()?cozySpriteSVG('ingredient-'+t,64,kitchenTierMark(t),'data-ingredient-grade="'+t+'"'):cozyLegacy_kitchenIngredientArt(t);}
+function kitchenIngredientArt(t){return expandedGameEnabled()?cozySpriteSVG('ingredient-'+t,64,kitchenTierMark(t),'data-ingredient-grade="'+t+'"',9):cozyLegacy_kitchenIngredientArt(t);}
 function kitchenRice(t){let s='<path fill="#cbb98a" d="M18 34h29v11H18zM22 28h21v7H22z"/><path fill="#f4e6ba" d="M19 33h27v9H19zM23 27h18v9H23z"/><path fill="#fff6d8" d="M23 30h4v2h-4zM30 28h4v2h-4zM37 31h4v2h-4zM21 36h3v2h-3zM29 34h3v2h-3zM37 37h4v2h-4z"/>';
  if(t>=1)s+='<path fill="#b5a36f" d="M25 39h2v2h-2zM40 34h2v2h-2z"/>';if(t>=2)s+='<path fill="#57935a" d="M28 29h2v2h-2zM34 36h2v2h-2zM23 35h2v2h-2z"/>';return s;}
 function kitchenMeat(t){let s='<path fill="#693e31" d="M17 29h6v-4h20v4h5v14h-7v4H21v-4h-4z"/><path fill="#b86d43" d="M20 29h22v12H20zM24 26h16v4H24z"/><path fill="#de9d67" d="M22 29h5v3h-5zM28 27h9v2h-9zM40 31h3v7h-3z"/><path fill="#653b2c" d="M24 33h16v2H24zM25 39h13v2H25z"/>';
@@ -24,8 +24,8 @@ function kitchenItemEffect(w){
  if(w.k==='m')return '搭配空格附近至少兩包同階食材（相連同階會一起消耗），製作一份'+KITCHEN_TYPES[w.s]+'備料。';
  return '';
 }
-function kitchenDishStats(w){
- const trio=COMBO[w.c].split(''),mult=1+[0,.05,.1,.2][kitchenStars(w)],raw={taste:10+8*w.t+trio.filter(s=>s==='1').length*5,fullness:8+6*w.t+trio.filter(s=>s==='0').length*6,aroma:8+7*w.t+trio.filter(s=>s==='2').length*5};
- const boost=KITCHEN_SPICES[w.spice]?.stat;return Object.fromEntries(Object.entries(raw).map(([key,value])=>[key,Math.round(value*mult*(boost===key?1.2:1))]));
+function kitchenDishStats(w,baseOnly=false){
+ const trio=COMBO[w.c].split(''),mult=baseOnly?1:1+[0,.05,.1,.2][kitchenStars(w)],raw={taste:10+8*w.t+trio.filter(s=>s==='1').length*5,fullness:8+6*w.t+trio.filter(s=>s==='0').length*6,aroma:8+7*w.t+trio.filter(s=>s==='2').length*5};
+ const boost=baseOnly?undefined:KITCHEN_SPICES[w.spice]?.stat;return Object.fromEntries(Object.entries(raw).map(([key,value])=>[key,Math.round(value*mult*(boost===key?1.2:1))]));
 }
 function kitchenRecipeStrip(c,labels=false){if(c===null)return '<small class="kitchen-any-recipe">任意三份備料</small>';return '<div class="kitchen-recipe-strip" aria-label="配方：'+COMBO[c].split('').map(s=>KITCHEN_TYPES[+s]).join('＋')+'">'+COMBO[c].split('').map((s,i)=>(i?'<em>＋</em>':'')+'<span>'+kitchenProcessArt(+s)+(labels?'<small>'+KITCHEN_TYPES[+s]+'</small>':'')+'</span>').join('')+'</div>';}
