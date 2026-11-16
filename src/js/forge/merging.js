@@ -16,9 +16,10 @@ function moldMaterials(i,board=g){
   return null;
 }
 function forgePath(i,board=g){
+  if(board[i]?.k!=='p')return null;
   const gr=group(i,board);
   if(gr.length<3)return null;
-  for(let n=Math.min(5,gr.length);n>=3;n--){
+  for(let n=gr.length;n>=3;n--){
     const S=gr.slice(0,n);
     const adj=j=>nb(j).filter(x=>S.includes(x));
     const ends=S.filter(j=>adj(j).length===1);

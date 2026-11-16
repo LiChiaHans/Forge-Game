@@ -1,0 +1,2 @@
+#sceneTransition{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;background:#080e17;color:#f3d99b;font-family:'Noto Serif TC',serif;font-size:clamp(23px,6vw,34px);font-weight:900;letter-spacing:.12em;text-align:center;text-shadow:2px 2px #30283d;pointer-events:auto;touch-action:none;cursor:wait;padding:20px}
+#sceneTransition[hidden]{display:none!important}

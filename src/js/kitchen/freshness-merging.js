@@ -47,15 +47,13 @@ function playKitchenMerges(launch=null,placed=-1){
 }
 
 function kitchenTriples(at,board=kitchen.g){
- const done=new Set(),result=[],starts=[at,...board.map((_,i)=>i)].filter(i=>board[i]?.k==='p');
- for(const start of starts){if(done.has(start))continue;const cells=kitchenConnected(board,start,'p');cells.forEach(i=>done.add(i));if(cells.length<3)continue;
-  const set=new Set(cells),triples=[];for(const middle of cells){const near=nb(middle).filter(i=>set.has(i));for(let a=0;a<near.length;a++)for(let b=a+1;b<near.length;b++)triples.push({cells:[near[a],middle,near[b]],middle,mask:(1<<near[a])|(1<<middle)|(1<<near[b])});}
-  triples.sort((a,b)=>Number(b.cells.includes(at))-Number(a.cells.includes(at))||a.middle-b.middle||a.cells[0]-b.cells[0]);
-  let best=[],visits=0;const all=cells.reduce((m,i)=>m|(1<<i),0),goal=Math.floor(cells.length/3),seen=new Map();
-  function search(mask,chosen){if(chosen.length>best.length)best=chosen.slice();if(best.length===goal||++visits>20000)return;let count=0;for(let bits=mask;bits;bits&=bits-1)count++;if(chosen.length+Math.floor(count/3)<=best.length)return;if((seen.get(mask)??-1)>=chosen.length)return;seen.set(mask,chosen.length);
-   let pivot=-1,options=null;for(const i of cells){if(!(mask&(1<<i)))continue;const available=triples.filter(t=>(t.mask&mask)===t.mask&&t.cells.includes(i));if(!options||available.length<options.length){pivot=i;options=available;}if(!available.length)break;}
-   if(pivot<0)return;for(const t of options){search(mask&~t.mask,[...chosen,t]);if(best.length===goal)return;}search(mask&~(1<<pivot),chosen);
-  }search(all,[]);
-  result.push(...best.map(t=>({...t,target:cells.length===3&&cells.includes(at)?at:t.middle})));
+ const remaining=board.slice(),result=[],starts=[at,...board.map((_,i)=>i)];
+ for(const start of starts){
+  if(remaining[start]?.k!=='p')continue;const path=forgePath(start,remaining);if(!path)continue;
+  // Match embryo forging: ABC, BCD, CDE are three recipes on a five-cell chain.
+  // A fork is never treated as one chain. Claim each chain's inputs once, but
+  // take every recipe from the original material snapshot before writing dishes.
+  path.forEach(i=>remaining[i]=null);
+  for(let k=0;k<path.length-2;k++){const cells=path.slice(k,k+3),middle=cells[1];result.push({cells,middle,path,target:path.length===3?start:middle});}
  }if(result.length>1)result.forEach(t=>t.target=t.middle);return result;
 }

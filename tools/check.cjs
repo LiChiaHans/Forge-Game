@@ -5,4 +5,4 @@ assert.ok(report.htmlBytes<50000,'HTML should contain structure, not a bundled g
 for(const a of manifest){const p=path.resolve(root,a.url);assert.ok(p.startsWith(root+path.sep));assert.equal(hash(fs.readFileSync(p)),a.sha256,a.url);}
 const html=read('index.html');assert.ok(!html.includes('openKitchenControlLab'));assert.ok(!html.includes(';base64,'));assert.ok(html.includes('game.js?v=')&&html.includes('game.css?v='));
 if(process.argv.includes('--extraction')){const reference=JSON.parse(read('tests/extraction-reference.json'));assert.equal(report.javascriptSha256,reference.javascriptSha256,'Extraction changed JS execution order/content');assert.equal(report.stylesSha256,reference.stylesSha256,'Extraction changed CSS cascade/content');}
-require('../tests/kitchen-progression.cjs');require('../tests/town-kitchen-battle.cjs');console.log(JSON.stringify({result:'PASS',assets:manifest.length,...report}));
+require('../tests/kitchen-progression.cjs');require('../tests/town-kitchen-battle.cjs');require('../tests/chain-recipes.cjs');require('../tests/scene-transitions.cjs');console.log(JSON.stringify({result:'PASS',assets:manifest.length,...report}));

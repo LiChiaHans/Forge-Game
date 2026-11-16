@@ -38,7 +38,7 @@ function remindTownSkills(){
  $('townSkillCount').textContent='還有 '+sp+' 點技能點尚未使用。要先前往訓練所嗎？';
  $('townSkillP').style.display='flex';
 }
-function startTownForge(){return preview_startTownForge(...arguments);}
+function startTownForge(){if(isSandboxNight())return preview_startTownForge(...arguments);return performSceneTransition('冶煉廠',()=>preview_startTownForge());}
 function stable_startTownForge(){
  $('townSkillP').style.display='none';phase='play';$('townP').style.display='none';render();saveNow();showPendingSeasonNotice();
 }

@@ -91,6 +91,7 @@
     "src/js/decorations/screenshots.js",
     "src/js/admin/sandbox.js",
     "src/js/ui/modals-layout.js",
+    "src/js/ui/scene-transitions.js",
     "src/js/ui/viewport-input.js",
     "src/js/online/leaderboard.js",
     "src/js/ui/portrait-kitchen-bootstrap.js"
@@ -128,6 +129,7 @@
     "src/styles/22-forge-bar-food-album.css",
     "src/styles/23-progress-panels.css",
     "src/styles/24-kitchen-held-controls.css",
-    "src/styles/25-town-kitchen-battle.css"
+    "src/styles/25-town-kitchen-battle.css",
+    "src/styles/26-scene-transitions.css"
   ]
 }

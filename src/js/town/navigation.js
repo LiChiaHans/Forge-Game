@@ -33,8 +33,8 @@ function preview_renderTown(){
  renderGreenhouse(p,s.id);
  renderTownPlaza(p,s.id);renderCityDecor();renderArchitect();renderHarvestAlert();scheduleTownBirds();renderTownChest();renderTownWeather(si);renderTownNight();renderGeminiTown();
 }
-function showTown(){clearKitchenIngredientFlights();clearForgeFeedback();
- if(day<=0)return;phase='town';$('townP').style.display='flex';renderTown();syncTownMotion();showTownDayBanner();saveNow();
+function showTown(){
+ if(day<=0)return;return performSceneTransition('城鎮',()=>{clearKitchenIngredientFlights();clearForgeFeedback();phase='town';$('townP').style.display='flex';renderTown();syncTownMotion();showTownDayBanner();saveNow();});
 }
 function returnToTown(){if(day<=0){goHome();return;}showTown();}
 function enterTownForge(){
