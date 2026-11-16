@@ -13,14 +13,14 @@ function kitchenDishArt(c,t){return expandedGameEnabled()?cozySpriteSVG('dish-'+
 const KITCHEN_TOOL_INFO={
  z:{name:'冰水桶',price:500,text:'放到棋盤任意格，全盤爐火餘熱立即歸零；不會清除物品。'},
  f:{name:'清潔工具',price:200,text:'清除指定格的一包食材或一份備料；不能清除完成料理。'},
- u:{name:'精選食材券',price:500,text:'指定一包食材升一階，恢復完整保鮮步數，並觸發相連合成；頂級食材不能再升。'}
+ u:{name:'精選食材券',price:500,text:'指定一包食材升一階，並觸發相連合成；頂級食材不能再升。'}
 };
 function kitchenGradeName(t){return (t+1)+'階・'+KITCHEN_GRADES[t];}
 function kitchenSpiceBonus(){return 10+5*kitchenLevel('spice');}
 function kitchenItemEffect(w){
  if(KITCHEN_TOOL_INFO[w.k])return KITCHEN_TOOL_INFO[w.k].text;
  if(w.k==='spice'){const spice=KITCHEN_SPICES[w.spice];return '在空白且無餘熱的格子建立'+spice.name+'調味格；本晚有效。在這格完成的料理'+spice.effect+'，售價 +'+kitchenSpiceBonus()+'%。每格保留最後使用的一種調味。';}
- if(w.k==='o')return kitchenGradeName(w.t)+'食材；保鮮 '+(14+6*kitchenLevel('fresh'))+' 步，久放會降一階。';
+ if(w.k==='o')return kitchenGradeName(w.t)+'食材；不會腐壞，可保留到需要備料時使用。';
  if(w.k==='m')return '搭配空格附近至少兩包同階食材（相連同階會一起消耗），製作一份'+KITCHEN_TYPES[w.s]+'備料。';
  return '';
 }

@@ -1804,5 +1804,12 @@
     "url": "assets/prepared/vegetable-board.d930a25bad04.webp",
     "bytes": 32448,
     "sha256": "d930a25bad04400ba4ccd2f5ea5bee62c1836aed9482a3273efa20d0b94b5479"
+  },
+  {
+    "variable": "HOME_ART",
+    "id": "welcome",
+    "url": "assets/home/welcome.7a5efc768b9e.webp",
+    "bytes": 235976,
+    "sha256": "7a5efc768b9e630d3d833409cb9f0149bf6d9fea4148bb444a837411a1372ab6"
   }
 ]

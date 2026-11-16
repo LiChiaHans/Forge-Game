@@ -3,7 +3,7 @@
 function newDay(){
   phase="play";
   const previousDay=day;
-  let skillExchange=0;if(previousDay>=1&&!sandboxSession&&Object.keys(SK).every(k=>(skills[k]||0)>=3)&&sp>0){skillExchange=sp*1000;coins+=skillExchange;sp=0;}
+  const skillExchange=previousDay>=1?convertWorkshopSurplus('forge')+convertWorkshopSurplus('kitchen'):0;
   forgeGuestSerial22=0;day++;elementTiles.clear();heat=heat.map(()=>0);dMagic=0;syncExpeditionDay();ensureBlueprintInventory();
   shopBought={m:0,tool:0,o:0};prepareSeasonDay(previousDay);
   const nMagic=sk('mg'),st=new Set();
@@ -41,7 +41,7 @@ function stable_endDay(){
   }
   if(lastCompletedDay>=day||orders.length||dq.length)return;
   qEach('safe',q=>{if(lives>=dLv)qProg(q,q.n)});
-  lastCompletedDay=day;sp++;pendingChests++;saveHi();
+  lastCompletedDay=day;grantDailyWorkshopSkill('forge');pendingChests++;saveHi();
   gachaUsed=false;skillDone=false;spentToday=0;newDay();
 }
 function preview_endDay(){
@@ -53,7 +53,7 @@ function preview_endDay(){
   if(sandboxSession){sandboxEndForgeDay();return;}
   if(lastCompletedDay>=day||orders.length||dq.length)return;
   qEach('safe',q=>{if(lives>=dLv)qProg(q,q.n)});
-  lastCompletedDay=day;sp++;pendingChests++;saveHi();
+  lastCompletedDay=day;grantDailyWorkshopSkill('forge');pendingChests++;saveHi();
   gachaUsed=false;skillDone=false;spentToday=0;newDay();
 }
 

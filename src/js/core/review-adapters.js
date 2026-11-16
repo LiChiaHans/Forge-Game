@@ -30,8 +30,8 @@ function stage21_kitchenCraft(at,silent=false){
 }
 function stage21_completeKitchenNight(){
  if(kitchen.done)return;kitchen.done=true;const c=KITCHEN_CHALLENGES[kitchen.challenge],passed=c.kind==='rush'?kitchen.served>=kitchen.total&&kitchen.missed===0:kitchen.progress>=c.goal,paid=kitchen.lastRewarded!==day;
- const bonus=paid?120+kitchen.served*20+(passed?150:0):0;if(paid){kitchen.lastRewarded=day;coins+=bonus;earned+=bonus;dEarn+=bonus;kitchen.sp+=passed?2:1;kitchen.bag.push({k:'spice',spice:passed?'milk':'herb'});}
- kitchen.settlement={served:kitchen.served,missed:kitchen.missed,cancelled:kitchen.cancelled||0,earned:kitchen.earned,challenge:kitchen.challenge,passed,bonus,points:paid?(passed?2:1):0,spice:paid?1:0};renderKitchenSettlement();
+ const bonus=paid?120+kitchen.served*20+(passed?150:0):0;let pointReward={points:0,gold:0};if(paid){kitchen.lastRewarded=day;coins+=bonus;earned+=bonus;dEarn+=bonus;pointReward=grantDailyWorkshopSkill('kitchen');pendingChests++;kitchen.bag.push({k:'spice',spice:passed?'milk':'herb'});}
+ kitchen.settlement={served:kitchen.served,missed:kitchen.missed,cancelled:kitchen.cancelled||0,earned:kitchen.earned,challenge:kitchen.challenge,passed,bonus,points:pointReward.points,skillGold:pointReward.gold,spice:paid?1:0};renderKitchenSettlement();
 }
 function stage21_kitchenSell(w,index,clear){
  if(!sandboxSession||!kitchen||kitchen.done)return false;const order=kitchen.orders[index];if(!order||w?.k!=='w')return false;if(order.c!==null&&order.c!==w.c){kitchen.message='這位客人需要'+KITCHEN_NAMES[order.c]+'。';return false;}if(w.t<order.t){kitchen.message='品質需要'+KITCHEN_GRADES[order.t]+'級以上。';return false;}

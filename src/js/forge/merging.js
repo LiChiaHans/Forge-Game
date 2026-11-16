@@ -19,16 +19,9 @@ function forgePath(i,board=g){
   if(board[i]?.k!=='p')return null;
   const gr=group(i,board);
   if(gr.length<3)return null;
+  if(gr.length===4)return workshopFour(gr,i);
   for(let n=gr.length;n>=3;n--){
-    const S=gr.slice(0,n);
-    const adj=j=>nb(j).filter(x=>S.includes(x));
-    const ends=S.filter(j=>adj(j).length===1);
-    if(ends.length===2&&S.every(j=>adj(j).length<=2)){
-      const path=[ends[0]];
-      while(path.length<n)
-        path.push(adj(path[path.length-1]).find(x=>!path.includes(x)));
-      return path;
-    }
+    const path=workshopChain(gr.slice(0,n));if(path)return path;
   }
   return null;
 }
@@ -40,103 +33,23 @@ function place(i,s2){
   if(!mat){say("模具要放在兩顆相鄰同階礦石的旁邊");return}
   const t=mat.t;
   const mm=mat.cells.reduce((a,j)=>a+(g[j].m||0),0)+(magicSet.has(i)?5:0);
-  const oreFrom=expandedGameEnabled()?mat.cells.map(j=>({i:j,h:oreH(g[j].t,'',g[j].m||0)})):null;mat.cells.forEach(j=>g[j]=null);
+  const oreFrom=expandedGameEnabled()?mat.cells.map(j=>({i:j,h:oreH(g[j].t,'',g[j].m||0),key:workshopItemKey(g[j])})):null;mat.cells.forEach(j=>g[j]=null);
   const s=s2!==undefined?s2:MQ.shift();
   if(s2===undefined&&MQ.length<3)MQ.push(rollM());
   g[i]=s===3?{k:'d',t,m:mm}:{k:'p',t,s,m:mm};
   tool=-1;fresh=i;
   say((mat.cells.length>2?"一次消耗了 "+mat.cells.length+" 顆礦石！":"")
     +(magicSet.has(i)?" ✨ 魔法 +5💰（賣出時結算）":""));
-  if(expandedGameEnabled()){const ev={step:0,tg:i,from:oreFrom,to:[i],res:{[i]:workshopPieceHTML(g[i])}};fx.push(ev);const begin=fx.length;if(s!==3)forge(i);fx.slice(begin).forEach(e=>e.step++);}else if(s!==3)forge(i);
+  if(expandedGameEnabled()){const ev={step:0,tg:i,from:oreFrom,to:[i],res:{[i]:workshopPieceHTML(g[i])},keys:{[i]:workshopItemKey(g[i])}};fx.push(ev);const begin=fx.length;if(s!==3)forge(i);fx.slice(begin).forEach(e=>e.step++);}else if(s!==3)forge(i);
   return true;
 }
 function mergeGroup(){return expandedGameEnabled()?preview_mergeGroup(...arguments):stable_mergeGroup(...arguments);}
-function stable_mergeGroup(i,lvl=0){
-  const t=g[i].t,gr=group(i);
-  if(gr.length<3)return [];
-  let path=null;
-  for(let n=Math.min(5,gr.length);n>=3&&!path;n--){
-    const S=gr.slice(0,n),adj=j=>nb(j).filter(x=>S.includes(x));
-    const ends=S.filter(j=>adj(j).length===1);
-    if(ends.length===2&&S.every(j=>adj(j).length<=2)){
-      path=[ends[0]];
-      while(path.length<n)
-        path.push(adj(path[path.length-1]).find(x=>!path.includes(x)));
-    }
-  }
-  if(!path)return [];
-  const n=path.length,tris=[];
-  for(let k=0;k<n-2;k++)tris.push(path.slice(k,k+3));
-  const mt=tris.map(tr=>tr.reduce((a,j)=>a+(g[j].m||0),0));
-  const ev={
-    step:lvl,tg:i,
-    from:path.map(j=>({i:j,h:oreH(t,"",g[j].m||0)})),
-    to:[],res:{}
-  };
-  fx.push(ev);
-  path.forEach(j=>g[j]=null);
-  let spots,tiers,ms;
-  if(n===3){
-    spots=[i];tiers=[t+1];ms=[mt[0]];
-  }else if(n===4){
-    spots=[path[1],path[2]];tiers=[t+1,t+1];ms=[mt[0],mt[1]];
-  }else if(t+2<=4){
-    spots=[path[2]];tiers=[t+2];ms=[mt[0]+mt[1]+mt[2]];
-  }else{
-    spots=[path[1],path[2],path[3]];tiers=[t+1,t+1,t+1];ms=mt;
-  }
-  spots.forEach((j,k)=>{
-    g[j]={k:'o',t:tiers[k],m:ms[k]};
-    ev.res[j]=oreH(tiers[k],"new",ms[k]);
-  });
-  ev.to=spots;
-  return spots;
-}
+function stable_mergeGroup(i,lvl=0){return preview_mergeGroup(i,lvl);}
 function preview_mergeGroup(i,lvl=0){
-  const t=g[i].t,gr=group(i);
-  if(gr.length<3||t>=4)return [];
-  if(gr.length>=5){
-    const cells=gr.slice(0,5),magic=cells.reduce((sum,j)=>sum+(g[j].m||0),0),tier=Math.min(4,t+2);
-    const ev={step:lvl,tg:i,from:cells.map(j=>({i:j,h:oreH(t,"",g[j].m||0)})),to:[i],res:{}};fx.push(ev);
-    cells.forEach(j=>g[j]=null);g[i]={k:'o',t:tier,m:magic};ev.res[i]=oreH(tier,"new",magic);return [i];
-  }
-  let path=null;
-  for(let n=Math.min(5,gr.length);n>=3&&!path;n--){
-    const S=gr.slice(0,n),adj=j=>nb(j).filter(x=>S.includes(x));
-    const ends=S.filter(j=>adj(j).length===1);
-    if(ends.length===2&&S.every(j=>adj(j).length<=2)){
-      path=[ends[0]];
-      while(path.length<n)
-        path.push(adj(path[path.length-1]).find(x=>!path.includes(x)));
-    }
-  }
-  if(!path)return [];
-  const n=path.length,tris=[];
-  for(let k=0;k<n-2;k++)tris.push(path.slice(k,k+3));
-  const mt=tris.map(tr=>tr.reduce((a,j)=>a+(g[j].m||0),0));
-  const ev={
-    step:lvl,tg:i,
-    from:path.map(j=>({i:j,h:oreH(t,"",g[j].m||0)})),
-    to:[],res:{}
-  };
-  fx.push(ev);
-  path.forEach(j=>g[j]=null);
-  let spots,tiers,ms;
-  if(n===3){
-    spots=[i];tiers=[t+1];ms=[mt[0]];
-  }else if(n===4){
-    spots=[path[1],path[2]];tiers=[t+1,t+1];ms=[mt[0],mt[1]];
-  }else if(t+2<=4){
-    spots=[path[2]];tiers=[t+2];ms=[mt[0]+mt[1]+mt[2]];
-  }else{
-    spots=[path[1],path[2],path[3]];tiers=[t+1,t+1,t+1];ms=mt;
-  }
-  spots.forEach((j,k)=>{
-    g[j]={k:'o',t:tiers[k],m:ms[k]};
-    ev.res[j]=oreH(tiers[k],"new",ms[k]);
-  });
-  ev.to=spots;
-  return spots;
+ const plan=workshopMaterialPlan(i,g);if(!plan)return [];const source=new Map(plan.cells.map(j=>[j,{...g[j]}]));plan.cells.forEach(j=>g[j]=null);
+ for(const batch of plan.groups){const magic=batch.cells.reduce((n,j)=>n+(source.get(j).m||0),0),w={k:'o',t:batch.tier,m:magic};g[batch.target]=w;
+  fx.push({step:lvl,tg:batch.target,from:batch.cells.map(j=>({i:j,h:oreH(source.get(j).t,'',source.get(j).m||0),key:workshopItemKey(source.get(j))})),to:[batch.target],res:{[batch.target]:oreH(w.t,'',w.m)},keys:{[batch.target]:workshopItemKey(w)}});
+ }return plan.groups.map(b=>b.target);
 }
 function auto(i,l0=0){
   if(!sk('mm'))return;
@@ -169,13 +82,8 @@ function forge(i){
   if(!path)return false;
   const n=path.length,tris=[];
   for(let k=0;k<n-2;k++)tris.push(path.slice(k,k+3));
-  const ev={
-    step:0,tg:i,
-    from:path.map(j=>({i:j,h:`<div class="t2">${mold(g[j].s,C[g[j].t])}${mb(g[j])}</div>`})),
-    to:[],res:{}
-  };
-  fx.push(ev);
-  const spots=n===3?[i]:tris.map((t,k)=>path[k+1]);
+  const source=new Map(path.map(j=>[j,{...g[j]}]));
+  const spots=workshopRecipeWindows(path,i).map(b=>b.target);
   const info=tris.map(t=>({
     w:COMBO.indexOf(t.map(j=>g[j].s).sort().join("")),
     wt:Math.floor(t.reduce((s,j)=>s+g[j].t,0)/3),
@@ -197,13 +105,14 @@ function forge(i){
       });
     g[spots[k]]={k:'w',t:f.wt,c:f.w,b,cs:f.cs,parts:f.parts,m:f.mm+dm,dts,statVersion:1};
     const wo=applyWeaponElement(g[spots[k]],spots[k]);recordWeaponCraft(wo);
+    const ev={step:0,tg:spots[k],from:f.cells.map(j=>({i:j,h:workshopPieceHTML(source.get(j)),key:workshopItemKey(source.get(j))})),to:[spots[k]],res:{[spots[k]]:workshopItemHTML(wo)},keys:{[spots[k]]:workshopItemKey(wo)},forged:[]};fx.push(ev);
     const emberGold=consumeAutumnForgeReward();if(emberGold)toast("🍂 落葉餘燼：鍛造獎金 +100 金幣（不計分）");
     (ev.forged||(ev.forged=[])).push({w:wo,i:spots[k]});
     if(day>0&&!testRun)rememberWeapon(wo);
     if(rankOf(wo)>rankOf(best[f.w]))
       best[f.w]={t:wo.t,cs:wo.cs,parts:wo.parts,b:wo.b,dts:wo.dts,m:wo.m,element:wo.element,stars:wo.stars,starXp:wo.starXp,statVersion:1};
     qOnForgeStats(wo);
-    ev.to.push(spots[k]);
+
     msgs.push(NM[f.wt]+"級"+WN[f.w]+"（"+materialNote(wo)+"）"+(b?"（💎+"+Math.round(b*100)+"%）":""));
   });
   say("鍛造出 "+msgs.join("、")+"！");
@@ -214,8 +123,8 @@ function forge(i){
     const r=free[rnd(free.length)];
     const pr=sk('mm')>=3?.5:sk('mm')===2?.25:0;
     const dt=Math.random()<pr?pt[rnd(pt.length)]:0;
-    g[r]={k:'o',t:dt};ev.to.push(r);
-    ev.res[r]=oreH(dt,"new");auto(r,1);
+    g[r]={k:'o',t:dt};
+    auto(r,1);
   }
   saveHi();
   return true;

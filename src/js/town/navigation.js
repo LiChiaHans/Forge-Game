@@ -36,7 +36,7 @@ function preview_renderTown(){
 function showTown(){
  if(day<=0)return;return performSceneTransition('城鎮',()=>{clearKitchenIngredientFlights();clearForgeFeedback();phase='town';$('townP').style.display='flex';renderTown();syncTownMotion();showTownDayBanner();saveNow();});
 }
-function returnToTown(){if(day<=0){goHome();return;}showTown();}
+function returnToTown(){if(busy){say('請等這次合成完成，再返回城鎮。');return;}if(day<=0){goHome();return;}showTown();}
 function enterTownForge(){
  if(sp>0&&!sandboxSession){remindTownSkills();return;}startTownForge();
 }

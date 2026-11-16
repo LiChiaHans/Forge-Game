@@ -6,6 +6,7 @@ $("skc").onclick=e=>{
   const b=e.target.closest("button");
   if(!b||b.disabled)return;
   skills[b.dataset.k]++;if(b.dataset.k==='cd')heat=heat.map(h=>Math.max(0,h-10));sp--;spentToday++;
+  const surplus=convertWorkshopSurplus('forge');if(surplus)toast('冶煉技能已滿，多餘技能點轉換 '+surplus+' 金幣。');
   syncPack();renderSk();render();if($("townP").style.display==="flex")renderTown();saveNow();
 };
 $("skb").onclick=()=>{

@@ -121,7 +121,7 @@ function render(){
     `<span>${mold(s,"","f")} ${s<3?TY[s]:"鑽石"}</span>`
   ).join("");
   $("col").innerHTML=colHTML(best);
-  fresh=-1;pop=new Set();flyI=-1;fit();
+  fresh=-1;pop=new Set();flyI=-1;fit();syncWorkshopMergeMasks('forge');
   if($("townP").style.display==="flex")renderTown();
   if(qFlip){const o=qFlip;qFlip=null;animateQ(o)}
 }

@@ -12,7 +12,7 @@ function setSandboxNight(value){
 }
 function toggleSandboxNight(){if(!sandboxSession)return;cancelKitchenDrag();$('kitchenP').hidden=true;$('kitchenModal').hidden=true;setSandboxNight(!sandboxNight);render();showTown();}
 function sandboxEndForgeDay(){
- if(lastCompletedDay>=day||orders.length||dq.length)return;lastCompletedDay=day;sp++;pendingChests++;gachaUsed=false;skillDone=false;spentToday=0;setSandboxNight(true);showTown();toast('白天營業結束！同一天的晚餐時段開始，前往廚房餐廳。');
+ if(lastCompletedDay>=day||orders.length||dq.length)return;lastCompletedDay=day;grantDailyWorkshopSkill('forge');pendingChests++;gachaUsed=false;skillDone=false;spentToday=0;setSandboxNight(true);showTown();toast('白天營業結束！同一天的晚餐時段開始，前往廚房餐廳。');
 }
 function nightTownPalette(p){if(!isSandboxNight())return p;const colors=[['#182944','#354c43','#817c68'],['#122d46','#777267','#99917b'],['#25253e','#534735','#988574'],['#152641','#718694','#8298ae']][townVisualSeason()];return {...p,sky:colors[0],ground:colors[1],road:colors[2],tree:'#314a4c',light:'#617b6f'};}
 function nightSkyArt(si){

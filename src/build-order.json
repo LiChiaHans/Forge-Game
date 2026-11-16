@@ -7,6 +7,8 @@
     "src/js/audio/sounds-music.js",
     "src/js/core/records.js",
     "src/js/core/game-state.js",
+    "src/js/core/workshop-plans.js",
+    "src/js/ui/workshop-animation.js",
     "src/js/forge/completion-feedback.js",
     "src/js/forge/weapon-mastery.js",
     "src/js/kitchen/rules.js",
@@ -78,6 +80,7 @@
     "src/js/blueprints/board-projects.js",
     "src/js/avatar/editor.js",
     "src/js/core/day-rewards.js",
+    "src/js/core/workshop-rewards.js",
     "src/js/skills/forge-training.js",
     "src/js/forge/input-animation.js",
     "src/js/forge/drag-controls.js",
@@ -97,6 +100,7 @@
     "src/js/ui/viewport-input.js",
     "src/js/online/leaderboard.js",
     "src/js/ui/portrait-kitchen-bootstrap.js",
+    "src/js/art/home-chest.js",
     "src/js/core/asset-loading.js"
   ],
   "styles": [
@@ -135,7 +139,8 @@
     "src/styles/25-town-kitchen-battle.css",
     "src/styles/26-scene-transitions.css",
     "src/styles/27-greenhouse-archive.css",
-    "src/styles/28-asset-loading.css"
+    "src/styles/28-asset-loading.css",
+    "src/styles/29-workshop-polish.css"
   ],
   "workers": [
     "src/workers/media-cache.js"

@@ -1,7 +1,7 @@
 
 function cancelKitchenDrag(){clearKitchenPreview();kitchenDrag?.ghost?.remove();kitchenDrag=null;}
 function startKitchenDrag(e){
- if(!expandedGameEnabled()||e.button>0)return;const target=e.target.closest('[data-kdrag]');if(!target)return;const kind=target.dataset.kdrag,index=+(target.dataset.ki||0),w=kind==='dish'?kitchen.g[index]:kind==='hand'?kitchen.hand:kind==='process'?{k:'m',s:kitchen.mq[0]}:kitchenFood(kitchen.q[0]);if(!w||kitchen.done&&!(kind==='dish'||kind==='hand'&&w.k==='w'))return;
+ if(!expandedGameEnabled()||kitchenMergeJobs.size||e.button>0)return;const target=e.target.closest('[data-kdrag]');if(!target)return;const kind=target.dataset.kdrag,index=+(target.dataset.ki||0),w=kind==='dish'?kitchen.g[index]:kind==='hand'?kitchen.hand:kind==='process'?{k:'m',s:kitchen.mq[0]}:kitchenFood(kitchen.q[0]);if(!w||kitchen.done&&!(kind==='dish'||kind==='hand'&&w.k==='w'))return;
  e.preventDefault();const ghost=document.createElement('div');ghost.className='kitchen-drag-ghost';ghost.innerHTML=kitchenArt(w);ghost.style.left=e.clientX-30+'px';ghost.style.top=e.clientY-30+'px';document.body.appendChild(ghost);kitchenDrag={kind,index,w,ghost,x:e.clientX,y:e.clientY,moved:false,pointer:e.pointerId};
 }
 function moveKitchenDrag(e){const d=kitchenDrag;if(!d||d.pointer!==e.pointerId)return;d.moved=d.moved||Math.hypot(e.clientX-d.x,e.clientY-d.y)>5;d.ghost.style.left=e.clientX-30+'px';d.ghost.style.top=e.clientY-30+'px';updateKitchenDragPreview(e);}

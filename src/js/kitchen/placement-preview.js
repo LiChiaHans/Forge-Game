@@ -10,7 +10,7 @@ function kitchenPlanAt(at,item){
   const used=new Set(groups.flatMap(g=>g.cells));return {valid:true,at,consumed,groups,leftovers:board.flatMap((w,i)=>w?.k==='p'&&!used.has(i)?[i]:[]),text:'消耗 '+consumed.length+' 包食材 → '+KITCHEN_TYPES[item.s]+'備料'+(groups.length?'；全盤檢定：'+groups.map((g,i)=>(i+1)+'組 '+KITCHEN_NAMES[g.recipe]+' → 第'+(g.target+1)+'格').join('、'):'；未達三份，先保留備料')+'。放開後確認。'};
  }
  if(item.k==='o'){if(!kitchenLevel('merge'))return {valid:true,at,consumed:[],groups:[],text:'放置'+KITCHEN_GRADES[item.t]+'食材；學習「料理大師」後才能合成升階。'};
-  board[at]={k:'o',t:item.t};const cells=kitchenConnected(board,at,'o');if(cells.length<3||item.t>=4)return {valid:true,at,consumed:[],groups:[],text:'放置'+KITCHEN_GRADES[item.t]+'食材；尚未達升階條件。'};const n=Math.min(5,cells.length);return {valid:true,at,consumed:cells.slice(0,n),groups:[{cells:cells.slice(0,n),target:at,recipe:null,tier:Math.min(4,item.t+(n===5?2:1))}],text:n+' 包食材合成，最後落點升 '+(n===5?2:1)+' 階'+(n===4?'，另一包升階食材保留在原材料格':'')+'。放開後確認。'};
+  board[at]={k:'o',t:item.t};const plan=workshopMaterialPlan(at,board);if(!plan)return {valid:true,at,consumed:[],groups:[],text:'放置'+KITCHEN_GRADES[item.t]+'食材；尚未達升階條件。'};return {valid:true,at,consumed:plan.cells,groups:plan.groups.map(g=>({...g,recipe:null})),text:plan.cells.length+' 包食材合成：'+plan.groups.map(g=>'第'+(g.target+1)+'格升至'+kitchenGradeName(g.tier)).join('、')+'。放開後確認。'};
  }return null;
 }
 function clearKitchenPreview(restore=true){kitchenPreviewPlan=null;for(const cell of $('kitchenGrid').children){cell.classList.remove('preview-source','preview-target','preview-leftover','preview-invalid');cell.querySelectorAll?.('.preview-label').forEach(n=>n.remove());cell.style?.removeProperty?.('--preview-color');}if(restore&&kitchen)renderKitchenMessage(kitchen.message);}

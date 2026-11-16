@@ -5,7 +5,7 @@ function clearKitchenIngredientFlights(){
  clearKitchenMerges();kitchenIngredientFlightEpoch++;for(const entry of [...kitchenIngredientFlights]){entry.animation?.cancel?.();entry.node.remove();}kitchenIngredientFlights.clear();syncKitchenFlightTargets();
 }
 function syncKitchenFlightTargets(){
- const cells=$('kitchenGrid').children;for(let i=0;i<cells.length;i++){const hidden=[...kitchenIngredientFlights].some(f=>f.index===i&&f.item&&kitchen?.g[i]===f.item)||[...kitchenMergeJobs].some(j=>j.outputs.some(d=>d.index===i&&kitchen?.g[i]===d.item));cells[i].classList.toggle('kitchen-flight-target',hidden);}
+ const cells=$('kitchenGrid').children;for(let i=0;i<cells.length;i++){const hidden=[...kitchenIngredientFlights].some(f=>f.index===i&&f.item&&kitchen?.g[i]===f.item)||[...kitchenMergeJobs].some(j=>j.outputs.some(d=>d.index===i&&kitchen?.g[i]===d.item));cells[i].classList.toggle('kitchen-flight-target',hidden);}syncWorkshopMergeMasks('kitchen');
 }
 function kitchenIngredientLaunch(i){
  if(!expandedGameEnabled()||!kitchen||kitchen.done||kitchen.g[i]||kitchen.heat[i])return null;const held=kitchen.useHeld?kitchen.hand:null;if(held&&held.k!=='o'||!held&&kitchen.mode==='prep')return null;const source=held?$('kitchenHand').querySelector('[data-kdrag="hand"]'):$('kitchenQueue').querySelector('.kitchen-next');return source?{item:held?{...held}:{k:'o',t:kitchen.q[0]},rect:source.getBoundingClientRect()}:null;
