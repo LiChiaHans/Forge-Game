@@ -9,7 +9,7 @@ function renderExpeditionBattle(){
 }
 
 function renderExpedition(){
- $('expeditionFoodSetup').hidden=false;if(expandedGameEnabled())$('expeditionFoodSetup').textContent=kitchenLevel('pack')?'🍱 冰箱有 '+expeditionFoodOptions().length+' 份料理可於戰鬥中使用；每場最多兩份。':'🍱 在訓練所解鎖冰箱，存入料理後即可帶作遠征補給。';syncExpeditionDay();renderExpeditionLab();const options=expeditionWeapons().filter(x=>!x.w.protected);if(!options.some(x=>x.key===expeditionSelected))expeditionSelected=options[0]?.key||'';
+ renderExpeditionFoodSetup();syncExpeditionDay();renderExpeditionLab();const options=expeditionWeapons().filter(x=>!x.w.protected);if(!options.some(x=>x.key===expeditionSelected))expeditionSelected=options[0]?.key||'';
  const chosen=options.find(x=>x.key===expeditionSelected),m=expeditionMonster(expeditionStage),cleared=(!sandboxSession&&expeditionCleared(expeditionStage));
  $('expeditionAttempts').textContent=(expeditionStage>=20?'無限模式 · 第 '+(expeditionStage-19)+' 隻':expeditionStage>=10?'二周目':'一周目')+' · 第 '+day+' 天 · 累計勝利 '+expeditionState.victories+' 場 · 無限通關 '+(expeditionState.endless||0)+' 隻';
  $('expeditionStages').innerHTML=EXPEDITIONS.map((x,i)=>'<button data-exp-stage="'+i+'" data-cycle="'+(i>=10?2:1)+'" '+(!sandboxSession&&(i>expeditionState.unlocked||expeditionCleared(i))?'disabled':'')+' aria-label="第 '+(i+1)+' 關 '+x.name+'" aria-pressed="'+(i===expeditionStage)+'">'+(expeditionState.cleared.includes(i)?'✓':i>expeditionState.unlocked?'·':'⚑')+(i+1)+'</button>').join('')+((sandboxSession||expeditionState.cleared.includes(19))?'<button data-exp-stage="'+(20+(expeditionState.endless||0))+'" data-cycle="3" aria-pressed="'+(expeditionStage>=20)+'">∞ '+((expeditionState.endless||0)+1)+'</button>':'');

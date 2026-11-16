@@ -7,7 +7,7 @@ function kitchenPlanAt(at,item){
  if(item.k==='m'){
   const mat=moldMaterials(at,board);if(!mat)return invalid('這格附近需要至少兩包相連的同階食材。');consumed=mat.cells.slice();consumed.forEach(i=>board[i]=null);board[at]={k:'p',s:item.s,t:mat.t};
   for(const t of kitchenTriples(at,board)){const parts=t.cells.map(i=>board[i]),recipe=COMBO.indexOf(parts.map(w=>w.s).sort().join(''));groups.push({cells:t.cells,target:t.target,recipe,tier:Math.floor(parts.reduce((s,w)=>s+w.t,0)/3)});}
-  const used=new Set(groups.flatMap(g=>g.cells));return {valid:true,at,consumed,groups,leftovers:kitchenConnected(board,at,'p').filter(i=>!used.has(i)),text:'消耗 '+consumed.length+' 包食材 → '+KITCHEN_TYPES[item.s]+'備料'+(groups.length?'；'+groups.map((g,i)=>(i+1)+'組 '+KITCHEN_NAMES[g.recipe]+' → 第'+(g.target+1)+'格').join('、'):'；未達三份，先保留備料')+'。放開後確認。'};
+  const used=new Set(groups.flatMap(g=>g.cells));return {valid:true,at,consumed,groups,leftovers:board.flatMap((w,i)=>w?.k==='p'&&!used.has(i)?[i]:[]),text:'消耗 '+consumed.length+' 包食材 → '+KITCHEN_TYPES[item.s]+'備料'+(groups.length?'；全盤檢定：'+groups.map((g,i)=>(i+1)+'組 '+KITCHEN_NAMES[g.recipe]+' → 第'+(g.target+1)+'格').join('、'):'；未達三份，先保留備料')+'。放開後確認。'};
  }
  if(item.k==='o'){if(!kitchenLevel('merge'))return {valid:true,at,consumed:[],groups:[],text:'放置'+KITCHEN_GRADES[item.t]+'食材；學習「料理大師」後才能合成升階。'};
   board[at]={k:'o',t:item.t};const cells=kitchenConnected(board,at,'o');if(cells.length<3||item.t>=4)return {valid:true,at,consumed:[],groups:[],text:'放置'+KITCHEN_GRADES[item.t]+'食材；尚未達升階條件。'};const n=Math.min(5,cells.length);return {valid:true,at,consumed:cells.slice(0,n),groups:[{cells:cells.slice(0,n),target:at,recipe:null,tier:Math.min(4,item.t+(n===5?2:1))}],text:n+' 包食材合成，最後落點升 '+(n===5?2:1)+' 階'+(n===4?'，另一包升階食材保留在原材料格':'')+'。放開後確認。'};

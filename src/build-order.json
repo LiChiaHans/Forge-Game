@@ -62,6 +62,7 @@
     "src/js/town/building-drawing.js",
     "src/js/town/weather-layout.js",
     "src/js/town/navigation.js",
+    "src/js/town/day-banner.js",
     "src/js/town/training-chest.js",
     "src/js/expedition/weapon-stats.js",
     "src/js/expedition/test-setup.js",
@@ -126,6 +127,7 @@
     "src/styles/21-training.css",
     "src/styles/22-forge-bar-food-album.css",
     "src/styles/23-progress-panels.css",
-    "src/styles/24-kitchen-held-controls.css"
+    "src/styles/24-kitchen-held-controls.css",
+    "src/styles/25-town-kitchen-battle.css"
   ]
 }

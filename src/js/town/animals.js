@@ -5,6 +5,7 @@ const townPetAnimations=new Set();let petNavigation=null;
 const townPets={cat:{kind:'cat',point:[178,558],anim:null,timer:null},dog:{kind:'dog',point:[178,222],anim:null,timer:null}};
 function petGround(x,y){
  if(x<20||x>340||y<174||y>607)return false;
+ if(townBackgroundFountainBlocked(x,y))return false;
  const blocks=expandedGameEnabled()?townMasterBlocks():PET_BLOCKS;
  if(blocks.some(([x0,y0,x1,y1])=>x>=x0-8&&x<=x1+8&&y>=y0-7&&y<=y1+7))return false;
  if(cityObstacleAt(x,y))return false;
@@ -21,7 +22,7 @@ function buildPetNavigation(){
  const nodes=new Map();for(let j=0;j<37;j++)for(let i=0;i<27;i++){const x=22+i*12,y=174+j*12;if(petGround(x,y))nodes.set(i+','+j,[x,y]);}return nodes;
 }
 function petRoute(start){
- petNavigation=petNavigation||buildPetNavigation();const keys=[...petNavigation.keys()];let first=keys[0],dist=Infinity;for(const k of keys){const p=petNavigation.get(k),d=Math.hypot(p[0]-start[0],p[1]-start[1]);if(d<dist){dist=d;first=k;}}
+ petNavigation=petNavigation||buildPetNavigation();const keys=[...petNavigation.keys()];if(!keys.length)return [];let first=keys[0],dist=Infinity;for(const k of keys){const p=petNavigation.get(k),d=Math.hypot(p[0]-start[0],p[1]-start[1]);if(d<dist){dist=d;first=k;}}
  const parents=new Map([[first,null]]),queue=[first],directions=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
  for(let n=0;n<queue.length;n++){const k=queue[n],[i,j]=k.split(',').map(Number);for(const [di,dj]of directions){const next=(i+di)+','+(j+dj);if(!petNavigation.has(next)||parents.has(next))continue;if(di&&dj&&(!petNavigation.has((i+di)+','+j)||!petNavigation.has(i+','+(j+dj))))continue;if(!cityPetSegmentClear(petNavigation.get(k),petNavigation.get(next)))continue;parents.set(next,k);queue.push(next);}}
  const choices=queue.filter(k=>{const p=petNavigation.get(k);return Math.hypot(p[0]-start[0],p[1]-start[1])>85});let last=(choices.length?choices:queue)[rnd((choices.length?choices:queue).length)],route=[];while(last!==null){route.push(petNavigation.get(last));last=parents.get(last);}route.reverse();

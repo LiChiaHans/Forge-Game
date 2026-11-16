@@ -8,6 +8,7 @@ function stable_cityObstacleAt(x,y){
  });
 }
 function preview_cityObstacleAt(x,y){
+ if(townBackgroundFountainBlocked(x,y))return true;
  if(expandedGameEnabled()&&townMasterBlocks().some(([x0,y0,x1,y1])=>x>=x0&&x<=x1&&y>=y0&&y<=y1))return true;
  if(!cityState)return false;return cityLayout().some(i=>{const d=DECOR_BY_ID.get(i.id);if(!d||['cat','dog','flowers','fence'].includes(i.id))return false;const px=i.x*3.6,py=i.y*6.2,s=i.s;
   if(i.id==='fountain'||d.art==='pond')return ((x-px)/(d.w*.43*s+6))**2+((y-(py-d.h*.32*s))/(d.h*.32*s+6))**2<1;

@@ -1,6 +1,6 @@
 
 
-function start(){if(formalSaveTimer!==null){clearTimeout(formalSaveTimer);formalSaveTimer=null;}cancelKitchenDrag();clearKitchenIngredientFlights();clearKitchenDepartures();reviewMetrics=freshPlayMetrics();forgeGuestSerial22=0;kitchenGuestSerial22=0;return preview_start(...arguments);}
+function start(){if(formalSaveTimer!==null){clearTimeout(formalSaveTimer);formalSaveTimer=null;}cancelKitchenDrag();clearKitchenIngredientFlights();clearKitchenDepartures();reviewMetrics=freshPlayMetrics();forgeGuestSerial22=0;kitchenGuestSerial22=0;expeditionFoodSelected=null;return preview_start(...arguments);}
 function stable_start(mode,opt){
   if(sandboxSession)opt={...opt,test:true};
   clearForgeFeedback();autumnForgeCharges=0;weaponMastery=new Map();

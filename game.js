@@ -470,11 +470,11 @@ function restoreWeaponMastery(raw){
 
 const KITCHEN_NAMES=['鹽味飯糰','肉醬燴飯','蔬菜炊飯','豪華肉丼','主廚套餐','田園拌飯','香煎肉排','蔬菜燉肉','鄉村濃湯','田園沙拉'];
 const KITCHEN_GRADES=['家常','新鮮','精選','特級','頂級'],KITCHEN_TYPES=['主食','主菜','配菜'],KITCHEN_PROCESS=['炊煮卡','煎烤卡','切拌卡'];
-const KITCHEN_SKILLS={merge:{name:'料理大師',icon:'🥣',desc:['解鎖食材合成升階；推出食材 2% 為2階，料理返還原階機率10%','推出食材 4% 為2階、2% 為3階；料理返還原階機率25%','推出食材 6% 為2階、4% 為3階、2% 為4階；料理返還原階機率50%']},cool:{name:'火候掌控',icon:'🔥',desc:['爐火餘熱減少 2 步','減少 4 步','減少 6 步']},fresh:{name:'保鮮專家',icon:'🧊',desc:['食材、備料及料理保鮮多 6 步','多 12 步','多 18 步']},spice:{name:'調味學',icon:'🌿',desc:['調味售價加成提高至 15%','提高至 20%','提高至 25%']},pack:{name:'冰箱管理',icon:'🧊',desc:['冰箱開啟 2 格','開啟 4 格','開啟 6 格']},patience:{name:'主廚口碑',icon:'👨‍🍳',desc:['客人耐心多 8 步','多 16 步','多 24 步']}};
+const KITCHEN_SKILLS={merge:{name:'料理大師',icon:'🥣',desc:['解鎖食材合成升階','合成料理後返還的食材，有 25% 是原材料食材之一，其餘為一階','返還原材料食材的機率提高至 50%']},purchase:{name:'採買大師',icon:'🧺',desc:['推出食材有 2% 為二階，其餘一階','推出食材有 4% 為二階、2% 為三階','推出食材有 6% 為二階、4% 為三階、2% 為四階']},cool:{name:'火候掌控',icon:'🔥',desc:['爐火餘熱減少 2 步','減少 4 步','減少 6 步']},fresh:{name:'保鮮專家',icon:'🧊',desc:['食材、備料及料理保鮮多 6 步','多 12 步','多 18 步']},spice:{name:'調味學',icon:'🌿',desc:['調味售價加成提高至 15%','提高至 20%','提高至 25%']},pack:{name:'冰箱管理',icon:'🧊',desc:['冰箱開啟 2 格','開啟 4 格','開啟 6 格']},patience:{name:'主廚口碑',icon:'👨‍🍳',desc:['客人耐心多 8 步','多 16 步','多 24 步']}};
 const KITCHEN_CHALLENGES=[{name:'晚餐尖峰',icon:'⏱',goal:6,text:'服務本晚全部客人，且沒有任何超時訂單。',kind:'rush'},{name:'蔬食餐會',icon:'🥬',goal:3,text:'售出三道含兩份以上配菜的料理。',kind:'vegetable'},{name:'嚴格食評',icon:'⭐',goal:3,text:'售出三道精選級以上，或至少一星的料理。',kind:'critic'}];
 const KITCHEN_SPICES={herb:{name:'香草',icon:'葉',color:'#8fd5a0',stat:'aroma',effect:'香氣 +20%'},spicy:{name:'辛香',icon:'辣',color:'#f49b6e',stat:'taste',effect:'滋味 +20%'},milk:{name:'奶香',icon:'乳',color:'#ffe6ab',stat:'fullness',effect:'飽足 +20%'}};
 let sandboxNight=false,kitchen=null,kitchenDrag=null,kitchenSuppressClick=0;
-function freshKitchen(){return {day:0,g:Array(30).fill(null),heat:Array(30).fill(0),tiles:{},q:Array(5).fill(0),mq:[0,1,2],hand:null,useHeld:false,bag:[],pack:[],skills:{merge:0,cool:0,fresh:0,spice:0,pack:0,patience:0},sp:0,xp:{},orders:[],queue:[],served:0,missed:0,cancelled:0,earned:0,crafted:0,turn:0,challenge:0,progress:0,mode:'ore',done:false,lastRewarded:0,stock:{m:0,tool:0,o:0},message:'先放食材，再把第一張工序卡拖到附近的空格。',justHeated:new Set()};}
+function freshKitchen(){return {day:0,g:Array(30).fill(null),heat:Array(30).fill(0),tiles:{},q:Array(5).fill(0),mq:[0,1,2],hand:null,useHeld:false,bag:[],pack:[],skills:{merge:0,purchase:0,cool:0,fresh:0,spice:0,pack:0,patience:0},sp:0,xp:{},orders:[],queue:[],served:0,missed:0,cancelled:0,earned:0,crafted:0,turn:0,challenge:0,progress:0,mode:'ore',done:false,lastRewarded:0,stock:{m:0,tool:0,o:0},message:'先放食材，再把第一張工序卡拖到附近的空格。',justHeated:new Set()};}
 function kitchenLevel(key){return kitchen?.skills[key]||0;}
 function kitchenFood(t=0){return {k:'o',t,fresh:14+6*kitchenLevel('fresh'),born:kitchen.turn+1};}
 function kitchenOrder(generic=false){const mx=Math.max(0,Math.min(4,Math.floor((day-1)/3))),t=mx>0?(Math.random()<.4?mx:rnd(mx)):0,wait=kitchenOrderPatience(t);return {guest:guestForOrder22(kitchenGuestSerial22++,true),c:generic?null:rnd(10),t,max:wait,wait,uid:++kitchenGuestSerial};}
@@ -483,7 +483,7 @@ function startKitchenNight(force=false){
  clearKitchenIngredientFlights();clearKitchenMerges();clearKitchenDepartures();kitchen.day=day;kitchen.heat.fill(0);kitchen.tiles={};kitchen.q=Array.from({length:5},()=>kitchenRollFood());kitchen.mq=[0,1,2];kitchen.served=0;kitchen.missed=0;kitchen.cancelled=0;kitchen.earned=0;kitchen.progress=0;kitchen.done=false;kitchen.settlement=null;kitchen.stock={m:0,tool:0,o:0};kitchen.challenge=day<=3?0:day<=6?rnd(2):rnd(3);kitchen.mode='ore';kitchen.useHeld=false;
  kitchenCreateOrders();kitchen.message='晚餐營業開始！點空格放食材，拖曳工序卡備料，第三份工序相連就會自動完成料理。';
 }
-function kitchenRollFood(){const table=[[],[[1,2]],[[1,4],[2,2]],[[1,6],[2,4],[3,2]]][kitchenLevel('merge')],roll=Math.random()*100;let cumulative=0;for(const [tier,chance]of table){cumulative+=chance;if(roll<cumulative)return tier;}return 0;}
+function kitchenRollFood(){const table=[[],[[1,2]],[[1,4],[2,2]],[[1,6],[2,4],[3,2]]][kitchenLevel('purchase')],roll=Math.random()*100;let cumulative=0;for(const [tier,chance]of table){cumulative+=chance;if(roll<cumulative)return tier;}return 0;}
 function openKitchen(){if(day<1)return;if(!sandboxNight){toast('現在是白天；冶煉廠營業結束後，會開啟同一天的晚餐時段。');return;}$('sk').style.display='none';startKitchenNight();$('kitchenP').hidden=false;renderKitchen();saveNow();if(kitchen.done){renderKitchenSettlement();return;}if(!kitchen.helpSeen){kitchen.helpSeen=true;kitchenHelp();saveNow();}}
 function closeKitchen(){cancelKitchenDrag();clearKitchenDepartures();$('kitchenP').hidden=true;$('kitchenModal').hidden=true;showTown();}
 function kitchenNeighbors(i){return nb(i);}
@@ -533,8 +533,9 @@ function kitchenSell(w,index,clear){
  clear();kitchenRemoveOrder(index);kitchen.message='出餐成功！'+KITCHEN_NAMES[w.c]+' +'+price+' 金幣'+(like?' · 喜好 +10%':'');if(!kitchen.orders.length&&!kitchen.queue.length)completeKitchenNight();else kitchenStep();saveHi();renderKitchen();saveNow();return true;
 }
 function completeKitchenNight(){const fresh=kitchen&&!kitchen.done;const result=stage21_completeKitchenNight();if(fresh&&kitchen.done){reviewMetrics.nights++;reviewMetrics.nightTurns+=kitchen.turn;saveReviewProgress();}return result;}
-function renderKitchenSettlement(){const r=kitchen?.settlement;if(!r)return;const c=KITCHEN_CHALLENGES[r.challenge];kitchenModal('晚餐營業完成','<p>出餐 '+r.served+' 位 · 超時 '+r.missed+' 位 · 取消 '+(r.cancelled||0)+' 位</p><p>料理收入 '+r.earned+' 金幣</p><p>'+c.icon+c.name+'：'+(r.passed?'挑戰成功':'下次再挑戰')+'</p><p>營業獎勵 '+r.bonus+' 金幣 · 廚房技能點 '+r.points+' · 調味包 '+r.spice+'</p><button class="kitchen-wide" onclick="openKitchenOrganize()">先整理料理進冰箱</button><button class="pri kitchen-wide" onclick="finishKitchenNight()">結束夜晚，進入隔天</button>');}
+function renderKitchenSettlement(){const r=kitchen?.settlement;if(!r)return;const c=KITCHEN_CHALLENGES[r.challenge],organize=kitchenLevel('pack')>0&&day>1; kitchenModal('晚餐營業完成','<p>出餐 '+r.served+' 位 · 超時 '+r.missed+' 位 · 取消 '+(r.cancelled||0)+' 位</p><p>料理收入 '+r.earned+' 金幣</p><p>'+c.icon+c.name+'：'+(r.passed?'挑戰成功':'下次再挑戰')+'</p><p>營業獎勵 '+r.bonus+' 金幣 · 廚房技能點 '+r.points+' · 調味包 '+r.spice+'</p>'+(organize?'<button class="kitchen-wide" onclick="openKitchenOrganize()">先整理料理進冰箱</button>':'')+'<button class="pri kitchen-wide" onclick="finishKitchenNight()">結束夜晚，進入隔天</button>');}
 function finishKitchenNight(){if(day<1||!sandboxNight||!kitchen?.done||kitchen.day!==day||lives<=0)return;$('kitchenModal').hidden=true;$('kitchenP').hidden=true;setSandboxNight(false);newDay();saveNow();}
+
 
 function kitchenSVG(body){return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" aria-hidden="true">'+body+'</svg>';}
 function kitchenArt(item){
@@ -605,11 +606,11 @@ function openKitchenRecipes(t=0){
 }
 function inspectKitchenDish(w){
  const star=kitchenStars(w),stats=kitchenDishStats(w),spice=KITCHEN_SPICES[w.spice];
- kitchenModal(kitchenGradeName(w.t)+' '+KITCHEN_NAMES[w.c],'<div class="kitchen-dish-preview">'+kitchenArt(w)+'</div><p class="kitchen-star-summary">'+('★'.repeat(star))+('☆'.repeat(3-star))+' · 同款同階製作 '+(kitchen?.xp?.[w.c+':'+w.t]||0)+' 次</p><div class="kitchen-stat-row"><span>滋味<b>'+stats.taste+'</b></span><span>飽足<b>'+stats.fullness+'</b></span><span>香氣<b>'+stats.aroma+'</b></span></div><p>'+(spice?spice.icon+' '+spice.name+'風味：'+spice.effect+' · 售價 +'+kitchenSpiceBonus()+'%<br>':'')+'目前售價 '+kitchenPrice(w)+' 金幣</p>'+kitchenRecipeStrip(w.c,true)+'<p class="food-effect-note">冰箱解鎖後可作遠征補給：'+dishSupplyDescription(w)+'。恢復的是本場戰鬥生命，不是經營愛心；每場最多兩份，發動後消耗。</p><h3>五階料理造型</h3><div class="kitchen-tier-gallery">'+KITCHEN_GRADES.map((name,t)=>'<button aria-pressed="'+(t===w.t)+'" onclick="inspectKitchenDish({k:\'w\',c:'+w.c+',t:'+t+'})">'+kitchenArt({k:'w',c:w.c,t})+'<small>'+(t+1)+'階<br>'+name+'</small></button>').join('')+'</div><p>升階增加滋味、飽足、香氣與基礎售價；升星額外提升 5%／10%／20%。棋盤上的料理可拖到客人出餐，或拖到冰箱收納。</p>');
+ kitchenModal(kitchenGradeName(w.t)+' '+KITCHEN_NAMES[w.c],'<div class="kitchen-dish-preview">'+kitchenArt(w)+'</div><p class="kitchen-star-summary">'+('★'.repeat(star))+('☆'.repeat(3-star))+' · 同款同階製作 '+(kitchen?.xp?.[w.c+':'+w.t]||0)+' 次</p><div class="kitchen-stat-row"><span>滋味<b>'+stats.taste+'</b></span><span>飽足<b>'+stats.fullness+'</b></span><span>香氣<b>'+stats.aroma+'</b></span></div><p>'+(spice?spice.icon+' '+spice.name+'風味：'+spice.effect+' · 售價 +'+kitchenSpiceBonus()+'%<br>':'')+'目前售價 '+kitchenPrice(w)+' 金幣</p>'+kitchenRecipeStrip(w.c,true)+'<p class="food-effect-note">冰箱解鎖後可作遠征補給：'+dishSupplyDescription(w)+'。恢復的是本場戰鬥生命，不是經營愛心；戰前選定一份，每場最多使用一份，發動後消耗。</p><h3>五階料理造型</h3><div class="kitchen-tier-gallery">'+KITCHEN_GRADES.map((name,t)=>'<button aria-pressed="'+(t===w.t)+'" onclick="inspectKitchenDish({k:\'w\',c:'+w.c+',t:'+t+'})">'+kitchenArt({k:'w',c:w.c,t})+'<small>'+(t+1)+'階<br>'+name+'</small></button>').join('')+'</div><p>升階增加滋味、飽足、香氣與基礎售價；升星額外提升 5%／10%／20%。棋盤上的料理可拖到客人出餐，或拖到冰箱收納。</p>');
 }
 function openKitchenChallenge(){if(kitchen.done){renderKitchenSettlement();return;}const c=KITCHEN_CHALLENGES[kitchen.challenge];kitchenModal(c.icon+c.name,'<p>'+(c.kind==='rush'?'服務本晚 '+kitchen.total+' 位客人，且沒有任何超時訂單。':c.text)+'</p><p>完成營業可得廚房技能點與調味包；挑戰成功另加金幣及技能點。</p><h3>後台切換挑戰</h3><p>切換會重新開始本晚的訂單；已領過的當晚結算獎勵不重複發放。</p>'+KITCHEN_CHALLENGES.map((ch,i)=>'<button class="kitchen-wide" onclick="setKitchenChallenge('+i+')">'+ch.icon+ch.name+'</button>').join(''));}
 function setKitchenChallenge(index){if(!sandboxSession||!KITCHEN_CHALLENGES[index])return;startKitchenNight(true);kitchen.challenge=index;kitchenCreateOrders();$('kitchenModal').hidden=true;renderKitchen();}
-function kitchenHelp(){kitchenModal('廚房操作','<p>① 點空格或拖第一包食材到棋盤。初始只推出一階食材，第一點技能只能學料理大師。學習後三包相連升一階，四包得到兩包高一階，五包在最後落點升兩階。</p><p>② 拖第一張工序卡到至少兩包同階食材附近（相連的同階食材會一起消耗）的空格，做出主食、主菜或配菜。也可以點工序卡，再點空格。</p><p>③ 像冶煉廠一樣，第三份工序連成直線或彎線就會自動完成料理；三份備料合成到最後放置的位置；同時有多組時，每三份獨立檢定，在各組中間格生成一道料理，剩餘備料保留。</p><p>④ 拖料理到上方客人出餐。冰箱可收納，點道具箱可拿出買來的食材、工序卡或工具；拿出後仍可點空格放食材，要用手持物品時再點選或拖曳。</p><p>⑤ 放食材、備料、料理、使用工具及出餐會推進一步；看食譜、逛市場、整理道具不消耗步數。食材／備料／料理保鮮期分別為 14／24／32 步，保鮮專家每級增加 6 步。超時變成佔格廚餘，第1–3天每格15金幣、第4–6天30金幣，之後50金幣清理並推進一步，請愛護食物；冰箱會暫停料理保鮮倒數。</p><p>⑥ 客人數由 3／4／5 位逐日增加，第四天起為 5–8 位；料理品質要求也會逐步提升。完成本晚訂單後結算，再進入隔天白天。回城鎮不會結束營業。點客人可保留或取消訂單；取消扣一顆愛心。</p>');}
+function kitchenHelp(){kitchenModal('廚房操作','<p>① 點空格或拖第一包食材到棋盤。初始只推出一階食材，第一點技能只能學料理大師。學習後三包相連升一階，四包得到兩包高一階，五包在最後落點升兩階；料理大師二／三級增加返還原階食材的機率，高階食材的推出機率另由「採買大師」提升。</p><p>② 拖第一張工序卡到至少兩包同階食材附近（相連的同階食材會一起消耗）的空格，做出主食、主菜或配菜。也可以點工序卡，再點空格。</p><p>③ 像冶煉廠一樣，第三份工序連成直線或彎線就會自動完成料理；三份備料合成到最後放置的位置；全盤每個相連區塊都會檢查，每三份獨立檢定且不重複使用，在各組中間格生成一道料理，剩餘備料保留。</p><p>④ 拖料理到上方客人出餐。冰箱可收納，點道具箱可拿出買來的食材、工序卡或工具；拿出後仍可點空格放食材，要用手持物品時再點選或拖曳。</p><p>⑤ 放食材、備料、料理、使用工具及出餐會推進一步；看食譜、逛市場、整理道具不消耗步數。食材／備料／料理保鮮期分別為 14／24／32 步，保鮮專家每級增加 6 步。超時變成佔格廚餘，第1–3天每格15金幣、第4–6天30金幣，之後50金幣清理並推進一步，請愛護食物；冰箱會暫停料理保鮮倒數。</p><p>⑥ 客人數由 3／4／5 位逐日增加，第四天起為 5–8 位；料理品質要求也會逐步提升。完成本晚訂單後結算，再進入隔天白天。回城鎮不會結束營業。點客人可保留或取消訂單；取消扣一顆愛心。</p>');}
 function cancelKitchenDrag(){clearKitchenPreview();kitchenDrag?.ghost?.remove();kitchenDrag=null;}
 function startKitchenDrag(e){
  if(!expandedGameEnabled()||e.button>0)return;const target=e.target.closest('[data-kdrag]');if(!target)return;const kind=target.dataset.kdrag,index=+(target.dataset.ki||0),w=kind==='dish'?kitchen.g[index]:kind==='hand'?kitchen.hand:kind==='process'?{k:'m',s:kitchen.mq[0]}:kitchenFood(kitchen.q[0]);if(!w||kitchen.done&&!(kind==='dish'||kind==='hand'&&w.k==='w'))return;
@@ -834,10 +835,12 @@ function clearGeminiTown(){
  $('townP').dataset.geminiTown='false';geminiSnapshotAssets.clear();const rear=$('townDecorBack');rear.style.maskImage='';rear.dataset.geminiMask='';GEMINI_TOWN_BUILDINGS.forEach(b=>{const el=$(b.id);for(const key of ['left','top','width','height'])el.style[key]='';el.title='';});
 }
 function geminiTownGuestPoint(i,night){
- const line=night?[[282,213],[269,224],[255,236],[244,250],[232,265],[225,281],[222,299],[218,317]]:[[272,408],[255,417],[238,426],[220,436],[202,445],[183,454],[177,474],[177,494]];
+ // Coordinates mark the visitor's feet, aligned with the painted doorstep/paths.
+ const line=night?[[263,199],[250,209],[237,220],[226,233],[217,247],[215,263],[229,279],[241,294]]:[[263,402],[248,406],[233,411],[218,418],[204,428],[192,441],[184,456],[181,472]];
  return line[i]||[177,Math.min(600,514+(i-line.length)*18)];
 }
-function geminiTownGuestRoute(i,night){const [x,y]=geminiTownGuestPoint(i,night);return night?[[177,650],[177,454],[177,348],[211,322],[225,294],[225,267],[x,y]]:[[177,650],[177,500],[177,463],[x,y]];}
+function geminiTownGuestRoute(i,night){const line=Array.from({length:Math.max(8,i+1)},(_,j)=>geminiTownGuestPoint(j,night));return [[177,650],[177,500],...(night?[[177,362],[218,335],[235,313]]:[]),...line.slice(i).reverse()];}
+function townBackgroundFountainBlocked(x,y){return expandedGameEnabled()&&((x-180)/44)**2+((y-293)/36)**2<=1;}
 function geminiTownSnapshot(items,si,savedHeight){
  const rect=$('townMap').getBoundingClientRect(),H=Number.isFinite(savedHeight)&&savedHeight>=360&&savedHeight<=1000?savedHeight:rect.width>100&&rect.height>200?Math.max(360,Math.min(1000,360*rect.height/rect.width)):620,night=isSandboxNight();
  let out='<image href="'+(geminiSnapshotAssets.get(si)||GEMINI_TOWN_ART[si])+'" width="360" height="'+H+'" preserveAspectRatio="none"'+(night?' filter="url(#gemini-snapshot-night)"':'')+'/>';
@@ -854,6 +857,7 @@ async function prepareGeminiSnapshot(si){
  const epoch=sandboxEpoch,job=(async()=>{const response=await fetch(GEMINI_TOWN_ART[si]);if(!response.ok)throw new Error('Town background unavailable');const blob=await response.blob(),data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error('Town image unreadable'));reader.readAsDataURL(blob);});if(expandedGameEnabled()&&epoch===sandboxEpoch)geminiSnapshotAssets.set(si,data);})();
  geminiSnapshotRequests.set(si,job);try{await job;}finally{geminiSnapshotRequests.delete(si);}
 }
+
 const WORKSHOP_ART={"forge":"assets/interiors/forge.4296ba06a3b2.webp","kitchen":"assets/interiors/kitchen.957bd2e9fd2b.webp"};
 function syncWorkshopLook(){
  syncCozyItemLook();const enabled=expandedGameEnabled()&&day>0,app=$('app'),screen=$('kitchenP');
@@ -1029,16 +1033,19 @@ function playKitchenMerges(launch=null,placed=-1){
 }
 
 function kitchenTriples(at,board=kitchen.g){
- if(board[at]?.k!=='p')return [];const cells=kitchenConnected(board,at,'p');if(cells.length<3)return [];
- const set=new Set(cells),triples=[];for(const middle of cells){const near=nb(middle).filter(i=>set.has(i));for(let a=0;a<near.length;a++)for(let b=a+1;b<near.length;b++)triples.push({cells:[near[a],middle,near[b]],middle,mask:(1<<near[a])|(1<<middle)|(1<<near[b])});}
- triples.sort((a,b)=>Number(b.cells.includes(at))-Number(a.cells.includes(at))||a.middle-b.middle||a.cells[0]-b.cells[0]);
- let best=[],visits=0;const all=cells.reduce((m,i)=>m|(1<<i),0),goal=Math.floor(cells.length/3),seen=new Map();
- function search(mask,chosen){if(chosen.length>best.length)best=chosen.slice();if(best.length===goal||++visits>20000)return;let count=0;for(let bits=mask;bits;bits&=bits-1)count++;if(chosen.length+Math.floor(count/3)<=best.length)return;if((seen.get(mask)??-1)>=chosen.length)return;seen.set(mask,chosen.length);
-  let pivot=-1,options=null;for(const i of cells){if(!(mask&(1<<i)))continue;const available=triples.filter(t=>(t.mask&mask)===t.mask&&t.cells.includes(i));if(!options||available.length<options.length){pivot=i;options=available;}if(!available.length)break;}
-  if(pivot<0)return;for(const t of options){search(mask&~t.mask,[...chosen,t]);if(best.length===goal)return;}search(mask&~(1<<pivot),chosen);
- }search(all,[]);
- return best.map(t=>({...t,target:cells.length===3?at:t.middle}));
+ const done=new Set(),result=[],starts=[at,...board.map((_,i)=>i)].filter(i=>board[i]?.k==='p');
+ for(const start of starts){if(done.has(start))continue;const cells=kitchenConnected(board,start,'p');cells.forEach(i=>done.add(i));if(cells.length<3)continue;
+  const set=new Set(cells),triples=[];for(const middle of cells){const near=nb(middle).filter(i=>set.has(i));for(let a=0;a<near.length;a++)for(let b=a+1;b<near.length;b++)triples.push({cells:[near[a],middle,near[b]],middle,mask:(1<<near[a])|(1<<middle)|(1<<near[b])});}
+  triples.sort((a,b)=>Number(b.cells.includes(at))-Number(a.cells.includes(at))||a.middle-b.middle||a.cells[0]-b.cells[0]);
+  let best=[],visits=0;const all=cells.reduce((m,i)=>m|(1<<i),0),goal=Math.floor(cells.length/3),seen=new Map();
+  function search(mask,chosen){if(chosen.length>best.length)best=chosen.slice();if(best.length===goal||++visits>20000)return;let count=0;for(let bits=mask;bits;bits&=bits-1)count++;if(chosen.length+Math.floor(count/3)<=best.length)return;if((seen.get(mask)??-1)>=chosen.length)return;seen.set(mask,chosen.length);
+   let pivot=-1,options=null;for(const i of cells){if(!(mask&(1<<i)))continue;const available=triples.filter(t=>(t.mask&mask)===t.mask&&t.cells.includes(i));if(!options||available.length<options.length){pivot=i;options=available;}if(!available.length)break;}
+   if(pivot<0)return;for(const t of options){search(mask&~t.mask,[...chosen,t]);if(best.length===goal)return;}search(mask&~(1<<pivot),chosen);
+  }search(all,[]);
+  result.push(...best.map(t=>({...t,target:cells.length===3&&cells.includes(at)?at:t.middle})));
+ }if(result.length>1)result.forEach(t=>t.target=t.middle);return result;
 }
+
 let trainingBranch='forge',trainingReadOnly=false;
 function openLearnedForgeSkills(){trainingReadOnly=true;skMode='inspect';renderSk();$('sk').style.display='flex';}
 function renderLearnedKitchenSkills(){
@@ -1110,7 +1117,7 @@ window.addEventListener('resize',()=>requestAnimationFrame(layoutKitchenMessage)
 const TOWN_GUEST_ROLES=['劍士','法師','遊俠','僧侶','盜賊','吟遊詩人','商人','饕客'];
 function townGuestIdentity(i){if(expandedGameEnabled()){const list=isSandboxNight()?[...(kitchen?.orders||[]),...(kitchen?.queue||[])]:orders.concat(dq);if(list[i]?.guest)return list[i].guest;}return guestForOrder22(i,isSandboxNight());}
 function townGuestArt(id){return '<svg viewBox="0 0 32 52" shape-rendering="crispEdges" aria-hidden="true" data-town-guest-art="'+id+'"><image href="'+TOWN_GUEST_ART[id]+'" x="0" y="0" width="32" height="52" preserveAspectRatio="xMidYMax meet" style="image-rendering:pixelated"/></svg>';}
-let expeditionFoodOpen=false;
+let expeditionFoodOpen=false,expeditionFoodSelected=null;
 const DISH_SUPPLY_BASE=[[.30,0,0],[.23,.10,0],[.23,0,.08],[.18,.16,0],[.24,.08,.06],[.22,0,.12],[.14,.20,0],[.20,.12,.06],[.26,0,.08],[.18,0,.18]];
 function dishSupplyEffect(w){
  const base=DISH_SUPPLY_BASE[w.c],stars=kitchenStars(w),tier=Math.max(0,Math.min(4,w.t||0));if(!base)return null;
@@ -1118,14 +1125,25 @@ function dishSupplyEffect(w){
 }
 function dishSupplyDescription(w){const e=dishSupplyEffect(w);if(!e)return '';return '恢復 '+Math.round(e.heal*100)+'% 本場生命'+(e.attack?' · 下兩次普通攻擊 +'+Math.round(e.attack*100)+'%':'')+(e.shield?' · 獲得 '+Math.round(e.shield*100)+'% 生命上限護盾':'');}
 function expeditionFoodOptions(){return expandedGameEnabled()&&kitchenLevel('pack')>0?kitchen.pack.map((w,index)=>({w,index})).filter(x=>x.w?.k==='w'&&Number.isFinite(x.w.fresh)&&x.w.fresh>0&&DISH_SUPPLY_BASE[x.w.c]):[];}
-function expeditionFoodReady(b){return !!(b&&b.outcome==='ongoing'&&!b.resolved&&b.hp>0&&b.enemyHp>0&&(b.foodUsed||0)<2&&!(b.foodCooldown>0));}
-function renderExpeditionFood(){
- const panel=$('expeditionFood');panel.hidden=!expandedGameEnabled();if(!expandedGameEnabled())return;const b=expeditionState.lastBattle,food=sortedFoods(expeditionFoodOptions(),supplyFilter,supplySort),key=[supplyFilter,supplySort,expeditionFoodOpen,kitchenLevel('pack'),b?.outcome,b?.resolved,b?.foodUsed||0,b?.foodCooldown||0,food.map(x=>[x.index,x.w.c,x.w.t,x.w.spice,kitchenStars(x.w)].join(':')).join('|')].join(';');if(panel.dataset.foodKey===key)return;panel.dataset.foodKey=key;
- const status=!kitchenLevel('pack')?'先到訓練所解鎖冰箱，再把完成料理存入冰箱。':!food.length?'冰箱沒有可用料理。完成料理後，拖進冰箱即可帶往遠征。':(b?.foodUsed||0)>=2?'本場已使用兩份料理。':b?.foodCooldown>0?'再普通攻擊 '+b.foodCooldown+' 次可使用下一份。':'每場最多兩份，使用後間隔兩次普通攻擊。';
- panel.innerHTML='<button class="exp-wide food-toggle" onclick="toggleExpeditionFood()">🍱 冰箱補給 · '+(b?.foodUsed||0)+'/2 · '+food.length+' 份可用 '+(expeditionFoodOpen?'▴':'▾')+'</button><p class="exp-note">'+status+'</p>'+(expeditionFoodOpen?foodViewControls('supply',supplyFilter,supplySort)+'<div class="exp-food-list">'+food.map(({w,index})=>'<button data-exp-food="'+index+'" onclick="useExpeditionFood('+index+')" '+(!expeditionFoodReady(b)?'disabled':'')+'>'+kitchenArt(w)+'<span><b>'+esc(kitchenItemName(w))+'</b>'+foodTags(w)+'<small>'+dishSupplyDescription(w)+'</small></span></button>').join('')+'</div><p class="exp-note">只消耗發動的那一份；不回復經營愛心，戰鬥結束後不能使用。</p>':'');
+function expeditionFoodReady(b){return !!(b&&b.foodChoice&&b.outcome==='ongoing'&&!b.resolved&&b.hp>0&&b.enemyHp>0&&(b.foodUsed||0)<1);}
+function selectExpeditionFood(index){
+ if($('expeditionSetup').hidden)return false;if(index===-1)expeditionFoodSelected=null;else{const option=expeditionFoodOptions().find(x=>x.index===index);if(!option)return false;expeditionFoodSelected=option.w;}
+ renderExpeditionFoodSetup();return true;
 }
-function toggleExpeditionFood(){expeditionFoodOpen=!expeditionFoodOpen;renderExpeditionFood();}
-function useExpeditionFood(index){const food=kitchen?.pack[index],ok=stage21_useExpeditionFood(index);if(ok){reviewMetrics.supplies++;if(food){const key=food.c+':'+food.t;reviewMetrics.supplyTypes[key]=(reviewMetrics.supplyTypes[key]||0)+1;}saveReviewProgress();}return ok;}
+function renderExpeditionFoodSetup(){
+ const panel=$('expeditionFoodSetup');panel.hidden=!expandedGameEnabled();if(panel.hidden)return;const options=expeditionFoodOptions();if(!options.some(x=>x.w===expeditionFoodSelected))expeditionFoodSelected=null;
+ panel.innerHTML='<h3>🍱 戰前料理 · 每場限一份</h3><p class="exp-note">進入戰鬥前選定一份，戰鬥中自行決定使用時機，不能更換或追加。使用才消耗，未使用會留在冰箱。</p><button class="exp-wide" data-exp-food-choice="-1" aria-pressed="'+(!expeditionFoodSelected)+'" onclick="selectExpeditionFood(-1)">不攜帶料理</button>'+(options.length?'<div class="exp-food-list food-loadout">'+options.map(({w,index})=>'<button data-exp-food-choice="'+index+'" aria-pressed="'+(w===expeditionFoodSelected)+'" onclick="selectExpeditionFood('+index+')">'+kitchenArt(w)+'<span><b>'+esc(kitchenItemName(w))+'</b>'+foodTags(w)+'<small>'+dishSupplyDescription(w)+'</small></span></button>').join('')+'</div>':'<p class="exp-note">'+(kitchenLevel('pack')?'冰箱沒有可用料理。':'在訓練所解鎖冰箱，將料理存入後即可攜帶。')+'</p>');
+}
+function renderExpeditionFood(){
+ const panel=$('expeditionFood');panel.hidden=!expandedGameEnabled();if(panel.hidden)return;const b=expeditionState.lastBattle,w=b?.foodChoice,option=expeditionFoodOptions().find(x=>x.w===w);
+ if(!w){panel.innerHTML='<p class="exp-note">🍱 本場未攜帶料理；戰鬥中不能追加。</p>';return;}
+ if(b.foodUsed){panel.innerHTML='<p class="exp-note">🍱 本場料理已使用：'+esc(kitchenItemName(w))+' · 1/1</p>';return;}
+ const effect=dishSupplyEffect(w),full=b.hp>=b.hpMax&&!effect.attack&&!effect.shield,ready=!!option&&expeditionFoodReady(b)&&!full;
+ panel.innerHTML='<h3>🍱 本場攜帶料理 · 0/1</h3><div class="exp-food-list"><button data-exp-food="'+(option?.index??-1)+'" onclick="useExpeditionFood('+(option?.index??-1)+')" '+(!ready?'disabled':'')+'>'+kitchenArt(w)+'<span><b>使用 '+esc(kitchenItemName(w))+'</b>'+foodTags(w)+'<small>'+dishSupplyDescription(w)+'</small></span></button></div><p class="exp-note">'+(full?'目前生命全滿，受傷後才可使用這份回血料理。':!option?'這份料理已不在冰箱，無法使用。':'只能使用戰前選定的這一份；不恢復經營愛心。')+'</p>';
+}
+function toggleExpeditionFood(){expeditionFoodOpen=false;renderExpeditionFood();}
+function useExpeditionFood(index){const food=kitchen?.pack[index],b=expeditionState.lastBattle;if(!food||food!==b?.foodChoice||!expeditionFoodReady(b))return false;const ok=stage21_useExpeditionFood(index);if(ok){reviewMetrics.supplies++;const key=food.c+':'+food.t;reviewMetrics.supplyTypes[key]=(reviewMetrics.supplyTypes[key]||0)+1;saveNow();if(sandboxSession)saveReviewProgress();}return ok;}
+
 let archiveCategory='weapons';
 function setArchiveCategory(category){if(!expandedGameEnabled()||!['weapons','dishes'].includes(category)||albumTier===-2)return;archiveCategory=category;albumTier=-1;renderWeaponAlbum();}
 function renderDishAlbum(){
@@ -1173,7 +1191,7 @@ function kitchenPlanAt(at,item){
  if(item.k==='m'){
   const mat=moldMaterials(at,board);if(!mat)return invalid('這格附近需要至少兩包相連的同階食材。');consumed=mat.cells.slice();consumed.forEach(i=>board[i]=null);board[at]={k:'p',s:item.s,t:mat.t};
   for(const t of kitchenTriples(at,board)){const parts=t.cells.map(i=>board[i]),recipe=COMBO.indexOf(parts.map(w=>w.s).sort().join(''));groups.push({cells:t.cells,target:t.target,recipe,tier:Math.floor(parts.reduce((s,w)=>s+w.t,0)/3)});}
-  const used=new Set(groups.flatMap(g=>g.cells));return {valid:true,at,consumed,groups,leftovers:kitchenConnected(board,at,'p').filter(i=>!used.has(i)),text:'消耗 '+consumed.length+' 包食材 → '+KITCHEN_TYPES[item.s]+'備料'+(groups.length?'；'+groups.map((g,i)=>(i+1)+'組 '+KITCHEN_NAMES[g.recipe]+' → 第'+(g.target+1)+'格').join('、'):'；未達三份，先保留備料')+'。放開後確認。'};
+  const used=new Set(groups.flatMap(g=>g.cells));return {valid:true,at,consumed,groups,leftovers:board.flatMap((w,i)=>w?.k==='p'&&!used.has(i)?[i]:[]),text:'消耗 '+consumed.length+' 包食材 → '+KITCHEN_TYPES[item.s]+'備料'+(groups.length?'；全盤檢定：'+groups.map((g,i)=>(i+1)+'組 '+KITCHEN_NAMES[g.recipe]+' → 第'+(g.target+1)+'格').join('、'):'；未達三份，先保留備料')+'。放開後確認。'};
  }
  if(item.k==='o'){if(!kitchenLevel('merge'))return {valid:true,at,consumed:[],groups:[],text:'放置'+KITCHEN_GRADES[item.t]+'食材；學習「料理大師」後才能合成升階。'};
   board[at]={k:'o',t:item.t};const cells=kitchenConnected(board,at,'o');if(cells.length<3||item.t>=4)return {valid:true,at,consumed:[],groups:[],text:'放置'+KITCHEN_GRADES[item.t]+'食材；尚未達升階條件。'};const n=Math.min(5,cells.length);return {valid:true,at,consumed:cells.slice(0,n),groups:[{cells:cells.slice(0,n),target:at,recipe:null,tier:Math.min(4,item.t+(n===5?2:1))}],text:n+' 包食材合成，最後落點升 '+(n===5?2:1)+' 階'+(n===4?'，另一包升階食材保留在原材料格':'')+'。放開後確認。'};
@@ -1187,6 +1205,7 @@ function showKitchenPreview(at,item){
 }
 function updateKitchenDragPreview(e){const d=kitchenDrag;if(!d?.moved||kitchen.done)return;const cell=document.elementFromPoint(e.clientX,e.clientY)?.closest('.kc');if(!cell){clearKitchenPreview();return;}showKitchenPreview(+cell.dataset.ki,d.w);}
 function kitchenHoverPreview(e){if(kitchenDrag||kitchen?.done)return;const hand=kitchen.useHeld&&kitchen.hand?.k==='m';if(!hand&&kitchen.mode!=='prep')return;const cell=e.target.closest('.kc');if(cell)showKitchenPreview(+cell.dataset.ki,hand?kitchen.hand:{k:'m',s:kitchen.mq[0]});}
+
 let fridgeFilter='all',fridgeSort='quality',supplyFilter='all',supplySort='heal',battleUserPaused=false,battleLastAdvance=0;
 const battleFeedbackNodes=new Set();
 function foodMatches(w,filter){const e=dishSupplyEffect(w);return filter==='all'||filter==='healing'&&e.heal>=.25||filter==='attack'&&e.attack>0||filter==='shield'&&e.shield>0;}
@@ -1194,7 +1213,7 @@ function sortedFoods(rows,filter,sort){return rows.filter(x=>foodMatches(x.w,fil
 function foodTags(w){const e=dishSupplyEffect(w);return '<span class="food-tags"><i>♥ '+Math.round(e.heal*100)+'%</i>'+(e.shield?'<i>🛡 '+Math.round(e.shield*100)+'%</i>':'')+(e.attack?'<i>⚔ +'+Math.round(e.attack*100)+'%</i>':'')+'</span>';}
 function foodViewControls(where,filter,sort){return '<div class="food-filter-row">'+[['all','全部'],['healing','回血主力'],['shield','護盾'],['attack','攻擊']].map(([id,name])=>'<button aria-pressed="'+(id===filter)+'" onclick="setFoodView(\''+where+'\',\''+id+'\',null)">'+name+'</button>').join('')+'</div><label class="food-sort">排序 <select aria-label="'+(where==='fridge'?'冰箱':'遠征補給')+'排序" onchange="setFoodView(\''+where+'\',null,this.value)">'+[['quality','品質'],['heal','回血效果'],['shield','護盾效果'],['attack','攻擊效果'],['freshness','保鮮剩餘']].map(([id,name])=>'<option value="'+id+'" '+(id===sort?'selected':'')+'>'+name+'</option>').join('')+'</select></label>';}
 function setFoodView(where,filter,sort){if(where==='fridge'){if(filter)fridgeFilter=filter;if(sort)fridgeSort=sort;openKitchenFridge();}else{if(filter)supplyFilter=filter;if(sort)supplySort=sort;$('expeditionFood').dataset.foodKey='';renderExpeditionFood();}}
-function updateBattlePace(){const b=expeditionState.lastBattle,button=$('expeditionPause22');button.hidden=!expandedGameEnabled()||!b||b.resolved;button.textContent=battleUserPaused?'▶ 繼續戰鬥':'⏸ 暫停戰鬥';$('expeditionPace22').textContent=battleUserPaused?'已暫停；可查看或使用補給。':expeditionFoodOpen?'補給清單展開中：戰鬥顯示為半速。':'戰鬥顯示正常速度。';$('expeditionPace22').hidden=!expandedGameEnabled()||!b||b.resolved;}
+function updateBattlePace(){const b=expeditionState.lastBattle,button=$('expeditionPause22');button.hidden=!expandedGameEnabled()||!b||b.resolved;button.textContent=battleUserPaused?'▶ 繼續戰鬥':'⏸ 暫停戰鬥';$('expeditionPace22').textContent=battleUserPaused?'已暫停；可查看能力或使用戰前攜帶的料理。':'戰鬥顯示正常速度。';$('expeditionPace22').hidden=!expandedGameEnabled()||!b||b.resolved;}
 function toggleBattlePause(){const b=expeditionState.lastBattle;if(!expandedGameEnabled()||!b||b.resolved)return;battleUserPaused=!battleUserPaused;battleLastAdvance=Date.now();updateBattlePace();}
 function clearBattleFeedback(){for(const n of battleFeedbackNodes)n.remove();battleFeedbackNodes.clear();}
 function showBattleFeedback(row){
@@ -1204,6 +1223,7 @@ function showBattleFeedback(row){
  const label=document.createElement('span');label.className='battle-damage22 '+(row.actor==='hero'?'enemy-hit':'hero-hit');label.setAttribute('aria-hidden','true');label.textContent=row.charge?'蓄力':row.damage?'-'+row.damage:row.absorbed?'護盾':'抵擋';target.appendChild(label);battleFeedbackNodes.add(label);const done=()=>{label.remove();battleFeedbackNodes.delete(label);};if(label.animate){const a=label.animate([{transform:'translateY(0)',opacity:1},{transform:'translateY(-28px)',opacity:0}],{duration:650,easing:'ease-out'});a.onfinish=done;a.oncancel=done;}else gameTimeout(done,650);
 }
 function monsterSpriteIndex(m){let index=EXPEDITIONS.findIndex(x=>x.name===m.name);if(index<0)index=m.endless?({dragon:18,golem:17,wolf:16,knight:19}[m.kind]??10):EXPEDITIONS.findIndex(x=>x.kind===m.kind);return Math.max(0,index);}
+
 function kitchenWasteFee(){return day<=3?15:day<=6?30:KITCHEN_WASTE_FEE;}
 function kitchenCompostEligible(w){return !!(w&&['p','w'].includes(w.fromKind)&&kitchen.compostEarnedDay!==day);}
 function earnKitchenCompost(w){if(!kitchenCompostEligible(w))return false;kitchen.compost=Math.min(99,(kitchen.compost||0)+1);kitchen.compostEarnedDay=day;return true;}
@@ -1231,6 +1251,7 @@ function validKitchenProgress(raw,forgeDay){
  if(!raw||typeof raw!=='object'||Array.isArray(raw))throw new Error('缺少餐廳進度');const k={...freshKitchen(),...raw},integer=(n,a,b)=>Number.isSafeInteger(n)&&n>=a&&n<=b;
  const item=w=>{if(w===null)return true;if(!w||typeof w!=='object')return false;if(['o','p','w'].includes(w.k)&&(!integer(w.t,0,4)||w.fresh!==undefined&&!integer(w.fresh,0,10000)||w.born!==undefined&&!integer(w.born,0,10000001)))return false;if(w.k==='o')return true;if(w.k==='p'||w.k==='m')return integer(w.s,0,2);if(w.k==='w')return integer(w.c,0,9)&&(!w.spice||Object.hasOwn(KITCHEN_SPICES,w.spice))&&(!w.cs||Array.isArray(w.cs)&&w.cs.length===3&&w.cs.every(t=>integer(t,0,4)));if(w.k==='spice')return Object.hasOwn(KITCHEN_SPICES,w.spice);if(w.k==='waste')return (!w.fromKind||['o','p','w'].includes(w.fromKind))&&(!w.fromName||typeof w.fromName==='string'&&w.fromName.length<100);return ['z','f','u'].includes(w.k);};
  if(!integer(k.day,0,forgeDay)||!Array.isArray(k.g)||k.g.length!==30||!k.g.every(item)||!Array.isArray(k.heat)||k.heat.length!==30||!k.heat.every(n=>integer(n,0,10000)))throw new Error('餐廳棋盤內容錯誤');
+ if(k.skills&&typeof k.skills==='object'&&!Object.hasOwn(k.skills,'purchase'))k.skills={...k.skills,purchase:0};
  if(!k.skills||Object.keys(KITCHEN_SKILLS).some(key=>!integer(k.skills[key],0,3))||!integer(k.sp,0,1000000))throw new Error('餐廳技能內容錯誤');
  if(!Array.isArray(k.pack)||k.pack.length>2*k.skills.pack||!k.pack.every(w=>item(w)&&w?.k==='w')||!Array.isArray(k.bag)||k.bag.length>2000||!k.bag.every(item)||!item(k.hand))throw new Error('冰箱或道具內容錯誤');
  if(!Array.isArray(k.q)||k.q.length!==5||!k.q.every(t=>integer(t,0,4))||!Array.isArray(k.mq)||k.mq.length!==3||!k.mq.every(s=>integer(s,0,2)))throw new Error('食材或工序佇列錯誤');
@@ -1241,7 +1262,7 @@ function validKitchenProgress(raw,forgeDay){
  if(!Array.isArray(k.justHeated)||!k.justHeated.every(i=>integer(i,0,29)))throw new Error('餘熱紀錄錯誤');
  if(k.settlement&&(!['served','missed','earned','bonus','points','spice'].every(key=>integer(k.settlement[key],0,1e15))||!integer(k.settlement.challenge,0,2)||typeof k.settlement.passed!=='boolean'))throw new Error('餐廳結算內容錯誤');
  if(!k.stock||!['m','tool','o'].every(key=>integer(k.stock[key],0,1000000)))throw new Error('菜市場庫存錯誤');
- k.compost=Math.max(0,Math.min(99,Math.floor(+k.compost||0)));k.compostEarnedDay=Math.max(0,Math.min(forgeDay,Math.floor(+k.compostEarnedDay||0)));k.useHeld=!!(raw.useHeld===true&&k.hand);k.cancelled=raw.cancelled===undefined?0:raw.cancelled;if(!integer(k.cancelled,0,1000000)||k.settlement?.cancelled!==undefined&&!integer(k.settlement.cancelled,0,1000000))throw new Error('取消訂單紀錄錯誤');if(!k.skills.merge)k.q=k.q.map(()=>0);k.forgedAt={};return k;
+ k.compost=Math.max(0,Math.min(99,Math.floor(+k.compost||0)));k.compostEarnedDay=Math.max(0,Math.min(forgeDay,Math.floor(+k.compostEarnedDay||0)));k.useHeld=!!(raw.useHeld===true&&k.hand);k.cancelled=raw.cancelled===undefined?0:raw.cancelled;if(!integer(k.cancelled,0,1000000)||k.settlement?.cancelled!==undefined&&!integer(k.settlement.cancelled,0,1000000))throw new Error('取消訂單紀錄錯誤');if(!k.skills.purchase)k.q=k.q.map(()=>0);k.forgedAt={};return k;
 }
 function snapshotReviewProgress(){
  const now=Date.now();if(!document.hidden)reviewMetrics.activeMs+=Math.max(0,Math.min(30000,now-reviewMetrics.lastActive));reviewMetrics.lastActive=now;
@@ -1263,7 +1284,7 @@ function restoreReviewProgress(raw,remember=true){
  try{if(remember){const old=localStorage.getItem(REVIEW_SAVE_KEY);if(old)localStorage.setItem(REVIEW_PREVIOUS_KEY,old);}stopExpeditionPlayback();clearKitchenIngredientFlights();clearKitchenDepartures();clearKitchenPreview(false);clearBattleFeedback();hydrateReviewForge(checked.entry);kitchen=validKitchenProgress(checked.kitchen,day);kitchen.justHeated=new Set(kitchen.justHeated);kitchen.forgedAt={};sandboxNight=checked.night;
   const metrics=checked.metrics||{},count=v=>Number.isFinite(+v)?Math.max(0,Math.min(1e15,+v)):0;reviewMetrics={activeMs:count(metrics.activeMs),lastActive:Date.now(),crafted:count(metrics.crafted),served:count(metrics.served),spoiled:count(metrics.spoiled),supplies:count(metrics.supplies),supplyTypes:Object.fromEntries(Object.entries(metrics.supplyTypes||{}).filter(([key,n])=>/^\d:[0-4]$/.test(key)&&Number.isSafeInteger(n)&&n>=0)),battles:Array.isArray(metrics.battles)?metrics.battles.slice(-50).filter(b=>b&&Number.isSafeInteger(b.stage)&&b.stage>=1&&b.stage<=1000000&&['勝利','生命歸零','回合上限或撤退'].includes(b.result)&&Number.isSafeInteger(b.supplies)&&b.supplies>=0&&b.supplies<=2):[],nights:count(metrics.nights),nightTurns:count(metrics.nightTurns)};
   const v=checked.views||{};for(const [key,value]of Object.entries(v))if(['all','healing','shield','attack'].includes(value)){if(key==='fridgeFilter')fridgeFilter=value;if(key==='supplyFilter')supplyFilter=value;}for(const [key,value]of Object.entries(v))if(['quality','heal','shield','attack','freshness'].includes(value)){if(key==='fridgeSort')fridgeSort=value;if(key==='supplySort')supplySort=value;}
-  battleUserPaused=false;battleLastAdvance=0;expeditionFoodOpen=false;ensureOrderGuests22();$('kitchenP').hidden=true;$('kitchenModal').hidden=true;$('reviewProgressP').style.display='none';render();showTown();toast('已恢復第 '+day+' 天'+(sandboxNight?'夜晚':'白天')+'的後台測試進度');
+  battleUserPaused=false;battleLastAdvance=0;expeditionFoodOpen=false;expeditionFoodSelected=null;ensureOrderGuests22();$('kitchenP').hidden=true;$('kitchenModal').hidden=true;$('reviewProgressP').style.display='none';render();showTown();toast('已恢復第 '+day+' 天'+(sandboxNight?'夜晚':'白天')+'的後台測試進度');
  }finally{reviewRestoring=wasRestoring;}if(!reviewRestoring)saveReviewProgress();return true;
 }
 function openReviewProgress(){if(!sandboxSession)return openFormalProgress();$("reviewProgressP").querySelector(".modal-x").setAttribute("aria-label","關閉測試進度");$("reviewProgressP").querySelector("h2").textContent="💾 後台測試進度";
@@ -1275,6 +1296,7 @@ function applyReviewImport(){if(!pendingReviewImport)return;const data=pendingRe
 function startFreshReviewRun(){confirmBox('開始新的後台測試','目前測試進度會被新的一局取代，建議先匯出備份。正式遊戲資料不受影響。','開始新測試',()=>{saveReviewProgress();const old=localStorage.getItem(REVIEW_SAVE_KEY);if(old)localStorage.setItem(REVIEW_PREVIOUS_KEY,old);reviewRestoring=true;try{stage21_preview_openAdmin();if(sandboxSession){preview_start('normal',{test:true});skills.mm=1;coins=1e12;sp=9999;reviewMetrics={activeMs:0,lastActive:Date.now(),crafted:0,served:0,spoiled:0,supplies:0,supplyTypes:{},battles:[],nights:0,nightTurns:0};showTown();}}finally{reviewRestoring=false;}saveReviewProgress();closeP('reviewProgressP');});}
 window.addEventListener('pagehide',()=>saveReviewProgress());
 document.addEventListener('visibilitychange',()=>{if(document.hidden)saveReviewProgress();});
+
 function stage21_monsterArt(m){
  const base='<ellipse cx="32" cy="57" rx="26" ry="5" fill="#102330" opacity=".4"/>';
  let shape='';
@@ -1300,7 +1322,7 @@ function stage21_kitchenCraft(at,silent=false){
   if(Math.floor((old+1)/3)>Math.floor(old/3)&&old<9)toast(KITCHEN_NAMES[c]+' 升星！');kitchenRecordMerge(batch.cells,trio,[target],target);
  }
  // Refunds run after every preparation-to-dish event, so no ingredient animation jumps ahead of cooking.
- for(const batch of batches){const free=batch.cells.filter(i=>i!==batch.target&&!kitchen.g[i]);if(!free.length)continue;const target=free[rnd(free.length)],chance=[0,.1,.25,.5][kitchenLevel('merge')],tier=Math.random()<chance?batch.parts[rnd(3)].t:0;kitchen.g[target]=kitchenFood(tier);kitchenAuto(target);}
+ for(const batch of batches){const free=batch.cells.filter(i=>i!==batch.target&&!kitchen.g[i]);if(!free.length)continue;const target=free[rnd(free.length)],chance=[0,0,.25,.5][kitchenLevel('merge')],tier=Math.random()<chance?batch.parts[rnd(3)].t:0;kitchen.g[target]=kitchenFood(tier);kitchenAuto(target);}
  kitchen.message='料理完成：'+made.join('、')+'！拖曳到客人即可出餐。';forgeSound(0);return true;
 }
 function stage21_completeKitchenNight(){
@@ -1314,10 +1336,10 @@ function stage21_kitchenSell(w,index,clear){
  clear();kitchenRemoveOrder(index);kitchen.message='出餐成功！'+KITCHEN_NAMES[w.c]+' +'+price+' 金幣';if(!kitchen.orders.length&&!kitchen.queue.length)completeKitchenNight();else kitchenStep();renderKitchen();return true;
 }
 function stage21_useExpeditionFood(index){
- const b=expeditionState.lastBattle;if(!expandedGameEnabled()||!expeditionFoodReady(b))return false;const option=expeditionFoodOptions().find(x=>x.index===index);if(!option)return false;const w=option.w,e=dishSupplyEffect(w);
+ const b=expeditionState.lastBattle;if(!expandedGameEnabled()||!expeditionFoodReady(b))return false;const option=expeditionFoodOptions().find(x=>x.index===index);if(!option||option.w!==b.foodChoice)return false;const w=option.w,e=dishSupplyEffect(w);
  if(b.hp>=b.hpMax&&!e.attack&&!e.shield){toast('生命已滿，這份回血料理先留在冰箱。');return false;}
  const restored=Math.min(b.hpMax-b.hp,Math.round(b.hpMax*e.heal)),shield=Math.round(b.hpMax*e.shield);kitchen.pack.splice(index,1);b.hp=Math.min(b.hpMax,b.hp+restored);b.shield+=shield;
- if(e.attack){b.foodAttack=Math.max(b.foodAttack||0,e.attack);b.foodAttackTurns=2;}b.foodUsed=(b.foodUsed||0)+1;b.foodCooldown=2;
+ if(e.attack){b.foodAttack=Math.max(b.foodAttack||0,e.attack);b.foodAttackTurns=2;}b.foodUsed=(b.foodUsed||0)+1;b.foodCooldown=0;
  b.log.push({actor:'hero',supply:true,hp:b.hp,enemyHp:b.enemyHp,text:'🍱 使用'+kitchenItemName(w)+'：恢復 '+restored+' 生命'+(shield?'、護盾 +'+shield:'')+(e.attack?'、下兩次普通攻擊 +'+Math.round(e.attack*100)+'%':'')+'（料理已消耗）'});
  renderExpeditionBattle();return true;
 }
@@ -1357,6 +1379,7 @@ function stage21_preview_openAdmin(){
  skills.mm=1;coins=1e12;sp=9999;cityRevision++;seasonNoticePending=false;closeP('seasonP');render();showTown();toast('🧪 後台測試 · 無限金錢與冶煉技能點 · 測試進度獨立保存');
 }
 function stage21_finishSandbox(){if(!sandboxSession)return;const result=preview_finishSandbox(...arguments);installKitchenPreviewCatalog(false);clearKitchenPreviewScene();clearGeminiTown();cityState=freshCity();return result;}
+
 function snapshotForgeReview(){  const st={
     g,coins,earned,all,day,dTot,dServed,dEarn,dLeft,orders,dq,best,Q,MQ,
     heat,hand,shopD,magic,magicSet:[...magicSet],dMagic,dSold,lives,
@@ -1407,7 +1430,7 @@ function readDishAlbum(){try{return new Set(JSON.parse(localStorage.getItem('for
 let dishAlbum=readDishAlbum();
 function rememberDish(w){if(sandboxSession||testRun||booting||!w||w.k!=='w')return;dishAlbum.add(w.c+':'+w.t);try{localStorage.setItem('forgeDishAlbumV1',JSON.stringify([...dishAlbum].sort()));}catch{}}
 function restoreRestaurant(raw){
- kitchen=freshKitchen();sandboxNight=false;reviewMetrics=freshPlayMetrics();fridgeFilter='all';fridgeSort='quality';supplyFilter='all';supplySort='heal';battleUserPaused=false;battleLastAdvance=0;expeditionFoodOpen=false;
+ kitchen=freshKitchen();sandboxNight=false;reviewMetrics=freshPlayMetrics();fridgeFilter='all';fridgeSort='quality';supplyFilter='all';supplySort='heal';battleUserPaused=false;battleLastAdvance=0;expeditionFoodOpen=false;expeditionFoodSelected=null;
  if(raw){kitchen=validKitchenProgress(raw.kitchen,day);kitchen.justHeated=new Set(kitchen.justHeated);sandboxNight=raw.night;const m=raw.metrics||{},number=v=>Number.isFinite(v)&&v>=0?Math.min(1e15,v):0;for(const key of ['activeMs','crafted','served','spoiled','supplies','nights','nightTurns'])reviewMetrics[key]=number(m[key]);reviewMetrics.supplyTypes=Object.fromEntries(Object.entries(m.supplyTypes||{}).filter(([k,n])=>validAlbumKey(k)&&Number.isSafeInteger(n)&&n>=0));reviewMetrics.battles=Array.isArray(m.battles)?m.battles.slice(-50).filter(b=>b&&Number.isSafeInteger(b.stage)&&b.stage>=1&&b.stage<=1000000&&['勝利','生命歸零','回合上限或撤退'].includes(b.result)&&Number.isSafeInteger(b.supplies)&&b.supplies>=0&&b.supplies<=2):[];}
  ensureOrderGuests22();for(const [key,n]of Object.entries(kitchen.xp))if(n>0&&!sandboxSession&&!testRun)dishAlbum.add(key);if(!sandboxSession&&!testRun)try{localStorage.setItem('forgeDishAlbumV1',JSON.stringify([...dishAlbum].sort()));}catch{}
 }
@@ -2493,6 +2516,7 @@ const townPetAnimations=new Set();let petNavigation=null;
 const townPets={cat:{kind:'cat',point:[178,558],anim:null,timer:null},dog:{kind:'dog',point:[178,222],anim:null,timer:null}};
 function petGround(x,y){
  if(x<20||x>340||y<174||y>607)return false;
+ if(townBackgroundFountainBlocked(x,y))return false;
  const blocks=expandedGameEnabled()?townMasterBlocks():PET_BLOCKS;
  if(blocks.some(([x0,y0,x1,y1])=>x>=x0-8&&x<=x1+8&&y>=y0-7&&y<=y1+7))return false;
  if(cityObstacleAt(x,y))return false;
@@ -2509,7 +2533,7 @@ function buildPetNavigation(){
  const nodes=new Map();for(let j=0;j<37;j++)for(let i=0;i<27;i++){const x=22+i*12,y=174+j*12;if(petGround(x,y))nodes.set(i+','+j,[x,y]);}return nodes;
 }
 function petRoute(start){
- petNavigation=petNavigation||buildPetNavigation();const keys=[...petNavigation.keys()];let first=keys[0],dist=Infinity;for(const k of keys){const p=petNavigation.get(k),d=Math.hypot(p[0]-start[0],p[1]-start[1]);if(d<dist){dist=d;first=k;}}
+ petNavigation=petNavigation||buildPetNavigation();const keys=[...petNavigation.keys()];if(!keys.length)return [];let first=keys[0],dist=Infinity;for(const k of keys){const p=petNavigation.get(k),d=Math.hypot(p[0]-start[0],p[1]-start[1]);if(d<dist){dist=d;first=k;}}
  const parents=new Map([[first,null]]),queue=[first],directions=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
  for(let n=0;n<queue.length;n++){const k=queue[n],[i,j]=k.split(',').map(Number);for(const [di,dj]of directions){const next=(i+di)+','+(j+dj);if(!petNavigation.has(next)||parents.has(next))continue;if(di&&dj&&(!petNavigation.has((i+di)+','+j)||!petNavigation.has(i+','+(j+dj))))continue;if(!cityPetSegmentClear(petNavigation.get(k),petNavigation.get(next)))continue;parents.set(next,k);queue.push(next);}}
  const choices=queue.filter(k=>{const p=petNavigation.get(k);return Math.hypot(p[0]-start[0],p[1]-start[1])>85});let last=(choices.length?choices:queue)[rnd((choices.length?choices:queue).length)],route=[];while(last!==null){route.push(petNavigation.get(last));last=parents.get(last);}route.reverse();
@@ -2531,6 +2555,7 @@ function moveTownPet(p){
 function petLove(kind){
  const el=$('townPet-'+kind);if(!el)return;el.querySelector('.pet-love')?.remove();const bubble=document.createElement('span');bubble.className='pet-love';bubble.setAttribute('aria-label','愛心');bubble.innerHTML='<svg viewBox="0 0 52 30" shape-rendering="crispEdges" aria-hidden="true"><path fill="#263a40" d="M5 1h42v4h4v17h-4v4H30v4h-7v-4H5v-4H1V5h4z"/><path fill="#f4e9c8" d="M6 4h40v3h2v13h-3v3H28v4h-3v-4H6v-3H4V7h2z"/><path fill="#df8491" d="M10 9h5v3h3V9h5v8h-3v3h-4v-3h-3v-3h-3zM29 9h5v3h3V9h5v8h-3v3h-4v-3h-3v-3h-3z"/><path fill="#f8b9b9" d="M11 10h3v2h-3zM30 10h3v2h-3z"/></svg>';el.appendChild(bubble);gameTimeout(()=>bubble.remove(),1800);
 }
+
 
 function townHouseSign(kind){
  const labels={archive:'圖鑑館',forge:'冶煉廠',shop:'商店',training:'訓練所',decor:'裝飾行',greenhouse:'溫室'},colors={archive:'#384e68',forge:'#804931',shop:'#3d6244',training:'#3e526f',decor:'#76547b',greenhouse:'#3b6f63'},x=25,y=82;
@@ -2565,23 +2590,23 @@ function stable_renderTownVisitors(remaining){
 function preview_renderTownVisitors(remaining){
  const el=$('townQueue'),key=runId+':'+day+':'+isSandboxNight();
  if(el.dataset.visitors===key&&el.dataset.remaining===String(remaining))return;
- if(el.dataset.visitors===key&&remaining<Number(el.dataset.remaining)){
-  [...el.querySelectorAll('.town-visitor')].slice(0,Number(el.dataset.remaining)-remaining).forEach(n=>{(n.getAnimations?.()||[]).forEach(a=>{a.cancel();townVisitorAnimations.delete(a)});n.remove()});el.dataset.remaining=String(remaining);return;
- }
+ const rect=$('townMap').getBoundingClientRect(),sx=(rect.width||360)/360,sy=(rect.height||620)/620,previous=new Map();
+ if(el.dataset.visitors===key)for(const n of el.querySelectorAll('.town-visitor')){const r=n.getBoundingClientRect();previous.set(n.dataset.visitorId,[(r.left+r.width/2-rect.left)/sx,(r.bottom-rect.top)/sy]);}
  townVisitorAnimations.forEach(a=>a.cancel?.());townVisitorAnimations.clear();el.dataset.visitors=key;el.dataset.remaining=String(remaining);
  el.innerHTML=Array.from({length:remaining},(_,i)=>{
   const guest=townGuestIdentity(i),[x,y]=kitchenTownGuestPoint(i);
-  return '<span class="town-visitor" style="left:'+x/360*100+'%;top:'+y/620*100+'%" data-guest="'+i+'" data-guest-role="'+guest.role+'" data-guest-gender="'+guest.gender+'" aria-label="排隊客人 '+(i+1)+' · '+guest.gender+guest.role+'">'+townGuestArt(guest.id)+'</span>';
+  return '<span class="town-visitor" style="left:'+x/360*100+'%;top:'+y/620*100+'%" data-guest-feet="true" data-visitor-id="'+guest.id+'" data-guest="'+i+'" data-guest-role="'+guest.role+'" data-guest-gender="'+guest.gender+'" aria-label="排隊客人 '+(i+1)+' · '+guest.gender+guest.role+'">'+townGuestArt(guest.id)+'</span>';
  }).join('');
- const rect=$('townMap').getBoundingClientRect(),sx=(rect.width||360)/360,sy=(rect.height||620)/620;
+ if(lowEffects||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
  [...el.querySelectorAll('.town-visitor')].forEach((n,i)=>{
-  const [x,y]=kitchenTownGuestPoint(i),route=townGuestRoute(i);let length=0;const distances=route.map((point,k)=>{if(k)length+=Math.hypot(point[0]-route[k-1][0],point[1]-route[k-1][1]);return length;});
+  const [x,y]=kitchenTownGuestPoint(i),prior=previous.get(n.dataset.visitorId),route=prior?[prior,[x,y]]:townGuestRoute(i);let length=0;const distances=route.map((point,k)=>{if(k)length+=Math.hypot(point[0]-route[k-1][0],point[1]-route[k-1][1]);return length;});if(length<1)return;
   const frames=route.map(([px,py],k)=>({transform:`translate3d(${(px-x)*sx}px,${(py-y)*sy}px,0)`,offset:distances[k]/length}));
-  const a=n.animate(frames,{duration:Math.min(8000,Math.max(3800,length*9))+i*70,delay:i*300,easing:'linear',fill:'backwards'});townVisitorAnimations.add(a);n.classList.add('arriving');
+  const a=n.animate(frames,{duration:prior?500:Math.min(8000,Math.max(3800,length*9))+i*70,delay:prior?0:i*300,easing:'linear',fill:'backwards'});townVisitorAnimations.add(a);n.classList.add('arriving');
   a.onfinish=()=>{n.classList.remove('arriving');townVisitorAnimations.delete(a)};
   if(townMotionPaused)a.pause?.();
  });
 }
+
 
 function townHouse(kind,p){if(expandedGameEnabled()&&['archive','training','decor'].includes(kind))return townCivicBuildingArt(kind,p);if(expandedGameEnabled()&&kind==='forge')return townForgeWorkshopArt(p);const art=public_townHouse(kind,p);return expandedGameEnabled()?art.replace(/<g fill="#735338" stroke="#4b4132"[\s\S]*?<\/g><path stroke="#c4a575"[^>]*\/>/,''):art;}
 function public_townHouse(kind,p){
@@ -2727,7 +2752,7 @@ function preview_renderTown(){
  renderTownPlaza(p,s.id);renderCityDecor();renderArchitect();renderHarvestAlert();scheduleTownBirds();renderTownChest();renderTownWeather(si);renderTownNight();renderGeminiTown();
 }
 function showTown(){clearKitchenIngredientFlights();clearForgeFeedback();
- if(day<=0)return;phase='town';$('townP').style.display='flex';renderTown();syncTownMotion();saveNow();
+ if(day<=0)return;phase='town';$('townP').style.display='flex';renderTown();syncTownMotion();showTownDayBanner();saveNow();
 }
 function returnToTown(){if(day<=0){goHome();return;}showTown();}
 function enterTownForge(){
@@ -2735,6 +2760,16 @@ function enterTownForge(){
 }
 function townNextAction(){enterTownForge();}
 function visitTrainingFromGame(){if(day===0)return stage19_visitTrainingFromGame();openLearnedForgeSkills();}
+let townDayBannerKey='',townDayBannerAnimation=null,townDayBannerTimer=null;
+function showTownDayBanner(){
+ const key=runId+':'+day+':'+isSandboxNight();if(day<1||townDayBannerKey===key)return;townDayBannerKey=key;
+ const banner=$('townDayBanner'),season=SEASONS[seasonIndex()];townDayBannerAnimation?.cancel?.();if(townDayBannerTimer!==null)clearTimeout(townDayBannerTimer);
+ banner.textContent=season.icon+' '+season.name+' · 第 '+day+' 天 · '+(isSandboxNight()?'晚上':'早上');banner.hidden=false;
+ const hide=()=>{banner.hidden=true;townDayBannerAnimation=null;townDayBannerTimer=null;};
+ if(lowEffects||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches){townDayBannerTimer=gameTimeout(hide,1800);return;}
+ townDayBannerAnimation=banner.animate([{opacity:0,transform:'translate(-50%,14px)'},{opacity:1,transform:'translate(-50%,0)',offset:.14},{opacity:1,transform:'translate(-50%,0)',offset:.78},{opacity:0,transform:'translate(-50%,-10px)'}],{duration:2700,easing:'ease-out'});townDayBannerAnimation.onfinish=hide;
+}
+
 
 
 function townSkillStar(){const points=sp+(kitchen?.sp||0);
@@ -3020,20 +3055,21 @@ function beginExpedition(confirmed=false){
  syncExpeditionDay();if((!sandboxSession&&(lives<=0||expeditionStage>expeditionState.unlocked||expeditionCleared(expeditionStage)))||$('expeditionSetup').hidden)return;
  if(!sandboxSession&&lives===1&&!confirmed){confirmBox('只剩最後一顆愛心','這次遠征若落敗，會失去最後一顆愛心並結束遊戲。出戰武器也會消耗。確定要挑戰嗎？','仍要挑戰',()=>beginExpedition(true));return;}
  const chosen=expeditionWeapons().find(x=>x.key===expeditionSelected);if(!chosen)return;if(chosen.w.protected){toast('請先取消武器保護才能出戰');return;}
- const b=expeditionBattleState(chosen.w,expeditionMonster(expeditionStage));if(!consumeExpeditionWeapon(chosen))return;
+ if(expeditionFoodSelected&&!expeditionFoodOptions().some(x=>x.w===expeditionFoodSelected)){expeditionFoodSelected=null;renderExpeditionFoodSetup();toast('選定料理已不可用，請重新選擇。');return;}
+ const b=expeditionBattleState(chosen.w,expeditionMonster(expeditionStage));b.foodChoice=expeditionFoodSelected;if(!consumeExpeditionWeapon(chosen))return;
  battleUserPaused=false;battleLastAdvance=0;expeditionFoodOpen=false;stopExpeditionPlayback();expeditionState.attempts++;expeditionState.lastBattle={...b,stage:expeditionStage,gold:0,loot:null,first:true,day};expeditionSelected='';expeditionBattleStep=0;
  // Save the consumed weapon before the first action. Reload/exit never refunds it or grants an unearned reward.
  saveNow();if(sandboxSession)saveReviewProgress();render();$('expeditionSetup').hidden=true;$('expeditionBattle').hidden=false;renderExpeditionBattle();
  expeditionTimer=setInterval(advanceExpeditionBattle,420);
 }
-function advanceExpeditionBattle(){if(!expandedGameEnabled())return stage21_advanceExpeditionBattle();const b=expeditionState.lastBattle;if(!b||b.resolved||b.outcome!=='ongoing')return stage21_advanceExpeditionBattle();const now=Date.now(),pace=expeditionFoodOpen?840:420;if(battleUserPaused||battleLastAdvance&&now-battleLastAdvance<pace-20)return;battleLastAdvance=now;const rows=b.log.length;stage21_advanceExpeditionBattle();if(b.log.length>rows)showBattleFeedback(b.log.at(-1));}
+function advanceExpeditionBattle(){if(!expandedGameEnabled())return stage21_advanceExpeditionBattle();const b=expeditionState.lastBattle;if(!b||b.resolved||b.outcome!=='ongoing')return stage21_advanceExpeditionBattle();const now=Date.now();if(battleUserPaused||battleLastAdvance&&now-battleLastAdvance<400)return;battleLastAdvance=now;const rows=b.log.length;stage21_advanceExpeditionBattle();if(b.log.length>rows)showBattleFeedback(b.log.at(-1));}
 function useExpeditionSkill(){const b=expeditionState.lastBattle;if(!b||!castBattleSkill(b))return;expeditionBattleStep=b.log.length;combatSound('hero');if(b.outcome!=='ongoing')settleExpeditionBattle(b);renderExpeditionBattle();}
 function settleExpeditionBattle(b){const fresh=b&&!b.resolved&&b.outcome!=='ongoing';const result=stage21_settleExpeditionBattle(b);if(fresh){reviewMetrics.battles.push({stage:b.stage+1,result:b.outcome==='win'?'勝利':b.outcome==='lose'?'生命歸零':'回合上限或撤退',supplies:b.foodUsed||0});reviewMetrics.battles=reviewMetrics.battles.slice(-50);saveReviewProgress();}return result;}
 function stopExpeditionPlayback(){clearBattleFeedback();if(expeditionTimer!==null){clearInterval(expeditionTimer);expeditionTimer=null;}if(expeditionAdvanceTimer!==null){clearTimeout(expeditionAdvanceTimer);expeditionAdvanceTimer=null;}}
 function finishExpeditionPlayback(){
  const b=expeditionState.lastBattle;if(!b||b.resolved)return;while(b.outcome==='ongoing')battleTick(b);expeditionBattleStep=b.log.length;settleExpeditionBattle(b);renderExpeditionBattle();
 }
-function showExpeditionSetup(){stopExpeditionPlayback();$('expeditionSetup').hidden=false;$('expeditionBattle').hidden=true;renderExpedition();$('expeditionSetup').scrollIntoView?.({block:'start'});}
+function showExpeditionSetup(){stopExpeditionPlayback();expeditionFoodSelected=null;$('expeditionSetup').hidden=false;$('expeditionBattle').hidden=true;renderExpedition();$('expeditionSetup').scrollIntoView?.({block:'start'});}
 function openExpedition(){
  syncExpeditionDay();const b=expeditionState.lastBattle;
  if(b&&b.outcome==='ongoing'&&!b.resolved){$('expeditionP').style.display='flex';$('expeditionSetup').hidden=true;$('expeditionBattle').hidden=false;renderExpeditionBattle();if(expeditionTimer===null)expeditionTimer=setInterval(advanceExpeditionBattle,420);return;}
@@ -3042,6 +3078,7 @@ function openExpedition(){
 function closeExpedition(){
  const b=expeditionState.lastBattle;if(b?.outcome==='ongoing'&&!b.resolved){b.outcome='draw';settleExpeditionBattle(b);}stopExpeditionPlayback();$('expeditionP').style.display='none';if(lives<=0)gameOver('遠征落敗，最後一顆愛心已用完。');
 }
+
 function renderExpeditionBattle(){
  const b=expeditionState.lastBattle;if(!b)return;updateBattlePace();renderExpeditionFood();const m=b.monster||{...EXPEDITIONS[b.stage],element:'none'},done=b.resolved;
  $('expeditionArena').innerHTML='<div class="exp-fighter"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</div><b>'+itemName(b.weapon)+'</b><small>♥ '+b.hp+' / '+b.hpMax+(b.shield?'　護盾 '+b.shield:'')+'</small><progress max="'+b.hpMax+'" value="'+b.hp+'"></progress></div><strong>VS</strong><div class="exp-fighter"><div>'+monsterArt(m)+elementBadge(m.element,'battle-element')+'</div><b>'+m.name+'</b><small>♥ '+b.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+b.enemyHp+'"></progress></div>';
@@ -3052,7 +3089,7 @@ function renderExpeditionBattle(){
 }
 
 function renderExpedition(){
- $('expeditionFoodSetup').hidden=false;if(expandedGameEnabled())$('expeditionFoodSetup').textContent=kitchenLevel('pack')?'🍱 冰箱有 '+expeditionFoodOptions().length+' 份料理可於戰鬥中使用；每場最多兩份。':'🍱 在訓練所解鎖冰箱，存入料理後即可帶作遠征補給。';syncExpeditionDay();renderExpeditionLab();const options=expeditionWeapons().filter(x=>!x.w.protected);if(!options.some(x=>x.key===expeditionSelected))expeditionSelected=options[0]?.key||'';
+ renderExpeditionFoodSetup();syncExpeditionDay();renderExpeditionLab();const options=expeditionWeapons().filter(x=>!x.w.protected);if(!options.some(x=>x.key===expeditionSelected))expeditionSelected=options[0]?.key||'';
  const chosen=options.find(x=>x.key===expeditionSelected),m=expeditionMonster(expeditionStage),cleared=(!sandboxSession&&expeditionCleared(expeditionStage));
  $('expeditionAttempts').textContent=(expeditionStage>=20?'無限模式 · 第 '+(expeditionStage-19)+' 隻':expeditionStage>=10?'二周目':'一周目')+' · 第 '+day+' 天 · 累計勝利 '+expeditionState.victories+' 場 · 無限通關 '+(expeditionState.endless||0)+' 隻';
  $('expeditionStages').innerHTML=EXPEDITIONS.map((x,i)=>'<button data-exp-stage="'+i+'" data-cycle="'+(i>=10?2:1)+'" '+(!sandboxSession&&(i>expeditionState.unlocked||expeditionCleared(i))?'disabled':'')+' aria-label="第 '+(i+1)+' 關 '+x.name+'" aria-pressed="'+(i===expeditionStage)+'">'+(expeditionState.cleared.includes(i)?'✓':i>expeditionState.unlocked?'·':'⚑')+(i+1)+'</button>').join('')+((sandboxSession||expeditionState.cleared.includes(19))?'<button data-exp-stage="'+(20+(expeditionState.endless||0))+'" data-cycle="3" aria-pressed="'+(expeditionStage>=20)+'">∞ '+((expeditionState.endless||0)+1)+'</button>':'');
@@ -3083,6 +3120,7 @@ document.addEventListener('click',e=>{
  const c=+item.dataset.recordWeapon,record=item.closest('[data-record-index]');const w=record?recs[+record.dataset.recordIndex]?.best?.[c]:best[c];
  if(w)openCraftedWeapon({...w,k:'w',c},record?'歷史紀錄':'本次最佳作品');
 });
+
 
 const LEGENDS=[
  {name:'苔冠獵爪',c:0,tier:0,recipe:[0,1,6],scale:1.5,price:1.15,magic:10,color:'#80d79b',trait:'翠刃工藝：攻擊額外提升 12%。'},
@@ -3899,7 +3937,7 @@ $("bagC").onclick=e=>{
   say("已拿到手持欄："+itemName(hand)+"，拖到棋盤上使用");render();
 };
 
-function start(){if(formalSaveTimer!==null){clearTimeout(formalSaveTimer);formalSaveTimer=null;}cancelKitchenDrag();clearKitchenIngredientFlights();clearKitchenDepartures();reviewMetrics=freshPlayMetrics();forgeGuestSerial22=0;kitchenGuestSerial22=0;return preview_start(...arguments);}
+function start(){if(formalSaveTimer!==null){clearTimeout(formalSaveTimer);formalSaveTimer=null;}cancelKitchenDrag();clearKitchenIngredientFlights();clearKitchenDepartures();reviewMetrics=freshPlayMetrics();forgeGuestSerial22=0;kitchenGuestSerial22=0;expeditionFoodSelected=null;return preview_start(...arguments);}
 function stable_start(mode,opt){
   if(sandboxSession)opt={...opt,test:true};
   clearForgeFeedback();autumnForgeCharges=0;weaponMastery=new Map();
@@ -4419,6 +4457,7 @@ function stable_cityObstacleAt(x,y){
  });
 }
 function preview_cityObstacleAt(x,y){
+ if(townBackgroundFountainBlocked(x,y))return true;
  if(expandedGameEnabled()&&townMasterBlocks().some(([x0,y0,x1,y1])=>x>=x0&&x<=x1&&y>=y0&&y<=y1))return true;
  if(!cityState)return false;return cityLayout().some(i=>{const d=DECOR_BY_ID.get(i.id);if(!d||['cat','dog','flowers','fence'].includes(i.id))return false;const px=i.x*3.6,py=i.y*6.2,s=i.s;
   if(i.id==='fountain'||d.art==='pond')return ((x-px)/(d.w*.43*s+6))**2+((y-(py-d.h*.32*s))/(d.h*.32*s+6))**2<1;
@@ -4472,6 +4511,7 @@ function installCityControls(){
  map.addEventListener('click',e=>{if(architect.active)return;const n=e.target.closest('.town-sticker');if(!n)return;const i=cityLayout().find(i=>i.uid===n.dataset.decorUid);if(i&&['cat','dog'].includes(i.id))loveCityPet(n);});
  window.addEventListener('resize',()=>{if(architect.active)requestAnimationFrame(renderArchitect);});
 }
+
 
 const cityThumbnailCache=new Map();
 const cityPreviewCache=new Map();let cityPreviewRequest=0;

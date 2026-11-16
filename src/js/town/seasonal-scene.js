@@ -35,10 +35,12 @@ function clearGeminiTown(){
  $('townP').dataset.geminiTown='false';geminiSnapshotAssets.clear();const rear=$('townDecorBack');rear.style.maskImage='';rear.dataset.geminiMask='';GEMINI_TOWN_BUILDINGS.forEach(b=>{const el=$(b.id);for(const key of ['left','top','width','height'])el.style[key]='';el.title='';});
 }
 function geminiTownGuestPoint(i,night){
- const line=night?[[282,213],[269,224],[255,236],[244,250],[232,265],[225,281],[222,299],[218,317]]:[[272,408],[255,417],[238,426],[220,436],[202,445],[183,454],[177,474],[177,494]];
+ // Coordinates mark the visitor's feet, aligned with the painted doorstep/paths.
+ const line=night?[[263,199],[250,209],[237,220],[226,233],[217,247],[215,263],[229,279],[241,294]]:[[263,402],[248,406],[233,411],[218,418],[204,428],[192,441],[184,456],[181,472]];
  return line[i]||[177,Math.min(600,514+(i-line.length)*18)];
 }
-function geminiTownGuestRoute(i,night){const [x,y]=geminiTownGuestPoint(i,night);return night?[[177,650],[177,454],[177,348],[211,322],[225,294],[225,267],[x,y]]:[[177,650],[177,500],[177,463],[x,y]];}
+function geminiTownGuestRoute(i,night){const line=Array.from({length:Math.max(8,i+1)},(_,j)=>geminiTownGuestPoint(j,night));return [[177,650],[177,500],...(night?[[177,362],[218,335],[235,313]]:[]),...line.slice(i).reverse()];}
+function townBackgroundFountainBlocked(x,y){return expandedGameEnabled()&&((x-180)/44)**2+((y-293)/36)**2<=1;}
 function geminiTownSnapshot(items,si,savedHeight){
  const rect=$('townMap').getBoundingClientRect(),H=Number.isFinite(savedHeight)&&savedHeight>=360&&savedHeight<=1000?savedHeight:rect.width>100&&rect.height>200?Math.max(360,Math.min(1000,360*rect.height/rect.width)):620,night=isSandboxNight();
  let out='<image href="'+(geminiSnapshotAssets.get(si)||GEMINI_TOWN_ART[si])+'" width="360" height="'+H+'" preserveAspectRatio="none"'+(night?' filter="url(#gemini-snapshot-night)"':'')+'/>';

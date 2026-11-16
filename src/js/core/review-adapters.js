@@ -24,7 +24,7 @@ function stage21_kitchenCraft(at,silent=false){
   if(Math.floor((old+1)/3)>Math.floor(old/3)&&old<9)toast(KITCHEN_NAMES[c]+' 升星！');kitchenRecordMerge(batch.cells,trio,[target],target);
  }
  // Refunds run after every preparation-to-dish event, so no ingredient animation jumps ahead of cooking.
- for(const batch of batches){const free=batch.cells.filter(i=>i!==batch.target&&!kitchen.g[i]);if(!free.length)continue;const target=free[rnd(free.length)],chance=[0,.1,.25,.5][kitchenLevel('merge')],tier=Math.random()<chance?batch.parts[rnd(3)].t:0;kitchen.g[target]=kitchenFood(tier);kitchenAuto(target);}
+ for(const batch of batches){const free=batch.cells.filter(i=>i!==batch.target&&!kitchen.g[i]);if(!free.length)continue;const target=free[rnd(free.length)],chance=[0,0,.25,.5][kitchenLevel('merge')],tier=Math.random()<chance?batch.parts[rnd(3)].t:0;kitchen.g[target]=kitchenFood(tier);kitchenAuto(target);}
  kitchen.message='料理完成：'+made.join('、')+'！拖曳到客人即可出餐。';forgeSound(0);return true;
 }
 function stage21_completeKitchenNight(){
@@ -38,10 +38,10 @@ function stage21_kitchenSell(w,index,clear){
  clear();kitchenRemoveOrder(index);kitchen.message='出餐成功！'+KITCHEN_NAMES[w.c]+' +'+price+' 金幣';if(!kitchen.orders.length&&!kitchen.queue.length)completeKitchenNight();else kitchenStep();renderKitchen();return true;
 }
 function stage21_useExpeditionFood(index){
- const b=expeditionState.lastBattle;if(!expandedGameEnabled()||!expeditionFoodReady(b))return false;const option=expeditionFoodOptions().find(x=>x.index===index);if(!option)return false;const w=option.w,e=dishSupplyEffect(w);
+ const b=expeditionState.lastBattle;if(!expandedGameEnabled()||!expeditionFoodReady(b))return false;const option=expeditionFoodOptions().find(x=>x.index===index);if(!option||option.w!==b.foodChoice)return false;const w=option.w,e=dishSupplyEffect(w);
  if(b.hp>=b.hpMax&&!e.attack&&!e.shield){toast('生命已滿，這份回血料理先留在冰箱。');return false;}
  const restored=Math.min(b.hpMax-b.hp,Math.round(b.hpMax*e.heal)),shield=Math.round(b.hpMax*e.shield);kitchen.pack.splice(index,1);b.hp=Math.min(b.hpMax,b.hp+restored);b.shield+=shield;
- if(e.attack){b.foodAttack=Math.max(b.foodAttack||0,e.attack);b.foodAttackTurns=2;}b.foodUsed=(b.foodUsed||0)+1;b.foodCooldown=2;
+ if(e.attack){b.foodAttack=Math.max(b.foodAttack||0,e.attack);b.foodAttackTurns=2;}b.foodUsed=(b.foodUsed||0)+1;b.foodCooldown=0;
  b.log.push({actor:'hero',supply:true,hp:b.hp,enemyHp:b.enemyHp,text:'🍱 使用'+kitchenItemName(w)+'：恢復 '+restored+' 生命'+(shield?'、護盾 +'+shield:'')+(e.attack?'、下兩次普通攻擊 +'+Math.round(e.attack*100)+'%':'')+'（料理已消耗）'});
  renderExpeditionBattle();return true;
 }

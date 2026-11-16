@@ -86,20 +86,21 @@ function beginExpedition(confirmed=false){
  syncExpeditionDay();if((!sandboxSession&&(lives<=0||expeditionStage>expeditionState.unlocked||expeditionCleared(expeditionStage)))||$('expeditionSetup').hidden)return;
  if(!sandboxSession&&lives===1&&!confirmed){confirmBox('只剩最後一顆愛心','這次遠征若落敗，會失去最後一顆愛心並結束遊戲。出戰武器也會消耗。確定要挑戰嗎？','仍要挑戰',()=>beginExpedition(true));return;}
  const chosen=expeditionWeapons().find(x=>x.key===expeditionSelected);if(!chosen)return;if(chosen.w.protected){toast('請先取消武器保護才能出戰');return;}
- const b=expeditionBattleState(chosen.w,expeditionMonster(expeditionStage));if(!consumeExpeditionWeapon(chosen))return;
+ if(expeditionFoodSelected&&!expeditionFoodOptions().some(x=>x.w===expeditionFoodSelected)){expeditionFoodSelected=null;renderExpeditionFoodSetup();toast('選定料理已不可用，請重新選擇。');return;}
+ const b=expeditionBattleState(chosen.w,expeditionMonster(expeditionStage));b.foodChoice=expeditionFoodSelected;if(!consumeExpeditionWeapon(chosen))return;
  battleUserPaused=false;battleLastAdvance=0;expeditionFoodOpen=false;stopExpeditionPlayback();expeditionState.attempts++;expeditionState.lastBattle={...b,stage:expeditionStage,gold:0,loot:null,first:true,day};expeditionSelected='';expeditionBattleStep=0;
  // Save the consumed weapon before the first action. Reload/exit never refunds it or grants an unearned reward.
  saveNow();if(sandboxSession)saveReviewProgress();render();$('expeditionSetup').hidden=true;$('expeditionBattle').hidden=false;renderExpeditionBattle();
  expeditionTimer=setInterval(advanceExpeditionBattle,420);
 }
-function advanceExpeditionBattle(){if(!expandedGameEnabled())return stage21_advanceExpeditionBattle();const b=expeditionState.lastBattle;if(!b||b.resolved||b.outcome!=='ongoing')return stage21_advanceExpeditionBattle();const now=Date.now(),pace=expeditionFoodOpen?840:420;if(battleUserPaused||battleLastAdvance&&now-battleLastAdvance<pace-20)return;battleLastAdvance=now;const rows=b.log.length;stage21_advanceExpeditionBattle();if(b.log.length>rows)showBattleFeedback(b.log.at(-1));}
+function advanceExpeditionBattle(){if(!expandedGameEnabled())return stage21_advanceExpeditionBattle();const b=expeditionState.lastBattle;if(!b||b.resolved||b.outcome!=='ongoing')return stage21_advanceExpeditionBattle();const now=Date.now();if(battleUserPaused||battleLastAdvance&&now-battleLastAdvance<400)return;battleLastAdvance=now;const rows=b.log.length;stage21_advanceExpeditionBattle();if(b.log.length>rows)showBattleFeedback(b.log.at(-1));}
 function useExpeditionSkill(){const b=expeditionState.lastBattle;if(!b||!castBattleSkill(b))return;expeditionBattleStep=b.log.length;combatSound('hero');if(b.outcome!=='ongoing')settleExpeditionBattle(b);renderExpeditionBattle();}
 function settleExpeditionBattle(b){const fresh=b&&!b.resolved&&b.outcome!=='ongoing';const result=stage21_settleExpeditionBattle(b);if(fresh){reviewMetrics.battles.push({stage:b.stage+1,result:b.outcome==='win'?'勝利':b.outcome==='lose'?'生命歸零':'回合上限或撤退',supplies:b.foodUsed||0});reviewMetrics.battles=reviewMetrics.battles.slice(-50);saveReviewProgress();}return result;}
 function stopExpeditionPlayback(){clearBattleFeedback();if(expeditionTimer!==null){clearInterval(expeditionTimer);expeditionTimer=null;}if(expeditionAdvanceTimer!==null){clearTimeout(expeditionAdvanceTimer);expeditionAdvanceTimer=null;}}
 function finishExpeditionPlayback(){
  const b=expeditionState.lastBattle;if(!b||b.resolved)return;while(b.outcome==='ongoing')battleTick(b);expeditionBattleStep=b.log.length;settleExpeditionBattle(b);renderExpeditionBattle();
 }
-function showExpeditionSetup(){stopExpeditionPlayback();$('expeditionSetup').hidden=false;$('expeditionBattle').hidden=true;renderExpedition();$('expeditionSetup').scrollIntoView?.({block:'start'});}
+function showExpeditionSetup(){stopExpeditionPlayback();expeditionFoodSelected=null;$('expeditionSetup').hidden=false;$('expeditionBattle').hidden=true;renderExpedition();$('expeditionSetup').scrollIntoView?.({block:'start'});}
 function openExpedition(){
  syncExpeditionDay();const b=expeditionState.lastBattle;
  if(b&&b.outcome==='ongoing'&&!b.resolved){$('expeditionP').style.display='flex';$('expeditionSetup').hidden=true;$('expeditionBattle').hidden=false;renderExpeditionBattle();if(expeditionTimer===null)expeditionTimer=setInterval(advanceExpeditionBattle,420);return;}
