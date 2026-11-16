@@ -724,3 +724,12 @@ requestPortraitLock	src/js/ui/portrait-kitchen-bootstrap.js	5
 syncPortraitGuard	src/js/ui/portrait-kitchen-bootstrap.js	11
 installKitchenPreviewCatalog	src/js/ui/portrait-kitchen-bootstrap.js	29
 clearKitchenPreviewScene	src/js/ui/portrait-kitchen-bootstrap.js	30
+collectGameAssets	src/js/core/asset-loading.js	4
+paintGameAssetProgress	src/js/core/asset-loading.js	8
+openGameAssetCache	src/js/core/asset-loading.js	12
+decodeGameAssetImage	src/js/core/asset-loading.js	13
+fetchGameAsset	src/js/core/asset-loading.js	18
+loadGameAsset	src/js/core/asset-loading.js	24
+pruneGameAssetCache	src/js/core/asset-loading.js	46
+finishGameAssetLoading	src/js/core/asset-loading.js	52
+beginGameAssetLoading	src/js/core/asset-loading.js	60

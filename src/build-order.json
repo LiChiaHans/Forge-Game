@@ -96,7 +96,8 @@
     "src/js/ui/scene-transitions.js",
     "src/js/ui/viewport-input.js",
     "src/js/online/leaderboard.js",
-    "src/js/ui/portrait-kitchen-bootstrap.js"
+    "src/js/ui/portrait-kitchen-bootstrap.js",
+    "src/js/core/asset-loading.js"
   ],
   "styles": [
     "src/styles/01-base-01.css",
@@ -133,6 +134,7 @@
     "src/styles/24-kitchen-held-controls.css",
     "src/styles/25-town-kitchen-battle.css",
     "src/styles/26-scene-transitions.css",
-    "src/styles/27-greenhouse-archive.css"
+    "src/styles/27-greenhouse-archive.css",
+    "src/styles/28-asset-loading.css"
   ]
 }
