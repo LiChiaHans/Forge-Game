@@ -3,6 +3,8 @@
 const cityThumbnailCache=new Map();
 const cityPreviewCache=new Map();let cityPreviewRequest=0;
 const CITY_DEFAULT_TIMESTAMP='2026-11-13T02:01:05.684Z';
+const CITY_PRESET_ART_VERSION=2;
+function cityPresetSavedThumbnail(p){return !p.night||p.artVersion===CITY_PRESET_ART_VERSION?safeCityThumbnail(p.thumbnail):'';}
 function defaultCityPreset(){return expandedGameEnabled()?preview_defaultCityPreset(...arguments):stable_defaultCityPreset(...arguments);}
 function stable_defaultCityPreset(si){const season=DECOR_SEASONS[si];return {id:'default-'+season,name:'預設版型 · '+SEASONS[si].name,season,builtin:true,authorName:'Forge Master',avatar:normalizeAvatar(AVATAR_DEFAULT),createdAt:CITY_DEFAULT_TIMESTAMP,items:freshCity().layouts[season]};}
 function preview_defaultCityPreset(si){const season=DECOR_SEASONS[si],night=isSandboxNight();return {id:'default-'+(night?'night-':'')+season,name:'預設版型 · '+SEASONS[si].name+(night?'夜間':'白天'),season,night,builtin:true,authorName:'Forge Master',avatar:normalizeAvatar(AVATAR_DEFAULT),createdAt:CITY_DEFAULT_TIMESTAMP,items:[]};}
@@ -41,7 +43,7 @@ function geminiOriginalCaptureCityLayout(items,si,options={}){
 async function captureCityLayout(items,si,options={}){if(expandedGameEnabled()){await prepareGeminiSnapshot(si);await prepareCozyItemSnapshot(items,si);}return geminiOriginalCaptureCityLayout(items,si,options);}
 function safeCityThumbnail(value){return typeof value==='string'&&/^data:image\/(?:png|webp|jpeg);base64,/.test(value)||typeof value==='string'&&value.startsWith('data:image/svg+xml;charset=utf-8,')?value:'';}
 async function cityPresetThumbnail(p){
- const saved=safeCityThumbnail(p.thumbnail);if(saved)return saved;
+ const saved=cityPresetSavedThumbnail(p);if(saved)return saved;
  const key=p.id+':'+p.season+':'+JSON.stringify(p.items),cached=cityThumbnailCache.get(key);if(cached)return await cached;
  const promise=captureCityLayout(p.items.map(cleanCityItem).filter(Boolean),DECOR_SEASONS.indexOf(p.season));cityThumbnailCache.set(key,promise);const result=await promise;cityThumbnailCache.set(key,result);return result;
 }

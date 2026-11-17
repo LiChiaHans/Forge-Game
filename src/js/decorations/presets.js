@@ -14,14 +14,14 @@ function renderCityLayouts(){return expandedGameEnabled()?preview_renderCityLayo
 function stable_renderCityLayouts(){
  const si=townVisualSeason(),season=DECOR_SEASONS[si],list=[defaultCityPreset(si),...readCityPresets().filter(p=>p.season===season)];$('cityLayoutsTitle').textContent=SEASONS[si].name+' · 城鎮版型';
  $('cityLayoutsList').innerHTML=list.map(p=>{
-  const q=quoteCityPreset(p),insufficient=!sandboxSession&&coins<q.cost,author=p.authorName||'舊版版型',missing=q.missing.map(x=>(DECOR_BY_ID.get(x.id)?.name||'未知裝飾')+'×'+x.n).join('、'),image=safeCityThumbnail(p.thumbnail);
+  const q=quoteCityPreset(p),insufficient=!sandboxSession&&coins<q.cost,author=p.authorName||'舊版版型',missing=q.missing.map(x=>(DECOR_BY_ID.get(x.id)?.name||'未知裝飾')+'×'+x.n).join('、'),image=cityPresetSavedThumbnail(p);
   return '<article class="city-layout-card"><div class="city-layout-info"><b>'+esc(p.name)+(p.builtin?'<span class="city-layout-default">預設</span>':'')+'</b><div class="city-layout-author"><span class="player-avatar">'+avatarSVG(normalizeAvatar(p.avatar||AVATAR_DEFAULT))+'</span><span>'+esc(author)+'<small>'+esc(cityPresetDate(p))+'</small></span></div><small>'+p.items.length+' 件裝飾 · '+(!q.valid?'版型內容不完整':q.missing.length?'尚缺：'+esc(missing)+'<br>補齊總價：💰 '+q.cost+(insufficient?'（還差 '+(q.cost-coins)+' 金幣）':''):'裝飾已備齊')+'</small><div class="city-layout-buttons"><button data-apply-layout="'+esc(p.id)+'" data-buy-missing="'+(q.cost>0?'1':'0')+'" '+(!q.valid||insufficient?'disabled':'')+'>'+(q.cost>0?'💰 '+q.cost+' 補齊並套用':p.builtin?'套用預設':'套用版型')+'</button>'+(p.builtin?'':'<button data-delete-layout="'+esc(p.id)+'">刪除</button>')+'</div></div><button class="city-layout-thumbnail" data-preview-layout="'+esc(p.id)+'" aria-label="放大查看'+esc(p.name)+'的截圖"><img data-layout-thumb="'+esc(p.id)+'" '+(image?'src="'+esc(image)+'"':'')+' alt="'+esc(p.name)+'的城鎮截圖"><span>點擊放大</span></button></article>';
  }).join('');hydrateCityThumbnails(list);
 }
 function preview_renderCityLayouts(){if(!cityContextEditable())return;
  const si=townVisualSeason(),season=DECOR_SEASONS[si],list=[defaultCityPreset(si),...readCityPresets().filter(p=>p.season===season&&!!p.night===isSandboxNight())];$('cityLayoutsTitle').textContent=SEASONS[si].name+(isSandboxNight()?'夜間':'白天')+' · 城鎮版型';
  $('cityLayoutsList').innerHTML=list.map(p=>{
-  const q=quoteCityPreset(p),insufficient=!sandboxSession&&coins<q.cost,author=p.authorName||'舊版版型',missing=q.missing.map(x=>(DECOR_BY_ID.get(x.id)?.name||'未知裝飾')+'×'+x.n).join('、'),image=safeCityThumbnail(p.thumbnail);
+  const q=quoteCityPreset(p),insufficient=!sandboxSession&&coins<q.cost,author=p.authorName||'舊版版型',missing=q.missing.map(x=>(DECOR_BY_ID.get(x.id)?.name||'未知裝飾')+'×'+x.n).join('、'),image=cityPresetSavedThumbnail(p);
   return '<article class="city-layout-card"><div class="city-layout-info"><b>'+esc(p.name)+(p.builtin?'<span class="city-layout-default">預設</span>':'')+'</b><div class="city-layout-author"><span class="player-avatar">'+avatarSVG(normalizeAvatar(p.avatar||AVATAR_DEFAULT))+'</span><span>'+esc(author)+'<small>'+esc(cityPresetDate(p))+'</small></span></div><small>'+p.items.length+' 件裝飾 · '+(!q.valid?(q.limitExceeded?'超過放置上限：'+q.limitExceeded.map(id=>DECOR_BY_ID.get(id).name).join('、'):'版型內容不完整'):q.missing.length?'尚缺：'+esc(missing)+'<br>補齊總價：💰 '+q.cost+(insufficient?'（還差 '+(q.cost-coins)+' 金幣）':''):'裝飾已備齊')+'</small><div class="city-layout-buttons"><button data-apply-layout="'+esc(p.id)+'" data-buy-missing="'+(q.cost>0?'1':'0')+'" '+(!q.valid||insufficient?'disabled':'')+'>'+(q.cost>0?'💰 '+q.cost+' 補齊並套用':p.builtin?'套用預設':'套用版型')+'</button>'+(p.builtin?'':'<button data-share-layout="'+esc(p.id)+'">分享給好友</button><button data-delete-layout="'+esc(p.id)+'">刪除</button>')+'</div></div><button class="city-layout-thumbnail" data-preview-layout="'+esc(p.id)+'" aria-label="放大查看'+esc(p.name)+'的截圖"><img data-layout-thumb="'+esc(p.id)+'" '+(image?'src="'+esc(image)+'"':'')+' alt="'+esc(p.name)+'的城鎮截圖"><span>點擊放大</span></button></article>';
  }).join('');hydrateCityThumbnails(list);
 }
@@ -33,7 +33,7 @@ async function stable_saveCityLayout(){
  try{
   const thumbnail=await captureCityLayout(items,si);if(ticket!==cityPresetSaveToken||runId!==run||sandboxEpoch!==epoch||sandboxSession!==sandbox)return false;
   const presets=readCityPresets();if(presets.filter(p=>p.season===season).length>=10){toast('這個季節的版型已滿。');return false;}
-  presets.push({id:'layout-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name,season,items,thumbnail,authorName,avatar,createdAt});gameStorage.setItem('forgeTownLayoutsV1',JSON.stringify(presets));renderCityLayouts();toast(sandboxSession?'版型與截圖已保存在後台獨立進度區。':'城鎮版型與截圖已儲存。');return true;
+  presets.push({id:'layout-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name,season,items,thumbnail,artVersion:CITY_PRESET_ART_VERSION,authorName,avatar,createdAt});gameStorage.setItem('forgeTownLayoutsV1',JSON.stringify(presets));renderCityLayouts();toast(sandboxSession?'版型與截圖已保存在後台獨立進度區。':'城鎮版型與截圖已儲存。');return true;
  }catch(e){toast('儲存空間不足，版型未保存。');return false;}
  finally{if(ticket===cityPresetSaveToken){cityPresetSaving=false;$('cityLayoutSave').disabled=false;$('cityLayoutSave').textContent='儲存目前版型';}}
 }
@@ -44,7 +44,7 @@ async function preview_saveCityLayout(){
  try{
   const thumbnail=await captureCityLayout(items,si);if(ticket!==cityPresetSaveToken||runId!==run||sandboxEpoch!==epoch||sandboxSession!==sandbox||!cityContextEditable()||!decorMatchesContext({season,night}))return false;
   const presets=readCityPresets();if(presets.filter(p=>p.season===season&&!!p.night===night).length>=10){toast('這個季節的版型已滿。');return false;}
-  presets.push({id:'layout-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name,season,night,items,thumbnail,authorName,avatar,createdAt});gameStorage.setItem('forgeTownLayoutsV1',JSON.stringify(presets));renderCityLayouts();toast(sandboxSession?'版型與截圖已保存在後台獨立進度區。':'城鎮版型與截圖已儲存。');return true;
+  presets.push({id:'layout-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name,season,night,items,thumbnail,artVersion:CITY_PRESET_ART_VERSION,authorName,avatar,createdAt});gameStorage.setItem('forgeTownLayoutsV1',JSON.stringify(presets));renderCityLayouts();toast(sandboxSession?'版型與截圖已保存在後台獨立進度區。':'城鎮版型與截圖已儲存。');return true;
  }catch(e){toast('儲存空間不足，版型未保存。');return false;}
  finally{if(ticket===cityPresetSaveToken){cityPresetSaving=false;$('cityLayoutSave').disabled=false;$('cityLayoutSave').textContent='儲存目前版型';}}
 }

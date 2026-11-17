@@ -9,4 +9,8 @@ const DECOR_CATALOG=[
  ['wi-pine','積雪松樹',550,'winter','snowpine',52,76],['wi-snowman','雪人',220,'winter','snowman',37,52],['wi-crystal','冰晶叢',380,'winter','icecrystal',43,47],['wi-gifts','禮物堆',300,'winter','gifts',44,37],['wi-sleigh','冬日雪橇',500,'winter','sleigh',64,41],['wi-reindeer','小麋鹿',650,'winter','reindeer',47,52],['wi-cocoa','熱可可攤',600,'winter','cocoastall',58,54],['wi-arch','冰晶拱門',800,'winter','icearch',67,77],['wi-banner','雪花旗',260,'winter','snowbanner',37,61],['wi-starlamp','星光燈',450,'winter','starlamp',36,64]
 ].map(([id,name,price,season,art,w,h])=>({id,name,price,season,art,w,h}));
 const DECOR_BY_ID=new Map(DECOR_CATALOG.map(d=>[d.id,d]));
-function decorSVG(){return expandedGameEnabled()?cozyDecorSVG(...arguments):stable_decorSVG(...arguments);}
+function decorSVG(id){
+ const svg=expandedGameEnabled()?cozyDecorSVG(...arguments):stable_decorSVG(...arguments);
+ if(!DECOR_BY_ID.get(id)?.night)return svg;
+ return svg.replace(/<svg\b([^>]*)>/,'<svg$1 data-night-palette="2"><g style="filter:brightness(.62) saturate(.74)">').replace(/<\/svg>\s*$/,'</g></svg>');
+}

@@ -4209,7 +4209,12 @@ const DECOR_CATALOG=[
  ['wi-pine','積雪松樹',550,'winter','snowpine',52,76],['wi-snowman','雪人',220,'winter','snowman',37,52],['wi-crystal','冰晶叢',380,'winter','icecrystal',43,47],['wi-gifts','禮物堆',300,'winter','gifts',44,37],['wi-sleigh','冬日雪橇',500,'winter','sleigh',64,41],['wi-reindeer','小麋鹿',650,'winter','reindeer',47,52],['wi-cocoa','熱可可攤',600,'winter','cocoastall',58,54],['wi-arch','冰晶拱門',800,'winter','icearch',67,77],['wi-banner','雪花旗',260,'winter','snowbanner',37,61],['wi-starlamp','星光燈',450,'winter','starlamp',36,64]
 ].map(([id,name,price,season,art,w,h])=>({id,name,price,season,art,w,h}));
 const DECOR_BY_ID=new Map(DECOR_CATALOG.map(d=>[d.id,d]));
-function decorSVG(){return expandedGameEnabled()?cozyDecorSVG(...arguments):stable_decorSVG(...arguments);}let cityEditDraft=null,decorShopNight=false;
+function decorSVG(id){
+ const svg=expandedGameEnabled()?cozyDecorSVG(...arguments):stable_decorSVG(...arguments);
+ if(!DECOR_BY_ID.get(id)?.night)return svg;
+ return svg.replace(/<svg\b([^>]*)>/,'<svg$1 data-night-palette="2"><g style="filter:brightness(.62) saturate(.74)">').replace(/<\/svg>\s*$/,'</g></svg>');
+}
+let cityEditDraft=null,decorShopNight=false;
 function cityContextLabel(si=seasonIndex(),night=isSandboxNight()){return SEASONS[si].name+' · '+(night?'夜晚':'白天');}
 function decorMatchesContext(d,si=seasonIndex(),night=isSandboxNight()){return !!d&&d.season===DECOR_SEASONS[si]&&!!d.night===!!night;}
 function cityContextEditable(){return architect.active&&architect.season===seasonIndex()&&(!cityEditDraft||cityEditDraft.night===isSandboxNight()&&cityEditDraft.season===DECOR_SEASONS[seasonIndex()]);}
@@ -4463,14 +4468,14 @@ function renderCityLayouts(){return expandedGameEnabled()?preview_renderCityLayo
 function stable_renderCityLayouts(){
  const si=townVisualSeason(),season=DECOR_SEASONS[si],list=[defaultCityPreset(si),...readCityPresets().filter(p=>p.season===season)];$('cityLayoutsTitle').textContent=SEASONS[si].name+' · 城鎮版型';
  $('cityLayoutsList').innerHTML=list.map(p=>{
-  const q=quoteCityPreset(p),insufficient=!sandboxSession&&coins<q.cost,author=p.authorName||'舊版版型',missing=q.missing.map(x=>(DECOR_BY_ID.get(x.id)?.name||'未知裝飾')+'×'+x.n).join('、'),image=safeCityThumbnail(p.thumbnail);
+  const q=quoteCityPreset(p),insufficient=!sandboxSession&&coins<q.cost,author=p.authorName||'舊版版型',missing=q.missing.map(x=>(DECOR_BY_ID.get(x.id)?.name||'未知裝飾')+'×'+x.n).join('、'),image=cityPresetSavedThumbnail(p);
   return '<article class="city-layout-card"><div class="city-layout-info"><b>'+esc(p.name)+(p.builtin?'<span class="city-layout-default">預設</span>':'')+'</b><div class="city-layout-author"><span class="player-avatar">'+avatarSVG(normalizeAvatar(p.avatar||AVATAR_DEFAULT))+'</span><span>'+esc(author)+'<small>'+esc(cityPresetDate(p))+'</small></span></div><small>'+p.items.length+' 件裝飾 · '+(!q.valid?'版型內容不完整':q.missing.length?'尚缺：'+esc(missing)+'<br>補齊總價：💰 '+q.cost+(insufficient?'（還差 '+(q.cost-coins)+' 金幣）':''):'裝飾已備齊')+'</small><div class="city-layout-buttons"><button data-apply-layout="'+esc(p.id)+'" data-buy-missing="'+(q.cost>0?'1':'0')+'" '+(!q.valid||insufficient?'disabled':'')+'>'+(q.cost>0?'💰 '+q.cost+' 補齊並套用':p.builtin?'套用預設':'套用版型')+'</button>'+(p.builtin?'':'<button data-delete-layout="'+esc(p.id)+'">刪除</button>')+'</div></div><button class="city-layout-thumbnail" data-preview-layout="'+esc(p.id)+'" aria-label="放大查看'+esc(p.name)+'的截圖"><img data-layout-thumb="'+esc(p.id)+'" '+(image?'src="'+esc(image)+'"':'')+' alt="'+esc(p.name)+'的城鎮截圖"><span>點擊放大</span></button></article>';
  }).join('');hydrateCityThumbnails(list);
 }
 function preview_renderCityLayouts(){if(!cityContextEditable())return;
  const si=townVisualSeason(),season=DECOR_SEASONS[si],list=[defaultCityPreset(si),...readCityPresets().filter(p=>p.season===season&&!!p.night===isSandboxNight())];$('cityLayoutsTitle').textContent=SEASONS[si].name+(isSandboxNight()?'夜間':'白天')+' · 城鎮版型';
  $('cityLayoutsList').innerHTML=list.map(p=>{
-  const q=quoteCityPreset(p),insufficient=!sandboxSession&&coins<q.cost,author=p.authorName||'舊版版型',missing=q.missing.map(x=>(DECOR_BY_ID.get(x.id)?.name||'未知裝飾')+'×'+x.n).join('、'),image=safeCityThumbnail(p.thumbnail);
+  const q=quoteCityPreset(p),insufficient=!sandboxSession&&coins<q.cost,author=p.authorName||'舊版版型',missing=q.missing.map(x=>(DECOR_BY_ID.get(x.id)?.name||'未知裝飾')+'×'+x.n).join('、'),image=cityPresetSavedThumbnail(p);
   return '<article class="city-layout-card"><div class="city-layout-info"><b>'+esc(p.name)+(p.builtin?'<span class="city-layout-default">預設</span>':'')+'</b><div class="city-layout-author"><span class="player-avatar">'+avatarSVG(normalizeAvatar(p.avatar||AVATAR_DEFAULT))+'</span><span>'+esc(author)+'<small>'+esc(cityPresetDate(p))+'</small></span></div><small>'+p.items.length+' 件裝飾 · '+(!q.valid?(q.limitExceeded?'超過放置上限：'+q.limitExceeded.map(id=>DECOR_BY_ID.get(id).name).join('、'):'版型內容不完整'):q.missing.length?'尚缺：'+esc(missing)+'<br>補齊總價：💰 '+q.cost+(insufficient?'（還差 '+(q.cost-coins)+' 金幣）':''):'裝飾已備齊')+'</small><div class="city-layout-buttons"><button data-apply-layout="'+esc(p.id)+'" data-buy-missing="'+(q.cost>0?'1':'0')+'" '+(!q.valid||insufficient?'disabled':'')+'>'+(q.cost>0?'💰 '+q.cost+' 補齊並套用':p.builtin?'套用預設':'套用版型')+'</button>'+(p.builtin?'':'<button data-share-layout="'+esc(p.id)+'">分享給好友</button><button data-delete-layout="'+esc(p.id)+'">刪除</button>')+'</div></div><button class="city-layout-thumbnail" data-preview-layout="'+esc(p.id)+'" aria-label="放大查看'+esc(p.name)+'的截圖"><img data-layout-thumb="'+esc(p.id)+'" '+(image?'src="'+esc(image)+'"':'')+' alt="'+esc(p.name)+'的城鎮截圖"><span>點擊放大</span></button></article>';
  }).join('');hydrateCityThumbnails(list);
 }
@@ -4482,7 +4487,7 @@ async function stable_saveCityLayout(){
  try{
   const thumbnail=await captureCityLayout(items,si);if(ticket!==cityPresetSaveToken||runId!==run||sandboxEpoch!==epoch||sandboxSession!==sandbox)return false;
   const presets=readCityPresets();if(presets.filter(p=>p.season===season).length>=10){toast('這個季節的版型已滿。');return false;}
-  presets.push({id:'layout-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name,season,items,thumbnail,authorName,avatar,createdAt});gameStorage.setItem('forgeTownLayoutsV1',JSON.stringify(presets));renderCityLayouts();toast(sandboxSession?'版型與截圖已保存在後台獨立進度區。':'城鎮版型與截圖已儲存。');return true;
+  presets.push({id:'layout-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name,season,items,thumbnail,artVersion:CITY_PRESET_ART_VERSION,authorName,avatar,createdAt});gameStorage.setItem('forgeTownLayoutsV1',JSON.stringify(presets));renderCityLayouts();toast(sandboxSession?'版型與截圖已保存在後台獨立進度區。':'城鎮版型與截圖已儲存。');return true;
  }catch(e){toast('儲存空間不足，版型未保存。');return false;}
  finally{if(ticket===cityPresetSaveToken){cityPresetSaving=false;$('cityLayoutSave').disabled=false;$('cityLayoutSave').textContent='儲存目前版型';}}
 }
@@ -4493,7 +4498,7 @@ async function preview_saveCityLayout(){
  try{
   const thumbnail=await captureCityLayout(items,si);if(ticket!==cityPresetSaveToken||runId!==run||sandboxEpoch!==epoch||sandboxSession!==sandbox||!cityContextEditable()||!decorMatchesContext({season,night}))return false;
   const presets=readCityPresets();if(presets.filter(p=>p.season===season&&!!p.night===night).length>=10){toast('這個季節的版型已滿。');return false;}
-  presets.push({id:'layout-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name,season,night,items,thumbnail,authorName,avatar,createdAt});gameStorage.setItem('forgeTownLayoutsV1',JSON.stringify(presets));renderCityLayouts();toast(sandboxSession?'版型與截圖已保存在後台獨立進度區。':'城鎮版型與截圖已儲存。');return true;
+  presets.push({id:'layout-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name,season,night,items,thumbnail,artVersion:CITY_PRESET_ART_VERSION,authorName,avatar,createdAt});gameStorage.setItem('forgeTownLayoutsV1',JSON.stringify(presets));renderCityLayouts();toast(sandboxSession?'版型與截圖已保存在後台獨立進度區。':'城鎮版型與截圖已儲存。');return true;
  }catch(e){toast('儲存空間不足，版型未保存。');return false;}
  finally{if(ticket===cityPresetSaveToken){cityPresetSaving=false;$('cityLayoutSave').disabled=false;$('cityLayoutSave').textContent='儲存目前版型';}}
 }
@@ -4580,6 +4585,8 @@ function installCityControls(){
 const cityThumbnailCache=new Map();
 const cityPreviewCache=new Map();let cityPreviewRequest=0;
 const CITY_DEFAULT_TIMESTAMP='2026-11-13T02:01:05.684Z';
+const CITY_PRESET_ART_VERSION=2;
+function cityPresetSavedThumbnail(p){return !p.night||p.artVersion===CITY_PRESET_ART_VERSION?safeCityThumbnail(p.thumbnail):'';}
 function defaultCityPreset(){return expandedGameEnabled()?preview_defaultCityPreset(...arguments):stable_defaultCityPreset(...arguments);}
 function stable_defaultCityPreset(si){const season=DECOR_SEASONS[si];return {id:'default-'+season,name:'預設版型 · '+SEASONS[si].name,season,builtin:true,authorName:'Forge Master',avatar:normalizeAvatar(AVATAR_DEFAULT),createdAt:CITY_DEFAULT_TIMESTAMP,items:freshCity().layouts[season]};}
 function preview_defaultCityPreset(si){const season=DECOR_SEASONS[si],night=isSandboxNight();return {id:'default-'+(night?'night-':'')+season,name:'預設版型 · '+SEASONS[si].name+(night?'夜間':'白天'),season,night,builtin:true,authorName:'Forge Master',avatar:normalizeAvatar(AVATAR_DEFAULT),createdAt:CITY_DEFAULT_TIMESTAMP,items:[]};}
@@ -4618,7 +4625,7 @@ function geminiOriginalCaptureCityLayout(items,si,options={}){
 async function captureCityLayout(items,si,options={}){if(expandedGameEnabled()){await prepareGeminiSnapshot(si);await prepareCozyItemSnapshot(items,si);}return geminiOriginalCaptureCityLayout(items,si,options);}
 function safeCityThumbnail(value){return typeof value==='string'&&/^data:image\/(?:png|webp|jpeg);base64,/.test(value)||typeof value==='string'&&value.startsWith('data:image/svg+xml;charset=utf-8,')?value:'';}
 async function cityPresetThumbnail(p){
- const saved=safeCityThumbnail(p.thumbnail);if(saved)return saved;
+ const saved=cityPresetSavedThumbnail(p);if(saved)return saved;
  const key=p.id+':'+p.season+':'+JSON.stringify(p.items),cached=cityThumbnailCache.get(key);if(cached)return await cached;
  const promise=captureCityLayout(p.items.map(cleanCityItem).filter(Boolean),DECOR_SEASONS.indexOf(p.season));cityThumbnailCache.set(key,promise);const result=await promise;cityThumbnailCache.set(key,result);return result;
 }
