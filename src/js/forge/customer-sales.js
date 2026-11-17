@@ -43,7 +43,7 @@ function dropGem(t){
   if(!em.length)return;
   const j=em[rnd(em.length)];
   g[j]={k:'d',t,m:0};fresh=j;
-  say($("msg").textContent+" 💎 掉落一顆"+NM[t]+"鑽！");
+  say(forgeMessageText()+" 💎 掉落一顆"+NM[t]+"鑽！");
 }
 function sellW(c,k,clear){
   if(c?.protected){toast('這把武器已受保護，請先取消保護');return false;}const o=orders[k];

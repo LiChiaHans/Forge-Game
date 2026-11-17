@@ -1,6 +1,6 @@
 
 
-const say=t=>$("msg").textContent=t;
+const say=t=>renderForgeMessage(t);
 const sk=id=>skills[id]||0;
 const TG=[[11,12,13],[16,17,18],[21,22,23]];
 let tutP2=false,tutStage=1;

@@ -31,6 +31,6 @@ function startExpeditionFeedbackClock(){
 function stopExpeditionFeedbackClock(){if(expeditionFeedbackTimer!==null)clearInterval(expeditionFeedbackTimer);expeditionFeedbackTimer=null;}
 function expeditionHealthHTML(b){
  const hp=Math.max(0,b.hp),shield=Math.max(0,b.shield||0),healed=Math.min(hp,Math.max(0,b.foodRecovered||0));b.healthShieldCapacity=Math.max(shield,b.healthShieldCapacity||0);const scale=Math.max(1,b.hpMax+b.healthShieldCapacity),width=n=>(Math.max(0,n)/scale*100).toFixed(3)+'%';
- return '<div class="exp-health-meter" role="img" aria-label="生命 '+hp+' / '+b.hpMax+'，料理恢復剩餘 '+healed+'，護盾 '+shield+'"><span class="exp-health-base" style="width:'+width(hp-healed)+'"></span><span class="exp-health-food" style="width:'+width(healed)+'"></span><span class="exp-health-shield" style="width:'+width(shield)+'"></span></div><span class="exp-health-key"><i>生命</i><i>料理回復</i><i>護盾</i></span>';
+ return '<div class="exp-health-meter" role="img" aria-label="生命 '+hp+' / '+b.hpMax+'，料理恢復剩餘 '+healed+'，護盾 '+shield+'"><span class="exp-health-base" style="width:'+width(hp-healed)+'"></span><span class="exp-health-food" style="width:'+width(healed)+'"></span><span class="exp-health-shield" style="width:'+width(shield)+'"></span></div><span class="exp-health-key"><i>生命</i><i>料理回復</i><i>護盾'+(shield?' '+shield:'')+'</i></span>';
 }
 document.addEventListener('visibilitychange',()=>{const b=expeditionState.lastBattle;if(b)b.effectStamp=Date.now();battleLastAdvance=Date.now();});

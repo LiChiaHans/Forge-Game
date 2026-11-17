@@ -32,5 +32,5 @@ function settle(){
 function magicAt(i){
   if(!magicSet.has(i)||!g[i])return;
   g[i].m=(g[i].m||0)+5;
-  say($("msg").textContent+" ✨魔法 +5💰（賣出時結算）");
+  say(forgeMessageText()+" ✨魔法 +5💰（賣出時結算）");
 }

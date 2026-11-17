@@ -128,7 +128,7 @@ function qOnSale(w,price){
       case'spec':if(w.c===q.c)bump(q,q.p+1);break;
     }
   });
-  if(notes.length)say($("msg").textContent+" 📋 "+notes.join("、"));
+  if(notes.length)say(forgeMessageText()+" 📋 "+notes.join("、"));
 }
 function renderQ(){
   const bar=$("qbar");

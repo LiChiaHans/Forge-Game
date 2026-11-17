@@ -144,7 +144,8 @@
     "src/styles/28-asset-loading.css",
     "src/styles/29-workshop-polish.css",
     "src/styles/30-battle-archive-feedback.css",
-    "src/styles/31-business-settlement.css"
+    "src/styles/31-business-settlement.css",
+    "src/styles/32-required-skills-layout.css"
   ],
   "workers": [
     "src/workers/media-cache.js"

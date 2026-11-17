@@ -544,7 +544,7 @@ function startKitchenNight(force=false){
  kitchenCreateOrders();kitchen.message='晚餐營業開始！點空格放食材，拖曳工序卡備料，第三份工序相連就會自動完成料理。';
 }
 function kitchenRollFood(){const table=[[],[[1,2]],[[1,4],[2,2]],[[1,6],[2,4],[3,2]]][kitchenLevel('purchase')],roll=Math.random()*100;let cumulative=0;for(const [tier,chance]of table){cumulative+=chance;if(roll<cumulative)return tier;}return 0;}
-function openKitchen(){if(day<1)return;if(!sandboxNight){toast('現在是白天；冶煉廠營業結束後，會開啟同一天的晚餐時段。');return;}return performSceneTransition('餐廳',()=>{$('sk').style.display='none';startKitchenNight();$('kitchenP').hidden=false;renderKitchen();saveNow();if(kitchen.done){renderKitchenSettlement();return;}});}
+function openKitchen(){if(day<1)return;if(!sandboxNight){toast('現在是白天；冶煉廠營業結束後，會開啟同一天的晚餐時段。');return;}if(!kitchen?.done&&requireWorkshopTraining('kitchen'))return;return performSceneTransition('餐廳',()=>{if(!kitchen?.done&&requireWorkshopTraining('kitchen'))return;$('sk').style.display='none';startKitchenNight();$('kitchenP').hidden=false;renderKitchen();saveNow();if(kitchen.done){renderKitchenSettlement();return;}});}
 function closeKitchen(){return performSceneTransition('城鎮',()=>{cancelKitchenDrag();clearKitchenIngredientFlights();clearKitchenDepartures();$('kitchenP').hidden=true;$('kitchenModal').hidden=true;showTown();});}
 function kitchenNeighbors(i){return nb(i);}
 function kitchenGroup(i){const item=kitchen.g[i];if(!item)return [];const out=[i];for(let k=0;k<out.length;k++)for(const n of nb(out[k]))if(!out.includes(n)&&kitchen.g[n]?.k===item.k&&(item.k==='p'||kitchen.g[n].t===item.t))out.push(n);return out;}
@@ -1158,17 +1158,25 @@ const TOWN_GUEST_ART={"0":"assets/guests/0.44c205fa7b0f.webp","1":"assets/guests
 function workshopOreHTML(t,extra='',magic=0){return '<div class="t o '+extra+' cozy-ore"'+cozyOreAttributes(t)+' style="background-color:'+C[t]+';'+cozyOreStyle(t)+'">'+NM[t]+(magic?'<span class="mb">+'+magic+'💰</span>':'')+'</div>';}
 function workshopPieceHTML(w){return '<div class="t2'+(w.k==='d'?' dg':'')+'">'+(w.k==='d'?gem(w.t):mold(w.s,C[w.t]))+mb(w)+'</div>';}
 function renderKitchenMessage(text){
- const el=$('kitchenMessage');if(!expandedGameEnabled()){el.textContent=text;return;}text=String(text||'');el.setAttribute('aria-label',text);el.title=text;
- if(el.dataset.message!==text){el.dataset.message=text;el.innerHTML='<span class="kitchen-message-track"><span class="kitchen-message-copy">'+esc(text)+'</span></span>';el.dataset.measured='';}
- requestAnimationFrame(layoutKitchenMessage);
+ renderWorkshopMessage($('kitchenMessage'),text,layoutKitchenMessage);
 }
-function layoutKitchenMessage(){
- const el=$('kitchenMessage'),track=el.querySelector('.kitchen-message-track'),copy=track?.querySelector('.kitchen-message-copy');if(!copy||!el.clientWidth)return;
+function renderForgeMessage(text){renderWorkshopMessage($('msg'),text,layoutForgeMessage);}
+function forgeMessageText(){return $('msg').dataset.message??$('msg').textContent;}
+function renderWorkshopMessage(el,text,layout){
+ text=String(text||'');el.setAttribute('aria-label',text);el.title=text;
+ if(el.dataset.message!==text){el.dataset.message=text;el.innerHTML='<span class="kitchen-message-track"><span class="kitchen-message-copy">'+esc(text)+'</span></span>';el.dataset.measured='';}
+ requestAnimationFrame(layout);
+}
+function layoutKitchenMessage(){layoutWorkshopMessage($('kitchenMessage'));}
+function layoutForgeMessage(){layoutWorkshopMessage($('msg'));}
+function layoutWorkshopMessage(el){
+ const track=el.querySelector('.kitchen-message-track'),copy=track?.querySelector('.kitchen-message-copy');if(!copy||!el.clientWidth)return;
  const width=copy.scrollWidth||copy.getBoundingClientRect().width,available=el.clientWidth-16,overflow=width>available+1,key=width+':'+available;
  if(el.dataset.measured===key)return;el.dataset.measured=key;el.classList.toggle('scrolling-message',overflow);track.querySelector('.kitchen-message-repeat')?.remove();
  if(overflow){const repeat=document.createElement('span');repeat.className='kitchen-message-repeat';repeat.setAttribute('aria-hidden','true');repeat.textContent=el.dataset.message;track.appendChild(repeat);track.style.setProperty('--message-distance',-(width+40)+'px');track.style.setProperty('--message-duration',Math.max(10,(width+40)/28)+'s');}
 }
-window.addEventListener('resize',()=>requestAnimationFrame(layoutKitchenMessage));
+window.addEventListener('resize',()=>{requestAnimationFrame(layoutKitchenMessage);requestAnimationFrame(layoutForgeMessage);});
+
 const TOWN_GUEST_ROLES=['劍士','法師','遊俠','僧侶','盜賊','吟遊詩人','商人','饕客'];
 function townGuestIdentity(i){if(expandedGameEnabled()){const list=isSandboxNight()?[...(kitchen?.orders||[]),...(kitchen?.queue||[])]:orders.concat(dq);if(list[i]?.guest)return list[i].guest;}return guestForOrder22(i,isSandboxNight());}
 function townGuestArt(id){return '<svg viewBox="0 0 32 52" shape-rendering="crispEdges" aria-hidden="true" data-town-guest-art="'+id+'"><image href="'+TOWN_GUEST_ART[id]+'" x="0" y="0" width="32" height="52" preserveAspectRatio="xMidYMax meet" style="image-rendering:pixelated"/></svg>';}
@@ -1663,7 +1671,7 @@ function showWeaponDetail(c,t){
 $('inspectPrev').onclick=()=>{if(inspectedTier>0)showWeaponDetail(inspectedWeapon,inspectedTier-1);};
 $('inspectNext').onclick=()=>{if(inspectedTier<NM.length-1)showWeaponDetail(inspectedWeapon,inspectedTier+1);};
 
-const say=t=>$("msg").textContent=t;
+const say=t=>renderForgeMessage(t);
 const sk=id=>skills[id]||0;
 const TG=[[11,12,13],[16,17,18],[21,22,23]];
 let tutP2=false,tutStage=1;
@@ -2120,7 +2128,7 @@ function qOnSale(w,price){
       case'spec':if(w.c===q.c)bump(q,q.p+1);break;
     }
   });
-  if(notes.length)say($("msg").textContent+" 📋 "+notes.join("、"));
+  if(notes.length)say(forgeMessageText()+" 📋 "+notes.join("、"));
 }
 function renderQ(){
   const bar=$("qbar");
@@ -2449,7 +2457,7 @@ function dropGem(t){
   if(!em.length)return;
   const j=em[rnd(em.length)];
   g[j]={k:'d',t,m:0};fresh=j;
-  say($("msg").textContent+" 💎 掉落一顆"+NM[t]+"鑽！");
+  say(forgeMessageText()+" 💎 掉落一顆"+NM[t]+"鑽！");
 }
 function sellW(c,k,clear){
   if(c?.protected){toast('這把武器已受保護，請先取消保護');return false;}const o=orders[k];
@@ -2775,7 +2783,7 @@ function showTown(){
 }
 function returnToTown(){if(busy){say('請等這次合成完成，再返回城鎮。');return;}if(day<=0){goHome();return;}showTown();}
 function enterTownForge(){
- if(!forgeSettlementPending()&&sp>0&&!sandboxSession){remindTownSkills();return;}startTownForge();
+ startTownForge();
 }
 function townNextAction(){enterTownForge();}
 function visitTrainingFromGame(){if(day===0)return stage19_visitTrainingFromGame();openLearnedForgeSkills();}
@@ -2822,16 +2830,25 @@ function claimTownChest(){
    $('townLootClose').textContent='收下';$('townLootClose').disabled=false;chestOpening=false;
  },700);
 }
-function remindTownSkills(){
- $('townSkillCount').textContent='還有 '+sp+' 點技能點尚未使用。要先前往訓練所嗎？';
+let townSkillBranch='forge';
+function requireWorkshopTraining(branch){
+ if(day<1||sandboxSession)return false;const points=branch==='kitchen'?kitchen.sp:sp;if(points<=0)return false;
+ if(workshopSkillsMaxed(branch)){convertWorkshopSurplus(branch);saveNow();render();return false;}
+ remindTownSkills(branch);return true;
+}
+function remindTownSkills(branch='forge'){
+ townSkillBranch=branch;const name=branch==='kitchen'?'餐廳':'冶煉廠',points=branch==='kitchen'?kitchen.sp:sp;
+ $('townSkillCount').textContent=name+'還有 '+points+' 點技能點尚未使用。請先到訓練所分配完畢，才能進入'+name+'營業。';
  $('townSkillP').style.display='flex';
 }
-function startTownForge(){if(forgeSettlementPending()){renderForgeSettlement();return;}if(isSandboxNight())return preview_startTownForge(...arguments);return performSceneTransition('冶煉廠',()=>preview_startTownForge());}
+function openRequiredTraining(){closeP('townSkillP');return performSceneTransition('城鎮',()=>{$('kitchenP').hidden=true;showTown();openSkills(false);trainingBranch=townSkillBranch;renderSk();});}
+function startTownForge(){if(forgeSettlementPending()){renderForgeSettlement();return;}if(isSandboxNight())return preview_startTownForge(...arguments);if(requireWorkshopTraining('forge'))return;return performSceneTransition('冶煉廠',()=>preview_startTownForge());}
 function stable_startTownForge(){
  $('townSkillP').style.display='none';phase='play';$('townP').style.display='none';render();saveNow();showPendingSeasonNotice();
 }
 function preview_startTownForge(){
  if(isSandboxNight()){toast('現在是晚餐時段，前往廚房餐廳營業。');return;}
+ if(requireWorkshopTraining('forge'))return;
  $('townSkillP').style.display='none';phase='play';$('townP').style.display='none';render();saveNow();showPendingSeasonNotice();
 }
 function restoreTownProgress(t){
@@ -3134,13 +3151,13 @@ function startExpeditionFeedbackClock(){
 function stopExpeditionFeedbackClock(){if(expeditionFeedbackTimer!==null)clearInterval(expeditionFeedbackTimer);expeditionFeedbackTimer=null;}
 function expeditionHealthHTML(b){
  const hp=Math.max(0,b.hp),shield=Math.max(0,b.shield||0),healed=Math.min(hp,Math.max(0,b.foodRecovered||0));b.healthShieldCapacity=Math.max(shield,b.healthShieldCapacity||0);const scale=Math.max(1,b.hpMax+b.healthShieldCapacity),width=n=>(Math.max(0,n)/scale*100).toFixed(3)+'%';
- return '<div class="exp-health-meter" role="img" aria-label="生命 '+hp+' / '+b.hpMax+'，料理恢復剩餘 '+healed+'，護盾 '+shield+'"><span class="exp-health-base" style="width:'+width(hp-healed)+'"></span><span class="exp-health-food" style="width:'+width(healed)+'"></span><span class="exp-health-shield" style="width:'+width(shield)+'"></span></div><span class="exp-health-key"><i>生命</i><i>料理回復</i><i>護盾</i></span>';
+ return '<div class="exp-health-meter" role="img" aria-label="生命 '+hp+' / '+b.hpMax+'，料理恢復剩餘 '+healed+'，護盾 '+shield+'"><span class="exp-health-base" style="width:'+width(hp-healed)+'"></span><span class="exp-health-food" style="width:'+width(healed)+'"></span><span class="exp-health-shield" style="width:'+width(shield)+'"></span></div><span class="exp-health-key"><i>生命</i><i>料理回復</i><i>護盾'+(shield?' '+shield:'')+'</i></span>';
 }
 document.addEventListener('visibilitychange',()=>{const b=expeditionState.lastBattle;if(b)b.effectStamp=Date.now();battleLastAdvance=Date.now();});
 
 function renderExpeditionBattle(){
  const b=expeditionState.lastBattle;if(!b)return;syncExpeditionEffects();updateBattlePace();renderExpeditionFood();const m=b.monster||{...EXPEDITIONS[b.stage],element:'none'},done=b.resolved;
- $('expeditionArena').innerHTML='<div class="exp-fighter"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</div><b>'+itemName(b.weapon)+'</b><small>♥ '+b.hp+' / '+b.hpMax+(b.shield?'　護盾 '+b.shield:'')+'</small>'+expeditionHealthHTML(b)+'</div><strong>VS</strong><div class="exp-fighter"><div>'+monsterArt(m)+elementBadge(m.element,'battle-element')+'</div><b>'+m.name+'</b><small>♥ '+b.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+b.enemyHp+'"></progress></div>';
+ $('expeditionArena').innerHTML='<div class="exp-fighter"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</div><b>'+itemName(b.weapon)+'</b><small>♥ '+b.hp+' / '+b.hpMax+'</small>'+expeditionHealthHTML(b)+'</div><strong>VS</strong><div class="exp-fighter"><div>'+monsterArt(m)+elementBadge(m.element,'battle-element')+'</div><b>'+m.name+'</b><small>♥ '+b.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+b.enemyHp+'" aria-label="怪物生命值"></progress><span class="exp-health-key exp-monster-key" aria-hidden="true"></span></div>';
  $('expeditionLog').innerHTML=(done?b.log:b.log.slice(-5)).map(x=>'<p class="'+x.actor+(x.skill?' skill-hit':'')+'">'+esc(x.text)+'</p>').join('')||'<p>武器已投入遠征；可在戰鬥中施放終極武器技能。</p>';
  $('expeditionLog').dataset.complete=String(done);$('expeditionGuard').hidden=done;$('expeditionIntent').textContent=done?'本次戰鬥已結束':('敵方下次：'+bossIntent(b)+(b.bossHardened?' · 現正硬化':'')+(b.guarding?' · 防禦中（減傷60%）':''));if(!done&&expandedGameEnabled()&&b.foodAttackTurns>0)$('expeditionIntent').textContent+=' · 🍖 攻擊 +'+Math.round((b.foodAttack||0)*100)+'%（剩 '+b.foodAttackTurns+' 次）';$('expeditionGuard').disabled=done||b.guardUsed;$('expeditionGuard').textContent=b.guardUsed?'🛡 已使用防禦架勢':'🛡 防禦3秒 · 減傷60%（每場一次）';const skill=ultimateSkill(b.weapon);$('expeditionSkill').hidden=done||!skill;$('expeditionSkill').disabled=done||b.skillUsed;$('expeditionSkill').textContent=skill?(b.skillUsed?'✓ 已施放 '+skill.name:'✦ 施放 '+skill.name):'';
  $('expeditionResult').innerHTML=done?'<h3>'+({win:'🏆 遠征勝利',lose:'遠征落敗',draw:'已撤退'}[b.outcome])+'</h3><p>'+(b.outcome==='win'?'獲得 '+b.gold+' 金幣'+(b.loot?'＋'+itemName(b.loot):'')+'。':b.outcome==='lose'?'失去一顆愛心，剩餘 '+lives+' 顆。':'未獲得獎勵，出戰武器已消耗。')+'</p>'+(b.outcome==='win'&&b.stage>=10&&b.stage<20?'<button class="ultimate-unlocked" onclick="openUltimateArt('+b.stage+')">'+ultimatePixelArt(b.stage)+'<span>終極藍圖已解鎖 · 查看高清美術 ↗</span></button>':''):'';
@@ -3677,7 +3694,7 @@ function settle(){
 function magicAt(i){
   if(!magicSet.has(i)||!g[i])return;
   g[i].m=(g[i].m||0)+5;
-  say($("msg").textContent+" ✨魔法 +5💰（賣出時結算）");
+  say(forgeMessageText()+" ✨魔法 +5💰（賣出時結算）");
 }
 
 

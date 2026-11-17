@@ -32,16 +32,25 @@ function claimTownChest(){
    $('townLootClose').textContent='收下';$('townLootClose').disabled=false;chestOpening=false;
  },700);
 }
-function remindTownSkills(){
- $('townSkillCount').textContent='還有 '+sp+' 點技能點尚未使用。要先前往訓練所嗎？';
+let townSkillBranch='forge';
+function requireWorkshopTraining(branch){
+ if(day<1||sandboxSession)return false;const points=branch==='kitchen'?kitchen.sp:sp;if(points<=0)return false;
+ if(workshopSkillsMaxed(branch)){convertWorkshopSurplus(branch);saveNow();render();return false;}
+ remindTownSkills(branch);return true;
+}
+function remindTownSkills(branch='forge'){
+ townSkillBranch=branch;const name=branch==='kitchen'?'餐廳':'冶煉廠',points=branch==='kitchen'?kitchen.sp:sp;
+ $('townSkillCount').textContent=name+'還有 '+points+' 點技能點尚未使用。請先到訓練所分配完畢，才能進入'+name+'營業。';
  $('townSkillP').style.display='flex';
 }
-function startTownForge(){if(forgeSettlementPending()){renderForgeSettlement();return;}if(isSandboxNight())return preview_startTownForge(...arguments);return performSceneTransition('冶煉廠',()=>preview_startTownForge());}
+function openRequiredTraining(){closeP('townSkillP');return performSceneTransition('城鎮',()=>{$('kitchenP').hidden=true;showTown();openSkills(false);trainingBranch=townSkillBranch;renderSk();});}
+function startTownForge(){if(forgeSettlementPending()){renderForgeSettlement();return;}if(isSandboxNight())return preview_startTownForge(...arguments);if(requireWorkshopTraining('forge'))return;return performSceneTransition('冶煉廠',()=>preview_startTownForge());}
 function stable_startTownForge(){
  $('townSkillP').style.display='none';phase='play';$('townP').style.display='none';render();saveNow();showPendingSeasonNotice();
 }
 function preview_startTownForge(){
  if(isSandboxNight()){toast('現在是晚餐時段，前往廚房餐廳營業。');return;}
+ if(requireWorkshopTraining('forge'))return;
  $('townSkillP').style.display='none';phase='play';$('townP').style.display='none';render();saveNow();showPendingSeasonNotice();
 }
 function restoreTownProgress(t){
