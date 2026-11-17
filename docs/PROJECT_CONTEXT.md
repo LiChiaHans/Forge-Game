@@ -17,7 +17,7 @@
 - 冶煉／餐廳共用kitchen/message.js的一行跑馬燈，冶煉34px、餐廳29px；forgeMessageText從dataset讀單份原文，追加魔法／寶石／任務文字不能讀含重複輪播副本的textContent。exp-fighter共用5列格線，名稱最多兩行，生命文字與12px血條始終對齊，護盾數字在下方圖例。
 - audio/workshop-sounds.js使用WebAudio提供冶煉金屬／餐廳木作與盤聲，與共用合成播放器的集合／落地對齊，低特效直接完成仍播一次；保留靜音，無新增下載。
 - 正式遊戲使用有限金錢、限購、愛心。後台有獨立資源與跳日，測試成果不影響正式存檔、首頁紀錄／圖鑑或排行榜。
-- 裝飾實際目錄由contexts.js把舊48件展成四季日夜各自ID，再加12件夜光，共156件，沿用素材。sourceId用來找舊圖片，所有夜版偏暗、只有燈具發光；decorSVG再以夜間palette2群組統一brightness(.62)/saturate(.74)，包含物件／水光／光暈及替代SVG。儲存版型帶artVersion=2，舊夜間縮圖會重繪，白天縮圖仍沿用；不再有all類。cityState.version=2，layouts/nightLayouts各四季空白，舊版持有數與擺設一次轉換，夜晚不隱式複製白天。cityEditDraft保存原擺設，snapshotCity在未按✅前輸出原樣，購買品保留；保存／載入／分享限當季時段，版型每情境10個、合計80。預設版型items=[]。
+- 裝飾實際目錄由contexts.js把舊48件展成四季日夜各自ID，再加12件夜光，共156件，沿用素材。sourceId用來找舊圖片，所有夜版偏暗、只有燈具發光；decorSVG以夜間palette3原生SVG feColorMatrix群組套用TOWN_NIGHT_COLOR_MATRIX，與實際背景／截圖共用相同RGB變換，移除圖片原先brightness(.52/.72)及palette2疊加；新版噴水池不再重複加亮度濾鏡。包含物件／水光／光暈及替代SVG。儲存版型帶artVersion=3，舊夜間縮圖會重繪，白天縮圖仍沿用；不再有all類。cityState.version=2，layouts/nightLayouts各四季空白，舊版持有數與擺設一次轉換，夜晚不隱式複製白天。cityEditDraft保存原擺設，snapshotCity在未按✅前輸出原樣，購買品保留；保存／載入／分享限當季時段，版型每情境10個、合計80。預設版型items=[]。
 - online/friends.js以既有玩家識別碼認證，只在正式玩家使用；好友單向加入（無訊息或對方確認），100人上限，讀最高分及頭像。版型經手動分享確認才上傳ID／位置／變換與頭像，不送截圖或完整存檔，最多每情境10個。好友只能讀已加入者的當季時段版型；套用缺品可補齊，但仍是建築師草稿，按✅才保存。後台／教學不連好友服務。
 - 排行榜服務已獨立部署，前端沿用 `src/js/online/leaderboard.js` 的原目的地。好友與分享服務新增friends及city_layouts兩表，保留players／records；不要新增測試玩家到正式服務。
 - 正常存檔主要為 `forgeSaves`，餐廳保存於 `state.restaurant`；後台獨立 `forgeBackendProgressV1`。保留舊存檔與備份相容。

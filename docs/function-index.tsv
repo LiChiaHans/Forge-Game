@@ -634,7 +634,7 @@ resizeSaveBoard	src/js/saves/game-slots.js	13
 loadGame	src/js/saves/game-slots.js	14
 openSaves	src/js/saves/game-slots.js	55
 newGameFlow	src/js/saves/game-slots.js	89
-decorSVG	src/js/decorations/catalog.js	12
+decorSVG	src/js/decorations/catalog.js	13
 cityContextLabel	src/js/decorations/contexts.js	2
 decorMatchesContext	src/js/decorations/contexts.js	3
 cityContextEditable	src/js/decorations/contexts.js	4

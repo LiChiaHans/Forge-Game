@@ -3,7 +3,7 @@
 const cityThumbnailCache=new Map();
 const cityPreviewCache=new Map();let cityPreviewRequest=0;
 const CITY_DEFAULT_TIMESTAMP='2026-11-13T02:01:05.684Z';
-const CITY_PRESET_ART_VERSION=2;
+const CITY_PRESET_ART_VERSION=3;
 function cityPresetSavedThumbnail(p){return !p.night||p.artVersion===CITY_PRESET_ART_VERSION?safeCityThumbnail(p.thumbnail):'';}
 function defaultCityPreset(){return expandedGameEnabled()?preview_defaultCityPreset(...arguments):stable_defaultCityPreset(...arguments);}
 function stable_defaultCityPreset(si){const season=DECOR_SEASONS[si];return {id:'default-'+season,name:'預設版型 · '+SEASONS[si].name,season,builtin:true,authorName:'Forge Master',avatar:normalizeAvatar(AVATAR_DEFAULT),createdAt:CITY_DEFAULT_TIMESTAMP,items:freshCity().layouts[season]};}

@@ -11,3 +11,5 @@ body.cozy-items [data-cozy-item],body.cozy-items [data-cozy-decor]{overflow:visi
 .low-effects .cozy-decor-halo,.low-effects .cozy-fountain-water{animation:none}
 @media(prefers-reduced-motion:reduce){.cozy-decor-halo,.cozy-fountain-water{animation:none}}
 
+
+#townP[data-time="night"] .town-sticker[data-decor-kind="fountain"] .sticker-transform>svg[data-night-palette="3"]{filter:none}

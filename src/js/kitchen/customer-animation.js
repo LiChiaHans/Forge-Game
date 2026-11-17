@@ -30,4 +30,4 @@ function kitchenTownGuestPoint(i,night=isSandboxNight()){
  return i<line.length?line[i]:[174+(i%2)*22,500+Math.floor((i-8)/2)*20];
 }
 function kitchenSnapshotPlazaSVG(svg){return isSandboxNight()?svg.replace('<svg ','<svg style="filter:brightness(.66) saturate(.76)" '):svg;}
-function kitchenSnapshotDecorSVG(svg,d){return isSandboxNight()&&d.art==='fountain'?svg.replace('<svg ','<svg style="filter:brightness(.58) saturate(.8)" '):svg;}
+function kitchenSnapshotDecorSVG(svg,d){return isSandboxNight()&&d.art==='fountain'&&!svg.includes('data-night-palette="3"')?svg.replace('<svg ','<svg style="filter:brightness(.58) saturate(.8)" '):svg;}

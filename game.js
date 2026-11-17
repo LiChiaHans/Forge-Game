@@ -793,7 +793,7 @@ function kitchenTownGuestPoint(i,night=isSandboxNight()){
  return i<line.length?line[i]:[174+(i%2)*22,500+Math.floor((i-8)/2)*20];
 }
 function kitchenSnapshotPlazaSVG(svg){return isSandboxNight()?svg.replace('<svg ','<svg style="filter:brightness(.66) saturate(.76)" '):svg;}
-function kitchenSnapshotDecorSVG(svg,d){return isSandboxNight()&&d.art==='fountain'?svg.replace('<svg ','<svg style="filter:brightness(.58) saturate(.8)" '):svg;}
+function kitchenSnapshotDecorSVG(svg,d){return isSandboxNight()&&d.art==='fountain'&&!svg.includes('data-night-palette="3"')?svg.replace('<svg ','<svg style="filter:brightness(.58) saturate(.8)" '):svg;}
 const TOWN_MASTER_BUILDINGS=[['townArchive','archive',0,.26,.37,.27],['townKitchen','kitchen',.58,.11,.42,.25],['townForge','forge',.59,.43,.41,.27],['townTraining','training',.57,.79,.43,.21],['townGreenhouse','greenhouse',0,.54,.3,.18],['townDecorShop','decor',-.03,.76,.44,.23]];
 function townMasterDoor(id){
  const row=TOWN_MASTER_BUILDINGS.find(r=>r[0]===id),points={townArchive:[98,160],townKitchen:[94,154],townForge:[66,147],townGreenhouse:[103,160],townShop:[105,160],townTraining:[94,160],townDecorShop:[98,160]},anchor=points[id],map=$('townMap').getBoundingClientRect(),el=$(id).getBoundingClientRect();
@@ -879,7 +879,7 @@ function geminiTownSignArt(kind,name){
 }
 function geminiTownNightArt(){
  const windows=[[.445,.212,.020,.027],[.743,.255,.027,.028],[.829,.263,.022,.026],[.91,.252,.026,.025],[.883,.608,.028,.035],[.842,.632,.040,.028],[.434,.832,.018,.025],[.725,.827,.025,.025],[.868,.826,.032,.028],[.892,.87,.022,.020],[.265,.816,.035,.030],[.248,.345,.025,.033],[.287,.366,.023,.026]],lamps=[[.274,.242],[.385,.244],[.711,.31],[.581,.868],[.425,.919]];
- return '<svg viewBox="0 0 572 1024" preserveAspectRatio="none" aria-hidden="true"><defs><filter id="geminiTownNightFilter" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values=".30 0 0 0 .015 0 .40 0 0 .025 0 0 .64 0 .065 0 0 0 1 0"/></filter><radialGradient id="gemini-lamp"><stop stop-color="#ffdf9a" stop-opacity=".8"/><stop offset=".25" stop-color="#ffbe60" stop-opacity=".32"/><stop offset="1" stop-color="#f6af53" stop-opacity="0"/></radialGradient></defs><path fill="#cfe5ef" opacity=".7" d="M494 17h8v3h-5v6h-3z"/><path fill="#c9deea" opacity=".6" d="M344 13h2v2h-2zM390 24h2v2h-2zM452 9h2v2h-2zM537 36h2v2h-2z"/><g class="gemini-window-light">'+windows.map(([x,y,w,h])=>'<ellipse fill="url(#gemini-lamp)" cx="'+x*572+'" cy="'+y*1024+'" rx="'+w*850+'" ry="'+h*1300+'"/>').join('')+'</g>'+lamps.map(([x,y],i)=>'<ellipse class="gemini-lamp-light" style="animation-delay:-'+i+'s" fill="url(#gemini-lamp)" cx="'+x*572+'" cy="'+y*1024+'" rx="22" ry="37"/>').join('')+'</svg>';
+ return '<svg viewBox="0 0 572 1024" preserveAspectRatio="none" aria-hidden="true"><defs><filter id="geminiTownNightFilter" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="'+TOWN_NIGHT_COLOR_MATRIX+'"/></filter><radialGradient id="gemini-lamp"><stop stop-color="#ffdf9a" stop-opacity=".8"/><stop offset=".25" stop-color="#ffbe60" stop-opacity=".32"/><stop offset="1" stop-color="#f6af53" stop-opacity="0"/></radialGradient></defs><path fill="#cfe5ef" opacity=".7" d="M494 17h8v3h-5v6h-3z"/><path fill="#c9deea" opacity=".6" d="M344 13h2v2h-2zM390 24h2v2h-2zM452 9h2v2h-2zM537 36h2v2h-2z"/><g class="gemini-window-light">'+windows.map(([x,y,w,h])=>'<ellipse fill="url(#gemini-lamp)" cx="'+x*572+'" cy="'+y*1024+'" rx="'+w*850+'" ry="'+h*1300+'"/>').join('')+'</g>'+lamps.map(([x,y],i)=>'<ellipse class="gemini-lamp-light" style="animation-delay:-'+i+'s" fill="url(#gemini-lamp)" cx="'+x*572+'" cy="'+y*1024+'" rx="22" ry="37"/>').join('')+'</svg>';
 }
 function geminiTownEffects(){
  return '<div class="gemini-sea-shimmer" aria-hidden="true"></div><div class="gemini-night-lights">'+geminiTownNightArt()+'</div><div class="gemini-fountain-water" aria-hidden="true"><i></i><i></i><i></i></div><div class="gemini-chimney-smoke" aria-hidden="true"><i></i><i></i><i></i></div><i class="gemini-forge-fire" aria-hidden="true"></i>';
@@ -911,7 +911,7 @@ function geminiTownSnapshot(items,si,savedHeight){
  out+='<g mask="url(#gemini-snapshot-buildings)">'+decor(0)+'</g>';
  for(const b of GEMINI_TOWN_BUILDINGS){const [x,y,w,h]=b.box,[sx,sy,sw,sh]=b.sign;out+=snapshotNestedSVG(geminiTownSignArt(b.kind,b.name),(x+w*sx)*360,(y+h*sy)*H,w*sw*360,h*sh*H);}
  if(night)out+=snapshotNestedSVG(geminiTownNightArt(),0,0,360,H);out+=decor(1);
- return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 '+H+'" width="360" height="'+H+'"><defs><filter id="gemini-snapshot-night" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values=".34 0 0 0 .01 0 .41 0 0 .02 0 0 .62 0 .04 0 0 0 1 0"/></filter><mask id="gemini-snapshot-buildings" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="white"/>'+GEMINI_TOWN_BUILDINGS.map(b=>'<rect x="'+b.box[0]+'" y="'+b.box[1]+'" width="'+b.box[2]+'" height="'+b.box[3]+'" fill="black"/>').join('')+'</mask></defs>'+out+'</svg>';
+ return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 '+H+'" width="360" height="'+H+'"><defs><filter id="gemini-snapshot-night" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="'+TOWN_NIGHT_COLOR_MATRIX+'"/></filter><mask id="gemini-snapshot-buildings" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="white"/>'+GEMINI_TOWN_BUILDINGS.map(b=>'<rect x="'+b.box[0]+'" y="'+b.box[1]+'" width="'+b.box[2]+'" height="'+b.box[3]+'" fill="black"/>').join('')+'</mask></defs>'+out+'</svg>';
 }
 const geminiSnapshotAssets=new Map(),geminiSnapshotRequests=new Map();
 async function prepareGeminiSnapshot(si){
@@ -975,7 +975,7 @@ function cozyDecorSVG(id,season=seasonIndex(),uid='preview'){
  const lamp=d.lighted||/lamp|lantern|candle|garland/.test(d.art),fountain=d.art==='fountain',w=d.w,h=d.h,glow=season===3?'#c7ebff':season===0?'#f5d5b0':'#ffd18c',name='cozy-glow-'+String(uid).replace(/[^a-zA-Z0-9_-]/g,'');
  const halo=lamp?'<defs><radialGradient id="'+name+'"><stop stop-color="'+glow+'" stop-opacity=".35"/><stop offset="1" stop-color="'+glow+'" stop-opacity="0"/></radialGradient></defs><ellipse class="cozy-decor-halo" cx="'+w*.5+'" cy="'+h*.32+'" rx="'+w*.46+'" ry="'+h*.3+'" fill="url(#'+name+')"/>':'';
  const water=fountain?'<g class="cozy-fountain-water"><ellipse cx="'+w*.5+'" cy="'+h*.7+'" rx="'+w*.23+'" ry="'+h*.055+'" fill="none" stroke="#bbf5ed" stroke-width=".9"/><path fill="#e4fffa" d="M'+w*.38+' '+h*.54+'h1v3h-1zM'+w*.64+' '+h*.53+'h1v3h-1z"/></g>':'';
- const pet=['cat','dog'].includes(d.art);return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+w+' '+h+'" data-cozy-decor="'+id+'" aria-hidden="true">'+halo+(pet?'<g class="pet-facing" data-facing="left">':'')+'<g'+(pet?' class="pet-body"':'')+'><image href="'+cozyItemURL(key)+'" width="'+w+'" height="'+h+'" preserveAspectRatio="xMidYMax meet" style="image-rendering:pixelated;'+(d.night?'filter:brightness('+(d.lighted?.72:.52)+') saturate(.78);':'')+'"/></g>'+(pet?'</g>':'')+water+'</svg>';
+ const pet=['cat','dog'].includes(d.art);return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+w+' '+h+'" data-cozy-decor="'+id+'" aria-hidden="true">'+halo+(pet?'<g class="pet-facing" data-facing="left">':'')+'<g'+(pet?' class="pet-body"':'')+'><image href="'+cozyItemURL(key)+'" width="'+w+'" height="'+h+'" preserveAspectRatio="xMidYMax meet" style="image-rendering:pixelated;"/></g>'+(pet?'</g>':'')+water+'</svg>';
 }
 const cozyItemSnapshotAssets=new Map(),cozyItemSnapshotRequests=new Map();
 async function prepareCozyItemSnapshot(items,si){
@@ -4201,6 +4201,7 @@ function newGameFlow(){
 }
 
 const DECOR_SEASONS=['spring','summer','autumn','winter'];
+const TOWN_NIGHT_COLOR_MATRIX='.30 0 0 0 .015 0 .40 0 0 .025 0 0 .64 0 .065 0 0 0 1 0';
 const DECOR_CATALOG=[
  ['tree','庭園樹',150,'all','tree',48,66],['lamp','暖光路燈',220,'all','lamp',30,56],['bench','木製長椅',180,'all','bench',44,28],['fountain','石造噴水池',850,'all','fountain',116,116],['flowers','小花叢',80,'all','flowers',25,22],['fence','木柵欄',100,'all','fence',52,28],['cat','小貓',600,'all','cat',26,26],['dog','小狗',600,'all','dog',28,28],
  ['sp-cherry','櫻花樹',650,'spring','cherry',58,72],['sp-tulips','鬱金香花圃',200,'spring','tulips',40,32],['sp-daisy','雛菊花盆',160,'spring','daisy',29,34],['sp-arch','蝴蝶花拱門',750,'spring','flowerarch',70,76],['sp-rabbit','白兔石像',380,'spring','rabbit',34,42],['sp-picnic','春日野餐',420,'spring','picnic',58,34],['sp-windmill','花園風車',520,'spring','windmill',42,70],['sp-birdhouse','小鳥屋',280,'spring','birdhouse',32,58],['sp-clover','幸運草石',240,'spring','clover',34,31],['sp-lantern','花瓣燈',360,'spring','blossomlamp',31,55],
@@ -4209,10 +4210,11 @@ const DECOR_CATALOG=[
  ['wi-pine','積雪松樹',550,'winter','snowpine',52,76],['wi-snowman','雪人',220,'winter','snowman',37,52],['wi-crystal','冰晶叢',380,'winter','icecrystal',43,47],['wi-gifts','禮物堆',300,'winter','gifts',44,37],['wi-sleigh','冬日雪橇',500,'winter','sleigh',64,41],['wi-reindeer','小麋鹿',650,'winter','reindeer',47,52],['wi-cocoa','熱可可攤',600,'winter','cocoastall',58,54],['wi-arch','冰晶拱門',800,'winter','icearch',67,77],['wi-banner','雪花旗',260,'winter','snowbanner',37,61],['wi-starlamp','星光燈',450,'winter','starlamp',36,64]
 ].map(([id,name,price,season,art,w,h])=>({id,name,price,season,art,w,h}));
 const DECOR_BY_ID=new Map(DECOR_CATALOG.map(d=>[d.id,d]));
-function decorSVG(id){
+function decorSVG(id,season=seasonIndex(),uid='preview'){
  const svg=expandedGameEnabled()?cozyDecorSVG(...arguments):stable_decorSVG(...arguments);
  if(!DECOR_BY_ID.get(id)?.night)return svg;
- return svg.replace(/<svg\b([^>]*)>/,'<svg$1 data-night-palette="2"><g style="filter:brightness(.62) saturate(.74)">').replace(/<\/svg>\s*$/,'</g></svg>');
+ const filter='decor-moonlight-'+String(id+'-'+uid).replace(/[^a-zA-Z0-9_-]/g,'');
+ return svg.replace(/<svg\b([^>]*)>/,'<svg$1 data-night-palette="3"><defs><filter id="'+filter+'" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="'+TOWN_NIGHT_COLOR_MATRIX+'"/></filter></defs><g filter="url(#'+filter+')">').replace(/<\/svg>\s*$/,'</g></svg>');
 }
 let cityEditDraft=null,decorShopNight=false;
 function cityContextLabel(si=seasonIndex(),night=isSandboxNight()){return SEASONS[si].name+' · '+(night?'夜晚':'白天');}
@@ -4585,7 +4587,7 @@ function installCityControls(){
 const cityThumbnailCache=new Map();
 const cityPreviewCache=new Map();let cityPreviewRequest=0;
 const CITY_DEFAULT_TIMESTAMP='2026-11-13T02:01:05.684Z';
-const CITY_PRESET_ART_VERSION=2;
+const CITY_PRESET_ART_VERSION=3;
 function cityPresetSavedThumbnail(p){return !p.night||p.artVersion===CITY_PRESET_ART_VERSION?safeCityThumbnail(p.thumbnail):'';}
 function defaultCityPreset(){return expandedGameEnabled()?preview_defaultCityPreset(...arguments):stable_defaultCityPreset(...arguments);}
 function stable_defaultCityPreset(si){const season=DECOR_SEASONS[si];return {id:'default-'+season,name:'預設版型 · '+SEASONS[si].name,season,builtin:true,authorName:'Forge Master',avatar:normalizeAvatar(AVATAR_DEFAULT),createdAt:CITY_DEFAULT_TIMESTAMP,items:freshCity().layouts[season]};}
