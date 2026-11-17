@@ -5,10 +5,10 @@ const cityPreviewCache=new Map();let cityPreviewRequest=0;
 const CITY_DEFAULT_TIMESTAMP='2026-11-13T02:01:05.684Z';
 function defaultCityPreset(){return expandedGameEnabled()?preview_defaultCityPreset(...arguments):stable_defaultCityPreset(...arguments);}
 function stable_defaultCityPreset(si){const season=DECOR_SEASONS[si];return {id:'default-'+season,name:'預設版型 · '+SEASONS[si].name,season,builtin:true,authorName:'Forge Master',avatar:normalizeAvatar(AVATAR_DEFAULT),createdAt:CITY_DEFAULT_TIMESTAMP,items:freshCity().layouts[season]};}
-function preview_defaultCityPreset(si){const season=DECOR_SEASONS[si],night=isSandboxNight();return {id:'default-'+(night?'night-':'')+season,name:'預設版型 · '+SEASONS[si].name+(night?'夜間':'白天'),season,night,builtin:true,authorName:'Forge Master',avatar:normalizeAvatar(AVATAR_DEFAULT),createdAt:CITY_DEFAULT_TIMESTAMP,items:capCityItems(night?defaultNightCityItems(si):public_freshCity().layouts[season])};}
+function preview_defaultCityPreset(si){const season=DECOR_SEASONS[si],night=isSandboxNight();return {id:'default-'+(night?'night-':'')+season,name:'預設版型 · '+SEASONS[si].name+(night?'夜間':'白天'),season,night,builtin:true,authorName:'Forge Master',avatar:normalizeAvatar(AVATAR_DEFAULT),createdAt:CITY_DEFAULT_TIMESTAMP,items:[]};}
 function findCityPreset(){return expandedGameEnabled()?preview_findCityPreset(...arguments):stable_findCityPreset(...arguments);}
-function stable_findCityPreset(id){const i=DECOR_SEASONS.findIndex(s=>id==='default-'+s);return i>=0?defaultCityPreset(i):readCityPresets().find(p=>p.id===id)||null;}
-function preview_findCityPreset(id){const i=DECOR_SEASONS.findIndex(s=>id==='default-'+s||id==='default-night-'+s);return i>=0?defaultCityPreset(i):readCityPresets().find(p=>p.id===id)||null;}
+function stable_findCityPreset(id){const i=DECOR_SEASONS.findIndex(s=>id==='default-'+s);return i>=0?{...defaultCityPreset(i),night:id.startsWith('default-night-')}:readCityPresets().find(p=>p.id===id)||friendCityPreset(id);}
+function preview_findCityPreset(id){const i=DECOR_SEASONS.findIndex(s=>id==='default-'+s||id==='default-night-'+s);return i>=0?(i===seasonIndex()&&id.startsWith('default-night-')===isSandboxNight()?defaultCityPreset(i):null):readCityPresets().find(p=>p.id===id)||friendCityPreset(id);}
 function snapshotNestedSVG(svg,x,y,w,h){
  if(!svg)return '';return svg.replace(/^<svg\b([^>]*)>/,(_,attrs)=>'<svg'+attrs.replace(/\s(?:x|y|width|height)="[^"]*"/g,'')+' x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'">');
 }
@@ -53,7 +53,7 @@ async function cityPresetPreview(p){
  const image=captureCityLayout(items,si,{preview:true,worldHeight});cityPreviewCache.set(key,image);while(cityPreviewCache.size>4)cityPreviewCache.delete(cityPreviewCache.keys().next().value);return await image;
 }
 async function openCityLayoutPreview(id){
- const p=findCityPreset(id);if(!p)return;const run=runId,epoch=sandboxEpoch,request=++cityPreviewRequest;
+ const p=findCityPreset(id);if(!p||p.season!==DECOR_SEASONS[seasonIndex()]||!!p.night!==isSandboxNight())return;const run=runId,epoch=sandboxEpoch,request=++cityPreviewRequest;
  const img=$('cityLayoutPreviewImage');img.hidden=true;$('cityLayoutPreviewStatus').textContent='正在繪製清晰預覽…';$('cityLayoutPreviewStatus').hidden=false;
  $('cityLayoutPreviewTitle').textContent=p.name;img.setAttribute('alt',p.name+'的城鎮截圖');$('cityLayoutPreviewMeta').textContent=(p.authorName||'舊版版型')+' · '+cityPresetDate(p);$('cityLayoutPreviewP').style.display='flex';syncTownMotion();
  const src=await cityPresetPreview(p);if(runId!==run||sandboxEpoch!==epoch||request!==cityPreviewRequest||$('cityLayoutPreviewP').style.display!=='flex')return;

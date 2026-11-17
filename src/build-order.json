@@ -89,6 +89,7 @@
     "src/js/core/start-home.js",
     "src/js/saves/game-slots.js",
     "src/js/decorations/catalog.js",
+    "src/js/decorations/contexts.js",
     "src/js/decorations/classic-drawing.js",
     "src/js/decorations/cozy-drawing.js",
     "src/js/decorations/layout-state.js",
@@ -100,6 +101,7 @@
     "src/js/ui/modals-layout.js",
     "src/js/ui/scene-transitions.js",
     "src/js/ui/viewport-input.js",
+    "src/js/online/friends.js",
     "src/js/online/leaderboard.js",
     "src/js/ui/portrait-kitchen-bootstrap.js",
     "src/js/art/home-chest.js",
@@ -145,7 +147,8 @@
     "src/styles/29-workshop-polish.css",
     "src/styles/30-battle-archive-feedback.css",
     "src/styles/31-business-settlement.css",
-    "src/styles/32-required-skills-layout.css"
+    "src/styles/32-required-skills-layout.css",
+    "src/styles/33-friends-city-contexts.css"
   ],
   "workers": [
     "src/workers/media-cache.js"

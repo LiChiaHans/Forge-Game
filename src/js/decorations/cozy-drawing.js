@@ -1,6 +1,6 @@
 
 function preview_decorSVG(id,season=seasonIndex(),uid='preview'){
- const d=DECOR_BY_ID.get(id);if(!d)return '';if(d.night)return nightDecorationSVG(d,season,uid);const type=d.art,p=TOWN_SEASONS[season],winter=season===3;if(type==='icearch')return iceCrystalArchArt();
+ const d=DECOR_BY_ID.get(id);if(!d)return '';if(d.lighted)return nightDecorationSVG(d,season,uid);const type=d.art,p=TOWN_SEASONS[season],winter=season===3;if(type==='icearch')return iceCrystalArchArt();
  const O='#273740',wood='#85613e',gold='#e7c47a',cream='#f4dfac',green=season===2?'#ca763c':winter?'#5f8894':'#6f9c68',leaf=season===2?'#edb057':winter?'#c6e3e4':'#a6c582',pink='#e7a3b4',blue='#80b8d1';
  const path=(c,s)=>'<path fill="'+c+'" d="'+s+'"/>',box=(x,y,w,h,c)=>'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+c+'"/>',gem=(x,y,c)=>'<path fill="'+c+'" stroke="'+O+'" d="M'+x+' '+(y-9)+'l7 9-7 13-7-13z"/>';
  const bloom=(x,y,c)=>path(c,'M'+(x-3)+' '+(y-9)+'h6v5h5v6h-5v5h-6V'+(y+2)+'h-5v-6h5z')+box(x-2,y-3,4,4,gold);

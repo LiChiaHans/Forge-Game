@@ -8,7 +8,7 @@ const NIGHT_DECOR_ROWS=[
 ];
 function isSandboxNight(){return day>0&&sandboxNight;}
 function setSandboxNight(value){
- if(!expandedGameEnabled())return;cancelCityPresetSave();sandboxNight=!!value;if(sandboxNight)startKitchenNight();$('townScenery').dataset.season='';$('townWeather').dataset.season='';$('townDecorFront').dataset.key='';$('townQueue').dataset.visitors='';cityRevision++;clearForgeFeedback();
+ if(!expandedGameEnabled())return;discardCityEdit();cancelCityPresetSave();sandboxNight=!!value;if(sandboxNight)startKitchenNight();$('townScenery').dataset.season='';$('townWeather').dataset.season='';$('townDecorFront').dataset.key='';$('townQueue').dataset.visitors='';cityRevision++;clearForgeFeedback();
 }
 function toggleSandboxNight(){if(!sandboxSession)return;cancelKitchenDrag();$('kitchenP').hidden=true;$('kitchenModal').hidden=true;setSandboxNight(!sandboxNight);render();showTown();}
 function sandboxEndForgeDay(){
@@ -25,7 +25,7 @@ function renderTownNight(){
  const key=si+':'+night;if($('townNightSky').dataset.key!==key){$('townNightSky').innerHTML=night?nightSkyArt(si):'';$('townNightSky').dataset.key=key;}$('townSeason').textContent=SEASONS[si].icon+' '+SEASONS[si].name+' · 第 '+day+' 天'+(night?'夜晚 · 餐廳營業':'白天 · 冶煉廠營業');
  for(const id of ['townArchive','townForge','townShop','townTraining','townDecorShop','townGreenhouse']){const el=$(id),existing=el.querySelector('.night-house-glow');if(!night)existing?.remove();else if(!existing){const glow=document.createElement('span');glow.className='night-house-glow';el.appendChild(glow);}}
 }
-function ensureNightCityLayout(si){if(!cityState)cityState=freshCity();const key=DECOR_SEASONS[si];if(!cityState.nightLayouts)cityState.nightLayouts={};if(!cityState.nightLayouts[key])cityState.nightLayouts[key]=JSON.parse(JSON.stringify(cityState.layouts[key]));return cityState.nightLayouts[key];}
+function ensureNightCityLayout(si){if(!cityState)cityState=freshCity();const key=DECOR_SEASONS[si];if(!cityState.nightLayouts)cityState.nightLayouts={};if(!cityState.nightLayouts[key])cityState.nightLayouts[key]=[];return cityState.nightLayouts[key];}
 function cityLayoutStore(){if(isSandboxNight()){ensureNightCityLayout(townVisualSeason());return cityState.nightLayouts;}return cityState.layouts;}
 function defaultNightCityItems(si){const items=JSON.parse(JSON.stringify(public_freshCity().layouts[DECOR_SEASONS[si]]));NIGHT_DECOR_ROWS.filter(r=>r[3]===DECOR_SEASONS[si]).forEach((r,i)=>items.push({uid:'night-default-'+si+'-'+i,id:r[0],x:[5,95,88][i],y:[74,70,24][i],s:.85,fx:false,fy:false,r:0,z:1,roam:false}));return items;}
 function nightDecorationSVG(d,si,uid){

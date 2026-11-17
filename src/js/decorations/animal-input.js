@@ -2,16 +2,16 @@
 
 function cityObstacleAt(){return expandedGameEnabled()?preview_cityObstacleAt(...arguments):stable_cityObstacleAt(...arguments);}
 function stable_cityObstacleAt(x,y){
- if(!cityState)return false;return cityLayout().some(i=>{const d=DECOR_BY_ID.get(i.id);if(!d||['cat','dog','flowers','fence'].includes(i.id))return false;const px=i.x*3.6,py=i.y*6.2,s=i.s;
-  if(i.id==='fountain'||d.art==='pond')return ((x-px)/(d.w*.43*s+6))**2+((y-(py-d.h*.32*s))/(d.h*.32*s+6))**2<1;
+ if(!cityState)return false;return cityLayout().some(i=>{const d=DECOR_BY_ID.get(i.id);if(!d||['cat','dog','flowers','fence'].includes(d.art))return false;const px=i.x*3.6,py=i.y*6.2,s=i.s;
+  if(d.art==='fountain'||d.art==='pond')return ((x-px)/(d.w*.43*s+6))**2+((y-(py-d.h*.32*s))/(d.h*.32*s+6))**2<1;
   return Math.hypot(x-px,y-py)<Math.min(20,d.w*.2*s+5);
  });
 }
 function preview_cityObstacleAt(x,y){
  if(townBackgroundFountainBlocked(x,y))return true;
  if(expandedGameEnabled()&&townMasterBlocks().some(([x0,y0,x1,y1])=>x>=x0&&x<=x1&&y>=y0&&y<=y1))return true;
- if(!cityState)return false;return cityLayout().some(i=>{const d=DECOR_BY_ID.get(i.id);if(!d||['cat','dog','flowers','fence'].includes(i.id))return false;const px=i.x*3.6,py=i.y*6.2,s=i.s;
-  if(i.id==='fountain'||d.art==='pond')return ((x-px)/(d.w*.43*s+6))**2+((y-(py-d.h*.32*s))/(d.h*.32*s+6))**2<1;
+ if(!cityState)return false;return cityLayout().some(i=>{const d=DECOR_BY_ID.get(i.id);if(!d||['cat','dog','flowers','fence'].includes(d.art))return false;const px=i.x*3.6,py=i.y*6.2,s=i.s;
+  if(d.art==='fountain'||d.art==='pond')return ((x-px)/(d.w*.43*s+6))**2+((y-(py-d.h*.32*s))/(d.h*.32*s+6))**2<1;
   return Math.hypot(x-px,y-py)<Math.min(20,d.w*.2*s+5);
  });
 }
@@ -23,7 +23,7 @@ function cityPetSegmentClear(a,b){
 function stopCityAnimals(){cityArtEpoch++;townDecorAnimations.forEach(a=>a.cancel?.());townDecorAnimations.clear();cityWalkers.forEach(w=>{if(w.timer)clearTimeout(w.timer);});cityWalkers.clear();}
 function ensureCityPetsMoving(){
  if(architect.active||townMotionPaused||$('townP').style.display!=='flex'||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
- for(const item of cityLayout()){if(!item.roam||!['cat','dog'].includes(item.id))continue;let w=cityWalkers.get(item.uid);if(!w){const el=document.querySelector('[data-decor-uid="'+item.uid+'"] .sticker-roamer');if(!el)continue;w={item,el,point:[item.x*3.6,item.y*6.2],origin:[item.x*3.6,item.y*6.2],anim:null,timer:null,epoch:cityArtEpoch};cityWalkers.set(item.uid,w);}if(!w.anim&&!w.timer&&!w.walking)walkCityPet(w);}
+ for(const item of cityLayout()){if(!item.roam||!['cat','dog'].includes(DECOR_BY_ID.get(item.id)?.art))continue;let w=cityWalkers.get(item.uid);if(!w){const el=document.querySelector('[data-decor-uid="'+item.uid+'"] .sticker-roamer');if(!el)continue;w={item,el,point:[item.x*3.6,item.y*6.2],origin:[item.x*3.6,item.y*6.2],anim:null,timer:null,epoch:cityArtEpoch};cityWalkers.set(item.uid,w);}if(!w.anim&&!w.timer&&!w.walking)walkCityPet(w);}
 }
 async function walkCityPet(w){
  if(!expandedGameEnabled())return stage19_walkCityPet(w);if(lowEffects||architect.active||townMotionPaused||w.walking||w.epoch!==cityArtEpoch)return;
@@ -44,8 +44,8 @@ function installCityControls(){
  $('architectScale').oninput=e=>{const i=selectedCityItem();if(!i)return;i.s=Math.max(.3,Math.min(2,+e.target.value/100));preview();$('architectScaleValue').textContent=Math.round(i.s*100)+'%';};$('architectScale').onchange=()=>commitCity();
  $('architectRotation').oninput=e=>{const i=selectedCityItem();if(!i)return;i.r=Math.max(0,Math.min(360,+e.target.value||0));preview();$('architectRotationValue').textContent=i.r+'°';};$('architectRotation').onchange=()=>commitCity();
  $('decorInventoryGrid').onclick=e=>{const b=e.target.closest('[data-place-decor]');if(b)chooseDecoration(b.dataset.placeDecor);};
- $('decorShopTabs').onclick=e=>{const b=e.target.closest('[data-shop-season]');if(b){decorShopSeason=+b.dataset.shopSeason;renderDecorationShop();}};$('decorShopGrid').onclick=e=>{const b=e.target.closest('[data-buy-decor]');if(b&&!b.disabled)buyDecoration(b.dataset.buyDecor);};
- $('cityLayoutsList').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;if(b.dataset.previewLayout){openCityLayoutPreview(b.dataset.previewLayout).catch(()=>toast('暫時無法產生預覽，請再試一次。'));return;}if(b.dataset.applyLayout)applyCityLayout(b.dataset.applyLayout,b.dataset.buyMissing==='1');if(b.dataset.deleteLayout)deleteCityLayout(b.dataset.deleteLayout);};
+ $('decorShopTabs').onclick=e=>{const b=e.target.closest('[data-shop-season]');if(b){decorShopSeason=+b.dataset.shopSeason;decorShopNight=b.dataset.shopNight==='true';renderDecorationShop();}};$('decorShopGrid').onclick=e=>{const b=e.target.closest('[data-buy-decor]');if(b&&!b.disabled)buyDecoration(b.dataset.buyDecor);};
+ $('cityLayoutsList').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;if(b.dataset.previewLayout){openCityLayoutPreview(b.dataset.previewLayout).catch(()=>toast('暫時無法產生預覽，請再試一次。'));return;}if(b.dataset.shareLayout){shareCityPreset(b.dataset.shareLayout);return;}if(b.dataset.applyLayout)applyCityLayout(b.dataset.applyLayout,b.dataset.buyMissing==='1');if(b.dataset.deleteLayout)deleteCityLayout(b.dataset.deleteLayout);};
  const map=$('townMap');
  map.addEventListener('pointerdown',e=>{
   if(!architect.active||e.button!==undefined&&e.button!==0||architect.drag&&architect.drag.pointer!==e.pointerId)return;
@@ -59,6 +59,6 @@ function installCityControls(){
  });
  const finish=(e,cancel)=>{const d=architect.drag;if(!d||d.pointer!==e.pointerId)return;const i=selectedCityItem();if(cancel&&i){i.x=d.x;i.y=d.y;}architect.drag=null;map.releasePointerCapture?.(e.pointerId);if(d.moved)commitCity();else{renderArchitect();updateCitySelection();}};
  map.addEventListener('pointerup',e=>finish(e,false));map.addEventListener('pointercancel',e=>finish(e,true));
- map.addEventListener('click',e=>{if(architect.active)return;const n=e.target.closest('.town-sticker');if(!n)return;const i=cityLayout().find(i=>i.uid===n.dataset.decorUid);if(i&&['cat','dog'].includes(i.id))loveCityPet(n);});
+ map.addEventListener('click',e=>{if(architect.active)return;const n=e.target.closest('.town-sticker');if(!n)return;const i=cityLayout().find(i=>i.uid===n.dataset.decorUid);if(i&&['cat','dog'].includes(DECOR_BY_ID.get(i.id)?.art))loveCityPet(n);});
  window.addEventListener('resize',()=>{if(architect.active)requestAnimationFrame(renderArchitect);});
 }

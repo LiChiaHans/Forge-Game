@@ -26,7 +26,7 @@ document.addEventListener('pointerup',requestPortraitLock,{passive:true});
 if(window.visualViewport)window.visualViewport.addEventListener('resize',syncPortraitGuard);
 // The public catalog is unchanged. Preview-only decorations live inside sandbox sessions.
 const PUBLIC_DECOR_CATALOG=DECOR_CATALOG.slice();
-function installKitchenPreviewCatalog(){const rows=PUBLIC_DECOR_CATALOG.concat(NIGHT_DECOR_ROWS.map(([id,name,price,season,art,w,h])=>({id,name,price,season,art,w,h,night:true})));DECOR_CATALOG.splice(0,DECOR_CATALOG.length,...rows);DECOR_BY_ID.clear();DECOR_CATALOG.forEach(d=>DECOR_BY_ID.set(d.id,d));}
+function installKitchenPreviewCatalog(){const rows=buildContextDecorCatalog(PUBLIC_DECOR_CATALOG,NIGHT_DECOR_ROWS);DECOR_CATALOG.splice(0,DECOR_CATALOG.length,...rows);DECOR_BY_ID.clear();DECOR_CATALOG.forEach(d=>DECOR_BY_ID.set(d.id,d));}
 function clearKitchenPreviewScene(){
  trainingReadOnly=false;trainingBranch='forge';$('sk').classList.remove('training-readonly');cozyItemSnapshotAssets.clear();clearKitchenIngredientFlights();syncWorkshopLook();cancelKitchenDrag();clearKitchenDepartures();for(const id of ['townKitchen','sandboxNightToggle','kitchenP','kitchenModal'])$(id).hidden=true;
  $('townP').dataset.previewKitchen='false';$('townP').dataset.time='day';$('townNightSky').innerHTML='';$('townNightSky').dataset.key='';

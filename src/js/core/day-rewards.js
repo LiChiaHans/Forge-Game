@@ -1,6 +1,6 @@
 
 
-function newDay(){
+function newDay(){discardCityEdit();
   $("forgeSettlementP").style.display="none";if(kitchen)kitchen.forgeSettlement=null;
   phase="play";
   const previousDay=day;
