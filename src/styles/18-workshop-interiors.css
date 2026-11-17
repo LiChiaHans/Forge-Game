@@ -45,7 +45,7 @@ body.workshop-backend #kitchenModal .kitchen-grade-tabs [aria-pressed="true"],bo
 .kitchen-ingredient-flight{position:fixed;z-index:149;pointer-events:none;contain:layout style;transform-origin:center;filter:drop-shadow(0 4px 3px #1c271b88);will-change:transform,width,height}
 .kitchen-ingredient-flight svg{display:block;width:100%;height:100%}
 .kitchen-flight-target>svg{visibility:hidden}
-.kitchen-ingredient-land>svg{animation:kitchen-ingredient-arrive .26s ease-out}
+.kitchen-ingredient-land>svg{animation:kitchen-ingredient-arrive .17s ease-out}
 @keyframes kitchen-ingredient-arrive{0%{transform:scale(.91)}55%{transform:scale(1.05)}100%{transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.kitchen-ingredient-land>svg{animation:none}}
 .low-effects .kitchen-ingredient-land>svg{animation:none}

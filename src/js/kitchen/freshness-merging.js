@@ -34,7 +34,7 @@ function clearKitchenMerges(){kitchenMergeEpoch++;kitchenMergeQueue.length=0;for
 function playKitchenMerges(launch=null,placed=-1){
  if(!kitchenMergeQueue.length)return false;const batches=kitchenMergeQueue.splice(0);if($('kitchenP').hidden)return false;
  clearKitchenIngredientFlights();const events=batches.map(b=>({tg:b.target,from:b.cells.map((i,k)=>({i,h:kitchenArt(b.parts[k]),key:workshopItemKey(b.parts[k])})),to:b.dest.map(d=>d.index),res:Object.fromEntries(b.dest.map(d=>[d.index,kitchenArt(d.item)])),keys:Object.fromEntries(b.dest.map(d=>[d.index,workshopItemKey(d.item)]))}));
- const delay=launch&&batches[0].cells.includes(placed)&&flyKitchenIngredient(placed,launch)?420:0;
+ const delay=launch&&batches[0].cells.includes(placed)&&flyKitchenIngredient(placed,launch)?270:0;
  const job=startWorkshopMerge('kitchen',events,delay);if(!job){workshopMergeSound('kitchen','complete');return false;}job.outputs=batches.flatMap(b=>b.dest);kitchenMergeJobs.add(job);syncKitchenFlightTargets();job.promise.finally(()=>{kitchenMergeJobs.delete(job);syncKitchenFlightTargets();});return true;
 }
 function kitchenTriples(at,board=kitchen.g){

@@ -130,7 +130,7 @@ function flyIn(i,t){
   el.animate([
     {width:a.width+"px",height:a.height+"px",transform:"translate(0,0)"},
     {width:tw+"px",height:th+"px",transform:`translate(${dx}px,${dy}px)`}
-  ],{duration:220,easing:"cubic-bezier(.4,0,.6,1)"}).onfinish=()=>el.remove();
+  ],{duration:150,easing:"cubic-bezier(.4,0,.6,1)"}).onfinish=()=>el.remove();
 }
 function bell(){} // Customer entrance is silent.
 let combatNoiseBuffer=null,combatNoiseContext=null;

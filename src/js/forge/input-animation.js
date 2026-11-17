@@ -14,7 +14,7 @@ $("grid").onclick=e=>{
   if(!c){
     if(heat[i]>0)say("過熱中，還要 "+heat[i]+" 步才能放置");
     else{
-      qFlip=qRects();flyIn(i,Q[0]);thud(.2);flyI=i;lead=210;
+      qFlip=qRects();flyIn(i,Q[0]);thud(.2);flyI=i;lead=150;
       g[i]={k:'o',t:Q.shift(),m:0};Q.push(rollOre());
       fresh=i;say("");magicAt(i);auto(i);cool();
     }

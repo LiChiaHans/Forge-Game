@@ -1,4 +1,4 @@
-const workshopMergeJobs=new Set(),WORKSHOP_MERGE_TIME={gather:400,drop:320,pause:70};
+const workshopMergeJobs=new Set(),WORKSHOP_MERGE_TIME={gather:260,drop:210,pause:40};
 function syncWorkshopMergeMasks(kind){
  const grid=$(kind==='forge'?'grid':'kitchenGrid');for(let i=0;i<grid.children.length;i++)grid.children[i].classList.toggle('workshop-merge-masked',[...workshopMergeJobs].some(j=>j.kind===kind&&j.mask.has(i)));
 }
