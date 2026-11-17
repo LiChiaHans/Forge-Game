@@ -22,7 +22,7 @@ function statsHTML(w){
  const s=weaponStats(w);return '<div class="weapon-stats">'+Object.entries(STAT_NAMES).map(([k,n])=>'<div><small>'+({atk:'⚔',def:'🛡',spd:'💨'}[k])+' '+n+'</small><b>'+s[k]+'</b></div>').join('')+'</div>'+weaponMasteryHTML(w);
 }
 function weaponEnchantHTML(w){
- const s=weaponStats(w);return elementWeaponHTML(w)+'<div class="weapon-enchant"><b>✦ 奧術附魔 '+s.stacks+' 層</b><span>每次攻擊額外 '+s.arcane+' 奧術傷害 · 開戰護盾 '+s.ward+'</span><small>每層提供 2 傷害、3 護盾，戰鬥效果最多計算 20 層。</small></div>';
+ const s=weaponStats(w);return elementWeaponHTML(w)+'<div class="weapon-enchant"><b>✦ 奧術附魔 '+s.stacks+' 層</b><span>每次攻擊額外 '+s.arcane+' 奧術傷害 · 開戰護盾 '+s.ward+'</span><span>附魔額外售價 +'+(w.m||0)+' 金幣（訂單、商人與季節加成另計）</span><small>每層提供 2 傷害、3 護盾，戰鬥效果最多計算 20 層；售價加成不受此上限限制。</small></div>';
 }
 function openCraftedWeapon(w,source='鍛造作品'){
  if(!w||w.c==null)return;inspectedLiveWeapon=liveWeapons().some(x=>x.w===w)?w:null;$('weaponProtection').hidden=!inspectedLiveWeapon;$('weaponProtection').textContent=w.protected?'🔓 取消武器保護':'🔒 保護這把武器（防止賣出、出戰與投入藍圖）';

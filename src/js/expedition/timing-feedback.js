@@ -23,6 +23,7 @@ function renderExpeditionProgress(){
  const b=expeditionState.lastBattle,ongoing=b&&!b.resolved&&b.outcome==='ongoing',guard=ongoing&&(b.guardRemainingMs||0)>0,charge=ongoing&&!!b.chargeName;
  $('expeditionGuardMeter').hidden=!guard;$('expeditionBossCharge').hidden=!charge;
  if(guard){$('expeditionGuardProgress').max=EXPEDITION_GUARD_MS;$('expeditionGuardProgress').value=b.guardRemainingMs;$('expeditionGuardTime').textContent=(b.guardRemainingMs/1000).toFixed(1)+' 秒'+(battleUserPaused?' · 暫停':'');}
+ $('expeditionSkill').disabled=!ongoing||!!b.skillUsed||!!guard;
  if(charge){$('expeditionChargeProgress').max=EXPEDITION_CHARGE_MS;$('expeditionChargeProgress').value=EXPEDITION_CHARGE_MS-b.chargeRemainingMs;$('expeditionChargeName').textContent=(b.monster||expeditionMonster(b.stage||0)).name+' · '+b.chargeName;$('expeditionChargeTime').textContent=battleUserPaused?'已暫停':b.chargeRemainingMs>0?'蓄力 '+(b.chargeRemainingMs/1000).toFixed(1)+' 秒':'蓄力完成';}
 }
 function startExpeditionFeedbackClock(){

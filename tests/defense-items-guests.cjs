@@ -1,0 +1,19 @@
+const assert=require('node:assert/strict'),runtime=require('./harness.cjs'),{c,run,els}=runtime(__dirname+'/../.build/combined.html');
+run("start('normal');g[0]=baseAlbumWeapon(0,0)");c.openExpedition();c.beginExpedition();
+const b=run('expeditionState.lastBattle');b.hp=10000;b.enemyHp=10000;b.monster.kind='knight';b.heroClock=0;b.enemyClock=100;
+assert.equal(c.guardBattle(b),true);const hp=b.enemyHp,clock=b.heroClock;c.battleTick(b);assert.equal(b.enemyHp,hp);assert.ok(b.heroClock>clock);assert.equal(b.log.length,0);
+c.stage21_advanceExpeditionBattle();assert.equal(b.enemyHp,hp); // Empty log is safe and has no attack sound.
+b.heroClock=1000;b.enemyClock=0;c.battleTick(b);assert.equal(b.log.at(-1).actor,'enemy');assert.ok(b.log.at(-1).damage>=0);c.advanceExpeditionEffects(b,3000);b.heroClock=0;b.enemyClock=1000;c.battleTick(b);assert.ok(b.enemyHp<hp);
+const skillBattle=c.expeditionBattleState(c.ultimateWeapon(10,[]),{hp:10000,atk:10,def:0,spd:10,kind:'knight'});c.guardBattle(skillBattle);assert.equal(c.castBattleSkill(skillBattle),false);assert.equal(skillBattle.skillUsed,false);c.advanceExpeditionEffects(skillBattle,3000);assert.equal(c.castBattleSkill(skillBattle),true);
+// Group duplicates without destroying inventory identity or grouping different tiers/spices.
+run("kitchen.bag=[{k:'z'},{k:'m',s:0},{k:'z'},{s:0,k:'m'},{k:'o',t:0},{k:'o',t:1},{k:'spice',spice:'herb'},{k:'spice',spice:'milk'}]");let rows=c.kitchenBagGroups();assert.deepEqual(JSON.parse(JSON.stringify(rows.map(x=>x.count))),[2,2,1,1,1,1]);c.openKitchenBag();assert.match(els.get('kitchenModalContent').innerHTML,/×2/);c.takeKitchenBag(0);assert.equal(run('kitchen.bag.length'),7);assert.equal(c.kitchenBagGroups().find(x=>x.w.k==='z').count,1);assert.equal(run('kitchen.hand.k'),'z');
+// Magic indicators reflect layers, while base and actual sale bonuses keep their original math.
+assert.match(run('mb({m:15})'),/\+3<svg/);assert.doesNotMatch(run('mb({m:15})'),/💰/);assert.match(c.workshopOreHTML(0,'',5),/\+1<svg/);
+const w=run('({...baseAlbumWeapon(0,0),m:15,protected:true})');c.openCraftedWeapon(w);assert.match(els.get('weaponStatsValues').innerHTML,/附魔額外售價 \+15/);assert.match(els.get('weaponStatsArt').innerHTML,/weapon-protected/);
+run("orders=[{c:null,t:0,wait:100,max:100}];skills.mc=1;g[0]={...baseAlbumWeapon(0,0),m:15}");const expected=run('salePrice(g[0],orders[0])-salePrice({...g[0],m:0},orders[0])');run('sellTo(0,0)');assert.match(c.forgeMessageText(),new RegExp('附魔 3 層 · 額外金幣 \\+'+expected));
+// Blizzard consumes once and locks input until the effect finishes, preserving board/turns.
+run("orders=[{c:null,t:0,wait:100,max:100}];g[0]={k:'o',t:0};heat[1]=42;hand={k:'z'};busy=false;exitMs=0;fx=[]");const ore=run('g[0]');assert.equal(c.castForgeBlizzard(),true);assert.equal(run('heat[1]'),42);assert.equal(run('hand'),null);assert.equal(run('busy'),true);assert.equal(c.castForgeBlizzard(),false);run('forgeBlizzardJob.animation.onfinish()');assert.equal(run('heat[1]'),0);assert.equal(run('g[0]'),ore);assert.equal(run('orders[0].wait'),100);assert.equal(run('busy'),false);
+run("hand={k:'z'};heat[1]=50");c.castForgeBlizzard();c.clearForgeFeedback();assert.equal(run('forgeBlizzardJob'),null);assert.equal(run('heat[1]'),0);assert.equal(run('busy'),false);
+// Order portraits use exactly the same role/gender sprite as the town queue.
+run('ensureOrderGuests22()');const guest=run('orders[0].guest');assert.match(c.orderGuestHTML(run('orders[0]')),new RegExp('data-town-guest-art="'+guest.id+'"'));c.render();assert.match(els.get('orders').innerHTML,/order-guest/);c.startKitchenNight(true);c.renderKitchen();assert.match(els.get('kitchenOrders').innerHTML,/order-guest/);
+console.log('PASS: no attacks/skills or banked strikes during guard, safe empty logs; duplicate kitchen counts/identity; enchant layers and real sale money; delayed/cancel-safe blizzard; matching order/queue identities.');

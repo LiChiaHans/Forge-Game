@@ -33,7 +33,7 @@ function render(){
     if(dl!==null&&dl<=-600)enter.delete(k);
     const an=dl!==null&&dl>-600;
     return `<div class="od${an?" in":""}" style="${an?`animation-delay:${dl}ms;`:""}background:linear-gradient(hsla(${hu(o).toFixed(0)},70%,52%,.42),hsla(${hu(o).toFixed(0)},70%,40%,.16)),#262e3b;border-color:hsl(${hu(o).toFixed(0)},60%,42%)" data-k="${k}">
-    ${guestBadge22(o,false)}<span class="wt">⏳${o.c===null?"∞":Math.max(0,o.wait)}</span>
+    ${orderGuestHTML(o)}${guestBadge22(o,false)}<span class="wt">⏳${o.c===null?"∞":Math.max(0,o.wait)}</span>
     <span class="em">${o.wait<=o.max/4?"😡":o.wait<=o.max/2?"😒":""}</span>
     ${o.c===null?`<div class="hxo"><div class="hxi" style="background:${C[o.t]}"><b>任意</b></div></div>`:hex(o.c,C[o.t],"",o.t)}
     <div class="order-name">${o.c===null?"≥任意"+NM[o.t]+"級道具":"≥"+NM[o.t]+"級"+WN[o.c]}</div>

@@ -66,7 +66,7 @@ function battleTick(b){
 
 function checkBattleOutcome(b){b.outcome=b.enemyHp<=0?'win':b.hp<=0?'lose':b.log.length>=120?'draw':'ongoing';return b.outcome;}
 function castBattleSkill(b){
- const skill=ultimateSkill(b.weapon);if(!skill||b.skillUsed||b.outcome!=='ongoing')return false;
+ const skill=ultimateSkill(b.weapon);if(!skill||b.skillUsed||b.guarding||b.outcome!=='ongoing')return false;
  b.skillUsed=true;const mult=elementMultiplier(elementOf(b.weapon),elementOf(b.monster)),damage=Math.min(b.enemyHp,Math.max(1,Math.round(b.stats.atk*skill.power*mult)+b.stats.arcane));b.enemyHp-=damage;
  const healed=Math.min(b.hpMax-b.hp,Math.round(b.hpMax*(skill.heal||0)));b.hp+=healed;
  const addedShield=Math.round(b.stats.def*(skill.shield||0));b.shield+=addedShield;
@@ -96,7 +96,7 @@ function beginExpedition(confirmed=false){
 function advanceExpeditionBattle(){
  if(!expandedGameEnabled())return stage21_advanceExpeditionBattle();const b=expeditionState.lastBattle;if(!b||b.resolved||b.outcome!=='ongoing')return stage21_advanceExpeditionBattle();const now=Date.now();syncExpeditionEffects(now);
  if(battleUserPaused||document.hidden||battleLastAdvance&&now-battleLastAdvance<400)return;
- if(b.heroClock>b.enemyClock&&b.chargeName&&b.chargeRemainingMs>0)return;
+ if((b.guarding||b.heroClock>b.enemyClock)&&b.chargeName&&b.chargeRemainingMs>0)return;
  battleLastAdvance=now;const rows=b.log.length;stage21_advanceExpeditionBattle();if(b.log.length>rows)showBattleFeedback(b.log.at(-1));
 }
 function useExpeditionSkill(){syncExpeditionEffects();const b=expeditionState.lastBattle;if(!b||!castBattleSkill(b))return;expeditionBattleStep=b.log.length;combatSound('hero');if(b.outcome!=='ongoing')settleExpeditionBattle(b);renderExpeditionBattle();}

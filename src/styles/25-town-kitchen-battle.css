@@ -1,5 +1,16 @@
 /* Feet anchors follow the painted doorsteps; only town visitors are enlarged. */
 #townQueue .town-visitor[data-guest-feet="true"]{width:32px;height:52px;margin-left:-16px;margin-top:-52px}
+#townQueue .town-visitor[data-guest-feet="true"]{transform-origin:50% 100%}
+.od>.order-guest,.kitchen-order>.order-guest{position:absolute;left:4%;top:25%;width:23%;height:44%;display:block;pointer-events:none;line-height:1}
+.order-guest svg{display:block;width:100%;height:100%;image-rendering:pixelated;filter:drop-shadow(0 2px 1px #15201966)}
+.hxo>.weapon-protected{top:auto;bottom:4%;right:2%;font-size:clamp(12px,3vw,18px);line-height:1;z-index:7;text-shadow:0 1px 2px #000}
+.mb{display:inline-flex;align-items:center;gap:1px;line-height:1.1;padding:1px 3px;right:0;top:0}
+.mb>.magic-orb{display:inline-block;width:1.15em;height:1.15em;vertical-align:middle;flex:none}
+.kitchen-tool-list .kitchen-bag-art{position:relative;display:block;flex:0 0 64px;width:64px;height:64px}
+.kitchen-tool-list .kitchen-bag-art>svg{width:100%;height:100%}
+.kitchen-tool-list .kitchen-bag-count{position:absolute;right:-3px;bottom:-2px;min-width:26px;padding:2px 4px;color:#fff1ba;background:#362b23;border:1px solid #d8b77a;border-radius:3px;font-size:18px;line-height:1.2;text-align:center}
+#grid{position:relative}.forge-blizzard{position:absolute;inset:0;z-index:22;pointer-events:none;transform-origin:center;contain:layout style;filter:drop-shadow(0 0 3px #c1efff)}
+.forge-blizzard svg{display:block;width:100%;height:100%;overflow:visible;image-rendering:pixelated}
 .town-day-banner{position:absolute;left:50%;top:25%;transform:translateX(-50%);z-index:18;pointer-events:none;width:max-content;max-width:92%;padding:13px 20px;color:#fff0bb;background:linear-gradient(#494039f5,#262e35f5);border:3px solid #d3ac63;outline:2px solid #302c30;box-shadow:0 4px 0 #121d2688,inset 0 0 0 2px #8c6a43;text-align:center;font-size:clamp(17px,4.5vw,23px);font-weight:900;text-shadow:2px 2px #26333d;white-space:nowrap}
 .town-day-banner[hidden]{display:none!important}
 #expeditionFoodSetup h3{margin:14px 0 6px}

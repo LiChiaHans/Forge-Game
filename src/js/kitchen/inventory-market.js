@@ -1,6 +1,9 @@
 
 function kitchenStow(){if(!kitchen.hand)return;if(kitchen.hand.k==='w'){if(kitchen.pack.length>=2*kitchenLevel('pack')){toast('冰箱已滿，請先把料理放回棋盤。');return;}kitchen.pack.push(kitchen.hand);}else kitchen.bag.push(kitchen.hand);kitchen.hand=null;kitchen.useHeld=false;kitchen.mode='ore';renderKitchen();saveNow();}
-function openKitchenBag(){kitchenModal('🎒 廚房道具箱','<div class="kitchen-tool-list">'+kitchen.bag.map((w,i)=>'<button onclick="takeKitchenBag('+i+')">'+kitchenArt(w)+'<span><b>'+kitchenItemName(w)+'</b><small>'+kitchenItemEffect(w)+'</small><strong>點擊拿到手持欄</strong></span></button>').join('')+'</div>'+(kitchen.bag.length?'':'<p>道具箱是空的。可到菜市場購買。</p>'));}
+function kitchenBagGroups(){
+ const groups=new Map();kitchen.bag.forEach((w,i)=>{const key=JSON.stringify(w,Object.keys(w).sort()),row=groups.get(key);if(row)row.count++;else groups.set(key,{w,index:i,count:1});});return [...groups.values()];
+}
+function openKitchenBag(){kitchenModal('🎒 廚房道具箱','<div class="kitchen-tool-list">'+kitchenBagGroups().map(({w,index,count})=>'<button onclick="takeKitchenBag('+index+')"><span class="kitchen-bag-art">'+kitchenArt(w)+(count>1?'<b class="kitchen-bag-count" aria-label="數量 '+count+'">×'+count+'</b>':'')+'</span><span><b>'+kitchenItemName(w)+'</b><small>'+kitchenItemEffect(w)+'</small><strong>點擊拿到手持欄</strong></span></button>').join('')+'</div>'+(kitchen.bag.length?'':'<p>道具箱是空的。可到菜市場購買。</p>'));}
 function takeKitchenBag(index){
  if(!kitchen.bag[index])return;if(kitchen.hand?.k==='w'){if(kitchen.pack.length>=2*kitchenLevel('pack')){toast('冰箱已滿，請先把手持料理放回棋盤。');return;}kitchen.pack.push(kitchen.hand);}else if(kitchen.hand)kitchen.bag.push(kitchen.hand);
  kitchen.hand=kitchen.bag.splice(index,1)[0];kitchen.useHeld=false;kitchen.mode='ore';$('kitchenModal').hidden=true;kitchen.message='已取出'+kitchenItemName(kitchen.hand)+'。可繼續放食材，拖曳手持物品才使用。';renderKitchen();saveNow();

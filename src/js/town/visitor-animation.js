@@ -34,7 +34,7 @@ function preview_renderTownVisitors(remaining){
  if(lowEffects||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
  [...el.querySelectorAll('.town-visitor')].forEach((n,i)=>{
   const [x,y]=kitchenTownGuestPoint(i),prior=previous.get(n.dataset.visitorId),route=prior?[prior,[x,y]]:townGuestRoute(i);let length=0;const distances=route.map((point,k)=>{if(k)length+=Math.hypot(point[0]-route[k-1][0],point[1]-route[k-1][1]);return length;});if(length<1)return;
-  const frames=route.map(([px,py],k)=>({transform:`translate3d(${(px-x)*sx}px,${(py-y)*sy}px,0)`,offset:distances[k]/length}));
+  const frames=route.map(([px,py],k)=>({transform:`translate3d(${(px-x)*sx}px,${(py-y)*sy}px,0) scale(${prior?1:(1+.65*(1-distances[k]/length)).toFixed(3)})`,offset:distances[k]/length}));
   const a=n.animate(frames,{duration:prior?500:Math.min(8000,Math.max(3800,length*9))+i*70,delay:prior?0:i*300,easing:'linear',fill:'backwards'});townVisitorAnimations.add(a);n.classList.add('arriving');
   a.onfinish=()=>{n.classList.remove('arriving');townVisitorAnimations.delete(a)};
   if(townMotionPaused)a.pause?.();

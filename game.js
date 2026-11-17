@@ -156,12 +156,14 @@ const MP=[
   '<polygon points="6,3 18,3 23,9 12,22 1,9"/>'
 ];
 const mold=(s,f,x="")=>{const cuts=['M12 3L15 7V20H9V7Z','M8 4h8v16H8z','M11 3h2v1h3v2h3v2h1v8h-1v2h-3v2h-3v1h-2v-1H8v-2H5v-2H4V8h1V6h3V4h3z','M7 4h10v2h3v3h1v3h-3v3h-3v3h-2v3h-2v-3H9v-3H6v-3H3V9h1V6h3z'];const cut=cuts[s];return `<svg class="mo ${x}" viewBox="0 0 24 24" shape-rendering="crispEdges"><path fill="#5a452e" d="M2 0h20v2h2v20h-2v2H2v-2H0V2h2z"/><path fill="#cdb27a" d="M2 2h20v20H2z"/><path fill="#f3dfaa" d="M2 2h20v2H4v16H2z"/><path fill="#967442" d="M4 20h16V4h2v18H4z"/><path fill="#e4cb92" d="M4 4h16v16H4z"/><path d="${cut}" fill="#f6e3b1" transform="translate(0 1)"/><path d="${cut}" fill="#806340"/><path d="${cut}" fill="${f||'#352a20'}" stroke="#4d3827" stroke-width="1"/><path fill="#fff1c9" opacity=".6" d="M3 3h2v1H3zM19 3h2v1h-2zM3 19h1v2H3zM20 19h1v2h-1z"/>${f?'<path fill="#ffffff" opacity=".35" d="M10 7h1v10h-1z"/>':'<path fill="#1d1815" opacity=".65" d="M10 7h1v10h-1z"/>'}</svg>`;};
-const mb=c=>c.m?`<span class="mb">+${c.m}💰</span>`:"";
-const stage20_oreH=(t,x="",m=0)=>`<div class="t o ${x}" style="background-color:${C[t]}">${NM[t]}${m?`<span class="mb">+${m}💰</span>`:""}</div>`;
+const magicOrbHTML=()=>'<svg class="magic-orb" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path fill="#392858" d="M5 1h6v1h2v2h1v7h-2v2H4v-1H2V4h1V2h2z"/><path fill="#9973e5" d="M5 3h6v1h1v6h-2v2H5v-1H4V5h1z"/><path fill="#ded7ff" d="M5 4h4v2H6v3H4V5h1z"/><path fill="#624bb2" d="M10 7h2v3h-2v2H6v-2h4z"/><path fill="#ffe7a1" d="M7 0h2v3H7zM0 7h3v2H0zM13 12h3v2h-3z"/></svg>';
+const mb=c=>c.m?'<span class="mb" aria-label="附魔 '+Math.floor(c.m/5)+' 層">+'+Math.floor(c.m/5)+magicOrbHTML()+'</span>':'';
+const stage20_oreH=(t,x="",m=0)=>`<div class="t o ${x}" style="background-color:${C[t]}">${NM[t]}${mb({m})}</div>`;
 const oreH=(t,x="",m=0)=>expandedGameEnabled()?workshopOreHTML(t,x,m):stage20_oreH(t,x,m);
 const bands=w=>w.cs&&new Set(w.cs).size>1
   ?`linear-gradient(to bottom,${C[w.cs[0]]} 0 33.33%,${C[w.cs[1]]} 33.33% 66.66%,${C[w.cs[2]]} 66.66% 100%)`
   :C[w.t];
+
 
 let muted=false;
 try{muted=gameStorage.getItem("forgeMute")==="1"}catch(e){}
@@ -460,6 +462,7 @@ window.addEventListener('resize',()=>cancelWorkshopMerges('forge'));
 let forgeFeedbackTimer=null,forgeFeedbackEpoch=0;
 const forgeFlashes=new Map();
 function clearForgeFeedback(){
+ cancelForgeBlizzard();
  cancelWorkshopMerges('forge');
  forgeFeedbackEpoch++;if(forgeFeedbackTimer!==null)clearTimeout(forgeFeedbackTimer);forgeFeedbackTimer=null;
  forgeFlashes.clear();$('forgeCelebration').hidden=true;$('forgeCelebration').innerHTML='';
@@ -488,6 +491,7 @@ function presentForgeResults(results,playSound=true){
  box.dataset.rank=String(rank);box.style.setProperty('--forge-color',color);box.innerHTML='<div class="forge-reveal"><span class="forge-rarity">'+(rank===2?'終極鍛造':rank===1?'傳說鍛造':'工藝升星')+' · 完成</span><div class="forge-trophy">'+hex(w.c,bands(w),'',w.t,w)+'</div><strong>'+esc(itemName(w))+'</strong><span class="forge-kind">'+esc(weaponKindLabel(w))+(validElement(w.element)?' · '+esc(elementName(w.element))+'屬性':'')+'</span>'+weaponStarsHTML(w,true)+'<span class="forge-values">⚔ '+stats.atk+'　🛡 '+stats.def+'　💨 '+stats.spd+'</span><small>已加入本局收藏</small></div>';
  box.hidden=false;forgeFeedbackTimer=gameTimeout(()=>{if(epoch===forgeFeedbackEpoch){box.hidden=true;forgeFeedbackTimer=null;}},lowEffects?1200:rank===2?1800:1450);
 }
+
 
 const WEAPON_STAR_THRESHOLDS=[0,3,6,9],WEAPON_STAR_BONUSES=[0,.05,.1,.2];
 let weaponMastery=new Map();
@@ -626,7 +630,7 @@ function kitchenItemName(w){return w.k==='waste'?'廚餘':w.k==='o'?KITCHEN_GRAD
 function kitchenModal(title,html){$('kitchenModalTitle').textContent=title;$('kitchenModalContent').innerHTML=html;$('kitchenModal').hidden=false;}
 function renderKitchen(){
  if(!kitchen)return;if(!kitchen.hand)kitchen.useHeld=false;clearKitchenPreview(false);kitchen.g.forEach(kitchenEnsureFresh);syncWorkshopLook();$('kitchenDate').textContent=SEASONS[seasonIndex()].icon+' '+SEASONS[seasonIndex()].name+' · 第 '+day+' 天夜晚';$('kitchenMoney').textContent='💰 '+(sandboxSession?'∞':coins)+'　❤️'+lives;$('kitchenMute').textContent=muted?'🔇':'🔊';
- $('kitchenOrders').innerHTML=kitchen.orders.map((o,i)=>'<button class="kitchen-order" data-ko="'+i+'" style="'+kitchenEntryStyle(o)+'" onclick="kitchenOrderHelp('+i+')"><span>⏳ '+o.wait+'</span><div>'+ (o.c===null?'<b class="kitchen-any">任意</b>':kitchenArt({k:'w',c:o.c,t:o.t}))+'</div><b>'+'≥'+kitchenGradeName(o.t)+(o.c===null?'任意料理':KITCHEN_NAMES[o.c])+'</b>'+kitchenRecipeStrip(o.c)+guestBadge22(o,true)+'</button>').join('');
+ $('kitchenOrders').innerHTML=kitchen.orders.map((o,i)=>'<button class="kitchen-order" data-ko="'+i+'" style="'+kitchenEntryStyle(o)+'" onclick="kitchenOrderHelp('+i+')"><span>⏳ '+o.wait+'</span><div>'+ (o.c===null?'<b class="kitchen-any">任意</b>':kitchenArt({k:'w',c:o.c,t:o.t}))+'</div><b>'+'≥'+kitchenGradeName(o.t)+(o.c===null?'任意料理':KITCHEN_NAMES[o.c])+'</b>'+kitchenRecipeStrip(o.c)+orderGuestHTML(o)+guestBadge22(o,true)+'</button>').join('');
  const ch=KITCHEN_CHALLENGES[kitchen.challenge],progress=ch.kind==='rush'?kitchen.served:kitchen.progress;$('kitchenChallenge').textContent=kitchen.done?'晚餐營業完成 · 點此查看結算':ch.icon+' '+ch.name+' '+progress+'/'+(ch.kind==='rush'?kitchen.total:ch.goal)+' · 出餐 '+kitchen.served+'/'+kitchen.total;$('kitchenChallenge').title=ch.text;
  $('kitchenQueue').innerHTML='<small>接下來</small>'+kitchen.q.map((t,i)=>'<span class="kitchen-next" '+(i===0?'data-kdrag="ore" onclick="selectKitchenIngredients()" aria-label="選擇放置食材"':'')+'>'+kitchenArt({k:'o',t})+'<b>'+(i+1)+'</b><b class="kitchen-queue-grade">'+(t+1)+'階 '+KITCHEN_GRADES[t]+'</b></span>').join('');
  $('kitchenGrid').innerHTML=kitchen.g.map((w,i)=>'<button class="kc '+(w?.k==='w'?'kitchen-dish':w?.k==='waste'?'kitchen-waste':'')+(w?.k==='w'&&Date.now()-(kitchen.forgedAt?.[i]||0)<650?' kitchen-complete':'')+'" data-ki="'+i+'" '+(w?.k==='w'?'data-kdrag="dish"':'')+' onclick="kitchenClick('+i+')" aria-label="第'+(i+1)+'格 '+esc(w?kitchenItemName(w):kitchen.heat[i]?'餘熱':'空格')+'" style="'+(kitchen.heat[i]?'background:#8a4437;':'')+(kitchen.tiles[i]?'box-shadow:inset 0 0 0 2px '+KITCHEN_SPICES[kitchen.tiles[i]].color+';':'')+'">'+(w?kitchenArt(w):'')+(w?.k==='w'?'<small class="kitchen-star">'+('★'.repeat(kitchenStars(w)))+('☆'.repeat(3-kitchenStars(w)))+'</small><span class="kitchen-food-label">'+(w.t+1)+'階 '+KITCHEN_NAMES[w.c]+'</span>':'')+(w?.k==='w'?'<small class="kitchen-fresh'+(w.fresh<=5?' urgent':'')+'" title="剩餘保鮮步數">'+w.fresh+'</small>':'')+(w?.k==='waste'?'<span class="kitchen-waste-label">廚餘</span>':'')+(kitchen.heat[i]?'<small class="kitchen-heat">'+kitchen.heat[i]+'</small>':'')+(kitchen.tiles[i]?'<span class="kitchen-seasoning">'+KITCHEN_SPICES[kitchen.tiles[i]].icon+'</span>':'')+'</button>').join('');
@@ -640,7 +644,10 @@ function kitchenOrderHelp(i){
  kitchenModal('客人訂單 · '+target,'<p>'+esc(guestPreferenceText(o,true))+'</p><p>需要 ≥'+kitchenGradeName(o.t)+' '+target+'，剩餘 '+o.wait+' 步。</p>'+(o.c===null?'<p>任意三份相連備料皆可組合料理。</p>':'<div class="kitchen-dish-preview">'+kitchenArt({k:'w',c:o.c,t:o.t})+'</div>'+kitchenRecipeStrip(o.c,true))+'<ol class="kitchen-method"><li>至少兩包同階食材旁放工序卡（相連同階會一起消耗）：炊煮→主食、煎烤→主菜、切拌→配菜。</li><li>依配方湊出三份備料；第三份連成直線或彎線時，會在最後放置的格子自動完成料理。備料的平均階級取整數，須達客人要求。</li><li>將完成料理拖到這位客人即可出餐。</li></ol><button class="kitchen-wide" onclick="openKitchenRecipes('+o.t+')">查看全部食譜與階級</button><p>無法完成時可取消這張訂單，會扣一顆愛心。</p><div class="kitchen-order-actions"><button onclick="kitchenCancelTarget=null;document.getElementById(\'kitchenModal\').hidden=true">保留訂單</button><button class="kitchen-cancel" onclick="cancelKitchenOrder('+i+')">取消訂單 · ❤️−1</button></div>');
 }
 function kitchenStow(){if(!kitchen.hand)return;if(kitchen.hand.k==='w'){if(kitchen.pack.length>=2*kitchenLevel('pack')){toast('冰箱已滿，請先把料理放回棋盤。');return;}kitchen.pack.push(kitchen.hand);}else kitchen.bag.push(kitchen.hand);kitchen.hand=null;kitchen.useHeld=false;kitchen.mode='ore';renderKitchen();saveNow();}
-function openKitchenBag(){kitchenModal('🎒 廚房道具箱','<div class="kitchen-tool-list">'+kitchen.bag.map((w,i)=>'<button onclick="takeKitchenBag('+i+')">'+kitchenArt(w)+'<span><b>'+kitchenItemName(w)+'</b><small>'+kitchenItemEffect(w)+'</small><strong>點擊拿到手持欄</strong></span></button>').join('')+'</div>'+(kitchen.bag.length?'':'<p>道具箱是空的。可到菜市場購買。</p>'));}
+function kitchenBagGroups(){
+ const groups=new Map();kitchen.bag.forEach((w,i)=>{const key=JSON.stringify(w,Object.keys(w).sort()),row=groups.get(key);if(row)row.count++;else groups.set(key,{w,index:i,count:1});});return [...groups.values()];
+}
+function openKitchenBag(){kitchenModal('🎒 廚房道具箱','<div class="kitchen-tool-list">'+kitchenBagGroups().map(({w,index,count})=>'<button onclick="takeKitchenBag('+index+')"><span class="kitchen-bag-art">'+kitchenArt(w)+(count>1?'<b class="kitchen-bag-count" aria-label="數量 '+count+'">×'+count+'</b>':'')+'</span><span><b>'+kitchenItemName(w)+'</b><small>'+kitchenItemEffect(w)+'</small><strong>點擊拿到手持欄</strong></span></button>').join('')+'</div>'+(kitchen.bag.length?'':'<p>道具箱是空的。可到菜市場購買。</p>'));}
 function takeKitchenBag(index){
  if(!kitchen.bag[index])return;if(kitchen.hand?.k==='w'){if(kitchen.pack.length>=2*kitchenLevel('pack')){toast('冰箱已滿，請先把手持料理放回棋盤。');return;}kitchen.pack.push(kitchen.hand);}else if(kitchen.hand)kitchen.bag.push(kitchen.hand);
  kitchen.hand=kitchen.bag.splice(index,1)[0];kitchen.useHeld=false;kitchen.mode='ore';$('kitchenModal').hidden=true;kitchen.message='已取出'+kitchenItemName(kitchen.hand)+'。可繼續放食材，拖曳手持物品才使用。';renderKitchen();saveNow();
@@ -673,6 +680,7 @@ function inspectKitchenDish(w){
 function openKitchenChallenge(){if(kitchen.done){renderKitchenSettlement();return;}const c=KITCHEN_CHALLENGES[kitchen.challenge];kitchenModal(c.icon+c.name,'<p>'+(c.kind==='rush'?'服務本晚 '+kitchen.total+' 位客人，且沒有任何超時訂單。':c.text)+'</p><p>完成營業可得廚房技能點與調味包；挑戰成功另加金幣；每晚固定獲得 1 點餐廳技能點，技能全滿改得 1000 金幣，並在城鎮生成一個寶箱。</p><h3>後台切換挑戰</h3><p>切換會重新開始本晚的訂單；已領過的當晚結算獎勵不重複發放。</p>'+KITCHEN_CHALLENGES.map((ch,i)=>'<button class="kitchen-wide" onclick="setKitchenChallenge('+i+')">'+ch.icon+ch.name+'</button>').join(''));}
 function setKitchenChallenge(index){if(!sandboxSession||!KITCHEN_CHALLENGES[index])return;startKitchenNight(true);kitchen.challenge=index;kitchenCreateOrders();$('kitchenModal').hidden=true;renderKitchen();}
 function kitchenHelp(){kitchenModal('廚房操作','<p>① 點空格或拖第一包食材到棋盤。初始只推出一階食材，第一點技能只能學料理大師。學習後三包相連升一階，四包得到兩包高一階，五包相連（包含交叉形）在最後落點升兩階；料理大師二／三級增加返還原階食材的機率，高階食材的推出機率另由「採買大師」提升。</p><p>② 拖第一張工序卡到至少兩包同階食材附近（相連的同階食材會一起消耗）的空格，做出主食、主菜或配菜。也可以點工序卡，再點空格。</p><p>③ 像冶煉廠一樣，第三份工序連成直線或彎線就會自動完成料理；三份備料合成到最後放置的位置；全盤每條不分岔的連線都會檢查，沿線每相鄰三份可重疊判定：ABC、BCD、CDE。四連線做兩道，五連線做三道，成品出現在各組中間格；交叉形不當成一條五連線。</p><p>④ 拖料理到上方客人出餐。冰箱可收納，點道具箱可拿出買來的食材、工序卡或工具；拿出後仍可點空格放食材，要用手持物品時再點選或拖曳。</p><p>⑤ 放食材、備料、料理、使用工具及出餐會推進一步；看食譜、逛市場、整理道具不消耗步數。食材與備料沒有保鮮倒數；只有完成料理有 32 步保鮮，保鮮專家每級增加 6 步。超時變成佔格廚餘，第1–3天每格15金幣、第4–6天30金幣，之後50金幣清理並推進一步，請愛護食物；冰箱會暫停料理保鮮倒數。</p><p>⑥ 客人數由 3／4／5 位逐日增加，第四天起為 5–8 位；料理品質要求也會逐步提升。完成本晚訂單後結算，再進入隔天白天。回城鎮不會結束營業。點客人可保留或取消訂單；取消扣一顆愛心。</p>');}
+
 function cancelKitchenDrag(){clearKitchenPreview();kitchenDrag?.ghost?.remove();kitchenDrag=null;}
 function startKitchenDrag(e){
  if(!expandedGameEnabled()||kitchenMergeJobs.size||e.button>0)return;const target=e.target.closest('[data-kdrag]');if(!target)return;const kind=target.dataset.kdrag,index=+(target.dataset.ki||0),w=kind==='dish'?kitchen.g[index]:kind==='hand'?kitchen.hand:kind==='process'?{k:'m',s:kitchen.mq[0]}:kitchenFood(kitchen.q[0]);if(!w||kitchen.done&&!(kind==='dish'||kind==='hand'&&w.k==='w'))return;
@@ -1155,8 +1163,9 @@ function stage19_walkCityPet(w){
  const end=route.at(-1);w.el.style.transform=tf(end);w.el.classList.add('decor-walking');const a=w.el.animate(route.map((p,i)=>({transform:tf(p),offset:dist[i]/total})),{duration:Math.max(3500,Math.min(22000,total/27*1000)),easing:'linear'});w.anim=a;townDecorAnimations.add(a);a.onfinish=()=>{w.anim=null;w.el.classList.remove('decor-walking');townDecorAnimations.delete(a);w.point=end;if(w.epoch!==cityArtEpoch)return;w.timer=gameTimeout(()=>{w.timer=null;walkCityPet(w);},1400+rnd(1800));};
 }
 const TOWN_GUEST_ART={"0":"assets/guests/0.44c205fa7b0f.webp","1":"assets/guests/1.3b37ce4458e9.webp","2":"assets/guests/2.c7131275b75a.webp","3":"assets/guests/3.7c053df81670.webp","4":"assets/guests/4.60ef3cb0a499.webp","5":"assets/guests/5.94f981128059.webp","6":"assets/guests/6.34bfdbeeeb73.webp","7":"assets/guests/7.f6a92bfb84ea.webp","8":"assets/guests/8.c09128253563.webp","9":"assets/guests/9.178d64be4011.webp","10":"assets/guests/10.858dcc8aacff.webp","11":"assets/guests/11.51c47fd4e9f3.webp","12":"assets/guests/12.919873b5435c.webp","13":"assets/guests/13.b86e3bcee084.webp","14":"assets/guests/14.6227110c34fd.webp","15":"assets/guests/15.88c3d8837176.webp"};
-function workshopOreHTML(t,extra='',magic=0){return '<div class="t o '+extra+' cozy-ore"'+cozyOreAttributes(t)+' style="background-color:'+C[t]+';'+cozyOreStyle(t)+'">'+NM[t]+(magic?'<span class="mb">+'+magic+'💰</span>':'')+'</div>';}
+function workshopOreHTML(t,extra='',magic=0){return '<div class="t o '+extra+' cozy-ore"'+cozyOreAttributes(t)+' style="background-color:'+C[t]+';'+cozyOreStyle(t)+'">'+NM[t]+mb({m:magic})+'</div>';}
 function workshopPieceHTML(w){return '<div class="t2'+(w.k==='d'?' dg':'')+'">'+(w.k==='d'?gem(w.t):mold(w.s,C[w.t]))+mb(w)+'</div>';}
+
 function renderKitchenMessage(text){
  renderWorkshopMessage($('kitchenMessage'),text,layoutKitchenMessage);
 }
@@ -1217,6 +1226,8 @@ function inspectArchiveDish(c,t){if(!expandedGameEnabled()||!Number.isInteger(c)
 function stage20_battleTick(b){
  if(b.outcome!=='ongoing')return;const s=b.stats,m=b.monster,heroElement=elementOf(b.weapon),enemyElement=elementOf(m);let row;
  if(b.heroClock<=b.enemyClock){
+  // Time still passes while guarding, but a missed attack is never banked for later.
+  if(b.guarding){b.heroClock+=1000/Math.max(1,s.spd);return;}
   const mult=elementMultiplier(heroElement,enemyElement),base=Math.max(1,Math.round(s.atk*mult)-Math.floor(b.enemyDef*.6)),physical=b.bossHardened?Math.max(1,Math.round(base*.4)):base,hardened=!!b.bossHardened,damage=Math.min(b.enemyHp,physical+s.arcane);b.bossHardened=false;b.enemyHp-=damage;b.heroClock+=1000/Math.max(1,s.spd);
   row={actor:'hero',damage,element:heroElement,multiplier:mult,text:elementName(heroElement)+'屬性命中 '+damage+' 傷害（×'+mult.toFixed(2)+'）'+(hardened?' · 硬化抵擋部分物理傷害':'')};
  }else{
@@ -1245,6 +1256,7 @@ function stage20_renderWeaponAlbum(){
     }).join('')+'</div></section>';
   }).join('')+legendAlbumSection();
 }
+
 const REVIEW_MONSTER_ART={"0":"assets/monsters/0.58497d0b41cd.webp","1":"assets/monsters/1.ffccc9cc0e1e.webp","2":"assets/monsters/2.b39078888b50.webp","3":"assets/monsters/3.418f6068ce70.webp","4":"assets/monsters/4.17e079d9bcb0.webp","5":"assets/monsters/5.882215b65c91.webp","6":"assets/monsters/6.813a1bff14b2.webp","7":"assets/monsters/7.14988078e7e7.webp","8":"assets/monsters/8.b002150ac64d.webp","9":"assets/monsters/9.832b123dc8c3.webp","10":"assets/monsters/10.3f7f336d8b4c.webp","11":"assets/monsters/11.ab260a5ab655.webp","12":"assets/monsters/12.2c19bd176515.webp","13":"assets/monsters/13.87b38a1d9693.webp","14":"assets/monsters/14.b603fe489b73.webp","15":"assets/monsters/15.09685802dd0a.webp","16":"assets/monsters/16.277e04f5d27d.webp","17":"assets/monsters/17.89233aba09af.webp","18":"assets/monsters/18.fa712caae1dd.webp","19":"assets/monsters/19.c54ae8d898de.webp"};
 let kitchenPreviewPlan=null;
 function kitchenConnected(board,at,kind){if(board[at]?.k!==kind)return [];const cells=[at];for(let i=0;i<cells.length;i++)for(const j of nb(cells[i]))if(!cells.includes(j)&&board[j]?.k===kind&&(kind==='p'||board[j].t===board[at].t))cells.push(j);return cells;}
@@ -1305,7 +1317,9 @@ function guestPreferenceBonus(w,o,food){
  else yes=({劍士:()=>count('0')>=2,法師:()=>enchanted,遊俠:()=>count('2')>=2,僧侶:()=>count('1')>=2,盜賊:()=>[0,2].includes(w.c),吟遊詩人:()=>(w.m||0)>0||(w.b||0)>0,商人:()=>fast,饕客:()=>w.t>o.t}[role]||(()=>false))();return yes?.1:0;
 }
 function guestBadge22(o,food){return expandedGameEnabled()&&o?.guest?'<em class="guest-like22" title="'+esc(guestPreferenceText(o,food))+'">♥10%</em>':'';}
+function orderGuestHTML(o){const guest=o?.guest;return expandedGameEnabled()&&guest&&TOWN_GUEST_ART[guest.id]?'<span class="order-guest" role="img" aria-label="'+esc(guest.gender+guest.role)+'">'+townGuestArt(guest.id)+'</span>':'';}
 function ensureOrderGuests22(){[orders.concat(dq),[...(kitchen?.orders||[]),...(kitchen?.queue||[])]].forEach((list,night)=>list.forEach((o,i)=>{if(!o.guest)o.guest=guestForOrder22(i,!!night);}));}
+
 const REVIEW_SAVE_KEY='forgeBackendProgressV1',REVIEW_PREVIOUS_KEY='forgeBackendProgressPreviousV1';
 let reviewRestoring=false,reviewSaveTimer=null,pendingReviewImport=null;
 let reviewMetrics={activeMs:0,lastActive:Date.now(),crafted:0,served:0,spoiled:0,supplies:0,supplyTypes:{},battles:[],nights:0,nightTurns:0};
@@ -1374,7 +1388,7 @@ function stage21_monsterArt(m){
 }
 function stage21_advanceExpeditionBattle(){
  const b=expeditionState.lastBattle;if(!b||b.outcome!=='ongoing'){stopExpeditionPlayback();return;}
- battleTick(b);expeditionBattleStep=b.log.length;combatSound(b.log.at(-1).actor);
+ const rows=b.log.length;battleTick(b);expeditionBattleStep=b.log.length;if(b.log.length>rows)combatSound(b.log.at(-1).actor);
  if(b.outcome!=='ongoing')settleExpeditionBattle(b);renderExpeditionBattle();
 }
 function stage21_kitchenCraft(at,silent=false){
@@ -2190,7 +2204,7 @@ function render(){
     if(dl!==null&&dl<=-600)enter.delete(k);
     const an=dl!==null&&dl>-600;
     return `<div class="od${an?" in":""}" style="${an?`animation-delay:${dl}ms;`:""}background:linear-gradient(hsla(${hu(o).toFixed(0)},70%,52%,.42),hsla(${hu(o).toFixed(0)},70%,40%,.16)),#262e3b;border-color:hsl(${hu(o).toFixed(0)},60%,42%)" data-k="${k}">
-    ${guestBadge22(o,false)}<span class="wt">⏳${o.c===null?"∞":Math.max(0,o.wait)}</span>
+    ${orderGuestHTML(o)}${guestBadge22(o,false)}<span class="wt">⏳${o.c===null?"∞":Math.max(0,o.wait)}</span>
     <span class="em">${o.wait<=o.max/4?"😡":o.wait<=o.max/2?"😒":""}</span>
     ${o.c===null?`<div class="hxo"><div class="hxi" style="background:${C[o.t]}"><b>任意</b></div></div>`:hex(o.c,C[o.t],"",o.t)}
     <div class="order-name">${o.c===null?"≥任意"+NM[o.t]+"級道具":"≥"+NM[o.t]+"級"+WN[o.c]}</div>
@@ -2282,6 +2296,7 @@ function render(){
   if($("townP").style.display==="flex")renderTown();
   if(qFlip){const o=qFlip;qFlip=null;animateQ(o)}
 }
+
 
 /* 合成與預覽共用的材料、路徑判定 */
 function moldMaterials(i,board=g){
@@ -2466,7 +2481,8 @@ function sellW(c,k,clear){
   const mg=c.m||0,p=salePrice(c,o);
   coins+=p;earned+=p;dEarn+=p;dMagic+=mg*10;
   clear();all++;dSold++;saveHi();
-  say("成交！+"+p+" 金幣"+(mg?"（含魔法 +"+mg+"）":"")
+  const magicGold=mg?p-salePrice({...c,m:0},o):0;
+  say("成交！+"+p+" 金幣"+(mg?"（附魔 "+weaponStats(c).stacks+" 層 · 額外金幣 +"+magicGold+"）":"")
     +(sk("mc")?"，大商人 +"+10*sk("mc")+"%":"")+seasonSaleNote(c)+(guestPreferenceBonus(c,o,false)?'，喜好 +10%':''));
   qOnSale(c,p);
   if(c.dts&&c.dts.length&&sk('gc')>=2&&Math.random()<.25)
@@ -2489,6 +2505,7 @@ function over(){
     :!(c.k==='o'&&c.t>=4)&&group(i).length>=3
   ));
 }
+
 const TOWN_SEASONS=[
  {sky:'#bad9dc',ground:'#6f914f',road:'#d5c18c',tree:'#426b41',light:'#8fba60',roof:'#7b586d',snow:false},
  {sky:'#91d6e9',ground:'#e7d39c',road:'#d3b77c',tree:'#346642',light:'#83ae52',roof:'#9b654a',snow:false},
@@ -2627,7 +2644,7 @@ function preview_renderTownVisitors(remaining){
  if(lowEffects||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
  [...el.querySelectorAll('.town-visitor')].forEach((n,i)=>{
   const [x,y]=kitchenTownGuestPoint(i),prior=previous.get(n.dataset.visitorId),route=prior?[prior,[x,y]]:townGuestRoute(i);let length=0;const distances=route.map((point,k)=>{if(k)length+=Math.hypot(point[0]-route[k-1][0],point[1]-route[k-1][1]);return length;});if(length<1)return;
-  const frames=route.map(([px,py],k)=>({transform:`translate3d(${(px-x)*sx}px,${(py-y)*sy}px,0)`,offset:distances[k]/length}));
+  const frames=route.map(([px,py],k)=>({transform:`translate3d(${(px-x)*sx}px,${(py-y)*sy}px,0) scale(${prior?1:(1+.65*(1-distances[k]/length)).toFixed(3)})`,offset:distances[k]/length}));
   const a=n.animate(frames,{duration:prior?500:Math.min(8000,Math.max(3800,length*9))+i*70,delay:prior?0:i*300,easing:'linear',fill:'backwards'});townVisitorAnimations.add(a);n.classList.add('arriving');
   a.onfinish=()=>{n.classList.remove('arriving');townVisitorAnimations.delete(a)};
   if(townMotionPaused)a.pause?.();
@@ -2885,7 +2902,7 @@ function statsHTML(w){
  const s=weaponStats(w);return '<div class="weapon-stats">'+Object.entries(STAT_NAMES).map(([k,n])=>'<div><small>'+({atk:'⚔',def:'🛡',spd:'💨'}[k])+' '+n+'</small><b>'+s[k]+'</b></div>').join('')+'</div>'+weaponMasteryHTML(w);
 }
 function weaponEnchantHTML(w){
- const s=weaponStats(w);return elementWeaponHTML(w)+'<div class="weapon-enchant"><b>✦ 奧術附魔 '+s.stacks+' 層</b><span>每次攻擊額外 '+s.arcane+' 奧術傷害 · 開戰護盾 '+s.ward+'</span><small>每層提供 2 傷害、3 護盾，戰鬥效果最多計算 20 層。</small></div>';
+ const s=weaponStats(w);return elementWeaponHTML(w)+'<div class="weapon-enchant"><b>✦ 奧術附魔 '+s.stacks+' 層</b><span>每次攻擊額外 '+s.arcane+' 奧術傷害 · 開戰護盾 '+s.ward+'</span><span>附魔額外售價 +'+(w.m||0)+' 金幣（訂單、商人與季節加成另計）</span><small>每層提供 2 傷害、3 護盾，戰鬥效果最多計算 20 層；售價加成不受此上限限制。</small></div>';
 }
 function openCraftedWeapon(w,source='鍛造作品'){
  if(!w||w.c==null)return;inspectedLiveWeapon=liveWeapons().some(x=>x.w===w)?w:null;$('weaponProtection').hidden=!inspectedLiveWeapon;$('weaponProtection').textContent=w.protected?'🔓 取消武器保護':'🔒 保護這把武器（防止賣出、出戰與投入藍圖）';
@@ -2911,6 +2928,7 @@ function addStatQuests(){
  QD.mag.tip='每累積 +5 金幣魔法值算 1 層附魔；同時提供遠征的奧術傷害與開戰護盾。';
 }
 addStatQuests();
+
 
 let expeditionLab={weapon:'n0',tier:4,stacks:0,element:'none',stage:1};
 function expeditionCleared(stage){return stage<20?expeditionState.cleared.includes(stage):stage<20+(expeditionState.endless||0);}
@@ -3070,7 +3088,7 @@ function battleTick(b){
 
 function checkBattleOutcome(b){b.outcome=b.enemyHp<=0?'win':b.hp<=0?'lose':b.log.length>=120?'draw':'ongoing';return b.outcome;}
 function castBattleSkill(b){
- const skill=ultimateSkill(b.weapon);if(!skill||b.skillUsed||b.outcome!=='ongoing')return false;
+ const skill=ultimateSkill(b.weapon);if(!skill||b.skillUsed||b.guarding||b.outcome!=='ongoing')return false;
  b.skillUsed=true;const mult=elementMultiplier(elementOf(b.weapon),elementOf(b.monster)),damage=Math.min(b.enemyHp,Math.max(1,Math.round(b.stats.atk*skill.power*mult)+b.stats.arcane));b.enemyHp-=damage;
  const healed=Math.min(b.hpMax-b.hp,Math.round(b.hpMax*(skill.heal||0)));b.hp+=healed;
  const addedShield=Math.round(b.stats.def*(skill.shield||0));b.shield+=addedShield;
@@ -3100,7 +3118,7 @@ function beginExpedition(confirmed=false){
 function advanceExpeditionBattle(){
  if(!expandedGameEnabled())return stage21_advanceExpeditionBattle();const b=expeditionState.lastBattle;if(!b||b.resolved||b.outcome!=='ongoing')return stage21_advanceExpeditionBattle();const now=Date.now();syncExpeditionEffects(now);
  if(battleUserPaused||document.hidden||battleLastAdvance&&now-battleLastAdvance<400)return;
- if(b.heroClock>b.enemyClock&&b.chargeName&&b.chargeRemainingMs>0)return;
+ if((b.guarding||b.heroClock>b.enemyClock)&&b.chargeName&&b.chargeRemainingMs>0)return;
  battleLastAdvance=now;const rows=b.log.length;stage21_advanceExpeditionBattle();if(b.log.length>rows)showBattleFeedback(b.log.at(-1));
 }
 function useExpeditionSkill(){syncExpeditionEffects();const b=expeditionState.lastBattle;if(!b||!castBattleSkill(b))return;expeditionBattleStep=b.log.length;combatSound('hero');if(b.outcome!=='ongoing')settleExpeditionBattle(b);renderExpeditionBattle();}
@@ -3143,6 +3161,7 @@ function renderExpeditionProgress(){
  const b=expeditionState.lastBattle,ongoing=b&&!b.resolved&&b.outcome==='ongoing',guard=ongoing&&(b.guardRemainingMs||0)>0,charge=ongoing&&!!b.chargeName;
  $('expeditionGuardMeter').hidden=!guard;$('expeditionBossCharge').hidden=!charge;
  if(guard){$('expeditionGuardProgress').max=EXPEDITION_GUARD_MS;$('expeditionGuardProgress').value=b.guardRemainingMs;$('expeditionGuardTime').textContent=(b.guardRemainingMs/1000).toFixed(1)+' 秒'+(battleUserPaused?' · 暫停':'');}
+ $('expeditionSkill').disabled=!ongoing||!!b.skillUsed||!!guard;
  if(charge){$('expeditionChargeProgress').max=EXPEDITION_CHARGE_MS;$('expeditionChargeProgress').value=EXPEDITION_CHARGE_MS-b.chargeRemainingMs;$('expeditionChargeName').textContent=(b.monster||expeditionMonster(b.stage||0)).name+' · '+b.chargeName;$('expeditionChargeTime').textContent=battleUserPaused?'已暫停':b.chargeRemainingMs>0?'蓄力 '+(b.chargeRemainingMs/1000).toFixed(1)+' 秒':'蓄力完成';}
 }
 function startExpeditionFeedbackClock(){
@@ -3159,7 +3178,7 @@ function renderExpeditionBattle(){
  const b=expeditionState.lastBattle;if(!b)return;syncExpeditionEffects();updateBattlePace();renderExpeditionFood();const m=b.monster||{...EXPEDITIONS[b.stage],element:'none'},done=b.resolved;
  $('expeditionArena').innerHTML='<div class="exp-fighter"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</div><b>'+itemName(b.weapon)+'</b><small>♥ '+b.hp+' / '+b.hpMax+'</small>'+expeditionHealthHTML(b)+'</div><strong>VS</strong><div class="exp-fighter"><div>'+monsterArt(m)+elementBadge(m.element,'battle-element')+'</div><b>'+m.name+'</b><small>♥ '+b.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+b.enemyHp+'" aria-label="怪物生命值"></progress><span class="exp-health-key exp-monster-key" aria-hidden="true"></span></div>';
  $('expeditionLog').innerHTML=(done?b.log:b.log.slice(-5)).map(x=>'<p class="'+x.actor+(x.skill?' skill-hit':'')+'">'+esc(x.text)+'</p>').join('')||'<p>武器已投入遠征；可在戰鬥中施放終極武器技能。</p>';
- $('expeditionLog').dataset.complete=String(done);$('expeditionGuard').hidden=done;$('expeditionIntent').textContent=done?'本次戰鬥已結束':('敵方下次：'+bossIntent(b)+(b.bossHardened?' · 現正硬化':'')+(b.guarding?' · 防禦中（減傷60%）':''));if(!done&&expandedGameEnabled()&&b.foodAttackTurns>0)$('expeditionIntent').textContent+=' · 🍖 攻擊 +'+Math.round((b.foodAttack||0)*100)+'%（剩 '+b.foodAttackTurns+' 次）';$('expeditionGuard').disabled=done||b.guardUsed;$('expeditionGuard').textContent=b.guardUsed?'🛡 已使用防禦架勢':'🛡 防禦3秒 · 減傷60%（每場一次）';const skill=ultimateSkill(b.weapon);$('expeditionSkill').hidden=done||!skill;$('expeditionSkill').disabled=done||b.skillUsed;$('expeditionSkill').textContent=skill?(b.skillUsed?'✓ 已施放 '+skill.name:'✦ 施放 '+skill.name):'';
+ $('expeditionLog').dataset.complete=String(done);$('expeditionGuard').hidden=done;$('expeditionIntent').textContent=done?'本次戰鬥已結束':('敵方下次：'+bossIntent(b)+(b.bossHardened?' · 現正硬化':'')+(b.guarding?' · 防禦中（停止攻擊、減傷60%）':''));if(!done&&expandedGameEnabled()&&b.foodAttackTurns>0)$('expeditionIntent').textContent+=' · 🍖 攻擊 +'+Math.round((b.foodAttack||0)*100)+'%（剩 '+b.foodAttackTurns+' 次）';$('expeditionGuard').disabled=done||b.guardUsed;$('expeditionGuard').textContent=b.guardUsed?'🛡 已使用防禦架勢':'🛡 防禦3秒 · 停止攻擊、減傷60%（每場一次）';const skill=ultimateSkill(b.weapon);$('expeditionSkill').hidden=done||!skill;$('expeditionSkill').disabled=done||b.skillUsed||b.guarding;$('expeditionSkill').textContent=skill?(b.skillUsed?'✓ 已施放 '+skill.name:'✦ 施放 '+skill.name):'';
  $('expeditionResult').innerHTML=done?'<h3>'+({win:'🏆 遠征勝利',lose:'遠征落敗',draw:'已撤退'}[b.outcome])+'</h3><p>'+(b.outcome==='win'?'獲得 '+b.gold+' 金幣'+(b.loot?'＋'+itemName(b.loot):'')+'。':b.outcome==='lose'?'失去一顆愛心，剩餘 '+lives+' 顆。':'未獲得獎勵，出戰武器已消耗。')+'</p>'+(b.outcome==='win'&&b.stage>=10&&b.stage<20?'<button class="ultimate-unlocked" onclick="openUltimateArt('+b.stage+')">'+ultimatePixelArt(b.stage)+'<span>終極藍圖已解鎖 · 查看高清美術 ↗</span></button>':''):'';
  $('expeditionAgain').textContent=lives<=0?'結束旅程':'返回遠征';$('expeditionSkip').hidden=done;$('expeditionAgain').hidden=!done;
 }
@@ -3694,7 +3713,20 @@ function settle(){
 function magicAt(i){
   if(!magicSet.has(i)||!g[i])return;
   g[i].m=(g[i].m||0)+5;
-  say(forgeMessageText()+" ✨魔法 +5💰（賣出時結算）");
+  say(forgeMessageText()+" ✨附魔 +1 層（額外售價 +5 金幣，賣出時結算）");
+}
+let forgeBlizzardJob=null;
+function cancelForgeBlizzard(){forgeBlizzardJob?.finish(false);}
+function castForgeBlizzard(){
+ if(busy||hand?.k!=='z')return false;hand=null;busy=true;render();say('❄️ 暴風雪正在席捲棋盤…');
+ const reduced=lowEffects||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches,grid=$('grid'),node=document.createElement('div');
+ node.className='forge-blizzard';node.setAttribute('aria-hidden','true');
+ node.innerHTML='<svg viewBox="0 0 100 120" preserveAspectRatio="none"><g fill="#f2fcff">'+Array.from({length:56},(_,i)=>{const a=i*2.39996,r=8+Math.sqrt(i/56)*49;return '<rect x="'+(50+Math.cos(a)*r).toFixed(2)+'" y="'+(60+Math.sin(a)*r).toFixed(2)+'" width="'+(i%3===0?1.8:.9)+'" height="'+(i%3===0?2.4:1.2)+'" opacity="'+(.45+i%5*.11)+'"/>';}).join('')+'</g></svg>';grid.appendChild(node);
+ const job={node,animation:null,timer:null,finish:null};forgeBlizzardJob=job;
+ job.finish=(continuePlay=true)=>{if(forgeBlizzardJob!==job)return;forgeBlizzardJob=null;clearTimeout(job.timer);job.animation?.cancel?.();node.remove();heat=heat.map(()=>0);justHeated.clear();busy=false;if(continuePlay){say('❄️ 暴風雪！全盤過熱已歸零，棋盤物品保留。');settle();}};
+ job.timer=setTimeout(()=>job.finish(),reduced?80:820);
+ if(!reduced&&typeof node.animate==='function'){job.animation=node.animate([{transform:'scale(.08) rotate(0deg)',opacity:0},{transform:'scale(.42) rotate(110deg)',opacity:1,offset:.25},{transform:'scale(.95) rotate(300deg)',opacity:1,offset:.75},{transform:'scale(1.45) rotate(480deg)',opacity:0}],{duration:780,easing:'ease-in',fill:'forwards'});job.animation.onfinish=()=>job.finish();}
+ return true;
 }
 
 
@@ -3889,8 +3921,7 @@ function dropOn(kind,x,y){
   if(kind==="hand"&&hand?.k==='ess'){useEssence(i);return;}
   if(kind==="hand"&&hand.k==='l'){useLifePotion();return;}
   if(kind==="hand"&&hand.k==='z'){
-    heat=heat.map(()=>0);justHeated.clear();hand=null;
-    say("❄️ 暴風雪！全盤過熱已歸零，棋盤物品保留。");settle();return;
+    castForgeBlizzard();return;
   }
   if(isOff(i)){render();return}
   if(cellBlock(i)){say(cellBlock(i));render();return;}
@@ -3989,6 +4020,7 @@ $("bagC").onclick=e=>{
   hand=bag.splice(idx,1)[0];closeP("bagP");
   say("已拿到手持欄："+itemName(hand)+"，拖到棋盤上使用");render();
 };
+
 
 function start(){$('forgeSettlementP').style.display='none';if(formalSaveTimer!==null){clearTimeout(formalSaveTimer);formalSaveTimer=null;}cancelKitchenDrag();clearKitchenIngredientFlights();clearKitchenDepartures();reviewMetrics=freshPlayMetrics();forgeGuestSerial22=0;kitchenGuestSerial22=0;expeditionFoodSelected=null;const args=[...arguments];if(!booting&&args[0]==='tut')return performSceneTransition('冶煉廠',()=>preview_start(...args));return preview_start(...args);}
 function stable_start(mode,opt){

@@ -2,6 +2,8 @@
 function stage20_battleTick(b){
  if(b.outcome!=='ongoing')return;const s=b.stats,m=b.monster,heroElement=elementOf(b.weapon),enemyElement=elementOf(m);let row;
  if(b.heroClock<=b.enemyClock){
+  // Time still passes while guarding, but a missed attack is never banked for later.
+  if(b.guarding){b.heroClock+=1000/Math.max(1,s.spd);return;}
   const mult=elementMultiplier(heroElement,enemyElement),base=Math.max(1,Math.round(s.atk*mult)-Math.floor(b.enemyDef*.6)),physical=b.bossHardened?Math.max(1,Math.round(base*.4)):base,hardened=!!b.bossHardened,damage=Math.min(b.enemyHp,physical+s.arcane);b.bossHardened=false;b.enemyHp-=damage;b.heroClock+=1000/Math.max(1,s.spd);
   row={actor:'hero',damage,element:heroElement,multiplier:mult,text:elementName(heroElement)+'屬性命中 '+damage+' 傷害（×'+mult.toFixed(2)+'）'+(hardened?' · 硬化抵擋部分物理傷害':'')};
  }else{

@@ -52,7 +52,8 @@ function sellW(c,k,clear){
   const mg=c.m||0,p=salePrice(c,o);
   coins+=p;earned+=p;dEarn+=p;dMagic+=mg*10;
   clear();all++;dSold++;saveHi();
-  say("成交！+"+p+" 金幣"+(mg?"（含魔法 +"+mg+"）":"")
+  const magicGold=mg?p-salePrice({...c,m:0},o):0;
+  say("成交！+"+p+" 金幣"+(mg?"（附魔 "+weaponStats(c).stacks+" 層 · 額外金幣 +"+magicGold+"）":"")
     +(sk("mc")?"，大商人 +"+10*sk("mc")+"%":"")+seasonSaleNote(c)+(guestPreferenceBonus(c,o,false)?'，喜好 +10%':''));
   qOnSale(c,p);
   if(c.dts&&c.dts.length&&sk('gc')>=2&&Math.random()<.25)

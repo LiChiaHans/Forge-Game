@@ -3,6 +3,7 @@
 let forgeFeedbackTimer=null,forgeFeedbackEpoch=0;
 const forgeFlashes=new Map();
 function clearForgeFeedback(){
+ cancelForgeBlizzard();
  cancelWorkshopMerges('forge');
  forgeFeedbackEpoch++;if(forgeFeedbackTimer!==null)clearTimeout(forgeFeedbackTimer);forgeFeedbackTimer=null;
  forgeFlashes.clear();$('forgeCelebration').hidden=true;$('forgeCelebration').innerHTML='';

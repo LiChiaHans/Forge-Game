@@ -11,7 +11,7 @@ function stage21_monsterArt(m){
 }
 function stage21_advanceExpeditionBattle(){
  const b=expeditionState.lastBattle;if(!b||b.outcome!=='ongoing'){stopExpeditionPlayback();return;}
- battleTick(b);expeditionBattleStep=b.log.length;combatSound(b.log.at(-1).actor);
+ const rows=b.log.length;battleTick(b);expeditionBattleStep=b.log.length;if(b.log.length>rows)combatSound(b.log.at(-1).actor);
  if(b.outcome!=='ongoing')settleExpeditionBattle(b);renderExpeditionBattle();
 }
 function stage21_kitchenCraft(at,silent=false){

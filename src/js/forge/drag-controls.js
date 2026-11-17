@@ -191,8 +191,7 @@ function dropOn(kind,x,y){
   if(kind==="hand"&&hand?.k==='ess'){useEssence(i);return;}
   if(kind==="hand"&&hand.k==='l'){useLifePotion();return;}
   if(kind==="hand"&&hand.k==='z'){
-    heat=heat.map(()=>0);justHeated.clear();hand=null;
-    say("❄️ 暴風雪！全盤過熱已歸零，棋盤物品保留。");settle();return;
+    castForgeBlizzard();return;
   }
   if(isOff(i)){render();return}
   if(cellBlock(i)){say(cellBlock(i));render();return;}

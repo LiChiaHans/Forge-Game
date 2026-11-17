@@ -27,3 +27,12 @@
 - 首頁及城鎮／餐廳／冶煉廠切換由ui/scene-transitions.js提供全暗中點切換與「進入OO」文字。短暫擋輸入、防重複下一天；低動態或不支援動畫API時立即切換。不要在過場期間另做遊戲步數或時間扣減。
 - JS原始片段按 `src/build-order.json` 合成單一腳本，維持原共享變數、包裝函式與初始化順序。不要直接將它們各自掛成script或改成ES modules。
 - 修改前先用 `docs/function-index.tsv` 定位；不需閱讀完整生成檔、大型素材資料或歷史副本。建置／檢查方式見README。
+
+
+## 2026-11-18 defense, item feedback and guests
+- Guard lasts 3 seconds and blocks all player offense, including ultimate skills. Skipped normal attack turns advance their clocks without damage, sound or saved-up strikes. Enemy actions and special windups continue normally.
+- Forge magic badges display floor(m/5) layers with a pixel orb. Raw m remains the additive sale value. Inspection shows base extra coins; sale messages show the actual rounded marginal coin gain after merchant/season/preference multipliers. No price formula changes.
+- Protected weapon locks sit at bottom right. Blizzard consumes once, locks input during a 780 ms outward swirl, then clears heat without a step. Navigation/reset cleanup completes the committed clear and removes particles/timers.
+- Restaurant bag groups identical item fields and shows quantity, but still retrieves/consumes one original item. Different grades/processes/spices remain separate.
+- Enlarged album art has proportional stars. Order cards render the same guest sprite ID as the town queue. New arriving guests scale from 1.65 to 1, feet anchored; reduced-motion skips the effect.
+- Added tests/defense-items-guests.cjs; local mobile and desktop visual checks recorded outside the publish tree in progression/39-defense-items-guests.
