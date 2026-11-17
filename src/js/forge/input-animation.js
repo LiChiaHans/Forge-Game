@@ -6,7 +6,7 @@ function playFx(evs){
 }
 $("grid").onclick=e=>{
   const d=e.target.closest(".c");
-  if(!d||busy)return;
+  if(!d||busy)return;if(forgeSettlementPending()){renderForgeSettlement();return;}
   const i=+d.dataset.i,c=g[i];
   if(isOff(i))return;
   const bp=blueprintSlotAt(i);if(bp){openBlueprintProject(bp.project.uid);return;}

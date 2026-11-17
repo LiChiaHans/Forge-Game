@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="game.css?v=206683299612430e">
+<link rel="stylesheet" href="game.css?v=25eb302812c07caa">
 
 
 
@@ -266,10 +266,12 @@
   <h2 id="ovt"></h2><p id="ovp"></p><button id="ovb"></button>
 </div></div>
 
+<div id="forgeSettlementP" role="dialog" aria-modal="true" aria-labelledby="forgeSettlementTitle"><div class="hp"><button type="button" class="modal-x" aria-label="關閉白天結算" onclick="dismissModal('forgeSettlementP')">×</button><h2 id="forgeSettlementTitle"></h2><div id="forgeSettlementBody"></div><button id="forgeSettlementNext" class="pri" onclick="finishForgeDay()">結束白天營業，進入晚上</button></div></div>
+
 <div id="prediction" role="status" aria-live="polite" hidden></div>
 <div id="toasts"></div>
 
 <div id="sceneTransition" role="status" aria-live="polite" tabindex="-1" hidden></div>
-<script src="game.js?v=2288f678f680c9d8"></script>
+<script src="game.js?v=794b074f5d731571"></script>
 </body>
 </html>

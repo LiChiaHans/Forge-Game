@@ -1,5 +1,5 @@
 const assert=require('node:assert/strict'),runtime=require('./harness.cjs'),file=__dirname+'/../.build/combined.html',json=x=>JSON.parse(JSON.stringify(x));
-const {c,run,els,storage}=runtime(file);run("start('normal');orders=[];dq=[]");c.endDay();c.openKitchen();els.get('kitchenModal').hidden=true;
+const {c,run,els,storage}=runtime(file);run("start('normal');orders=[];dq=[]");c.endDay();c.finishForgeDay();c.openKitchen();els.get('kitchenModal').hidden=true;
 // Cooking mastery no longer grants purchasing chances; refunds match forge mastery.
 run('kitchen.skills.merge=3;kitchen.skills.purchase=0');for(let i=0;i<200;i++)assert.equal(c.kitchenRollFood(),0);
 assert.equal(run('KITCHEN_SKILLS.purchase.name'),'採買大師');const random=c.Math.random;

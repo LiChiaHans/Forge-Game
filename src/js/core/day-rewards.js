@@ -1,6 +1,7 @@
 
 
 function newDay(){
+  $("forgeSettlementP").style.display="none";if(kitchen)kitchen.forgeSettlement=null;
   phase="play";
   const previousDay=day;
   const skillExchange=previousDay>=1?convertWorkshopSurplus('forge')+convertWorkshopSurplus('kitchen'):0;
@@ -33,6 +34,17 @@ function newDay(){
   if(skillExchange){say('🌟 全技能已滿！多餘技能點轉換為 '+skillExchange+' 金幣。');toast('技能點已轉換為 '+skillExchange+' 金幣');saveNow();}
 }
 function endDay(){if(day===0)return stable_endDay();return productionEndForgeDay();}
+function forgeSettlementPending(){return day>0&&!sandboxNight&&lastCompletedDay===day&&kitchen?.forgeSettlement?.day===day;}
+function renderForgeSettlement(){
+ if(!forgeSettlementPending())return;const r=kitchen.forgeSettlement;
+ $('forgeSettlementTitle').textContent='第 '+day+' 天 · 白天營業完成';
+ $('forgeSettlementBody').innerHTML='<p>服務 '+r.served+' / '+r.total+' 位客人 · 未完成訂單 '+r.unfulfilled+' 位</p><p>售出武器 '+r.served+' 把 · 白天收入 '+r.earned+' 金幣</p><p>'+(r.skillGold?'技能已滿轉換 '+r.skillGold+' 金幣':'冶煉技能點 '+r.points+' 點')+' · 營業寶箱 '+r.chests+' 個</p><p class="exp-note">技能點可在城鎮訓練所使用，寶箱會留在噴水池旁等候開啟。</p>';
+ $('forgeSettlementP').style.display='flex';
+}
+function finishForgeDay(){
+ if(!forgeSettlementPending()||lives<=0)return;
+ return performSceneTransition('城鎮',()=>{if(!forgeSettlementPending()||lives<=0)return;$('forgeSettlementP').style.display='none';setSandboxNight(true);showTown();saveNow();});
+}
 function stable_endDay(){
   if(day===0){
     tutDoneSet();

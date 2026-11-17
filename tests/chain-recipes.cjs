@@ -1,5 +1,5 @@
 const assert=require('node:assert/strict'),runtime=require('./harness.cjs'),file=__dirname+'/../.build/combined.html',json=v=>JSON.parse(JSON.stringify(v));
-const {c,run,els}=runtime(file);run("start('normal');orders=[];dq=[]");c.endDay();c.openKitchen();els.get('kitchenModal').hidden=true;
+const {c,run,els}=runtime(file);run("start('normal');orders=[];dq=[]");c.endDay();c.finishForgeDay();c.openKitchen();els.get('kitchenModal').hidden=true;
 function prep(cells,at){run("kitchen.g=Array(30).fill(null);kitchen.heat.fill(0);kitchen.xp={};kitchen.crafted=0;kitchen.skills.merge=1;kitchen.tiles={};kitchen.done=false");for(const i of cells)run("kitchen.g["+i+"]=kitchenFreshen({k:'p',s:"+(i%3)+",t:0})");return json(c.kitchenTriples(at));}
 for(const [cells,at,targets]of [[[10,11,12],12,[12]],[[10,11,12,13],12,[11,12]],[[10,11,12,13,14],12,[11,12,13]],[[0,5,10,15,20,25],10,[5,10,15,20]],[[0,1,2,7,12],12,[1,2,7]]]){const groups=prep(cells,at);assert.deepEqual(groups.map(g=>g.target).sort((a,b)=>a-b),targets);assert.equal(groups.length,cells.length-2);c.kitchenCraft(at);assert.equal(run("kitchen.g.filter(w=>w?.k==='w').length"),targets.length);assert.equal(run('kitchen.crafted'),targets.length);assert.equal(c.kitchenCraft(at,true),false);}
 // Crosses do not create three recipes. Material crosses use their separate upgrade rule.

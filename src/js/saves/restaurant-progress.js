@@ -19,5 +19,9 @@ function openFormalProgress(){
 }
 function kitchenStockRemaining(kind){return sandboxSession?99:Math.max(0,({m:3,tool:1,o:3}[kind]||0)-(kitchen.stock[kind]||0));}
 function productionEndForgeDay(){
- if(lastCompletedDay>=day||orders.length||dq.length)return;qEach('safe',q=>{if(lives>=dLv)qProg(q,q.n)});lastCompletedDay=day;const reward=grantDailyWorkshopSkill('forge');pendingChests++;gachaUsed=false;skillDone=false;spentToday=0;saveHi();setSandboxNight(true);showTown();saveNow();toast('白天營業結束！'+(reward.gold?'技能已滿，獲得 1000 金幣。':'獲得冶煉技能點 1 點。')+'寶箱已出現，可前往暖爐餐廳營業。');
+ if(day<1||sandboxNight||lives<=0||orders.length||dq.length)return;
+ if(lastCompletedDay>=day){renderForgeSettlement();return;}
+ qEach('safe',q=>{if(lives>=dLv)qProg(q,q.n)});lastCompletedDay=day;const reward=grantDailyWorkshopSkill('forge');pendingChests++;gachaUsed=false;skillDone=false;spentToday=0;
+ kitchen.forgeSettlement={day,total:dTot,served:dSold,unfulfilled:Math.max(0,dTot-dSold),earned:dEarn,points:reward.points,skillGold:reward.gold,chests:1};
+ saveHi();saveNow();renderForgeSettlement();
 }

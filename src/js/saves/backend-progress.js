@@ -18,6 +18,7 @@ function validKitchenProgress(raw,forgeDay){
  if(!Array.isArray(k.justHeated)||!k.justHeated.every(i=>integer(i,0,29)))throw new Error('餘熱紀錄錯誤');
  if(k.settlement&&(!['served','missed','earned','bonus','points','spice'].every(key=>integer(k.settlement[key],0,1e15))||!integer(k.settlement.challenge,0,2)||typeof k.settlement.passed!=='boolean'))throw new Error('餐廳結算內容錯誤');
  if(k.settlement?.skillGold!==undefined&&!integer(k.settlement.skillGold,0,1e15))throw new Error('技能轉換金額錯誤');
+ if(k.forgeSettlement&&(!['day','total','served','unfulfilled','earned','points','skillGold','chests'].every(key=>integer(k.forgeSettlement[key],0,1e15))||k.forgeSettlement.day<1||k.forgeSettlement.day>forgeDay))throw new Error('白天結算內容錯誤');
  if(!k.stock||!['m','tool','o'].every(key=>integer(k.stock[key],0,1000000)))throw new Error('菜市場庫存錯誤');
  k.compost=Math.max(0,Math.min(99,Math.floor(+k.compost||0)));k.compostEarnedDay=Math.max(0,Math.min(forgeDay,Math.floor(+k.compostEarnedDay||0)));k.useHeld=!!(raw.useHeld===true&&k.hand);k.cancelled=raw.cancelled===undefined?0:raw.cancelled;if(!integer(k.cancelled,0,1000000)||k.settlement?.cancelled!==undefined&&!integer(k.settlement.cancelled,0,1000000))throw new Error('取消訂單紀錄錯誤');if(!k.skills.purchase)k.q=k.q.map(()=>0);k.forgedAt={};[...k.g,...k.bag,k.hand].forEach(w=>{if(w?.k==='o'||w?.k==='p'){delete w.fresh;delete w.born;}});return k;
 }

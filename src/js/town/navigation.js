@@ -38,7 +38,7 @@ function showTown(){
 }
 function returnToTown(){if(busy){say('請等這次合成完成，再返回城鎮。');return;}if(day<=0){goHome();return;}showTown();}
 function enterTownForge(){
- if(sp>0&&!sandboxSession){remindTownSkills();return;}startTownForge();
+ if(!forgeSettlementPending()&&sp>0&&!sandboxSession){remindTownSkills();return;}startTownForge();
 }
 function townNextAction(){enterTownForge();}
 function visitTrainingFromGame(){if(day===0)return stage19_visitTrainingFromGame();openLearnedForgeSkills();}

@@ -534,7 +534,7 @@ const KITCHEN_SKILLS={merge:{name:'料理大師',icon:'🥣',desc:['解鎖食材
 const KITCHEN_CHALLENGES=[{name:'晚餐尖峰',icon:'⏱',goal:6,text:'服務本晚全部客人，且沒有任何超時訂單。',kind:'rush'},{name:'蔬食餐會',icon:'🥬',goal:3,text:'售出三道含兩份以上配菜的料理。',kind:'vegetable'},{name:'嚴格食評',icon:'⭐',goal:3,text:'售出三道精選級以上，或至少一星的料理。',kind:'critic'}];
 const KITCHEN_SPICES={herb:{name:'香草',icon:'葉',color:'#8fd5a0',stat:'aroma',effect:'香氣 +20%'},spicy:{name:'辛香',icon:'辣',color:'#f49b6e',stat:'taste',effect:'滋味 +20%'},milk:{name:'奶香',icon:'乳',color:'#ffe6ab',stat:'fullness',effect:'飽足 +20%'}};
 let sandboxNight=false,kitchen=null,kitchenDrag=null,kitchenSuppressClick=0;
-function freshKitchen(){return {day:0,g:Array(30).fill(null),heat:Array(30).fill(0),tiles:{},q:Array(5).fill(0),mq:[0,1,2],hand:null,useHeld:false,bag:[],pack:[],skills:{merge:0,purchase:0,cool:0,fresh:0,spice:0,pack:0,patience:0},sp:0,xp:{},orders:[],queue:[],served:0,missed:0,cancelled:0,earned:0,crafted:0,turn:0,challenge:0,progress:0,mode:'ore',done:false,lastRewarded:0,stock:{m:0,tool:0,o:0},message:'先放食材，再把第一張工序卡拖到附近的空格。',justHeated:new Set()};}
+function freshKitchen(){return {day:0,g:Array(30).fill(null),heat:Array(30).fill(0),tiles:{},q:Array(5).fill(0),mq:[0,1,2],hand:null,useHeld:false,bag:[],pack:[],skills:{merge:0,purchase:0,cool:0,fresh:0,spice:0,pack:0,patience:0},sp:0,xp:{},orders:[],queue:[],served:0,missed:0,cancelled:0,earned:0,crafted:0,turn:0,challenge:0,progress:0,mode:'ore',done:false,lastRewarded:0,forgeSettlement:null,stock:{m:0,tool:0,o:0},message:'先放食材，再把第一張工序卡拖到附近的空格。',justHeated:new Set()};}
 function kitchenLevel(key){return kitchen?.skills[key]||0;}
 function kitchenFood(t=0){return {k:'o',t};}
 function kitchenOrder(generic=false){const mx=Math.max(0,Math.min(4,Math.floor((day-1)/3))),t=mx>0?(Math.random()<.4?mx:rnd(mx)):0,wait=kitchenOrderPatience(t);return {guest:guestForOrder22(kitchenGuestSerial22++,true),c:generic?null:rnd(10),t,max:wait,wait,uid:++kitchenGuestSerial};}
@@ -544,7 +544,7 @@ function startKitchenNight(force=false){
  kitchenCreateOrders();kitchen.message='晚餐營業開始！點空格放食材，拖曳工序卡備料，第三份工序相連就會自動完成料理。';
 }
 function kitchenRollFood(){const table=[[],[[1,2]],[[1,4],[2,2]],[[1,6],[2,4],[3,2]]][kitchenLevel('purchase')],roll=Math.random()*100;let cumulative=0;for(const [tier,chance]of table){cumulative+=chance;if(roll<cumulative)return tier;}return 0;}
-function openKitchen(){if(day<1)return;if(!sandboxNight){toast('現在是白天；冶煉廠營業結束後，會開啟同一天的晚餐時段。');return;}return performSceneTransition('餐廳',()=>{$('sk').style.display='none';startKitchenNight();$('kitchenP').hidden=false;renderKitchen();saveNow();if(kitchen.done){renderKitchenSettlement();return;}if(!kitchen.helpSeen){kitchen.helpSeen=true;kitchenHelp();saveNow();}});}
+function openKitchen(){if(day<1)return;if(!sandboxNight){toast('現在是白天；冶煉廠營業結束後，會開啟同一天的晚餐時段。');return;}return performSceneTransition('餐廳',()=>{$('sk').style.display='none';startKitchenNight();$('kitchenP').hidden=false;renderKitchen();saveNow();if(kitchen.done){renderKitchenSettlement();return;}});}
 function closeKitchen(){return performSceneTransition('城鎮',()=>{cancelKitchenDrag();clearKitchenIngredientFlights();clearKitchenDepartures();$('kitchenP').hidden=true;$('kitchenModal').hidden=true;showTown();});}
 function kitchenNeighbors(i){return nb(i);}
 function kitchenGroup(i){const item=kitchen.g[i];if(!item)return [];const out=[i];for(let k=0;k<out.length;k++)for(const n of nb(out[k]))if(!out.includes(n)&&kitchen.g[n]?.k===item.k&&(item.k==='p'||kitchen.g[n].t===item.t))out.push(n);return out;}
@@ -1317,6 +1317,7 @@ function validKitchenProgress(raw,forgeDay){
  if(!Array.isArray(k.justHeated)||!k.justHeated.every(i=>integer(i,0,29)))throw new Error('餘熱紀錄錯誤');
  if(k.settlement&&(!['served','missed','earned','bonus','points','spice'].every(key=>integer(k.settlement[key],0,1e15))||!integer(k.settlement.challenge,0,2)||typeof k.settlement.passed!=='boolean'))throw new Error('餐廳結算內容錯誤');
  if(k.settlement?.skillGold!==undefined&&!integer(k.settlement.skillGold,0,1e15))throw new Error('技能轉換金額錯誤');
+ if(k.forgeSettlement&&(!['day','total','served','unfulfilled','earned','points','skillGold','chests'].every(key=>integer(k.forgeSettlement[key],0,1e15))||k.forgeSettlement.day<1||k.forgeSettlement.day>forgeDay))throw new Error('白天結算內容錯誤');
  if(!k.stock||!['m','tool','o'].every(key=>integer(k.stock[key],0,1000000)))throw new Error('菜市場庫存錯誤');
  k.compost=Math.max(0,Math.min(99,Math.floor(+k.compost||0)));k.compostEarnedDay=Math.max(0,Math.min(forgeDay,Math.floor(+k.compostEarnedDay||0)));k.useHeld=!!(raw.useHeld===true&&k.hand);k.cancelled=raw.cancelled===undefined?0:raw.cancelled;if(!integer(k.cancelled,0,1000000)||k.settlement?.cancelled!==undefined&&!integer(k.settlement.cancelled,0,1000000))throw new Error('取消訂單紀錄錯誤');if(!k.skills.purchase)k.q=k.q.map(()=>0);k.forgedAt={};[...k.g,...k.bag,k.hand].forEach(w=>{if(w?.k==='o'||w?.k==='p'){delete w.fresh;delete w.born;}});return k;
 }
@@ -1497,8 +1498,13 @@ function openFormalProgress(){
 }
 function kitchenStockRemaining(kind){return sandboxSession?99:Math.max(0,({m:3,tool:1,o:3}[kind]||0)-(kitchen.stock[kind]||0));}
 function productionEndForgeDay(){
- if(lastCompletedDay>=day||orders.length||dq.length)return;qEach('safe',q=>{if(lives>=dLv)qProg(q,q.n)});lastCompletedDay=day;const reward=grantDailyWorkshopSkill('forge');pendingChests++;gachaUsed=false;skillDone=false;spentToday=0;saveHi();setSandboxNight(true);showTown();saveNow();toast('白天營業結束！'+(reward.gold?'技能已滿，獲得 1000 金幣。':'獲得冶煉技能點 1 點。')+'寶箱已出現，可前往暖爐餐廳營業。');
+ if(day<1||sandboxNight||lives<=0||orders.length||dq.length)return;
+ if(lastCompletedDay>=day){renderForgeSettlement();return;}
+ qEach('safe',q=>{if(lives>=dLv)qProg(q,q.n)});lastCompletedDay=day;const reward=grantDailyWorkshopSkill('forge');pendingChests++;gachaUsed=false;skillDone=false;spentToday=0;
+ kitchen.forgeSettlement={day,total:dTot,served:dSold,unfulfilled:Math.max(0,dTot-dSold),earned:dEarn,points:reward.points,skillGold:reward.gold,chests:1};
+ saveHi();saveNow();renderForgeSettlement();
 }
+
 let kitchenCancelTarget=null;
 function selectKitchenIngredients(){if(!kitchen||kitchen.done)return;kitchen.useHeld=false;kitchen.mode='ore';kitchen.message=kitchen.hand?'放食材模式：手持物品保留，拖曳手持物品才使用。':'放食材模式：點空格或拖曳第一包食材。';renderKitchen();}
 function selectKitchenProcess(){if(!kitchen||kitchen.done)return;kitchen.useHeld=false;kitchen.mode=kitchen.mode==='prep'?'ore':'prep';renderKitchen();}
@@ -2769,7 +2775,7 @@ function showTown(){
 }
 function returnToTown(){if(busy){say('請等這次合成完成，再返回城鎮。');return;}if(day<=0){goHome();return;}showTown();}
 function enterTownForge(){
- if(sp>0&&!sandboxSession){remindTownSkills();return;}startTownForge();
+ if(!forgeSettlementPending()&&sp>0&&!sandboxSession){remindTownSkills();return;}startTownForge();
 }
 function townNextAction(){enterTownForge();}
 function visitTrainingFromGame(){if(day===0)return stage19_visitTrainingFromGame();openLearnedForgeSkills();}
@@ -2820,7 +2826,7 @@ function remindTownSkills(){
  $('townSkillCount').textContent='還有 '+sp+' 點技能點尚未使用。要先前往訓練所嗎？';
  $('townSkillP').style.display='flex';
 }
-function startTownForge(){if(isSandboxNight())return preview_startTownForge(...arguments);return performSceneTransition('冶煉廠',()=>preview_startTownForge());}
+function startTownForge(){if(forgeSettlementPending()){renderForgeSettlement();return;}if(isSandboxNight())return preview_startTownForge(...arguments);return performSceneTransition('冶煉廠',()=>preview_startTownForge());}
 function stable_startTownForge(){
  $('townSkillP').style.display='none';phase='play';$('townP').style.display='none';render();saveNow();showPendingSeasonNotice();
 }
@@ -3476,6 +3482,7 @@ $('avatarControls').onclick=e=>{const b=e.target.closest('button[data-avatar-fie
 $('avatarControls').onchange=e=>{const s=e.target.closest('select[data-avatar-field]');if(s)updateAvatarField(s.dataset.avatarField,s.value);};
 
 function newDay(){
+  $("forgeSettlementP").style.display="none";if(kitchen)kitchen.forgeSettlement=null;
   phase="play";
   const previousDay=day;
   const skillExchange=previousDay>=1?convertWorkshopSurplus('forge')+convertWorkshopSurplus('kitchen'):0;
@@ -3508,6 +3515,17 @@ function newDay(){
   if(skillExchange){say('🌟 全技能已滿！多餘技能點轉換為 '+skillExchange+' 金幣。');toast('技能點已轉換為 '+skillExchange+' 金幣');saveNow();}
 }
 function endDay(){if(day===0)return stable_endDay();return productionEndForgeDay();}
+function forgeSettlementPending(){return day>0&&!sandboxNight&&lastCompletedDay===day&&kitchen?.forgeSettlement?.day===day;}
+function renderForgeSettlement(){
+ if(!forgeSettlementPending())return;const r=kitchen.forgeSettlement;
+ $('forgeSettlementTitle').textContent='第 '+day+' 天 · 白天營業完成';
+ $('forgeSettlementBody').innerHTML='<p>服務 '+r.served+' / '+r.total+' 位客人 · 未完成訂單 '+r.unfulfilled+' 位</p><p>售出武器 '+r.served+' 把 · 白天收入 '+r.earned+' 金幣</p><p>'+(r.skillGold?'技能已滿轉換 '+r.skillGold+' 金幣':'冶煉技能點 '+r.points+' 點')+' · 營業寶箱 '+r.chests+' 個</p><p class="exp-note">技能點可在城鎮訓練所使用，寶箱會留在噴水池旁等候開啟。</p>';
+ $('forgeSettlementP').style.display='flex';
+}
+function finishForgeDay(){
+ if(!forgeSettlementPending()||lives<=0)return;
+ return performSceneTransition('城鎮',()=>{if(!forgeSettlementPending()||lives<=0)return;$('forgeSettlementP').style.display='none';setSandboxNight(true);showTown();saveNow();});
+}
 function stable_endDay(){
   if(day===0){
     tutDoneSet();
@@ -3593,7 +3611,8 @@ $("gcc").onclick=e=>{
   render();
 };
 $("gcb").onclick=()=>{if($("gcb").disabled)return;$("gcP").style.display="none";renderRw()};
-$("rwn").onclick=()=>{if(!gachaUsed)return;$("rw").style.display="none";newDay()};function workshopSkillsMaxed(branch){const tree=branch==='kitchen'?KITCHEN_SKILLS:SK,levels=branch==='kitchen'?kitchen?.skills:skills;return Object.keys(tree).every(k=>(levels?.[k]||0)>=3);}
+$("rwn").onclick=()=>{if(!gachaUsed)return;$("rw").style.display="none";newDay()};
+function workshopSkillsMaxed(branch){const tree=branch==='kitchen'?KITCHEN_SKILLS:SK,levels=branch==='kitchen'?kitchen?.skills:skills;return Object.keys(tree).every(k=>(levels?.[k]||0)>=3);}
 function convertWorkshopSurplus(branch){
  if(sandboxSession||!workshopSkillsMaxed(branch))return 0;const points=branch==='kitchen'?kitchen.sp:sp;if(!points)return 0;
  if(branch==='kitchen')kitchen.sp=0;else sp=0;const gold=points*1000;coins+=gold;return gold;
@@ -3632,7 +3651,7 @@ function playFx(evs){
 }
 $("grid").onclick=e=>{
   const d=e.target.closest(".c");
-  if(!d||busy)return;
+  if(!d||busy)return;if(forgeSettlementPending()){renderForgeSettlement();return;}
   const i=+d.dataset.i,c=g[i];
   if(isOff(i))return;
   const bp=blueprintSlotAt(i);if(bp){openBlueprintProject(bp.project.uid);return;}
@@ -3954,7 +3973,7 @@ $("bagC").onclick=e=>{
   say("已拿到手持欄："+itemName(hand)+"，拖到棋盤上使用");render();
 };
 
-function start(){if(formalSaveTimer!==null){clearTimeout(formalSaveTimer);formalSaveTimer=null;}cancelKitchenDrag();clearKitchenIngredientFlights();clearKitchenDepartures();reviewMetrics=freshPlayMetrics();forgeGuestSerial22=0;kitchenGuestSerial22=0;expeditionFoodSelected=null;const args=[...arguments];if(!booting&&args[0]==='tut')return performSceneTransition('冶煉廠',()=>preview_start(...args));return preview_start(...args);}
+function start(){$('forgeSettlementP').style.display='none';if(formalSaveTimer!==null){clearTimeout(formalSaveTimer);formalSaveTimer=null;}cancelKitchenDrag();clearKitchenIngredientFlights();clearKitchenDepartures();reviewMetrics=freshPlayMetrics();forgeGuestSerial22=0;kitchenGuestSerial22=0;expeditionFoodSelected=null;const args=[...arguments];if(!booting&&args[0]==='tut')return performSceneTransition('冶煉廠',()=>preview_start(...args));return preview_start(...args);}
 function stable_start(mode,opt){
   if(sandboxSession)opt={...opt,test:true};
   clearForgeFeedback();autumnForgeCharges=0;weaponMastery=new Map();
@@ -4026,7 +4045,7 @@ function toggleMute(){
 }
 function goHome(){return performSceneTransition('遊戲首頁',()=>preview_goHome());}
 function stable_goHome(){clearForgeFeedback();if(architect.active){architect.active=false;closeCityPanels();}stopExpeditionPlayback();$("expeditionP").style.display="none";$("weaponStatsP").style.display="none";saveNow();finishSandbox();$("townP").style.display="none";render();$("title").style.display="flex"}
-function preview_goHome(){clearKitchenIngredientFlights();cancelKitchenDrag();$("kitchenP").hidden=true;$("kitchenModal").hidden=true;clearForgeFeedback();if(architect.active){architect.active=false;closeCityPanels();}stopExpeditionPlayback();$("expeditionP").style.display="none";$("weaponStatsP").style.display="none";saveNow();finishSandbox();$("townP").style.display="none";render();$("title").style.display="flex"}
+function preview_goHome(){$('forgeSettlementP').style.display='none';clearKitchenIngredientFlights();cancelKitchenDrag();$("kitchenP").hidden=true;$("kitchenModal").hidden=true;clearForgeFeedback();if(architect.active){architect.active=false;closeCityPanels();}stopExpeditionPlayback();$("expeditionP").style.display="none";$("weaponStatsP").style.display="none";saveNow();finishSandbox();$("townP").style.display="none";render();$("title").style.display="flex"}
 function openRec(){
   $("recS").textContent=recs.length
     ?"最多保留 5 筆，依分數由高到低排列。":"還沒有紀錄，快去玩一局吧！";
@@ -4116,7 +4135,7 @@ function loadGame(id){
   stepSales=0;justHeated.clear();ensureQuests();
   tool=-1;fresh=-1;fx=[];hold=new Set();pop=new Set();shown=new Map();
   restoreRestaurant(t.restaurant);enter.clear();busy=false;tutP2=false;lead=0;flyI=-1;exitMs=0;active=true;
-  ["ov","cf","sk","rw","gcP","svP","recP","help","seasonP","townLootP","townSkillP","expeditionP","weaponStatsP","legendBlueprintP","blueprintProjectP","avatarCreatorP","greenhouseP","seedP"].forEach(x=>$(x).style.display="none");
+  ["forgeSettlementP","ov","cf","sk","rw","gcP","svP","recP","help","seasonP","townLootP","townSkillP","expeditionP","weaponStatsP","legendBlueprintP","blueprintProjectP","avatarCreatorP","greenhouseP","seedP"].forEach(x=>$(x).style.display="none");
   $("title").style.display="none";clearPrediction();render();
   restoreWeaponMastery(t.weaponMastery);render();
   restoreTownProgress(t);
@@ -4636,9 +4655,10 @@ lowEffects=localStorage.getItem("forgeLowEffectsV1")==="1";document.body.classLi
 }
 
 function showHelp(){$("help").style.display="flex"}
-const townModalIds=['backupP','blueprintGoalP','leaderboardP','leaderboardDetailP','ultimateArtP','chestP','townLootP','townSkillP','weaponStatsP','expeditionP','legendBlueprintP','blueprintProjectP','avatarCreatorP','weaponAlbumP','weaponInspectP','seasonP','help','shopP','qP','colP','sk','bagP','rw','gcP','recP','nm','svP','pw','decorShopP','decorInventoryP','cityLayoutsP','cityLayoutPreviewP','cf','ov','greenhouseP','seedP'];
+const townModalIds=['forgeSettlementP','backupP','blueprintGoalP','leaderboardP','leaderboardDetailP','ultimateArtP','chestP','townLootP','townSkillP','weaponStatsP','expeditionP','legendBlueprintP','blueprintProjectP','avatarCreatorP','weaponAlbumP','weaponInspectP','seasonP','help','shopP','qP','colP','sk','bagP','rw','gcP','recP','nm','svP','pw','decorShopP','decorInventoryP','cityLayoutsP','cityLayoutPreviewP','cf','ov','greenhouseP','seedP'];
 function dismissModal(id){
- if(id==='avatarCreatorP')cancelAvatar();
+ if(id==='forgeSettlementP'){closeP(id);showTown();}
+ else if(id==='avatarCreatorP')cancelAvatar();
  else if(id==='expeditionP')closeExpedition();
  else if(id==='townLootP'){if(chestOpening)return;closeP(id);}
  else if(id==='greenhouseP'){closeP('seedP');closeP(id);}
