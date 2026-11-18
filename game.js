@@ -535,7 +535,7 @@ function syncMasteryWeapons(key){
 }
 function recordWeaponCraft(w){
  const key=weaponMasteryKey(w);if(day<1||!key)return 0;
- const previous=weaponMastery.get(key)||0,count=Math.min(1000000,previous+1),level=Math.min(3,Math.floor(count/3));weaponMastery.set(key,count);syncMasteryWeapons(key);w.stars=level;w.starXp=count;
+ const previous=weaponMastery.get(key)||0,count=Math.min(1000000,previous+1),level=Math.min(3,Math.floor(count/3));weaponMastery.set(key,count);syncMasteryWeapons(key);syncAchievementMedals();w.stars=level;w.starXp=count;
  if(level>Math.min(3,Math.floor(previous/3))){forgeLevelUps.add(w);toast(itemName(w)+' 升至 '+('★'.repeat(level))+'！售價與攻防速 +'+Math.round(weaponStarBonus(w)*100)+'%');}
  return level;
 }
@@ -543,7 +543,7 @@ function snapshotWeaponMastery(){return {version:1,counts:[...weaponMastery]};}
 function restoreWeaponMastery(raw){
  weaponMastery=new Map();if(raw?.version===1&&Array.isArray(raw.counts))for(const row of raw.counts.slice(0,70))if(Array.isArray(row)&&validMasteryKey(row[0])&&Number.isSafeInteger(row[1])&&row[1]>=0&&row[1]<=1000000)weaponMastery.set(row[0],Math.max(weaponMastery.get(row[0])||0,row[1]));
  // Legacy weapons keep their existing snapshots. Loading never awards craft XP.
- for(const key of weaponMastery.keys())syncMasteryWeapons(key);
+ for(const key of weaponMastery.keys())syncMasteryWeapons(key);syncAchievementMedals(false);
 }
 
 const KITCHEN_NAMES=['鹽味飯糰','肉醬燴飯','蔬菜炊飯','豪華肉丼','主廚套餐','田園拌飯','香煎肉排','蔬菜燉肉','鄉村濃湯','田園沙拉'];
@@ -552,7 +552,7 @@ const KITCHEN_SKILLS={merge:{name:'料理大師',icon:'🥣',desc:['解鎖食材
 const KITCHEN_CHALLENGES=[{name:'晚餐尖峰',icon:'⏱',goal:6,text:'服務本晚全部客人，且沒有任何超時訂單。',kind:'rush'},{name:'蔬食餐會',icon:'🥬',goal:3,text:'售出三道含兩份以上配菜的料理。',kind:'vegetable'},{name:'嚴格食評',icon:'⭐',goal:3,text:'售出三道精選級以上，或至少一星的料理。',kind:'critic'}];
 const KITCHEN_SPICES={herb:{name:'香草',icon:'葉',color:'#8fd5a0',stat:'aroma',effect:'香氣 +20%'},spicy:{name:'辛香',icon:'辣',color:'#f49b6e',stat:'taste',effect:'滋味 +20%'},milk:{name:'奶香',icon:'乳',color:'#ffe6ab',stat:'fullness',effect:'飽足 +20%'}};
 let sandboxNight=false,kitchen=null,kitchenDrag=null,kitchenSuppressClick=0;
-function freshKitchen(){return {day:0,g:Array(30).fill(null),heat:Array(30).fill(0),tiles:{},q:Array(5).fill(0),mq:[0,1,2],hand:null,useHeld:false,bag:[],pack:[],skills:{merge:0,purchase:0,cool:0,fresh:0,spice:0,pack:0,patience:0},sp:0,xp:{},orders:[],queue:[],served:0,missed:0,cancelled:0,earned:0,crafted:0,turn:0,challenge:0,progress:0,mode:'ore',done:false,lastRewarded:0,forgeSettlement:null,stock:{m:0,tool:0,o:0},message:'先放食材，再把第一張工序卡拖到附近的空格。',justHeated:new Set()};}
+function freshKitchen(){return {achievements:{harvests:0,stars:{}},day:0,g:Array(30).fill(null),heat:Array(30).fill(0),tiles:{},q:Array(5).fill(0),mq:[0,1,2],hand:null,useHeld:false,bag:[],pack:[],skills:{merge:0,purchase:0,cool:0,fresh:0,spice:0,pack:0,patience:0},sp:0,xp:{},orders:[],queue:[],served:0,missed:0,cancelled:0,earned:0,crafted:0,turn:0,challenge:0,progress:0,mode:'ore',done:false,lastRewarded:0,forgeSettlement:null,stock:{m:0,tool:0,o:0},message:'先放食材，再把第一張工序卡拖到附近的空格。',justHeated:new Set()};}
 function kitchenLevel(key){return kitchen?.skills[key]||0;}
 function kitchenFood(t=0){return {k:'o',t};}
 function kitchenOrder(generic=false){const mx=Math.max(0,Math.min(4,Math.floor((day-1)/3))),t=mx>0?(Math.random()<.4?mx:rnd(mx)):0,wait=kitchenOrderPatience(t);return {guest:guestForOrder22(kitchenGuestSerial22++,true),c:generic?null:rnd(10),t,max:wait,wait,uid:++kitchenGuestSerial};}
@@ -1382,7 +1382,7 @@ function validKitchenProgress(raw,forgeDay){
  if(k.settlement?.skillGold!==undefined&&!integer(k.settlement.skillGold,0,1e15))throw new Error('技能轉換金額錯誤');
  if(k.forgeSettlement&&(!['day','total','served','unfulfilled','earned','points','skillGold','chests'].every(key=>integer(k.forgeSettlement[key],0,1e15))||k.forgeSettlement.day<1||k.forgeSettlement.day>forgeDay))throw new Error('白天結算內容錯誤');
  if(!k.stock||!['m','tool','o'].every(key=>integer(k.stock[key],0,1000000)))throw new Error('菜市場庫存錯誤');
- k.compost=Math.max(0,Math.min(99,Math.floor(+k.compost||0)));k.compostEarnedDay=Math.max(0,Math.min(forgeDay,Math.floor(+k.compostEarnedDay||0)));k.useHeld=!!(raw.useHeld===true&&k.hand);k.cancelled=raw.cancelled===undefined?0:raw.cancelled;if(!integer(k.cancelled,0,1000000)||k.settlement?.cancelled!==undefined&&!integer(k.settlement.cancelled,0,1000000))throw new Error('取消訂單紀錄錯誤');if(!k.skills.purchase)k.q=k.q.map(()=>0);k.forgedAt={};[...k.g,...k.bag,k.hand].forEach(w=>{if(w?.k==='o'||w?.k==='p'){delete w.fresh;delete w.born;}});k.festivals=cleanFestivalState(k.festivals,forgeDay);return validateKitchenMenu(k);
+ k.compost=Math.max(0,Math.min(99,Math.floor(+k.compost||0)));k.compostEarnedDay=Math.max(0,Math.min(forgeDay,Math.floor(+k.compostEarnedDay||0)));k.useHeld=!!(raw.useHeld===true&&k.hand);k.cancelled=raw.cancelled===undefined?0:raw.cancelled;if(!integer(k.cancelled,0,1000000)||k.settlement?.cancelled!==undefined&&!integer(k.settlement.cancelled,0,1000000))throw new Error('取消訂單紀錄錯誤');if(!k.skills.purchase)k.q=k.q.map(()=>0);k.forgedAt={};[...k.g,...k.bag,k.hand].forEach(w=>{if(w?.k==='o'||w?.k==='p'){delete w.fresh;delete w.born;}});k.achievements=cleanMedalAchievements(k.achievements);k.festivals=cleanFestivalState(k.festivals,forgeDay);return validateKitchenMenu(k);
 }
 function snapshotReviewProgress(){
  const now=Date.now();if(!document.hidden)reviewMetrics.activeMs+=Math.max(0,Math.min(30000,now-reviewMetrics.lastActive));reviewMetrics.lastActive=now;
@@ -1444,7 +1444,7 @@ function stage21_kitchenCraft(at,silent=false){
  }
  // Return one ingredient per consumed chain, as in embryo forging; never overwrite a dish.
  for(const path of paths.values()){const free=path.cells.filter(i=>!kitchen.g[i]);if(!free.length)continue;const target=free[rnd(free.length)],chance=[0,0,.25,.5][kitchenLevel('merge')],tier=Math.random()<chance?path.parts[rnd(path.parts.length)].t:0;kitchen.g[target]=kitchenFood(tier);kitchenAuto(target);}
- kitchen.message='料理完成：'+made.join('、')+'！拖曳到客人即可出餐。';return true;
+ syncAchievementMedals();kitchen.message='料理完成：'+made.join('、')+'！拖曳到客人即可出餐。';return true;
 }
 function stage21_completeKitchenNight(){
  if(kitchen.done)return;kitchen.done=true;const c=KITCHEN_CHALLENGES[kitchen.challenge],passed=c.kind==='rush'?kitchen.served>=kitchen.total&&kitchen.missed===0:kitchen.progress>=c.goal,paid=kitchen.lastRewarded!==day;
@@ -1469,7 +1469,7 @@ function stage21_settleExpeditionBattle(b){
  if(b.outcome==='win'&&!expeditionCleared(b.stage)){
   b.gold=b.monster.gold;b.loot=b.stage<20?{k:'bp',id:b.stage}:null;coins+=b.gold;earned+=b.gold;dEarn+=b.gold;expeditionState.victories++;expeditionState.wonToday.push(b.stage);if(b.stage<20){expeditionState.cleared.push(b.stage);grantBlueprintItem(b.stage);}else expeditionState.endless=Math.max(expeditionState.endless||0,b.stage-19);expeditionState.unlocked=b.stage+1;
  }else if(b.outcome==='lose'&&!sandboxSession)lives=Math.max(0,lives-1);
- if(lives<=0)removeSave(runId);saveHi();render();saveNow();
+ syncAchievementMedals();if(lives<=0)removeSave(runId);saveHi();render();saveNow();
 }
 function stage21_saveNow(){
   if(!active||testRun||day<1||lives<=0||!runId)return;
@@ -1947,7 +1947,7 @@ function renderGreenhousePanel(){
 function selectGreenhouseBed(i){
  if(!Number.isInteger(i)||i<0||i>=6||day<1)return;selectedPlantBed=i;const p=greenhouseBeds[i];
  if(!p){renderSeedPicker();$('seedP').style.display='flex';return;}
- if(plantAge(p)>=3){const e=p.element,yieldCount=harvestYield();greenhouseBeds[i]=null;for(let n=0;n<yieldCount;n++)bag.push({k:'ess',element:e});selectedPlantBed=-1;renderGreenhousePanel();saveNow();$('greenhouseDetail').textContent='已收成 '+ELEMENTS[e].name+'之精華 ×'+yieldCount+(yieldCount===2?'（春日豐收）':'')+'，放入道具箱。盆栽可重新播種。';return;}
+ if(plantAge(p)>=3){const e=p.element,yieldCount=harvestYield();greenhouseBeds[i]=null;for(let n=0;n<yieldCount;n++)bag.push({k:'ess',element:e});recordMedalHarvest();selectedPlantBed=-1;renderGreenhousePanel();saveNow();$('greenhouseDetail').textContent='已收成 '+ELEMENTS[e].name+'之精華 ×'+yieldCount+(yieldCount===2?'（春日豐收）':'')+'，放入道具箱。盆栽可重新播種。';return;}
  renderGreenhousePanel();$('greenhouseDetail').textContent='第 '+(i+1)+' 格 · '+ELEMENTS[p.element].name+'之花，將在第 '+(p.plantedDay+3-(expandedGameEnabled()?(p.growthBoost||0):0))+' 天開花。';
 }
 function renderSeedPicker(){
@@ -3034,7 +3034,7 @@ function renderBlueprintGoal(){
 }
 function inspectPlannerWeapon(index){const row=plannerRows[index];if(row?.held)openCraftedWeapon(row.held.w,row.held.source);}
 
-const BACKUP_KEYS=['forgeSaves','forgeRecs','forgeHi','forgeName','forgeAvatarPresetV1','forgeWeaponAlbumV1','forgeLegendBlueprintsV1','forgeLegendCollectionV1','forgeTownLayoutsV1','forgeDishAlbumV1','forgeFestivalBadgesV1'];
+const BACKUP_KEYS=['forgeSaves','forgeRecs','forgeHi','forgeName','forgeAvatarPresetV1','forgeWeaponAlbumV1','forgeLegendBlueprintsV1','forgeLegendCollectionV1','forgeTownLayoutsV1','forgeDishAlbumV1','forgeFestivalBadgesV1','forgeMedalCollectionV2'];
 let pendingBackup=null,lowEffects=localStorage.getItem('forgeLowEffectsV1')==='1';
 function captureBackup(){
  if(sandboxSession||testRun)throw new Error('後台測試資料不會匯出，請先回到首頁');saveNow();return {format:'ForgeMasterBackup',version:1,exportedAt:new Date().toISOString(),data:Object.fromEntries(BACKUP_KEYS.map(k=>[k,localStorage.getItem(k)]))};
@@ -3043,7 +3043,7 @@ function validateBackup(text){
  if(typeof text!=='string'||text.length>8000000)throw new Error('備份檔過大或格式錯誤');let v;try{v=JSON.parse(text);}catch{throw new Error('檔案不是有效的 JSON 備份');}
  if(v?.format!=='ForgeMasterBackup'||v.version!==1||!v.data||typeof v.data!=='object'||Array.isArray(v.data))throw new Error('這不是支援的 Forge Master 備份');
  if(Object.keys(v.data).some(k=>!BACKUP_KEYS.includes(k)))throw new Error('備份含有不支援的欄位');
- if(!Object.hasOwn(v.data,'forgeFestivalBadgesV1'))v.data.forgeFestivalBadgesV1=null;if(!Object.hasOwn(v.data,'forgeDishAlbumV1'))v.data.forgeDishAlbumV1=null;for(const key of BACKUP_KEYS)if(v.data[key]!==null&&typeof v.data[key]!=='string')throw new Error('備份欄位不完整：'+key);
+ if(!Object.hasOwn(v.data,'forgeMedalCollectionV2'))v.data.forgeMedalCollectionV2=null;if(!Object.hasOwn(v.data,'forgeFestivalBadgesV1'))v.data.forgeFestivalBadgesV1=null;if(!Object.hasOwn(v.data,'forgeDishAlbumV1'))v.data.forgeDishAlbumV1=null;for(const key of BACKUP_KEYS)if(v.data[key]!==null&&typeof v.data[key]!=='string')throw new Error('備份欄位不完整：'+key);
  const number=(n,min=0,max=1e15)=>typeof n==='number'&&Number.isFinite(n)&&n>=min&&n<=max;
  const item=w=>{if(w===null)return true;if(!w||typeof w!=='object')return false;if(w.k==='w')return (!('stars'in w)||Number.isInteger(w.stars)&&w.stars>=0&&w.stars<=3)&&(!('starXp'in w)||Number.isSafeInteger(w.starXp)&&w.starXp>=0&&w.starXp<=1000000)&&Number.isInteger(w.c)&&w.c>=0&&w.c<10&&Number.isInteger(w.t)&&w.t>=0&&w.t<5&&(!('legendId'in w)||validLegendId(w.legendId)&&w.legendCore&&['atk','def','spd'].every(k=>number(w.legendCore[k],1,1e9)));if(w.k==='o'||w.k==='d')return Number.isInteger(w.t)&&w.t>=0&&w.t<5;if(w.k==='p')return Number.isInteger(w.s)&&w.s>=0&&w.s<3&&Number.isInteger(w.t)&&w.t>=0&&w.t<5;if(w.k==='m')return Number.isInteger(w.s)&&w.s>=0&&w.s<=3;if(['f','u','z','l'].includes(w.k))return true;if(w.k==='seed'||w.k==='ess')return validElement(w.element);return w.k==='bp'&&validLegendId(w.id);};
  const parse=(key,fallback)=>{try{return v.data[key]===null?fallback:JSON.parse(v.data[key]);}catch{throw new Error('備份內容損壞：'+key);}};
@@ -3061,6 +3061,7 @@ function validateBackup(text){
  if(records.some(r=>!r||!number(r.score)||typeof r.name!=='string'||!Array.isArray(r.best)||r.best.length!==10||!r.best.every((w,c)=>!w||item({...w,k:'w',c}))))throw new Error('歷史紀錄內容錯誤');
  if(v.data.forgeHi!==null&&!/^\d+(?:\.\d+)?$/.test(v.data.forgeHi))throw new Error('最高分格式錯誤');
  for(const key of ['forgeWeaponAlbumV1','forgeLegendBlueprintsV1','forgeLegendCollectionV1','forgeTownLayoutsV1'])if(!Array.isArray(parse(key,[])))throw new Error('收藏內容錯誤');
+ const medalStars=parse('forgeMedalCollectionV2',{});if(!medalStars||typeof medalStars!=='object'||Array.isArray(medalStars)||Object.entries(medalStars).some(([id,n])=>!MEDAL_DEFS.some(d=>d.id===id&&Number.isInteger(n)&&n>=0&&n<=d.max)))throw new Error('紀念章星級收藏內容錯誤');
  const medals=parse('forgeFestivalBadgesV1',[]);if(!Array.isArray(medals)||medals.some(i=>!Number.isInteger(i)||i<0||i>3))throw new Error('紀念章收藏內容錯誤');
  const dishes=parse('forgeDishAlbumV1',[]);if(!Array.isArray(dishes)||dishes.some(k=>!validAlbumKey(k)))throw new Error('料理收藏內容錯誤');if(parse('forgeTownLayoutsV1',[]).length>40)throw new Error('版型數量過多');return {value:v,saves:saves.length,records:records.length};
 }
@@ -4593,7 +4594,7 @@ function renderDecorationShop(){
 function buyDecoration(id){
  const d=DECOR_BY_ID.get(id);if(!d||!sandboxSession&&!decorMatchesContext(d))return false;
  if(!sandboxSession&&coins<d.price){toast('金幣不足。');return false;}if((cityState.owned[id]||0)>=9999)return false;
- if(!sandboxSession)coins-=d.price;cityState.owned[id]=(cityState.owned[id]||0)+1;saveNow();render();renderDecorationShop();toast('已購買「'+d.name+'」，可到裝飾收藏放置。');return true;
+ if(!sandboxSession)coins-=d.price;cityState.owned[id]=(cityState.owned[id]||0)+1;syncAchievementMedals();saveNow();render();renderDecorationShop();toast('已購買「'+d.name+'」，可到裝飾收藏放置。');return true;
 }
 
 let cityPresetSaving=false,cityPresetSaveToken=0;
@@ -4650,14 +4651,14 @@ function stable_applyCityLayout(id,buyMissing=false){
  const p=findCityPreset(id);if(!p||p.season!==DECOR_SEASONS[townVisualSeason()])return false;const quote=quoteCityPreset(p);
  if(!quote.valid||quote.missing.length&&!buyMissing)return false;if(!sandboxSession&&coins<quote.cost){toast('金幣不足，版型與裝飾均未變更。');return false;}
  const owned={...cityState.owned};quote.missing.forEach(i=>owned[i.id]=(owned[i.id]||0)+i.n);let next=cityState.next;const items=p.items.map(raw=>({...cleanCityItem(raw),uid:'d-'+next++}));
- cityState.owned=owned;cityState.next=next;cityState.layouts[p.season]=items;if(!sandboxSession)coins-=quote.cost;architect.selected=null;architect.placing=null;architect.drag=null;commitCity();renderTown();closeP('cityLayoutsP');toast((quote.cost?'已補齊裝飾並':'已')+'套用「'+p.name+'」'+(quote.cost&&!sandboxSession?'，花費 '+quote.cost+' 金幣。':'。'));return true;
+ cityState.owned=owned;syncAchievementMedals();cityState.next=next;cityState.layouts[p.season]=items;if(!sandboxSession)coins-=quote.cost;architect.selected=null;architect.placing=null;architect.drag=null;commitCity();renderTown();closeP('cityLayoutsP');toast((quote.cost?'已補齊裝飾並':'已')+'套用「'+p.name+'」'+(quote.cost&&!sandboxSession?'，花費 '+quote.cost+' 金幣。':'。'));return true;
 }
 function preview_applyCityLayout(id,buyMissing=false){
  if(!cityContextEditable())return false;
  const p=findCityPreset(id);if(!p||p.season!==DECOR_SEASONS[townVisualSeason()])return false;if(!!p.night!==isSandboxNight())return false;const quote=quoteCityPreset(p);
  if(!quote.valid||quote.missing.length&&!buyMissing)return false;if(!sandboxSession&&coins<quote.cost){toast('金幣不足，版型與裝飾均未變更。');return false;}
  const owned={...cityState.owned};quote.missing.forEach(i=>owned[i.id]=(owned[i.id]||0)+i.n);let next=cityState.next;const items=p.items.map(raw=>({...cleanCityItem(raw),uid:'d-'+next++}));
- cityState.owned=owned;cityState.next=next;cityLayoutStore()[p.season]=items;if(!sandboxSession)coins-=quote.cost;architect.selected=null;architect.placing=null;architect.drag=null;commitCity();renderTown();closeP('cityLayoutsP');toast((quote.cost?'已補齊裝飾並':'已')+'套用「'+p.name+'」'+(quote.cost&&!sandboxSession?'，花費 '+quote.cost+' 金幣。':'。'));return true;
+ cityState.owned=owned;syncAchievementMedals();cityState.next=next;cityLayoutStore()[p.season]=items;if(!sandboxSession)coins-=quote.cost;architect.selected=null;architect.placing=null;architect.drag=null;commitCity();renderTown();closeP('cityLayoutsP');toast((quote.cost?'已補齊裝飾並':'已')+'套用「'+p.name+'」'+(quote.cost&&!sandboxSession?'，花費 '+quote.cost+' 金幣。':'。'));return true;
 }
 function deleteCityLayout(id){if(id.startsWith('default-'))return;try{gameStorage.setItem('forgeTownLayoutsV1',JSON.stringify(readCityPresets().filter(p=>p.id!==id)));}catch(e){return;}renderCityLayouts();}
 
@@ -4804,40 +4805,42 @@ $('grid').addEventListener('pointerover',e=>{if(e.pointerType!=='mouse'||drag||b
 $('grid').addEventListener('pointerleave',()=>{if(!drag)clearPrediction();});
 $('q').addEventListener('pointerdown',e=>{if(busy||e.button>0)return;const node=e.target.closest('.q');if(!node||node.dataset.step!=='1')return;e.preventDefault();startDrag(e,'ore',null,oreH(Q[0]),node);});
 const SEASON_FESTIVALS=[
- {name:'春芽市集',goals:[{text:'播種一盆屬性花',n:1},{text:'售出含配菜的料理',n:3}],gold:400,gift:'sp-tulips',hint:'準備350金幣或庫存種子，料理配方保留至少一份配菜。'},
+ {name:'春芽市集',goals:[{text:'播種屬性花',n:1},{text:'售出含配菜的料理',n:3}],gold:400,gift:'sp-tulips',hint:'準備350金幣或庫存種子，料理配方保留至少一份配菜。'},
  {name:'海風祭',goals:[{text:'售出鐵級以上武器',n:3},{text:'售出香氣20以上料理',n:3}],gold:600,gift:'su-parasol',hint:'預留鐵礦與高香氣料理；配菜、香草或升階都能提高香氣。'},
  {name:'豐收工藝展',goals:[{text:'燒掉落葉格',n:3},{text:'售出含兩份以上配菜的料理',n:3}],gold:800,gift:'au-basket',hint:'預留鍛造空間燒葉，餐廳可準備田園拌飯、濃湯或沙拉。'},
  {name:'暖爐慶典',goals:[{text:'售出鋼級以上武器',n:3},{text:'售出飽足26以上料理',n:3}],gold:1000,gift:'wi-starlamp',hint:'預先合成鋼級材料，並準備主食較多的料理或奶香調味。'}
 ];
 function cleanFestivalState(raw,currentDay=day){
- const row=x=>{if(!x||!Number.isSafeInteger(x.start)||x.start<1||x.start>currentDay||(x.start-1)%3!==0||x.season!==seasonIndex(x.start))return null;const defs=SEASON_FESTIVALS[x.season];return {start:x.start,season:x.season,progress:[0,1].map(i=>Math.max(0,Math.min(defs.goals[i].n,(Number.isFinite(Number(x.progress?.[i]))?Math.floor(Number(x.progress[i])):0)))),claimed:!!x.claimed,notified:!!x.notified};};
- return {active:row(raw?.active),past:(Array.isArray(raw?.past)?raw.past:[]).map(row).filter(Boolean).filter((x,i,a)=>a.findIndex(y=>y.start===x.start)===i).slice(-8),readDays:[...new Set((Array.isArray(raw?.readDays)?raw.readDays:[]).filter(d=>Number.isSafeInteger(d)&&d>=1&&d<=currentDay))].slice(-24),badges:[...new Set((Array.isArray(raw?.badges)?raw.badges:[]).filter(x=>Number.isInteger(x)&&x>=0&&x<4))]};
+ const row=x=>{if(!x||!Number.isSafeInteger(x.start)||x.start<1||x.start>currentDay||(x.start-1)%3!==0||x.season!==seasonIndex(x.start))return null;const defs=SEASON_FESTIVALS[x.season],tier=[1,2,3].includes(x.tier)?x.tier:1;return {start:x.start,season:x.season,tier,progress:[0,1].map(i=>Math.max(0,Math.min(defs.goals[i].n*tier,(Number.isFinite(Number(x.progress?.[i]))?Math.floor(Number(x.progress[i])):0)))),claimed:!!x.claimed,notified:!!x.notified};};
+ const badgeStars=Object.fromEntries([0,1,2,3].map(i=>[i,Math.max((raw?.badges||[]).includes?.(i)?1:0,Math.min(3,Math.max(0,Math.floor(Number(raw?.badgeStars?.[i])||0))))]));return {badgeStars,active:row(raw?.active),past:(Array.isArray(raw?.past)?raw.past:[]).map(row).filter(Boolean).filter((x,i,a)=>a.findIndex(y=>y.start===x.start)===i).slice(-8),readDays:[...new Set((Array.isArray(raw?.readDays)?raw.readDays:[]).filter(d=>Number.isSafeInteger(d)&&d>=1&&d<=currentDay))].slice(-24),badges:[...new Set((Array.isArray(raw?.badges)?raw.badges:[]).filter(x=>Number.isInteger(x)&&x>=0&&x<4))]};
 }
 function syncFestival(){
- if(day<1||!kitchen)return null;if(!kitchen.festivals)kitchen.festivals={active:null,past:[],badges:[]};const state=kitchen.festivals,start=day-seasonDay()+1;
- if(state.active?.start!==start){if(state.active){state.past=state.past.filter(x=>x.start!==state.active.start);state.past.push(state.active);state.past=state.past.slice(-8);}state.active={start,season:seasonIndex(),progress:[0,0],claimed:false,notified:false};}return state;
+ if(day<1||!kitchen)return null;if(!kitchen.festivals)kitchen.festivals={active:null,past:[],badges:[]};const state=kitchen.festivals,start=day-seasonDay()+1;if(!state.badgeStars)state.badgeStars=Object.fromEntries([0,1,2,3].map(i=>[i,state.badges.includes(i)?1:0]));
+ if(state.active?.start!==start){if(state.active){state.past=state.past.filter(x=>x.start!==state.active.start);state.past.push(state.active);state.past=state.past.slice(-8);}state.active={start,season:seasonIndex(),tier:festivalNextTier(seasonIndex()),progress:[0,0],claimed:false,notified:false};}return state;
 }
-function festivalComplete(row){return SEASON_FESTIVALS[row.season].goals.every((g,i)=>(row.progress[i]||0)>=g.n);}
+function festivalNextTier(si){return Math.min(3,1+(kitchen?.festivals?.badgeStars?.[si]||0));}
+function festivalGoal(row,i){return SEASON_FESTIVALS[row.season].goals[i].n*(row.tier||1);}
+function festivalComplete(row){return SEASON_FESTIVALS[row.season].goals.every((g,i)=>(row.progress[i]||0)>=festivalGoal(row,i));}
 function recordFestival(event,item=null,count=1){
  const state=syncFestival();if(!state)return;const row=state.active;if(row.claimed)return;let goal=-1;const parts=item?.c!==undefined?(COMBO[item.c]||'').split(''):[];
  if(row.season===0){if(event==='sow')goal=0;if(event==='food'&&parts.includes('2'))goal=1;}
  if(row.season===1){if(event==='weapon'&&item.t>=1)goal=0;if(event==='food'&&kitchenDishStats(item).aroma>=20)goal=1;}
  if(row.season===2){if(event==='burn')goal=0;if(event==='food'&&parts.filter(s=>s==='2').length>=2)goal=1;}
  if(row.season===3){if(event==='weapon'&&item.t>=2)goal=0;if(event==='food'&&kitchenDishStats(item).fullness>=26)goal=1;}
- if(goal>=0)row.progress[goal]=Math.min(SEASON_FESTIVALS[row.season].goals[goal].n,row.progress[goal]+Math.max(0,Math.floor(count)));
+ if(goal>=0)row.progress[goal]=Math.min(festivalGoal(row,goal),row.progress[goal]+Math.max(0,Math.floor(count)));
  if(festivalComplete(row)&&!row.notified){row.notified=true;toast('🎪 '+SEASON_FESTIVALS[row.season].name+'目標完成！'+(day>=row.start+2?'可從城鎮季節資訊領獎。':'第 '+(row.start+2)+' 天開放領獎。'));}
 }
-function festivalRewardText(season){const f=SEASON_FESTIVALS[season],d=DECOR_BY_ID.get(f.gift);return f.gold+' 金幣＋'+(d?.name||'節慶裝飾')+'＋本局紀念章';}
+function festivalRewardText(season,tier=festivalNextTier(season)){const f=SEASON_FESTIVALS[season],d=DECOR_BY_ID.get(f.gift);return f.gold+' 金幣＋'+(d?.name||'節慶裝飾')+'＋'+tier+'星紀念章';}
 function claimFestival(start){
  const state=syncFestival();if(!state)return false;const row=[state.active,...state.past].find(x=>x.start===start);if(!row||row.claimed||day<row.start+2||!festivalComplete(row))return false;
  row.claimed=true;const f=SEASON_FESTIVALS[row.season],d=DECOR_BY_ID.get(f.gift);let gold=f.gold;if(!cityState)cityState=freshCity();const owned=cityState.owned[f.gift]||0;if(d&&owned<cityPlacementLimit(f.gift))cityState.owned[f.gift]=owned+1;else if(d)gold+=d.price;
- if(!state.badges.includes(row.season))state.badges.push(row.season);persistFestivalBadges();coins+=gold;earned+=gold;dEarn+=gold;cityRevision++;saveHi();saveNow();renderFestival();if($('townP').style.display==='flex')renderTown();toast('🎪 '+f.name+'獎勵已收下：'+gold+' 金幣，裝飾已加入收藏（同款已足量時折算金幣）。');return true;
+ if(!state.badges.includes(row.season))state.badges.push(row.season);state.badgeStars[row.season]=Math.max(state.badgeStars[row.season]||0,row.tier||1);syncAchievementMedals();persistFestivalBadges();coins+=gold;earned+=gold;dEarn+=gold;cityRevision++;saveHi();saveNow();renderFestival();if($('townP').style.display==='flex')renderTown();toast('🎪 '+f.name+'獎勵已收下：'+gold+' 金幣，裝飾已加入收藏（同款已足量時折算金幣）。');return true;
 }
 function festivalRowHTML(row){const f=SEASON_FESTIVALS[row.season],ready=festivalComplete(row),claimable=ready&&!row.claimed&&day>=row.start+2;
- return '<section class="festival-card"><h3>'+SEASONS[row.season].icon+' '+f.name+' · 第 '+(row.start+2)+' 天</h3>'+f.goals.map((g,i)=>'<label>'+g.text+' <b>'+row.progress[i]+'/'+g.n+'</b><progress max="'+g.n+'" value="'+row.progress[i]+'"></progress></label>').join('')+'<p>'+festivalRewardText(row.season)+'</p><button class="exp-wide" '+(!claimable?'disabled':'')+' onclick="claimFestival('+row.start+')">'+(row.claimed?'已領取':claimable?'領取節慶獎勵':ready?'第 '+(row.start+2)+' 天開放領獎':'目標尚未完成')+'</button></section>';
+ return '<section class="festival-card"><h3>'+SEASONS[row.season].icon+' '+f.name+' · '+(row.tier||1)+'星挑戰 · 第 '+(row.start+2)+' 天</h3>'+f.goals.map((g,i)=>'<label>'+g.text+' <b>'+row.progress[i]+'/'+festivalGoal(row,i)+'</b><progress max="'+festivalGoal(row,i)+'" value="'+row.progress[i]+'"></progress></label>').join('')+'<p>'+festivalRewardText(row.season,row.tier||1)+'</p><button class="exp-wide" '+(!claimable?'disabled':'')+' onclick="claimFestival('+row.start+')">'+(row.claimed?'已領取':claimable?'領取節慶獎勵':ready?'第 '+(row.start+2)+' 天開放領獎':'目標尚未完成')+'</button></section>';
 }
 function renderFestival(){
- const state=syncFestival();if(!state)return;const row=state.active,next=(row.season+1)%4,f=SEASON_FESTIVALS[next];$('festivalTitle').textContent='四季節慶與預告';$('festivalBody').innerHTML=festivalRowHTML(row)+'<section class="festival-next"><h3>下一季預告 · '+f.name+'</h3><p>第 '+(row.start+3)+' 天開始準備，第 '+(row.start+5)+' 天領獎。</p><p>'+f.goals.map(g=>g.text+' ×'+g.n).join('；')+'</p><p>'+f.hint+'</p><p>獎勵：'+festivalRewardText(next)+'</p></section><p>本局紀念章：'+(state.badges.map(i=>SEASONS[i].name).join('、')||'尚未取得')+'。未完成不扣愛心，已完成獎勵保留最近8季可補領。</p><button class="exp-wide" onclick="openFestivalBadgeAlbum()">查看圖鑑館紀念章</button>'+state.past.filter(x=>festivalComplete(x)&&!x.claimed).map(festivalRowHTML).join('');
+ const state=syncFestival();if(!state)return;const row=state.active,next=(row.season+1)%4,f=SEASON_FESTIVALS[next];$('festivalTitle').textContent='四季節慶與預告';$('festivalBody').innerHTML=festivalRowHTML(row)+'<section class="festival-next"><h3>下一季預告 · '+f.name+' · '+festivalNextTier(next)+'星挑戰</h3><p>第 '+(row.start+3)+' 天開始準備，第 '+(row.start+5)+' 天領獎。</p><p>'+f.goals.map(g=>g.text+' ×'+(g.n*festivalNextTier(next))).join('；')+'</p><p>'+f.hint+'</p><p>獎勵：'+festivalRewardText(next)+'</p></section><p>本局紀念章：'+(state.badges.map(i=>SEASONS[i].name+' '+(state.badgeStars[i]||1)+'星').join('、')||'尚未取得')+'。取得後，下次該季挑戰目標數量提升為原本2倍／3倍；未完成維持原難度。三星後維持3倍。未完成不扣愛心，已完成獎勵保留最近8季可補領。</p><button class="exp-wide" onclick="openFestivalBadgeAlbum()">查看圖鑑館紀念章</button>'+state.past.filter(x=>festivalComplete(x)&&!x.claimed).map(festivalRowHTML).join('');
 }
 function openFestival(){if(day<1)return;markFestivalRead();closeP('seasonP');renderFestival();$('festivalP').style.display='flex';syncTownMotion();}
 function renderFestivalNotice(){const state=syncFestival();if(!state)return;const row=state.active,next=(row.season+1)%4;$('festivalNotice').textContent='本季：'+SEASON_FESTIVALS[row.season].name+'（第 '+(row.start+2)+' 天領獎）；下一季：'+SEASON_FESTIVALS[next].name+'。';}
@@ -4850,18 +4853,78 @@ function festivalBadgeArt(si){
  '<path fill="#78402d" d="M30 10h4v11h5v-5h4v11h8v5h-5v7H36v8h-4v6h-3V40H19v-7h-5v-5h8V17h5v5h3z"/><path fill="#e8863d" d="M31 14h2v11h6v-5h2v9h7v2h-5v6H33v10h-2V37H22v-6h-5v-1h8v-9h1v4h5z"/><path fill="#ffce71" d="M31 20h2v17h-2zM25 29h4v3h-4zM35 29h5v3h-5z"/>',
  '<path fill="#7499c5" d="M29 11h6v9h7v-4h5v8h-7v5h11v6H40v5h7v8h-5v-4h-7v9h-6v-9h-7v4h-5v-8h7v-5H13v-6h11v-5h-7v-8h5v4h7z"/><path fill="#e2f7ff" d="M31 13h2v14h5v-5h5v-3h2v3h-5v7H33v2h16v2H33v2h7v7h5v3h-2v-3h-5v-5h-5v14h-2V37h-5v5h-5v3h-2v-3h5v-7h7v-2H15v-2h16v-2h-7v-7h-5v-3h2v3h5v5h5z"/><path fill="#a6d7ef" d="M29 29h6v6h-6z"/>'
  ][si];
- return '<svg viewBox="0 0 64 72" shape-rendering="crispEdges" role="img" aria-label="'+FESTIVAL_BADGE_NAMES[si]+'"><path fill="#523d3c" d="M15 46h14v23l-7-5-7 5zM35 46h14v23l-7-5-7 5z"/><path fill="#a8665d" d="M18 48h8v15l-4-3-4 3zM38 48h8v15l-4-3-4 3z"/><path fill="#483c32" d="M17 2h30v4h8v7h5v34h-5v8h-8v5H17v-5H9v-8H4V13h5V6h8z"/><path fill="#c7954f" d="M18 5h28v4h8v6h3v30h-5v8h-8v4H20v-4h-8v-8H7V15h5V9h6z"/><path fill="#ffdf91" d="M18 5h28v3H19v4h-6v6H9v24H7V15h5V9h6z"/><path fill="#86603c" d="M52 17h3v27h-5v7h-8v4H20v-3h22v-4h7v-6h3z"/><path fill="'+colors[0]+'" d="M21 12h22v4h7v29h-7v5H21v-5h-7V16h7z"/><path fill="'+colors[1]+'" opacity=".22" d="M21 13h22v4H19v24h-4V17h6z"/>'+symbols+'<path fill="#fff0b4" d="M13 13h3v3h-3zM48 13h3v3h-3zM16 48h3v3h-3zM45 48h3v3h-3z"/></svg>';
+ return pixelMedalArt(FESTIVAL_BADGE_NAMES[si],colors,symbols);
+}
+function pixelMedalArt(name,colors,symbols){
+ return '<svg viewBox="0 0 64 72" shape-rendering="crispEdges" role="img" aria-label="'+name+'"><path fill="#523d3c" d="M15 46h14v23l-7-5-7 5zM35 46h14v23l-7-5-7 5z"/><path fill="#a8665d" d="M18 48h8v15l-4-3-4 3zM38 48h8v15l-4-3-4 3z"/><path fill="#483c32" d="M17 2h30v4h8v7h5v34h-5v8h-8v5H17v-5H9v-8H4V13h5V6h8z"/><path fill="#c7954f" d="M18 5h28v4h8v6h3v30h-5v8h-8v4H20v-4h-8v-8H7V15h5V9h6z"/><path fill="#ffdf91" d="M18 5h28v3H19v4h-6v6H9v24H7V15h5V9h6z"/><path fill="#86603c" d="M52 17h3v27h-5v7h-8v4H20v-3h22v-4h7v-6h3z"/><path fill="'+colors[0]+'" d="M21 12h22v4h7v29h-7v5H21v-5h-7V16h7z"/><path fill="'+colors[1]+'" opacity=".22" d="M21 13h22v4H19v24h-4V17h6z"/>'+symbols+'<path fill="#fff0b4" d="M13 13h3v3h-3zM48 13h3v3h-3zM16 48h3v3h-3zM45 48h3v3h-3z"/></svg>';
 }
 function readFestivalBadgeCollection(){try{return new Set(JSON.parse(localStorage.getItem('forgeFestivalBadgesV1')||'[]').filter(i=>Number.isInteger(i)&&i>=0&&i<4));}catch{return new Set();}}
-function persistFestivalBadges(){if(sandboxSession||testRun)return;const all=readFestivalBadgeCollection();for(const i of kitchen?.festivals?.badges||[])all.add(i);try{localStorage.setItem('forgeFestivalBadgesV1',JSON.stringify([...all].sort()));}catch{}}
-function albumFestivalBadges(){if(!albumFromHome)return new Set(kitchen?.festivals?.badges||[]);const all=readFestivalBadgeCollection();if(!sandboxSession){for(const entry of saves)for(const i of entry.state?.restaurant?.kitchen?.festivals?.badges||[])if(Number.isInteger(i)&&i>=0&&i<4)all.add(i);if(!testRun)for(const i of kitchen?.festivals?.badges||[])all.add(i);}return all;}
-function renderFestivalBadgeAlbum(){const badges=albumFestivalBadges();$('albumProgress').textContent=(albumFromHome?'跨局紀念章收藏':'本局紀念章收藏')+' · '+badges.size+'/4';$('albumWeapons').innerHTML='<div class="festival-badge-grid">'+FESTIVAL_BADGE_NAMES.map((name,i)=>'<button class="festival-badge-card '+(badges.has(i)?'collected':'uncollected')+'" onclick="inspectFestivalBadge('+i+')"><span class="festival-badge-art">'+festivalBadgeArt(i)+'</span><b>'+name+'</b><small>'+SEASON_FESTIVALS[i].name+' · '+(badges.has(i)?'已取得':'未取得')+'</small></button>').join('')+'</div>';}
-function inspectFestivalBadge(i){if(!Number.isInteger(i)||i<0||i>3)return;const found=albumFestivalBadges().has(i),f=SEASON_FESTIVALS[i];$('festivalBadgeTitle').textContent=FESTIVAL_BADGE_NAMES[i];$('festivalBadgeBody').innerHTML='<div class="festival-badge-large '+(found?'collected':'uncollected')+'">'+festivalBadgeArt(i)+'</div><p>'+(found?'已取得 · ':'尚未取得 · ')+f.name+'</p><p>在同一季完成：'+f.goals.map(g=>g.text+' ×'+g.n).join('、')+'。</p><p>季節第三天領取節慶獎勵時點亮。</p>';$('festivalBadgeP').style.display='flex';}
+function persistFestivalBadges(){if(sandboxSession||testRun)return;const all=readFestivalBadgeCollection();for(const i of kitchen?.festivals?.badges||[])all.add(i);try{localStorage.setItem('forgeFestivalBadgesV1',JSON.stringify([...all].sort()));}catch{}persistMedalCollection(true);}
+function albumFestivalBadges(){const stars=albumMedalStars();return new Set([0,1,2,3].filter(i=>stars['season-'+i]>0));}
+function renderFestivalBadgeAlbum(){
+ const stars=albumMedalStars(),found=MEDAL_DEFS.filter(d=>stars[d.id]>0).length,total=MEDAL_DEFS.reduce((n,d)=>n+(stars[d.id]||0),0);$('albumProgress').textContent=(albumFromHome?'跨局紀念章收藏':'本局紀念章收藏')+' · '+found+'/14 · 星級 '+total+'/34';
+ $('albumWeapons').innerHTML='<p class="medal-rules">四季與成就進度每局重新累計；首頁保留歷來最高星級。遠征通關章為單次成就。</p>'+[['四季紀念章',MEDAL_DEFS.slice(0,4)],['遠征通關章',MEDAL_DEFS.slice(4,8)],['工藝與生活成就章',MEDAL_DEFS.slice(8)]].map(([name,defs])=>'<section class="medal-section"><h3>'+name+'</h3><div class="festival-badge-grid">'+defs.map(d=>{const level=stars[d.id]||0;return '<button class="festival-badge-card '+(level?'collected':'uncollected')+'" onclick="inspectMedal(&quot;'+d.id+'&quot;)"><span class="festival-badge-art">'+medalArt(d.id)+'</span><b>'+d.name+'</b>'+medalStarsHTML(level,d.max)+'<small>'+medalSummary(d,level)+'</small></button>';}).join('')+'</div></section>').join('');
+}
+function inspectFestivalBadge(i){if(Number.isInteger(i)&&i>=0&&i<4)inspectMedal('season-'+i);}
 function openFestivalBadgeAlbum(){closeP('festivalP');openWeaponAlbum();setArchiveCategory('badges');}
 function festivalBoardArt(){return '<svg viewBox="0 0 96 88" shape-rendering="crispEdges" aria-hidden="true"><ellipse cx="48" cy="82" rx="38" ry="4" fill="#1c372e" opacity=".3"/><path fill="#493727" d="M20 33h10v49H20zM68 33h10v49H68z"/><path fill="#9f7747" d="M23 36h4v44h-4zM71 36h4v44h-4z"/><path fill="#392e25" d="M5 4h86v6h4v49h-4v5H5v-5H1V10h4z"/><path fill="#aa7848" d="M7 7h82v51H7z"/><path fill="#e0b777" d="M7 7h82v4H11v43H7z"/><path fill="#705135" d="M11 54h74V12h4v46H11z"/><path fill="#425a49" d="M14 15h68v35H14z"/><path fill="#334637" d="M16 18h64v3H16zM16 45h64v3H16z"/><path fill="#f0cf87" d="M10 11h3v3h-3zM83 11h3v3h-3zM10 51h3v3h-3zM83 51h3v3h-3z"/><text x="48" y="32" font-size="13" font-family="serif" font-weight="bold" text-anchor="middle" fill="#ffe8ad">四季節慶</text><text x="48" y="46" font-size="11" font-family="serif" text-anchor="middle" fill="#f0ddb0">與預告</text><path fill="#b28d58" d="M22 68h3v11h-3zM70 63h3v16h-3z"/></svg>';}
 function festivalBoardReminder(){const state=syncFestival();return !!state&&[1,3].includes(seasonDay())&&!(state.readDays||[]).includes(day);}
 function renderFestivalBoard(){const board=$('townFestivalBoard');board.hidden=day<1;if(!board.dataset.built){board.innerHTML=festivalBoardArt()+'<span class="festival-board-alert" aria-hidden="true"><svg viewBox="0 0 24 30" shape-rendering="crispEdges"><path fill="#473329" d="M4 0h16v4h4v20h-7l-5 6-1-6H0V4h4z"/><path fill="#f7ce62" d="M5 3h14v3h2v15h-7l-2 4v-4H3V6h2z"/><path fill="#74472f" d="M10 7h5v8h-5zM10 17h5v3h-5z"/></svg></span>';board.dataset.built='true';}const unread=festivalBoardReminder(),kind=seasonDay()===3?'下一季預告':'本季目標';board.dataset.unread=String(unread);board.title=unread?'尚未閱讀：'+kind:'查看四季節慶與預告';board.setAttribute('aria-label','四季節慶與預告告示牌'+(unread?'，有新的'+kind:''));}
 function markFestivalRead(){const state=syncFestival();if(!state)return;if(!state.readDays)state.readDays=[];if([1,3].includes(seasonDay())&&!state.readDays.includes(day)){state.readDays.push(day);state.readDays=state.readDays.slice(-24);saveNow();}renderFestivalBoard();}
+const MEDAL_DEFS=[
+ ...FESTIVAL_BADGE_NAMES.map((name,i)=>({id:'season-'+i,name,max:3,season:i})),
+ ...[5,10,15,20].map((stage,i)=>({id:'exp-'+stage,name:['初征勇士章','屠龍英雄章','破界征服章','終極遠征章'][i],max:1,stage})),
+ {id:'gold',name:'黃金鑄匠章',max:3,goals:[1,5,10],unit:'把',text:'製作金級武器',tier:3,kind:'weapon'},
+ {id:'mithril',name:'秘銀神匠章',max:3,goals:[1,3,5],unit:'把',text:'製作秘銀級武器',tier:4,kind:'weapon'},
+ {id:'chef4',name:'星饌主廚章',max:3,goals:[1,5,10],unit:'道',text:'製作四階料理',tier:3,kind:'dish'},
+ {id:'chef5',name:'巔峰美饌章',max:3,goals:[1,3,5],unit:'道',text:'製作五階料理',tier:4,kind:'dish'},
+ {id:'decor',name:'小鎮造景章',max:3,goals:[10,20,30],unit:'件',text:'擁有裝飾品'},
+ {id:'garden',name:'花園培育章',max:3,goals:[5,10,15],unit:'朵',text:'種植並收成花朵'}
+];
+function medalDefinition(id){return MEDAL_DEFS.find(d=>d.id===id);}
+function cleanMedalAchievements(raw){const stars={};for(const d of MEDAL_DEFS.filter(d=>d.season===undefined))stars[d.id]=Math.max(0,Math.min(d.max,Math.floor(Number(raw?.stars?.[d.id])||0)));return {harvests:Math.max(0,Math.min(1000000,Math.floor(Number(raw?.harvests)||0))),stars};}
+function medalProgress(d,state=null){
+ const k=state?state.restaurant?.kitchen:kitchen;
+ if(d.stage){const cleared=(state?state.expedition:expeditionState)?.cleared;return Array.isArray(cleared)&&cleared.includes(d.stage-1)?1:0;}
+ if(d.kind==='weapon'){const counts=state?state.weaponMastery?.counts:[...weaponMastery];return (Array.isArray(counts)?counts:[]).filter(row=>Array.isArray(row)&&row.length===2&&typeof row[0]==='string').reduce((sum,[key,n])=>sum+(/^n:[0-9]:[0-4]$/.test(key)&&Number(key.at(-1))===d.tier&&Number.isSafeInteger(n)&&n>0?n:0),0);}
+ if(d.kind==='dish')return Object.entries(k?.xp||{}).reduce((sum,[key,n])=>sum+(/^[0-9]:[0-4]$/.test(key)&&Number(key.at(-1))===d.tier&&Number.isSafeInteger(n)&&n>0?n:0),0);
+ if(d.id==='decor')return Object.entries((state?state.city:cityState)?.owned||{}).reduce((sum,[id,n])=>sum+(DECOR_BY_ID.has(id)&&Number.isSafeInteger(n)&&n>0?n:0),0);
+ if(d.id==='garden')return k?.achievements?.harvests||0;return 0;
+}
+function stateMedalStars(state=null){
+ const k=state?state.restaurant?.kitchen:kitchen,result={};for(const d of MEDAL_DEFS){
+  if(d.season!==undefined){result[d.id]=Math.max((k?.festivals?.badges||[]).includes(d.season)?1:0,Math.max(0,Math.min(3,Math.floor(Number(k?.festivals?.badgeStars?.[d.season])||0))));continue;}
+  const p=medalProgress(d,state),earned=Math.max(0,Math.min(d.max,Math.floor(Number(k?.achievements?.stars?.[d.id])||0)));result[d.id]=Math.max(earned,d.stage?p:d.goals.filter(n=>p>=n).length);
+ }return result;
+}
+function readMedalCollection(){let raw={};try{raw=JSON.parse(localStorage.getItem('forgeMedalCollectionV2')||'{}');}catch{}const all={};for(const d of MEDAL_DEFS)all[d.id]=Math.max(0,Math.min(d.max,Math.floor(Number(raw?.[d.id])||0)));for(const i of readFestivalBadgeCollection())all['season-'+i]=Math.max(1,all['season-'+i]);return all;}
+function persistMedalCollection(onlyFestivals=false){if(sandboxSession||testRun||booting||day<1)return;const all=readMedalCollection(),current=stateMedalStars();for(const d of MEDAL_DEFS)if(!onlyFestivals||d.season!==undefined)all[d.id]=Math.max(all[d.id],current[d.id]);try{localStorage.setItem('forgeMedalCollectionV2',JSON.stringify(all));}catch{}}
+function syncAchievementMedals(announce=true){
+ if(!kitchen||day<1||booting)return;if(!kitchen.achievements)kitchen.achievements=cleanMedalAchievements(null);const stars=stateMedalStars();for(const d of MEDAL_DEFS.filter(d=>d.season===undefined))if(stars[d.id]>(kitchen.achievements.stars[d.id]||0)){kitchen.achievements.stars[d.id]=stars[d.id];if(announce)toast('🏅 '+d.name+' '+(d.max===1?'已取得':stars[d.id]+'星達成')+'！可到圖鑑館查看。');}persistMedalCollection();
+}
+function recordMedalHarvest(){if(!kitchen||day<1)return;if(!kitchen.achievements)kitchen.achievements=cleanMedalAchievements(null);kitchen.achievements.harvests=Math.min(1000000,kitchen.achievements.harvests+1);syncAchievementMedals();}
+function albumMedalStars(){if(!albumFromHome)return stateMedalStars();const all=readMedalCollection(),merge=s=>{for(const d of MEDAL_DEFS)all[d.id]=Math.max(all[d.id],s[d.id]||0);};if(!sandboxSession){for(const entry of saves)merge(stateMedalStars(entry.state));if(!testRun)merge(stateMedalStars());}return all;}
+function medalStarsHTML(level,max=3){return max===1?'<span class="medal-completion">'+(level?'已通關':'尚未通關')+'</span>':'<span class="medal-stars" aria-label="'+level+'星，共'+max+'星"><b>'+'★'.repeat(level)+'</b><i>'+'☆'.repeat(max-level)+'</i></span>';}
+function medalSummary(d,level){if(albumFromHome)return level?(d.max===1?'已取得':'最高 '+level+' 星'):'尚未取得';if(d.season!==undefined)return (level===3?'三星已完成':(level+1)+'星：原目標 ×'+(level+1))+' · 三天內完成';if(d.stage)return '打贏遠征第 '+d.stage+' 關';return d.text+' '+Math.min(medalProgress(d),d.goals.at(-1))+'/'+d.goals[Math.min(level,2)]+d.unit;}
+function inspectMedal(id){
+ const d=medalDefinition(id);if(!d)return;const level=albumMedalStars()[id]||0;$('festivalBadgeTitle').textContent=d.name;let body='';
+ if(d.season!==undefined){const f=SEASON_FESTIVALS[d.season];body='<p>'+f.name+' · 每次該季三天內完成兩項目標，第三天領獎取得星級。</p><div class="medal-goals">'+[1,2,3].map(t=>'<p class="'+(level>=t?'earned':'')+'">'+t+'星：'+f.goals.map(g=>g.text+' ×'+g.n*t).join('、')+'</p>').join('')+'</div><p>完成一星後，下次該季挑戰二星；再完成後挑戰三星。失敗維持原難度，三星後維持三倍目標。</p>';}
+ else if(d.stage)body='<p>在本局遠征打贏第 '+d.stage+' 關，即可自動取得通關紀念章。</p><p>此章為單次通關成就，沒有二星、三星。</p>';
+ else{body='<div class="medal-goals">'+d.goals.map((n,i)=>'<p class="'+(level>i?'earned':'')+'">'+(i+1)+'星：'+d.text+' '+n+d.unit+'</p>').join('')+'</div><p>'+(albumFromHome?'首頁保存歷來最高星級；以下數量需在同一局內累計。':'本局累計：'+medalProgress(d)+d.unit+'。')+'</p><p>'+(d.kind==='weapon'?'只計指定階級的一般武器，合成完成即計數，不必售出；各種武器可一起累計。':d.kind==='dish'?'只計指定階級的完成料理，合成完成即計數，不必售出；各種料理可一起累計。':d.id==='decor'?'計算已擁有的裝飾總件數，包含收藏與已放置、不同季節與日夜款。同款多件各計一件。':'每盆親自種植並收成的成熟花朵計一朵；春天雙倍精華仍只計一朵，寶箱精華不計。')+'</p>';}
+ $('festivalBadgeBody').innerHTML='<div class="festival-badge-large '+(level?'collected':'uncollected')+'">'+medalArt(id)+'</div>'+medalStarsHTML(level,d.max)+'<p>'+(level?'已取得':'尚未取得')+'</p>'+body;$('festivalBadgeP').style.display='flex';
+}
+function medalArt(id){
+ const d=medalDefinition(id);if(!d)return '';if(d.season!==undefined)return festivalBadgeArt(d.season);let symbol='',colors=['#68556f','#d3a6b2'];
+ if(d.stage){const i=[5,10,15,20].indexOf(d.stage);colors=[['#576d54','#a8ca85'],['#764e42','#e9a35f'],['#53648a','#a3c8eb'],['#624876','#e4b9f0']][i];symbol='<path fill="#2f3140" d="M18 16h7v-5h5v9h5v-9h5v5h7v30H18z"/><path fill="#d8bf83" d="M20 19h24v25H20zM20 15h4v8h-4zM29 13h5v10h-5zM40 15h4v8h-4z"/><path fill="#665449" d="M29 32h7v12h-7zM23 25h4v5h-4zM38 25h4v5h-4z"/><path fill="'+['#a5ca83','#f4ae5e','#a9d9ed','#e8b9ee'][i]+'" d="M28 23h9v7h-9z"/><path fill="#fff1c1" d="M30 24h4v3h-4z"/>';
+  if(i>=1)symbol+='<path fill="#f2d38b" d="M13 41h6v7h26v-7h6v12H13z"/>';if(i>=2)symbol+='<path fill="#d7eafa" d="M11 18h4v19h-4zM49 18h4v19h-4z"/>';if(i===3)symbol+='<path fill="#fff1b2" d="M29 4h6v5h5v4h-5v5h-6v-5h-5V9h5z"/>';
+ }else if(d.kind==='weapon'){const myth=d.id==='mithril';colors=myth?['#405b7d','#b4e9ee']:['#795c32','#f6d782'];symbol='<path fill="#343747" d="M29 9h7v29h9v6h-9v11h-7V44h-9v-6h9z"/><path fill="'+(myth?'#a4e4ec':'#e7b857')+'" d="M31 11h3v25h-3zM23 39h19v3H23z"/><path fill="'+(myth?'#e7ffff':'#fff0a0')+'" d="M31 11h1v22h-1z"/><path fill="#98664b" d="M31 44h3v8h-3z"/><path fill="'+(myth?'#bc8ee7':'#ef865a')+'" d="M29 37h7v6h-7z"/><path fill="#fff2b9" d="M31 38h3v2h-3z"/>';
+  symbol+='<path fill="'+(myth?'#a1cee9':'#e0aa50')+'" d="M16 19h7v5h-7zM12 23h15v7H12zM15 30h10v4H15zM43 24h6v4h-6zM40 28h12v8H40zM43 36h7v3h-7z"/>';
+ }else if(d.kind==='dish'){const top=d.id==='chef5';colors=top?['#6d4b67','#e9b5c3']:['#665b40','#dec797'];symbol='<path fill="#383c42" d="M12 34h40v11h-5v5H17v-5h-5z"/><path fill="#f1e3bb" d="M14 34h36v9h-5v4H19v-4h-5z"/><path fill="#bd9c76" d="M18 42h28v3H18z"/><path fill="#c18554" d="M19 25h25v14H19z"/><path fill="#edb764" d="M22 23h19v5H22zM19 29h25v5H19z"/><path fill="#63844f" d="M17 32h7v6h-7zM40 31h7v7h-7z"/><path fill="#db6b4f" d="M28 27h8v6h-8z"/><path fill="#e8e2c5" d="M23 14h3v7h-3zM32 10h3v9h-3zM41 14h3v7h-3z"/>';
+  if(top)symbol+='<path fill="#e4c16e" d="M21 8h5v5h4v-5h5v5h4V8h5v9H21z"/><path fill="#fff0b9" d="M29 35h8v3h-8z"/>';
+ }else if(d.id==='decor'){colors=['#526d63','#c1d9af'];symbol='<path fill="#423b35" d="M14 27h4v-5h5v-5h9v-5h5v5h6v5h5v5h4v6h-5v20H19V33h-5z"/><path fill="#b16d58" d="M17 28h5v-5h6v-5h9v5h6v5h6v3H17z"/><path fill="#e0c68e" d="M22 33h22v17H22z"/><path fill="#6b5747" d="M30 38h7v12h-7z"/><path fill="#8db9b2" d="M24 36h4v7h-4zM39 36h3v7h-3z"/><path fill="#78a45d" d="M10 40h8v9h-8zM47 39h9v10h-9z"/><path fill="#dda15b" d="M11 48h7v5h-7zM48 48h7v5h-7z"/>';
+ }else{colors=['#516447','#bddb92'];symbol='<path fill="#365343" d="M30 19h4v28h-4zM21 30h9v5h-9zM34 35h10v5H34z"/><path fill="#98bc6d" d="M20 28h8v4h-8zM36 33h8v4h-8z"/><path fill="#d689ab" d="M27 9h10v6h7v10h-7v6H27v-6h-7V15h7z"/><path fill="#f1b8be" d="M29 11h6v7h7v5h-7v6h-6v-6h-7v-5h7z"/><path fill="#ffe3a0" d="M28 18h9v7h-9z"/><path fill="#8b513d" d="M20 44h25v6h-3v6H23v-6h-3z"/><path fill="#c68b5f" d="M22 45h21v3H22zM25 49h14v5H25z"/>';}
+ return pixelMedalArt(d.name,colors,symbol);
+}
 
 
 /* 後台設定 */

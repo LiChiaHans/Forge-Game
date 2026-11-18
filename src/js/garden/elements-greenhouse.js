@@ -42,7 +42,7 @@ function renderGreenhousePanel(){
 function selectGreenhouseBed(i){
  if(!Number.isInteger(i)||i<0||i>=6||day<1)return;selectedPlantBed=i;const p=greenhouseBeds[i];
  if(!p){renderSeedPicker();$('seedP').style.display='flex';return;}
- if(plantAge(p)>=3){const e=p.element,yieldCount=harvestYield();greenhouseBeds[i]=null;for(let n=0;n<yieldCount;n++)bag.push({k:'ess',element:e});selectedPlantBed=-1;renderGreenhousePanel();saveNow();$('greenhouseDetail').textContent='已收成 '+ELEMENTS[e].name+'之精華 ×'+yieldCount+(yieldCount===2?'（春日豐收）':'')+'，放入道具箱。盆栽可重新播種。';return;}
+ if(plantAge(p)>=3){const e=p.element,yieldCount=harvestYield();greenhouseBeds[i]=null;for(let n=0;n<yieldCount;n++)bag.push({k:'ess',element:e});recordMedalHarvest();selectedPlantBed=-1;renderGreenhousePanel();saveNow();$('greenhouseDetail').textContent='已收成 '+ELEMENTS[e].name+'之精華 ×'+yieldCount+(yieldCount===2?'（春日豐收）':'')+'，放入道具箱。盆栽可重新播種。';return;}
  renderGreenhousePanel();$('greenhouseDetail').textContent='第 '+(i+1)+' 格 · '+ELEMENTS[p.element].name+'之花，將在第 '+(p.plantedDay+3-(expandedGameEnabled()?(p.growthBoost||0):0))+' 天開花。';
 }
 function renderSeedPicker(){

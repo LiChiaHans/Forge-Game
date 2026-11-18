@@ -69,5 +69,5 @@ function renderDecorationShop(){
 function buyDecoration(id){
  const d=DECOR_BY_ID.get(id);if(!d||!sandboxSession&&!decorMatchesContext(d))return false;
  if(!sandboxSession&&coins<d.price){toast('金幣不足。');return false;}if((cityState.owned[id]||0)>=9999)return false;
- if(!sandboxSession)coins-=d.price;cityState.owned[id]=(cityState.owned[id]||0)+1;saveNow();render();renderDecorationShop();toast('已購買「'+d.name+'」，可到裝飾收藏放置。');return true;
+ if(!sandboxSession)coins-=d.price;cityState.owned[id]=(cityState.owned[id]||0)+1;syncAchievementMedals();saveNow();render();renderDecorationShop();toast('已購買「'+d.name+'」，可到裝飾收藏放置。');return true;
 }

@@ -26,7 +26,7 @@ function stage21_kitchenCraft(at,silent=false){
  }
  // Return one ingredient per consumed chain, as in embryo forging; never overwrite a dish.
  for(const path of paths.values()){const free=path.cells.filter(i=>!kitchen.g[i]);if(!free.length)continue;const target=free[rnd(free.length)],chance=[0,0,.25,.5][kitchenLevel('merge')],tier=Math.random()<chance?path.parts[rnd(path.parts.length)].t:0;kitchen.g[target]=kitchenFood(tier);kitchenAuto(target);}
- kitchen.message='料理完成：'+made.join('、')+'！拖曳到客人即可出餐。';return true;
+ syncAchievementMedals();kitchen.message='料理完成：'+made.join('、')+'！拖曳到客人即可出餐。';return true;
 }
 function stage21_completeKitchenNight(){
  if(kitchen.done)return;kitchen.done=true;const c=KITCHEN_CHALLENGES[kitchen.challenge],passed=c.kind==='rush'?kitchen.served>=kitchen.total&&kitchen.missed===0:kitchen.progress>=c.goal,paid=kitchen.lastRewarded!==day;
@@ -51,7 +51,7 @@ function stage21_settleExpeditionBattle(b){
  if(b.outcome==='win'&&!expeditionCleared(b.stage)){
   b.gold=b.monster.gold;b.loot=b.stage<20?{k:'bp',id:b.stage}:null;coins+=b.gold;earned+=b.gold;dEarn+=b.gold;expeditionState.victories++;expeditionState.wonToday.push(b.stage);if(b.stage<20){expeditionState.cleared.push(b.stage);grantBlueprintItem(b.stage);}else expeditionState.endless=Math.max(expeditionState.endless||0,b.stage-19);expeditionState.unlocked=b.stage+1;
  }else if(b.outcome==='lose'&&!sandboxSession)lives=Math.max(0,lives-1);
- if(lives<=0)removeSave(runId);saveHi();render();saveNow();
+ syncAchievementMedals();if(lives<=0)removeSave(runId);saveHi();render();saveNow();
 }
 function stage21_saveNow(){
   if(!active||testRun||day<1||lives<=0||!runId)return;

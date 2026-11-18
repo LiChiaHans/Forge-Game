@@ -103,6 +103,7 @@
     "src/js/forge/planning-feedback.js",
     "src/js/seasons/festivals.js",
     "src/js/seasons/badges-board.js",
+    "src/js/collections/medal-achievements.js",
     "src/js/admin/sandbox.js",
     "src/js/ui/modals-layout.js",
     "src/js/ui/scene-transitions.js",
