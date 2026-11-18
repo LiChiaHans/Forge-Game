@@ -75,6 +75,16 @@ kitchenSell	src/js/kitchen/rules.js	64
 completeKitchenNight	src/js/kitchen/rules.js	69
 renderKitchenSettlement	src/js/kitchen/rules.js	70
 finishKitchenNight	src/js/kitchen/rules.js	71
+kitchenSpecial	src/js/kitchen/menu-specials.js	2
+openKitchenSpecial	src/js/kitchen/menu-specials.js	3
+chooseKitchenSpecial	src/js/kitchen/menu-specials.js	7
+kitchenSpecialLabel	src/js/kitchen/menu-specials.js	13
+assignKitchenStatOrder	src/js/kitchen/menu-specials.js	14
+kitchenNeedText	src/js/kitchen/menu-specials.js	17
+kitchenRequirementFailure	src/js/kitchen/menu-specials.js	18
+kitchenOrderRecipeHTML	src/js/kitchen/menu-specials.js	19
+kitchenMenuBonus	src/js/kitchen/menu-specials.js	20
+validateKitchenMenu	src/js/kitchen/menu-specials.js	21
 kitchenSVG	src/js/kitchen/rendering.js	3
 kitchenArt	src/js/kitchen/rendering.js	4
 kitchenProcessArt	src/js/kitchen/rendering.js	13

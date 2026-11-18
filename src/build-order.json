@@ -13,6 +13,7 @@
     "src/js/forge/completion-feedback.js",
     "src/js/forge/weapon-mastery.js",
     "src/js/kitchen/rules.js",
+    "src/js/kitchen/menu-specials.js",
     "src/js/kitchen/rendering.js",
     "src/js/kitchen/inventory-market.js",
     "src/js/kitchen/drag-controls.js",
