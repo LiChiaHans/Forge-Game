@@ -67,7 +67,7 @@ function render(){
       h=`<div style="display:contents;visibility:hidden">${h}</div>`;
     return `<div class="c${c&&c.k==='w'?" wc":""}${forgeFlashes.get(i)===c?" forge-complete":""}${magicSet.has(i)?" mg":""}${isOff(i)?" off":""}${leaves.has(i)?" has-leaf":""}${frozen.has(i)?" is-frozen":""}"
       style="${heat[i]>0?`background:rgba(192,57,43,${(.12+.88*heat[i]/hotSteps()).toFixed(2)});`:""}${magicSet.has(i)?`animation-delay:-${Date.now()%1400}ms`:""}"
-      data-i="${i}">${h}${c?.k==='w'&&!hold.has(i)&&!shown.has(i)?forgeCellLabel(c):''}${seasonCellHTML(i)}${heat[i]>0?`<span class="ht">${heat[i]}</span>`:""}${magicSet.has(i)?`<span class="mgs" style="animation-delay:-${Date.now()%1800}ms">✦</span>`:""}</div>`;
+      data-i="${i}" data-piece-kind="${c?.k||'empty'}">${h}${c?.k==='p'?'<span class="piece-stage">'+NM[c.t]+'胚</span>':''}${c?.k==='w'&&!hold.has(i)&&!shown.has(i)?forgeCellLabel(c):''}${seasonCellHTML(i)}${heat[i]>0?`<span class="ht">${heat[i]}</span>`:""}${magicSet.has(i)?`<span class="mgs" style="animation-delay:-${Date.now()%1800}ms">✦</span>`:""}</div>`;
   }).join("");
 
   renderBlueprintCells();renderElementTiles();if($('greenhouseP').style.display==='flex')renderGreenhousePanel();

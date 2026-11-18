@@ -34,6 +34,9 @@ workshopAnimationNode	src/js/ui/workshop-animation.js	6
 workshopAnimate	src/js/ui/workshop-animation.js	9
 workshopAnimationWait	src/js/ui/workshop-animation.js	12
 startWorkshopMerge	src/js/ui/workshop-animation.js	13
+clearWorkshopMilestone	src/js/ui/workshop-milestones.js	2
+showWorkshopMilestone	src/js/ui/workshop-milestones.js	3
+presentKitchenResults	src/js/ui/workshop-milestones.js	10
 clearForgeFeedback	src/js/forge/completion-feedback.js	5
 weaponKindLabel	src/js/forge/completion-feedback.js	11
 weaponTierLabel	src/js/forge/completion-feedback.js	12

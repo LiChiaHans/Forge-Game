@@ -3,7 +3,7 @@
 let forgeFeedbackTimer=null,forgeFeedbackEpoch=0;
 const forgeFlashes=new Map();
 function clearForgeFeedback(){
- cancelForgeBlizzard();
+ clearWorkshopMilestone();cancelForgeBlizzard();
  cancelWorkshopMerges('forge');
  forgeFeedbackEpoch++;if(forgeFeedbackTimer!==null)clearTimeout(forgeFeedbackTimer);forgeFeedbackTimer=null;
  forgeFlashes.clear();$('forgeCelebration').hidden=true;$('forgeCelebration').innerHTML='';
@@ -26,7 +26,7 @@ function presentForgeResults(results,playSound=true){
   gameTimeout(()=>{if(epoch!==forgeFeedbackEpoch||forgeFlashes.get(i)!==w)return;forgeFlashes.delete(i);const current=$('grid').children[i];current?.classList.remove('forge-complete');current?.querySelector('.forge-sparks')?.remove();},700);
  });
  const chosen=live.find(x=>forgeLevelUps.has(x.w))||live.reduce((best,x)=>rankOf(x.w)>rankOf(best.w)?x:best,live[0]),w=chosen.w,rank=isUltimate(w)?2:isLegend(w)?1:0;
- const leveled=forgeLevelUps.has(w);if(playSound||rank||leveled)forgeSound(rank||(leveled?1:0));if(!rank&&!leveled)return;forgeLevelUps.delete(w);
+ const leveled=forgeLevelUps.has(w);if(playSound||rank||leveled)forgeSound(rank||(leveled?1:0));if(!rank&&!leveled){showWorkshopMilestone('forge',w,live.length);return;}forgeLevelUps.delete(w);
  const color=isLegend(w)?LEGENDS[w.legendId].color:C[w.t],stats=weaponStats(w),box=$('forgeCelebration');
  if(forgeFeedbackTimer!==null)clearTimeout(forgeFeedbackTimer);
  box.dataset.rank=String(rank);box.style.setProperty('--forge-color',color);box.innerHTML='<div class="forge-reveal"><span class="forge-rarity">'+(rank===2?'終極鍛造':rank===1?'傳說鍛造':'工藝升星')+' · 完成</span><div class="forge-trophy">'+hex(w.c,bands(w),'',w.t,w)+'</div><strong>'+esc(itemName(w))+'</strong><span class="forge-kind">'+esc(weaponKindLabel(w))+(validElement(w.element)?' · '+esc(elementName(w.element))+'屬性':'')+'</span>'+weaponStarsHTML(w,true)+'<span class="forge-values">⚔ '+stats.atk+'　🛡 '+stats.def+'　💨 '+stats.spd+'</span><small>已加入本局收藏</small></div>';

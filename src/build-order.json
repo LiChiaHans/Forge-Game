@@ -10,6 +10,7 @@
     "src/js/core/game-state.js",
     "src/js/core/workshop-plans.js",
     "src/js/ui/workshop-animation.js",
+    "src/js/ui/workshop-milestones.js",
     "src/js/forge/completion-feedback.js",
     "src/js/forge/weapon-mastery.js",
     "src/js/kitchen/rules.js",

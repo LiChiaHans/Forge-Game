@@ -1,6 +1,6 @@
 
 const kitchenDepartures=new Set();
-function clearKitchenDepartures(){for(const d of kitchenDepartures){d.animation?.cancel?.();d.node.remove();}kitchenDepartures.clear();}
+function clearKitchenDepartures(){clearWorkshopMilestone();for(const d of kitchenDepartures){d.animation?.cancel?.();d.node.remove();}kitchenDepartures.clear();}
 function kitchenGuestExit(index){
  const card=$('kitchenOrders').querySelector('[data-ko="'+index+'"]'),ghost=card?.cloneNode?.(true);if(!ghost)return;
  const rect=card.getBoundingClientRect();if(!rect.width||!rect.height)return;
