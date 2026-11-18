@@ -31,7 +31,7 @@ function preview_renderTown(){
  if(!$('townFountain').innerHTML)$('townFountain').innerHTML=townFountainArt();
  if(!$('townExpedition').dataset.built){$('townExpedition').innerHTML=townExpeditionSign();$('townExpedition').dataset.built='1';}
  renderGreenhouse(p,s.id);
- renderTownPlaza(p,s.id);renderCityDecor();renderArchitect();renderHarvestAlert();scheduleTownBirds();renderTownChest();renderTownWeather(si);renderTownNight();renderGeminiTown();
+ renderTownPlaza(p,s.id);renderCityDecor();renderArchitect();renderHarvestAlert();scheduleTownBirds();renderTownChest();renderTownWeather(si);renderTownNight();renderGeminiTown();renderFestivalBoard();
 }
 function showTown(){
  if(day<=0)return;return performSceneTransition('城鎮',()=>{clearKitchenIngredientFlights();clearForgeFeedback();phase='town';$('townP').style.display='flex';renderTown();syncTownMotion();showTownDayBanner();saveNow();});

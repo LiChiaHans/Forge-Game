@@ -1258,7 +1258,7 @@ function toggleExpeditionFood(){expeditionFoodOpen=false;renderExpeditionFood();
 function useExpeditionFood(index){syncExpeditionEffects();const food=expeditionFoodOptions().find(x=>x.index===index)?.w,b=expeditionState.lastBattle;if(!food||food!==b?.foodChoice||!expeditionFoodReady(b))return false;const ok=stage21_useExpeditionFood(index);if(ok){reviewMetrics.supplies++;const key=food.c+':'+food.t;reviewMetrics.supplyTypes[key]=(reviewMetrics.supplyTypes[key]||0)+1;saveNow();if(sandboxSession)saveReviewProgress();}return ok;}
 
 let archiveCategory='weapons';
-function setArchiveCategory(category){if(!expandedGameEnabled()||!['weapons','dishes'].includes(category)||albumTier===-2)return;archiveCategory=category;albumTier=-1;renderWeaponAlbum();}
+function setArchiveCategory(category){if(!expandedGameEnabled()||!['weapons','dishes','badges'].includes(category)||albumTier===-2)return;archiveCategory=category;albumTier=-1;renderWeaponAlbum();}
 function renderDishAlbum(){
  $('albumProgress').textContent=(albumFromHome?'跨局料理收藏 · ':'本局料理收藏 · ')+KITCHEN_NAMES.reduce((n,_,c)=>n+KITCHEN_GRADES.filter((_,t)=>(albumFromHome?dishAlbum.has(c+':'+t):(kitchen?.xp[c+':'+t]||0)>0)).length,0)+'/50';
  $('albumWeapons').innerHTML=KITCHEN_GRADES.map((name,t)=>'<section class="album-section dish-album-section"><h3>'+kitchenGradeName(t)+' '+archiveTierPriceHTML('dishes',t)+' <small>'+KITCHEN_NAMES.filter((_,c)=>(albumFromHome?dishAlbum.has(c+':'+t):(kitchen?.xp[c+':'+t]||0)>0)).length+'/10</small></h3><div class="album-grid">'+archiveOrder('dishes',t).map(c=>{const name=KITCHEN_NAMES[c],found=(albumFromHome?dishAlbum.has(c+':'+t):(kitchen?.xp[c+':'+t]||0)>0);return '<button class="album-card '+(found?'collected':'uncollected')+'" data-album-dish="'+c+'" data-tier="'+t+'" aria-label="'+kitchenGradeName(t)+name+'，'+(found?'已製作':'未製作')+'">'+archiveSortValueHTML('dishes',c,t)+'<span class="album-art">'+kitchenArt({k:'w',c,t})+'</span><b>'+name+'</b><small>'+(found?'已製作':'未製作')+'</small></button>';}).join('')+'</div></section>').join('');
@@ -1550,7 +1550,7 @@ function rememberDish(w){if(sandboxSession||testRun||booting||!w||w.k!=='w')retu
 function restoreRestaurant(raw){
  kitchen=freshKitchen();sandboxNight=false;reviewMetrics=freshPlayMetrics();fridgeFilter='all';fridgeSort='quality';supplyFilter='all';supplySort='heal';battleUserPaused=false;battleLastAdvance=0;expeditionFoodOpen=false;expeditionFoodSelected=null;
  if(raw){kitchen=validKitchenProgress(raw.kitchen,day);kitchen.justHeated=new Set(kitchen.justHeated);sandboxNight=raw.night;const m=raw.metrics||{},number=v=>Number.isFinite(v)&&v>=0?Math.min(1e15,v):0;for(const key of ['activeMs','crafted','served','spoiled','supplies','nights','nightTurns'])reviewMetrics[key]=number(m[key]);reviewMetrics.supplyTypes=Object.fromEntries(Object.entries(m.supplyTypes||{}).filter(([k,n])=>validAlbumKey(k)&&Number.isSafeInteger(n)&&n>=0));reviewMetrics.battles=Array.isArray(m.battles)?m.battles.slice(-50).filter(b=>b&&Number.isSafeInteger(b.stage)&&b.stage>=1&&b.stage<=1000000&&['勝利','生命歸零','回合上限或撤退'].includes(b.result)&&Number.isSafeInteger(b.supplies)&&b.supplies>=0&&b.supplies<=2):[];}
- ensureOrderGuests22();for(const [key,n]of Object.entries(kitchen.xp))if(n>0&&!sandboxSession&&!testRun)dishAlbum.add(key);if(!sandboxSession&&!testRun)try{localStorage.setItem('forgeDishAlbumV1',JSON.stringify([...dishAlbum].sort()));}catch{}
+ ensureOrderGuests22();if(!sandboxSession&&!testRun)persistFestivalBadges();for(const [key,n]of Object.entries(kitchen.xp))if(n>0&&!sandboxSession&&!testRun)dishAlbum.add(key);if(!sandboxSession&&!testRun)try{localStorage.setItem('forgeDishAlbumV1',JSON.stringify([...dishAlbum].sort()));}catch{}
 }
 function snapshotRestaurant(){const now=Date.now();if(!document.hidden)reviewMetrics.activeMs+=Math.max(0,Math.min(30000,now-reviewMetrics.lastActive));reviewMetrics.lastActive=now;return {version:1,night:sandboxNight,kitchen:snapshotKitchenProgress(),metrics:JSON.parse(JSON.stringify(reviewMetrics))};}
 function validateRestaurant(raw,day){if(!raw||raw.version!==1||typeof raw.night!=='boolean')throw new Error('餐廳與日夜進度格式錯誤');validKitchenProgress(raw.kitchen,day);if(raw.night&&raw.kitchen.day!==day)throw new Error('餐廳日期與存檔不符');return true;}
@@ -1661,7 +1661,7 @@ function archiveSortValueHTML(category,id,tier,legend=false){
  return '<small class="album-sort-value" data-sort-field="'+key+'" data-sort-value="'+value+'" title="'+ARCHIVE_SORT_FIELDS[category][key]+' '+value+(percent?'%':'')+'">'+text+'</small>';
 }
 function renderArchiveSort(){
- const panel=$('archiveSort');panel.hidden=!expandedGameEnabled()||albumTier===-2;if(panel.hidden)return;const category=archiveCategory,select=$('archiveSortSelect');
+ const panel=$('archiveSort');panel.hidden=!expandedGameEnabled()||albumTier===-2||archiveCategory==='badges';if(panel.hidden)return;const category=archiveCategory,select=$('archiveSortSelect');
  $('archiveSortLabel').textContent=category==='weapons'?'武器排序':'料理排序';select.setAttribute('aria-label',category==='weapons'?'武器排序':'料理排序');
  select.innerHTML='<option value="default">原始順序</option>'+Object.entries(ARCHIVE_SORT_FIELDS[category]).flatMap(([key,label])=>[['desc','高到低'],['asc','低到高']].map(([direction,text])=>'<option value="'+key+':'+direction+'">'+label+' · '+text+'</option>')).join('');select.value=archiveSortState[category];
 }
@@ -1714,7 +1714,7 @@ function importWeaponAlbum(){if(sandboxSession)return;
   if(changed)persistWeaponAlbum();
 }
 function openWeaponAlbum(){if(!sandboxSession)dishAlbum=readDishAlbum();archiveCategory='weapons';albumFromHome=$("title").style.display!=="none";importLegendProgress();importWeaponAlbum();albumTier=-1;renderWeaponAlbum();$('weaponAlbumP').style.display='flex';}
-function renderWeaponAlbum(){renderArchiveSort();const categories=$('archiveCategories');categories.hidden=!expandedGameEnabled()||albumTier===-2;if(!expandedGameEnabled()||albumTier===-2)return stage20_renderWeaponAlbum();albumTier=-1;$('archiveWeapons').setAttribute('aria-pressed',String(archiveCategory==='weapons'));$('archiveDishes').setAttribute('aria-pressed',String(archiveCategory==='dishes'));if(archiveCategory==='dishes')renderDishAlbum();else stage20_renderWeaponAlbum();$('weaponAlbumP').querySelector('h2').textContent='📚 圖鑑館';$('albumTabs').style.display='none';}
+function renderWeaponAlbum(){renderArchiveSort();const categories=$('archiveCategories');categories.hidden=!expandedGameEnabled()||albumTier===-2;if(!expandedGameEnabled()||albumTier===-2)return stage20_renderWeaponAlbum();albumTier=-1;$('archiveWeapons').setAttribute('aria-pressed',String(archiveCategory==='weapons'));$('archiveDishes').setAttribute('aria-pressed',String(archiveCategory==='dishes'));$('archiveBadges').setAttribute('aria-pressed',String(archiveCategory==='badges'));if(archiveCategory==='badges')renderFestivalBadgeAlbum();else if(archiveCategory==='dishes')renderDishAlbum();else stage20_renderWeaponAlbum();$('weaponAlbumP').querySelector('h2').textContent='📚 圖鑑館';$('albumTabs').style.display='none';}
 $('albumTabs').onclick=e=>{const b=e.target.closest('[data-album-tier]');if(!b)return;albumTier=+b.dataset.albumTier;renderWeaponAlbum();};
 $('albumWeapons').onclick=e=>{const dish=e.target.closest('[data-album-dish]');if(dish){inspectArchiveDish(+dish.dataset.albumDish,+dish.dataset.tier);return;}const legend=e.target.closest('[data-legend]');if(legend){openLegendBlueprint(+legend.dataset.legend,albumFromHome);return;}const b=e.target.closest('[data-album-weapon]');if(!b)return;showWeaponDetail(+b.dataset.albumWeapon,+b.dataset.tier);};
 function showWeaponDetail(c,t){
@@ -2839,7 +2839,7 @@ function preview_renderTown(){
  if(!$('townFountain').innerHTML)$('townFountain').innerHTML=townFountainArt();
  if(!$('townExpedition').dataset.built){$('townExpedition').innerHTML=townExpeditionSign();$('townExpedition').dataset.built='1';}
  renderGreenhouse(p,s.id);
- renderTownPlaza(p,s.id);renderCityDecor();renderArchitect();renderHarvestAlert();scheduleTownBirds();renderTownChest();renderTownWeather(si);renderTownNight();renderGeminiTown();
+ renderTownPlaza(p,s.id);renderCityDecor();renderArchitect();renderHarvestAlert();scheduleTownBirds();renderTownChest();renderTownWeather(si);renderTownNight();renderGeminiTown();renderFestivalBoard();
 }
 function showTown(){
  if(day<=0)return;return performSceneTransition('城鎮',()=>{clearKitchenIngredientFlights();clearForgeFeedback();phase='town';$('townP').style.display='flex';renderTown();syncTownMotion();showTownDayBanner();saveNow();});
@@ -3034,7 +3034,7 @@ function renderBlueprintGoal(){
 }
 function inspectPlannerWeapon(index){const row=plannerRows[index];if(row?.held)openCraftedWeapon(row.held.w,row.held.source);}
 
-const BACKUP_KEYS=['forgeSaves','forgeRecs','forgeHi','forgeName','forgeAvatarPresetV1','forgeWeaponAlbumV1','forgeLegendBlueprintsV1','forgeLegendCollectionV1','forgeTownLayoutsV1','forgeDishAlbumV1'];
+const BACKUP_KEYS=['forgeSaves','forgeRecs','forgeHi','forgeName','forgeAvatarPresetV1','forgeWeaponAlbumV1','forgeLegendBlueprintsV1','forgeLegendCollectionV1','forgeTownLayoutsV1','forgeDishAlbumV1','forgeFestivalBadgesV1'];
 let pendingBackup=null,lowEffects=localStorage.getItem('forgeLowEffectsV1')==='1';
 function captureBackup(){
  if(sandboxSession||testRun)throw new Error('後台測試資料不會匯出，請先回到首頁');saveNow();return {format:'ForgeMasterBackup',version:1,exportedAt:new Date().toISOString(),data:Object.fromEntries(BACKUP_KEYS.map(k=>[k,localStorage.getItem(k)]))};
@@ -3043,7 +3043,7 @@ function validateBackup(text){
  if(typeof text!=='string'||text.length>8000000)throw new Error('備份檔過大或格式錯誤');let v;try{v=JSON.parse(text);}catch{throw new Error('檔案不是有效的 JSON 備份');}
  if(v?.format!=='ForgeMasterBackup'||v.version!==1||!v.data||typeof v.data!=='object'||Array.isArray(v.data))throw new Error('這不是支援的 Forge Master 備份');
  if(Object.keys(v.data).some(k=>!BACKUP_KEYS.includes(k)))throw new Error('備份含有不支援的欄位');
- if(!Object.hasOwn(v.data,'forgeDishAlbumV1'))v.data.forgeDishAlbumV1=null;for(const key of BACKUP_KEYS)if(v.data[key]!==null&&typeof v.data[key]!=='string')throw new Error('備份欄位不完整：'+key);
+ if(!Object.hasOwn(v.data,'forgeFestivalBadgesV1'))v.data.forgeFestivalBadgesV1=null;if(!Object.hasOwn(v.data,'forgeDishAlbumV1'))v.data.forgeDishAlbumV1=null;for(const key of BACKUP_KEYS)if(v.data[key]!==null&&typeof v.data[key]!=='string')throw new Error('備份欄位不完整：'+key);
  const number=(n,min=0,max=1e15)=>typeof n==='number'&&Number.isFinite(n)&&n>=min&&n<=max;
  const item=w=>{if(w===null)return true;if(!w||typeof w!=='object')return false;if(w.k==='w')return (!('stars'in w)||Number.isInteger(w.stars)&&w.stars>=0&&w.stars<=3)&&(!('starXp'in w)||Number.isSafeInteger(w.starXp)&&w.starXp>=0&&w.starXp<=1000000)&&Number.isInteger(w.c)&&w.c>=0&&w.c<10&&Number.isInteger(w.t)&&w.t>=0&&w.t<5&&(!('legendId'in w)||validLegendId(w.legendId)&&w.legendCore&&['atk','def','spd'].every(k=>number(w.legendCore[k],1,1e9)));if(w.k==='o'||w.k==='d')return Number.isInteger(w.t)&&w.t>=0&&w.t<5;if(w.k==='p')return Number.isInteger(w.s)&&w.s>=0&&w.s<3&&Number.isInteger(w.t)&&w.t>=0&&w.t<5;if(w.k==='m')return Number.isInteger(w.s)&&w.s>=0&&w.s<=3;if(['f','u','z','l'].includes(w.k))return true;if(w.k==='seed'||w.k==='ess')return validElement(w.element);return w.k==='bp'&&validLegendId(w.id);};
  const parse=(key,fallback)=>{try{return v.data[key]===null?fallback:JSON.parse(v.data[key]);}catch{throw new Error('備份內容損壞：'+key);}};
@@ -3061,6 +3061,7 @@ function validateBackup(text){
  if(records.some(r=>!r||!number(r.score)||typeof r.name!=='string'||!Array.isArray(r.best)||r.best.length!==10||!r.best.every((w,c)=>!w||item({...w,k:'w',c}))))throw new Error('歷史紀錄內容錯誤');
  if(v.data.forgeHi!==null&&!/^\d+(?:\.\d+)?$/.test(v.data.forgeHi))throw new Error('最高分格式錯誤');
  for(const key of ['forgeWeaponAlbumV1','forgeLegendBlueprintsV1','forgeLegendCollectionV1','forgeTownLayoutsV1'])if(!Array.isArray(parse(key,[])))throw new Error('收藏內容錯誤');
+ const medals=parse('forgeFestivalBadgesV1',[]);if(!Array.isArray(medals)||medals.some(i=>!Number.isInteger(i)||i<0||i>3))throw new Error('紀念章收藏內容錯誤');
  const dishes=parse('forgeDishAlbumV1',[]);if(!Array.isArray(dishes)||dishes.some(k=>!validAlbumKey(k)))throw new Error('料理收藏內容錯誤');if(parse('forgeTownLayoutsV1',[]).length>40)throw new Error('版型數量過多');return {value:v,saves:saves.length,records:records.length};
 }
 function downloadBackup(){
@@ -4810,7 +4811,7 @@ const SEASON_FESTIVALS=[
 ];
 function cleanFestivalState(raw,currentDay=day){
  const row=x=>{if(!x||!Number.isSafeInteger(x.start)||x.start<1||x.start>currentDay||(x.start-1)%3!==0||x.season!==seasonIndex(x.start))return null;const defs=SEASON_FESTIVALS[x.season];return {start:x.start,season:x.season,progress:[0,1].map(i=>Math.max(0,Math.min(defs.goals[i].n,(Number.isFinite(Number(x.progress?.[i]))?Math.floor(Number(x.progress[i])):0)))),claimed:!!x.claimed,notified:!!x.notified};};
- return {active:row(raw?.active),past:(Array.isArray(raw?.past)?raw.past:[]).map(row).filter(Boolean).filter((x,i,a)=>a.findIndex(y=>y.start===x.start)===i).slice(-8),badges:[...new Set((Array.isArray(raw?.badges)?raw.badges:[]).filter(x=>Number.isInteger(x)&&x>=0&&x<4))]};
+ return {active:row(raw?.active),past:(Array.isArray(raw?.past)?raw.past:[]).map(row).filter(Boolean).filter((x,i,a)=>a.findIndex(y=>y.start===x.start)===i).slice(-8),readDays:[...new Set((Array.isArray(raw?.readDays)?raw.readDays:[]).filter(d=>Number.isSafeInteger(d)&&d>=1&&d<=currentDay))].slice(-24),badges:[...new Set((Array.isArray(raw?.badges)?raw.badges:[]).filter(x=>Number.isInteger(x)&&x>=0&&x<4))]};
 }
 function syncFestival(){
  if(day<1||!kitchen)return null;if(!kitchen.festivals)kitchen.festivals={active:null,past:[],badges:[]};const state=kitchen.festivals,start=day-seasonDay()+1;
@@ -4830,16 +4831,37 @@ function festivalRewardText(season){const f=SEASON_FESTIVALS[season],d=DECOR_BY_
 function claimFestival(start){
  const state=syncFestival();if(!state)return false;const row=[state.active,...state.past].find(x=>x.start===start);if(!row||row.claimed||day<row.start+2||!festivalComplete(row))return false;
  row.claimed=true;const f=SEASON_FESTIVALS[row.season],d=DECOR_BY_ID.get(f.gift);let gold=f.gold;if(!cityState)cityState=freshCity();const owned=cityState.owned[f.gift]||0;if(d&&owned<cityPlacementLimit(f.gift))cityState.owned[f.gift]=owned+1;else if(d)gold+=d.price;
- if(!state.badges.includes(row.season))state.badges.push(row.season);coins+=gold;earned+=gold;dEarn+=gold;cityRevision++;saveHi();saveNow();renderFestival();if($('townP').style.display==='flex')renderTown();toast('🎪 '+f.name+'獎勵已收下：'+gold+' 金幣，裝飾已加入收藏（同款已足量時折算金幣）。');return true;
+ if(!state.badges.includes(row.season))state.badges.push(row.season);persistFestivalBadges();coins+=gold;earned+=gold;dEarn+=gold;cityRevision++;saveHi();saveNow();renderFestival();if($('townP').style.display==='flex')renderTown();toast('🎪 '+f.name+'獎勵已收下：'+gold+' 金幣，裝飾已加入收藏（同款已足量時折算金幣）。');return true;
 }
 function festivalRowHTML(row){const f=SEASON_FESTIVALS[row.season],ready=festivalComplete(row),claimable=ready&&!row.claimed&&day>=row.start+2;
  return '<section class="festival-card"><h3>'+SEASONS[row.season].icon+' '+f.name+' · 第 '+(row.start+2)+' 天</h3>'+f.goals.map((g,i)=>'<label>'+g.text+' <b>'+row.progress[i]+'/'+g.n+'</b><progress max="'+g.n+'" value="'+row.progress[i]+'"></progress></label>').join('')+'<p>'+festivalRewardText(row.season)+'</p><button class="exp-wide" '+(!claimable?'disabled':'')+' onclick="claimFestival('+row.start+')">'+(row.claimed?'已領取':claimable?'領取節慶獎勵':ready?'第 '+(row.start+2)+' 天開放領獎':'目標尚未完成')+'</button></section>';
 }
 function renderFestival(){
- const state=syncFestival();if(!state)return;const row=state.active,next=(row.season+1)%4,f=SEASON_FESTIVALS[next];$('festivalTitle').textContent='四季節慶與預告';$('festivalBody').innerHTML=festivalRowHTML(row)+'<section class="festival-next"><h3>下一季預告 · '+f.name+'</h3><p>第 '+(row.start+3)+' 天開始準備，第 '+(row.start+5)+' 天領獎。</p><p>'+f.goals.map(g=>g.text+' ×'+g.n).join('；')+'</p><p>'+f.hint+'</p><p>獎勵：'+festivalRewardText(next)+'</p></section><p>本局紀念章：'+(state.badges.map(i=>SEASONS[i].name).join('、')||'尚未取得')+'。未完成不扣愛心，已完成獎勵保留最近8季可補領。</p>'+state.past.filter(x=>festivalComplete(x)&&!x.claimed).map(festivalRowHTML).join('');
+ const state=syncFestival();if(!state)return;const row=state.active,next=(row.season+1)%4,f=SEASON_FESTIVALS[next];$('festivalTitle').textContent='四季節慶與預告';$('festivalBody').innerHTML=festivalRowHTML(row)+'<section class="festival-next"><h3>下一季預告 · '+f.name+'</h3><p>第 '+(row.start+3)+' 天開始準備，第 '+(row.start+5)+' 天領獎。</p><p>'+f.goals.map(g=>g.text+' ×'+g.n).join('；')+'</p><p>'+f.hint+'</p><p>獎勵：'+festivalRewardText(next)+'</p></section><p>本局紀念章：'+(state.badges.map(i=>SEASONS[i].name).join('、')||'尚未取得')+'。未完成不扣愛心，已完成獎勵保留最近8季可補領。</p><button class="exp-wide" onclick="openFestivalBadgeAlbum()">查看圖鑑館紀念章</button>'+state.past.filter(x=>festivalComplete(x)&&!x.claimed).map(festivalRowHTML).join('');
 }
-function openFestival(){if(day<1)return;closeP('seasonP');renderFestival();$('festivalP').style.display='flex';syncTownMotion();}
+function openFestival(){if(day<1)return;markFestivalRead();closeP('seasonP');renderFestival();$('festivalP').style.display='flex';syncTownMotion();}
 function renderFestivalNotice(){const state=syncFestival();if(!state)return;const row=state.active,next=(row.season+1)%4;$('festivalNotice').textContent='本季：'+SEASON_FESTIVALS[row.season].name+'（第 '+(row.start+2)+' 天領獎）；下一季：'+SEASON_FESTIVALS[next].name+'。';}
+const FESTIVAL_BADGE_NAMES=['春芽花冠章','海風珍貝章','豐收楓葉章','暖爐雪晶章'];
+function festivalBadgeArt(si){
+ const colors=[['#547b47','#b9d68a'],['#316d79','#9bd9d5'],['#914c32','#f4b668'],['#435c8b','#b9def4']][si];if(!colors)return '';
+ const symbols=[
+ '<path fill="#416741" d="M30 27h4v22h-4zM23 36h7v5h-7zM34 40h7v5h-7z"/><path fill="#d985a4" d="M27 14h10v8h8v10h-8v8H27v-8h-8V22h8z"/><path fill="#f7c2c0" d="M28 16h7v8h8v6h-8v8h-6v-8h-8v-6h7z"/><path fill="#a96083" d="M28 31h9v6h-9z"/><path fill="#fff0a6" d="M28 24h9v9h-9z"/><path fill="#fff9d5" d="M29 25h4v4h-4z"/>',
+ '<path fill="#eee0b3" d="M18 23h4v-5h7v-3h7v3h7v5h4v15h-4v5H22v-5h-4z"/><path fill="#c8a573" d="M22 35h21v7H22zM29 42h7v5h-7z"/><path fill="#fff3cb" d="M22 23h4v11h-4zM28 19h4v15h-4zM35 20h4v14h-4zM41 24h3v10h-3z"/><path fill="#a9805d" d="M25 28h2v9h-2zM32 23h2v14h-2zM39 28h2v9h-2z"/><path fill="#73b8c4" d="M17 46h10v2H17zM37 46h11v2H37z"/>',
+ '<path fill="#78402d" d="M30 10h4v11h5v-5h4v11h8v5h-5v7H36v8h-4v6h-3V40H19v-7h-5v-5h8V17h5v5h3z"/><path fill="#e8863d" d="M31 14h2v11h6v-5h2v9h7v2h-5v6H33v10h-2V37H22v-6h-5v-1h8v-9h1v4h5z"/><path fill="#ffce71" d="M31 20h2v17h-2zM25 29h4v3h-4zM35 29h5v3h-5z"/>',
+ '<path fill="#7499c5" d="M29 11h6v9h7v-4h5v8h-7v5h11v6H40v5h7v8h-5v-4h-7v9h-6v-9h-7v4h-5v-8h7v-5H13v-6h11v-5h-7v-8h5v4h7z"/><path fill="#e2f7ff" d="M31 13h2v14h5v-5h5v-3h2v3h-5v7H33v2h16v2H33v2h7v7h5v3h-2v-3h-5v-5h-5v14h-2V37h-5v5h-5v3h-2v-3h5v-7h7v-2H15v-2h16v-2h-7v-7h-5v-3h2v3h5v5h5z"/><path fill="#a6d7ef" d="M29 29h6v6h-6z"/>'
+ ][si];
+ return '<svg viewBox="0 0 64 72" shape-rendering="crispEdges" role="img" aria-label="'+FESTIVAL_BADGE_NAMES[si]+'"><path fill="#523d3c" d="M15 46h14v23l-7-5-7 5zM35 46h14v23l-7-5-7 5z"/><path fill="#a8665d" d="M18 48h8v15l-4-3-4 3zM38 48h8v15l-4-3-4 3z"/><path fill="#483c32" d="M17 2h30v4h8v7h5v34h-5v8h-8v5H17v-5H9v-8H4V13h5V6h8z"/><path fill="#c7954f" d="M18 5h28v4h8v6h3v30h-5v8h-8v4H20v-4h-8v-8H7V15h5V9h6z"/><path fill="#ffdf91" d="M18 5h28v3H19v4h-6v6H9v24H7V15h5V9h6z"/><path fill="#86603c" d="M52 17h3v27h-5v7h-8v4H20v-3h22v-4h7v-6h3z"/><path fill="'+colors[0]+'" d="M21 12h22v4h7v29h-7v5H21v-5h-7V16h7z"/><path fill="'+colors[1]+'" opacity=".22" d="M21 13h22v4H19v24h-4V17h6z"/>'+symbols+'<path fill="#fff0b4" d="M13 13h3v3h-3zM48 13h3v3h-3zM16 48h3v3h-3zM45 48h3v3h-3z"/></svg>';
+}
+function readFestivalBadgeCollection(){try{return new Set(JSON.parse(localStorage.getItem('forgeFestivalBadgesV1')||'[]').filter(i=>Number.isInteger(i)&&i>=0&&i<4));}catch{return new Set();}}
+function persistFestivalBadges(){if(sandboxSession||testRun)return;const all=readFestivalBadgeCollection();for(const i of kitchen?.festivals?.badges||[])all.add(i);try{localStorage.setItem('forgeFestivalBadgesV1',JSON.stringify([...all].sort()));}catch{}}
+function albumFestivalBadges(){if(!albumFromHome)return new Set(kitchen?.festivals?.badges||[]);const all=readFestivalBadgeCollection();if(!sandboxSession){for(const entry of saves)for(const i of entry.state?.restaurant?.kitchen?.festivals?.badges||[])if(Number.isInteger(i)&&i>=0&&i<4)all.add(i);if(!testRun)for(const i of kitchen?.festivals?.badges||[])all.add(i);}return all;}
+function renderFestivalBadgeAlbum(){const badges=albumFestivalBadges();$('albumProgress').textContent=(albumFromHome?'跨局紀念章收藏':'本局紀念章收藏')+' · '+badges.size+'/4';$('albumWeapons').innerHTML='<div class="festival-badge-grid">'+FESTIVAL_BADGE_NAMES.map((name,i)=>'<button class="festival-badge-card '+(badges.has(i)?'collected':'uncollected')+'" onclick="inspectFestivalBadge('+i+')"><span class="festival-badge-art">'+festivalBadgeArt(i)+'</span><b>'+name+'</b><small>'+SEASON_FESTIVALS[i].name+' · '+(badges.has(i)?'已取得':'未取得')+'</small></button>').join('')+'</div>';}
+function inspectFestivalBadge(i){if(!Number.isInteger(i)||i<0||i>3)return;const found=albumFestivalBadges().has(i),f=SEASON_FESTIVALS[i];$('festivalBadgeTitle').textContent=FESTIVAL_BADGE_NAMES[i];$('festivalBadgeBody').innerHTML='<div class="festival-badge-large '+(found?'collected':'uncollected')+'">'+festivalBadgeArt(i)+'</div><p>'+(found?'已取得 · ':'尚未取得 · ')+f.name+'</p><p>在同一季完成：'+f.goals.map(g=>g.text+' ×'+g.n).join('、')+'。</p><p>季節第三天領取節慶獎勵時點亮。</p>';$('festivalBadgeP').style.display='flex';}
+function openFestivalBadgeAlbum(){closeP('festivalP');openWeaponAlbum();setArchiveCategory('badges');}
+function festivalBoardArt(){return '<svg viewBox="0 0 96 88" shape-rendering="crispEdges" aria-hidden="true"><ellipse cx="48" cy="82" rx="38" ry="4" fill="#1c372e" opacity=".3"/><path fill="#493727" d="M20 33h10v49H20zM68 33h10v49H68z"/><path fill="#9f7747" d="M23 36h4v44h-4zM71 36h4v44h-4z"/><path fill="#392e25" d="M5 4h86v6h4v49h-4v5H5v-5H1V10h4z"/><path fill="#aa7848" d="M7 7h82v51H7z"/><path fill="#e0b777" d="M7 7h82v4H11v43H7z"/><path fill="#705135" d="M11 54h74V12h4v46H11z"/><path fill="#425a49" d="M14 15h68v35H14z"/><path fill="#334637" d="M16 18h64v3H16zM16 45h64v3H16z"/><path fill="#f0cf87" d="M10 11h3v3h-3zM83 11h3v3h-3zM10 51h3v3h-3zM83 51h3v3h-3z"/><text x="48" y="32" font-size="13" font-family="serif" font-weight="bold" text-anchor="middle" fill="#ffe8ad">四季節慶</text><text x="48" y="46" font-size="11" font-family="serif" text-anchor="middle" fill="#f0ddb0">與預告</text><path fill="#b28d58" d="M22 68h3v11h-3zM70 63h3v16h-3z"/></svg>';}
+function festivalBoardReminder(){const state=syncFestival();return !!state&&[1,3].includes(seasonDay())&&!(state.readDays||[]).includes(day);}
+function renderFestivalBoard(){const board=$('townFestivalBoard');board.hidden=day<1;if(!board.dataset.built){board.innerHTML=festivalBoardArt()+'<span class="festival-board-alert" aria-hidden="true"><svg viewBox="0 0 24 30" shape-rendering="crispEdges"><path fill="#473329" d="M4 0h16v4h4v20h-7l-5 6-1-6H0V4h4z"/><path fill="#f7ce62" d="M5 3h14v3h2v15h-7l-2 4v-4H3V6h2z"/><path fill="#74472f" d="M10 7h5v8h-5zM10 17h5v3h-5z"/></svg></span>';board.dataset.built='true';}const unread=festivalBoardReminder(),kind=seasonDay()===3?'下一季預告':'本季目標';board.dataset.unread=String(unread);board.title=unread?'尚未閱讀：'+kind:'查看四季節慶與預告';board.setAttribute('aria-label','四季節慶與預告告示牌'+(unread?'，有新的'+kind:''));}
+function markFestivalRead(){const state=syncFestival();if(!state)return;if(!state.readDays)state.readDays=[];if([1,3].includes(seasonDay())&&!state.readDays.includes(day)){state.readDays.push(day);state.readDays=state.readDays.slice(-24);saveNow();}renderFestivalBoard();}
 
 
 /* 後台設定 */
@@ -4888,7 +4910,7 @@ lowEffects=localStorage.getItem("forgeLowEffectsV1")==="1";document.body.classLi
 }
 
 function showHelp(){$("help").style.display="flex"}
-const townModalIds=['festivalP','architectConfirmP','friendsP','forgeSettlementP','backupP','blueprintGoalP','leaderboardP','leaderboardDetailP','ultimateArtP','chestP','townLootP','townSkillP','weaponStatsP','expeditionP','legendBlueprintP','blueprintProjectP','avatarCreatorP','weaponAlbumP','weaponInspectP','seasonP','help','shopP','qP','colP','sk','bagP','rw','gcP','recP','nm','svP','pw','decorShopP','decorInventoryP','cityLayoutsP','cityLayoutPreviewP','cf','ov','greenhouseP','seedP'];
+const townModalIds=['festivalBadgeP','festivalP','architectConfirmP','friendsP','forgeSettlementP','backupP','blueprintGoalP','leaderboardP','leaderboardDetailP','ultimateArtP','chestP','townLootP','townSkillP','weaponStatsP','expeditionP','legendBlueprintP','blueprintProjectP','avatarCreatorP','weaponAlbumP','weaponInspectP','seasonP','help','shopP','qP','colP','sk','bagP','rw','gcP','recP','nm','svP','pw','decorShopP','decorInventoryP','cityLayoutsP','cityLayoutPreviewP','cf','ov','greenhouseP','seedP'];
 function dismissModal(id){
  if(id==='forgeSettlementP'){closeP(id);showTown();}
  else if(id==='avatarCreatorP')cancelAvatar();

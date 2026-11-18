@@ -6,7 +6,7 @@ const SEASON_FESTIVALS=[
 ];
 function cleanFestivalState(raw,currentDay=day){
  const row=x=>{if(!x||!Number.isSafeInteger(x.start)||x.start<1||x.start>currentDay||(x.start-1)%3!==0||x.season!==seasonIndex(x.start))return null;const defs=SEASON_FESTIVALS[x.season];return {start:x.start,season:x.season,progress:[0,1].map(i=>Math.max(0,Math.min(defs.goals[i].n,(Number.isFinite(Number(x.progress?.[i]))?Math.floor(Number(x.progress[i])):0)))),claimed:!!x.claimed,notified:!!x.notified};};
- return {active:row(raw?.active),past:(Array.isArray(raw?.past)?raw.past:[]).map(row).filter(Boolean).filter((x,i,a)=>a.findIndex(y=>y.start===x.start)===i).slice(-8),badges:[...new Set((Array.isArray(raw?.badges)?raw.badges:[]).filter(x=>Number.isInteger(x)&&x>=0&&x<4))]};
+ return {active:row(raw?.active),past:(Array.isArray(raw?.past)?raw.past:[]).map(row).filter(Boolean).filter((x,i,a)=>a.findIndex(y=>y.start===x.start)===i).slice(-8),readDays:[...new Set((Array.isArray(raw?.readDays)?raw.readDays:[]).filter(d=>Number.isSafeInteger(d)&&d>=1&&d<=currentDay))].slice(-24),badges:[...new Set((Array.isArray(raw?.badges)?raw.badges:[]).filter(x=>Number.isInteger(x)&&x>=0&&x<4))]};
 }
 function syncFestival(){
  if(day<1||!kitchen)return null;if(!kitchen.festivals)kitchen.festivals={active:null,past:[],badges:[]};const state=kitchen.festivals,start=day-seasonDay()+1;
@@ -26,13 +26,13 @@ function festivalRewardText(season){const f=SEASON_FESTIVALS[season],d=DECOR_BY_
 function claimFestival(start){
  const state=syncFestival();if(!state)return false;const row=[state.active,...state.past].find(x=>x.start===start);if(!row||row.claimed||day<row.start+2||!festivalComplete(row))return false;
  row.claimed=true;const f=SEASON_FESTIVALS[row.season],d=DECOR_BY_ID.get(f.gift);let gold=f.gold;if(!cityState)cityState=freshCity();const owned=cityState.owned[f.gift]||0;if(d&&owned<cityPlacementLimit(f.gift))cityState.owned[f.gift]=owned+1;else if(d)gold+=d.price;
- if(!state.badges.includes(row.season))state.badges.push(row.season);coins+=gold;earned+=gold;dEarn+=gold;cityRevision++;saveHi();saveNow();renderFestival();if($('townP').style.display==='flex')renderTown();toast('🎪 '+f.name+'獎勵已收下：'+gold+' 金幣，裝飾已加入收藏（同款已足量時折算金幣）。');return true;
+ if(!state.badges.includes(row.season))state.badges.push(row.season);persistFestivalBadges();coins+=gold;earned+=gold;dEarn+=gold;cityRevision++;saveHi();saveNow();renderFestival();if($('townP').style.display==='flex')renderTown();toast('🎪 '+f.name+'獎勵已收下：'+gold+' 金幣，裝飾已加入收藏（同款已足量時折算金幣）。');return true;
 }
 function festivalRowHTML(row){const f=SEASON_FESTIVALS[row.season],ready=festivalComplete(row),claimable=ready&&!row.claimed&&day>=row.start+2;
  return '<section class="festival-card"><h3>'+SEASONS[row.season].icon+' '+f.name+' · 第 '+(row.start+2)+' 天</h3>'+f.goals.map((g,i)=>'<label>'+g.text+' <b>'+row.progress[i]+'/'+g.n+'</b><progress max="'+g.n+'" value="'+row.progress[i]+'"></progress></label>').join('')+'<p>'+festivalRewardText(row.season)+'</p><button class="exp-wide" '+(!claimable?'disabled':'')+' onclick="claimFestival('+row.start+')">'+(row.claimed?'已領取':claimable?'領取節慶獎勵':ready?'第 '+(row.start+2)+' 天開放領獎':'目標尚未完成')+'</button></section>';
 }
 function renderFestival(){
- const state=syncFestival();if(!state)return;const row=state.active,next=(row.season+1)%4,f=SEASON_FESTIVALS[next];$('festivalTitle').textContent='四季節慶與預告';$('festivalBody').innerHTML=festivalRowHTML(row)+'<section class="festival-next"><h3>下一季預告 · '+f.name+'</h3><p>第 '+(row.start+3)+' 天開始準備，第 '+(row.start+5)+' 天領獎。</p><p>'+f.goals.map(g=>g.text+' ×'+g.n).join('；')+'</p><p>'+f.hint+'</p><p>獎勵：'+festivalRewardText(next)+'</p></section><p>本局紀念章：'+(state.badges.map(i=>SEASONS[i].name).join('、')||'尚未取得')+'。未完成不扣愛心，已完成獎勵保留最近8季可補領。</p>'+state.past.filter(x=>festivalComplete(x)&&!x.claimed).map(festivalRowHTML).join('');
+ const state=syncFestival();if(!state)return;const row=state.active,next=(row.season+1)%4,f=SEASON_FESTIVALS[next];$('festivalTitle').textContent='四季節慶與預告';$('festivalBody').innerHTML=festivalRowHTML(row)+'<section class="festival-next"><h3>下一季預告 · '+f.name+'</h3><p>第 '+(row.start+3)+' 天開始準備，第 '+(row.start+5)+' 天領獎。</p><p>'+f.goals.map(g=>g.text+' ×'+g.n).join('；')+'</p><p>'+f.hint+'</p><p>獎勵：'+festivalRewardText(next)+'</p></section><p>本局紀念章：'+(state.badges.map(i=>SEASONS[i].name).join('、')||'尚未取得')+'。未完成不扣愛心，已完成獎勵保留最近8季可補領。</p><button class="exp-wide" onclick="openFestivalBadgeAlbum()">查看圖鑑館紀念章</button>'+state.past.filter(x=>festivalComplete(x)&&!x.claimed).map(festivalRowHTML).join('');
 }
-function openFestival(){if(day<1)return;closeP('seasonP');renderFestival();$('festivalP').style.display='flex';syncTownMotion();}
+function openFestival(){if(day<1)return;markFestivalRead();closeP('seasonP');renderFestival();$('festivalP').style.display='flex';syncTownMotion();}
 function renderFestivalNotice(){const state=syncFestival();if(!state)return;const row=state.active,next=(row.season+1)%4;$('festivalNotice').textContent='本季：'+SEASON_FESTIVALS[row.season].name+'（第 '+(row.start+2)+' 天領獎）；下一季：'+SEASON_FESTIVALS[next].name+'。';}

@@ -1,6 +1,6 @@
 
 
-const BACKUP_KEYS=['forgeSaves','forgeRecs','forgeHi','forgeName','forgeAvatarPresetV1','forgeWeaponAlbumV1','forgeLegendBlueprintsV1','forgeLegendCollectionV1','forgeTownLayoutsV1','forgeDishAlbumV1'];
+const BACKUP_KEYS=['forgeSaves','forgeRecs','forgeHi','forgeName','forgeAvatarPresetV1','forgeWeaponAlbumV1','forgeLegendBlueprintsV1','forgeLegendCollectionV1','forgeTownLayoutsV1','forgeDishAlbumV1','forgeFestivalBadgesV1'];
 let pendingBackup=null,lowEffects=localStorage.getItem('forgeLowEffectsV1')==='1';
 function captureBackup(){
  if(sandboxSession||testRun)throw new Error('後台測試資料不會匯出，請先回到首頁');saveNow();return {format:'ForgeMasterBackup',version:1,exportedAt:new Date().toISOString(),data:Object.fromEntries(BACKUP_KEYS.map(k=>[k,localStorage.getItem(k)]))};
@@ -9,7 +9,7 @@ function validateBackup(text){
  if(typeof text!=='string'||text.length>8000000)throw new Error('備份檔過大或格式錯誤');let v;try{v=JSON.parse(text);}catch{throw new Error('檔案不是有效的 JSON 備份');}
  if(v?.format!=='ForgeMasterBackup'||v.version!==1||!v.data||typeof v.data!=='object'||Array.isArray(v.data))throw new Error('這不是支援的 Forge Master 備份');
  if(Object.keys(v.data).some(k=>!BACKUP_KEYS.includes(k)))throw new Error('備份含有不支援的欄位');
- if(!Object.hasOwn(v.data,'forgeDishAlbumV1'))v.data.forgeDishAlbumV1=null;for(const key of BACKUP_KEYS)if(v.data[key]!==null&&typeof v.data[key]!=='string')throw new Error('備份欄位不完整：'+key);
+ if(!Object.hasOwn(v.data,'forgeFestivalBadgesV1'))v.data.forgeFestivalBadgesV1=null;if(!Object.hasOwn(v.data,'forgeDishAlbumV1'))v.data.forgeDishAlbumV1=null;for(const key of BACKUP_KEYS)if(v.data[key]!==null&&typeof v.data[key]!=='string')throw new Error('備份欄位不完整：'+key);
  const number=(n,min=0,max=1e15)=>typeof n==='number'&&Number.isFinite(n)&&n>=min&&n<=max;
  const item=w=>{if(w===null)return true;if(!w||typeof w!=='object')return false;if(w.k==='w')return (!('stars'in w)||Number.isInteger(w.stars)&&w.stars>=0&&w.stars<=3)&&(!('starXp'in w)||Number.isSafeInteger(w.starXp)&&w.starXp>=0&&w.starXp<=1000000)&&Number.isInteger(w.c)&&w.c>=0&&w.c<10&&Number.isInteger(w.t)&&w.t>=0&&w.t<5&&(!('legendId'in w)||validLegendId(w.legendId)&&w.legendCore&&['atk','def','spd'].every(k=>number(w.legendCore[k],1,1e9)));if(w.k==='o'||w.k==='d')return Number.isInteger(w.t)&&w.t>=0&&w.t<5;if(w.k==='p')return Number.isInteger(w.s)&&w.s>=0&&w.s<3&&Number.isInteger(w.t)&&w.t>=0&&w.t<5;if(w.k==='m')return Number.isInteger(w.s)&&w.s>=0&&w.s<=3;if(['f','u','z','l'].includes(w.k))return true;if(w.k==='seed'||w.k==='ess')return validElement(w.element);return w.k==='bp'&&validLegendId(w.id);};
  const parse=(key,fallback)=>{try{return v.data[key]===null?fallback:JSON.parse(v.data[key]);}catch{throw new Error('備份內容損壞：'+key);}};
@@ -27,6 +27,7 @@ function validateBackup(text){
  if(records.some(r=>!r||!number(r.score)||typeof r.name!=='string'||!Array.isArray(r.best)||r.best.length!==10||!r.best.every((w,c)=>!w||item({...w,k:'w',c}))))throw new Error('歷史紀錄內容錯誤');
  if(v.data.forgeHi!==null&&!/^\d+(?:\.\d+)?$/.test(v.data.forgeHi))throw new Error('最高分格式錯誤');
  for(const key of ['forgeWeaponAlbumV1','forgeLegendBlueprintsV1','forgeLegendCollectionV1','forgeTownLayoutsV1'])if(!Array.isArray(parse(key,[])))throw new Error('收藏內容錯誤');
+ const medals=parse('forgeFestivalBadgesV1',[]);if(!Array.isArray(medals)||medals.some(i=>!Number.isInteger(i)||i<0||i>3))throw new Error('紀念章收藏內容錯誤');
  const dishes=parse('forgeDishAlbumV1',[]);if(!Array.isArray(dishes)||dishes.some(k=>!validAlbumKey(k)))throw new Error('料理收藏內容錯誤');if(parse('forgeTownLayoutsV1',[]).length>40)throw new Error('版型數量過多');return {value:v,saves:saves.length,records:records.length};
 }
 function downloadBackup(){

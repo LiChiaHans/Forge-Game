@@ -22,7 +22,7 @@ function archiveSortValueHTML(category,id,tier,legend=false){
  return '<small class="album-sort-value" data-sort-field="'+key+'" data-sort-value="'+value+'" title="'+ARCHIVE_SORT_FIELDS[category][key]+' '+value+(percent?'%':'')+'">'+text+'</small>';
 }
 function renderArchiveSort(){
- const panel=$('archiveSort');panel.hidden=!expandedGameEnabled()||albumTier===-2;if(panel.hidden)return;const category=archiveCategory,select=$('archiveSortSelect');
+ const panel=$('archiveSort');panel.hidden=!expandedGameEnabled()||albumTier===-2||archiveCategory==='badges';if(panel.hidden)return;const category=archiveCategory,select=$('archiveSortSelect');
  $('archiveSortLabel').textContent=category==='weapons'?'武器排序':'料理排序';select.setAttribute('aria-label',category==='weapons'?'武器排序':'料理排序');
  select.innerHTML='<option value="default">原始順序</option>'+Object.entries(ARCHIVE_SORT_FIELDS[category]).flatMap(([key,label])=>[['desc','高到低'],['asc','低到高']].map(([direction,text])=>'<option value="'+key+':'+direction+'">'+label+' · '+text+'</option>')).join('');select.value=archiveSortState[category];
 }
