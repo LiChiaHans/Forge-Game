@@ -4,7 +4,7 @@ let expeditionLab={weapon:'n0',tier:4,stacks:0,element:'none',stage:1};
 function expeditionCleared(stage){return stage<20?expeditionState.cleared.includes(stage):stage<20+(expeditionState.endless||0);}
 function endlessMonster(stage){
  const wave=Math.max(1,Math.floor(stage)-19),kind=['dragon','golem','wolf','knight'][(wave-1)%4],names={dragon:'星海古龍',golem:'界域巨像',wolf:'虛空獵王',knight:'不朽王鎧'},choices=['none',...ELEMENT_IDS];
- return {name:names[kind]+' · '+wave,area:'無限試煉',kind,color:['#dbacdc','#9bd5d2','#c3a7ee','#e7cf91'][(wave-1)%4],hp:5000+900*wave+90*wave*wave,atk:310+28*wave+2*wave*wave,def:220+16*wave+wave*wave,spd:Math.floor(115+6*wave+.25*wave*wave),gold:2200+300*wave+25*wave*wave,element:choices[((stage*17+Math.max(1,day)*13)>>>0)%choices.length],endless:wave};
+ return {name:names[kind]+' · '+wave,area:'無限試煉',kind,color:['#dbacdc','#9bd5d2','#c3a7ee','#e7cf91'][(wave-1)%4],hp:5000+900*wave+90*wave*wave,atk:310+28*wave+2*wave*wave,def:220+16*wave+wave*wave,spd:Math.floor(115+6*wave+.25*wave*wave),gold:2200+300*wave+25*wave*wave,element:choices[((stage*17+Math.max(1,day)*13)>>>0)%choices.length],endless:wave,traitIndex:(wave-1)%10};
 }
 function labWeapon(){
  if(!sandboxSession)return null;const t=expeditionLab.tier,key=expeditionLab.weapon;let w;

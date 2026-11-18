@@ -12,6 +12,7 @@ function weaponParts(w){
 function weaponStats(w){
  const parts=weaponParts(w),v=isLegend(w)?{...w.legendCore}:{atk:5,def:3,spd:3};
  if(!isLegend(w))parts.forEach(p=>Object.keys(v).forEach(k=>v[k]+=MOLD_STATS[p.s][k]*ORE_POWER[p.t]));
+ if(!isLegend(w)){const role=weaponTrait(w).stats;Object.keys(v).forEach(k=>v[k]*=role[k]||1);}
  const gemPower=Array.isArray(w.dts)?w.dts.reduce((a,t)=>a+.05*(Math.max(0,Math.min(4,t))+1),0):Math.max(0,w.b||0)/6;
  if(!isLegend(w))Object.keys(v).forEach(k=>v[k]=Math.round(v[k]*(1+gemPower)));
  Object.keys(v).forEach(k=>v[k]=Math.round(v[k]*(1+weaponStarBonus(w))));
@@ -19,7 +20,7 @@ function weaponStats(w){
  return {...v,stacks,arcane:effective*2,ward:effective*3,estimated:!isLegend(w)&&!Array.isArray(w.parts)};
 }
 function statsHTML(w){
- const s=weaponStats(w);return '<div class="weapon-stats">'+Object.entries(STAT_NAMES).map(([k,n])=>'<div><small>'+({atk:'⚔',def:'🛡',spd:'💨'}[k])+' '+n+'</small><b>'+s[k]+'</b></div>').join('')+'</div>'+weaponMasteryHTML(w);
+ const s=weaponStats(w);return '<div class="weapon-stats">'+Object.entries(STAT_NAMES).map(([k,n])=>'<div><small>'+({atk:'⚔',def:'🛡',spd:'💨'}[k])+' '+n+'</small><b>'+s[k]+'</b></div>').join('')+'</div>'+weaponMasteryHTML(w)+weaponTraitHTML(w);
 }
 function weaponEnchantHTML(w){
  const s=weaponStats(w);return elementWeaponHTML(w)+'<div class="weapon-enchant"><b>✦ 奧術附魔 '+s.stacks+' 層</b><span>每次攻擊額外 '+s.arcane+' 奧術傷害 · 開戰護盾 '+s.ward+'</span><span>附魔額外售價 +'+(w.m||0)+' 金幣（訂單、商人與季節加成另計）</span><small>每層提供 2 傷害、3 護盾，戰鬥效果最多計算 20 層；售價加成不受此上限限制。</small></div>';

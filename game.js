@@ -1228,15 +1228,15 @@ function stage20_battleTick(b){
  if(b.heroClock<=b.enemyClock){
   // Time still passes while guarding, but a missed attack is never banked for later.
   if(b.guarding){b.heroClock+=1000/Math.max(1,s.spd);return;}
-  const mult=elementMultiplier(heroElement,enemyElement),base=Math.max(1,Math.round(s.atk*mult)-Math.floor(b.enemyDef*.6)),physical=b.bossHardened?Math.max(1,Math.round(base*.4)):base,hardened=!!b.bossHardened,damage=Math.min(b.enemyHp,physical+s.arcane);b.bossHardened=false;b.enemyHp-=damage;b.heroClock+=1000/Math.max(1,s.spd);
-  row={actor:'hero',damage,element:heroElement,multiplier:mult,text:elementName(heroElement)+'屬性命中 '+damage+' 傷害（×'+mult.toFixed(2)+'）'+(hardened?' · 硬化抵擋部分物理傷害':'')};
+  const profile=weaponAttackProfile(b),mult=elementMultiplier(heroElement,enemyElement),base=Math.max(1,Math.round(s.atk*mult*profile.power)-Math.floor(b.enemyDef*(1-profile.ignore)*.6)),physical=Math.max(1,Math.round(base*(b.bossHardened?.4:1)*bossPhysicalFactor(b))),hardened=!!b.bossHardened,raw=physical+s.arcane+profile.arcane+profile.counter,absorbed=Math.min(b.enemyWard||0,raw),damage=Math.min(b.enemyHp,raw-absorbed);b.enemyWard=Math.max(0,(b.enemyWard||0)-absorbed);b.bossHardened=false;b.enemyHp-=damage;b.heroClock+=1000/Math.max(1,s.spd);
+  row={actor:'hero',damage,element:heroElement,multiplier:mult,text:elementName(heroElement)+'屬性命中 '+damage+' 傷害（×'+mult.toFixed(2)+'）'+(hardened?' · 硬化抵擋部分物理傷害':'')+(profile.text?' · '+profile.text:'')+(absorbed?' · 敵盾吸收 '+absorbed:'')};applyHeroExtra(b,row);
  }else{
   b.enemyTurns=(b.enemyTurns||0)+1;const turn=b.enemyTurns,phase=(turn-1)%3,mult=elementMultiplier(enemyElement,heroElement),charge=m.kind==='dragon'&&phase===0,heavy=m.kind==='dragon'&&phase===1,hits=m.kind==='wolf'&&turn%3===0?2:1,power=heavy?2:hits===2?.6:1;
-  let damage=0,absorbed=0;
-  if(!charge){for(let k=0;k<hits;k++){let raw=Math.max(1,Math.round(m.atk*mult*power)-Math.floor(s.def*.6));if(b.guarding)raw=Math.max(1,Math.ceil(raw*.4));const block=Math.min(b.shield,raw);b.shield-=block;absorbed+=block;const hit=Math.min(b.hp,raw-block);b.hp-=hit;damage+=hit;}const defended=b.guarding;b.foodRecovered=Math.max(0,(b.foodRecovered||0)-damage);row={actor:'enemy',damage,absorbed,element:enemyElement,multiplier:mult,text:m.name+(heavy?' 蓄力重擊':hits===2?' 雙段連擊':'攻擊')+'造成 '+damage+' 傷害'+(defended?' · 防禦架勢減傷 60%':'')+(absorbed?' · 護盾吸收 '+absorbed:'')};}
+  let damage=0,absorbed=0;const traitPower=charge?1:bossAttackPower(b);
+  if(!charge){for(let k=0;k<hits;k++){let raw=Math.max(1,Math.round(m.atk*mult*power*traitPower)-Math.floor(s.def*.6));raw=weaponIncoming(b,raw);if(b.guarding)raw=Math.max(1,Math.ceil(raw*.4));const block=Math.min(b.shield,raw);b.shield-=block;absorbed+=block;const hit=Math.min(b.hp,raw-block);b.hp-=hit;damage+=hit;}b.enemyAttacks=(b.enemyAttacks||0)+1;const defended=b.guarding;b.foodRecovered=Math.max(0,(b.foodRecovered||0)-damage);row={actor:'enemy',damage,absorbed,element:enemyElement,multiplier:mult,text:m.name+(heavy?' 蓄力重擊':hits===2?' 雙段連擊':'攻擊')+'造成 '+damage+' 傷害'+(defended?' · 防禦架勢減傷 60%':'')+(absorbed?' · 護盾吸收 '+absorbed:'')};}
   else row={actor:'enemy',damage:0,absorbed:0,charge:true,text:m.name+' 正在蓄力，下一次將使用雙倍重擊！'};
   if(m.kind==='golem'&&turn%3===0){b.bossHardened=true;row.text+=' · 進入硬化';}
-  b.enemyClock+=1000/Math.max(1,m.spd);
+  b.enemyClock+=1000/Math.max(1,m.spd);applyBossAfterAction(b,row);
  }
  b.log.push({...row,hp:b.hp,shield:b.shield,enemyHp:b.enemyHp});checkBattleOutcome(b);
 }
@@ -1891,7 +1891,7 @@ function syncMonsterElements(){
  if(monsterElementDay===day&&monsterElements.length===EXPEDITIONS.length)return;
  const choices=['none',...ELEMENT_IDS];monsterElementDay=day;monsterElements=EXPEDITIONS.map(()=>day>0?choices[rnd(choices.length)]:'none');
 }
-function expeditionMonster(id){syncMonsterElements();return id>=20?endlessMonster(id):{...EXPEDITIONS[id],element:monsterElements[id]||'none'};}
+function expeditionMonster(id){syncMonsterElements();return id>=20?endlessMonster(id):{...EXPEDITIONS[id],traitIndex:id%10,element:monsterElements[id]||'none'};}
 function applyWeaponElement(w,i){const e=elementTiles.get(i);if(validElement(e))w.element=e;return w;}
 function elementBadge(e,cls=''){const color=validElement(e)?ELEMENTS[e].color:'#b8c3c9';return '<span class="element-badge '+cls+'" style="--element:'+color+'" aria-label="'+elementName(e)+'屬性">'+elementIcon(e)+'<b>'+elementName(e)+'</b></span>';}
 function elementWeaponHTML(w){const e=elementOf(w);return e==='none'?'<p class="element-weapon-note">無屬性</p>':'<div class="element-weapon-note">'+elementBadge(e)+'<span>屬性附魔 · 武器售價 +20%</span></div>';}
@@ -2896,6 +2896,7 @@ function weaponParts(w){
 function weaponStats(w){
  const parts=weaponParts(w),v=isLegend(w)?{...w.legendCore}:{atk:5,def:3,spd:3};
  if(!isLegend(w))parts.forEach(p=>Object.keys(v).forEach(k=>v[k]+=MOLD_STATS[p.s][k]*ORE_POWER[p.t]));
+ if(!isLegend(w)){const role=weaponTrait(w).stats;Object.keys(v).forEach(k=>v[k]*=role[k]||1);}
  const gemPower=Array.isArray(w.dts)?w.dts.reduce((a,t)=>a+.05*(Math.max(0,Math.min(4,t))+1),0):Math.max(0,w.b||0)/6;
  if(!isLegend(w))Object.keys(v).forEach(k=>v[k]=Math.round(v[k]*(1+gemPower)));
  Object.keys(v).forEach(k=>v[k]=Math.round(v[k]*(1+weaponStarBonus(w))));
@@ -2903,7 +2904,7 @@ function weaponStats(w){
  return {...v,stacks,arcane:effective*2,ward:effective*3,estimated:!isLegend(w)&&!Array.isArray(w.parts)};
 }
 function statsHTML(w){
- const s=weaponStats(w);return '<div class="weapon-stats">'+Object.entries(STAT_NAMES).map(([k,n])=>'<div><small>'+({atk:'⚔',def:'🛡',spd:'💨'}[k])+' '+n+'</small><b>'+s[k]+'</b></div>').join('')+'</div>'+weaponMasteryHTML(w);
+ const s=weaponStats(w);return '<div class="weapon-stats">'+Object.entries(STAT_NAMES).map(([k,n])=>'<div><small>'+({atk:'⚔',def:'🛡',spd:'💨'}[k])+' '+n+'</small><b>'+s[k]+'</b></div>').join('')+'</div>'+weaponMasteryHTML(w)+weaponTraitHTML(w);
 }
 function weaponEnchantHTML(w){
  const s=weaponStats(w);return elementWeaponHTML(w)+'<div class="weapon-enchant"><b>✦ 奧術附魔 '+s.stacks+' 層</b><span>每次攻擊額外 '+s.arcane+' 奧術傷害 · 開戰護盾 '+s.ward+'</span><span>附魔額外售價 +'+(w.m||0)+' 金幣（訂單、商人與季節加成另計）</span><small>每層提供 2 傷害、3 護盾，戰鬥效果最多計算 20 層；售價加成不受此上限限制。</small></div>';
@@ -2938,7 +2939,7 @@ let expeditionLab={weapon:'n0',tier:4,stacks:0,element:'none',stage:1};
 function expeditionCleared(stage){return stage<20?expeditionState.cleared.includes(stage):stage<20+(expeditionState.endless||0);}
 function endlessMonster(stage){
  const wave=Math.max(1,Math.floor(stage)-19),kind=['dragon','golem','wolf','knight'][(wave-1)%4],names={dragon:'星海古龍',golem:'界域巨像',wolf:'虛空獵王',knight:'不朽王鎧'},choices=['none',...ELEMENT_IDS];
- return {name:names[kind]+' · '+wave,area:'無限試煉',kind,color:['#dbacdc','#9bd5d2','#c3a7ee','#e7cf91'][(wave-1)%4],hp:5000+900*wave+90*wave*wave,atk:310+28*wave+2*wave*wave,def:220+16*wave+wave*wave,spd:Math.floor(115+6*wave+.25*wave*wave),gold:2200+300*wave+25*wave*wave,element:choices[((stage*17+Math.max(1,day)*13)>>>0)%choices.length],endless:wave};
+ return {name:names[kind]+' · '+wave,area:'無限試煉',kind,color:['#dbacdc','#9bd5d2','#c3a7ee','#e7cf91'][(wave-1)%4],hp:5000+900*wave+90*wave*wave,atk:310+28*wave+2*wave*wave,def:220+16*wave+wave*wave,spd:Math.floor(115+6*wave+.25*wave*wave),gold:2200+300*wave+25*wave*wave,element:choices[((stage*17+Math.max(1,day)*13)>>>0)%choices.length],endless:wave,traitIndex:(wave-1)%10};
 }
 function labWeapon(){
  if(!sandboxSession)return null;const t=expeditionLab.tier,key=expeditionLab.weapon;let w;
@@ -3037,7 +3038,52 @@ function confirmBackupRestore(){
  if(!pendingBackup||sandboxSession||testRun)return;confirmBox('還原這份備份？','這會替換本機存檔、歷史紀錄與收藏。建議先下載目前備份；排行榜身份與雲端最高分不會被替換。','還原備份',()=>{try{applyBackup(pendingBackup);}catch(e){$('backupStatus').textContent=e.message;}});
 }
 function setLowEffects(value){lowEffects=!!value;gameStorage.setItem('forgeLowEffectsV1',lowEffects?'1':'0');document.body.classList.toggle('low-effects',lowEffects);$('lowEffectsToggle').checked=lowEffects;syncTownMotion();if(!lowEffects&&$('townP').style.display==='flex')renderTown();}
-function openBackup(){pendingBackup=null;$('backupRestore').disabled=true;$('backupDownload').disabled=sandboxSession||testRun;$('backupFile').disabled=sandboxSession||testRun;$('backupStatus').textContent=sandboxSession||testRun?'後台測試不能匯出或還原正式資料。':'備份包含存檔、無限遠征進度、城鎮、收藏與版型，不包含排行榜身份識別碼。';$('lowEffectsToggle').checked=lowEffects;closeP('svP');closeP('help');$('backupP').style.display='flex';}
+function openBackup(){pendingBackup=null;$('backupRestore').disabled=true;$('backupDownload').disabled=sandboxSession||testRun;$('backupFile').disabled=sandboxSession||testRun;$('backupStatus').textContent=sandboxSession||testRun?'後台測試不能匯出或還原正式資料。':'備份包含存檔、無限遠征進度、城鎮、收藏與版型，不包含排行榜身份識別碼。';$('lowEffectsToggle').checked=lowEffects;closeP('svP');closeP('help');$('backupP').style.display='flex';}const WEAPON_ROLES=[
+ {name:'疾爪',stats:{atk:.9,spd:1.35},text:'每第三次普通攻擊傷害提高30%。'},
+ {name:'重斬',stats:{},text:'每第三次普通攻擊傷害提高40%。'},
+ {name:'迴旋護刃',stats:{},text:'每次普通命中獲得防禦12%的護盾；此效果累計最多防禦60%。'},
+ {name:'穿刺',stats:{},text:'首次普通攻擊忽略60%防禦，之後忽略15%。'},
+ {name:'堅甲',stats:{atk:.85,def:1.25},text:'受到的怪物攻擊傷害再減少12%。'},
+ {name:'震擊',stats:{atk:1.6,def:.75},text:'每第三次普通攻擊傷害提高35%，並延緩敵方半個行動週期。'},
+ {name:'靈能杖',stats:{},text:'每次普通攻擊額外造成速度20%的奧術傷害。'},
+ {name:'開拓者',stats:{atk:1.2},text:'每次普通命中回復防禦6%的生命，至少1點。'},
+ {name:'裂甲',stats:{atk:2,def:.65,spd:.9},text:'每次普通命中降低敵方初始防禦6%，累計最多40%。'},
+ {name:'盾返',stats:{},text:'防禦架勢每次抵擋攻擊累積防禦35%的反擊傷害，最多防禦100%；下一次普通攻擊釋放。'}
+];
+const BOSS_TRAITS=[
+ ['黏液外殼','首次受到的普通物理傷害減少20%；奧術與主動技能不受影響。'],
+ ['獵手先機','第一次攻擊傷害提高20%；提前防禦可降低壓力。'],
+ ['岩甲裂隙','被破甲時額外降低初始防禦3%；適合裂甲武器。'],
+ ['戰術反擊','每受到四次普通攻擊，反擊20%攻擊傷害；可用重擊減少出手次數。'],
+ ['寒霜屏障','開戰具有最大生命10%的護盾；破盾後不再恢復。'],
+ ['灼熱吐息','普通攻擊額外提高10%傷害；適合護盾與堅甲。'],
+ ['影步','每第三次受到的普通物理傷害減少25%；奧術與主動技能不受影響。'],
+ ['遺跡修復','每第三次行動回復最大生命2%；需要集中輸出。'],
+ ['龍血狂熱','生命低於一半時，攻擊傷害提高15%。'],
+ ['王者決意','生命低於四分之一時，下次攻擊傷害提高25%，每場一次。']
+];
+function weaponTrait(w){return WEAPON_ROLES[w?.c]||WEAPON_ROLES[1];}
+function weaponTraitHTML(w){const t=weaponTrait(w);return '<div class="weapon-trait"><b>武器特性 · '+t.name+'</b><span>'+t.text+'</span></div>';}
+function bossTraitIndex(m){const i=Number.isInteger(m.traitIndex)?m.traitIndex:EXPEDITIONS.findIndex(x=>x.name===m.name);return i<0?-1:i%10;}
+function bossRule(m){const i=bossTraitIndex(m);return baseBossRule(m)+(i<0?'':' 特性【'+BOSS_TRAITS[i][0]+'】：'+BOSS_TRAITS[i][1]);}
+function initCombatTraits(b){if(bossTraitIndex(b.monster)===4)b.enemyWard=Math.round(b.monster.hp*.1);return b;}
+function weaponAttackProfile(b){
+ b.heroTurns=(b.heroTurns||0)+1;const n=b.heroTurns,c=b.weapon.c,third=n%3===0;
+ return {power:third?(c===0?1.3:c===1?1.4:c===5?1.35:1):1,ignore:c===3?(n===1?.6:.15):0,arcane:c===6?Math.max(1,Math.round(b.stats.spd*.2)):0,counter:c===9?(b.counterBonus||0):0,text:third&&[0,1,5].includes(c)?weaponTrait(b.weapon).name:c===3&&n===1?'穿刺':c===6?'靈能':c===9&&b.counterBonus?'盾返':''};
+}
+function bossPhysicalFactor(b){const id=bossTraitIndex(b.monster);return id===0&&(b.heroTurns||0)===1?.8:id===6&&(b.heroTurns||0)%3===0?.75:1;}
+function applyHeroExtra(b,row){
+ const c=b.weapon.c,s=b.stats;if(c===9)b.counterBonus=0;
+ if(c===2){const max=Math.round(s.def*.6),gain=Math.min(Math.round(s.def*.12),Math.max(0,max-(b.bladeWardGained||0)));b.shield+=gain;b.bladeWardGained=(b.bladeWardGained||0)+gain;if(gain)row.text+=' · 護刃 +'+gain+'盾';}
+ if(c===5&&b.heroTurns%3===0)b.enemyClock+=.5*1000/Math.max(1,b.monster.spd);
+ if(c===7){const healed=Math.min(b.hpMax-b.hp,Math.max(1,Math.round(s.def*.06)));b.hp+=healed;if(healed)row.text+=' · 回復 '+healed;}
+ if(c===8&&b.enemyHp>0){const base=b.monster.def,broken=(b.axeBreak||0)<.4,extra=bossTraitIndex(b.monster)===2?.03:0;b.axeBreak=Math.min(.4,(b.axeBreak||0)+.06);if(broken){const normal=Math.round(base*b.axeBreak)-(b.axeBreakDamage||0);b.axeBreakDamage=Math.round(base*b.axeBreak);b.enemyDef=Math.max(0,b.enemyDef-normal-Math.round(base*extra));row.text+=' · 裂甲';}}
+ if(b.enemyHp>0&&bossTraitIndex(b.monster)===3&&b.heroTurns%4===0){const raw=Math.max(1,Math.round(b.monster.atk*.2)),block=Math.min(b.shield,raw);b.shield-=block;const damage=Math.min(b.hp,raw-block);b.hp-=damage;b.foodRecovered=Math.max(0,(b.foodRecovered||0)-damage);row.text+=' · 遭反擊 '+damage;}
+}
+function bossAttackPower(b){const id=bossTraitIndex(b.monster);let n=1;if(id===1&&!(b.enemyAttacks||0))n*=1.2;if(id===5)n*=1.1;if(id===8&&b.enemyHp<b.monster.hp*.5)n*=1.15;if(id===9&&!b.royalUsed&&b.enemyHp<b.monster.hp*.25){n*=1.25;b.royalUsed=true;}return n;}
+function weaponIncoming(b,raw){if(b.weapon.c===4)raw=Math.max(1,Math.ceil(raw*.88));if(b.guarding&&b.weapon.c===9)b.counterBonus=Math.min(Math.round(b.stats.def),(b.counterBonus||0)+Math.max(1,Math.round(b.stats.def*.35)));return raw;}
+function applyBossAfterAction(b,row){if(bossTraitIndex(b.monster)===7&&b.enemyTurns%3===0&&b.enemyHp>0){const heal=Math.min(b.monster.hp-b.enemyHp,Math.round(b.monster.hp*.02));b.enemyHp+=heal;if(heal)row.text+=' · 遺跡修復 '+heal;}}
+
 
 const EXPEDITIONS=[
  {name:'苔原史萊姆',area:'林間小徑',kind:'slime',color:'#81ad67',hp:65,atk:12,def:3,spd:8,gold:120,loot:{k:'o',t:1}},
@@ -3089,13 +3135,13 @@ function expeditionWeapons(){
 }
 
 function monsterArt(m){if(!expandedGameEnabled())return stage21_monsterArt(m);const id=monsterSpriteIndex(m);return '<svg viewBox="0 0 64 64" role="img" aria-label="'+esc(m.name)+'" data-monster-art="'+id+'"><image href="'+REVIEW_MONSTER_ART[id]+'" width="64" height="64" preserveAspectRatio="xMidYMid meet" style="image-rendering:pixelated"/></svg>';}
-function bossRule(m){return m.kind==='dragon'?'巨龍循環：蓄力 → 雙倍重擊 → 普通攻擊。蓄力時不造成傷害，可準備防禦或延緩技能。':m.kind==='golem'?'魔像每第三次行動後硬化，下一次受到的物理傷害減少 60%；奧術與主動技能不受影響。':m.kind==='wolf'?'狼王每第三次行動使用兩段連擊，每段為 60% 攻擊；防禦分別抵擋兩段傷害。':'以普通攻擊交戰，速度決定出手頻率。';}
+function baseBossRule(m){return m.kind==='dragon'?'巨龍循環：蓄力 → 雙倍重擊 → 普通攻擊。蓄力時不造成傷害，可準備防禦或延緩技能。':m.kind==='golem'?'魔像每第三次行動後硬化，下一次受到的物理傷害減少 60%；奧術與主動技能不受影響。':m.kind==='wolf'?'狼王每第三次行動使用兩段連擊，每段為 60% 攻擊；防禦分別抵擋兩段傷害。':'以普通攻擊交戰，速度決定出手頻率。';}
 function bossIntent(b){const next=(b.enemyTurns||0)+1,m=b.monster;if(m.kind==='dragon')return ['蓄力（本次不攻擊）','蓄力重擊 ×2','普通攻擊'][(next-1)%3];if(m.kind==='wolf'&&next%3===0)return '雙段連擊（各 60%）';if(m.kind==='golem'&&next%3===0)return '攻擊後硬化';return '普通攻擊';}
 function guardBattle(b){if(!b||b.resolved||b.outcome!=='ongoing'||b.guardUsed)return false;b.guardUsed=true;b.guarding=true;b.guardRemainingMs=EXPEDITION_GUARD_MS;b.effectStamp=Date.now();return true;}
 function useExpeditionGuard(){syncExpeditionEffects();if(guardBattle(expeditionState.lastBattle))renderExpeditionBattle();}
 function expeditionBattleState(w,monster){
  const stats=weaponStats(w),hpMax=100+stats.def*2;
- return {weapon:JSON.parse(JSON.stringify(w)),monster:JSON.parse(JSON.stringify(monster)),stats,hpMax,hp:hpMax,shield:stats.ward,enemyHp:monster.hp,heroClock:1000/Math.max(1,stats.spd),enemyClock:1000/Math.max(1,monster.spd),enemyDef:monster.def,skillUsed:false,guardUsed:false,guarding:false,guardRemainingMs:0,foodRecovered:0,enemyTurns:0,bossHardened:false,outcome:'ongoing',resolved:false,log:[]};
+ return initCombatTraits({weapon:JSON.parse(JSON.stringify(w)),monster:JSON.parse(JSON.stringify(monster)),stats,hpMax,hp:hpMax,shield:stats.ward,enemyHp:monster.hp,heroClock:1000/Math.max(1,stats.spd),enemyClock:1000/Math.max(1,monster.spd),enemyDef:monster.def,skillUsed:false,guardUsed:false,guarding:false,guardRemainingMs:0,foodRecovered:0,enemyTurns:0,bossHardened:false,outcome:'ongoing',resolved:false,log:[]});
 }
 function battleTick(b){
  if(!expandedGameEnabled())return stage20_battleTick(b);const start=b.log.length,attack=b.stats.atk,boost=b.foodAttackTurns>0?b.foodAttack||0:0;
@@ -3106,11 +3152,11 @@ function battleTick(b){
 function checkBattleOutcome(b){b.outcome=b.enemyHp<=0?'win':b.hp<=0?'lose':b.log.length>=120?'draw':'ongoing';return b.outcome;}
 function castBattleSkill(b){
  const skill=ultimateSkill(b.weapon);if(!skill||b.skillUsed||b.guarding||b.outcome!=='ongoing')return false;
- b.skillUsed=true;const mult=elementMultiplier(elementOf(b.weapon),elementOf(b.monster)),damage=Math.min(b.enemyHp,Math.max(1,Math.round(b.stats.atk*skill.power*mult)+b.stats.arcane));b.enemyHp-=damage;
+ b.skillUsed=true;const mult=elementMultiplier(elementOf(b.weapon),elementOf(b.monster)),raw=Math.max(1,Math.round(b.stats.atk*skill.power*mult)+b.stats.arcane),absorbed=Math.min(b.enemyWard||0,raw),damage=Math.min(b.enemyHp,raw-absorbed);b.enemyWard=Math.max(0,(b.enemyWard||0)-absorbed);b.enemyHp-=damage;
  const healed=Math.min(b.hpMax-b.hp,Math.round(b.hpMax*(skill.heal||0)));b.hp+=healed;
  const addedShield=Math.round(b.stats.def*(skill.shield||0));b.shield+=addedShield;
  b.enemyDef=Math.round(b.enemyDef*(1-(skill.break||0)));b.enemyClock+=(skill.delay||0)*1000/Math.max(1,b.monster.spd);
- b.log.push({actor:'hero',skill:true,damage,hp:b.hp,shield:b.shield,enemyHp:b.enemyHp,text:'✦ '+skill.name+'！'+damage+' 傷害'+(healed?' · 回復 '+healed:'')+(addedShield?' · 護盾 +'+addedShield:'')+(skill.break?' · 破甲':'')+(skill.delay?' · 延緩敵方':'')});checkBattleOutcome(b);return true;
+ b.log.push({actor:'hero',skill:true,damage,hp:b.hp,shield:b.shield,enemyHp:b.enemyHp,text:'✦ '+skill.name+'！'+damage+' 傷害'+(absorbed?' · 敵盾吸收 '+absorbed:'')+(healed?' · 回復 '+healed:'')+(addedShield?' · 護盾 +'+addedShield:'')+(skill.break?' · 破甲':'')+(skill.delay?' · 延緩敵方':'')});checkBattleOutcome(b);return true;
 }
 // Kept pure for balance checks; the actual battle advances one action at a time.
 function simulateExpedition(w,monster,useSkill=false){const b=expeditionBattleState(w,monster);if(useSkill)castBattleSkill(b);while(b.outcome==='ongoing')battleTick(b);return b;}
@@ -3195,7 +3241,7 @@ function renderExpeditionBattle(){
  const b=expeditionState.lastBattle;if(!b)return;syncExpeditionEffects();updateBattlePace();renderExpeditionFood();const m=b.monster||{...EXPEDITIONS[b.stage],element:'none'},done=b.resolved;
  $('expeditionArena').innerHTML='<div class="exp-fighter"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</div><b>'+itemName(b.weapon)+'</b><small>♥ '+b.hp+' / '+b.hpMax+'</small>'+expeditionHealthHTML(b)+'</div><strong>VS</strong><div class="exp-fighter"><div>'+monsterArt(m)+elementBadge(m.element,'battle-element')+'</div><b>'+m.name+'</b><small>♥ '+b.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+b.enemyHp+'" aria-label="怪物生命值"></progress><span class="exp-health-key exp-monster-key" aria-hidden="true"></span></div>';
  $('expeditionLog').innerHTML=(done?b.log:b.log.slice(-5)).map(x=>'<p class="'+x.actor+(x.skill?' skill-hit':'')+'">'+esc(x.text)+'</p>').join('')||'<p>武器已投入遠征；可在戰鬥中施放終極武器技能。</p>';
- $('expeditionLog').dataset.complete=String(done);$('expeditionGuard').hidden=done;$('expeditionIntent').textContent=done?'本次戰鬥已結束':('敵方下次：'+bossIntent(b)+(b.bossHardened?' · 現正硬化':'')+(b.guarding?' · 防禦中（停止攻擊、減傷60%）':''));if(!done&&expandedGameEnabled()&&b.foodAttackTurns>0)$('expeditionIntent').textContent+=' · 🍖 攻擊 +'+Math.round((b.foodAttack||0)*100)+'%（剩 '+b.foodAttackTurns+' 次）';$('expeditionGuard').disabled=done||b.guardUsed;$('expeditionGuard').textContent=b.guardUsed?'🛡 已使用防禦架勢':'🛡 防禦3秒 · 停止攻擊、減傷60%（每場一次）';const skill=ultimateSkill(b.weapon);$('expeditionSkill').hidden=done||!skill;$('expeditionSkill').disabled=done||b.skillUsed||b.guarding;$('expeditionSkill').textContent=skill?(b.skillUsed?'✓ 已施放 '+skill.name:'✦ 施放 '+skill.name):'';
+ $('expeditionLog').dataset.complete=String(done);$('expeditionGuard').hidden=done;$('expeditionIntent').textContent=done?'本次戰鬥已結束':('敵方下次：'+bossIntent(b)+(b.bossHardened?' · 現正硬化':'')+(b.guarding?' · 防禦中（停止攻擊、減傷60%）':''));if(!done&&expandedGameEnabled()&&b.foodAttackTurns>0)$('expeditionIntent').textContent+=' · 🍖 攻擊 +'+Math.round((b.foodAttack||0)*100)+'%（剩 '+b.foodAttackTurns+' 次）';if(!done&&b.enemyWard)$('expeditionIntent').textContent+=' · 怪物護盾 '+b.enemyWard;$('expeditionGuard').disabled=done||b.guardUsed;$('expeditionGuard').textContent=b.guardUsed?'🛡 已使用防禦架勢':'🛡 防禦3秒 · 停止攻擊、減傷60%（每場一次）';const skill=ultimateSkill(b.weapon);$('expeditionSkill').hidden=done||!skill;$('expeditionSkill').disabled=done||b.skillUsed||b.guarding;$('expeditionSkill').textContent=skill?(b.skillUsed?'✓ 已施放 '+skill.name:'✦ 施放 '+skill.name):'';
  $('expeditionResult').innerHTML=done?'<h3>'+({win:'🏆 遠征勝利',lose:'遠征落敗',draw:'已撤退'}[b.outcome])+'</h3><p>'+(b.outcome==='win'?'獲得 '+b.gold+' 金幣'+(b.loot?'＋'+itemName(b.loot):'')+'。':b.outcome==='lose'?'失去一顆愛心，剩餘 '+lives+' 顆。':'未獲得獎勵，出戰武器已消耗。')+'</p>'+(b.outcome==='win'&&b.stage>=10&&b.stage<20?'<button class="ultimate-unlocked" onclick="openUltimateArt('+b.stage+')">'+ultimatePixelArt(b.stage)+'<span>終極藍圖已解鎖 · 查看高清美術 ↗</span></button>':''):'';
  $('expeditionAgain').textContent=lives<=0?'結束旅程':'返回遠征';$('expeditionSkip').hidden=done;$('expeditionAgain').hidden=!done;
 }

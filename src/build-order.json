@@ -73,6 +73,7 @@
     "src/js/expedition/test-setup.js",
     "src/js/blueprints/planner.js",
     "src/js/saves/backup.js",
+    "src/js/expedition/combat-traits.js",
     "src/js/expedition/bosses-battle.js",
     "src/js/expedition/timing-feedback.js",
     "src/js/expedition/rendering.js",

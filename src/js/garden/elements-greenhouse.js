@@ -28,7 +28,7 @@ function syncMonsterElements(){
  if(monsterElementDay===day&&monsterElements.length===EXPEDITIONS.length)return;
  const choices=['none',...ELEMENT_IDS];monsterElementDay=day;monsterElements=EXPEDITIONS.map(()=>day>0?choices[rnd(choices.length)]:'none');
 }
-function expeditionMonster(id){syncMonsterElements();return id>=20?endlessMonster(id):{...EXPEDITIONS[id],element:monsterElements[id]||'none'};}
+function expeditionMonster(id){syncMonsterElements();return id>=20?endlessMonster(id):{...EXPEDITIONS[id],traitIndex:id%10,element:monsterElements[id]||'none'};}
 function applyWeaponElement(w,i){const e=elementTiles.get(i);if(validElement(e))w.element=e;return w;}
 function elementBadge(e,cls=''){const color=validElement(e)?ELEMENTS[e].color:'#b8c3c9';return '<span class="element-badge '+cls+'" style="--element:'+color+'" aria-label="'+elementName(e)+'屬性">'+elementIcon(e)+'<b>'+elementName(e)+'</b></span>';}
 function elementWeaponHTML(w){const e=elementOf(w);return e==='none'?'<p class="element-weapon-note">無屬性</p>':'<div class="element-weapon-note">'+elementBadge(e)+'<span>屬性附魔 · 武器售價 +20%</span></div>';}
