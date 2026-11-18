@@ -84,7 +84,7 @@
  <header class="exp-header"><div class="exp-player-heading"><span id="expeditionAvatar" class="player-avatar"></span><div><small>鍛造之後，向城外出發</small><h2>⚔ 遠征</h2></div></div><button hidden class="legacy-modal-close" onclick="closeExpedition()">回城鎮</button></header>
  <p id="expeditionAttempts"></p>
  <div id="expeditionSetup">
-  <section id="expeditionLab" hidden><h3>🧪 遠征測試台</h3><div class="exp-lab-fields"><label>武器<select id="labWeapon" onchange="updateExpeditionLab()"></select></label><label>材料階級<select id="labTier" onchange="updateExpeditionLab()"></select></label><label>星級<select id="labStars" onchange="updateExpeditionLab()"><option value="0">零星</option><option value="1">一星</option><option value="2">二星</option><option value="3">三星</option></select></label><label>附魔層數（0～20）<label>附魔層數（0～20）<input id="labStacks" type="number" min="0" max="20" value="0" onchange="updateExpeditionLab()"></label><label>屬性<select id="labElement" onchange="updateExpeditionLab()"></select></label><label>挑戰關卡（21 起為無限）<input id="labStage" type="number" min="1" max="1000000" value="1" onchange="updateExpeditionLab()"></label></div><p class="exp-note">直接產生測試武器，不占物品欄、不扣愛心。可自由選關，所有結果僅供本次後台測試。</p></section>
+  <section id="expeditionLab" hidden><h3>🧪 遠征測試台</h3><div class="exp-lab-fields"><label>武器<select id="labWeapon" onchange="updateExpeditionLab()"></select></label><label>材料階級<select id="labTier" onchange="updateExpeditionLab()"></select></label><label>星級<select id="labStars" onchange="updateExpeditionLab()"><option value="0">零星</option><option value="1">一星</option><option value="2">二星</option><option value="3">三星</option></select></label><label>附魔層數（0～20）<input id="labStacks" type="number" min="0" max="20" value="0" onchange="updateExpeditionLab()"></label><label>屬性<select id="labElement" onchange="updateExpeditionLab()"></select></label><label>挑戰關卡（21 起為無限）<input id="labStage" type="number" min="1" max="1000000" value="1" onchange="updateExpeditionLab()"></label><label>測試料理<select id="labFood" onchange="updateLabFood()"></select></label><label>料理階級<select id="labFoodTier" onchange="updateLabFood()"></select></label><label>料理星級<select id="labFoodStars" onchange="updateLabFood()"><option value="0">零星</option><option value="1">一星</option><option value="2">二星</option><option value="3">三星</option></select></label><label>調味<select id="labFoodSpice" onchange="updateLabFood()"><option value="">無調味</option><option value="herb">香草</option><option value="spicy">辛香</option><option value="milk">奶香</option></select></label></div><p class="exp-note">直接產生測試武器，不占物品欄、不扣愛心。可自由選關，所有結果僅供本次後台測試。</p></section>
 
   <div id="expeditionStages" aria-label="選擇遠征關卡"></div><div id="expeditionMonster"></div><p id="expeditionBossRule" class="exp-note"></p><p id="expeditionReward"></p>
   <h3>選擇出戰武器</h3><div id="expeditionWeapons"></div><div id="expeditionSelectedStats"></div>
@@ -131,7 +131,7 @@
 
 <div id="title">
   <small id="assetCacheStatus" class="asset-cache-status" aria-live="off">素材會在背景逐步準備</small>
-  <div class="tl" id="tl"></div>
+  <div class="tl" id="tl" role="group" aria-label="後台測試快速入口"></div>
   <h1>Forge Master</h1>
   <p id="hs"></p>
   <p>放礦石 · 合成升階 · 鍛造武器 · 賣給客人</p>
@@ -144,7 +144,7 @@
   <button id="homeLeaderboard" onclick="openLeaderboard()">🏆 全球排行榜</button>
   <button onclick="showHelp()">遊戲說明</button>
   <p class="cr">製作人: LiChia</p>
-  <p class="cr" id="upd">更新日期: 2026/11/18</p>
+  <p class="cr" id="upd">更新日期: 2026/11/19</p>
 </div>
 
 <div id="weaponAlbumP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('weaponAlbumP')">×</button>

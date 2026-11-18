@@ -17,7 +17,19 @@ function updateExpeditionLab(){
  expeditionStage=expeditionLab.stage-1;expeditionSelected='lab';renderExpedition();
 }
 function renderExpeditionLab(){
- const el=$('expeditionLab');el.hidden=!sandboxSession;if(!sandboxSession)return;
+ const el=$('expeditionLab');el.hidden=!sandboxSession;if(!sandboxSession)return;renderLabFood();
  if(!$('labWeapon').innerHTML){$('labWeapon').innerHTML='<optgroup label="普通武器">'+WN.map((n,c)=>'<option value="n'+c+'">'+n+'</option>').join('')+'</optgroup><optgroup label="傳說武器">'+LEGENDS.slice(0,10).map((l,id)=>'<option value="l'+id+'">'+l.name+'</option>').join('')+'</optgroup><optgroup label="終極武器">'+LEGENDS.slice(10).map((l,i)=>'<option value="l'+(i+10)+'">'+l.name+'</option>').join('')+'</optgroup>';$('labTier').innerHTML=NM.map((n,t)=>'<option value="'+t+'">'+n+'級</option>').join('');$('labElement').innerHTML='<option value="none">無屬性</option>'+ELEMENT_IDS.map(e=>'<option value="'+e+'">'+elementName(e)+'</option>').join('');}
  $('labStars').value=String(expeditionLab.stars||0);$('labWeapon').value=expeditionLab.weapon;$('labTier').value=String(expeditionLab.tier);$('labStacks').value=String(expeditionLab.stacks);$('labElement').value=expeditionLab.element;$('labStage').value=String(expeditionStage+1);
+}
+let expeditionLabFood=null;
+function updateLabFood(){
+ if(!sandboxSession||!$('expeditionBattle').hidden)return false;
+ const id=Number($('labFood').value),tier=Math.max(0,Math.min(4,Math.trunc(Number($('labFoodTier').value)||0))),stars=Math.max(0,Math.min(3,Math.trunc(Number($('labFoodStars').value)||0))),spice=$('labFoodSpice').value;
+ expeditionLabFood=Number.isInteger(id)&&id>=0&&id<10?{k:'w',c:id,t:tier,fresh:999,testStars:stars,...(Object.hasOwn(KITCHEN_SPICES,spice)?{spice}:{} )}:null;
+ expeditionFoodSelected=expeditionLabFood;renderExpeditionFoodSetup();return true;
+}
+function renderLabFood(){
+ if(!sandboxSession)return;
+ if(!$('labFood').innerHTML){$('labFood').innerHTML='<option value="-1">不使用測試料理</option>'+KITCHEN_NAMES.map((n,c)=>'<option value="'+c+'">'+n+'</option>').join('');$('labFoodTier').innerHTML=KITCHEN_GRADES.map((n,t)=>'<option value="'+t+'">'+n+'</option>').join('');}
+ $('labFood').value=String(expeditionLabFood?.c??-1);$('labFoodTier').value=String(expeditionLabFood?.t??0);$('labFoodStars').value=String(expeditionLabFood?.testStars||0);$('labFoodSpice').value=expeditionLabFood?.spice||'';
 }

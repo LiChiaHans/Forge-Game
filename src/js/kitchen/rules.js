@@ -35,7 +35,7 @@ function kitchenPrepare(i,source='auto'){
  kitchenRecordMerge(mat.cells,ingredientParts,[i],i);if(held){kitchen.hand=null;kitchen.useHeld=false;}else{kitchen.mq.shift();kitchen.mq.push(rnd(3));}kitchen.mode='ore';
  kitchen.message='已備好'+KITCHEN_GRADES[mat.t]+KITCHEN_TYPES[s]+'。連成三份工序時會自動完成料理。';kitchenCraft(i,true);return true;
 }
-function kitchenStars(w){return Math.min(3,Math.floor((kitchen?.xp?.[w.c+':'+w.t]||0)/3));}
+function kitchenStars(w){return sandboxSession&&Number.isInteger(w.testStars)?Math.max(0,Math.min(3,w.testStars)):Math.min(3,Math.floor((kitchen?.xp?.[w.c+':'+w.t]||0)/3));}
 function kitchenPrice(w,baseOnly=false){const quality=Array.isArray(w.cs)?w.cs.reduce((sum,t)=>sum+[35,65,105,160,235][t],0)/3:[35,65,105,160,235][w.t];return baseOnly?Math.round(quality):Math.round(quality*(1+[0,.05,.1,.2][kitchenStars(w)])*(w.spice?1.1+.05*kitchenLevel('spice'):1));}
 function kitchenCraft(at,silent=false){const old=kitchen.crafted,result=stage21_kitchenCraft(at,silent);reviewMetrics.crafted+=kitchen.crafted-old;return result;}
 function kitchenStep(){

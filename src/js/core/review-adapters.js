@@ -41,7 +41,7 @@ function stage21_kitchenSell(w,index,clear){
 function stage21_useExpeditionFood(index){
  const b=expeditionState.lastBattle;if(!expandedGameEnabled()||!expeditionFoodReady(b))return false;const option=expeditionFoodOptions().find(x=>x.index===index);if(!option||option.w!==b.foodChoice)return false;const w=option.w,e=dishSupplyEffect(w);
  if(b.hp>=b.hpMax&&!e.attack&&!e.shield){toast('生命已滿，這份回血料理先留在冰箱。');return false;}
- const restored=Math.min(b.hpMax-b.hp,Math.round(b.hpMax*e.heal)),shield=Math.round(b.hpMax*e.shield);kitchen.pack.splice(index,1);b.hp=Math.min(b.hpMax,b.hp+restored);b.foodRecovered=Math.min(b.hp,(b.foodRecovered||0)+restored);b.shield+=shield;
+ const restored=Math.min(b.hpMax-b.hp,Math.round(b.hpMax*e.heal)),shield=Math.round(b.hpMax*e.shield);if(!option.lab)kitchen.pack.splice(index,1);b.hp=Math.min(b.hpMax,b.hp+restored);b.foodRecovered=Math.min(b.hp,(b.foodRecovered||0)+restored);b.shield+=shield;
  if(e.attack){b.foodAttack=Math.max(b.foodAttack||0,e.attack);b.foodAttackTurns=2;}b.foodUsed=(b.foodUsed||0)+1;b.foodCooldown=0;
  b.log.push({actor:'hero',supply:true,healed:restored,addedShield:shield,hp:b.hp,shield:b.shield,enemyHp:b.enemyHp,text:'🍱 使用'+kitchenItemName(w)+'：恢復 '+restored+' 生命'+(shield?'、護盾 +'+shield:'')+(e.attack?'、下兩次普通攻擊 +'+Math.round(e.attack*100)+'%':'')+'（料理已消耗）'});
  renderExpeditionBattle();return true;

@@ -36,3 +36,7 @@
 - Restaurant bag groups identical item fields and shows quantity, but still retrieves/consumes one original item. Different grades/processes/spices remain separate.
 - Enlarged album art has proportional stars. Order cards render the same guest sprite ID as the town queue. New arriving guests scale from 1.65 to 1, feet anchored; reduced-motion skips the effect.
 - Added tests/defense-items-guests.cjs; local mobile and desktop visual checks recorded outside the publish tree in progression/39-defense-items-guests.
+
+## 2026-11-19 ordered updates
+- Home four weapon icons are password shortcuts to isolated sandbox. Test is now an ordinary player name, never an admin bypass. Existing password unchanged.
+- Sandbox expedition adds ten dishes × five grades, stars and spices as virtual one-meal options (index -2); never writes or consumes formal/fridge inventory. Lab meal identity is stable for a battle and cleared on sandbox exit. testStars is honored only in sandbox.

@@ -567,7 +567,7 @@ function kitchenPrepare(i,source='auto'){
  kitchenRecordMerge(mat.cells,ingredientParts,[i],i);if(held){kitchen.hand=null;kitchen.useHeld=false;}else{kitchen.mq.shift();kitchen.mq.push(rnd(3));}kitchen.mode='ore';
  kitchen.message='已備好'+KITCHEN_GRADES[mat.t]+KITCHEN_TYPES[s]+'。連成三份工序時會自動完成料理。';kitchenCraft(i,true);return true;
 }
-function kitchenStars(w){return Math.min(3,Math.floor((kitchen?.xp?.[w.c+':'+w.t]||0)/3));}
+function kitchenStars(w){return sandboxSession&&Number.isInteger(w.testStars)?Math.max(0,Math.min(3,w.testStars)):Math.min(3,Math.floor((kitchen?.xp?.[w.c+':'+w.t]||0)/3));}
 function kitchenPrice(w,baseOnly=false){const quality=Array.isArray(w.cs)?w.cs.reduce((sum,t)=>sum+[35,65,105,160,235][t],0)/3:[35,65,105,160,235][w.t];return baseOnly?Math.round(quality):Math.round(quality*(1+[0,.05,.1,.2][kitchenStars(w)])*(w.spice?1.1+.05*kitchenLevel('spice'):1));}
 function kitchenCraft(at,silent=false){const old=kitchen.crafted,result=stage21_kitchenCraft(at,silent);reviewMetrics.crafted+=kitchen.crafted-old;return result;}
 function kitchenStep(){
@@ -1196,7 +1196,7 @@ function dishSupplyEffect(w,baseOnly=false){
  return {heal:Math.min(.5,base[0]+tier*.025+stars*.01+(spice==='milk'?.03:0)),attack:base[1]?Math.min(.35,base[1]+tier*.02+stars*.01+(spice==='spicy'?.03:0)):0,shield:base[2]?Math.min(.3,base[2]+tier*.015+stars*.01+(spice==='herb'?.03:0)):0};
 }
 function dishSupplyDescription(w){const e=dishSupplyEffect(w);if(!e)return '';return '恢復 '+Math.round(e.heal*100)+'% 本場生命'+(e.attack?' · 下兩次普通攻擊 +'+Math.round(e.attack*100)+'%':'')+(e.shield?' · 獲得 '+Math.round(e.shield*100)+'% 生命上限護盾':'');}
-function expeditionFoodOptions(){return expandedGameEnabled()&&kitchenLevel('pack')>0?kitchen.pack.map((w,index)=>({w,index})).filter(x=>x.w?.k==='w'&&Number.isFinite(x.w.fresh)&&x.w.fresh>0&&DISH_SUPPLY_BASE[x.w.c]):[];}
+function expeditionFoodOptions(){const foods=expandedGameEnabled()&&kitchenLevel('pack')>0?kitchen.pack.map((w,index)=>({w,index})).filter(x=>x.w?.k==='w'&&Number.isFinite(x.w.fresh)&&x.w.fresh>0&&DISH_SUPPLY_BASE[x.w.c]):[];if(sandboxSession&&expeditionLabFood)foods.unshift({w:expeditionLabFood,index:-2,lab:true});return foods;}
 function expeditionFoodReady(b){return !!(b&&b.foodChoice&&b.outcome==='ongoing'&&!b.resolved&&b.hp>0&&b.enemyHp>0&&(b.foodUsed||0)<1);}
 function selectExpeditionFood(index){
  if($('expeditionSetup').hidden)return false;if(index===-1)expeditionFoodSelected=null;else{const option=expeditionFoodOptions().find(x=>x.index===index);if(!option)return false;expeditionFoodSelected=option.w;}
@@ -1214,7 +1214,7 @@ function renderExpeditionFood(){
  panel.innerHTML='<h3>🍱 本場攜帶料理 · 0/1</h3><div class="exp-food-list"><button data-exp-food="'+(option?.index??-1)+'" onclick="useExpeditionFood('+(option?.index??-1)+')" '+(!ready?'disabled':'')+'>'+kitchenArt(w)+'<span><b>使用 '+esc(kitchenItemName(w))+'</b>'+foodTags(w)+'<small>'+dishSupplyDescription(w)+'</small></span></button></div><p class="exp-note">'+(full?'目前生命全滿，受傷後才可使用這份回血料理。':!option?'這份料理已不在冰箱，無法使用。':'只能使用戰前選定的這一份；不恢復經營愛心。')+'</p>';
 }
 function toggleExpeditionFood(){expeditionFoodOpen=false;renderExpeditionFood();}
-function useExpeditionFood(index){syncExpeditionEffects();const food=kitchen?.pack[index],b=expeditionState.lastBattle;if(!food||food!==b?.foodChoice||!expeditionFoodReady(b))return false;const ok=stage21_useExpeditionFood(index);if(ok){reviewMetrics.supplies++;const key=food.c+':'+food.t;reviewMetrics.supplyTypes[key]=(reviewMetrics.supplyTypes[key]||0)+1;saveNow();if(sandboxSession)saveReviewProgress();}return ok;}
+function useExpeditionFood(index){syncExpeditionEffects();const food=expeditionFoodOptions().find(x=>x.index===index)?.w,b=expeditionState.lastBattle;if(!food||food!==b?.foodChoice||!expeditionFoodReady(b))return false;const ok=stage21_useExpeditionFood(index);if(ok){reviewMetrics.supplies++;const key=food.c+':'+food.t;reviewMetrics.supplyTypes[key]=(reviewMetrics.supplyTypes[key]||0)+1;saveNow();if(sandboxSession)saveReviewProgress();}return ok;}
 
 let archiveCategory='weapons';
 function setArchiveCategory(category){if(!expandedGameEnabled()||!['weapons','dishes'].includes(category)||albumTier===-2)return;archiveCategory=category;albumTier=-1;renderWeaponAlbum();}
@@ -1418,7 +1418,7 @@ function stage21_kitchenSell(w,index,clear){
 function stage21_useExpeditionFood(index){
  const b=expeditionState.lastBattle;if(!expandedGameEnabled()||!expeditionFoodReady(b))return false;const option=expeditionFoodOptions().find(x=>x.index===index);if(!option||option.w!==b.foodChoice)return false;const w=option.w,e=dishSupplyEffect(w);
  if(b.hp>=b.hpMax&&!e.attack&&!e.shield){toast('生命已滿，這份回血料理先留在冰箱。');return false;}
- const restored=Math.min(b.hpMax-b.hp,Math.round(b.hpMax*e.heal)),shield=Math.round(b.hpMax*e.shield);kitchen.pack.splice(index,1);b.hp=Math.min(b.hpMax,b.hp+restored);b.foodRecovered=Math.min(b.hp,(b.foodRecovered||0)+restored);b.shield+=shield;
+ const restored=Math.min(b.hpMax-b.hp,Math.round(b.hpMax*e.heal)),shield=Math.round(b.hpMax*e.shield);if(!option.lab)kitchen.pack.splice(index,1);b.hp=Math.min(b.hpMax,b.hp+restored);b.foodRecovered=Math.min(b.hp,(b.foodRecovered||0)+restored);b.shield+=shield;
  if(e.attack){b.foodAttack=Math.max(b.foodAttack||0,e.attack);b.foodAttackTurns=2;}b.foodUsed=(b.foodUsed||0)+1;b.foodCooldown=0;
  b.log.push({actor:'hero',supply:true,healed:restored,addedShield:shield,hp:b.hp,shield:b.shield,enemyHp:b.enemyHp,text:'🍱 使用'+kitchenItemName(w)+'：恢復 '+restored+' 生命'+(shield?'、護盾 +'+shield:'')+(e.attack?'、下兩次普通攻擊 +'+Math.round(e.attack*100)+'%':'')+'（料理已消耗）'});
  renderExpeditionBattle();return true;
@@ -2947,10 +2947,23 @@ function updateExpeditionLab(){
  expeditionStage=expeditionLab.stage-1;expeditionSelected='lab';renderExpedition();
 }
 function renderExpeditionLab(){
- const el=$('expeditionLab');el.hidden=!sandboxSession;if(!sandboxSession)return;
+ const el=$('expeditionLab');el.hidden=!sandboxSession;if(!sandboxSession)return;renderLabFood();
  if(!$('labWeapon').innerHTML){$('labWeapon').innerHTML='<optgroup label="普通武器">'+WN.map((n,c)=>'<option value="n'+c+'">'+n+'</option>').join('')+'</optgroup><optgroup label="傳說武器">'+LEGENDS.slice(0,10).map((l,id)=>'<option value="l'+id+'">'+l.name+'</option>').join('')+'</optgroup><optgroup label="終極武器">'+LEGENDS.slice(10).map((l,i)=>'<option value="l'+(i+10)+'">'+l.name+'</option>').join('')+'</optgroup>';$('labTier').innerHTML=NM.map((n,t)=>'<option value="'+t+'">'+n+'級</option>').join('');$('labElement').innerHTML='<option value="none">無屬性</option>'+ELEMENT_IDS.map(e=>'<option value="'+e+'">'+elementName(e)+'</option>').join('');}
  $('labStars').value=String(expeditionLab.stars||0);$('labWeapon').value=expeditionLab.weapon;$('labTier').value=String(expeditionLab.tier);$('labStacks').value=String(expeditionLab.stacks);$('labElement').value=expeditionLab.element;$('labStage').value=String(expeditionStage+1);
 }
+let expeditionLabFood=null;
+function updateLabFood(){
+ if(!sandboxSession||!$('expeditionBattle').hidden)return false;
+ const id=Number($('labFood').value),tier=Math.max(0,Math.min(4,Math.trunc(Number($('labFoodTier').value)||0))),stars=Math.max(0,Math.min(3,Math.trunc(Number($('labFoodStars').value)||0))),spice=$('labFoodSpice').value;
+ expeditionLabFood=Number.isInteger(id)&&id>=0&&id<10?{k:'w',c:id,t:tier,fresh:999,testStars:stars,...(Object.hasOwn(KITCHEN_SPICES,spice)?{spice}:{} )}:null;
+ expeditionFoodSelected=expeditionLabFood;renderExpeditionFoodSetup();return true;
+}
+function renderLabFood(){
+ if(!sandboxSession)return;
+ if(!$('labFood').innerHTML){$('labFood').innerHTML='<option value="-1">不使用測試料理</option>'+KITCHEN_NAMES.map((n,c)=>'<option value="'+c+'">'+n+'</option>').join('');$('labFoodTier').innerHTML=KITCHEN_GRADES.map((n,t)=>'<option value="'+t+'">'+n+'</option>').join('');}
+ $('labFood').value=String(expeditionLabFood?.c??-1);$('labFoodTier').value=String(expeditionLabFood?.t??0);$('labFoodStars').value=String(expeditionLabFood?.testStars||0);$('labFoodSpice').value=expeditionLabFood?.spice||'';
+}
+
 
 let blueprintGoalId=null,inspectedLiveWeapon=null,plannerRows=[];
 function liveWeapons(){const a=[];[['棋盤',g],['武器箱',pack],['道具箱',bag]].forEach(([source,list])=>list.forEach(w=>{if(w?.k==='w')a.push({w,source});}));if(hand?.k==='w')a.push({w:hand,source:'手持'});return a;}
@@ -4129,7 +4142,6 @@ function askName(cb){
  const finish=name=>{playerName=name;try{gameStorage.setItem('forgeName',name)}catch(e){}$('nm').style.display='none';cb();};
  const go=async()=>{
   if(busy)return;const v=$('nmi').value.trim();if(!v){$('nmi').focus();return;}
-  if(v.toLowerCase()==='test'){$('nm').style.display='none';askPwd();return;}
   busy=true;$('nmb').disabled=true;$('onlineNameStatus').textContent='確認玩家名稱中…';
   try{const p=await claimOnlineName(v);if(requestVersion===onlineNameRequestVersion&&$('nm').style.display==='flex')finish(p.name);}catch(e){if(requestVersion===onlineNameRequestVersion){$('onlineNameStatus').textContent=e.message;$('onlineNameOffline').hidden=!!e.status||String(e.message).includes('已被使用')||String(e.message).includes('目前使用');}}finally{busy=false;if(requestVersion===onlineNameRequestVersion)$('nmb').disabled=false;}
  };
@@ -4682,6 +4694,7 @@ async function openCityLayoutPreview(id){
 /* 後台設定 */
 const ADM_PW="09070220";
 function askPwd(){
+  if($("title").style.display==="none")return;
   $("pwi").value="";$("pwe").textContent="";
   $("pw").style.display="flex";
   gameTimeout(()=>$("pwi").focus(),60);
@@ -4707,7 +4720,7 @@ function stable_nextSandboxDay(){
 function preview_nextSandboxDay(){
  if(!sandboxSession)return;setSandboxNight(false);$("kitchenP").hidden=true;$("kitchenModal").hidden=true;stopExpeditionPlayback();closeCityPanels();architect.active=false;architect.selected=null;architect.placing=null;pendingChests++;newDay();seasonNoticePending=false;closeP('seasonP');coins=1e12;sp=9999;lives=3;render();showTown();
 }
-function finishSandbox(){if(sandboxSession)saveReviewProgress();if(reviewSaveTimer!==null){clearTimeout(reviewSaveTimer);reviewSaveTimer=null;}$('reviewProgressP').style.display='none';clearKitchenPreview(false);return stage21_finishSandbox();}
+function finishSandbox(){expeditionLabFood=null;if(sandboxSession)saveReviewProgress();if(reviewSaveTimer!==null){clearTimeout(reviewSaveTimer);reviewSaveTimer=null;}$('reviewProgressP').style.display='none';clearKitchenPreview(false);return stage21_finishSandbox();}
 function stable_finishSandbox(){
  if(!sandboxSession)return;weaponMastery=new Map();stopCityAnimals();cancelCityPresetSave();sandboxEpoch++;sandboxStorage.clear();cityThumbnailCache.clear();cityPreviewCache.clear();cityPreviewRequest++;sandboxSession=false;
  if(sandboxProfile){playerName=sandboxProfile.playerName;playerAvatar=normalizeAvatar(sandboxProfile.avatar);muted=sandboxProfile.muted;hi=sandboxProfile.hi;recs=sandboxProfile.recs;saves=sandboxProfile.saves;weaponAlbum.clear();sandboxProfile.weapons.forEach(k=>weaponAlbum.add(k));legendBlueprints.clear();sandboxProfile.blueprints.forEach(k=>legendBlueprints.add(k));legendCollection.clear();sandboxProfile.legends.forEach(k=>legendCollection.add(k));}sandboxProfile=null;
@@ -4838,7 +4851,7 @@ try{
   const ro=new ResizeObserver(fit);
   ro.observe($("play"));ro.observe($("app"));
 }catch(e){}
-$("tl").innerHTML=[0,1,4,9].map((c,k)=>hex(c,C[k+1],"",k+1)).join("");
+$("tl").innerHTML=[0,1,4,9].map((c,k)=>'<button type="button" class="home-admin-icon" onclick="askPwd()" aria-label="開啟後台測試密碼">'+hex(c,C[k+1],"",k+1)+'</button>').join("");
 setInterval(()=>{if(!busy)saveNow()},3000);
 addEventListener("pagehide",saveNow);
 document.addEventListener("visibilitychange",()=>{

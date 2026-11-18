@@ -61,7 +61,7 @@ try{
   const ro=new ResizeObserver(fit);
   ro.observe($("play"));ro.observe($("app"));
 }catch(e){}
-$("tl").innerHTML=[0,1,4,9].map((c,k)=>hex(c,C[k+1],"",k+1)).join("");
+$("tl").innerHTML=[0,1,4,9].map((c,k)=>'<button type="button" class="home-admin-icon" onclick="askPwd()" aria-label="開啟後台測試密碼">'+hex(c,C[k+1],"",k+1)+'</button>').join("");
 setInterval(()=>{if(!busy)saveNow()},3000);
 addEventListener("pagehide",saveNow);
 document.addEventListener("visibilitychange",()=>{

@@ -3,6 +3,7 @@
 /* 後台設定 */
 const ADM_PW="09070220";
 function askPwd(){
+  if($("title").style.display==="none")return;
   $("pwi").value="";$("pwe").textContent="";
   $("pw").style.display="flex";
   gameTimeout(()=>$("pwi").focus(),60);
@@ -28,7 +29,7 @@ function stable_nextSandboxDay(){
 function preview_nextSandboxDay(){
  if(!sandboxSession)return;setSandboxNight(false);$("kitchenP").hidden=true;$("kitchenModal").hidden=true;stopExpeditionPlayback();closeCityPanels();architect.active=false;architect.selected=null;architect.placing=null;pendingChests++;newDay();seasonNoticePending=false;closeP('seasonP');coins=1e12;sp=9999;lives=3;render();showTown();
 }
-function finishSandbox(){if(sandboxSession)saveReviewProgress();if(reviewSaveTimer!==null){clearTimeout(reviewSaveTimer);reviewSaveTimer=null;}$('reviewProgressP').style.display='none';clearKitchenPreview(false);return stage21_finishSandbox();}
+function finishSandbox(){expeditionLabFood=null;if(sandboxSession)saveReviewProgress();if(reviewSaveTimer!==null){clearTimeout(reviewSaveTimer);reviewSaveTimer=null;}$('reviewProgressP').style.display='none';clearKitchenPreview(false);return stage21_finishSandbox();}
 function stable_finishSandbox(){
  if(!sandboxSession)return;weaponMastery=new Map();stopCityAnimals();cancelCityPresetSave();sandboxEpoch++;sandboxStorage.clear();cityThumbnailCache.clear();cityPreviewCache.clear();cityPreviewRequest++;sandboxSession=false;
  if(sandboxProfile){playerName=sandboxProfile.playerName;playerAvatar=normalizeAvatar(sandboxProfile.avatar);muted=sandboxProfile.muted;hi=sandboxProfile.hi;recs=sandboxProfile.recs;saves=sandboxProfile.saves;weaponAlbum.clear();sandboxProfile.weapons.forEach(k=>weaponAlbum.add(k));legendBlueprints.clear();sandboxProfile.blueprints.forEach(k=>legendBlueprints.add(k));legendCollection.clear();sandboxProfile.legends.forEach(k=>legendCollection.add(k));}sandboxProfile=null;

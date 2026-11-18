@@ -107,7 +107,6 @@ function askName(cb){
  const finish=name=>{playerName=name;try{gameStorage.setItem('forgeName',name)}catch(e){}$('nm').style.display='none';cb();};
  const go=async()=>{
   if(busy)return;const v=$('nmi').value.trim();if(!v){$('nmi').focus();return;}
-  if(v.toLowerCase()==='test'){$('nm').style.display='none';askPwd();return;}
   busy=true;$('nmb').disabled=true;$('onlineNameStatus').textContent='確認玩家名稱中…';
   try{const p=await claimOnlineName(v);if(requestVersion===onlineNameRequestVersion&&$('nm').style.display==='flex')finish(p.name);}catch(e){if(requestVersion===onlineNameRequestVersion){$('onlineNameStatus').textContent=e.message;$('onlineNameOffline').hidden=!!e.status||String(e.message).includes('已被使用')||String(e.message).includes('目前使用');}}finally{busy=false;if(requestVersion===onlineNameRequestVersion)$('nmb').disabled=false;}
  };
