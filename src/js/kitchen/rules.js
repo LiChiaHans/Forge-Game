@@ -32,7 +32,7 @@ function kitchenPrepare(i,source='auto'){
  if(kitchen.g[i]||kitchen.heat[i]>0){kitchen.message='工序卡要放在可用的空格。';return false;}
  const mat=moldMaterials(i,kitchen.g);if(!mat){kitchen.message='空格附近需要至少兩包相連的同階食材。';return false;}
  const held=source!=='queue'&&kitchen.hand?.k==='m',s=held?kitchen.hand.s:kitchen.mq[0];const ingredientParts=mat.cells.map(j=>({...kitchen.g[j]}));mat.cells.forEach(j=>kitchen.g[j]=null);kitchen.g[i]=kitchenFreshen({k:'p',s,t:mat.t});
- kitchenRecordMerge(mat.cells,ingredientParts,[i],i);if(held){kitchen.hand=null;kitchen.useHeld=false;}else{kitchen.mq.shift();kitchen.mq.push(rnd(3));}kitchen.mode='ore';
+ kitchenRecordMerge(mat.cells,ingredientParts,[i],i);if(held){kitchen.hand=null;kitchen.useHeld=false;}else{kitchen.mq.shift();kitchen.mq.push(kitchenRollProcess());}kitchen.mode='ore';
  kitchen.message='已備好'+KITCHEN_GRADES[mat.t]+KITCHEN_TYPES[s]+'。連成三份工序時會自動完成料理。';kitchenCraft(i,true);return true;
 }
 function kitchenStars(w){return sandboxSession&&Number.isInteger(w.testStars)?Math.max(0,Math.min(3,w.testStars)):Math.min(3,Math.floor((kitchen?.xp?.[w.c+':'+w.t]||0)/3));}

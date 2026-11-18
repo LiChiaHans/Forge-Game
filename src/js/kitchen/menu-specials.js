@@ -22,3 +22,6 @@ function validateKitchenMenu(k){
  const s=k.special;k.special=s&&s.day===k.day&&(s.recipe===null||Number.isInteger(s.recipe)&&s.recipe>=0&&s.recipe<10)?{day:s.day,recipe:s.recipe,locked:!!s.locked||k.turn>0,sold:Number.isSafeInteger(s.sold)&&s.sold>=0?s.sold:0}:{day:k.day,recipe:null,locked:k.turn>0,sold:0};
  for(const o of [...k.orders,...k.queue])if(o.need&&(!Object.hasOwn(KITCHEN_STAT_NAMES,o.need.key)||!Number.isSafeInteger(o.need.value)||o.need.value<1||o.need.value>300))throw new Error('餐廳狀態需求錯誤');return k;
 }
+
+function kitchenProcessWeights(){const weights=[1,1,1];for(const o of kitchen?.orders||[]){if(o.c!==null)for(const s of COMBO[o.c])weights[+s]++;else if(o.need)weights[{fullness:0,taste:1,aroma:2}[o.need.key]]+=2;}return weights;}
+function kitchenRollProcess(){const weights=kitchenProcessWeights();let value=Math.random()*weights.reduce((a,b)=>a+b,0);for(let s=0;s<3;s++){value-=weights[s];if(value<0)return s;}return 2;}

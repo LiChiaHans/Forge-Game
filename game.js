@@ -578,7 +578,7 @@ function kitchenPrepare(i,source='auto'){
  if(kitchen.g[i]||kitchen.heat[i]>0){kitchen.message='工序卡要放在可用的空格。';return false;}
  const mat=moldMaterials(i,kitchen.g);if(!mat){kitchen.message='空格附近需要至少兩包相連的同階食材。';return false;}
  const held=source!=='queue'&&kitchen.hand?.k==='m',s=held?kitchen.hand.s:kitchen.mq[0];const ingredientParts=mat.cells.map(j=>({...kitchen.g[j]}));mat.cells.forEach(j=>kitchen.g[j]=null);kitchen.g[i]=kitchenFreshen({k:'p',s,t:mat.t});
- kitchenRecordMerge(mat.cells,ingredientParts,[i],i);if(held){kitchen.hand=null;kitchen.useHeld=false;}else{kitchen.mq.shift();kitchen.mq.push(rnd(3));}kitchen.mode='ore';
+ kitchenRecordMerge(mat.cells,ingredientParts,[i],i);if(held){kitchen.hand=null;kitchen.useHeld=false;}else{kitchen.mq.shift();kitchen.mq.push(kitchenRollProcess());}kitchen.mode='ore';
  kitchen.message='已備好'+KITCHEN_GRADES[mat.t]+KITCHEN_TYPES[s]+'。連成三份工序時會自動完成料理。';kitchenCraft(i,true);return true;
 }
 function kitchenStars(w){return sandboxSession&&Number.isInteger(w.testStars)?Math.max(0,Math.min(3,w.testStars)):Math.min(3,Math.floor((kitchen?.xp?.[w.c+':'+w.t]||0)/3));}
@@ -639,6 +639,9 @@ function validateKitchenMenu(k){
  const s=k.special;k.special=s&&s.day===k.day&&(s.recipe===null||Number.isInteger(s.recipe)&&s.recipe>=0&&s.recipe<10)?{day:s.day,recipe:s.recipe,locked:!!s.locked||k.turn>0,sold:Number.isSafeInteger(s.sold)&&s.sold>=0?s.sold:0}:{day:k.day,recipe:null,locked:k.turn>0,sold:0};
  for(const o of [...k.orders,...k.queue])if(o.need&&(!Object.hasOwn(KITCHEN_STAT_NAMES,o.need.key)||!Number.isSafeInteger(o.need.value)||o.need.value<1||o.need.value>300))throw new Error('餐廳狀態需求錯誤');return k;
 }
+
+function kitchenProcessWeights(){const weights=[1,1,1];for(const o of kitchen?.orders||[]){if(o.c!==null)for(const s of COMBO[o.c])weights[+s]++;else if(o.need)weights[{fullness:0,taste:1,aroma:2}[o.need.key]]+=2;}return weights;}
+function kitchenRollProcess(){const weights=kitchenProcessWeights();let value=Math.random()*weights.reduce((a,b)=>a+b,0);for(let s=0;s<3;s++){value-=weights[s];if(value<0)return s;}return 2;}
 
 
 function kitchenSVG(body){return '<svg viewBox="0 0 64 64" shape-rendering="crispEdges" aria-hidden="true">'+body+'</svg>';}
@@ -1307,7 +1310,7 @@ function kitchenPlanAt(at,item){
   const used=new Set(groups.flatMap(g=>g.cells));return {valid:true,at,consumed,groups,leftovers:board.flatMap((w,i)=>w?.k==='p'&&!used.has(i)?[i]:[]),text:'消耗 '+consumed.length+' 包食材 → '+KITCHEN_TYPES[item.s]+'備料'+(groups.length?'；全盤檢定：'+groups.map((g,i)=>(i+1)+'組 '+kitchenGradeName(g.tier)+KITCHEN_NAMES[g.recipe]+' → 第'+(g.target+1)+'格').join('、'):'；未達三份，先保留備料')+'。放開後確認。'};
  }
  if(item.k==='o'){if(!kitchenLevel('merge'))return {valid:true,at,consumed:[],groups:[],text:'放置'+KITCHEN_GRADES[item.t]+'食材；學習「料理大師」後才能合成升階。'};
-  board[at]={k:'o',t:item.t};const plan=workshopMaterialPlan(at,board);if(!plan)return {valid:true,at,consumed:[],groups:[],text:'放置'+KITCHEN_GRADES[item.t]+'食材；尚未達升階條件。'};return {valid:true,at,consumed:plan.cells,groups:plan.groups.map(g=>({...g,recipe:null})),text:plan.cells.length+' 包食材合成：'+plan.groups.map(g=>'第'+(g.target+1)+'格升至'+kitchenGradeName(g.tier)).join('、')+'。放開後確認。'};
+  const forecast=forecastMaterials(board,at,{k:'o',t:item.t});if(!forecast.steps.length)return {valid:true,at,consumed:[],groups:[],text:'放置'+KITCHEN_GRADES[item.t]+'食材；尚未達升階條件。'};return {valid:true,at,consumed:forecast.consumed,groups:forecast.groups,text:'連鎖 '+forecast.steps.length+' 次；最後 '+forecast.groups.length+' 包：'+forecast.groups.map(g=>kitchenGradeName(g.tier)+' → 第'+(g.target+1)+'格').join('、')+'。放開後確認。'};
  }return null;
 }
 function clearKitchenPreview(restore=true){kitchenPreviewPlan=null;for(const cell of $('kitchenGrid').children){cell.classList.remove('preview-source','preview-target','preview-leftover','preview-invalid');cell.querySelectorAll?.('.preview-label').forEach(n=>n.remove());cell.style?.removeProperty?.('--preview-color');}if(restore&&kitchen)renderKitchenMessage(kitchen.message);}
@@ -3969,6 +3972,7 @@ function mv(e){
     showPrediction("無法放置",why,true);return;
   }
 
+  if(k==="ore"||h?.k==='o'){previewForgeMaterial(i,h?.t??Q[0]);return;}
   if(k==="mold"||h&&h.k==='m'){
     const s=k==="mold"?MQ[0]:h.s,r=predictMold(i,s);
     if(!r){
@@ -4041,6 +4045,7 @@ function dropOn(kind,x,y){
   }
   if(g[i]){say("要放在空格上");render();return}
   if(heat[i]>0){say("過熱中，還要 "+heat[i]+" 步才能放置");render();return}
+  if(kind==="ore"){qFlip=qRects();flyIn(i,Q[0]);flyI=i;lead=150;g[i]={k:'o',t:Q.shift(),m:0};Q.push(rollOre());fresh=i;magicAt(i);thud(.2);auto(i);cool();settle();return;}
   if(kind==="mold"||(kind==="hand"&&hand.k==='m')){
     const hm=kind==="hand";
     if(!place(i,hm?hand.s:undefined)){render();return}
@@ -4048,7 +4053,7 @@ function dropOn(kind,x,y){
     cool();
   }else{
     const h=hand;
-    g[i]=h.k==='d'?{k:'d',t:h.t}:h.k==='o'?{k:'o',t:h.t}:{...h};
+    g[i]=h.k==='d'?{k:'d',t:h.t,m:h.m||0}:h.k==='o'?{k:'o',t:h.t,m:h.m||0}:{...h};
     hand=null;fresh=i;say("");magicAt(i);
     if(h.k==='o'){thud();auto(i)}
     else if(h.k==='p')forge(i);
@@ -4782,6 +4787,20 @@ async function openCityLayoutPreview(id){
 function markForgeOutputs(weapons){
  weapons.forEach((w,k)=>{const el=$('grid').children[w.target];if(!el)return;el.classList.add('pv-target');const label=document.createElement('span');label.className='forge-preview-label';label.textContent=(k+1)+' · '+NM[w.t]+'級'+WN[w.c];el.appendChild(label);});
 }
+
+function forecastMaterials(source,at,item){
+ const board=source.map(x=>x?{...x}:null),queue=[at],steps=[],outputs=new Map(),consumed=new Set();board[at]={...item};
+ while(queue.length&&steps.length<30){const i=queue.shift(),plan=workshopMaterialPlan(i,board);if(!plan)continue;const snapshots=plan.cells.map(j=>board[j]);steps.push(plan);for(const j of plan.cells){consumed.add(j);board[j]=null;outputs.delete(j);}for(const batch of plan.groups){const result={k:'o',t:batch.tier,m:batch.cells.reduce((n,j)=>n+(snapshots[plan.cells.indexOf(j)]?.m||0),0)};board[batch.target]=result;outputs.set(batch.target,{...batch,recipe:null});queue.push(batch.target);}}
+ return {board,steps,consumed:[...consumed],groups:[...outputs.values()]};
+}
+function previewForgeMaterial(i,t){
+ if(!sk('mm')){markPrediction(i,'pv-target');showPrediction('放置'+NM[t]+'礦','學習合成大師後可合成升階。');return;}
+ const forecast=forecastMaterials(g,i,{k:'o',t,m:(hand?.k==='o'?hand.m||0:0)+(magicSet.has(i)?5:0)});forecast.consumed.forEach(j=>markPrediction(j,'pv-use'));forecast.groups.forEach((b,k)=>{const cell=$('grid').children[b.target];if(!cell)return;cell.classList.add('pv-target');const label=document.createElement('span');label.className='forge-preview-label';label.textContent=(k+1)+' · '+NM[b.tier]+'礦';cell.appendChild(label);});markPrediction(i,'pv-target');
+ showPrediction(forecast.steps.length?'連鎖 '+forecast.steps.length+' 次 · 最後 '+forecast.groups.length+' 顆':'放置'+NM[t]+'礦',forecast.steps.length?forecast.groups.map(b=>NM[b.tier]+'礦 → 第'+(b.target+1)+'格').join('、'):'尚未達三顆相連。');
+}
+$('grid').addEventListener('pointerover',e=>{if(e.pointerType!=='mouse'||drag||busy)return;const cell=e.target.closest('.c');if(!cell)return;const i=+cell.dataset.i;if(!g[i]&&!heat[i]&&!cellBlock(i))previewForgeMaterial(i,Q[0]);});
+$('grid').addEventListener('pointerleave',()=>{if(!drag)clearPrediction();});
+$('q').addEventListener('pointerdown',e=>{if(busy||e.button>0)return;const node=e.target.closest('.q');if(!node||node.dataset.step!=='1')return;e.preventDefault();startDrag(e,'ore',null,oreH(Q[0]),node);});
 
 
 /* 後台設定 */

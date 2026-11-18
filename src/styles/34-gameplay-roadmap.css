@@ -10,3 +10,5 @@
 #workshopFinish[hidden]{display:none!important}#workshopFinish>span:last-child{display:grid;gap:3px;min-width:0}#workshopFinish b{font-size:16px;line-height:1.2}#workshopFinish small{font-size:11px;line-height:1.3}#workshopFinish[data-kind="kitchen"]{background:#4c3c2df2}#workshopFinish[data-raised="true"]{border-color:#ffe890;box-shadow:0 0 14px #ffdc6d66,0 3px 0 #182323}
 .finish-art{display:block;width:48px;height:48px;flex:none}.finish-art>.hxo,.finish-art>svg{width:100%;height:100%}.kitchen-star-complete{outline:2px solid #ffe687;outline-offset:-3px}
 @media(prefers-reduced-motion:reduce){#workshopFinish{animation:none}.kitchen-star-complete{outline-color:#e6ca87}}
+
+#q .q.first{cursor:grab;touch-action:none}#q .q.first:active{cursor:grabbing}

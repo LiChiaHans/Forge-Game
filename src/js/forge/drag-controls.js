@@ -138,6 +138,7 @@ function mv(e){
     showPrediction("無法放置",why,true);return;
   }
 
+  if(k==="ore"||h?.k==='o'){previewForgeMaterial(i,h?.t??Q[0]);return;}
   if(k==="mold"||h&&h.k==='m'){
     const s=k==="mold"?MQ[0]:h.s,r=predictMold(i,s);
     if(!r){
@@ -210,6 +211,7 @@ function dropOn(kind,x,y){
   }
   if(g[i]){say("要放在空格上");render();return}
   if(heat[i]>0){say("過熱中，還要 "+heat[i]+" 步才能放置");render();return}
+  if(kind==="ore"){qFlip=qRects();flyIn(i,Q[0]);flyI=i;lead=150;g[i]={k:'o',t:Q.shift(),m:0};Q.push(rollOre());fresh=i;magicAt(i);thud(.2);auto(i);cool();settle();return;}
   if(kind==="mold"||(kind==="hand"&&hand.k==='m')){
     const hm=kind==="hand";
     if(!place(i,hm?hand.s:undefined)){render();return}
@@ -217,7 +219,7 @@ function dropOn(kind,x,y){
     cool();
   }else{
     const h=hand;
-    g[i]=h.k==='d'?{k:'d',t:h.t}:h.k==='o'?{k:'o',t:h.t}:{...h};
+    g[i]=h.k==='d'?{k:'d',t:h.t,m:h.m||0}:h.k==='o'?{k:'o',t:h.t,m:h.m||0}:{...h};
     hand=null;fresh=i;say("");magicAt(i);
     if(h.k==='o'){thud();auto(i)}
     else if(h.k==='p')forge(i);
