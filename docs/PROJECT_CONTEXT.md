@@ -40,3 +40,4 @@
 ## 2026-11-19 ordered updates
 - Home four weapon icons are password shortcuts to isolated sandbox. Test is now an ordinary player name, never an admin bypass. Existing password unchanged.
 - Sandbox expedition adds ten dishes × five grades, stars and spices as virtual one-meal options (index -2); never writes or consumes formal/fridge inventory. Lab meal identity is stable for a battle and cleared on sandbox exit. testStars is honored only in sandbox.
+- Stage1: ranger checks handle molds, monk checks shield molds. Gold quests appear day4+, sale goals30/60/90 in days1–3, multi/gold capped to daily customer count; old early quests migrated without rewards. Safe quest records actual timeout/cancel even if later healed. Forge and kitchen previews name grade/quantity/output cells without consuming RNG/resources.

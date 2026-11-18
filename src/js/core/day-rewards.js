@@ -14,7 +14,7 @@ function newDay(){discardCityEdit();
   dTot=day===0?2:day<=3?day+2:5+rnd(4);
   dServed=0;dSold=0;dEarn=0;
   dLv=lives;stepSales=0;justHeated.clear();
-  quests.forEach(q=>{if(q&&q.s==='a'&&QD[q.t].day)q.p=0});
+  quests.forEach(q=>{if(q&&q.s==='a'&&QD[q.t].day){q.p=0;delete q.failed;}});
   ensureQuests();
   const n=Math.min(3,dTot),gen=new Set();
   while(gen.size<Math.min(2,dTot))gen.add(rnd(dTot));
@@ -52,7 +52,7 @@ function stable_endDay(){
     return;
   }
   if(lastCompletedDay>=day||orders.length||dq.length)return;
-  qEach('safe',q=>{if(lives>=dLv)qProg(q,q.n)});
+  qEach('safe',q=>{if(!q.failed&&lives>=dLv)qProg(q,q.n)});
   lastCompletedDay=day;grantDailyWorkshopSkill('forge');pendingChests++;saveHi();
   gachaUsed=false;skillDone=false;spentToday=0;newDay();
 }
@@ -64,7 +64,7 @@ function preview_endDay(){
   }
   if(sandboxSession){sandboxEndForgeDay();return;}
   if(lastCompletedDay>=day||orders.length||dq.length)return;
-  qEach('safe',q=>{if(lives>=dLv)qProg(q,q.n)});
+  qEach('safe',q=>{if(!q.failed&&lives>=dLv)qProg(q,q.n)});
   lastCompletedDay=day;grantDailyWorkshopSkill('forge');pendingChests++;saveHi();
   gachaUsed=false;skillDone=false;spentToday=0;newDay();
 }

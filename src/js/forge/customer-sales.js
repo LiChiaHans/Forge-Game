@@ -16,7 +16,7 @@ function checkWait(){
   for(let k=orders.length-1;k>=0;k--){
     if(orders[k].wait<=0){removeOrder(k);n++}
   }
-  if(n){lives-=n;say("客人等太久離開了！生命 -"+n)}
+  if(n){qEach('safe',q=>q.failed=true);lives-=n;say("客人等太久離開了！生命 -"+n)}
 }
 function gameOver(why){active=false;cancelKitchenDrag();clearKitchenIngredientFlights();clearKitchenDepartures();$("kitchenP").hidden=true;$("kitchenModal").hidden=true;
   stopExpeditionPlayback();$("expeditionP").style.display="none";$("weaponStatsP").style.display="none";
@@ -30,7 +30,7 @@ function gameOver(why){active=false;cancelKitchenDrag();clearKitchenIngredientFl
 }
 function cancelOrder(k){
   if(!orders[k])return;
-  lives--;say("已取消訂單，生命 -1");removeOrder(k);render();
+  qEach('safe',q=>q.failed=true);lives--;say("已取消訂單，生命 -1");removeOrder(k);render();
   const T=exitMs;exitMs=0;
   gameTimeout(()=>{
     if(lives<=0)gameOver("生命用完了。");

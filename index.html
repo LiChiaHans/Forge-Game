@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="game.css?v=d3071ed582868357">
+<link rel="stylesheet" href="game.css?v=09869c1ff269afac">
 
 
 
@@ -90,7 +90,7 @@
   <h3>選擇出戰武器</h3><div id="expeditionWeapons"></div><div id="expeditionSelectedStats"></div>
   <section id="expeditionFoodSetup" hidden></section>
   <button id="expeditionFight" class="pri exp-wide" onclick="beginExpedition()">開始挑戰</button>
-  <p class="exp-note">出戰時消耗一把武器，勝負、撤退或中途離開都不退回。落敗扣一顆愛心，未通關可不限次重試；勝利自動前往下一關。第 1～10 關解鎖傳說藍圖，第 11～20 關解鎖終極藍圖。</p>
+  <p class="exp-note">出戰時消耗一把武器，勝負、撤退或中途離開都不退回。落敗扣一顆愛心，未通關可不限次重試；勝利後可查看戰果，按返回遠征前往下一關。第 1～10 關解鎖傳說藍圖，第 11～20 關解鎖終極藍圖。</p>
   <details class="exp-rules"><summary>能力與戰鬥規則</summary><p>每個胚分別提供能力：刃胚偏重攻擊、盾胚偏重防禦、柄胚偏重速度。銅、鐵、鋼、金、秘銀的材料強度為 1、1.7、2.8、4.4、6.8 倍。</p><p>出戰生命＝100＋防禦×2。速度決定先後與行動頻率；物理傷害＝攻擊×屬性倍率－對方防禦的 60%，至少造成 1 傷害。奧術傷害無視防禦，護盾先吸收傷害。120 次行動後仍未分勝負則撤退。終極武器的主動技能每場可施放一次；按「顯示戰果」會直接完成剩餘戰鬥，不會自動施放技能或防禦。防禦架勢每場一次，讓下一次敵方攻擊減少 60% 傷害，蓄力不會消耗已準備的防禦。</p></details>
   <p id="expeditionLast" class="exp-note"></p><section class="element-chart-panel"><h3>屬性相剋</h3><div id="elementChart"></div></section>
  </div>
@@ -275,6 +275,6 @@
 <div id="toasts"></div>
 
 <div id="sceneTransition" role="status" aria-live="polite" tabindex="-1" hidden></div>
-<script src="game.js?v=877114e6921a51f3"></script>
+<script src="game.js?v=5eaf2f8a9e5e6af3"></script>
 </body>
 </html>

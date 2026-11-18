@@ -1,0 +1,8 @@
+const assert=require('node:assert/strict'),{c,run,els}=require('./harness.cjs')(__dirname+'/../.build/combined.html');
+run("start('normal',{test:true})");
+assert.equal(run('QD.gold.ok()'),false);for(let n=0;n<20;n++){assert.equal(run('QD.big.mk().x'),30);assert.ok(run('QD.multi.mk().n<=dTot'));}
+run("day=2;dTot=4;quests=[{t:'gold',s:'a',n:5,p:0,r:800},{t:'big',s:'a',n:1,p:0,x:600,r:750},{t:'multi',s:'a',n:5,p:0,r:750}];ensureQuests()");assert.equal(run("quests.some(q=>q.t==='gold')"),false);assert.equal(run('quests[1].x'),60);assert.equal(run('quests[2].n'),4);
+const ranger={guest:{role:'遊俠'}},monk={guest:{role:'僧侶'}};assert.equal(c.guestPreferenceBonus(c.baseAlbumWeapon(6,0),ranger,false),.1);assert.equal(c.guestPreferenceBonus(c.baseAlbumWeapon(9,0),ranger,false),0);assert.equal(c.guestPreferenceBonus(c.baseAlbumWeapon(9,0),monk,false),.1);
+run("g=Array(30).fill(null);g[0]={k:'p',s:0,t:0};g[1]={k:'p',s:0,t:0};g[2]={k:'p',s:0,t:0};g[4]={k:'o',t:1};g[9]={k:'o',t:1};magicSet=new Set();");const before=run('JSON.stringify(g)'),plan=c.predictMold(3,1);assert.equal(run('JSON.stringify(g)'),before);assert.equal(plan.weapons.length,2);assert.deepEqual(JSON.parse(JSON.stringify(plan.weapons.map(w=>w.target))),[1,2]);assert.ok(plan.weapons.every(w=>Number.isInteger(w.t)));
+run("quests=[{t:'safe',s:'a',n:1,p:0,r:120}];orders=[{c:null,t:0,wait:100,max:100}];dq=[];dLeft=0;lives=3");c.cancelOrder(0);assert.equal(run('quests[0].failed'),true);
+console.log('PASS: reachable initial quests/legacy migration, correct profession preferences, exact read-only output targets and grades, real safe-order failure tracking.');

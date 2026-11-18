@@ -10,6 +10,7 @@ function clearPrediction(){
   document.querySelectorAll(".pv-use,.pv-forge,.pv-target,.pv-bad,.pv-sale").forEach(el=>{
     el.classList.remove("pv-use","pv-forge","pv-target","pv-bad","pv-sale");
   });
+  document.querySelectorAll(".forge-preview-label").forEach(el=>el.remove());
   $("prediction").hidden=true;
 }
 function showPrediction(title,detail,bad=false){
@@ -46,10 +47,10 @@ function predictMold(i,s){
       [...new Set(w.cells.flatMap(nb))]
         .filter(j=>board[j]&&board[j].k==='d')
         .slice(0,3).forEach(j=>{
-          w.b+=.3*(board[j].t+1);
+          (w.dts||(w.dts=[])).push(board[j].t);w.b+=.3*(board[j].t+1);
           w.m+=board[j].m||0;gems.push(j);board[j]=null;
         });
-      applyWeaponElement(w,path.length===3?i:path[k+1]);weapons.push(w);
+      w.target=workshopRecipeWindows(path,i)[k].target;applyWeaponElement(w,w.target);weapons.push(w);
       board[path.length===3?i:path[k+1]]=w;
     });
   }
@@ -150,11 +151,12 @@ function mv(e){
     const detail="消耗 "+r.mat.cells.length+" 顆"+NM[r.mat.t]
       +"礦 → "+NM[r.mat.t]+(s===3?"鑽石":TY[s]+"胚");
     if(r.weapons.length){
+      markForgeOutputs(r.weapons);
       const names=r.weapons.map(w=>NM[w.t]+"級"+WN[w.c]+"（"+materialNote(w)+"）"
         +(w.b?"（鑽石 +"+Math.round(w.b*100)+"%）":"")
         +(w.m?"（魔法 +"+w.m+"）":"")).join("、");
       showPrediction(
-        "放開鍛造："+names,
+        "放開鍛造 "+r.weapons.length+" 把："+names,
         detail+"。參與鍛造的胚格將過熱 "+hotSteps()+" 步；鑽石格立即空出，另隨機掉落礦石。"
       );
     }else{
@@ -168,10 +170,10 @@ function mv(e){
   }
   markPrediction(i,"pv-target");
   showPrediction(
-    "放開放置"+itemName(h),
-    h.k==='d'?"貼著胚，鍛造時自動鑲嵌；售價加成 "+30*(h.t+1)+"%。"
-      :h.k==='w'?"舊存檔保留的武器，可放回空格後出售。"
-      :h.k==='p'?"舊存檔保留的胚，放置後可能觸發鍛造。"
+    "放開放置"+itemName(h||{k:"o",t:Q[0]}),
+    h?.k==='d'?"貼著胚，鍛造時自動鑲嵌；售價加成 "+30*(h.t+1)+"%。"
+      :h?.k==='w'?"舊存檔保留的武器，可放回空格後出售。"
+      :h?.k==='p'?"舊存檔保留的胚，放置後可能觸發鍛造。"
       :"相鄰同階礦石可能觸發合成。"
   );
 }

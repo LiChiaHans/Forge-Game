@@ -39,7 +39,7 @@ function place(i,s2){
   g[i]=s===3?{k:'d',t,m:mm}:{k:'p',t,s,m:mm};
   tool=-1;fresh=i;
   say((mat.cells.length>2?"一次消耗了 "+mat.cells.length+" 顆礦石！":"")
-    +(magicSet.has(i)?" ✨ 魔法 +5💰（賣出時結算）":""));
+    +(magicSet.has(i)?" ✨ 附魔 +1 層（額外售價 +5 金幣）":""));
   if(expandedGameEnabled()){const ev={step:0,tg:i,from:oreFrom,to:[i],res:{[i]:workshopPieceHTML(g[i])},keys:{[i]:workshopItemKey(g[i])}};fx.push(ev);const begin=fx.length;if(s!==3)forge(i);fx.slice(begin).forEach(e=>e.step++);}else if(s!==3)forge(i);
   return true;
 }

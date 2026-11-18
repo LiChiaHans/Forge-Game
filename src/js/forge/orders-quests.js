@@ -47,15 +47,15 @@ const QD={
     tx:q=>`在 1 天中，賣出的武器累計鑲有 ${q.n} 顆鑽石`,sh:q=>`累計鑽×${q.n}`,
     tip:"當天賣出的所有武器，鑲嵌的鑽石加總。"},
   multi:{i:"⚡",w:3,ok:()=>true,
-    mk:()=>{const n=3+rnd(3);return{n,r:[250,450,750][n-3]}},
+    mk:()=>{const n=Math.min(dTot||3,3+rnd(3));return{n,r:[250,450,750][n-3]}},
     tx:q=>`在 1 步內，同時將武器賣給 ${q.n} 位客人`,sh:q=>`一步賣${q.n}位`,
     tip:"放礦石、模具、鑽石算 1 步；賣武器不算步數，先備好武器再連續賣。"},
-  gold:{i:"🥇",w:3,day:true,ok:()=>sk('mm')>0,
-    mk:()=>{const n=3+rnd(3);return{n,r:[300,500,800][n-3]}},
+  gold:{i:"🥇",w:3,day:true,ok:()=>day>=4&&sk('mm')>0,
+    mk:()=>{const n=Math.min(dTot||3,3+rnd(3));return{n,r:[300,500,800][n-3]}},
     tx:q=>`在 1 天中，賣出 ${q.n} 把金級以上的武器`,sh:q=>`金級×${q.n}`,
     tip:"金級與秘銀級武器都算。"},
   big:{i:"💰",w:2,ok:()=>true,
-    mk:()=>{const k=rnd(Math.min(4,Math.floor(day/2))+1);return{n:1,x:[120,200,300,450,600][k],r:[100,180,300,500,750][k]}},
+    mk:()=>{if(day<=3){const k=day===1?0:rnd(3);return {n:1,x:[30,60,90][k],r:[25,50,75][k]};}const k=rnd(Math.min(4,Math.floor(day/2))+1);return{n:1,x:[120,200,300,450,600][k],r:[100,180,300,500,750][k]}},
     tx:q=>`賣出一把成交價達 ${q.x} 金幣的武器`,sh:q=>`單筆≥${q.x}`,
     tip:"成交價含鑽石、魔法與大商人加成。"},
   spec:{i:"🗡️",w:2,ok:()=>true,
@@ -84,6 +84,10 @@ function genQuest(taken){
 function ensureQuests(){
   if(day<1){quests=[];return}
   if(!Array.isArray(quests))quests=[];
+  quests=quests.map(q=>q?.s==='a'&&q.t==='gold'&&day<4?null:q);
+  for(const q of quests)if(q?.s==='a'&&q.t==='big'&&day<=3&&q.x>90){q.x=day===1?30:60;q.r=day===1?25:50;}
+  for(const q of quests)if(q?.s==='a'&&q.t==='multi'&&q.n>dTot){q.n=dTot;q.r=[250,450,750][Math.max(0,dTot-3)];}
+  for(const q of quests)if(q?.s==='a'&&q.t==='gold'&&q.n>dTot){q.n=dTot;q.r=[300,500,800][Math.max(0,dTot-3)];}
   const taken=quests.filter(q=>q&&q.s==='a').map(q=>q.t);
   for(let k=0;k<3;k++){
     if(!quests[k]||quests[k].s!=='a'){

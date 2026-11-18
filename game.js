@@ -1266,7 +1266,7 @@ function kitchenPlanAt(at,item){
  if(item.k==='m'){
   const mat=moldMaterials(at,board);if(!mat)return invalid('這格附近需要至少兩包相連的同階食材。');consumed=mat.cells.slice();consumed.forEach(i=>board[i]=null);board[at]={k:'p',s:item.s,t:mat.t};
   for(const t of kitchenTriples(at,board)){const parts=t.cells.map(i=>board[i]),recipe=COMBO.indexOf(parts.map(w=>w.s).sort().join(''));groups.push({cells:t.cells,target:t.target,recipe,tier:Math.floor(parts.reduce((s,w)=>s+w.t,0)/3)});}
-  const used=new Set(groups.flatMap(g=>g.cells));return {valid:true,at,consumed,groups,leftovers:board.flatMap((w,i)=>w?.k==='p'&&!used.has(i)?[i]:[]),text:'消耗 '+consumed.length+' 包食材 → '+KITCHEN_TYPES[item.s]+'備料'+(groups.length?'；全盤檢定：'+groups.map((g,i)=>(i+1)+'組 '+KITCHEN_NAMES[g.recipe]+' → 第'+(g.target+1)+'格').join('、'):'；未達三份，先保留備料')+'。放開後確認。'};
+  const used=new Set(groups.flatMap(g=>g.cells));return {valid:true,at,consumed,groups,leftovers:board.flatMap((w,i)=>w?.k==='p'&&!used.has(i)?[i]:[]),text:'消耗 '+consumed.length+' 包食材 → '+KITCHEN_TYPES[item.s]+'備料'+(groups.length?'；全盤檢定：'+groups.map((g,i)=>(i+1)+'組 '+kitchenGradeName(g.tier)+KITCHEN_NAMES[g.recipe]+' → 第'+(g.target+1)+'格').join('、'):'；未達三份，先保留備料')+'。放開後確認。'};
  }
  if(item.k==='o'){if(!kitchenLevel('merge'))return {valid:true,at,consumed:[],groups:[],text:'放置'+KITCHEN_GRADES[item.t]+'食材；學習「料理大師」後才能合成升階。'};
   board[at]={k:'o',t:item.t};const plan=workshopMaterialPlan(at,board);if(!plan)return {valid:true,at,consumed:[],groups:[],text:'放置'+KITCHEN_GRADES[item.t]+'食材；尚未達升階條件。'};return {valid:true,at,consumed:plan.cells,groups:plan.groups.map(g=>({...g,recipe:null})),text:plan.cells.length+' 包食材合成：'+plan.groups.map(g=>'第'+(g.target+1)+'格升至'+kitchenGradeName(g.tier)).join('、')+'。放開後確認。'};
@@ -1276,7 +1276,7 @@ function clearKitchenPreview(restore=true){kitchenPreviewPlan=null;for(const cel
 function showKitchenPreview(at,item){
  clearKitchenPreview(false);const plan=kitchenPlanAt(at,item);kitchenPreviewPlan=plan;if(!plan)return;const cells=$('kitchenGrid').children,target=cells[at];if(!target)return;if(!plan.valid){target.classList.add('preview-invalid');renderKitchenMessage(plan.text);return;}
  plan.consumed.forEach(i=>cells[i]?.classList.add('preview-source'));const label=(i,text,color)=>{const cell=cells[i];if(!cell)return;cell.style.setProperty('--preview-color',color);cell.classList.add('preview-target');const s=cell.querySelector('.preview-label')||document.createElement('span');s.className='preview-label';s.textContent=text;cell.appendChild(s);};
- label(at,'備料／落點','#e7cc77');plan.groups.forEach((g,i)=>{const color=['#83e4bd','#dab2ff','#f5b67a','#8ed5fa'][i%4];g.cells.forEach(j=>{cells[j]?.classList.add('preview-source');cells[j]?.style.setProperty('--preview-color',color);});label(g.target,(i+1)+'組成品',color);});(plan.leftovers||[]).filter(i=>i!==at).forEach(i=>cells[i]?.classList.add('preview-leftover'));renderKitchenMessage(plan.text);
+ label(at,'備料／落點','#e7cc77');plan.groups.forEach((g,i)=>{const color=['#83e4bd','#dab2ff','#f5b67a','#8ed5fa'][i%4];g.cells.forEach(j=>{cells[j]?.classList.add('preview-source');cells[j]?.style.setProperty('--preview-color',color);});label(g.target,(i+1)+' · '+(g.recipe===null?kitchenGradeName(g.tier):kitchenGradeName(g.tier)+KITCHEN_NAMES[g.recipe]),color);});(plan.leftovers||[]).filter(i=>i!==at).forEach(i=>cells[i]?.classList.add('preview-leftover'));renderKitchenMessage(plan.text);
 }
 function updateKitchenDragPreview(e){const d=kitchenDrag;if(!d?.moved||kitchen.done)return;const cell=document.elementFromPoint(e.clientX,e.clientY)?.closest('.kc');if(!cell){clearKitchenPreview();return;}showKitchenPreview(+cell.dataset.ki,d.w);}
 function kitchenHoverPreview(e){if(kitchenDrag||kitchen?.done)return;const hand=kitchen.useHeld&&kitchen.hand?.k==='m';if(!hand&&kitchen.mode!=='prep')return;const cell=e.target.closest('.kc');if(cell)showKitchenPreview(+cell.dataset.ki,hand?kitchen.hand:{k:'m',s:kitchen.mq[0]});}
@@ -1314,7 +1314,7 @@ function guestPreferenceText(o,food){
 function guestPreferenceBonus(w,o,food){
  if(!expandedGameEnabled()||!o?.guest||!w)return 0;const role=o.guest.role,parts=COMBO[w.c]?.split('')||[],count=s=>parts.filter(x=>x===s).length,fast=o.wait>=o.max*.5,enchanted=(w.m||0)>0||(w.b||0)>0||elementOf(w)!=='none';let yes=false;
  if(food){yes=({劍士:()=>count('1')>=2,法師:()=>!!w.spice,遊俠:()=>count('2')>=2,僧侶:()=>w.c===8||count('2')>=2,盜賊:()=>fast,吟遊詩人:()=>kitchenDishStats(w).aroma>=25,商人:()=>fast,饕客:()=>w.t>o.t||kitchenStars(w)>0}[role]||(()=>false))();}
- else yes=({劍士:()=>count('0')>=2,法師:()=>enchanted,遊俠:()=>count('2')>=2,僧侶:()=>count('1')>=2,盜賊:()=>[0,2].includes(w.c),吟遊詩人:()=>(w.m||0)>0||(w.b||0)>0,商人:()=>fast,饕客:()=>w.t>o.t}[role]||(()=>false))();return yes?.1:0;
+ else yes=({劍士:()=>count('0')>=2,法師:()=>enchanted,遊俠:()=>count('1')>=2,僧侶:()=>count('2')>=2,盜賊:()=>[0,2].includes(w.c),吟遊詩人:()=>(w.m||0)>0||(w.b||0)>0,商人:()=>fast,饕客:()=>w.t>o.t}[role]||(()=>false))();return yes?.1:0;
 }
 function guestBadge22(o,food){return expandedGameEnabled()&&o?.guest?'<em class="guest-like22" title="'+esc(guestPreferenceText(o,food))+'">♥10%</em>':'';}
 function orderGuestHTML(o){const guest=o?.guest;return expandedGameEnabled()&&guest&&TOWN_GUEST_ART[guest.id]?'<span class="order-guest" role="img" aria-label="'+esc(guest.gender+guest.role)+'">'+townGuestArt(guest.id)+'</span>':'';}
@@ -2061,15 +2061,15 @@ const QD={
     tx:q=>`在 1 天中，賣出的武器累計鑲有 ${q.n} 顆鑽石`,sh:q=>`累計鑽×${q.n}`,
     tip:"當天賣出的所有武器，鑲嵌的鑽石加總。"},
   multi:{i:"⚡",w:3,ok:()=>true,
-    mk:()=>{const n=3+rnd(3);return{n,r:[250,450,750][n-3]}},
+    mk:()=>{const n=Math.min(dTot||3,3+rnd(3));return{n,r:[250,450,750][n-3]}},
     tx:q=>`在 1 步內，同時將武器賣給 ${q.n} 位客人`,sh:q=>`一步賣${q.n}位`,
     tip:"放礦石、模具、鑽石算 1 步；賣武器不算步數，先備好武器再連續賣。"},
-  gold:{i:"🥇",w:3,day:true,ok:()=>sk('mm')>0,
-    mk:()=>{const n=3+rnd(3);return{n,r:[300,500,800][n-3]}},
+  gold:{i:"🥇",w:3,day:true,ok:()=>day>=4&&sk('mm')>0,
+    mk:()=>{const n=Math.min(dTot||3,3+rnd(3));return{n,r:[300,500,800][n-3]}},
     tx:q=>`在 1 天中，賣出 ${q.n} 把金級以上的武器`,sh:q=>`金級×${q.n}`,
     tip:"金級與秘銀級武器都算。"},
   big:{i:"💰",w:2,ok:()=>true,
-    mk:()=>{const k=rnd(Math.min(4,Math.floor(day/2))+1);return{n:1,x:[120,200,300,450,600][k],r:[100,180,300,500,750][k]}},
+    mk:()=>{if(day<=3){const k=day===1?0:rnd(3);return {n:1,x:[30,60,90][k],r:[25,50,75][k]};}const k=rnd(Math.min(4,Math.floor(day/2))+1);return{n:1,x:[120,200,300,450,600][k],r:[100,180,300,500,750][k]}},
     tx:q=>`賣出一把成交價達 ${q.x} 金幣的武器`,sh:q=>`單筆≥${q.x}`,
     tip:"成交價含鑽石、魔法與大商人加成。"},
   spec:{i:"🗡️",w:2,ok:()=>true,
@@ -2098,6 +2098,10 @@ function genQuest(taken){
 function ensureQuests(){
   if(day<1){quests=[];return}
   if(!Array.isArray(quests))quests=[];
+  quests=quests.map(q=>q?.s==='a'&&q.t==='gold'&&day<4?null:q);
+  for(const q of quests)if(q?.s==='a'&&q.t==='big'&&day<=3&&q.x>90){q.x=day===1?30:60;q.r=day===1?25:50;}
+  for(const q of quests)if(q?.s==='a'&&q.t==='multi'&&q.n>dTot){q.n=dTot;q.r=[250,450,750][Math.max(0,dTot-3)];}
+  for(const q of quests)if(q?.s==='a'&&q.t==='gold'&&q.n>dTot){q.n=dTot;q.r=[300,500,800][Math.max(0,dTot-3)];}
   const taken=quests.filter(q=>q&&q.s==='a').map(q=>q.t);
   for(let k=0;k<3;k++){
     if(!quests[k]||quests[k].s!=='a'){
@@ -2337,7 +2341,7 @@ function place(i,s2){
   g[i]=s===3?{k:'d',t,m:mm}:{k:'p',t,s,m:mm};
   tool=-1;fresh=i;
   say((mat.cells.length>2?"一次消耗了 "+mat.cells.length+" 顆礦石！":"")
-    +(magicSet.has(i)?" ✨ 魔法 +5💰（賣出時結算）":""));
+    +(magicSet.has(i)?" ✨ 附魔 +1 層（額外售價 +5 金幣）":""));
   if(expandedGameEnabled()){const ev={step:0,tg:i,from:oreFrom,to:[i],res:{[i]:workshopPieceHTML(g[i])},keys:{[i]:workshopItemKey(g[i])}};fx.push(ev);const begin=fx.length;if(s!==3)forge(i);fx.slice(begin).forEach(e=>e.step++);}else if(s!==3)forge(i);
   return true;
 }
@@ -2445,7 +2449,7 @@ function checkWait(){
   for(let k=orders.length-1;k>=0;k--){
     if(orders[k].wait<=0){removeOrder(k);n++}
   }
-  if(n){lives-=n;say("客人等太久離開了！生命 -"+n)}
+  if(n){qEach('safe',q=>q.failed=true);lives-=n;say("客人等太久離開了！生命 -"+n)}
 }
 function gameOver(why){active=false;cancelKitchenDrag();clearKitchenIngredientFlights();clearKitchenDepartures();$("kitchenP").hidden=true;$("kitchenModal").hidden=true;
   stopExpeditionPlayback();$("expeditionP").style.display="none";$("weaponStatsP").style.display="none";
@@ -2459,7 +2463,7 @@ function gameOver(why){active=false;cancelKitchenDrag();clearKitchenIngredientFl
 }
 function cancelOrder(k){
   if(!orders[k])return;
-  lives--;say("已取消訂單，生命 -1");removeOrder(k);render();
+  qEach('safe',q=>q.failed=true);lives--;say("已取消訂單，生命 -1");removeOrder(k);render();
   const T=exitMs;exitMs=0;
   gameTimeout(()=>{
     if(lives<=0)gameOver("生命用完了。");
@@ -3544,7 +3548,7 @@ function newDay(){discardCityEdit();
   dTot=day===0?2:day<=3?day+2:5+rnd(4);
   dServed=0;dSold=0;dEarn=0;
   dLv=lives;stepSales=0;justHeated.clear();
-  quests.forEach(q=>{if(q&&q.s==='a'&&QD[q.t].day)q.p=0});
+  quests.forEach(q=>{if(q&&q.s==='a'&&QD[q.t].day){q.p=0;delete q.failed;}});
   ensureQuests();
   const n=Math.min(3,dTot),gen=new Set();
   while(gen.size<Math.min(2,dTot))gen.add(rnd(dTot));
@@ -3582,7 +3586,7 @@ function stable_endDay(){
     return;
   }
   if(lastCompletedDay>=day||orders.length||dq.length)return;
-  qEach('safe',q=>{if(lives>=dLv)qProg(q,q.n)});
+  qEach('safe',q=>{if(!q.failed&&lives>=dLv)qProg(q,q.n)});
   lastCompletedDay=day;grantDailyWorkshopSkill('forge');pendingChests++;saveHi();
   gachaUsed=false;skillDone=false;spentToday=0;newDay();
 }
@@ -3594,7 +3598,7 @@ function preview_endDay(){
   }
   if(sandboxSession){sandboxEndForgeDay();return;}
   if(lastCompletedDay>=day||orders.length||dq.length)return;
-  qEach('safe',q=>{if(lives>=dLv)qProg(q,q.n)});
+  qEach('safe',q=>{if(!q.failed&&lives>=dLv)qProg(q,q.n)});
   lastCompletedDay=day;grantDailyWorkshopSkill('forge');pendingChests++;saveHi();
   gachaUsed=false;skillDone=false;spentToday=0;newDay();
 }
@@ -3753,6 +3757,7 @@ function clearPrediction(){
   document.querySelectorAll(".pv-use,.pv-forge,.pv-target,.pv-bad,.pv-sale").forEach(el=>{
     el.classList.remove("pv-use","pv-forge","pv-target","pv-bad","pv-sale");
   });
+  document.querySelectorAll(".forge-preview-label").forEach(el=>el.remove());
   $("prediction").hidden=true;
 }
 function showPrediction(title,detail,bad=false){
@@ -3789,10 +3794,10 @@ function predictMold(i,s){
       [...new Set(w.cells.flatMap(nb))]
         .filter(j=>board[j]&&board[j].k==='d')
         .slice(0,3).forEach(j=>{
-          w.b+=.3*(board[j].t+1);
+          (w.dts||(w.dts=[])).push(board[j].t);w.b+=.3*(board[j].t+1);
           w.m+=board[j].m||0;gems.push(j);board[j]=null;
         });
-      applyWeaponElement(w,path.length===3?i:path[k+1]);weapons.push(w);
+      w.target=workshopRecipeWindows(path,i)[k].target;applyWeaponElement(w,w.target);weapons.push(w);
       board[path.length===3?i:path[k+1]]=w;
     });
   }
@@ -3893,11 +3898,12 @@ function mv(e){
     const detail="消耗 "+r.mat.cells.length+" 顆"+NM[r.mat.t]
       +"礦 → "+NM[r.mat.t]+(s===3?"鑽石":TY[s]+"胚");
     if(r.weapons.length){
+      markForgeOutputs(r.weapons);
       const names=r.weapons.map(w=>NM[w.t]+"級"+WN[w.c]+"（"+materialNote(w)+"）"
         +(w.b?"（鑽石 +"+Math.round(w.b*100)+"%）":"")
         +(w.m?"（魔法 +"+w.m+"）":"")).join("、");
       showPrediction(
-        "放開鍛造："+names,
+        "放開鍛造 "+r.weapons.length+" 把："+names,
         detail+"。參與鍛造的胚格將過熱 "+hotSteps()+" 步；鑽石格立即空出，另隨機掉落礦石。"
       );
     }else{
@@ -3911,10 +3917,10 @@ function mv(e){
   }
   markPrediction(i,"pv-target");
   showPrediction(
-    "放開放置"+itemName(h),
-    h.k==='d'?"貼著胚，鍛造時自動鑲嵌；售價加成 "+30*(h.t+1)+"%。"
-      :h.k==='w'?"舊存檔保留的武器，可放回空格後出售。"
-      :h.k==='p'?"舊存檔保留的胚，放置後可能觸發鍛造。"
+    "放開放置"+itemName(h||{k:"o",t:Q[0]}),
+    h?.k==='d'?"貼著胚，鍛造時自動鑲嵌；售價加成 "+30*(h.t+1)+"%。"
+      :h?.k==='w'?"舊存檔保留的武器，可放回空格後出售。"
+      :h?.k==='p'?"舊存檔保留的胚，放置後可能觸發鍛造。"
       :"相鄰同階礦石可能觸發合成。"
   );
 }
@@ -4688,6 +4694,9 @@ async function openCityLayoutPreview(id){
  $('cityLayoutPreviewTitle').textContent=p.name;img.setAttribute('alt',p.name+'的城鎮截圖');$('cityLayoutPreviewMeta').textContent=(p.authorName||'舊版版型')+' · '+cityPresetDate(p);$('cityLayoutPreviewP').style.display='flex';syncTownMotion();
  const src=await cityPresetPreview(p);if(runId!==run||sandboxEpoch!==epoch||request!==cityPreviewRequest||$('cityLayoutPreviewP').style.display!=='flex')return;
  img.setAttribute('src',src);img.hidden=false;$('cityLayoutPreviewStatus').hidden=true;
+}
+function markForgeOutputs(weapons){
+ weapons.forEach((w,k)=>{const el=$('grid').children[w.target];if(!el)return;el.classList.add('pv-target');const label=document.createElement('span');label.className='forge-preview-label';label.textContent=(k+1)+' · '+NM[w.t]+'級'+WN[w.c];el.appendChild(label);});
 }
 
 
