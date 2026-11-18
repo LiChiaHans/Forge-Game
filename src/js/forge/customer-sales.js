@@ -55,7 +55,7 @@ function sellW(c,k,clear){
   const magicGold=mg?p-salePrice({...c,m:0},o):0;
   say("成交！+"+p+" 金幣"+(mg?"（附魔 "+weaponStats(c).stacks+" 層 · 額外金幣 +"+magicGold+"）":"")
     +(sk("mc")?"，大商人 +"+10*sk("mc")+"%":"")+seasonSaleNote(c)+(guestPreferenceBonus(c,o,false)?'，喜好 +10%':''));
-  qOnSale(c,p);
+  qOnSale(c,p);recordFestival('weapon',c);
   if(c.dts&&c.dts.length&&sk('gc')>=2&&Math.random()<.25)
     dropGem(sk('gc')>=3?Math.max(...c.dts):0);
   removeOrder(k);

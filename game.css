@@ -1282,3 +1282,5 @@ body.cozy-items [data-cozy-item],body.cozy-items [data-cozy-decor]{overflow:visi
 @media(prefers-reduced-motion:reduce){#workshopFinish{animation:none}.kitchen-star-complete{outline-color:#e6ca87}}
 
 #q .q.first{cursor:grab;touch-action:none}#q .q.first:active{cursor:grabbing}
+
+#festivalP{z-index:141}#festivalP .hp{max-width:440px}#townSeason[role="button"]{cursor:pointer;text-decoration:underline dotted #bfae75;text-underline-offset:3px}#townSeason:focus-visible{outline:2px solid #ffe39a}.festival-card,.festival-next{border:2px solid #aa8c57;background:#35443a;padding:12px;margin:12px 0;color:#fff0c8}.festival-next{background:#293d4d;border-color:#739caa}.festival-card h3,.festival-next h3{margin:0 0 10px;color:#ffe49c}.festival-card label{display:block;font-size:15px;line-height:1.5;margin:8px 0}.festival-card label b{float:right}.festival-card progress{display:block;width:100%;height:10px;accent-color:#b3d47c}.festival-card p,.festival-next p{font-size:14px;line-height:1.6}#festivalNotice{color:#e7d99d;font-size:14px;line-height:1.6}

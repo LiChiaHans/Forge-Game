@@ -53,7 +53,7 @@ function renderSeedPicker(){
 function sowSeed(e){
  const i=selectedPlantBed;if(day<1||!validElement(e)||!Number.isInteger(i)||i<0||i>=6||greenhouseBeds[i])return false;
  const cost=(seedStock[e]||0)>0?0:ELEMENTS[e].price;if(coins<cost)return false;
- if(cost)coins-=cost;else seedStock[e]--;greenhouseBeds[i]={element:e,plantedDay:day};selectedPlantBed=-1;closeP('seedP');render();renderGreenhousePanel();saveNow();$('greenhouseDetail').textContent='已播下'+ELEMENTS[e].name+'之花種子，第 '+(day+3)+' 天可收成。';return true;
+ if(cost)coins-=cost;else seedStock[e]--;greenhouseBeds[i]={element:e,plantedDay:day};recordFestival('sow');selectedPlantBed=-1;closeP('seedP');render();renderGreenhousePanel();saveNow();$('greenhouseDetail').textContent='已播下'+ELEMENTS[e].name+'之花種子，第 '+(day+3)+' 天可收成。';return true;
 }
 function grantGardenLoot(it){if(it.k==='seed'&&validElement(it.element))seedStock[it.element]=(seedStock[it.element]||0)+1;else bag.push({...it});}
 function useEssence(i){

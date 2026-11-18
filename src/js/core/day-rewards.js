@@ -5,7 +5,7 @@ function newDay(){discardCityEdit();
   phase="play";
   const previousDay=day;
   const skillExchange=previousDay>=1?convertWorkshopSurplus('forge')+convertWorkshopSurplus('kitchen'):0;
-  forgeGuestSerial22=0;day++;elementTiles.clear();heat=heat.map(()=>0);dMagic=0;syncExpeditionDay();ensureBlueprintInventory();
+  forgeGuestSerial22=0;day++;syncFestival();elementTiles.clear();heat=heat.map(()=>0);dMagic=0;syncExpeditionDay();ensureBlueprintInventory();
   shopBought={m:0,tool:0,o:0};prepareSeasonDay(previousDay);
   const nMagic=sk('mg'),st=new Set();
   const magicCandidates=Array.from({length:W*H},(_,i)=>i).filter(i=>!blueprintSlotAt(i)),magicCount=Math.min(nMagic,magicCandidates.length);

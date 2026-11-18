@@ -70,7 +70,7 @@ function castBattleSkill(b){
  b.skillUsed=true;const mult=elementMultiplier(elementOf(b.weapon),elementOf(b.monster)),raw=Math.max(1,Math.round(b.stats.atk*skill.power*mult)+b.stats.arcane),absorbed=Math.min(b.enemyWard||0,raw),damage=Math.min(b.enemyHp,raw-absorbed);b.enemyWard=Math.max(0,(b.enemyWard||0)-absorbed);b.enemyHp-=damage;
  const healed=Math.min(b.hpMax-b.hp,Math.round(b.hpMax*(skill.heal||0)));b.hp+=healed;
  const addedShield=Math.round(b.stats.def*(skill.shield||0));b.shield+=addedShield;
- b.enemyDef=Math.round(b.enemyDef*(1-(skill.break||0)));b.enemyClock+=(skill.delay||0)*1000/Math.max(1,b.monster.spd);
+ b.enemyDef=Math.round(b.enemyDef*(1-(skill.break||0)));if(skill.break&&bossTraitIndex(b.monster)===2)b.enemyDef=Math.max(0,b.enemyDef-Math.round(b.monster.def*.03));b.enemyClock+=(skill.delay||0)*1000/Math.max(1,b.monster.spd);
  b.log.push({actor:'hero',skill:true,damage,hp:b.hp,shield:b.shield,enemyHp:b.enemyHp,text:'✦ '+skill.name+'！'+damage+' 傷害'+(absorbed?' · 敵盾吸收 '+absorbed:'')+(healed?' · 回復 '+healed:'')+(addedShield?' · 護盾 +'+addedShield:'')+(skill.break?' · 破甲':'')+(skill.delay?' · 延緩敵方':'')});checkBattleOutcome(b);return true;
 }
 // Kept pure for balance checks; the actual battle advances one action at a time.

@@ -24,6 +24,7 @@ function seasonCellHTML(i){
 }
 function burnLeaves(){
  let burned=0;for(const i of [...leaves])if(nb(i).some(j=>heat[j]>0)){leaves.delete(i);seasonEffect(i,'burning');burned++;}
+ if(burned)recordFestival('burn',null,burned);
  if(day>0&&seasonIndex()===2&&burned){autumnForgeCharges=Math.min(3,autumnForgeCharges+burned);toast('🍂 落葉餘燼 ×'+autumnForgeCharges+'：接下來每把鍛造 +100 金幣（當天有效）');}
 }
 function addSeasonCells(target,count,type,animate=true){
@@ -47,7 +48,7 @@ function prepareSeasonDay(previousDay){
 }
 function showSeasonNotice(){
   if(day<1)return;const s=SEASONS[seasonIndex()];
-  $('seasonTitle').textContent=s.icon+' '+s.name+'來了！';
+  renderFestivalNotice();$('seasonTitle').textContent=s.icon+' '+s.name+'來了！';
   $('seasonDescription').textContent=s.description;
   $('seasonBenefit').textContent='季節好處 · '+seasonBenefitText()+(seasonIndex()===2?' 目前餘燼：'+autumnForgeCharges+' 次。':'');
   $('seasonP').querySelector('button:not(.modal-x)').textContent=phase==='town'||phase==='reward'?'知道了':'開始鍛造';
