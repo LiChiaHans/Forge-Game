@@ -3,7 +3,11 @@ let expeditionFoodOpen=false,expeditionFoodSelected=null;
 const DISH_SUPPLY_BASE=[[.30,0,0],[.23,.10,0],[.23,0,.08],[.18,.16,0],[.24,.08,.06],[.22,0,.12],[.14,.20,0],[.20,.12,.06],[.26,0,.08],[.18,0,.18]];
 function dishSupplyEffect(w,baseOnly=false){
  const base=DISH_SUPPLY_BASE[w.c],stars=baseOnly?0:kitchenStars(w),tier=Math.max(0,Math.min(4,w.t||0)),spice=baseOnly?null:w.spice;if(!base)return null;
- return {heal:Math.min(.5,base[0]+tier*.025+stars*.01+(spice==='milk'?.03:0)),attack:base[1]?Math.min(.35,base[1]+tier*.02+stars*.01+(spice==='spicy'?.03:0)):0,shield:base[2]?Math.min(.3,base[2]+tier*.015+stars*.01+(spice==='herb'?.03:0)):0};
+ const boost=baseOnly?1:1+medalBonuses().supplyBoost;
+ const heal=Math.min(.5,base[0]+tier*.025+stars*.01+(spice==='milk'?.03:0));
+ const attack=base[1]?Math.min(.35,base[1]+tier*.02+stars*.01+(spice==='spicy'?.03:0)):0;
+ const shield=base[2]?Math.min(.3,base[2]+tier*.015+stars*.01+(spice==='herb'?.03:0)):0;
+ return {heal:Math.min(.65,heal*boost),attack:attack?Math.min(.45,attack*boost):0,shield:shield?Math.min(.4,shield*boost):0};
 }
 function dishSupplyDescription(w){const e=dishSupplyEffect(w);if(!e)return '';return '恢復 '+Math.round(e.heal*100)+'% 本場生命'+(e.attack?' · 下兩次普通攻擊 +'+Math.round(e.attack*100)+'%':'')+(e.shield?' · 獲得 '+Math.round(e.shield*100)+'% 生命上限護盾':'');}
 function expeditionFoodOptions(){const foods=expandedGameEnabled()&&kitchenLevel('pack')>0?kitchen.pack.map((w,index)=>({w,index})).filter(x=>x.w?.k==='w'&&Number.isFinite(x.w.fresh)&&x.w.fresh>0&&DISH_SUPPLY_BASE[x.w.c]):[];if(sandboxSession&&expeditionLabFood)foods.unshift({w:expeditionLabFood,index:-2,lab:true});return foods;}

@@ -103,8 +103,9 @@ function toast(h){
 }
 function qFinish(q){
   q.s='d';q.p=q.n;qDone++;
-  coins+=q.r;earned+=q.r;dEarn+=q.r;
-  toast("🎉 任務完成："+QD[q.t].tx(q)+"<br>獎勵 +"+q.r+" 💰　分數 +"+q.r*10);
+  const reward=Math.round(q.r*(1+medalBonuses().questGold));
+  coins+=reward;earned+=reward;dEarn+=reward;
+  toast("🎉 任務完成："+QD[q.t].tx(q)+"<br>獎勵 +"+reward+" 💰　分數 +"+reward*10);
   bell();saveHi();
 }
 function qProg(q,p){

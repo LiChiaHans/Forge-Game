@@ -621,8 +621,8 @@ function kitchenClick(i){
 }
 function kitchenSell(w,index,clear){
  if(!expandedGameEnabled()||!kitchen||kitchen.done)return false;const order=kitchen.orders[index];if(!order||w?.k!=='w')return false;if(order.c!==null&&order.c!==w.c){kitchen.message='這位客人需要'+KITCHEN_NAMES[order.c]+'。';return false;}if(w.t<order.t){kitchen.message='品質需要'+KITCHEN_GRADES[order.t]+'級以上。';return false;}
- const failed=kitchenRequirementFailure(w,order);if(failed){kitchen.message=failed;return false;}const menuBonus=kitchenMenuBonus(w),statBonus=order.need?.1:0,like=guestPreferenceBonus(w,order,true),price=Math.round(kitchenPrice(w)*(1+like)*(1+menuBonus)*(1+statBonus));if(menuBonus)kitchenSpecial().sold++;coins+=price;earned+=price;dEarn+=price;all++;kitchen.earned+=price;kitchen.served++;reviewMetrics.served++;if(kitchen.challenge===1&&COMBO[w.c].split('').filter(s=>s==='2').length>=2)kitchen.progress++;if(kitchen.challenge===2&&(w.t>=2||kitchenStars(w)>=1))kitchen.progress++;
- recordFestival('food',w);clear();kitchenRemoveOrder(index);kitchen.message='出餐成功！'+KITCHEN_NAMES[w.c]+' +'+price+' 金幣'+(like?' · 喜好 +10%':'')+(menuBonus?' · 主打 +20%':'')+(statBonus?' · 狀態訂單 +10%':'');if(!kitchen.orders.length&&!kitchen.queue.length)completeKitchenNight();else kitchenStep();saveHi();renderKitchen();saveNow();return true;
+ const failed=kitchenRequirementFailure(w,order);if(failed){kitchen.message=failed;return false;}const menuBonus=kitchenMenuBonus(w),statBonus=order.need?.1:0,like=guestPreferenceBonus(w,order,true),medalBonus=medalBonuses().dishSale,price=Math.round(kitchenPrice(w)*(1+like)*(1+menuBonus)*(1+statBonus)*(1+medalBonus));if(menuBonus)kitchenSpecial().sold++;coins+=price;earned+=price;dEarn+=price;all++;kitchen.earned+=price;kitchen.served++;reviewMetrics.served++;if(kitchen.challenge===1&&COMBO[w.c].split('').filter(s=>s==='2').length>=2)kitchen.progress++;if(kitchen.challenge===2&&(w.t>=2||kitchenStars(w)>=1))kitchen.progress++;
+ recordFestival('food',w);clear();kitchenRemoveOrder(index);kitchen.message='出餐成功！'+KITCHEN_NAMES[w.c]+' +'+price+' 金幣'+(like?' · 喜好 +10%':'')+(menuBonus?' · 主打 +20%':'')+(statBonus?' · 狀態訂單 +10%':'')+(medalBonus?' · 紀念章 +'+Math.round(medalBonus*100)+'%':'');if(!kitchen.orders.length&&!kitchen.queue.length)completeKitchenNight();else kitchenStep();saveHi();renderKitchen();saveNow();return true;
 }
 function completeKitchenNight(){
  if(!kitchen||kitchen.done)return;kitchen.done=true;const c=KITCHEN_CHALLENGES[kitchen.challenge],passed=c.kind==='rush'?kitchen.served>=kitchen.total&&kitchen.missed===0:kitchen.progress>=c.goal,paid=kitchen.lastRewarded!==day;
@@ -1046,7 +1046,7 @@ async function prepareCozyItemSnapshot(items,si){
 }
 const kitchenMergeQueue=[],kitchenMergeJobs=new Set();let kitchenMergeEpoch=0,kitchenGuestSerial=0;
 const KITCHEN_WASTE_FEE=50;
-function kitchenShelfLife(w){return w?.k==='w'?32+6*kitchenLevel('fresh'):0;}
+function kitchenShelfLife(w){return w?.k==='w'?32+6*kitchenLevel('fresh')+medalBonuses().dishFreshBonus:0;}
 function kitchenFreshen(w){if(!w)return w;if(w.k==='o'||w.k==='p'){delete w.fresh;delete w.born;}else if(w.k==='w'){w.fresh=kitchenShelfLife(w);w.born=kitchen.turn+1;}return w;}
 function kitchenEnsureFresh(w){if(w?.k==='o'||w?.k==='p')return kitchenFreshen(w);if(w?.k==='w'&&!Number.isFinite(w.fresh))kitchenFreshen(w);return w;}
 function kitchenWasteArt(){return gardenWasteSVG();}
@@ -1068,7 +1068,7 @@ function kitchenCreateOrders(){
  const counts=[0,0,0,0,0],caps=[Infinity,Infinity,3,2,1],list=Array.from({length:total},(_,i)=>{const o=kitchenOrder(generics.has(i));while(o.t>0&&counts[o.t]>=caps[o.t])o.t--;counts[o.t]++;o.max=o.wait=kitchenOrderPatience(o.t);return o;});
  assignKitchenStatOrder(list);kitchen.total=total;kitchen.orders=list.splice(0,3);kitchen.queue=list;kitchen.orders.forEach((o,i)=>{o.slot=i;o.enteredAt=Date.now()+i*90;});
 }
-function kitchenOrderPatience(t){return 100+60*t+8*kitchenLevel('patience')-(kitchen.challenge===0&&day>3?10:0);}
+function kitchenOrderPatience(t){return 100+60*t+8*kitchenLevel('patience')+medalBonuses().kitchenPatienceBonus-(kitchen.challenge===0&&day>3?10:0);}
 function kitchenEntryStyle(o){const elapsed=Date.now()-(o.enteredAt||0);return 'grid-column:'+((o.slot??0)+1)+';'+(elapsed<480&&!lowEffects?'animation:kitchen-guest-enter 480ms cubic-bezier(.2,.8,.3,1) both;animation-delay:'+(-elapsed)+'ms;':'');}
 function kitchenRecordMerge(cells,parts,dest,target=dest[0]){
  if(!expandedGameEnabled()||$('kitchenP').hidden)return;
@@ -1154,7 +1154,11 @@ let expeditionFoodOpen=false,expeditionFoodSelected=null;
 const DISH_SUPPLY_BASE=[[.30,0,0],[.23,.10,0],[.23,0,.08],[.18,.16,0],[.24,.08,.06],[.22,0,.12],[.14,.20,0],[.20,.12,.06],[.26,0,.08],[.18,0,.18]];
 function dishSupplyEffect(w,baseOnly=false){
  const base=DISH_SUPPLY_BASE[w.c],stars=baseOnly?0:kitchenStars(w),tier=Math.max(0,Math.min(4,w.t||0)),spice=baseOnly?null:w.spice;if(!base)return null;
- return {heal:Math.min(.5,base[0]+tier*.025+stars*.01+(spice==='milk'?.03:0)),attack:base[1]?Math.min(.35,base[1]+tier*.02+stars*.01+(spice==='spicy'?.03:0)):0,shield:base[2]?Math.min(.3,base[2]+tier*.015+stars*.01+(spice==='herb'?.03:0)):0};
+ const boost=baseOnly?1:1+medalBonuses().supplyBoost;
+ const heal=Math.min(.5,base[0]+tier*.025+stars*.01+(spice==='milk'?.03:0));
+ const attack=base[1]?Math.min(.35,base[1]+tier*.02+stars*.01+(spice==='spicy'?.03:0)):0;
+ const shield=base[2]?Math.min(.3,base[2]+tier*.015+stars*.01+(spice==='herb'?.03:0)):0;
+ return {heal:Math.min(.65,heal*boost),attack:attack?Math.min(.45,attack*boost):0,shield:shield?Math.min(.4,shield*boost):0};
 }
 function dishSupplyDescription(w){const e=dishSupplyEffect(w);if(!e)return '';return '恢復 '+Math.round(e.heal*100)+'% 本場生命'+(e.attack?' · 下兩次普通攻擊 +'+Math.round(e.attack*100)+'%':'')+(e.shield?' · 獲得 '+Math.round(e.shield*100)+'% 生命上限護盾':'');}
 function expeditionFoodOptions(){const foods=expandedGameEnabled()&&kitchenLevel('pack')>0?kitchen.pack.map((w,index)=>({w,index})).filter(x=>x.w?.k==='w'&&Number.isFinite(x.w.fresh)&&x.w.fresh>0&&DISH_SUPPLY_BASE[x.w.c]):[];if(sandboxSession&&expeditionLabFood)foods.unshift({w:expeditionLabFood,index:-2,lab:true});return foods;}
@@ -1402,7 +1406,7 @@ const SEASONS=[
 ];
 function seasonIndex(d=day){return d>0?Math.floor((d-1)/3)%4:0;}
 function seasonDay(d=day){return d>0?(d-1)%3+1:1;}
-function hotSteps(){return (seasonIndex()===1?60:50)-10*Math.max(0,Math.min(3,sk('cd')));}
+function hotSteps(){return Math.max(5,(seasonIndex()===1?60:50)-10*Math.max(0,Math.min(3,sk('cd')))-medalBonuses().forgeHeatReduce);}
 function cellBlock(i){return blueprintSlotAt(i)?'這是傳說藍圖格，請放入指定武器':frozen.has(i)?'這格已冰凍，換季後才能放置物品':leaves.has(i)?'這格有落葉，需要相鄰過熱格將它燒掉':'';}
 function seasonEffect(i,type){
   const effect={type,start:Date.now(),duration:type==='burning'?800:900};
@@ -1771,28 +1775,36 @@ function expeditionMonster(id){syncMonsterElements();return id>=20?endlessMonste
 function applyWeaponElement(w,i){const e=elementTiles.get(i);if(validElement(e))w.element=e;return w;}
 function elementBadge(e,cls=''){const color=validElement(e)?ELEMENTS[e].color:'#b8c3c9';return '<span class="element-badge '+cls+'" style="--element:'+color+'" aria-label="'+elementName(e)+'屬性">'+elementIcon(e)+'<b>'+elementName(e)+'</b></span>';}
 function elementWeaponHTML(w){const e=elementOf(w);return e==='none'?'<p class="element-weapon-note">無屬性</p>':'<div class="element-weapon-note">'+elementBadge(e)+'<span>屬性附魔 · 武器售價 +20%</span></div>';}
-function plantAge(p){return Math.max(0,Math.min(3,day-p.plantedDay+(expandedGameEnabled()?(p.growthBoost||0):0)));}
+function seedPrice(e){return Math.max(1,Math.round((ELEMENTS[e]?.price||350)*(1-medalBonuses().seedDiscount)));}
+function plantAge(p){return Math.max(0,Math.min(3,day-p.plantedDay+(p.growthBoost||0)+medalBonuses().flowerSpeed));}
+function plantReadyDay(p){return p.plantedDay+Math.max(1,3-(p.growthBoost||0)-medalBonuses().flowerSpeed);}
 function renderGreenhousePanel(){
  $('greenhouseP').querySelector('.greenhouse-panel').style.setProperty('--greenhouse-art','url("'+GREENHOUSE_ART.interior+'")');
  $('greenhouseSeeds').innerHTML='<h3>種子庫存</h3><div class="seed-stock">'+ELEMENT_IDS.map(e=>'<span style="--element:'+ELEMENTS[e].color+'">'+elementIcon(e)+'<b>'+ELEMENTS[e].name+'</b><small>×'+(seedStock[e]||0)+'</small></span>').join('')+'</div>';
- $('greenhouseBeds').innerHTML=greenhouseBeds.map((p,i)=>{const age=p?plantAge(p):0,label=p?ELEMENTS[p.element].name+'之花':'種植區 '+(i+1),stage=p?['種子 · 還有3天','發芽 · 還有2天','屬性葉 · 還有1天','已開花 · 收成 ×'+harvestYield()][age]:'點擊播種';return '<button data-plant-bed="'+i+'" class="'+(p&&age===3?'ripe':'')+'" aria-pressed="'+(selectedPlantBed===i)+'" onclick="selectGreenhouseBed('+i+')" aria-label="第'+(i+1)+'格，'+label+'，'+stage+'"><span class="plant-bed-art">'+plantArt(p?.element,age)+'</span><b>'+label+'</b><small>'+stage+'</small></button>'}).join('');
- renderKitchenCompost();renderHarvestAlert();$('greenhouseDetail').textContent='播種後經過三天即可收成精華。精華可製作當天有效的屬性附魔格。'+(seasonIndex()===0?' 春日豐收：每盆成熟花朵收成 2 份精華。':'');
+ $('greenhouseBeds').innerHTML=greenhouseBeds.map((p,i)=>{const age=p?plantAge(p):0,left=Math.max(0,3-age),label=p?ELEMENTS[p.element].name+'之花':'種植區 '+(i+1),stage=p?(age>=3?'已開花 · 收成 ×'+harvestYield():['種子','發芽','屬性葉'][age]+' · 還有'+left+'天'):'點擊播種';return '<button data-plant-bed="'+i+'" class="'+(p&&age===3?'ripe':'')+'" aria-pressed="'+(selectedPlantBed===i)+'" onclick="selectGreenhouseBed('+i+')" aria-label="第'+(i+1)+'格，'+label+'，'+stage+'"><span class="plant-bed-art">'+plantArt(p?.element,age)+'</span><b>'+label+'</b><small>'+stage+'</small></button>'}).join('');
+ renderKitchenCompost();renderHarvestAlert();const b=medalBonuses();$('greenhouseDetail').textContent='播種後經過'+(b.flowerSpeed?'兩':'三')+'天即可收成精華。精華可製作當天有效的屬性附魔格。'+(seasonIndex()===0?' 春日豐收：每盆成熟花朵收成 2 份精華。':'')+(b.seedReturnChance?' 春芽章：收成 '+Math.round(b.seedReturnChance*100)+'% 返還種子。':'')+(b.extraEssenceChance?' 花園章：收成 '+Math.round(b.extraEssenceChance*100)+'% 額外精華。':'');
 }
 function selectGreenhouseBed(i){
  if(!Number.isInteger(i)||i<0||i>=6||day<1)return;selectedPlantBed=i;const p=greenhouseBeds[i];
  if(!p){renderSeedPicker();$('seedP').style.display='flex';return;}
- if(plantAge(p)>=3){const e=p.element,yieldCount=harvestYield();greenhouseBeds[i]=null;for(let n=0;n<yieldCount;n++)bag.push({k:'ess',element:e});recordMedalHarvest();selectedPlantBed=-1;renderGreenhousePanel();saveNow();$('greenhouseDetail').textContent='已收成 '+ELEMENTS[e].name+'之精華 ×'+yieldCount+(yieldCount===2?'（春日豐收）':'')+'，放入道具箱。盆栽可重新播種。';return;}
- renderGreenhousePanel();$('greenhouseDetail').textContent='第 '+(i+1)+' 格 · '+ELEMENTS[p.element].name+'之花，將在第 '+(p.plantedDay+3-(expandedGameEnabled()?(p.growthBoost||0):0))+' 天開花。';
+ if(plantAge(p)>=3){
+  const e=p.element,b=medalBonuses(),baseYield=harvestYield(),extraEss=b.extraEssenceChance>0&&Math.random()<b.extraEssenceChance?1:0,yieldCount=baseYield+extraEss,seedBack=b.seedReturnChance>0&&Math.random()<b.seedReturnChance?1:0;
+  greenhouseBeds[i]=null;for(let n=0;n<yieldCount;n++)bag.push({k:'ess',element:e});if(seedBack)seedStock[e]=(seedStock[e]||0)+seedBack;
+  recordMedalHarvest();selectedPlantBed=-1;renderGreenhousePanel();saveNow();
+  $('greenhouseDetail').textContent='已收成 '+ELEMENTS[e].name+'之精華 ×'+yieldCount+(baseYield===2?'（春日豐收）':'')+(extraEss?'（花園章 +1）':'')+(seedBack?'，並返還 1 顆'+ELEMENTS[e].name+'之花種子':'')+'，放入道具箱。盆栽可重新播種。';return;
+ }
+ renderGreenhousePanel();$('greenhouseDetail').textContent='第 '+(i+1)+' 格 · '+ELEMENTS[p.element].name+'之花，將在第 '+plantReadyDay(p)+' 天開花。';
 }
 function renderSeedPicker(){
  $('seedTitle').textContent='第 '+(selectedPlantBed+1)+' 格 · 選擇花種';
- $('seedChoices').innerHTML=ELEMENT_IDS.map(e=>{const n=seedStock[e]||0,p=ELEMENTS[e];return '<button data-sow="'+e+'" onclick="sowSeed(\''+e+'\')" '+(!n&&coins<p.price?'disabled':'')+'>'+seedPacketArt(e)+'<span><b>'+p.name+'之花</b><small>'+(n?'庫存 '+n+' 顆 · 免費播種':'購買並播種 · '+p.price+' 金幣')+'</small></span></button>'}).join('');
+ const disc=Math.round(medalBonuses().seedDiscount*100);
+ $('seedChoices').innerHTML=ELEMENT_IDS.map(e=>{const n=seedStock[e]||0,p=ELEMENTS[e],cost=seedPrice(e);return '<button data-sow="'+e+'" onclick="sowSeed(\''+e+'\')" '+(!n&&coins<cost?'disabled':'')+'>'+seedPacketArt(e)+'<span><b>'+p.name+'之花</b><small>'+(n?'庫存 '+n+' 顆 · 免費播種':'購買並播種 · '+cost+' 金幣'+(disc?'（紀念章 -'+disc+'%）':''))+'</small></span></button>'}).join('');
  $('seedCoins').textContent='持有 '+coins+' 金幣 · 優先使用庫存種子';
 }
 function sowSeed(e){
  const i=selectedPlantBed;if(day<1||!validElement(e)||!Number.isInteger(i)||i<0||i>=6||greenhouseBeds[i])return false;
- const cost=(seedStock[e]||0)>0?0:ELEMENTS[e].price;if(coins<cost)return false;
- if(cost)coins-=cost;else seedStock[e]--;greenhouseBeds[i]={element:e,plantedDay:day};recordFestival('sow');selectedPlantBed=-1;closeP('seedP');render();renderGreenhousePanel();saveNow();$('greenhouseDetail').textContent='已播下'+ELEMENTS[e].name+'之花種子，第 '+(day+3)+' 天可收成。';return true;
+ const cost=(seedStock[e]||0)>0?0:seedPrice(e);if(coins<cost)return false;
+ if(cost)coins-=cost;else seedStock[e]--;greenhouseBeds[i]={element:e,plantedDay:day};recordFestival('sow');selectedPlantBed=-1;closeP('seedP');render();renderGreenhousePanel();saveNow();$('greenhouseDetail').textContent='已播下'+ELEMENTS[e].name+'之花種子，第 '+plantReadyDay(greenhouseBeds[i])+' 天可收成。';return true;
 }
 function grantGardenLoot(it){if(it.k==='seed'&&validElement(it.element))seedStock[it.element]=(seedStock[it.element]||0)+1;else bag.push({...it});}
 function useEssence(i){
@@ -1860,8 +1872,9 @@ const materialNote=w=>"材料基價 "+materialPrice(w)+" 金幣"
 const wp=w=>Math.round((isUltimate(w)?ultimateSaleQuote(w):isLegend(w)?Math.max(0,Math.round(w.legendPrice||0)):Math.round(materialPrice(w)*(1+(w.b||0))))*(validElement(w.element)?1.2:1)*(1+weaponStarBonus(w)));
 const recipe=c=>COMBO[c].split("").map(x=>TY[x]).join("");
 const oPrice=o=>o.c===null?PR[o.t]:Math.round(price(o.t,o.c)*1.3);
+const medalWeaponSaleBonus=w=>{const b=medalBonuses();return b.weaponSale+(validElement(w?.element)?b.elementWeaponSale:0);};
 const salePrice=(w,o)=>Math.round(
-  Math.round((wp(w)*(o.c===null?1:1.3)*pat(o)+(w.m||0))*(1+.1*sk('mc'))*(1+seasonSaleBonus(w)))*(1+guestPreferenceBonus(w,o,false))
+  Math.round((wp(w)*(o.c===null?1:1.3)*pat(o)+(w.m||0))*(1+.1*sk('mc'))*(1+seasonSaleBonus(w)))*(1+guestPreferenceBonus(w,o,false))*(1+medalWeaponSaleBonus(w))
 );
 
 function ov(t,p,b,f){
@@ -1990,8 +2003,9 @@ function toast(h){
 }
 function qFinish(q){
   q.s='d';q.p=q.n;qDone++;
-  coins+=q.r;earned+=q.r;dEarn+=q.r;
-  toast("🎉 任務完成："+QD[q.t].tx(q)+"<br>獎勵 +"+q.r+" 💰　分數 +"+q.r*10);
+  const reward=Math.round(q.r*(1+medalBonuses().questGold));
+  coins+=reward;earned+=reward;dEarn+=reward;
+  toast("🎉 任務完成："+QD[q.t].tx(q)+"<br>獎勵 +"+reward+" 💰　分數 +"+reward*10);
   bell();saveHi();
 }
 function qProg(q,p){
@@ -2949,8 +2963,10 @@ function bossIntent(b){const next=(b.enemyTurns||0)+1,m=b.monster;if(m.kind==='d
 function guardBattle(b){if(!b||b.resolved||b.outcome!=='ongoing'||b.guardUsed)return false;b.guardUsed=true;b.guarding=true;b.guardRemainingMs=EXPEDITION_GUARD_MS;b.effectStamp=Date.now();return true;}
 function useExpeditionGuard(){syncExpeditionEffects();if(guardBattle(expeditionState.lastBattle))renderExpeditionBattle();}
 function expeditionBattleState(w,monster){
- const stats=weaponStats(w),hpMax=100+stats.def*2;
- return initCombatTraits({weapon:JSON.parse(JSON.stringify(w)),monster:JSON.parse(JSON.stringify(monster)),stats,hpMax,hp:hpMax,shield:stats.ward,enemyHp:monster.hp,heroClock:1000/Math.max(1,stats.spd),enemyClock:1000/Math.max(1,monster.spd),enemyDef:monster.def,skillUsed:false,guardUsed:false,guarding:false,guardRemainingMs:0,foodRecovered:0,enemyTurns:0,bossHardened:false,outcome:'ongoing',resolved:false,log:[]});
+ const base=weaponStats(w),mb=medalBonuses(),effective=Math.min(20,base.stacks||0);
+ const stats={...base,atk:Math.round(base.atk*(1+mb.battleAtk)),def:Math.round(base.def*(1+mb.battleDef)),spd:Math.round(base.spd*(1+mb.battleSpd)),arcane:base.arcane+effective*mb.enchantExtra,ward:base.ward+effective*mb.enchantExtra};
+ const hpMax=100+stats.def*2,shield=stats.ward+Math.round(hpMax*mb.battleStartShield);
+ return initCombatTraits({weapon:JSON.parse(JSON.stringify(w)),monster:JSON.parse(JSON.stringify(monster)),stats,hpMax,hp:hpMax,shield,enemyHp:monster.hp,heroClock:1000/Math.max(1,stats.spd),enemyClock:1000/Math.max(1,monster.spd),enemyDef:monster.def,skillUsed:false,guardUsed:false,guarding:false,guardRemainingMs:0,foodRecovered:0,enemyTurns:0,bossHardened:false,outcome:'ongoing',resolved:false,log:[]});
 }
 function runBattleTurn(b){
  if(b.outcome!=='ongoing')return;const s=b.stats,m=b.monster,heroElement=elementOf(b.weapon),enemyElement=elementOf(m);let row;
@@ -3019,7 +3035,7 @@ function useExpeditionSkill(){syncExpeditionEffects();const b=expeditionState.la
 function settleExpeditionBattle(b){
  if(!b||b.resolved||b.outcome==='ongoing')return;stopExpeditionPlayback();b.resolved=true;b.guarding=false;b.guardRemainingMs=0;b.chargeName=null;b.chargeRemainingMs=0;
  if(b.outcome==='win'&&!expeditionCleared(b.stage)){
-  b.gold=b.monster.gold;b.loot=b.stage<20?{k:'bp',id:b.stage}:null;coins+=b.gold;earned+=b.gold;dEarn+=b.gold;expeditionState.victories++;expeditionState.wonToday.push(b.stage);if(b.stage<20){expeditionState.cleared.push(b.stage);grantBlueprintItem(b.stage);}else expeditionState.endless=Math.max(expeditionState.endless||0,b.stage-19);expeditionState.unlocked=b.stage+1;
+  b.gold=Math.round(b.monster.gold*(1+medalBonuses().expeditionGold));b.loot=b.stage<20?{k:'bp',id:b.stage}:null;coins+=b.gold;earned+=b.gold;dEarn+=b.gold;expeditionState.victories++;expeditionState.wonToday.push(b.stage);if(b.stage<20){expeditionState.cleared.push(b.stage);grantBlueprintItem(b.stage);}else expeditionState.endless=Math.max(expeditionState.endless||0,b.stage-19);expeditionState.unlocked=b.stage+1;
  }else if(b.outcome==='lose'&&!sandboxSession)lives=Math.max(0,lives-1);
  syncAchievementMedals();if(lives<=0)removeSave(runId);saveHi();render();saveNow();
  reviewMetrics.battles.push({stage:b.stage+1,result:b.outcome==='win'?'勝利':b.outcome==='lose'?'生命歸零':'回合上限或撤退',supplies:b.foodUsed||0});reviewMetrics.battles=reviewMetrics.battles.slice(-50);saveReviewProgress();
@@ -3090,9 +3106,11 @@ function renderExpedition(){
  $('expeditionAttempts').textContent=(expeditionStage>=20?'無限模式 · 第 '+(expeditionStage-19)+' 隻':expeditionStage>=10?'二周目':'一周目')+' · 第 '+day+' 天 · 累計勝利 '+expeditionState.victories+' 場 · 無限通關 '+(expeditionState.endless||0)+' 隻';
  $('expeditionStages').innerHTML=EXPEDITIONS.map((x,i)=>'<button data-exp-stage="'+i+'" data-cycle="'+(i>=10?2:1)+'" '+(!sandboxSession&&(i>expeditionState.unlocked||expeditionCleared(i))?'disabled':'')+' aria-label="第 '+(i+1)+' 關 '+x.name+'" aria-pressed="'+(i===expeditionStage)+'">'+(expeditionState.cleared.includes(i)?'✓':i>expeditionState.unlocked?'·':'⚑')+(i+1)+'</button>').join('')+((sandboxSession||expeditionState.cleared.includes(19))?'<button data-exp-stage="'+(20+(expeditionState.endless||0))+'" data-cycle="3" aria-pressed="'+(expeditionStage>=20)+'">∞ '+((expeditionState.endless||0)+1)+'</button>':'');
  $('expeditionMonster').innerHTML='<div class="exp-monster-art">'+monsterArt(m)+elementBadge(m.element,'monster-element')+'</div><div><small>第 '+(expeditionStage+1)+' 關 · '+m.area+'</small><h3>'+m.name+'</h3><div class="exp-monster-stats">♥ '+m.hp+'　⚔ '+m.atk+'　🛡 '+m.def+'　💨 '+m.spd+'</div></div>';
- $('expeditionBossRule').textContent=bossRule(m);$('expeditionReward').textContent=cleared?'已通關'+(expeditionStage===19?'，二周目全部完成！':'，請前往下一關。'):(expeditionStage>=20?'無限勝利：'+m.gold+' 金幣':'首次勝利：'+m.gold+' 金幣＋'+itemName(m.loot)+(expeditionStage>=10?' · 解鎖高清武器美術':''));
+ const mb=medalBonuses(),expGold=Math.round(m.gold*(1+mb.expeditionGold)),buffParts=[];
+ if(mb.battleAtk)buffParts.push('攻 +'+Math.round(mb.battleAtk*100)+'%');if(mb.battleDef)buffParts.push('防 +'+Math.round(mb.battleDef*100)+'%');if(mb.battleSpd)buffParts.push('速 +'+Math.round(mb.battleSpd*100)+'%');if(mb.enchantExtra)buffParts.push('附魔每層 +'+mb.enchantExtra+'傷/盾');if(mb.battleStartShield)buffParts.push('開戰 +'+Math.round(mb.battleStartShield*100)+'%生命盾');if(mb.supplyBoost)buffParts.push('料理補給 +'+Math.round(mb.supplyBoost*100)+'%');
+ $('expeditionBossRule').textContent=bossRule(m);$('expeditionReward').textContent=cleared?'已通關'+(expeditionStage===19?'，二周目全部完成！':'，請前往下一關。'):(expeditionStage>=20?'無限勝利：'+expGold+' 金幣':'首次勝利：'+expGold+' 金幣＋'+itemName(m.loot)+(expeditionStage>=10?' · 解鎖高清武器美術':''));
  $('expeditionWeapons').innerHTML=options.length?options.map(x=>'<button class="exp-weapon '+(x.key===expeditionSelected?'selected':'')+'" data-exp-weapon="'+x.key+'"><span class="exp-weapon-art">'+hex(x.w.c,bands(x.w),'',x.w.t,x.w)+'</span><span><b>'+esc(itemName(x.w))+'</b><small>'+x.source+' · ⚔'+weaponStats(x.w).atk+' 🛡'+weaponStats(x.w).def+' 💨'+weaponStats(x.w).spd+'</small></span></button>').join(''):'<div class="exp-empty">沒有未受保護的可出戰武器。請先在冶煉廠鍛造武器；每次出戰都會消耗一把。</div>';
- $('expeditionSelectedStats').innerHTML=chosen?statsHTML(chosen.w)+weaponEnchantHTML(chosen.w)+ultimateSkillHTML(chosen.w)+elementMatchupHTML(chosen.w,m)+'<p class="exp-note">⚠ 出戰後消耗這把武器，勝利、失敗或撤退都不退回。</p>':'';
+ $('expeditionSelectedStats').innerHTML=chosen?statsHTML(chosen.w)+weaponEnchantHTML(chosen.w)+ultimateSkillHTML(chosen.w)+elementMatchupHTML(chosen.w,m)+(buffParts.length?'<p class="exp-note">🏅 紀念章戰鬥加成（出戰生效）：'+buffParts.join(' · ')+'</p>':'')+'<p class="exp-note">⚠ 出戰後消耗這把武器，勝利、失敗或撤退都不退回。</p>':'';
  if(!$('elementChart').innerHTML)$('elementChart').innerHTML=elementChartHTML();
  $('expeditionFight').disabled=!chosen||lives<=0||cleared;$('expeditionFight').textContent='消耗武器 · 開始挑戰';
  $('expeditionLast').textContent=expeditionState.lastBattle?'上次遠征：'+(expeditionState.lastBattle.monster||expeditionMonster(expeditionState.lastBattle.stage)).name+' · '+({win:'勝利',lose:'落敗',draw:'撤退',ongoing:'戰鬥中'}[expeditionState.lastBattle.outcome]):'';
@@ -4283,17 +4301,18 @@ function cityTransform(action){if(!cityContextEditable())return;
  if(action==='roam'){const x=i.x*3.6,y=i.y*6.2;if(!i.roam&&!petGround(x,y)){toast('請先把小動物移到沒有建築的地面，再開始散步。');return;}i.roam=!i.roam;}
  commitCity();
 }
+function decorPrice(d){return Math.max(1,Math.round((d?.price||0)*(1-medalBonuses().decorDiscount)));}
 function openDecorationShop(){decorShopSeason=seasonIndex();decorShopNight=isSandboxNight();renderDecorationShop();$('decorShopP').style.display='flex';syncTownMotion();}
 function renderDecorationShop(){
- const si=decorShopSeason,night=decorShopNight,canBuy=sandboxSession||si===seasonIndex()&&night===isSandboxNight();$('decorShopSummary').textContent=(sandboxSession?'🧪 無限金錢':'持有 '+coins+' 金幣')+' · '+cityContextLabel(si,night);
+ const si=decorShopSeason,night=decorShopNight,canBuy=sandboxSession||si===seasonIndex()&&night===isSandboxNight(),disc=Math.round(medalBonuses().decorDiscount*100);$('decorShopSummary').textContent=(sandboxSession?'🧪 無限金錢':'持有 '+coins+' 金幣')+' · '+cityContextLabel(si,night)+(disc?' · 🏅 造景章 -'+disc+'%':'');
  $('decorShopTabs').innerHTML=SEASONS.flatMap((s,i)=>[false,true].map(n=>'<button data-shop-season="'+i+'" data-shop-night="'+n+'" aria-pressed="'+(i===si&&n===night)+'">'+s.icon+s.name+' '+(n?'🌙 夜晚':'☀ 白天')+'</button>')).join('');
  $('decorShopNotice').textContent=canBuy?'此類裝飾只用於'+cityContextLabel(si,night)+'，購買後到建築師收藏放置。':'目前僅能購買'+cityContextLabel()+'的裝飾；可先欣賞其他時段。';
- $('decorShopGrid').innerHTML=DECOR_CATALOG.filter(d=>decorMatchesContext(d,si,night)).map(d=>'<article class="decor-card"><div class="decor-thumb">'+decorSVG(d.id,si,'shop-'+d.id)+'</div><b>'+d.name+'</b><small>擁有 '+(cityState.owned[d.id]||0)+' · 最多放 '+cityPlacementLimit(d.id)+'</small><button data-buy-decor="'+d.id+'" '+(!canBuy||!sandboxSession&&coins<d.price?'disabled':'')+'>💰 '+d.price+' 購買</button></article>').join('');
+ $('decorShopGrid').innerHTML=DECOR_CATALOG.filter(d=>decorMatchesContext(d,si,night)).map(d=>{const p=decorPrice(d);return '<article class="decor-card"><div class="decor-thumb">'+decorSVG(d.id,si,'shop-'+d.id)+'</div><b>'+d.name+'</b><small>擁有 '+(cityState.owned[d.id]||0)+' · 最多放 '+cityPlacementLimit(d.id)+'</small><button data-buy-decor="'+d.id+'" '+(!canBuy||!sandboxSession&&coins<p?'disabled':'')+'>💰 '+p+' 購買</button></article>';}).join('');
 }
 function buyDecoration(id){
- const d=DECOR_BY_ID.get(id);if(!d||!sandboxSession&&!decorMatchesContext(d))return false;
- if(!sandboxSession&&coins<d.price){toast('金幣不足。');return false;}if((cityState.owned[id]||0)>=9999)return false;
- if(!sandboxSession)coins-=d.price;cityState.owned[id]=(cityState.owned[id]||0)+1;syncAchievementMedals();saveNow();render();renderDecorationShop();toast('已購買「'+d.name+'」，可到裝飾收藏放置。');return true;
+ const d=DECOR_BY_ID.get(id);if(!d||!sandboxSession&&!decorMatchesContext(d))return false;const cost=decorPrice(d);
+ if(!sandboxSession&&coins<cost){toast('金幣不足。');return false;}if((cityState.owned[id]||0)>=9999)return false;
+ if(!sandboxSession)coins-=cost;cityState.owned[id]=(cityState.owned[id]||0)+1;syncAchievementMedals();saveNow();render();renderDecorationShop();toast('已購買「'+d.name+'」，可到裝飾收藏放置。');return true;
 }
 
 const CITY_PRESET_CONTEXT_LIMIT=5,CITY_PRESET_TOTAL_LIMIT=40;
@@ -4305,7 +4324,7 @@ function quoteCityPreset(p){
  if(!p||!DECOR_SEASONS.includes(p.season)||!Array.isArray(p.items)||p.items.length>100||p.items.some(i=>!cleanCityItem(i)))return {valid:false,missing:[],cost:0};
  if(p.items.some(i=>!decorMatchesContext(DECOR_BY_ID.get(i.id),DECOR_SEASONS.indexOf(p.season),!!p.night)))return {valid:false,missing:[],cost:0};
  if(cityItemsOverLimit(p.items).length)return {valid:false,missing:[],cost:0,limitExceeded:cityItemsOverLimit(p.items)};const missing=presetMissing(p.items);if(missing.some(i=>!DECOR_BY_ID.has(i.id)||(cityState.owned[i.id]||0)+i.n>9999))return {valid:false,missing:[],cost:0};
- return {valid:true,missing,cost:missing.reduce((total,i)=>total+DECOR_BY_ID.get(i.id).price*i.n,0)};
+ return {valid:true,missing,cost:missing.reduce((total,i)=>total+decorPrice(DECOR_BY_ID.get(i.id))*i.n,0)};
 }
 function openCityLayouts(){if(!architect.active)toggleArchitect();if(!cityContextEditable())return;$('cityLayoutName').value=SEASONS[townVisualSeason()].name+'小鎮';renderCityLayouts();$('cityLayoutsP').style.display='flex';syncTownMotion();}
 function renderCityLayouts(){if(!cityContextEditable())return;
@@ -4454,11 +4473,13 @@ $('grid').addEventListener('pointerover',e=>{if(e.pointerType!=='mouse'||drag||b
 $('grid').addEventListener('pointerleave',()=>{if(!drag)clearPrediction();});
 $('q').addEventListener('pointerdown',e=>{if(busy||e.button>0)return;const node=e.target.closest('.q');if(!node||node.dataset.step!=='1')return;e.preventDefault();startDrag(e,'ore',null,oreH(Q[0]),node);});
 const SEASON_FESTIVALS=[
- {name:'春芽市集',goals:[{text:'播種屬性花',n:1},{text:'售出含配菜的料理',n:3}],gold:400,gift:'sp-tulips',hint:'準備350金幣或庫存種子，料理配方保留至少一份配菜。'},
- {name:'海風祭',goals:[{text:'售出鐵級以上武器',n:3},{text:'售出香氣20以上料理',n:3}],gold:600,gift:'su-parasol',hint:'預留鐵礦與高香氣料理；配菜、香草或升階都能提高香氣。'},
- {name:'豐收工藝展',goals:[{text:'燒掉落葉格',n:3},{text:'售出含兩份以上配菜的料理',n:3}],gold:800,gift:'au-basket',hint:'預留鍛造空間燒葉，餐廳可準備田園拌飯、濃湯或沙拉。'},
- {name:'暖爐慶典',goals:[{text:'售出鋼級以上武器',n:3},{text:'售出飽足26以上料理',n:3}],gold:1000,gift:'wi-starlamp',hint:'預先合成鋼級材料，並準備主食較多的料理或奶香調味。'}
+ {name:'春芽市集',goals:[{text:'播種屬性花',n:2},{text:'售出含配菜的料理',n:3}],gold:400,gift:'sp-tulips',hint:'準備足夠金幣或庫存種子播種屬性花，料理配方保留至少一份配菜。'},
+ {name:'海風祭',goals:[{text:'售出鐵級以上武器',n:3},{stat:'aroma',label:'香氣',n:3}],gold:600,gift:'su-parasol',hint:'預留鐵礦與高香氣料理；配菜、香草或升階都能提高香氣（一至三星需求 20／30／40）。'},
+ {name:'豐收工藝展',goals:[{text:'燒掉落葉格',n:3},{stat:'taste',label:'滋味',n:3}],gold:800,gift:'au-basket',hint:'預留鍛造空間燒葉，餐廳可準備主菜較多的料理或辛香調味（一至三星滋味需求 20／30／40）。'},
+ {name:'暖爐慶典',goals:[{text:'售出鋼級以上武器',n:3},{stat:'fullness',label:'飽足',n:3}],gold:1000,gift:'wi-starlamp',hint:'預先合成鋼級材料，並準備主食較多的料理或奶香調味（一至三星飽足需求 20／30／40）。'}
 ];
+function festivalStatThreshold(tier=1){return 20+10*(Math.max(1,Math.min(3,Math.floor(Number(tier)||1)))-1);}
+function festivalGoalText(season,i,tier=1){const g=SEASON_FESTIVALS[season]?.goals[i];if(!g)return '';return g.stat?'售出'+g.label+festivalStatThreshold(tier)+'以上料理':g.text;}
 function cleanFestivalState(raw,currentDay=day){
  const row=x=>{if(!x||!Number.isSafeInteger(x.start)||x.start<1||x.start>currentDay||(x.start-1)%3!==0||x.season!==seasonIndex(x.start))return null;const defs=SEASON_FESTIVALS[x.season],tier=[1,2,3].includes(x.tier)?x.tier:1;return {start:x.start,season:x.season,tier,progress:[0,1].map(i=>Math.max(0,Math.min(defs.goals[i].n*tier,(Number.isFinite(Number(x.progress?.[i]))?Math.floor(Number(x.progress[i])):0)))),claimed:!!x.claimed,notified:!!x.notified};};
  const badgeStars=Object.fromEntries([0,1,2,3].map(i=>[i,Math.max((raw?.badges||[]).includes?.(i)?1:0,Math.min(3,Math.max(0,Math.floor(Number(raw?.badgeStars?.[i])||0))))]));return {badgeStars,active:row(raw?.active),past:(Array.isArray(raw?.past)?raw.past:[]).map(row).filter(Boolean).filter((x,i,a)=>a.findIndex(y=>y.start===x.start)===i).slice(-8),readDays:[...new Set((Array.isArray(raw?.readDays)?raw.readDays:[]).filter(d=>Number.isSafeInteger(d)&&d>=1&&d<=currentDay))].slice(-24),badges:[...new Set((Array.isArray(raw?.badges)?raw.badges:[]).filter(x=>Number.isInteger(x)&&x>=0&&x<4))]};
@@ -4471,11 +4492,11 @@ function festivalNextTier(si){return Math.min(3,1+(kitchen?.festivals?.badgeStar
 function festivalGoal(row,i){return SEASON_FESTIVALS[row.season].goals[i].n*(row.tier||1);}
 function festivalComplete(row){return SEASON_FESTIVALS[row.season].goals.every((g,i)=>(row.progress[i]||0)>=festivalGoal(row,i));}
 function recordFestival(event,item=null,count=1){
- const state=syncFestival();if(!state)return;const row=state.active;if(row.claimed)return;let goal=-1;const parts=item?.c!==undefined?(COMBO[item.c]||'').split(''):[];
+ const state=syncFestival();if(!state)return;const row=state.active;if(row.claimed)return;let goal=-1;const parts=item?.c!==undefined?(COMBO[item.c]||'').split(''):[],need=festivalStatThreshold(row.tier||1);
  if(row.season===0){if(event==='sow')goal=0;if(event==='food'&&parts.includes('2'))goal=1;}
- if(row.season===1){if(event==='weapon'&&item.t>=1)goal=0;if(event==='food'&&kitchenDishStats(item).aroma>=20)goal=1;}
- if(row.season===2){if(event==='burn')goal=0;if(event==='food'&&parts.filter(s=>s==='2').length>=2)goal=1;}
- if(row.season===3){if(event==='weapon'&&item.t>=2)goal=0;if(event==='food'&&kitchenDishStats(item).fullness>=26)goal=1;}
+ if(row.season===1){if(event==='weapon'&&item.t>=1)goal=0;if(event==='food'&&kitchenDishStats(item).aroma>=need)goal=1;}
+ if(row.season===2){if(event==='burn')goal=0;if(event==='food'&&kitchenDishStats(item).taste>=need)goal=1;}
+ if(row.season===3){if(event==='weapon'&&item.t>=2)goal=0;if(event==='food'&&kitchenDishStats(item).fullness>=need)goal=1;}
  if(goal>=0)row.progress[goal]=Math.min(festivalGoal(row,goal),row.progress[goal]+Math.max(0,Math.floor(count)));
  if(festivalComplete(row)&&!row.notified){row.notified=true;toast('🎪 '+SEASON_FESTIVALS[row.season].name+'目標完成！'+(day>=row.start+2?'可從城鎮季節資訊領獎。':'第 '+(row.start+2)+' 天開放領獎。'));}
 }
@@ -4485,11 +4506,11 @@ function claimFestival(start){
  row.claimed=true;const f=SEASON_FESTIVALS[row.season],d=DECOR_BY_ID.get(f.gift);let gold=f.gold;if(!cityState)cityState=freshCity();const owned=cityState.owned[f.gift]||0;if(d&&owned<cityPlacementLimit(f.gift))cityState.owned[f.gift]=owned+1;else if(d)gold+=d.price;
  if(!state.badges.includes(row.season))state.badges.push(row.season);state.badgeStars[row.season]=Math.max(state.badgeStars[row.season]||0,row.tier||1);syncAchievementMedals();persistFestivalBadges();coins+=gold;earned+=gold;dEarn+=gold;cityRevision++;saveHi();saveNow();renderFestival();if($('townP').style.display==='flex')renderTown();toast('🎪 '+f.name+'獎勵已收下：'+gold+' 金幣，裝飾已加入收藏（同款已足量時折算金幣）。');return true;
 }
-function festivalRowHTML(row){const f=SEASON_FESTIVALS[row.season],ready=festivalComplete(row),claimable=ready&&!row.claimed&&day>=row.start+2;
- return '<section class="festival-card"><h3>'+SEASONS[row.season].icon+' '+f.name+' · '+(row.tier||1)+'星挑戰 · 第 '+(row.start+2)+' 天</h3>'+f.goals.map((g,i)=>'<label>'+g.text+' <b>'+row.progress[i]+'/'+festivalGoal(row,i)+'</b><progress max="'+festivalGoal(row,i)+'" value="'+row.progress[i]+'"></progress></label>').join('')+'<p>'+festivalRewardText(row.season,row.tier||1)+'</p><button class="exp-wide" '+(!claimable?'disabled':'')+' onclick="claimFestival('+row.start+')">'+(row.claimed?'已領取':claimable?'領取節慶獎勵':ready?'第 '+(row.start+2)+' 天開放領獎':'目標尚未完成')+'</button></section>';
+function festivalRowHTML(row){const f=SEASON_FESTIVALS[row.season],tier=row.tier||1,ready=festivalComplete(row),claimable=ready&&!row.claimed&&day>=row.start+2;
+ return '<section class="festival-card"><h3>'+SEASONS[row.season].icon+' '+f.name+' · '+tier+'星挑戰 · 第 '+(row.start+2)+' 天</h3>'+f.goals.map((g,i)=>'<label>'+festivalGoalText(row.season,i,tier)+' <b>'+row.progress[i]+'/'+festivalGoal(row,i)+'</b><progress max="'+festivalGoal(row,i)+'" value="'+row.progress[i]+'"></progress></label>').join('')+'<p>'+festivalRewardText(row.season,tier)+'</p><button class="exp-wide" '+(!claimable?'disabled':'')+' onclick="claimFestival('+row.start+')">'+(row.claimed?'已領取':claimable?'領取節慶獎勵':ready?'第 '+(row.start+2)+' 天開放領獎':'目標尚未完成')+'</button></section>';
 }
 function renderFestival(){
- const state=syncFestival();if(!state)return;const row=state.active,next=(row.season+1)%4,f=SEASON_FESTIVALS[next];$('festivalTitle').textContent='四季節慶與預告';$('festivalBody').innerHTML=festivalRowHTML(row)+'<section class="festival-next"><h3>下一季預告 · '+f.name+' · '+festivalNextTier(next)+'星挑戰</h3><p>第 '+(row.start+3)+' 天開始準備，第 '+(row.start+5)+' 天領獎。</p><p>'+f.goals.map(g=>g.text+' ×'+(g.n*festivalNextTier(next))).join('；')+'</p><p>'+f.hint+'</p><p>獎勵：'+festivalRewardText(next)+'</p></section><p>本局紀念章：'+(state.badges.map(i=>SEASONS[i].name+' '+(state.badgeStars[i]||1)+'星').join('、')||'尚未取得')+'。取得後，下次該季挑戰目標數量提升為原本2倍／3倍；未完成維持原難度。三星後維持3倍。未完成不扣愛心，已完成獎勵保留最近8季可補領。</p><button class="exp-wide" onclick="openFestivalBadgeAlbum()">查看圖鑑館紀念章</button>'+state.past.filter(x=>festivalComplete(x)&&!x.claimed).map(festivalRowHTML).join('');
+ const state=syncFestival();if(!state)return;const row=state.active,next=(row.season+1)%4,f=SEASON_FESTIVALS[next],nextTier=festivalNextTier(next);$('festivalTitle').textContent='四季節慶與預告';$('festivalBody').innerHTML=festivalRowHTML(row)+'<section class="festival-next"><h3>下一季預告 · '+f.name+' · '+nextTier+'星挑戰</h3><p>第 '+(row.start+3)+' 天開始準備，第 '+(row.start+5)+' 天領獎。</p><p>'+f.goals.map((g,i)=>festivalGoalText(next,i,nextTier)+' ×'+(g.n*nextTier)).join('；')+'</p><p>'+f.hint+'</p><p>獎勵：'+festivalRewardText(next,nextTier)+'</p></section><p>本局紀念章：'+(state.badges.map(i=>SEASONS[i].name+' '+(state.badgeStars[i]||1)+'星').join('、')||'尚未取得')+'。取得後，下次該季挑戰目標數量提升為原本2倍／3倍，夏秋冬料理屬性門檻同步升至 30／40；未完成維持原難度。三星後維持最高難度。未完成不扣愛心，已完成獎勵保留最近8季可補領。</p><button class="exp-wide" onclick="openFestivalBadgeAlbum()">查看圖鑑館紀念章</button>'+state.past.filter(x=>festivalComplete(x)&&!x.claimed).map(festivalRowHTML).join('');
 }
 function openFestival(){if(day<1)return;markFestivalRead();closeP('seasonP');renderFestival();$('festivalP').style.display='flex';syncTownMotion();}
 function renderFestivalNotice(){const state=syncFestival();if(!state)return;const row=state.active,next=(row.season+1)%4;$('festivalNotice').textContent='本季：'+SEASON_FESTIVALS[row.season].name+'（第 '+(row.start+2)+' 天領獎）；下一季：'+SEASON_FESTIVALS[next].name+'。';}
@@ -4532,7 +4553,9 @@ function renderFestivalBadgeAlbum(){
  const stars=albumMedalStars(),found=MEDAL_DEFS.filter(d=>stars[d.id]>0).length,total=MEDAL_DEFS.reduce((n,d)=>n+(stars[d.id]||0),0),maxTotal=MEDAL_DEFS.reduce((n,d)=>n+d.max,0),pct=Math.round(total/maxTotal*100);
  $('albumProgress').textContent=(albumFromHome?'跨局紀念章收藏':'本局紀念章收藏')+' · '+found+'/14 · 星級 '+total+'/'+maxTotal;
  const groups=[['四季紀念章','🌿',MEDAL_DEFS.slice(0,4)],['遠征通關章','⚔',MEDAL_DEFS.slice(4,8)],['工藝與生活成就章','✦',MEDAL_DEFS.slice(8)]];
- const overview='<section class="medal-overview"><div class="medal-overview-top"><div class="medal-kpi"><span>已收藏</span><strong>'+found+'<small>/14</small></strong></div><div class="medal-kpi is-gold"><span>總星級</span><strong>★ '+total+'<small>/'+maxTotal+'</small></strong></div></div><div class="medal-progress-track" aria-hidden="true"><i style="width:'+pct+'%"></i></div><p class="medal-rules">四季與成就進度每局重新累計；首頁保留歷來最高星級。遠征通關章為單次成就。</p></section>';
+ const activeBuffs=!albumFromHome?activeMedalBonusTags(stars):[];
+ const buffStrip=activeBuffs.length?'<div class="medal-active-buffs"><span class="medal-active-buffs-title">✦ 本局生效中的全局加成</span>'+activeBuffs.map(b=>'<span class="medal-buff-chip"><b>'+b.name+(b.max>1?' '+b.level+'★':'')+'</b>：'+b.text+'</span>').join('')+'</div>':'';
+ const overview='<section class="medal-overview"><div class="medal-overview-top"><div class="medal-kpi"><span>已收藏</span><strong>'+found+'<small>/14</small></strong></div><div class="medal-kpi is-gold"><span>總星級</span><strong>★ '+total+'<small>/'+maxTotal+'</small></strong></div></div><div class="medal-progress-track" aria-hidden="true"><i style="width:'+pct+'%"></i></div>'+buffStrip+'<p class="medal-rules">每枚紀念章與每個星級皆提供本局全局加成（點擊卡片查看）。四季與成就進度每局重新累計；首頁保留歷來最高星級。</p></section>';
  $('albumWeapons').innerHTML=overview+groups.map(([name,icon,defs])=>{
   const groupStars=defs.reduce((n,d)=>n+(stars[d.id]||0),0),groupMax=defs.reduce((n,d)=>n+d.max,0);
   return '<section class="medal-section"><header class="medal-section-head"><h3><span class="medal-section-icon" aria-hidden="true">'+icon+'</span>'+name+'</h3><span class="medal-section-count">★ '+groupStars+'/'+groupMax+'</span></header><div class="festival-badge-grid">'+defs.map(d=>{
@@ -4581,6 +4604,54 @@ function syncAchievementMedals(announce=true){
 }
 function recordMedalHarvest(){if(!kitchen||day<1)return;if(!kitchen.achievements)kitchen.achievements=cleanMedalAchievements(null);kitchen.achievements.harvests=Math.min(1000000,kitchen.achievements.harvests+1);syncAchievementMedals();}
 function albumMedalStars(){if(!albumFromHome)return stateMedalStars();const all=readMedalCollection(),merge=s=>{for(const d of MEDAL_DEFS)all[d.id]=Math.max(all[d.id],s[d.id]||0);};if(!sandboxSession){for(const entry of saves)merge(stateMedalStars(entry.state));if(!testRun)merge(stateMedalStars());}return all;}
+const MEDAL_BONUSES={
+ 'season-0':['種子購價 -10%，收成 25% 機率返還種子','種子購價 -20%，收成 50% 機率返還種子','種子購價 -30%，收成 75% 機率返還種子，花朵成熟縮短 1 天'],
+ 'season-1':['所有武器成交價 +4%','所有武器成交價 +8%','所有武器成交價 +12%'],
+ 'season-2':['所有料理成交價 +4%','所有料理成交價 +8%','所有料理成交價 +12%'],
+ 'season-3':['冶煉過熱 -3 步、餐廳客人耐心 +3 步','冶煉過熱 -6 步、餐廳客人耐心 +6 步','冶煉過熱 -9 步、餐廳客人耐心 +9 步'],
+ 'exp-5':['遠征我方攻擊力 +6%'],
+ 'exp-10':['遠征我方防禦力 +8%（同步提高生命上限）'],
+ 'exp-15':['遠征我方速度 +8%'],
+ 'exp-20':['遠征開戰獲最大生命 10% 護盾、遠征勝利金幣 +15%'],
+ gold:['冶煉每日任務金幣獎勵 +6%','冶煉每日任務金幣獎勵 +12%','冶煉每日任務金幣獎勵 +18%'],
+ mithril:['附魔每層額外 +1 奧術傷害／+1 護盾，遠征攻擊 +2%','附魔每層額外 +2 奧術傷害／+2 護盾，遠征攻擊 +4%','附魔每層額外 +3 奧術傷害／+3 護盾，遠征攻擊 +6%'],
+ chef4:['完成料理保鮮延長 +4 步','完成料理保鮮延長 +8 步','完成料理保鮮延長 +12 步'],
+ chef5:['遠征攜帶料理補給效果 +8%','遠征攜帶料理補給效果 +16%','遠征攜帶料理補給效果 +25%'],
+ decor:['裝飾行與版型補齊購價 -10%','裝飾行與版型補齊購價 -20%','裝飾行與版型補齊購價 -30%'],
+ garden:['屬性武器成交價 +4%，收成 20% 機率額外 +1 精華','屬性武器成交價 +8%，收成 40% 機率額外 +1 精華','屬性武器成交價 +12%，收成 60% 機率額外 +1 精華']
+};
+function medalEffectText(id,tier=1){const list=MEDAL_BONUSES[id];return list?list[Math.max(0,Math.min(list.length-1,(tier||1)-1))]||'':'';}
+function medalBonuses(state=null){
+ const s=state?stateMedalStars(state):day>0&&kitchen?stateMedalStars():{};
+ const l=id=>s[id]||0,spring=l('season-0'),summer=l('season-1'),autumn=l('season-2'),winter=l('season-3');
+ const gold=l('gold'),mithril=l('mithril'),chef4=l('chef4'),chef5=l('chef5'),decor=l('decor'),garden=l('garden');
+ return {
+  seedDiscount:.1*spring,
+  seedReturnChance:.25*spring,
+  flowerSpeed:spring>=3?1:0,
+  weaponSale:.04*summer,
+  dishSale:.04*autumn,
+  forgeHeatReduce:3*winter,
+  kitchenPatienceBonus:3*winter,
+  battleAtk:.06*l('exp-5')+.02*mithril,
+  battleDef:.08*l('exp-10'),
+  battleSpd:.08*l('exp-15'),
+  battleStartShield:.1*l('exp-20'),
+  expeditionGold:.15*l('exp-20'),
+  questGold:.06*gold,
+  enchantExtra:mithril,
+  dishFreshBonus:4*chef4,
+  supplyBoost:[0,.08,.16,.25][chef5],
+  decorDiscount:.1*decor,
+  elementWeaponSale:.04*garden,
+  extraEssenceChance:.2*garden
+ };
+}
+function activeMedalBonusTags(stars){
+ const tags=[];
+ for(const d of MEDAL_DEFS){const lv=stars[d.id]||0;if(lv>0)tags.push({id:d.id,name:d.name,level:lv,max:d.max,text:medalEffectText(d.id,lv)});}
+ return tags;
+}
 function medalStarsHTML(level,max=3){return max===1?'<span class="medal-completion '+(level?'is-cleared':'is-locked')+'">'+(level?'✦ 已通關':'◇ 尚未通關')+'</span>':'<span class="medal-stars" aria-label="'+level+'星，共'+max+'星"><b>'+'★'.repeat(level)+'</b><i>'+'☆'.repeat(max-level)+'</i></span>';}
 function medalCardMeterHTML(d,level){
  const current=medalProgress(d),target=d.goals[Math.min(level,2)],pct=Math.max(0,Math.min(100,Math.round(current/target*100)));
@@ -4590,18 +4661,19 @@ function medalCategoryLabel(d){return d.season!==undefined?'四季紀念章 · �
 function medalSummary(d,level){if(albumFromHome)return level?(d.max===1?'已取得':'最高 '+level+' 星'):'尚未取得';if(d.season!==undefined)return (level===3?'三星已完成':(level+1)+'星：原目標 ×'+(level+1))+' · 三天內完成';if(d.stage)return '打贏遠征第 '+d.stage+' 關';return d.text+' '+Math.min(medalProgress(d),d.goals.at(-1))+'/'+d.goals[Math.min(level,2)]+d.unit;}
 function inspectMedal(id){
  const d=medalDefinition(id);if(!d)return;const level=albumMedalStars()[id]||0,maxed=level>=d.max,tier=d.max===1?(level?3:0):level;$('festivalBadgeTitle').textContent=d.name;let body='';
+ const activeBuff='<div class="medal-current-buff '+(level?'is-active':'')+'"><small>'+(level?(albumFromHome?'最高星級全局加成（本局取得即生效）':'本局生效中加成'):'取得後全局加成')+'</small><strong>✦ '+medalEffectText(id,Math.max(1,level))+'</strong></div>';
  if(d.season!==undefined){
   const f=SEASON_FESTIVALS[d.season];
-  body='<p class="medal-lead">'+f.name+' · 每次該季三天內完成兩項目標，第三天領獎取得星級。</p>'
-   +'<div class="medal-goals">'+[1,2,3].map(t=>'<p class="'+(level>=t?'earned':'')+'"><span class="medal-goal-mark" aria-hidden="true">'+(level>=t?'✓':'◇')+'</span><span class="medal-goal-text"><strong>'+t+'星</strong>：'+f.goals.map(g=>g.text+' ×'+g.n*t).join('、')+'</span></p>').join('')+'</div>'
-   +'<p class="medal-footnote">完成一星後，下次該季挑戰二星；再完成後挑戰三星。失敗維持原難度，三星後維持三倍目標。</p>';
+  body=activeBuff+'<p class="medal-lead">'+f.name+' · 每次該季三天內完成兩項目標，第三天領獎取得星級。</p>'
+   +'<div class="medal-goals">'+[1,2,3].map(t=>'<p class="'+(level>=t?'earned':'')+'"><span class="medal-goal-mark" aria-hidden="true">'+(level>=t?'✓':'◇')+'</span><span class="medal-goal-text"><strong>'+t+'星</strong>：'+f.goals.map((g,i)=>festivalGoalText(d.season,i,t)+' ×'+g.n*t).join('、')+'<span class="medal-goal-reward">✦ '+medalEffectText(id,t)+'</span></span></p>').join('')+'</div>'
+   +'<p class="medal-footnote">完成一星後，下次該季挑戰二星；再完成後挑戰三星（夏秋冬料理屬性門檻同步升至 30／40）。失敗維持原難度，三星後維持最高難度。</p>';
  }else if(d.stage){
-  body='<div class="medal-goals"><p class="'+(level?'earned':'')+'"><span class="medal-goal-mark" aria-hidden="true">'+(level?'✓':'◇')+'</span><span class="medal-goal-text">在本局遠征打贏第 '+d.stage+' 關，即可自動取得通關紀念章。</span></p></div>'
+  body=activeBuff+'<div class="medal-goals"><p class="'+(level?'earned':'')+'"><span class="medal-goal-mark" aria-hidden="true">'+(level?'✓':'◇')+'</span><span class="medal-goal-text">在本局遠征打贏第 '+d.stage+' 關，即可自動取得通關紀念章。<span class="medal-goal-reward">✦ '+medalEffectText(id,1)+'</span></span></p></div>'
    +'<p class="medal-footnote">此章為單次通關成就，沒有二星、三星。</p>';
  }else{
   const current=medalProgress(d),target=d.goals[Math.min(level,2)],pct=Math.max(0,Math.min(100,Math.round(current/target*100)));
   const runMeter=albumFromHome?'<p class="medal-progress-note">首頁保存歷來最高星級；以下數量需在同一局內累計。</p>':'<div class="medal-run-meter"><div class="medal-run-meter-head"><span>本局累計</span><strong>'+current+d.unit+' / '+target+d.unit+'</strong></div><div class="medal-progress-track" aria-hidden="true"><i style="width:'+pct+'%"></i></div></div>';
-  body='<div class="medal-goals">'+d.goals.map((n,i)=>'<p class="'+(level>i?'earned':'')+'"><span class="medal-goal-mark" aria-hidden="true">'+(level>i?'✓':'◇')+'</span><span class="medal-goal-text"><strong>'+(i+1)+'星</strong>：'+d.text+' '+n+d.unit+'</span></p>').join('')+'</div>'
+  body=activeBuff+'<div class="medal-goals">'+d.goals.map((n,i)=>'<p class="'+(level>i?'earned':'')+'"><span class="medal-goal-mark" aria-hidden="true">'+(level>i?'✓':'◇')+'</span><span class="medal-goal-text"><strong>'+(i+1)+'星</strong>：'+d.text+' '+n+d.unit+'<span class="medal-goal-reward">✦ '+medalEffectText(id,i+1)+'</span></span></p>').join('')+'</div>'
    +runMeter
    +'<p class="medal-footnote">'+(d.kind==='weapon'?'只計指定階級的一般武器，合成完成即計數，不必售出；各種武器可一起累計。':d.kind==='dish'?'只計指定階級的完成料理，合成完成即計數，不必售出；各種料理可一起累計。':d.id==='decor'?'計算已擁有的裝飾總件數，包含收藏與已放置、不同季節與日夜款。同款多件各計一件。':'每盆親自種植並收成的成熟花朵計一朵；春天雙倍精華仍只計一朵，寶箱精華不計。')+'</p>';
  }

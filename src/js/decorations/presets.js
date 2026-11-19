@@ -8,7 +8,7 @@ function quoteCityPreset(p){
  if(!p||!DECOR_SEASONS.includes(p.season)||!Array.isArray(p.items)||p.items.length>100||p.items.some(i=>!cleanCityItem(i)))return {valid:false,missing:[],cost:0};
  if(p.items.some(i=>!decorMatchesContext(DECOR_BY_ID.get(i.id),DECOR_SEASONS.indexOf(p.season),!!p.night)))return {valid:false,missing:[],cost:0};
  if(cityItemsOverLimit(p.items).length)return {valid:false,missing:[],cost:0,limitExceeded:cityItemsOverLimit(p.items)};const missing=presetMissing(p.items);if(missing.some(i=>!DECOR_BY_ID.has(i.id)||(cityState.owned[i.id]||0)+i.n>9999))return {valid:false,missing:[],cost:0};
- return {valid:true,missing,cost:missing.reduce((total,i)=>total+DECOR_BY_ID.get(i.id).price*i.n,0)};
+ return {valid:true,missing,cost:missing.reduce((total,i)=>total+decorPrice(DECOR_BY_ID.get(i.id))*i.n,0)};
 }
 function openCityLayouts(){if(!architect.active)toggleArchitect();if(!cityContextEditable())return;$('cityLayoutName').value=SEASONS[townVisualSeason()].name+'小鎮';renderCityLayouts();$('cityLayoutsP').style.display='flex';syncTownMotion();}
 function renderCityLayouts(){if(!cityContextEditable())return;

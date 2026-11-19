@@ -32,28 +32,36 @@ function expeditionMonster(id){syncMonsterElements();return id>=20?endlessMonste
 function applyWeaponElement(w,i){const e=elementTiles.get(i);if(validElement(e))w.element=e;return w;}
 function elementBadge(e,cls=''){const color=validElement(e)?ELEMENTS[e].color:'#b8c3c9';return '<span class="element-badge '+cls+'" style="--element:'+color+'" aria-label="'+elementName(e)+'屬性">'+elementIcon(e)+'<b>'+elementName(e)+'</b></span>';}
 function elementWeaponHTML(w){const e=elementOf(w);return e==='none'?'<p class="element-weapon-note">無屬性</p>':'<div class="element-weapon-note">'+elementBadge(e)+'<span>屬性附魔 · 武器售價 +20%</span></div>';}
-function plantAge(p){return Math.max(0,Math.min(3,day-p.plantedDay+(expandedGameEnabled()?(p.growthBoost||0):0)));}
+function seedPrice(e){return Math.max(1,Math.round((ELEMENTS[e]?.price||350)*(1-medalBonuses().seedDiscount)));}
+function plantAge(p){return Math.max(0,Math.min(3,day-p.plantedDay+(p.growthBoost||0)+medalBonuses().flowerSpeed));}
+function plantReadyDay(p){return p.plantedDay+Math.max(1,3-(p.growthBoost||0)-medalBonuses().flowerSpeed);}
 function renderGreenhousePanel(){
  $('greenhouseP').querySelector('.greenhouse-panel').style.setProperty('--greenhouse-art','url("'+GREENHOUSE_ART.interior+'")');
  $('greenhouseSeeds').innerHTML='<h3>種子庫存</h3><div class="seed-stock">'+ELEMENT_IDS.map(e=>'<span style="--element:'+ELEMENTS[e].color+'">'+elementIcon(e)+'<b>'+ELEMENTS[e].name+'</b><small>×'+(seedStock[e]||0)+'</small></span>').join('')+'</div>';
- $('greenhouseBeds').innerHTML=greenhouseBeds.map((p,i)=>{const age=p?plantAge(p):0,label=p?ELEMENTS[p.element].name+'之花':'種植區 '+(i+1),stage=p?['種子 · 還有3天','發芽 · 還有2天','屬性葉 · 還有1天','已開花 · 收成 ×'+harvestYield()][age]:'點擊播種';return '<button data-plant-bed="'+i+'" class="'+(p&&age===3?'ripe':'')+'" aria-pressed="'+(selectedPlantBed===i)+'" onclick="selectGreenhouseBed('+i+')" aria-label="第'+(i+1)+'格，'+label+'，'+stage+'"><span class="plant-bed-art">'+plantArt(p?.element,age)+'</span><b>'+label+'</b><small>'+stage+'</small></button>'}).join('');
- renderKitchenCompost();renderHarvestAlert();$('greenhouseDetail').textContent='播種後經過三天即可收成精華。精華可製作當天有效的屬性附魔格。'+(seasonIndex()===0?' 春日豐收：每盆成熟花朵收成 2 份精華。':'');
+ $('greenhouseBeds').innerHTML=greenhouseBeds.map((p,i)=>{const age=p?plantAge(p):0,left=Math.max(0,3-age),label=p?ELEMENTS[p.element].name+'之花':'種植區 '+(i+1),stage=p?(age>=3?'已開花 · 收成 ×'+harvestYield():['種子','發芽','屬性葉'][age]+' · 還有'+left+'天'):'點擊播種';return '<button data-plant-bed="'+i+'" class="'+(p&&age===3?'ripe':'')+'" aria-pressed="'+(selectedPlantBed===i)+'" onclick="selectGreenhouseBed('+i+')" aria-label="第'+(i+1)+'格，'+label+'，'+stage+'"><span class="plant-bed-art">'+plantArt(p?.element,age)+'</span><b>'+label+'</b><small>'+stage+'</small></button>'}).join('');
+ renderKitchenCompost();renderHarvestAlert();const b=medalBonuses();$('greenhouseDetail').textContent='播種後經過'+(b.flowerSpeed?'兩':'三')+'天即可收成精華。精華可製作當天有效的屬性附魔格。'+(seasonIndex()===0?' 春日豐收：每盆成熟花朵收成 2 份精華。':'')+(b.seedReturnChance?' 春芽章：收成 '+Math.round(b.seedReturnChance*100)+'% 返還種子。':'')+(b.extraEssenceChance?' 花園章：收成 '+Math.round(b.extraEssenceChance*100)+'% 額外精華。':'');
 }
 function selectGreenhouseBed(i){
  if(!Number.isInteger(i)||i<0||i>=6||day<1)return;selectedPlantBed=i;const p=greenhouseBeds[i];
  if(!p){renderSeedPicker();$('seedP').style.display='flex';return;}
- if(plantAge(p)>=3){const e=p.element,yieldCount=harvestYield();greenhouseBeds[i]=null;for(let n=0;n<yieldCount;n++)bag.push({k:'ess',element:e});recordMedalHarvest();selectedPlantBed=-1;renderGreenhousePanel();saveNow();$('greenhouseDetail').textContent='已收成 '+ELEMENTS[e].name+'之精華 ×'+yieldCount+(yieldCount===2?'（春日豐收）':'')+'，放入道具箱。盆栽可重新播種。';return;}
- renderGreenhousePanel();$('greenhouseDetail').textContent='第 '+(i+1)+' 格 · '+ELEMENTS[p.element].name+'之花，將在第 '+(p.plantedDay+3-(expandedGameEnabled()?(p.growthBoost||0):0))+' 天開花。';
+ if(plantAge(p)>=3){
+  const e=p.element,b=medalBonuses(),baseYield=harvestYield(),extraEss=b.extraEssenceChance>0&&Math.random()<b.extraEssenceChance?1:0,yieldCount=baseYield+extraEss,seedBack=b.seedReturnChance>0&&Math.random()<b.seedReturnChance?1:0;
+  greenhouseBeds[i]=null;for(let n=0;n<yieldCount;n++)bag.push({k:'ess',element:e});if(seedBack)seedStock[e]=(seedStock[e]||0)+seedBack;
+  recordMedalHarvest();selectedPlantBed=-1;renderGreenhousePanel();saveNow();
+  $('greenhouseDetail').textContent='已收成 '+ELEMENTS[e].name+'之精華 ×'+yieldCount+(baseYield===2?'（春日豐收）':'')+(extraEss?'（花園章 +1）':'')+(seedBack?'，並返還 1 顆'+ELEMENTS[e].name+'之花種子':'')+'，放入道具箱。盆栽可重新播種。';return;
+ }
+ renderGreenhousePanel();$('greenhouseDetail').textContent='第 '+(i+1)+' 格 · '+ELEMENTS[p.element].name+'之花，將在第 '+plantReadyDay(p)+' 天開花。';
 }
 function renderSeedPicker(){
  $('seedTitle').textContent='第 '+(selectedPlantBed+1)+' 格 · 選擇花種';
- $('seedChoices').innerHTML=ELEMENT_IDS.map(e=>{const n=seedStock[e]||0,p=ELEMENTS[e];return '<button data-sow="'+e+'" onclick="sowSeed(\''+e+'\')" '+(!n&&coins<p.price?'disabled':'')+'>'+seedPacketArt(e)+'<span><b>'+p.name+'之花</b><small>'+(n?'庫存 '+n+' 顆 · 免費播種':'購買並播種 · '+p.price+' 金幣')+'</small></span></button>'}).join('');
+ const disc=Math.round(medalBonuses().seedDiscount*100);
+ $('seedChoices').innerHTML=ELEMENT_IDS.map(e=>{const n=seedStock[e]||0,p=ELEMENTS[e],cost=seedPrice(e);return '<button data-sow="'+e+'" onclick="sowSeed(\''+e+'\')" '+(!n&&coins<cost?'disabled':'')+'>'+seedPacketArt(e)+'<span><b>'+p.name+'之花</b><small>'+(n?'庫存 '+n+' 顆 · 免費播種':'購買並播種 · '+cost+' 金幣'+(disc?'（紀念章 -'+disc+'%）':''))+'</small></span></button>'}).join('');
  $('seedCoins').textContent='持有 '+coins+' 金幣 · 優先使用庫存種子';
 }
 function sowSeed(e){
  const i=selectedPlantBed;if(day<1||!validElement(e)||!Number.isInteger(i)||i<0||i>=6||greenhouseBeds[i])return false;
- const cost=(seedStock[e]||0)>0?0:ELEMENTS[e].price;if(coins<cost)return false;
- if(cost)coins-=cost;else seedStock[e]--;greenhouseBeds[i]={element:e,plantedDay:day};recordFestival('sow');selectedPlantBed=-1;closeP('seedP');render();renderGreenhousePanel();saveNow();$('greenhouseDetail').textContent='已播下'+ELEMENTS[e].name+'之花種子，第 '+(day+3)+' 天可收成。';return true;
+ const cost=(seedStock[e]||0)>0?0:seedPrice(e);if(coins<cost)return false;
+ if(cost)coins-=cost;else seedStock[e]--;greenhouseBeds[i]={element:e,plantedDay:day};recordFestival('sow');selectedPlantBed=-1;closeP('seedP');render();renderGreenhousePanel();saveNow();$('greenhouseDetail').textContent='已播下'+ELEMENTS[e].name+'之花種子，第 '+plantReadyDay(greenhouseBeds[i])+' 天可收成。';return true;
 }
 function grantGardenLoot(it){if(it.k==='seed'&&validElement(it.element))seedStock[it.element]=(seedStock[it.element]||0)+1;else bag.push({...it});}
 function useEssence(i){

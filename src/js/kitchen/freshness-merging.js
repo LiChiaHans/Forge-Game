@@ -1,7 +1,7 @@
 
 const kitchenMergeQueue=[],kitchenMergeJobs=new Set();let kitchenMergeEpoch=0,kitchenGuestSerial=0;
 const KITCHEN_WASTE_FEE=50;
-function kitchenShelfLife(w){return w?.k==='w'?32+6*kitchenLevel('fresh'):0;}
+function kitchenShelfLife(w){return w?.k==='w'?32+6*kitchenLevel('fresh')+medalBonuses().dishFreshBonus:0;}
 function kitchenFreshen(w){if(!w)return w;if(w.k==='o'||w.k==='p'){delete w.fresh;delete w.born;}else if(w.k==='w'){w.fresh=kitchenShelfLife(w);w.born=kitchen.turn+1;}return w;}
 function kitchenEnsureFresh(w){if(w?.k==='o'||w?.k==='p')return kitchenFreshen(w);if(w?.k==='w'&&!Number.isFinite(w.fresh))kitchenFreshen(w);return w;}
 function kitchenWasteArt(){return gardenWasteSVG();}
@@ -23,7 +23,7 @@ function kitchenCreateOrders(){
  const counts=[0,0,0,0,0],caps=[Infinity,Infinity,3,2,1],list=Array.from({length:total},(_,i)=>{const o=kitchenOrder(generics.has(i));while(o.t>0&&counts[o.t]>=caps[o.t])o.t--;counts[o.t]++;o.max=o.wait=kitchenOrderPatience(o.t);return o;});
  assignKitchenStatOrder(list);kitchen.total=total;kitchen.orders=list.splice(0,3);kitchen.queue=list;kitchen.orders.forEach((o,i)=>{o.slot=i;o.enteredAt=Date.now()+i*90;});
 }
-function kitchenOrderPatience(t){return 100+60*t+8*kitchenLevel('patience')-(kitchen.challenge===0&&day>3?10:0);}
+function kitchenOrderPatience(t){return 100+60*t+8*kitchenLevel('patience')+medalBonuses().kitchenPatienceBonus-(kitchen.challenge===0&&day>3?10:0);}
 function kitchenEntryStyle(o){const elapsed=Date.now()-(o.enteredAt||0);return 'grid-column:'+((o.slot??0)+1)+';'+(elapsed<480&&!lowEffects?'animation:kitchen-guest-enter 480ms cubic-bezier(.2,.8,.3,1) both;animation-delay:'+(-elapsed)+'ms;':'');}
 function kitchenRecordMerge(cells,parts,dest,target=dest[0]){
  if(!expandedGameEnabled()||$('kitchenP').hidden)return;

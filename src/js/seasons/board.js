@@ -7,7 +7,7 @@ const SEASONS=[
 ];
 function seasonIndex(d=day){return d>0?Math.floor((d-1)/3)%4:0;}
 function seasonDay(d=day){return d>0?(d-1)%3+1:1;}
-function hotSteps(){return (seasonIndex()===1?60:50)-10*Math.max(0,Math.min(3,sk('cd')));}
+function hotSteps(){return Math.max(5,(seasonIndex()===1?60:50)-10*Math.max(0,Math.min(3,sk('cd')))-medalBonuses().forgeHeatReduce);}
 function cellBlock(i){return blueprintSlotAt(i)?'這是傳說藍圖格，請放入指定武器':frozen.has(i)?'這格已冰凍，換季後才能放置物品':leaves.has(i)?'這格有落葉，需要相鄰過熱格將它燒掉':'';}
 function seasonEffect(i,type){
   const effect={type,start:Date.now(),duration:type==='burning'?800:900};

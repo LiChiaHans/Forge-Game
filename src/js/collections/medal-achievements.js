@@ -31,6 +31,54 @@ function syncAchievementMedals(announce=true){
 }
 function recordMedalHarvest(){if(!kitchen||day<1)return;if(!kitchen.achievements)kitchen.achievements=cleanMedalAchievements(null);kitchen.achievements.harvests=Math.min(1000000,kitchen.achievements.harvests+1);syncAchievementMedals();}
 function albumMedalStars(){if(!albumFromHome)return stateMedalStars();const all=readMedalCollection(),merge=s=>{for(const d of MEDAL_DEFS)all[d.id]=Math.max(all[d.id],s[d.id]||0);};if(!sandboxSession){for(const entry of saves)merge(stateMedalStars(entry.state));if(!testRun)merge(stateMedalStars());}return all;}
+const MEDAL_BONUSES={
+ 'season-0':['種子購價 -10%，收成 25% 機率返還種子','種子購價 -20%，收成 50% 機率返還種子','種子購價 -30%，收成 75% 機率返還種子，花朵成熟縮短 1 天'],
+ 'season-1':['所有武器成交價 +4%','所有武器成交價 +8%','所有武器成交價 +12%'],
+ 'season-2':['所有料理成交價 +4%','所有料理成交價 +8%','所有料理成交價 +12%'],
+ 'season-3':['冶煉過熱 -3 步、餐廳客人耐心 +3 步','冶煉過熱 -6 步、餐廳客人耐心 +6 步','冶煉過熱 -9 步、餐廳客人耐心 +9 步'],
+ 'exp-5':['遠征我方攻擊力 +6%'],
+ 'exp-10':['遠征我方防禦力 +8%（同步提高生命上限）'],
+ 'exp-15':['遠征我方速度 +8%'],
+ 'exp-20':['遠征開戰獲最大生命 10% 護盾、遠征勝利金幣 +15%'],
+ gold:['冶煉每日任務金幣獎勵 +6%','冶煉每日任務金幣獎勵 +12%','冶煉每日任務金幣獎勵 +18%'],
+ mithril:['附魔每層額外 +1 奧術傷害／+1 護盾，遠征攻擊 +2%','附魔每層額外 +2 奧術傷害／+2 護盾，遠征攻擊 +4%','附魔每層額外 +3 奧術傷害／+3 護盾，遠征攻擊 +6%'],
+ chef4:['完成料理保鮮延長 +4 步','完成料理保鮮延長 +8 步','完成料理保鮮延長 +12 步'],
+ chef5:['遠征攜帶料理補給效果 +8%','遠征攜帶料理補給效果 +16%','遠征攜帶料理補給效果 +25%'],
+ decor:['裝飾行與版型補齊購價 -10%','裝飾行與版型補齊購價 -20%','裝飾行與版型補齊購價 -30%'],
+ garden:['屬性武器成交價 +4%，收成 20% 機率額外 +1 精華','屬性武器成交價 +8%，收成 40% 機率額外 +1 精華','屬性武器成交價 +12%，收成 60% 機率額外 +1 精華']
+};
+function medalEffectText(id,tier=1){const list=MEDAL_BONUSES[id];return list?list[Math.max(0,Math.min(list.length-1,(tier||1)-1))]||'':'';}
+function medalBonuses(state=null){
+ const s=state?stateMedalStars(state):day>0&&kitchen?stateMedalStars():{};
+ const l=id=>s[id]||0,spring=l('season-0'),summer=l('season-1'),autumn=l('season-2'),winter=l('season-3');
+ const gold=l('gold'),mithril=l('mithril'),chef4=l('chef4'),chef5=l('chef5'),decor=l('decor'),garden=l('garden');
+ return {
+  seedDiscount:.1*spring,
+  seedReturnChance:.25*spring,
+  flowerSpeed:spring>=3?1:0,
+  weaponSale:.04*summer,
+  dishSale:.04*autumn,
+  forgeHeatReduce:3*winter,
+  kitchenPatienceBonus:3*winter,
+  battleAtk:.06*l('exp-5')+.02*mithril,
+  battleDef:.08*l('exp-10'),
+  battleSpd:.08*l('exp-15'),
+  battleStartShield:.1*l('exp-20'),
+  expeditionGold:.15*l('exp-20'),
+  questGold:.06*gold,
+  enchantExtra:mithril,
+  dishFreshBonus:4*chef4,
+  supplyBoost:[0,.08,.16,.25][chef5],
+  decorDiscount:.1*decor,
+  elementWeaponSale:.04*garden,
+  extraEssenceChance:.2*garden
+ };
+}
+function activeMedalBonusTags(stars){
+ const tags=[];
+ for(const d of MEDAL_DEFS){const lv=stars[d.id]||0;if(lv>0)tags.push({id:d.id,name:d.name,level:lv,max:d.max,text:medalEffectText(d.id,lv)});}
+ return tags;
+}
 function medalStarsHTML(level,max=3){return max===1?'<span class="medal-completion '+(level?'is-cleared':'is-locked')+'">'+(level?'✦ 已通關':'◇ 尚未通關')+'</span>':'<span class="medal-stars" aria-label="'+level+'星，共'+max+'星"><b>'+'★'.repeat(level)+'</b><i>'+'☆'.repeat(max-level)+'</i></span>';}
 function medalCardMeterHTML(d,level){
  const current=medalProgress(d),target=d.goals[Math.min(level,2)],pct=Math.max(0,Math.min(100,Math.round(current/target*100)));
@@ -40,18 +88,19 @@ function medalCategoryLabel(d){return d.season!==undefined?'四季紀念章 · �
 function medalSummary(d,level){if(albumFromHome)return level?(d.max===1?'已取得':'最高 '+level+' 星'):'尚未取得';if(d.season!==undefined)return (level===3?'三星已完成':(level+1)+'星：原目標 ×'+(level+1))+' · 三天內完成';if(d.stage)return '打贏遠征第 '+d.stage+' 關';return d.text+' '+Math.min(medalProgress(d),d.goals.at(-1))+'/'+d.goals[Math.min(level,2)]+d.unit;}
 function inspectMedal(id){
  const d=medalDefinition(id);if(!d)return;const level=albumMedalStars()[id]||0,maxed=level>=d.max,tier=d.max===1?(level?3:0):level;$('festivalBadgeTitle').textContent=d.name;let body='';
+ const activeBuff='<div class="medal-current-buff '+(level?'is-active':'')+'"><small>'+(level?(albumFromHome?'最高星級全局加成（本局取得即生效）':'本局生效中加成'):'取得後全局加成')+'</small><strong>✦ '+medalEffectText(id,Math.max(1,level))+'</strong></div>';
  if(d.season!==undefined){
   const f=SEASON_FESTIVALS[d.season];
-  body='<p class="medal-lead">'+f.name+' · 每次該季三天內完成兩項目標，第三天領獎取得星級。</p>'
-   +'<div class="medal-goals">'+[1,2,3].map(t=>'<p class="'+(level>=t?'earned':'')+'"><span class="medal-goal-mark" aria-hidden="true">'+(level>=t?'✓':'◇')+'</span><span class="medal-goal-text"><strong>'+t+'星</strong>：'+f.goals.map(g=>g.text+' ×'+g.n*t).join('、')+'</span></p>').join('')+'</div>'
-   +'<p class="medal-footnote">完成一星後，下次該季挑戰二星；再完成後挑戰三星。失敗維持原難度，三星後維持三倍目標。</p>';
+  body=activeBuff+'<p class="medal-lead">'+f.name+' · 每次該季三天內完成兩項目標，第三天領獎取得星級。</p>'
+   +'<div class="medal-goals">'+[1,2,3].map(t=>'<p class="'+(level>=t?'earned':'')+'"><span class="medal-goal-mark" aria-hidden="true">'+(level>=t?'✓':'◇')+'</span><span class="medal-goal-text"><strong>'+t+'星</strong>：'+f.goals.map((g,i)=>festivalGoalText(d.season,i,t)+' ×'+g.n*t).join('、')+'<span class="medal-goal-reward">✦ '+medalEffectText(id,t)+'</span></span></p>').join('')+'</div>'
+   +'<p class="medal-footnote">完成一星後，下次該季挑戰二星；再完成後挑戰三星（夏秋冬料理屬性門檻同步升至 30／40）。失敗維持原難度，三星後維持最高難度。</p>';
  }else if(d.stage){
-  body='<div class="medal-goals"><p class="'+(level?'earned':'')+'"><span class="medal-goal-mark" aria-hidden="true">'+(level?'✓':'◇')+'</span><span class="medal-goal-text">在本局遠征打贏第 '+d.stage+' 關，即可自動取得通關紀念章。</span></p></div>'
+  body=activeBuff+'<div class="medal-goals"><p class="'+(level?'earned':'')+'"><span class="medal-goal-mark" aria-hidden="true">'+(level?'✓':'◇')+'</span><span class="medal-goal-text">在本局遠征打贏第 '+d.stage+' 關，即可自動取得通關紀念章。<span class="medal-goal-reward">✦ '+medalEffectText(id,1)+'</span></span></p></div>'
    +'<p class="medal-footnote">此章為單次通關成就，沒有二星、三星。</p>';
  }else{
   const current=medalProgress(d),target=d.goals[Math.min(level,2)],pct=Math.max(0,Math.min(100,Math.round(current/target*100)));
   const runMeter=albumFromHome?'<p class="medal-progress-note">首頁保存歷來最高星級；以下數量需在同一局內累計。</p>':'<div class="medal-run-meter"><div class="medal-run-meter-head"><span>本局累計</span><strong>'+current+d.unit+' / '+target+d.unit+'</strong></div><div class="medal-progress-track" aria-hidden="true"><i style="width:'+pct+'%"></i></div></div>';
-  body='<div class="medal-goals">'+d.goals.map((n,i)=>'<p class="'+(level>i?'earned':'')+'"><span class="medal-goal-mark" aria-hidden="true">'+(level>i?'✓':'◇')+'</span><span class="medal-goal-text"><strong>'+(i+1)+'星</strong>：'+d.text+' '+n+d.unit+'</span></p>').join('')+'</div>'
+  body=activeBuff+'<div class="medal-goals">'+d.goals.map((n,i)=>'<p class="'+(level>i?'earned':'')+'"><span class="medal-goal-mark" aria-hidden="true">'+(level>i?'✓':'◇')+'</span><span class="medal-goal-text"><strong>'+(i+1)+'星</strong>：'+d.text+' '+n+d.unit+'<span class="medal-goal-reward">✦ '+medalEffectText(id,i+1)+'</span></span></p>').join('')+'</div>'
    +runMeter
    +'<p class="medal-footnote">'+(d.kind==='weapon'?'只計指定階級的一般武器，合成完成即計數，不必售出；各種武器可一起累計。':d.kind==='dish'?'只計指定階級的完成料理，合成完成即計數，不必售出；各種料理可一起累計。':d.id==='decor'?'計算已擁有的裝飾總件數，包含收藏與已放置、不同季節與日夜款。同款多件各計一件。':'每盆親自種植並收成的成熟花朵計一朵；春天雙倍精華仍只計一朵，寶箱精華不計。')+'</p>';
  }
