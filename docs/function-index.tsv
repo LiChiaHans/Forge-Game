@@ -539,7 +539,7 @@ stopExpeditionFeedbackClock	src/js/expedition/timing-feedback.js	32
 expeditionHealthHTML	src/js/expedition/timing-feedback.js	33
 renderExpeditionBattle	src/js/expedition/rendering.js	2
 renderExpedition	src/js/expedition/rendering.js	11
-startExpeditionDemo	src/js/expedition/rendering.js	27
+startExpeditionDemo	src/js/expedition/rendering.js	28
 isUltimate	src/js/blueprints/ultimate-weapons.js	2
 ultimateSkill	src/js/blueprints/ultimate-weapons.js	3
 legendKind	src/js/blueprints/ultimate-weapons.js	4
@@ -684,7 +684,7 @@ cityTransform	src/js/decorations/architect.js	38
 decorPrice	src/js/decorations/architect.js	45
 openDecorationShop	src/js/decorations/architect.js	46
 renderDecorationShop	src/js/decorations/architect.js	47
-buyDecoration	src/js/decorations/architect.js	53
+buyDecoration	src/js/decorations/architect.js	55
 cancelCityPresetSave	src/js/decorations/presets.js	4
 readCityPresets	src/js/decorations/presets.js	5
 presetMissing	src/js/decorations/presets.js	6

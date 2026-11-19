@@ -1722,3 +1722,595 @@ body.cozy-items [data-cozy-item],body.cozy-items [data-cozy-decor]{overflow:visi
 
 @media(prefers-reduced-motion:reduce){#townFestivalBoard .festival-board-alert{animation:none}.festival-badge-card{transition:none}.festival-badge-card:hover{transform:none}}
 .low-effects #townFestivalBoard .festival-board-alert{animation:none}.low-effects .festival-badge-card{transition:none}
+/* ==========================================================================
+   Distinct Visual Identities:
+   1. Expedition War-Room (#expeditionP)
+   2. Royal Collectors' Archive (#weaponAlbumP, #weaponInspectP)
+   3. Artisan Boutique Decoration Shop (#decorShopP, #decorInventoryP, #cityLayoutsP)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. EXPEDITION WAR-ROOM (#expeditionP) — Obsidian Iron, Ember & War-Bronze
+   -------------------------------------------------------------------------- */
+#expeditionP{background:#06080ee0}
+#expeditionP .hp.exp-panel{
+ position:relative;max-width:470px;padding:18px 14px 18px;
+ border:2px solid #9d7d51;border-radius:10px;overflow-x:hidden;
+ background:
+  linear-gradient(90deg,#c95d3e 0%,#e9b25a 50%,#c95d3e 100%) top/100% 4px no-repeat,
+  radial-gradient(110% 42% at 50% 0%,#b84b3026 0%,transparent 70%),
+  linear-gradient(180deg,#202531 0%,#151923 56%,#10131b 100%);
+ box-shadow:inset 0 5px 0 #0c0e1488,inset 0 -3px 0 #090b10cc,0 22px 48px #03050add;
+ color:#f1e8d4
+}
+#expeditionP[data-cycle="2"] .hp.exp-panel{
+ border-color:#a88ae0;
+ background:
+  linear-gradient(90deg,#7c5bc4 0%,#e5be72 50%,#7c5bc4 100%) top/100% 4px no-repeat,
+  radial-gradient(110% 42% at 50% 0%,#865ed92b 0%,transparent 70%),
+  linear-gradient(180deg,#241f36 0%,#181628 56%,#12101e 100%)
+}
+#expeditionP[data-cycle="3"] .hp.exp-panel{
+ border-color:#e6bf68;
+ background:
+  linear-gradient(90deg,#d8963c 0%,#fff0ad 50%,#d8963c 100%) top/100% 4px no-repeat,
+  radial-gradient(110% 42% at 50% 0%,#e8b24c28 0%,transparent 70%),
+  linear-gradient(180deg,#25212a 0%,#171620 56%,#101018 100%)
+}
+
+#expeditionP .exp-header{padding-right:42px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #9c7d5144}
+#expeditionP .exp-player-heading{gap:11px}
+#expeditionP #expeditionAvatar{
+ width:48px;height:48px;border:2px solid #d4a65a;border-radius:8px;
+ background:radial-gradient(circle,#362c24,#161922);
+ box-shadow:inset 0 1px 0 #ffe9ad55,0 3px 8px #05070c99
+}
+#expeditionP .exp-player-heading small{
+ display:block;font-size:11.5px;font-weight:700;letter-spacing:1.1px;
+ color:#d7a36f;margin-bottom:2px
+}
+#expeditionP .exp-player-heading h2{
+ margin:0;font-family:'Noto Serif TC',serif;font-size:22px;font-weight:900;
+ letter-spacing:1.2px;color:#ffe6a4;text-shadow:0 2px 0 #161010,0 0 14px #e58d4633
+}
+
+#expeditionP #expeditionAttempts{
+ margin:0 0 10px;padding:7px 10px;border:1px solid #59607488;border-left:3px solid #d4964f;
+ border-radius:5px;background:#10141ed4;color:#d6d9e2;font-size:12.5px;
+ font-variant-numeric:tabular-nums;letter-spacing:.2px
+}
+
+/* Tactical Stage Milestones */
+#expeditionP #expeditionStages{
+ grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;
+ margin:10px 0 12px;padding:8px;border:1px solid #4c5266;border-radius:8px;
+ background:linear-gradient(180deg,#121620,#0d1018);
+ box-shadow:inset 0 2px 8px #05070caa
+}
+#expeditionP #expeditionStages button{
+ padding:7px 2px;font-size:12.5px;font-weight:800;line-height:1.15;
+ border:1.5px solid #545d72;border-radius:5px;
+ background:linear-gradient(180deg,#272d3c,#1b202c);background-image:none;
+ color:#dde2ec;box-shadow:inset 0 1px 0 #ffffff14,0 2px 4px #06080e88;
+ transition:transform .12s ease,border-color .14s ease,box-shadow .14s ease
+}
+#expeditionP #expeditionStages button[data-cycle="2"]{
+ border-color:#8770bf;background:linear-gradient(180deg,#362a52,#241c3a);color:#e4d6ff
+}
+#expeditionP #expeditionStages button[data-cycle="3"]{
+ grid-column:span 2;border-color:#e2ba64;
+ background:linear-gradient(180deg,#4c3719,#2c2010);color:#ffea9f
+}
+#expeditionP #expeditionStages button[data-cleared="true"]{
+ border-color:#53846a;background:linear-gradient(180deg,#1e322a,#15241e);
+ color:#9edbb6;opacity:.86
+}
+#expeditionP #expeditionStages button[data-locked="true"]{
+ border-color:#303645;background:#131720;color:#636c7e;box-shadow:none;opacity:.75
+}
+#expeditionP #expeditionStages button[aria-pressed="true"]{
+ outline:0;transform:translateY(-1px);
+ border-color:#ffe38d;
+ background:linear-gradient(180deg,#8d5225 0%,#582e15 100%);
+ color:#fff6d4;box-shadow:0 0 0 1px #ffe38d88,0 0 12px #e89d4555
+}
+#expeditionP #expeditionStages button[data-cycle="2"][aria-pressed="true"]{
+ border-color:#f3d284;background:linear-gradient(180deg,#64429e 0%,#3c2564 100%);
+ box-shadow:0 0 0 1px #e5c6ff88,0 0 12px #a479ee66
+}
+
+/* Monster Wanted Dossier */
+#expeditionP #expeditionMonster{
+ position:relative;display:flex;align-items:center;gap:12px;padding:12px;
+ border:1.5px solid #9c5b4a;border-radius:8px;
+ background:linear-gradient(135deg,#2a1b22 0%,#1a1d28 60%,#141822 100%);
+ box-shadow:inset 0 1px 0 #ffcca824,0 4px 12px #05070c99
+}
+#expeditionP[data-cycle="2"] #expeditionMonster{
+ border-color:#9b7cd6;background:linear-gradient(135deg,#2b1f3d 0%,#1a1b2c 60%,#131524 100%)
+}
+#expeditionP .exp-monster-art{
+ position:relative;flex:none;width:90px;height:90px;padding:5px;
+ border:1.5px solid #8a564999;border-radius:8px;
+ background:radial-gradient(circle at 50% 45%,#cf5a3d38 0%,#0f121a99 74%);
+ box-shadow:inset 0 2px 8px #07090faa
+}
+#expeditionP[data-cycle="2"] .exp-monster-art{
+ border-color:#9e82d499;background:radial-gradient(circle at 50% 45%,#9f6ef038 0%,#0f121f99 74%)
+}
+#expeditionP .exp-monster-info{flex:1;min-width:0}
+#expeditionP #expeditionMonster small{
+ display:inline-block;padding:2px 8px;border-radius:99px;
+ border:1px solid #8c5a4a88;background:#26171ccc;color:#ebb688;
+ font-size:11px;font-weight:700;letter-spacing:.4px
+}
+#expeditionP #expeditionMonster h3{
+ margin:5px 0 7px;font-family:'Noto Serif TC',serif;font-size:20px;font-weight:900;
+ color:#fff0d1;text-shadow:0 2px 0 #170e10
+}
+#expeditionP .exp-monster-stats{display:flex;flex-wrap:wrap;gap:5px;font-size:12px;line-height:1.2}
+#expeditionP .exp-stat-pill{
+ display:inline-flex;align-items:center;gap:2px;padding:3px 7px;
+ border-radius:4px;font-weight:800;font-variant-numeric:tabular-nums;
+ border:1px solid #565d70;background:#161b26
+}
+#expeditionP .exp-stat-pill.is-hp{border-color:#9b4a56;background:#321920;color:#ffc1c8}
+#expeditionP .exp-stat-pill.is-atk{border-color:#a8663d;background:#332016;color:#ffd2a4}
+#expeditionP .exp-stat-pill.is-def{border-color:#4b7699;background:#172735;color:#bce0ff}
+#expeditionP .exp-stat-pill.is-spd{border-color:#4a8a73;background:#152c25;color:#b2f2d8}
+
+#expeditionP #expeditionBossRule{
+ margin:9px 0 8px;padding:8px 10px;border:1px solid #85493f;border-left:3px solid #e37b52;
+ border-radius:6px;background:#26191de0;color:#ebd5c5;font-size:12.5px;line-height:1.55
+}
+#expeditionP #expeditionReward{
+ margin:0 0 12px;padding:8px 11px;border:1px solid #b58d47;border-radius:6px;
+ background:linear-gradient(90deg,#332714e6 0%,#1f1d1be6 100%);
+ color:#ffe49b;font-size:13.5px;font-weight:700;box-shadow:inset 0 1px 0 #fff1b824
+}
+
+#expeditionP #expeditionSetup>h3,
+#expeditionP .element-chart-panel h3,
+#expeditionP .exp-log-title{
+ display:flex;align-items:center;gap:6px;margin:13px 0 7px;
+ font-family:'Noto Serif TC',serif;font-size:15.5px;font-weight:800;
+ color:#f2cf83;letter-spacing:.6px
+}
+#expeditionP #expeditionSetup>h3::after,
+#expeditionP .element-chart-panel h3::after,
+#expeditionP .exp-log-title::after{
+ content:"";flex:1;height:1px;background:linear-gradient(90deg,#a6824b66,transparent)
+}
+
+/* Weapon Armory Rack */
+#expeditionP #expeditionWeapons{
+ gap:7px;padding:7px;max-height:224px;border:1px solid #485064;border-radius:8px;
+ background:#10141ecc;box-shadow:inset 0 2px 8px #05070caa
+}
+#expeditionP .exp-weapon{
+ gap:8px;padding:7px;border:1.5px solid #4a5368;border-radius:7px;
+ background:linear-gradient(180deg,#232938,#191e2a);background-image:none;
+ color:#f0e8d4;box-shadow:inset 0 1px 0 #ffffff14,0 2px 5px #05070d88;
+ transition:transform .12s ease,border-color .14s ease,box-shadow .14s ease
+}
+#expeditionP .exp-weapon:hover{border-color:#9e8152;transform:translateY(-1px)}
+#expeditionP .exp-weapon.selected{
+ border-color:#f6cf73;
+ background:linear-gradient(180deg,#4c3720 0%,#2d2116 100%);
+ box-shadow:0 0 0 1px #ffe79e77,0 4px 12px #05070daa
+}
+#expeditionP .exp-weapon-art{
+ width:46px;height:46px;padding:2px;border-radius:6px;
+ border:1px solid #596278;background:#121620
+}
+#expeditionP .exp-weapon.selected .exp-weapon-art{border-color:#e5ba61;background:#221910}
+#expeditionP .exp-weapon b{color:#fff1cc;font-size:13px}
+#expeditionP .exp-weapon small{color:#bcc5d6;font-size:11px;line-height:1.45}
+
+#expeditionP #expeditionSelectedStats{
+ margin-top:9px;padding:9px 10px;border:1px solid #586075;border-radius:7px;
+ background:#151a25d6
+}
+#expeditionP #expeditionSelectedStats:empty{display:none}
+
+#expeditionP #expeditionFoodSetup{
+ margin-top:10px;padding:9px 10px;border:1px solid #8c6e49;border-radius:7px;
+ background:linear-gradient(180deg,#26211c,#191920)
+}
+#expeditionP #expeditionFoodSetup h3{margin:0 0 7px;color:#f5cf84;font-family:'Noto Serif TC',serif}
+
+/* Primary Warhorn Fight CTA */
+#expeditionP #expeditionFight{
+ margin-top:12px;padding:12px 14px;font-size:16px;font-weight:900;letter-spacing:1px;
+ border:2px solid #f4cc74;border-radius:7px;
+ background:linear-gradient(180deg,#c15535 0%,#832d1b 100%);background-image:none;
+ color:#fff8e0;text-shadow:0 1px 0 #471409;
+ box-shadow:inset 0 1px 0 #fff1bf66,0 5px 14px #45130a99;
+ transition:transform .12s ease,filter .14s ease
+}
+#expeditionP #expeditionFight:not(:disabled):hover{filter:brightness(1.08)}
+#expeditionP #expeditionFight:not(:disabled):active{transform:translateY(1px)}
+#expeditionP #expeditionFight:disabled{
+ border-color:#4b5263;background:#1e232e;color:#7f8799;box-shadow:none;text-shadow:none
+}
+
+#expeditionP .exp-rules{
+ margin-top:10px;padding:8px 10px;border:1px solid #485064;border-radius:6px;
+ background:#121620b8;color:#c3cad6;font-size:12.5px
+}
+#expeditionP .exp-rules summary{cursor:pointer;font-weight:700;color:#e6cb8e}
+#expeditionP .element-chart-panel{
+ margin-top:10px;padding:9px 10px;border:1px solid #4b5468;border-radius:7px;
+ background:#131822cc
+}
+
+/* Expedition Battle Arena */
+#expeditionP #expeditionArena{
+ position:relative;padding:18px 10px 16px;border:2px solid #a88856;border-radius:9px;
+ background:
+  radial-gradient(85% 45% at 50% 18%,#f4b26a22 0%,transparent 65%),
+  linear-gradient(180deg,#253347 0%,#455866 55%,#27342e 55%,#17201d 100%);
+ box-shadow:inset 0 2px 12px #090d14aa,0 6px 16px #04060b88
+}
+#expeditionP #expeditionArena>strong{
+ flex:none;align-self:center;width:36px;height:36px;border-radius:50%;
+ display:inline-flex;align-items:center;justify-content:center;
+ font-family:'Noto Serif TC',serif;font-size:13px;font-weight:900;letter-spacing:.5px;
+ border:1.5px solid #f2cb72;
+ background:linear-gradient(180deg,#7c2f23,#3d1715);color:#ffe7a0;
+ box-shadow:0 0 12px #00000088,inset 0 1px 0 #fff1b855
+}
+#expeditionP #expeditionIntent{
+ margin:10px 0;padding:8px 10px;border:1px solid #9d6847;border-left:3px solid #eb9652;
+ border-radius:6px;background:linear-gradient(90deg,#342423,#1d1e29);
+ color:#ffe2a6;font-size:13px;font-weight:700
+}
+#expeditionP #expeditionGuard{
+ border:1.5px solid #85bccf;border-radius:6px;
+ background:linear-gradient(180deg,#2a4d61,#1a3242);background-image:none;
+ color:#e4f6ff;font-weight:800;box-shadow:inset 0 1px 0 #d4f4ff33,0 3px 8px #06090f88
+}
+#expeditionP #expeditionSkill{
+ border-radius:7px;font-weight:900;letter-spacing:.5px;
+ background:linear-gradient(120deg,#443373,#763e7c);background-image:none;
+ box-shadow:inset 0 1px 0 #fff1c255,0 0 16px #b582ec44
+}
+#expeditionP #expeditionLog{
+ border:1px solid #485164;border-radius:7px;background:#0e121a;
+ box-shadow:inset 0 2px 8px #05070baa;padding:10px 11px
+}
+#expeditionP #expeditionLog p{padding:2px 0;border-bottom:1px dashed #2a314266}
+#expeditionP #expeditionLog p:last-child{border-bottom:0}
+#expeditionP #expeditionResult:not(:empty){
+ margin:10px 0;padding:12px 11px;border:1.5px solid #cfa555;border-radius:8px;
+ background:linear-gradient(180deg,#312619,#171a23);
+ box-shadow:inset 0 1px 0 #fff1b833,0 6px 14px #04060b88
+}
+#expeditionP #expeditionResult h3{margin:0 0 6px;font-family:'Noto Serif TC',serif;color:#ffe69b}
+
+
+/* --------------------------------------------------------------------------
+   2. ROYAL COLLECTORS' ARCHIVE (#weaponAlbumP & #weaponInspectP)
+      — Mahogany Cabinet, Antique Brass & Gallery Velvet
+   -------------------------------------------------------------------------- */
+#weaponAlbumP,#weaponInspectP{background:#0b0808e0}
+#weaponAlbumP .hp{
+ position:relative;max-width:568px;padding:17px 14px 18px;
+ border:2px solid #c69e57;border-radius:10px;
+ background:
+  radial-gradient(100% 35% at 50% 0%,#d9a95922 0%,transparent 70%),
+  linear-gradient(180deg,#2c211d 0%,#1d1614 55%,#15100f 100%);
+ box-shadow:
+  inset 0 0 0 4px #181210,
+  inset 0 0 0 5px #b9924e38,
+  0 22px 48px #050303dd;
+ color:#f4ead5
+}
+#weaponAlbumP[data-category="dishes"] .hp{
+ border-color:#d49764;
+ background:
+  radial-gradient(100% 35% at 50% 0%,#e0955a24 0%,transparent 70%),
+  linear-gradient(180deg,#30221c 0%,#201613 55%,#17100e 100%)
+}
+#weaponAlbumP[data-category="badges"] .hp{
+ border-color:#c6a056;
+ background:
+  radial-gradient(100% 35% at 50% 0%,#e6c26b1f 0%,transparent 70%),
+  linear-gradient(180deg,#23322a 0%,#18241e 55%,#121b17 100%)
+}
+#weaponAlbumP[data-category="blueprints"] .hp{
+ border-color:#7fbcd6;
+ background:
+  radial-gradient(100% 35% at 50% 0%,#79c6e824 0%,transparent 70%),
+  linear-gradient(180deg,#1d2b3b 0%,#141f2c 55%,#0e1620 100%)
+}
+#weaponAlbumP .hp::before,#weaponAlbumP .hp::after{
+ content:"";position:absolute;top:9px;width:5px;height:5px;border-radius:1px;
+ background:#e8c477;box-shadow:0 1px #4c3419;pointer-events:none
+}
+#weaponAlbumP .hp::before{left:9px}#weaponAlbumP .hp::after{right:9px}
+
+#weaponAlbumP h2{
+ margin:0 44px 12px;padding-bottom:8px;text-align:center;
+ font-family:'Noto Serif TC',serif;font-size:22px;font-weight:900;letter-spacing:1.6px;
+ color:#ffe7a8;text-shadow:0 2px 0 #1b110d,0 0 14px #e8bc6233;
+ border-bottom:1px solid #c69e5744
+}
+
+/* Museum Index Tabs */
+#weaponAlbumP #archiveCategories{gap:8px;margin-bottom:11px}
+#weaponAlbumP #archiveCategories button{
+ padding:9px 4px;font-size:15px;font-weight:800;letter-spacing:.4px;
+ border:1.5px solid #6e573e;border-radius:6px;
+ background:linear-gradient(180deg,#33251f,#221815);background-image:none;
+ color:#d7cab3;box-shadow:inset 0 1px 0 #ffffff14,0 2px 5px #0a070688;
+ transition:all .15s ease
+}
+#weaponAlbumP #archiveCategories button:hover{border-color:#c49d5a;color:#fff0c6}
+#weaponAlbumP #archiveCategories button[aria-pressed="true"]{
+ border-color:#f5d381;color:#fff6d6;
+ background:linear-gradient(180deg,#74542b 0%,#4c3519 100%);
+ box-shadow:inset 0 1px 0 #fff1b855,0 0 12px #e5b75a38,0 2px 5px #0a070699
+}
+
+/* Catalog Sort Bar & Progress Plaque */
+#weaponAlbumP .archive-sort{
+ margin:10px 0;padding:9px 10px;border:1px solid #967746;border-radius:6px;
+ background:linear-gradient(180deg,#261c18,#1b1411);color:#f2dfb2;
+ box-shadow:inset 0 1px 0 #ffe9ad1c
+}
+#weaponAlbumP .archive-sort select{
+ background:#15100e;color:#ffefc5;border:1px solid #b89255;border-radius:4px;
+ padding:6px 8px;font-size:14px
+}
+#weaponAlbumP .archive-sort small{color:#c4b69a;font-size:11.5px}
+
+#weaponAlbumP #albumProgress{
+ margin:8px 0 12px;padding:8px 11px;border:1px solid #8c6f43;border-left:3px solid #e6be6a;
+ border-radius:6px;background:#17110fd8;color:#f0dfba;font-size:13px;font-weight:700;
+ letter-spacing:.2px;box-shadow:inset 0 1px 3px #090605aa
+}
+
+/* Tier Showcase Shelves */
+#weaponAlbumP .album-section{margin:16px 0 20px}
+#weaponAlbumP .album-section h3{
+ display:flex;align-items:center;flex-wrap:wrap;gap:6px;
+ margin:0 0 10px;padding-bottom:6px;border-bottom:1px solid #b58f5055;
+ font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;letter-spacing:.6px;
+ text-shadow:0 2px 0 #120c0a
+}
+#weaponAlbumP .album-section h3 small{
+ margin-left:auto;padding:2px 8px;border:1px solid #8c6f42;border-radius:99px;
+ background:#17110f;color:#edd497;font-family:'Noto Sans TC',sans-serif;
+ font-size:11.5px;font-weight:800
+}
+#weaponAlbumP #albumWeapons .album-tier-price{
+ margin-left:2px;padding:1px 7px;border:1px solid #9b7c4688;border-radius:99px;
+ background:#281e16;color:#f5d58b;font-family:'Noto Sans TC',sans-serif;
+ font-size:11.5px;font-weight:700
+}
+
+/* Display Pedestal Cards */
+#weaponAlbumP .album-grid{gap:8px 6px}
+#weaponAlbumP .album-card{
+ border:1.5px solid #594738;border-radius:7px;padding:6px 3px 6px;gap:4px;
+ background:linear-gradient(180deg,#251c18 0%,#191311 100%);background-image:none;
+ box-shadow:inset 0 1px 0 #ffffff12,0 2px 6px #07050488;
+ transition:transform .14s ease,border-color .15s ease,box-shadow .15s ease
+}
+#weaponAlbumP .album-card:hover{
+ transform:translateY(-2px);border-color:#dfb86c;
+ box-shadow:inset 0 1px 0 #fff1bf33,0 6px 12px #060403aa
+}
+#weaponAlbumP .album-card.collected{
+ border-color:#c69e58;
+ background:
+  radial-gradient(circle at 50% 38%,#e8be6624 0%,transparent 68%),
+  linear-gradient(180deg,#352720 0%,#221815 100%);
+ box-shadow:inset 0 1px 0 #fff0bd2c,0 3px 8px #07050499
+}
+#weaponAlbumP .album-card.collected b{color:#fff1cc}
+#weaponAlbumP .album-card.collected small{color:#f0d28b;font-weight:700}
+#weaponAlbumP .album-card.uncollected{
+ border:1px dashed #5e4c3c;background:#16100ee8;box-shadow:inset 0 2px 6px #090605aa
+}
+#weaponAlbumP .album-card.uncollected b{color:#9d9082}
+#weaponAlbumP .album-card.blueprint-known{
+ border:1.5px solid #7fc3dc;
+ background:
+  radial-gradient(circle at 50% 38%,#76d1f022 0%,transparent 68%),
+  linear-gradient(180deg,#223846 0%,#162530 100%)
+}
+#weaponAlbumP .album-card.blueprint-known small{color:#a8e5f7}
+#weaponAlbumP #albumWeapons .album-sort-value{
+ top:3px;right:3px;background:#1b130fec;border-color:#c29c56;color:#ffeaa8
+}
+
+/* Enlarged Weapon Inspection Velvet Case */
+#weaponInspectP .hp{
+ position:relative;max-width:416px;padding:18px 16px;
+ border:2px solid #d4ab5f;border-radius:10px;
+ background:
+  radial-gradient(95% 42% at 50% 18%,#f0c76e24 0%,transparent 68%),
+  linear-gradient(180deg,#30231e 0%,#1d1513 60%,#140f0e 100%);
+ box-shadow:inset 0 0 0 4px #18110f,inset 0 0 0 5px #c59b5238,0 24px 54px #040202ee
+}
+#weaponInspectP #inspectName{
+ margin:0 36px 8px;font-family:'Noto Serif TC',serif;font-size:22px;font-weight:900;
+ color:#ffe9ad;text-shadow:0 2px 0 #1b110d
+}
+#weaponInspectP #inspectArt{
+ padding:14px;border-radius:50%;border:1.5px solid #b58e4c88;
+ background:radial-gradient(circle,#f3ca6e26 0%,#140e0d99 72%);
+ box-shadow:inset 0 0 20px #080504aa,0 6px 18px #05030388
+}
+#weaponInspectP #inspectState{
+ display:inline-block;margin:4px auto 8px;padding:4px 12px;border-radius:99px;
+ border:1px solid #9b7a44;background:#1a1310;color:#eed79e;font-size:13px;font-weight:700
+}
+#weaponInspectP .inspect-tiers{margin-top:12px}
+#weaponInspectP .inspect-tiers button{
+ padding:10px 8px;font-weight:800;border:1.5px solid #9d7d47;border-radius:6px;
+ background:linear-gradient(180deg,#3b2b22,#251a15);background-image:none;color:#fae6b8
+}
+#weaponInspectP .inspect-tiers button:not(:disabled):hover{border-color:#f0ca72;color:#fff5d4}
+
+
+/* --------------------------------------------------------------------------
+   3. ARTISAN BOUTIQUE DECORATION SHOP (#decorShopP, #decorInventoryP, #cityLayoutsP)
+      — Cozy Striped Awning, Honey-Brass & Live Seasonal Showcase Windows
+   -------------------------------------------------------------------------- */
+#decorShopP,#decorInventoryP,#cityLayoutsP{background:#081214db}
+#decorShopP .hp,#decorInventoryP .hp,#cityLayoutsP .hp{
+ position:relative;max-width:548px;padding:22px 15px 18px;
+ border:2px solid #cfa866;border-radius:11px;
+ background:
+  repeating-linear-gradient(90deg,#c56a4b 0 22px,#f1dec0 22px 44px) top/100% 7px no-repeat,
+  linear-gradient(180deg,#253837 0%,#1a2829 58%,#142022 100%);
+ box-shadow:inset 0 8px 0 #111b1caa,inset 0 -3px 0 #0c1415cc,0 22px 48px #040b0cdd;
+ color:#f4edd8
+}
+#decorShopP h2,#decorInventoryP h2,#cityLayoutsP h2{
+ margin:2px 44px 10px;text-align:center;
+ font-family:'Noto Serif TC',serif;font-size:22px;font-weight:900;letter-spacing:1.4px;
+ color:#ffecba;text-shadow:0 2px 0 #142222,0 0 12px #f2c97233
+}
+
+/* Boutique Counter Summary Plaque */
+#decorShopP #decorShopSummary{
+ margin:0 0 10px;padding:8px 12px;text-align:center;
+ border:1.5px solid #bd9654;border-radius:7px;
+ background:linear-gradient(180deg,#342b1e,#221e17);
+ color:#ffeba8;font-size:14px;font-weight:800;letter-spacing:.3px;
+ box-shadow:inset 0 1px 0 #fff1b833,0 3px 8px #07101177
+}
+
+/* 8-Context Seasonal Window Picker (Day vs Night distinct styling) */
+#decorShopP #decorShopTabs{gap:6px;margin-bottom:10px}
+#decorShopP #decorShopTabs button{
+ padding:8px 2px;font-size:11.5px;font-weight:800;border-radius:6px;
+ border:1.5px solid #6b7f76;
+ background:linear-gradient(180deg,#2a403d,#1e2f2e);background-image:none;
+ color:#e0e8dc;box-shadow:inset 0 1px 0 #ffffff18,0 2px 4px #08121377;
+ transition:transform .12s ease,border-color .14s ease,box-shadow .14s ease
+}
+#decorShopP #decorShopTabs button[data-shop-night="true"]{
+ border-color:#5a658c;
+ background:linear-gradient(180deg,#222943,#171c30);color:#cdd8f5
+}
+#decorShopP #decorShopTabs button:hover{border-color:#dfb76e;transform:translateY(-1px)}
+#decorShopP #decorShopTabs button[aria-pressed="true"]{
+ border-color:#f8d880;color:#fff7d6;
+ background:linear-gradient(180deg,#7b5c2b 0%,#503a19 100%);
+ box-shadow:inset 0 1px 0 #fff2be55,0 0 12px #f2c86644
+}
+#decorShopP #decorShopTabs button[data-shop-night="true"][aria-pressed="true"]{
+ border-color:#e9c97b;color:#fff4ce;
+ background:linear-gradient(180deg,#473c76 0%,#2c254d 100%);
+ box-shadow:inset 0 1px 0 #ffe9b844,0 0 12px #9c82e855
+}
+
+#decorShopP #decorShopNotice,#decorInventoryP .city-note,#cityLayoutsP .city-note{
+ margin:0 0 10px;padding:7px 10px;border:1px solid #5e787288;border-left:3px solid #d5aa62;
+ border-radius:6px;background:#132022cc;color:#d2ded8;font-size:12.5px;line-height:1.5
+}
+#decorShopP[data-can-buy="false"] #decorShopNotice{
+ border-color:#9b7a4888;border-left-color:#e8a856;background:#262118cc;color:#f0dcb4
+}
+
+/* Boutique Diorama Display Cards */
+#decorShopP .decor-grid,#decorInventoryP .decor-grid{gap:9px;margin-top:10px}
+#decorShopP .decor-card,#decorInventoryP .decor-card{
+ position:relative;padding:9px 7px 8px;gap:6px;
+ border:1.5px solid #5e7772;border-radius:9px;
+ background:linear-gradient(180deg,#213436 0%,#162426 100%);
+ box-shadow:inset 0 1px 0 #ffffff18,0 3px 8px #07101188;
+ transition:transform .14s ease,border-color .16s ease,box-shadow .16s ease
+}
+#decorShopP .decor-card:hover,#decorInventoryP .decor-card:hover{
+ transform:translateY(-2px);border-color:#d8b36d;
+ box-shadow:inset 0 1px 0 #fff1bf33,0 7px 14px #060e0f99
+}
+#decorShopP .decor-card.is-owned{
+ border-color:#b89659;
+ background:linear-gradient(180deg,#273936 0%,#182725 100%)
+}
+#decorShopP .decor-card.is-owned::after{
+ content:"✦";position:absolute;top:5px;right:7px;font-size:11px;color:#f3cf78;
+ text-shadow:0 1px 2px #101a18
+}
+
+/* Arched Showcase Window Thumbnail — shifts by Season & Day/Night! */
+#decorShopP .decor-thumb,#decorInventoryP .decor-thumb{
+ width:100%;max-width:100%;height:82px;padding:6px;box-sizing:border-box;
+ border:1px solid #8ea39844;border-radius:28px 28px 6px 6px;
+ background:radial-gradient(circle at 50% 44%,#ffe9ad2e 0%,#5a7c7328 56%,#111d1ed8 100%);
+ box-shadow:inset 0 2px 8px #08121499
+}
+#decorShopP[data-shop-season="0"] .decor-thumb{
+ background:radial-gradient(circle at 50% 42%,#ffd2df38 0%,#78b68c28 56%,#132220dd 100%)
+}
+#decorShopP[data-shop-season="1"] .decor-thumb{
+ background:radial-gradient(circle at 50% 42%,#fff0a63a 0%,#5db8d62b 56%,#12232add 100%)
+}
+#decorShopP[data-shop-season="2"] .decor-thumb{
+ background:radial-gradient(circle at 50% 42%,#ffc7763a 0%,#cb6e4328 56%,#211a18dd 100%)
+}
+#decorShopP[data-shop-season="3"] .decor-thumb{
+ background:radial-gradient(circle at 50% 42%,#e5f6ff38 0%,#79aed82b 56%,#141f2add 100%)
+}
+#decorShopP[data-shop-night="true"] .decor-thumb{
+ border-color:#9397c955;
+ background:radial-gradient(circle at 50% 48%,#ffd27038 0%,#2c396348 52%,#0c1222eb 100%)
+}
+#decorShopP .decor-thumb svg,#decorInventoryP .decor-thumb svg{
+ filter:drop-shadow(0 3px 3px #07101288)
+}
+
+#decorShopP .decor-card b,#decorInventoryP .decor-card b{
+ font-size:13.5px;font-weight:800;color:#fbf0d4;line-height:1.25
+}
+#decorShopP .decor-card small,#decorInventoryP .decor-card small{
+ font-size:11px;color:#b8ccc4;line-height:1.35
+}
+#decorShopP .decor-card button,#decorInventoryP .decor-card button{
+ padding:7px 4px;border:1.5px solid #edc66f;border-radius:6px;
+ background:linear-gradient(180deg,#a6772e 0%,#754e1a 100%);background-image:none;
+ color:#fff8dc;font-size:12px;font-weight:800;text-shadow:0 1px 0 #3f280a;
+ box-shadow:inset 0 1px 0 #fff1bf55,0 2px 5px #07101188;
+ transition:filter .14s ease,transform .12s ease
+}
+#decorShopP .decor-card button:not(:disabled):hover,#decorInventoryP .decor-card button:not(:disabled):hover{
+ filter:brightness(1.09)
+}
+#decorShopP .decor-card button:disabled,#decorInventoryP .decor-card button:disabled{
+ border-color:#425758;background:#162325;color:#7d9290;text-shadow:none;box-shadow:none;opacity:1
+}
+
+/* Harmonized Decor Inventory & City Layouts */
+#decorInventoryP .decor-inventory-toolbar button,
+#cityLayoutsP .city-layout-save button,
+#cityLayoutsP .city-layout-buttons button{
+ border:1.5px solid #a98b55;border-radius:6px;
+ background:linear-gradient(180deg,#354846,#223333);background-image:none;
+ color:#f7e9c6;font-weight:700
+}
+#cityLayoutsP .city-layout-card{
+ border:1.5px solid #6b847d;border-radius:8px;
+ background:linear-gradient(180deg,#203335,#162426);
+ box-shadow:inset 0 1px 0 #ffffff14,0 3px 8px #07101177
+}
+
+@media(prefers-reduced-motion:reduce){
+ #expeditionP #expeditionStages button,
+ #expeditionP .exp-weapon,
+ #expeditionP #expeditionFight,
+ #weaponAlbumP .album-card,
+ #decorShopP #decorShopTabs button,
+ #decorShopP .decor-card{transition:none!important}
+}
+@media(max-width:380px){
+ #expeditionP .hp.exp-panel,#weaponAlbumP .hp,#decorShopP .hp{padding-left:10px;padding-right:10px}
+ #decorShopP .decor-grid,#decorInventoryP .decor-grid{gap:6px}
+ #decorShopP .decor-thumb,#decorInventoryP .decor-thumb{height:72px}
+}

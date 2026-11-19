@@ -45,10 +45,12 @@ function cityTransform(action){if(!cityContextEditable())return;
 function decorPrice(d){return Math.max(1,Math.round((d?.price||0)*(1-medalBonuses().decorDiscount)));}
 function openDecorationShop(){decorShopSeason=seasonIndex();decorShopNight=isSandboxNight();renderDecorationShop();$('decorShopP').style.display='flex';syncTownMotion();}
 function renderDecorationShop(){
- const si=decorShopSeason,night=decorShopNight,canBuy=sandboxSession||si===seasonIndex()&&night===isSandboxNight(),disc=Math.round(medalBonuses().decorDiscount*100);$('decorShopSummary').textContent=(sandboxSession?'🧪 無限金錢':'持有 '+coins+' 金幣')+' · '+cityContextLabel(si,night)+(disc?' · 🏅 造景章 -'+disc+'%':'');
+ const si=decorShopSeason,night=decorShopNight,canBuy=sandboxSession||si===seasonIndex()&&night===isSandboxNight(),disc=Math.round(medalBonuses().decorDiscount*100);
+ const shopEl=$('decorShopP');if(shopEl?.dataset){shopEl.dataset.shopSeason=String(si);shopEl.dataset.shopNight=String(night);shopEl.dataset.canBuy=String(canBuy);}
+ $('decorShopSummary').textContent=(sandboxSession?'🧪 無限金錢':'持有 '+coins+' 金幣')+' · '+cityContextLabel(si,night)+(disc?' · 🏅 造景章 -'+disc+'%':'');
  $('decorShopTabs').innerHTML=SEASONS.flatMap((s,i)=>[false,true].map(n=>'<button data-shop-season="'+i+'" data-shop-night="'+n+'" aria-pressed="'+(i===si&&n===night)+'">'+s.icon+s.name+' '+(n?'🌙 夜晚':'☀ 白天')+'</button>')).join('');
  $('decorShopNotice').textContent=canBuy?'此類裝飾只用於'+cityContextLabel(si,night)+'，購買後到建築師收藏放置。':'目前僅能購買'+cityContextLabel()+'的裝飾；可先欣賞其他時段。';
- $('decorShopGrid').innerHTML=DECOR_CATALOG.filter(d=>decorMatchesContext(d,si,night)).map(d=>{const p=decorPrice(d);return '<article class="decor-card"><div class="decor-thumb">'+decorSVG(d.id,si,'shop-'+d.id)+'</div><b>'+d.name+'</b><small>擁有 '+(cityState.owned[d.id]||0)+' · 最多放 '+cityPlacementLimit(d.id)+'</small><button data-buy-decor="'+d.id+'" '+(!canBuy||!sandboxSession&&coins<p?'disabled':'')+'>💰 '+p+' 購買</button></article>';}).join('');
+ $('decorShopGrid').innerHTML=DECOR_CATALOG.filter(d=>decorMatchesContext(d,si,night)).map(d=>{const p=decorPrice(d),owned=cityState.owned[d.id]||0;return '<article class="decor-card'+(owned>0?' is-owned':'')+'"><div class="decor-thumb">'+decorSVG(d.id,si,'shop-'+d.id)+'</div><b>'+d.name+'</b><small>擁有 '+owned+' · 最多放 '+cityPlacementLimit(d.id)+'</small><button data-buy-decor="'+d.id+'" '+(!canBuy||!sandboxSession&&coins<p?'disabled':'')+'>💰 '+p+' 購買</button></article>';}).join('');
 }
 function buyDecoration(id){
  const d=DECOR_BY_ID.get(id);if(!d||!sandboxSession&&!decorMatchesContext(d))return false;const cost=decorPrice(d);
