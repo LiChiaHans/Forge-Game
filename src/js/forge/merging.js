@@ -43,9 +43,7 @@ function place(i,s2){
   if(expandedGameEnabled()){const ev={step:0,tg:i,from:oreFrom,to:[i],res:{[i]:workshopPieceHTML(g[i])},keys:{[i]:workshopItemKey(g[i])}};fx.push(ev);const begin=fx.length;if(s!==3)forge(i);fx.slice(begin).forEach(e=>e.step++);}else if(s!==3)forge(i);
   return true;
 }
-function mergeGroup(){return expandedGameEnabled()?preview_mergeGroup(...arguments):stable_mergeGroup(...arguments);}
-function stable_mergeGroup(i,lvl=0){return preview_mergeGroup(i,lvl);}
-function preview_mergeGroup(i,lvl=0){
+function mergeGroup(i,lvl=0){
  const plan=workshopMaterialPlan(i,g);if(!plan)return [];const source=new Map(plan.cells.map(j=>[j,{...g[j]}]));plan.cells.forEach(j=>g[j]=null);
  for(const batch of plan.groups){const magic=batch.cells.reduce((n,j)=>n+(source.get(j).m||0),0),w={k:'o',t:batch.tier,m:magic};g[batch.target]=w;
   fx.push({step:lvl,tg:batch.target,from:batch.cells.map(j=>({i:j,h:oreH(source.get(j).t,'',source.get(j).m||0),key:workshopItemKey(source.get(j))})),to:[batch.target],res:{[batch.target]:oreH(w.t,'',w.m)},keys:{[batch.target]:workshopItemKey(w)}});

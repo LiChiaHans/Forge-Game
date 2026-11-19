@@ -14,7 +14,7 @@ function cozyPreparedSVG(item){
 }
 function cozyDecorKey(id,si){id=DECOR_BY_ID.get(id)?.sourceId||id;if(id==='tree'||id==='lamp')return 'decor-'+id+'-'+si;if(id==='flowers'&&si>=2)return 'decor-flowers-'+si;return 'decor-'+id;}
 function cozyDecorSVG(id,season=seasonIndex(),uid='preview'){
- const d=DECOR_BY_ID.get(id),key=cozyDecorKey(id,season);if(!d||!COZY_ITEM_ART[key])return preview_decorSVG(id,season,uid);
+ const d=DECOR_BY_ID.get(id),key=cozyDecorKey(id,season);if(!d||!COZY_ITEM_ART[key])return fallbackDecorSVG(id,season,uid);
  const lamp=d.lighted||/lamp|lantern|candle|garland/.test(d.art),fountain=d.art==='fountain',w=d.w,h=d.h,glow=season===3?'#c7ebff':season===0?'#f5d5b0':'#ffd18c',name='cozy-glow-'+String(uid).replace(/[^a-zA-Z0-9_-]/g,'');
  const halo=lamp?'<defs><radialGradient id="'+name+'"><stop stop-color="'+glow+'" stop-opacity=".35"/><stop offset="1" stop-color="'+glow+'" stop-opacity="0"/></radialGradient></defs><ellipse class="cozy-decor-halo" cx="'+w*.5+'" cy="'+h*.32+'" rx="'+w*.46+'" ry="'+h*.3+'" fill="url(#'+name+')"/>':'';
  const water=fountain?'<g class="cozy-fountain-water"><ellipse cx="'+w*.5+'" cy="'+h*.7+'" rx="'+w*.23+'" ry="'+h*.055+'" fill="none" stroke="#bbf5ed" stroke-width=".9"/><path fill="#e4fffa" d="M'+w*.38+' '+h*.54+'h1v3h-1zM'+w*.64+' '+h*.53+'h1v3h-1z"/></g>':'';

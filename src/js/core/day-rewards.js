@@ -33,7 +33,14 @@ function newDay(){discardCityEdit();
   showPendingSeasonNotice();
   if(skillExchange){say('🌟 全技能已滿！多餘技能點轉換為 '+skillExchange+' 金幣。');toast('技能點已轉換為 '+skillExchange+' 金幣');saveNow();}
 }
-function endDay(){if(day===0)return stable_endDay();return productionEndForgeDay();}
+function endDay(){
+ if(day===0){
+  tutDoneSet();
+  ov("教學完成！","你已經學會放礦石、做胚、過熱、魔法格與鑽石加成了。","回到首頁",goHome);
+  return;
+ }
+ return productionEndForgeDay();
+}
 function forgeSettlementPending(){return day>0&&!sandboxNight&&lastCompletedDay===day&&kitchen?.forgeSettlement?.day===day;}
 function renderForgeSettlement(){
  if(!forgeSettlementPending())return;const r=kitchen.forgeSettlement;
@@ -44,29 +51,6 @@ function renderForgeSettlement(){
 function finishForgeDay(){
  if(!forgeSettlementPending()||lives<=0)return;
  return performSceneTransition('城鎮',()=>{if(!forgeSettlementPending()||lives<=0)return;$('forgeSettlementP').style.display='none';setSandboxNight(true);showTown();saveNow();});
-}
-function stable_endDay(){
-  if(day===0){
-    tutDoneSet();
-    ov("教學完成！","你已經學會放礦石、做胚、過熱、魔法格與鑽石加成了。","回到首頁",goHome);
-    return;
-  }
-  if(lastCompletedDay>=day||orders.length||dq.length)return;
-  qEach('safe',q=>{if(!q.failed&&lives>=dLv)qProg(q,q.n)});
-  lastCompletedDay=day;grantDailyWorkshopSkill('forge');pendingChests++;saveHi();
-  gachaUsed=false;skillDone=false;spentToday=0;newDay();
-}
-function preview_endDay(){
-  if(day===0){
-    tutDoneSet();
-    ov("教學完成！","你已經學會放礦石、做胚、過熱、魔法格與鑽石加成了。","回到首頁",goHome);
-    return;
-  }
-  if(sandboxSession){sandboxEndForgeDay();return;}
-  if(lastCompletedDay>=day||orders.length||dq.length)return;
-  qEach('safe',q=>{if(!q.failed&&lives>=dLv)qProg(q,q.n)});
-  lastCompletedDay=day;grantDailyWorkshopSkill('forge');pendingChests++;saveHi();
-  gachaUsed=false;skillDone=false;spentToday=0;newDay();
 }
 
 let skMode="",skillDone=false,spentToday=0;

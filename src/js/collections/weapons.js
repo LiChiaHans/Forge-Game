@@ -47,9 +47,25 @@ function importWeaponAlbum(){if(sandboxSession)return;
   if(changed)persistWeaponAlbum();
 }
 function openWeaponAlbum(){if(!sandboxSession)dishAlbum=readDishAlbum();archiveCategory='weapons';albumFromHome=$("title").style.display!=="none";importLegendProgress();importWeaponAlbum();albumTier=-1;renderWeaponAlbum();$('weaponAlbumP').style.display='flex';}
-function renderWeaponAlbum(){renderArchiveSort();const categories=$('archiveCategories');categories.hidden=!expandedGameEnabled()||albumTier===-2;if(!expandedGameEnabled()||albumTier===-2)return stage20_renderWeaponAlbum();albumTier=-1;$('archiveWeapons').setAttribute('aria-pressed',String(archiveCategory==='weapons'));$('archiveDishes').setAttribute('aria-pressed',String(archiveCategory==='dishes'));$('archiveBadges').setAttribute('aria-pressed',String(archiveCategory==='badges'));if(archiveCategory==='badges')renderFestivalBadgeAlbum();else if(archiveCategory==='dishes')renderDishAlbum();else stage20_renderWeaponAlbum();$('weaponAlbumP').querySelector('h2').textContent='📚 圖鑑館';$('albumTabs').style.display='none';}
+function renderWeaponAlbumGrid(){
+  const blueprintOnly=albumTier===-2;
+  $('weaponAlbumP').querySelector('h2').textContent=blueprintOnly?'🌟 藍圖收藏':'📖 武器圖鑑';
+  $('albumTabs').style.display=blueprintOnly?'none':'grid';
+  if(blueprintOnly){$('albumProgress').textContent='藍圖 '+LEGENDS.filter((_,id)=>albumHasBlueprint(id)).length+'/20 · 珍藏 '+LEGENDS.filter((_,id)=>albumHasLegend(id)).length+'/20';renderLegendAlbum();return;}
+  $('albumProgress').textContent=(albumFromHome?'跨局累計 · ':'本局收藏 · ')+'普通 '+albumWeapons().size+'/50 · 藍圖 '+LEGENDS.filter((_,id)=>albumHasBlueprint(id)).length+'/20 · 珍藏 '+LEGENDS.filter((_,id)=>albumHasLegend(id)).length+'/20';
+  $('albumTabs').innerHTML=[-1,0,1,2,3,4].map(t=>'<button data-album-tier="'+t+'" aria-pressed="'+(t===albumTier)+'">'+(t===-2?'🌟 傳說藍圖':t<0?'全部':NM[t]+'級')+'</button>').join('');
+  $('albumWeapons').innerHTML=NM.map((name,t)=>{
+    if(albumTier!==-1&&albumTier!==t)return '';
+    const total=WN.filter((_,c)=>albumWeapons().has(albumKey(c,t))).length;
+    return '<section class="album-section"><h3 style="color:'+C[t]+'">'+name+'級 '+archiveTierPriceHTML('weapons',t)+' <small>'+total+'/10</small></h3><div class="album-grid">'+archiveOrder('weapons',t).map(c=>{const n=WN[c];
+      const found=albumWeapons().has(albumKey(c,t));
+      return '<button class="album-card '+(found?'collected':'uncollected')+'" data-album-weapon="'+c+'" data-tier="'+t+'" aria-label="'+name+'級'+n+'，'+(found?'已蒐集':'未蒐集')+'">'+archiveSortValueHTML('weapons',c,t)+'<span class="album-art">'+hex(c,C[t],'',t,galleryWeapon(c,t))+'</span><b>'+n+'</b><small>'+(found?'已蒐集':'未蒐集')+'</small></button>';
+    }).join('')+'</div></section>';
+  }).join('')+legendAlbumSection();
+}
+function renderWeaponAlbum(){renderArchiveSort();const categories=$('archiveCategories');categories.hidden=albumTier===-2;if(albumTier===-2)return renderWeaponAlbumGrid();albumTier=-1;$('archiveWeapons').setAttribute('aria-pressed',String(archiveCategory==='weapons'));$('archiveDishes').setAttribute('aria-pressed',String(archiveCategory==='dishes'));$('archiveBadges').setAttribute('aria-pressed',String(archiveCategory==='badges'));if(archiveCategory==='badges')renderFestivalBadgeAlbum();else if(archiveCategory==='dishes')renderDishAlbum();else renderWeaponAlbumGrid();$('weaponAlbumP').querySelector('h2').textContent='📚 圖鑑館';$('albumTabs').style.display='none';}
 $('albumTabs').onclick=e=>{const b=e.target.closest('[data-album-tier]');if(!b)return;albumTier=+b.dataset.albumTier;renderWeaponAlbum();};
-$('albumWeapons').onclick=e=>{const dish=e.target.closest('[data-album-dish]');if(dish){inspectArchiveDish(+dish.dataset.albumDish,+dish.dataset.tier);return;}const legend=e.target.closest('[data-legend]');if(legend){openLegendBlueprint(+legend.dataset.legend,albumFromHome);return;}const b=e.target.closest('[data-album-weapon]');if(!b)return;showWeaponDetail(+b.dataset.albumWeapon,+b.dataset.tier);};
+$('albumWeapons').onclick=e=>{const medal=e.target.closest('[data-medal-id]');if(medal){inspectMedal(medal.dataset.medalId);return;}const dish=e.target.closest('[data-album-dish]');if(dish){inspectArchiveDish(+dish.dataset.albumDish,+dish.dataset.tier);return;}const legend=e.target.closest('[data-legend]');if(legend){openLegendBlueprint(+legend.dataset.legend,albumFromHome);return;}const b=e.target.closest('[data-album-weapon]');if(!b)return;showWeaponDetail(+b.dataset.albumWeapon,+b.dataset.tier);};
 function showWeaponDetail(c,t){
   inspectedWeapon=c;inspectedTier=t;const found=albumWeapons().has(albumKey(c,t)),sample=galleryWeapon(c,t);
   $('inspectName').textContent=NM[t]+'級'+WN[c];$('inspectArt').className=found?'collected':'uncollected';$('inspectArt').innerHTML=hex(c,C[t],'',t,sample);

@@ -14,4 +14,5 @@ function finishCityEdit(save=true){
  cityEditDraft=null;architect.active=false;architect.selected=null;architect.placing=null;architect.drag=null;$('architectConfirmP').style.display='none';closeCityPanels();cityRevision++;renderTown();saveNow();
 }
 function discardCityEdit(){if(cityEditDraft)finishCityEdit(false);}
-function confirmCityEdit(){if(!architect.active)return;$('architectConfirmText').textContent='是否儲存「'+cityContextLabel()+'」的造景修改？選擇維持原樣會還原擺設，已購買的裝飾仍保留在收藏。';$('architectConfirmP').style.display='flex';}
+function cityEditChanged(){return !!cityEditDraft&&JSON.stringify(cityLayout())!==JSON.stringify(cityEditDraft.items);}
+function confirmCityEdit(){if(!architect.active)return;if(!cityEditChanged()){finishCityEdit(false);return;}$('architectConfirmText').textContent='是否儲存「'+cityContextLabel()+'」的造景修改？選擇維持原樣會還原擺設，已購買的裝飾仍保留在收藏。';$('architectConfirmP').style.display='flex';}

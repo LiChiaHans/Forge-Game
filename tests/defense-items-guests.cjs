@@ -2,7 +2,7 @@ const assert=require('node:assert/strict'),runtime=require('./harness.cjs'),{c,r
 run("start('normal');g[0]=baseAlbumWeapon(0,0)");c.openExpedition();c.beginExpedition();
 const b=run('expeditionState.lastBattle');b.hp=10000;b.enemyHp=10000;b.monster.kind='knight';b.heroClock=0;b.enemyClock=100;
 assert.equal(c.guardBattle(b),true);const hp=b.enemyHp,clock=b.heroClock;c.battleTick(b);assert.equal(b.enemyHp,hp);assert.ok(b.heroClock>clock);assert.equal(b.log.length,0);
-c.stage21_advanceExpeditionBattle();assert.equal(b.enemyHp,hp); // Empty log is safe and has no attack sound.
+c.stepExpeditionBattle();assert.equal(b.enemyHp,hp); // Empty log is safe and has no attack sound.
 b.heroClock=1000;b.enemyClock=0;c.battleTick(b);assert.equal(b.log.at(-1).actor,'enemy');assert.ok(b.log.at(-1).damage>=0);c.advanceExpeditionEffects(b,3000);b.heroClock=0;b.enemyClock=1000;c.battleTick(b);assert.ok(b.enemyHp<hp);
 const skillBattle=c.expeditionBattleState(c.ultimateWeapon(10,[]),{hp:10000,atk:10,def:0,spd:10,kind:'knight'});c.guardBattle(skillBattle);assert.equal(c.castBattleSkill(skillBattle),false);assert.equal(skillBattle.skillUsed,false);c.advanceExpeditionEffects(skillBattle,3000);assert.equal(c.castBattleSkill(skillBattle),true);
 // Group duplicates without destroying inventory identity or grouping different tiers/spices.

@@ -13,8 +13,8 @@ async function openFriends(){
  catch(e){if(socialStillCurrent(profile,version))socialStatus(e.status===404?'好友服務尚待更新，請稍後再試。':e.message);}
 }
 function renderFriends(){
- $('friendsList').innerHTML=friendsRows.length?friendsRows.map((f,i)=>'<article class="friend-row"><span class="player-avatar">'+avatarSVG(normalizeAvatar(f.best?.avatar||AVATAR_DEFAULT))+'</span><div><b>'+esc(f.name)+'</b><small>'+(f.best?'最高 '+f.best.score.toLocaleString()+' 分 · 第 '+f.best.day+' 天':'尚未上傳成績')+'</small></div><button onclick="openFriendLayouts('+i+')">造景</button><button onclick="removeFriend('+i+')" aria-label="移除好友'+esc(f.name)+'">×</button></article>').join(''):'<p class="city-note">還沒有好友，輸入玩家名稱來加入。</p>';
- $('mySharedLayouts').innerHTML='<h3>我分享的造景</h3>'+(mySharedLayouts.length?mySharedLayouts.map(p=>'<div class="friend-shared-row"><span>'+esc(p.name)+'<small>'+cityContextLabel(DECOR_SEASONS.indexOf(p.season),p.night)+'</small></span><button onclick="unshareCityPreset(\''+esc(p.id)+'\')">取消分享</button></div>').join(''):'<p class="city-note">在建築師的城鎮版型中，按「分享給好友」即可分享；不會自動上傳。</p>');
+ $('friendsList').innerHTML=friendsRows.length?friendsRows.map((f,i)=>'<article class="friend-row"><span class="player-avatar">'+avatarSVG(normalizeAvatar(f.best?.avatar||AVATAR_DEFAULT))+'</span><div><b>'+esc(f.name)+'</b><small>'+(f.best?'最高 '+f.best.score.toLocaleString()+' 分 · 第 '+f.best.day+' 天':'尚未上傳成績')+'</small></div><button data-friend-layouts="'+i+'">造景</button><button data-friend-remove="'+i+'" aria-label="移除好友'+esc(f.name)+'">×</button></article>').join(''):'<p class="city-note">還沒有好友，輸入玩家名稱來加入。</p>';
+ $('mySharedLayouts').innerHTML='<h3>我分享的造景</h3>'+(mySharedLayouts.length?mySharedLayouts.map(p=>'<div class="friend-shared-row"><span>'+esc(p.name)+'<small>'+cityContextLabel(DECOR_SEASONS.indexOf(p.season),p.night)+'</small></span><button data-unshare-layout="'+esc(p.id)+'">取消分享</button></div>').join(''):'<p class="city-note">在建築師的城鎮版型中，按「分享給好友」即可分享；不會自動上傳。</p>');
 }
 async function addFriendByName(){
  if(!socialAllowed()||friendsMutating)return;const profile={...onlinePlayer},name=$('friendName').value.trim();if(!name){socialStatus('請輸入好友的完整玩家名稱。');return;}friendsMutating=true;$('friendAdd').disabled=true;
@@ -28,7 +28,7 @@ async function openFriendLayouts(index){
  const friend=friendsRows[index];if(!socialAllowed()||!friend)return;const profile={...onlinePlayer},version=++friendsRequestVersion,season=DECOR_SEASONS[seasonIndex()],night=isSandboxNight();friendsSelected=friend;friendLayouts=[];$('friendLayoutsSection').hidden=false;$('friendLayoutsTitle').textContent=friend.name+' · '+cityContextLabel()+'造景';$('friendLayoutsList').innerHTML='';$('friendLayoutsNote').textContent='正在讀取好友分享的版型…';
  try{const data=await onlineAPI('friends/layouts?friendId='+encodeURIComponent(friend.playerId)+'&season='+season+'&night='+(night?'1':'0'),{profile});if(!socialStillCurrent(profile,version)||season!==DECOR_SEASONS[seasonIndex()]||night!==isSandboxNight())return;
   friendLayouts=data.layouts.map(p=>({...p,id:'friend-'+friend.playerId+'-'+p.id,sourceId:p.id,authorName:friend.name}));$('friendLayoutsNote').textContent='僅顯示目前季節與時段。缺少的裝飾可補齊；套用後仍需按建築師 ✅ 確認儲存。';
-  $('friendLayoutsList').innerHTML=friendLayouts.length?friendLayouts.map(p=>{const q=quoteCityPreset(p);return '<article class="friend-layout-card"><b>'+esc(p.name)+'</b><small>'+p.items.length+' 件裝飾 · '+(q.cost?'缺少裝飾共 '+q.cost+' 金幣':'裝飾已備齊')+'</small><button onclick="openCityLayoutPreview(\''+esc(p.id)+'\')">預覽造景</button><button class="pri" onclick="applyFriendCityLayout(\''+esc(p.id)+'\')" '+(!q.valid||!friendCanApply()||coins<q.cost?'disabled':'')+'>'+(q.cost?'補齊並套用':'套用造景')+'</button></article>';}).join(''):'<p>好友還沒有分享這個季節與時段的造景。</p>';
+  $('friendLayoutsList').innerHTML=friendLayouts.length?friendLayouts.map(p=>{const q=quoteCityPreset(p);return '<article class="friend-layout-card"><b>'+esc(p.name)+'</b><small>'+p.items.length+' 件裝飾 · '+(q.cost?'缺少裝飾共 '+q.cost+' 金幣':'裝飾已備齊')+'</small><button data-friend-preview-layout="'+esc(p.id)+'">預覽造景</button><button class="pri" data-friend-apply-layout="'+esc(p.id)+'" '+(!q.valid||!friendCanApply()||coins<q.cost?'disabled':'')+'>'+(q.cost?'補齊並套用':'套用造景')+'</button></article>';}).join(''):'<p>好友還沒有分享這個季節與時段的造景。</p>';
  }catch(e){if(socialStillCurrent(profile,version))$('friendLayoutsNote').textContent=e.message;}
 }
 function applyFriendCityLayout(id){
@@ -45,3 +45,9 @@ async function publishCityPreset(p){
  try{await onlineAPI('layouts/share',{method:'POST',body:{id:p.id,name:p.name,season:p.season,night:!!p.night,items:p.items,avatar:normalizeAvatar(playerAvatar)},profile});if(onlinePlayer?.id===profile.id)toast('已分享造景；好友可在對應季節與時段套用。');return true;}catch(e){toast('分享未完成：'+e.message);return false;}
 }
 async function unshareCityPreset(id){if(!socialAllowed())return;const profile={...onlinePlayer};try{await onlineAPI('layouts/remove',{method:'POST',body:{id},profile});if(onlinePlayer?.id===profile.id){await openFriends();socialStatus('已取消分享，自己的儲存版型仍保留。');}}catch(e){socialStatus(e.message);}}
+function installFriendsControls(){
+ $('friendsList').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;if(b.dataset.friendLayouts!==undefined)openFriendLayouts(+b.dataset.friendLayouts);else if(b.dataset.friendRemove!==undefined)removeFriend(+b.dataset.friendRemove);};
+ $('mySharedLayouts').onclick=e=>{const b=e.target.closest('[data-unshare-layout]');if(b&&!b.disabled)unshareCityPreset(b.dataset.unshareLayout);};
+ $('friendLayoutsList').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;if(b.dataset.friendPreviewLayout)openCityLayoutPreview(b.dataset.friendPreviewLayout).catch(()=>toast('暫時無法產生預覽，請再試一次。'));else if(b.dataset.friendApplyLayout)applyFriendCityLayout(b.dataset.friendApplyLayout);};
+}
+installFriendsControls();

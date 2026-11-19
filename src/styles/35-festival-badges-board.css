@@ -1,5 +1,106 @@
 #townFestivalBoard{position:absolute;left:77%;top:34%;width:20%;height:10%;z-index:4;padding:0;min-height:0;border:0;background:none;box-shadow:none;cursor:pointer;overflow:visible;touch-action:manipulation}#townFestivalBoard[hidden]{display:none!important}#townFestivalBoard>svg{display:block;width:100%;height:100%;overflow:visible;image-rendering:pixelated;filter:drop-shadow(1px 2px 0 #18332b88)}#townFestivalBoard:focus-visible{outline:2px solid #ffe7ab;outline-offset:3px}#townFestivalBoard:active>svg{transform:translateY(1px)}#townP[data-time="night"] #townFestivalBoard>svg{filter:brightness(.6) saturate(.75) drop-shadow(1px 2px #10202b)}.festival-board-alert{position:absolute;right:0;top:-10%;width:29%;height:42%;display:none;filter:drop-shadow(0 1px 2px #1d2b32)}#townFestivalBoard[data-unread="true"] .festival-board-alert{display:block;animation:festival-alert 1.8s steps(3,end) infinite}.festival-board-alert svg{width:100%;height:100%}@keyframes festival-alert{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-.festival-badge-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.festival-badge-card{display:flex;flex-direction:column;align-items:center;padding:12px 7px;gap:7px;border:2px solid #ab8a54;background:#314437;color:#ffefc0}.festival-badge-card.collected{border-color:#e6c57b;box-shadow:inset 0 0 14px #ecd09b18}.festival-badge-card b{font-size:16px}.festival-badge-card small{font-size:12px;line-height:1.4}.festival-badge-art{display:block;width:min(100%,112px);aspect-ratio:64/72}.festival-badge-art svg,.festival-badge-large svg{width:100%;height:100%;display:block;image-rendering:pixelated}.festival-badge-card.uncollected .festival-badge-art,.festival-badge-large.uncollected{filter:grayscale(1) brightness(.38);opacity:.75}.festival-badge-large{width:min(200px,55vw);aspect-ratio:64/72;margin:16px auto}#festivalBadgeP{z-index:145}#festivalBadgeP .hp{max-width:410px;text-align:center}#festivalBadgeBody p{line-height:1.7;font-size:15px}#archiveCategories button{min-width:0;padding:9px 3px;font-size:16px}
-@media(prefers-reduced-motion:reduce){#townFestivalBoard .festival-board-alert{animation:none}}.low-effects #townFestivalBoard .festival-board-alert{animation:none}
 
-.medal-section{margin:16px 0 24px}.medal-section h3{color:#e9cb88;font-size:18px;margin:10px 0}.medal-rules{font-size:14px;line-height:1.6;color:#d5d6b7}.medal-stars{font-size:24px;line-height:1.2;letter-spacing:2px;white-space:nowrap}.medal-stars b{color:#ffe28a;text-shadow:1px 2px #694b30}.medal-stars i{color:#a1a799;font-style:normal}.medal-completion{font-size:14px;color:#e8d59c}.medal-goals{text-align:left;border:1px solid #8d7955;background:#1d3028;padding:8px 12px}.medal-goals p{margin:8px 0;color:#b5bbad}.medal-goals p.earned{color:#ffdc82}#festivalBadgeBody>.medal-stars{display:block;font-size:38px;margin:6px auto 16px}#festivalBadgeBody>.medal-completion{font-size:20px}
+#archiveCategories button{min-width:0;padding:9px 3px;font-size:16px}
+
+/* Trophy Cabinet Overview Plaque */
+.medal-overview{margin:10px 0 18px;padding:12px 13px 11px;border:2px solid #b89152;border-radius:4px;background:linear-gradient(180deg,#25392f 0%,#1a2b23 100%);box-shadow:inset 0 1px 0 #ffe9ad40,inset 0 -2px 0 #0f1b15aa,0 4px 12px #0b171266;position:relative}
+.medal-overview::before,.medal-overview::after{content:"";position:absolute;top:5px;width:4px;height:4px;background:#e8c477;box-shadow:0 1px #4c361e}
+.medal-overview::before{left:5px}.medal-overview::after{right:5px}
+.medal-overview-top{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:9px}
+.medal-kpi{display:flex;align-items:baseline;justify-content:space-between;padding:6px 10px;border:1px solid #6b5b3e;border-radius:3px;background:#14231cb8;box-shadow:inset 0 1px 4px #09130eaa}
+.medal-kpi span{font-size:12px;color:#c9c9aa;letter-spacing:.5px}
+.medal-kpi strong{font-family:'Noto Serif TC',serif;font-size:18px;color:#fff0c0;text-shadow:1px 1px #1d2c24}
+.medal-kpi strong small{font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:500;color:#b7bc9f;margin-left:1px}
+.medal-kpi.is-gold{border-color:#a5844a;background:linear-gradient(180deg,#2b2c1db8,#1c2317c8)}
+.medal-kpi.is-gold strong{color:#ffe084;text-shadow:1px 2px #4e361c}
+.medal-progress-track{height:8px;padding:1px;border:1px solid #8f7245;border-radius:2px;background:#111d17;box-shadow:inset 0 1px 3px #070e0b;overflow:hidden}
+.medal-progress-track>i{display:block;height:100%;background:linear-gradient(90deg,#c58b3b 0%,#f0c667 55%,#fff0a8 100%);box-shadow:inset 0 1px 0 #fff8cf,0 0 6px #f2c86b66;transition:width .25s ease}
+.medal-rules{margin:9px 0 0;padding-top:8px;border-top:1px dashed #69796455;font-size:12.5px;line-height:1.55;color:#cfd4b8}
+
+/* Section Shelf Header */
+.medal-section{margin:18px 0 24px}
+.medal-section-head{display:flex;align-items:center;gap:8px;margin:0 0 11px;padding-bottom:6px;border-bottom:1px solid #8a734a66;position:relative}
+.medal-section-head::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1px;background:#0d1a1488}
+.medal-section h3{display:flex;align-items:center;gap:6px;margin:0;color:#f3d893;font-family:'Noto Serif TC',serif;font-size:17px;letter-spacing:.6px;text-shadow:1px 2px #1a2820;flex:1;min-width:0}
+.medal-section-icon{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:13px;border:1px solid #b49052;border-radius:3px;background:linear-gradient(180deg,#354c3e,#213329);color:#ffe49a;box-shadow:inset 0 1px #fff0bc33;flex:none}
+.medal-section-count{flex:none;padding:2px 8px;border:1px solid #917648;border-radius:99px;background:#172720;color:#f4d88c;font-size:12px;font-weight:700;letter-spacing:.4px;box-shadow:inset 0 1px 2px #09120e}
+
+/* Medal Gallery Grid & Velvet Display Cards */
+.festival-badge-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.festival-badge-card{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:12px 8px 11px;gap:6px;border:2px solid #876f49;border-radius:4px;background:linear-gradient(180deg,#2a3d33 0%,#1f3028 100%);color:#ffefc0;box-shadow:inset 0 1px 0 #ffe9b329,inset 0 -3px 0 #111e18aa,0 3px 8px #0a141066;overflow:hidden;cursor:pointer;transition:transform .14s ease,border-color .16s ease,box-shadow .16s ease}
+.festival-badge-card::before,.festival-badge-card::after{content:"";position:absolute;top:4px;width:3px;height:3px;background:#9c8154;opacity:.75;pointer-events:none}
+.festival-badge-card::before{left:4px}.festival-badge-card::after{right:4px}
+.festival-badge-card:hover{transform:translateY(-2px);border-color:#d8b56c;box-shadow:inset 0 1px 0 #fff1bf44,inset 0 -3px 0 #111e18aa,0 6px 14px #08120e88}
+.festival-badge-card:active{transform:translateY(1px)}
+.festival-badge-card:focus-visible{outline:2px solid #ffe7ab;outline-offset:2px}
+
+.festival-badge-card.uncollected{border-color:#5b5b49;background:linear-gradient(180deg,#212f29 0%,#18241f 100%);color:#bfc5b1;box-shadow:inset 0 2px 8px #0d1612aa}
+.festival-badge-card.uncollected::before,.festival-badge-card.uncollected::after{background:#5d6454}
+.festival-badge-card.collected{border-color:#c99c58;background:linear-gradient(180deg,#33483b 0%,#22342a 100%);box-shadow:inset 0 1px 0 #fff0bd3a,inset 0 0 18px #e9c4751c,inset 0 -3px 0 #14221aaa,0 3px 10px #0a151077}
+.festival-badge-card.collected::before,.festival-badge-card.collected::after{background:#ebd086}
+.festival-badge-card[data-medal-tier="2"]{border-color:#dfba6d;background:linear-gradient(180deg,#374c3d 0%,#23362b 100%)}
+.festival-badge-card[data-medal-maxed="true"]{border-color:#f4d47c;background:linear-gradient(180deg,#3d4d3a 0%,#283626 100%);box-shadow:inset 0 1px 0 #fff5c855,inset 0 0 22px #f6d57a29,inset 0 -3px 0 #1a2417bb,0 4px 14px #0a140f88}
+
+.medal-master-seal{position:absolute;top:5px;right:7px;font-size:12px;line-height:1;color:#ffe691;text-shadow:0 1px 2px #4c3318,0 0 6px #ffd96699;pointer-events:none}
+.festival-badge-pedestal{position:relative;display:flex;align-items:center;justify-content:center;width:100%;padding:6px 0 4px;border-radius:3px;background:radial-gradient(ellipse at 50% 45%,#f4d68c22 0%,#14221b55 68%,transparent 100%)}
+.festival-badge-card.uncollected .festival-badge-pedestal{background:radial-gradient(ellipse at 50% 45%,#0f1a1699 0%,#14211b44 65%,transparent 100%)}
+.festival-badge-card[data-medal-maxed="true"] .festival-badge-pedestal{background:radial-gradient(ellipse at 50% 45%,#ffe28a36 0%,#2a352028 65%,transparent 100%)}
+.festival-badge-art{display:block;width:min(100%,96px);aspect-ratio:64/72;filter:drop-shadow(0 3px 3px #0c1712aa)}
+.festival-badge-art svg,.festival-badge-large svg{width:100%;height:100%;display:block;image-rendering:pixelated}
+.festival-badge-card.uncollected .festival-badge-art,.festival-badge-large.uncollected{filter:grayscale(1) brightness(.4) contrast(1.05);opacity:.72}
+
+.festival-badge-card b{font-family:'Noto Serif TC',serif;font-size:15.5px;letter-spacing:.4px;color:#fff3cb;text-shadow:1px 1px #19261e}
+.festival-badge-card.uncollected b{color:#c9cfc0;text-shadow:none}
+.festival-badge-card small{font-size:11.5px;line-height:1.4;color:#d6dbbe;padding:0 2px}
+.festival-badge-card.uncollected small{color:#9ea999}
+
+.medal-mini-track{display:block;width:78%;height:5px;border:1px solid #6b6344;border-radius:99px;background:#121e18;overflow:hidden}
+.medal-mini-track>i{display:block;height:100%;background:linear-gradient(90deg,#c99444,#ffe184)}
+
+/* Stars & Completion Badges */
+.medal-stars{display:inline-flex;align-items:center;justify-content:center;font-size:21px;line-height:1.1;letter-spacing:2px;white-space:nowrap}
+.medal-stars b{color:#ffe182;text-shadow:1px 2px #5f4022,0 0 8px #ffd56b44}
+.medal-stars i{color:#6f7d6e;font-style:normal;text-shadow:0 1px #142019}
+.medal-completion{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:700;letter-spacing:.4px}
+.medal-completion.is-cleared{border:1px solid #dfbc6c;background:linear-gradient(180deg,#473f22,#302b17);color:#ffe694;box-shadow:inset 0 1px #fff2be33}
+.medal-completion.is-locked{border:1px solid #59675c;background:#17241e;color:#9ea99b}
+
+/* Enlarged Medal Inspection Modal (Velvet Showcase Case) */
+#festivalBadgeP{z-index:145}
+#festivalBadgeP .hp{max-width:410px;text-align:center;border:3px solid #c39854;background:linear-gradient(180deg,#25392f 0%,#1a2a23 100%);box-shadow:inset 0 0 0 2px #f0d08a38,0 14px 38px #050f0bcc;padding-top:18px}
+#festivalBadgeTitle{margin:2px 46px 6px;font-family:'Noto Serif TC',serif;font-size:22px;color:#fff0bd;letter-spacing:.8px;text-shadow:1px 2px #14221a}
+.medal-category-pill{display:inline-block;margin:0 auto 12px!important;padding:3px 11px;border:1px solid #8c764e;border-radius:99px;background:#16251e;color:#d6cca8;font-size:12px!important;line-height:1.4!important;letter-spacing:.5px}
+
+.medal-showcase{position:relative;display:flex;align-items:center;justify-content:center;width:min(228px,64vw);margin:4px auto 12px;padding:16px 14px 12px;border:2px solid #967a4c;border-radius:6px;background:radial-gradient(circle at 50% 42%,#3a5343 0%,#1d3027 58%,#13201a 100%);box-shadow:inset 0 0 0 1px #f3d68f26,inset 0 4px 18px #09130eaa,0 6px 16px #09130e88}
+.medal-showcase::before,.medal-showcase::after{content:"";position:absolute;top:6px;width:4px;height:4px;background:#e4be70;box-shadow:0 1px #3e2a17}
+.medal-showcase::before{left:6px}.medal-showcase::after{right:6px}
+.medal-showcase[data-medal-tier="1"]{border-color:#c69553;background:radial-gradient(circle at 50% 42%,#554b2c 0%,#23362a 60%,#14211b 100%)}
+.medal-showcase[data-medal-tier="2"]{border-color:#e2bd6c;background:radial-gradient(circle at 50% 42%,#62542b 0%,#263a2d 60%,#14221b 100%)}
+.medal-showcase[data-medal-maxed="true"]{border-color:#f6d982;background:radial-gradient(circle at 50% 42%,#78622b 0%,#2d3e2c 58%,#16231b 100%);box-shadow:inset 0 0 0 1px #fff3c044,inset 0 0 26px #ffd8752e,0 6px 20px #08120e99}
+.festival-badge-large{width:min(172px,48vw);aspect-ratio:64/72;margin:0;filter:drop-shadow(0 6px 8px #08120eaa)}
+
+#festivalBadgeBody>.medal-stars{display:flex;font-size:36px;margin:2px auto 8px;letter-spacing:4px}
+#festivalBadgeBody>.medal-completion{font-size:15px;padding:4px 14px;margin:4px auto 8px}
+.medal-status-pill{display:inline-block;margin:0 auto 12px!important;padding:3px 12px;border-radius:99px;font-size:13px!important;font-weight:700;line-height:1.4!important;letter-spacing:.5px}
+.medal-status-pill.is-earned{border:1px solid #d7b261;background:#3a341b;color:#ffe694}
+.medal-status-pill.is-pending{border:1px solid #59695e;background:#18261f;color:#aeb9aa}
+
+#festivalBadgeBody p{line-height:1.65;font-size:14.5px;margin:8px 0}
+.medal-lead{color:#ebdfc0;font-size:14px!important}
+.medal-goals{text-align:left;border:1px solid #9b8050;border-radius:4px;background:#15241de6;padding:6px 10px;margin:10px 0;box-shadow:inset 0 2px 6px #0a140faa}
+.medal-goals p{display:flex;align-items:flex-start;gap:8px;margin:0;padding:7px 4px;border-bottom:1px dashed #4a5e4e55;color:#b8c1b0;font-size:14px!important;line-height:1.5!important}
+.medal-goals p:last-child{border-bottom:0}
+.medal-goal-mark{flex:none;width:18px;text-align:center;font-weight:900;color:#788879}
+.medal-goal-text{flex:1;min-width:0}
+.medal-goals p.earned{color:#ffdf85}
+.medal-goals p.earned .medal-goal-mark{color:#ffe48f;text-shadow:0 0 6px #f7cd6366}
+.medal-goals strong{font-weight:800}
+
+.medal-run-meter{margin:10px 0;padding:9px 11px;border:1px solid #7f6d4a;border-radius:4px;background:#172720;text-align:left}
+.medal-run-meter-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;font-size:13px;color:#d0d3b6}
+.medal-run-meter-head strong{color:#ffe28c;font-size:14px}
+.medal-progress-note{color:#d2d4b8;font-size:13px!important}
+.medal-footnote{padding:8px 10px;border-radius:4px;background:#14211b99;border:1px solid #51655666;color:#bac5b2;font-size:12.5px!important;line-height:1.6!important;text-align:left}
+
+@media(prefers-reduced-motion:reduce){#townFestivalBoard .festival-board-alert{animation:none}.festival-badge-card{transition:none}.festival-badge-card:hover{transform:none}}
+.low-effects #townFestivalBoard .festival-board-alert{animation:none}.low-effects .festival-badge-card{transition:none}

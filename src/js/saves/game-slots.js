@@ -8,7 +8,28 @@ function removeSave(id){
   if(id===runId)active=false;
   persistSaves();
 }
-function saveNow(){if(sandboxSession){queueReviewSave();return;}if(formalRestoring)return;if(formalSaveTimer!==null){clearTimeout(formalSaveTimer);formalSaveTimer=null;}return stage21_saveNow();}
+function saveNow(){
+ if(sandboxSession){queueReviewSave();return;}
+ if(formalRestoring)return;
+ if(formalSaveTimer!==null){clearTimeout(formalSaveTimer);formalSaveTimer=null;}
+ if(!active||testRun||day<1||lives<=0||!runId)return;
+ const st={restaurant:snapshotRestaurant(),
+  g,coins,earned,all,day,dTot,dServed,dEarn,dLeft,orders,dq,best,Q,MQ,
+  heat,hand,shopD,magic,magicSet:[...magicSet],dMagic,dSold,lives,
+  skills,pack,sp,bag,gachaUsed,skillDone,spentToday,phase,quests,qDone,dLv,pendingChests,lastCompletedDay,expedition:expeditionState,legendProjects,blueprintGoalId,collections:snapshotRunCollections(),ecology:snapshotEcology(),orderCapVersion:1,city:snapshotCity(),avatar:normalizeAvatar(playerAvatar),
+  shopBought,leaves:[...leaves],frozen:[...frozen],seasonVersion:1,seasonNoticePending,seasonCraft:{day,charges:autumnForgeCharges},weaponMastery:snapshotWeaponMastery()
+ };
+ const e={
+  id:runId,name:playerName||"玩家",date:runDate,time:runTime,avatar:normalizeAvatar(playerAvatar),
+  coins,score:score(),day,updated:Date.now(),
+  state:JSON.parse(JSON.stringify(st))
+ };
+ const i=saves.findIndex(x=>x.id===runId);
+ if(i>=0)saves[i]=e;
+ else if(saves.length<3)saves.push(e);
+ else return;
+ persistSaves();
+}
 /* 舊版末排與超出容量的武器箱物品，完整轉入道具箱。 */
 function resizeSaveBoard(t){const size=W*H,oldG=t.g||[],oldPack=t.pack||[];const cap=[0,2,4,6][(t.skills&&t.skills.wb)||0];return {...t,g:Array.from({length:size},(_,i)=>oldG[i]||null),heat:Array.from({length:size},(_,i)=>(t.heat||[])[i]||0),magicSet:(t.magicSet||[]).filter(i=>i>=0&&i<size),pack:oldPack.slice(0,cap),bag:[...(t.bag||[]),...oldG.slice(size).filter(Boolean),...oldPack.slice(cap).filter(Boolean)]};}
 function loadGame(id){

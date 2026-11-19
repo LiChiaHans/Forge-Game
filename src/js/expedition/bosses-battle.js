@@ -49,7 +49,7 @@ function expeditionWeapons(){
  if(hand&&hand.k==='w')a.push({key:'hand',w:hand,source:'手持'});if(sandboxSession)a.unshift({key:'lab',w:labWeapon(),source:'後台測試武器'});return a;
 }
 
-function monsterArt(m){if(!expandedGameEnabled())return stage21_monsterArt(m);const id=monsterSpriteIndex(m);return '<svg viewBox="0 0 64 64" role="img" aria-label="'+esc(m.name)+'" data-monster-art="'+id+'"><image href="'+REVIEW_MONSTER_ART[id]+'" width="64" height="64" preserveAspectRatio="xMidYMid meet" style="image-rendering:pixelated"/></svg>';}
+function monsterArt(m){const id=monsterSpriteIndex(m);return '<svg viewBox="0 0 64 64" role="img" aria-label="'+esc(m.name)+'" data-monster-art="'+id+'"><image href="'+REVIEW_MONSTER_ART[id]+'" width="64" height="64" preserveAspectRatio="xMidYMid meet" style="image-rendering:pixelated"/></svg>';}
 function baseBossRule(m){return m.kind==='dragon'?'巨龍循環：蓄力 → 雙倍重擊 → 普通攻擊。蓄力時不造成傷害，可準備防禦或延緩技能。':m.kind==='golem'?'魔像每第三次行動後硬化，下一次受到的物理傷害減少 60%；奧術與主動技能不受影響。':m.kind==='wolf'?'狼王每第三次行動使用兩段連擊，每段為 60% 攻擊；防禦分別抵擋兩段傷害。':'以普通攻擊交戰，速度決定出手頻率。';}
 function bossIntent(b){const next=(b.enemyTurns||0)+1,m=b.monster;if(m.kind==='dragon')return ['蓄力（本次不攻擊）','蓄力重擊 ×2','普通攻擊'][(next-1)%3];if(m.kind==='wolf'&&next%3===0)return '雙段連擊（各 60%）';if(m.kind==='golem'&&next%3===0)return '攻擊後硬化';return '普通攻擊';}
 function guardBattle(b){if(!b||b.resolved||b.outcome!=='ongoing'||b.guardUsed)return false;b.guardUsed=true;b.guarding=true;b.guardRemainingMs=EXPEDITION_GUARD_MS;b.effectStamp=Date.now();return true;}
@@ -58,9 +58,26 @@ function expeditionBattleState(w,monster){
  const stats=weaponStats(w),hpMax=100+stats.def*2;
  return initCombatTraits({weapon:JSON.parse(JSON.stringify(w)),monster:JSON.parse(JSON.stringify(monster)),stats,hpMax,hp:hpMax,shield:stats.ward,enemyHp:monster.hp,heroClock:1000/Math.max(1,stats.spd),enemyClock:1000/Math.max(1,monster.spd),enemyDef:monster.def,skillUsed:false,guardUsed:false,guarding:false,guardRemainingMs:0,foodRecovered:0,enemyTurns:0,bossHardened:false,outcome:'ongoing',resolved:false,log:[]});
 }
+function runBattleTurn(b){
+ if(b.outcome!=='ongoing')return;const s=b.stats,m=b.monster,heroElement=elementOf(b.weapon),enemyElement=elementOf(m);let row;
+ if(b.heroClock<=b.enemyClock){
+  // Time still passes while guarding, but a missed attack is never banked for later.
+  if(b.guarding){b.heroClock+=1000/Math.max(1,s.spd);return;}
+  const profile=weaponAttackProfile(b),mult=elementMultiplier(heroElement,enemyElement),base=Math.max(1,Math.round(s.atk*mult*profile.power)-Math.floor(b.enemyDef*(1-profile.ignore)*.6)),physical=Math.max(1,Math.round(base*(b.bossHardened?.4:1)*bossPhysicalFactor(b))),hardened=!!b.bossHardened,raw=physical+s.arcane+profile.arcane+profile.counter,absorbed=Math.min(b.enemyWard||0,raw),damage=Math.min(b.enemyHp,raw-absorbed);b.enemyWard=Math.max(0,(b.enemyWard||0)-absorbed);b.bossHardened=false;b.enemyHp-=damage;b.heroClock+=1000/Math.max(1,s.spd);
+  row={actor:'hero',damage,effect:profile.text,element:heroElement,multiplier:mult,text:elementName(heroElement)+'屬性命中 '+damage+' 傷害（×'+mult.toFixed(2)+'）'+(hardened?' · 硬化抵擋部分物理傷害':'')+(profile.text?' · '+profile.text:'')+(absorbed?' · 敵盾吸收 '+absorbed:'')};applyHeroExtra(b,row);
+ }else{
+  b.enemyTurns=(b.enemyTurns||0)+1;const turn=b.enemyTurns,phase=(turn-1)%3,mult=elementMultiplier(enemyElement,heroElement),charge=m.kind==='dragon'&&phase===0,heavy=m.kind==='dragon'&&phase===1,hits=m.kind==='wolf'&&turn%3===0?2:1,power=heavy?2:hits===2?.6:1;
+  let damage=0,absorbed=0;const traitPower=charge?1:bossAttackPower(b);
+  if(!charge){for(let k=0;k<hits;k++){let raw=Math.max(1,Math.round(m.atk*mult*power*traitPower)-Math.floor(s.def*.6));raw=weaponIncoming(b,raw);if(b.guarding)raw=Math.max(1,Math.ceil(raw*.4));const block=Math.min(b.shield,raw);b.shield-=block;absorbed+=block;const hit=Math.min(b.hp,raw-block);b.hp-=hit;damage+=hit;}b.enemyAttacks=(b.enemyAttacks||0)+1;const defended=b.guarding;b.foodRecovered=Math.max(0,(b.foodRecovered||0)-damage);row={actor:'enemy',damage,absorbed,element:enemyElement,multiplier:mult,text:m.name+(heavy?' 蓄力重擊':hits===2?' 雙段連擊':'攻擊')+'造成 '+damage+' 傷害'+(defended?' · 防禦架勢減傷 60%':'')+(absorbed?' · 護盾吸收 '+absorbed:'')};}
+  else row={actor:'enemy',damage:0,absorbed:0,charge:true,text:m.name+' 正在蓄力，下一次將使用雙倍重擊！'};
+  if(m.kind==='golem'&&turn%3===0){b.bossHardened=true;row.text+=' · 進入硬化';}
+  b.enemyClock+=1000/Math.max(1,m.spd);applyBossAfterAction(b,row);
+ }
+ b.log.push({...row,hp:b.hp,shield:b.shield,enemyHp:b.enemyHp});checkBattleOutcome(b);
+}
 function battleTick(b){
- if(!expandedGameEnabled())return stage20_battleTick(b);const start=b.log.length,attack=b.stats.atk,boost=b.foodAttackTurns>0?b.foodAttack||0:0;
- try{if(boost)b.stats.atk=Math.round(attack*(1+boost));stage20_battleTick(b);}finally{b.stats.atk=attack;}
+ const start=b.log.length,attack=b.stats.atk,boost=b.foodAttackTurns>0?b.foodAttack||0:0;
+ try{if(boost)b.stats.atk=Math.round(attack*(1+boost));runBattleTurn(b);}finally{b.stats.atk=attack;}
  const row=b.log.length>start?b.log.at(-1):null;if(row?.actor==='hero'){if(b.foodCooldown>0)b.foodCooldown--;if(b.foodAttackTurns>0){b.foodAttackTurns--;row.foodBoost=boost;if(boost)row.text+=' · 料理增幅';if(!b.foodAttackTurns)b.foodAttack=0;}}
 }
 
@@ -93,14 +110,26 @@ function beginExpedition(confirmed=false){
  saveNow();if(sandboxSession)saveReviewProgress();render();$('expeditionSetup').hidden=true;$('expeditionBattle').hidden=false;renderExpeditionBattle();
  expeditionTimer=setInterval(advanceExpeditionBattle,420);startExpeditionFeedbackClock();
 }
+function stepExpeditionBattle(){
+ const b=expeditionState.lastBattle;if(!b||b.outcome!=='ongoing'){stopExpeditionPlayback();return;}
+ const rows=b.log.length;battleTick(b);expeditionBattleStep=b.log.length;if(b.log.length>rows)combatSound(b.log.at(-1).actor);
+ if(b.outcome!=='ongoing')settleExpeditionBattle(b);renderExpeditionBattle();
+}
 function advanceExpeditionBattle(){
- if(!expandedGameEnabled())return stage21_advanceExpeditionBattle();const b=expeditionState.lastBattle;if(!b||b.resolved||b.outcome!=='ongoing')return stage21_advanceExpeditionBattle();const now=Date.now();syncExpeditionEffects(now);
+ const b=expeditionState.lastBattle;if(!b||b.resolved||b.outcome!=='ongoing')return stepExpeditionBattle();const now=Date.now();syncExpeditionEffects(now);
  if(battleUserPaused||document.hidden||battleLastAdvance&&now-battleLastAdvance<400)return;
  if((b.guarding||b.heroClock>b.enemyClock)&&b.chargeName&&b.chargeRemainingMs>0)return;
- battleLastAdvance=now;const rows=b.log.length;stage21_advanceExpeditionBattle();if(b.log.length>rows)showBattleFeedback(b.log.at(-1));
+ battleLastAdvance=now;const rows=b.log.length;stepExpeditionBattle();if(b.log.length>rows)showBattleFeedback(b.log.at(-1));
 }
 function useExpeditionSkill(){syncExpeditionEffects();const b=expeditionState.lastBattle;if(!b||!castBattleSkill(b))return;expeditionBattleStep=b.log.length;combatSound('hero');if(b.outcome!=='ongoing')settleExpeditionBattle(b);renderExpeditionBattle();}
-function settleExpeditionBattle(b){const fresh=b&&!b.resolved&&b.outcome!=='ongoing';const result=stage21_settleExpeditionBattle(b);if(fresh){reviewMetrics.battles.push({stage:b.stage+1,result:b.outcome==='win'?'勝利':b.outcome==='lose'?'生命歸零':'回合上限或撤退',supplies:b.foodUsed||0});reviewMetrics.battles=reviewMetrics.battles.slice(-50);saveReviewProgress();}return result;}
+function settleExpeditionBattle(b){
+ if(!b||b.resolved||b.outcome==='ongoing')return;stopExpeditionPlayback();b.resolved=true;b.guarding=false;b.guardRemainingMs=0;b.chargeName=null;b.chargeRemainingMs=0;
+ if(b.outcome==='win'&&!expeditionCleared(b.stage)){
+  b.gold=b.monster.gold;b.loot=b.stage<20?{k:'bp',id:b.stage}:null;coins+=b.gold;earned+=b.gold;dEarn+=b.gold;expeditionState.victories++;expeditionState.wonToday.push(b.stage);if(b.stage<20){expeditionState.cleared.push(b.stage);grantBlueprintItem(b.stage);}else expeditionState.endless=Math.max(expeditionState.endless||0,b.stage-19);expeditionState.unlocked=b.stage+1;
+ }else if(b.outcome==='lose'&&!sandboxSession)lives=Math.max(0,lives-1);
+ syncAchievementMedals();if(lives<=0)removeSave(runId);saveHi();render();saveNow();
+ reviewMetrics.battles.push({stage:b.stage+1,result:b.outcome==='win'?'勝利':b.outcome==='lose'?'生命歸零':'回合上限或撤退',supplies:b.foodUsed||0});reviewMetrics.battles=reviewMetrics.battles.slice(-50);saveReviewProgress();
+}
 function stopExpeditionPlayback(){stopExpeditionFeedbackClock();clearBattleFeedback();if(expeditionTimer!==null){clearInterval(expeditionTimer);expeditionTimer=null;}if(expeditionAdvanceTimer!==null){clearTimeout(expeditionAdvanceTimer);expeditionAdvanceTimer=null;}}
 function finishExpeditionPlayback(){
  const b=expeditionState.lastBattle;if(!b||b.resolved)return;while(b.outcome==='ongoing'){primeExpeditionCharge(b);advanceExpeditionEffects(b,420+(b.heroClock>b.enemyClock?b.chargeRemainingMs||0:0));battleTick(b);}expeditionBattleStep=b.log.length;settleExpeditionBattle(b);renderExpeditionBattle();

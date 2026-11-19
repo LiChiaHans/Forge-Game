@@ -37,7 +37,20 @@ function kitchenPrepare(i,source='auto'){
 }
 function kitchenStars(w){return sandboxSession&&Number.isInteger(w.testStars)?Math.max(0,Math.min(3,w.testStars)):Math.min(3,Math.floor((kitchen?.xp?.[w.c+':'+w.t]||0)/3));}
 function kitchenPrice(w,baseOnly=false){const quality=Array.isArray(w.cs)?w.cs.reduce((sum,t)=>sum+[35,65,105,160,235][t],0)/3:[35,65,105,160,235][w.t];return baseOnly?Math.round(quality):Math.round(quality*(1+[0,.05,.1,.2][kitchenStars(w)])*(w.spice?1.1+.05*kitchenLevel('spice'):1));}
-function kitchenCraft(at,silent=false){const old=kitchen.crafted,result=stage21_kitchenCraft(at,silent);reviewMetrics.crafted+=kitchen.crafted-old;return result;}
+function kitchenCraft(at,silent=false){
+ const triples=kitchenTriples(at);if(!triples.length){if(!silent)kitchen.message='三份備料需要排成直線或彎線。';return false;}
+ const old=kitchen.crafted,batches=triples.map(t=>({...t,parts:t.cells.map(i=>({...kitchen.g[i]}))})),made=[],paths=new Map();
+ for(const batch of batches){const key=batch.path.join(',');if(!paths.has(key))paths.set(key,{cells:batch.path,parts:batch.path.map(i=>({...kitchen.g[i]}))});}
+ const consumed=new Set(batches.flatMap(batch=>batch.cells));for(const i of consumed){kitchen.g[i]=null;kitchen.heat[i]=Math.max(2,8-2*kitchenLevel('cool'));kitchen.justHeated.add(i);}
+ for(const batch of batches){const trio=batch.parts,c=COMBO.indexOf(trio.map(p=>p.s).sort().join('')),t=Math.floor(trio.reduce((sum,p)=>sum+p.t,0)/3);if(c<0)continue;
+  const target=batch.target,w=kitchenFreshen({k:'w',c,t,cs:trio.map(p=>p.t),spice:kitchen.tiles[target]||null});kitchen.g[target]=w;
+  const key=c+':'+t,prev=kitchen.xp[key]||0;kitchen.xp[key]=prev+1;kitchen.crafted++;rememberDish(w);(kitchen.forgedAt||(kitchen.forgedAt={}))[target]=Date.now();made.push(KITCHEN_NAMES[c]);
+  if(Math.floor((prev+1)/3)>Math.floor(prev/3)&&prev<9){kitchenLevelUps.add(w);toast(KITCHEN_NAMES[c]+' 升星！');}kitchenRecordMerge(batch.cells,trio,[target],target);
+ }
+ // Return one ingredient per consumed chain, as in embryo forging; never overwrite a dish.
+ for(const path of paths.values()){const free=path.cells.filter(i=>!kitchen.g[i]);if(!free.length)continue;const target=free[rnd(free.length)],chance=[0,0,.25,.5][kitchenLevel('merge')],tier=Math.random()<chance?path.parts[rnd(path.parts.length)].t:0;kitchen.g[target]=kitchenFood(tier);kitchenAuto(target);}
+ syncAchievementMedals();reviewMetrics.crafted+=kitchen.crafted-old;kitchen.message='料理完成：'+made.join('、')+'！拖曳到客人即可出餐。';return true;
+}
 function kitchenStep(){
  kitchenSpecial().locked=true;kitchen.turn++;kitchen.heat=kitchen.heat.map((h,i)=>h>0&&!kitchen.justHeated.has(i)?h-1:h);kitchen.justHeated.clear();
  kitchenTickFreshness();
@@ -66,6 +79,11 @@ function kitchenSell(w,index,clear){
  const failed=kitchenRequirementFailure(w,order);if(failed){kitchen.message=failed;return false;}const menuBonus=kitchenMenuBonus(w),statBonus=order.need?.1:0,like=guestPreferenceBonus(w,order,true),price=Math.round(kitchenPrice(w)*(1+like)*(1+menuBonus)*(1+statBonus));if(menuBonus)kitchenSpecial().sold++;coins+=price;earned+=price;dEarn+=price;all++;kitchen.earned+=price;kitchen.served++;reviewMetrics.served++;if(kitchen.challenge===1&&COMBO[w.c].split('').filter(s=>s==='2').length>=2)kitchen.progress++;if(kitchen.challenge===2&&(w.t>=2||kitchenStars(w)>=1))kitchen.progress++;
  recordFestival('food',w);clear();kitchenRemoveOrder(index);kitchen.message='出餐成功！'+KITCHEN_NAMES[w.c]+' +'+price+' 金幣'+(like?' · 喜好 +10%':'')+(menuBonus?' · 主打 +20%':'')+(statBonus?' · 狀態訂單 +10%':'');if(!kitchen.orders.length&&!kitchen.queue.length)completeKitchenNight();else kitchenStep();saveHi();renderKitchen();saveNow();return true;
 }
-function completeKitchenNight(){const fresh=kitchen&&!kitchen.done;const result=stage21_completeKitchenNight();if(fresh&&kitchen.done){reviewMetrics.nights++;reviewMetrics.nightTurns+=kitchen.turn;saveReviewProgress();}return result;}
+function completeKitchenNight(){
+ if(!kitchen||kitchen.done)return;kitchen.done=true;const c=KITCHEN_CHALLENGES[kitchen.challenge],passed=c.kind==='rush'?kitchen.served>=kitchen.total&&kitchen.missed===0:kitchen.progress>=c.goal,paid=kitchen.lastRewarded!==day;
+ const bonus=paid?120+kitchen.served*20+(passed?150:0):0;let pointReward={points:0,gold:0};if(paid){kitchen.lastRewarded=day;coins+=bonus;earned+=bonus;dEarn+=bonus;pointReward=grantDailyWorkshopSkill('kitchen');pendingChests++;kitchen.bag.push({k:'spice',spice:passed?'milk':'herb'});}
+ kitchen.settlement={served:kitchen.served,missed:kitchen.missed,cancelled:kitchen.cancelled||0,earned:kitchen.earned,challenge:kitchen.challenge,passed,bonus,points:pointReward.points,skillGold:pointReward.gold,spice:paid?1:0};renderKitchenSettlement();
+ reviewMetrics.nights++;reviewMetrics.nightTurns+=kitchen.turn;saveReviewProgress();
+}
 function renderKitchenSettlement(){const r=kitchen?.settlement;if(!r)return;const c=KITCHEN_CHALLENGES[r.challenge],organize=kitchenLevel('pack')>0&&day>1; kitchenModal('晚餐營業完成','<p>出餐 '+r.served+' 位 · 超時 '+r.missed+' 位 · 取消 '+(r.cancelled||0)+' 位</p><p>料理收入 '+r.earned+' 金幣</p><p>'+c.icon+c.name+'：'+(r.passed?'挑戰成功':'下次再挑戰')+'</p><p>營業獎勵 '+r.bonus+' 金幣 · '+(r.skillGold?'技能已滿轉換 '+r.skillGold+' 金幣':'廚房技能點 '+r.points)+' · 調味包 '+r.spice+'</p>'+(organize?'<button class="kitchen-wide" onclick="openKitchenOrganize()">先整理料理進冰箱</button>':'')+'<button class="pri kitchen-wide" onclick="finishKitchenNight()">結束夜晚，進入隔天</button>');}
 function finishKitchenNight(){if(day<1||!sandboxNight||!kitchen?.done||kitchen.day!==day||lives<=0)return;return performSceneTransition('城鎮',()=>{if(!sandboxNight||!kitchen?.done||kitchen.day!==day||lives<=0)return;$('kitchenModal').hidden=true;$('kitchenP').hidden=true;setSandboxNight(false);newDay();saveNow();});}

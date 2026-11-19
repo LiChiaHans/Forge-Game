@@ -51,7 +51,7 @@ function showSeasonNotice(){
   renderFestivalNotice();$('seasonTitle').textContent=s.icon+' '+s.name+'來了！';
   $('seasonDescription').textContent=s.description;
   $('seasonBenefit').textContent='季節好處 · '+seasonBenefitText()+(seasonIndex()===2?' 目前餘燼：'+autumnForgeCharges+' 次。':'');
-  $('seasonP').querySelector('button:not(.modal-x)').textContent=phase==='town'||phase==='reward'?'知道了':'開始鍛造';
+  $('seasonP').querySelector('button:not(.modal-x)').textContent='知道了';
   $('seasonP').style.display='flex';seasonNoticePending=false;
 }
 function showPendingSeasonNotice(){if(seasonNoticePending&&$('title').style.display==='none')showSeasonNotice();}

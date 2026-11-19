@@ -1,15 +1,8 @@
 
 
-function cityObstacleAt(){return expandedGameEnabled()?preview_cityObstacleAt(...arguments):stable_cityObstacleAt(...arguments);}
-function stable_cityObstacleAt(x,y){
- if(!cityState)return false;return cityLayout().some(i=>{const d=DECOR_BY_ID.get(i.id);if(!d||['cat','dog','flowers','fence'].includes(d.art))return false;const px=i.x*3.6,py=i.y*6.2,s=i.s;
-  if(d.art==='fountain'||d.art==='pond')return ((x-px)/(d.w*.43*s+6))**2+((y-(py-d.h*.32*s))/(d.h*.32*s+6))**2<1;
-  return Math.hypot(x-px,y-py)<Math.min(20,d.w*.2*s+5);
- });
-}
-function preview_cityObstacleAt(x,y){
+function cityObstacleAt(x,y){
  if(townBackgroundFountainBlocked(x,y))return true;
- if(expandedGameEnabled()&&townMasterBlocks().some(([x0,y0,x1,y1])=>x>=x0&&x<=x1&&y>=y0&&y<=y1))return true;
+ if(townMasterBlocks().some(([x0,y0,x1,y1])=>x>=x0&&x<=x1&&y>=y0&&y<=y1))return true;
  if(!cityState)return false;return cityLayout().some(i=>{const d=DECOR_BY_ID.get(i.id);if(!d||['cat','dog','flowers','fence'].includes(d.art))return false;const px=i.x*3.6,py=i.y*6.2,s=i.s;
   if(d.art==='fountain'||d.art==='pond')return ((x-px)/(d.w*.43*s+6))**2+((y-(py-d.h*.32*s))/(d.h*.32*s+6))**2<1;
   return Math.hypot(x-px,y-py)<Math.min(20,d.w*.2*s+5);
@@ -26,14 +19,14 @@ function ensureCityPetsMoving(){
  for(const item of cityLayout()){if(!item.roam||!['cat','dog'].includes(DECOR_BY_ID.get(item.id)?.art))continue;let w=cityWalkers.get(item.uid);if(!w){const el=document.querySelector('[data-decor-uid="'+item.uid+'"] .sticker-roamer');if(!el)continue;w={item,el,point:[item.x*3.6,item.y*6.2],origin:[item.x*3.6,item.y*6.2],anim:null,timer:null,epoch:cityArtEpoch};cityWalkers.set(item.uid,w);}if(!w.anim&&!w.timer&&!w.walking)walkCityPet(w);}
 }
 async function walkCityPet(w){
- if(!expandedGameEnabled())return stage19_walkCityPet(w);if(lowEffects||architect.active||townMotionPaused||w.walking||w.epoch!==cityArtEpoch)return;
+ if(lowEffects||architect.active||townMotionPaused||w.walking||w.epoch!==cityArtEpoch)return;
  const route=petRoute(w.point);if(route.length<2)return;w.walking=true;const rect=$('townMap').getBoundingClientRect(),dist=route.slice(1).map((p,i)=>Math.hypot(p[0]-route[i][0],p[1]-route[i][1])),total=dist.reduce((a,b)=>a+b,0),duration=Math.max(3500,Math.min(22000,total/27*1000)),tf=p=>'translate3d('+((p[0]-w.origin[0])*rect.width/360)+'px,'+((p[1]-w.origin[1])*rect.height/620)+'px,0) scale('+(petDepthScale(p[1])/petDepthScale(w.origin[1]))+')';w.point=route[0];
  try{for(let i=1;i<route.length;i++){
   if(w.epoch!==cityArtEpoch||architect.active||townMotionPaused)break;const from=route[i-1],to=route[i];w.el.classList.remove('decor-walking');if(!await turnCityPet(w,to[0]-from[0])||w.epoch!==cityArtEpoch)break;
   w.el.classList.add('decor-walking');w.el.style.transform=tf(to);const ok=await cityPetAnimation(w.el,[{transform:tf(from)},{transform:tf(to)}],{duration:Math.max(40,duration*dist[i-1]/total),easing:'linear'},w);if(!ok||w.epoch!==cityArtEpoch)break;w.point=to;
  }}finally{w.walking=false;w.el.classList.remove('decor-walking');if(w.epoch===cityArtEpoch&&!architect.active&&!townMotionPaused)w.timer=gameTimeout(()=>{w.timer=null;walkCityPet(w);},1400+rnd(1800));}
 }
-function loveCityPet(node){if(expandedGameEnabled())playPetVoice(node.dataset.decorKind);const old=node.querySelector('.sticker-love');old?.remove();const b=document.createElement('span');b.className='sticker-love';b.setAttribute('aria-label','愛心');b.innerHTML='<svg viewBox="0 0 32 24" shape-rendering="crispEdges"><path fill="#fff0ce" stroke="#364b51" d="M2 1h28v18H19l-3 4-3-4H2z"/><path fill="#d88799" d="M8 6h6v3h4V6h6v7h-3v3h-3v2h-4v-2h-3v-3H8z"/></svg>';node.querySelector('.sticker-roamer').appendChild(b);gameTimeout(()=>b.remove(),1700);}
+function loveCityPet(node){playPetVoice(node.dataset.decorKind);const old=node.querySelector('.sticker-love');old?.remove();const b=document.createElement('span');b.className='sticker-love';b.setAttribute('aria-label','愛心');b.innerHTML='<svg viewBox="0 0 32 24" shape-rendering="crispEdges"><path fill="#fff0ce" stroke="#364b51" d="M2 1h28v18H19l-3 4-3-4H2z"/><path fill="#d88799" d="M8 6h6v3h4V6h6v7h-3v3h-3v2h-4v-2h-3v-3H8z"/></svg>';node.querySelector('.sticker-roamer').appendChild(b);gameTimeout(()=>b.remove(),1700);}
 function installCityControls(){
  $('townArchitectBtn').onclick=toggleArchitect;$('architectInventoryTop').onclick=openDecorInventory;$('architectLayoutsTop').onclick=openCityLayouts;$('decorInventoryShop').onclick=()=>{closeP('decorInventoryP');openDecorationShop();};$('decorReturnAll').onclick=stowAllCityDecor;$('cityLayoutSave').onclick=saveCityLayout;
  $('architectCancelTop').onclick=()=>{architect.placing=null;renderArchitect();};

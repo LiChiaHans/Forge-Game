@@ -1,12 +1,10 @@
 
 
 const pat=()=>1;
-const cozyLegacySvg=(c,t=0)=>`<svg viewBox="0 0 48 48" shape-rendering="crispEdges"><image href="${UNITY_ART['weapon'+c+'_'+t]}" width="48" height="48" style="image-rendering:pixelated"/></svg>`;
-const svg=(c,t=0)=>expandedGameEnabled()?cozySpriteSVG('weapon-'+c+'-'+t,48):cozyLegacySvg(c,t);
+const svg=(c,t=0)=>cozySpriteSVG('weapon-'+c+'-'+t,48);
 const hex=(c,bg,cls="",t=0,w=null)=>`<div class="hxo ${cls}${isLegend(w)?" legendary":""}"><div class="hxi" style="background:${bg}">${isLegend(w)?legendWeaponSVG(w.legendId):svg(c,t)}</div>${weaponStarsHTML(w)}${w?.protected?'<span class="weapon-protected" aria-label="受保護武器">🔒</span>':''}${validElement(w?.element)?'<span class="weapon-element-icon" style="--element:'+ELEMENTS[w.element].color+'" aria-label="'+ELEMENTS[w.element].name+'屬性">'+elementIcon(w.element)+'</span>':''}</div>`;
 const price=(t,c)=>Math.round(PR[t]*MUL[c]);
-const cozyLegacyTok=(bg,tx,b)=>`<div class="${b?"t o":"q"}" style="background-color:${bg}">${tx}</div>`;
-const tok=(bg,tx,b)=>expandedGameEnabled()&&C.includes(bg)?cozyOreMarkup(C.indexOf(bg),b):cozyLegacyTok(bg,tx,b);
+const tok=(bg,tx,b)=>C.includes(bg)?cozyOreMarkup(C.indexOf(bg),b):`<div class="${b?"t o":"q"}" style="background-color:${bg}">${tx}</div>`;
 const itemH=(h,b)=>h.k==='ess'?'<span class="essence-icon">'+essenceArt(h.element)+'</span>':h.k==='seed'?'<span class="seed-icon">'+seedPacketArt(h.element)+'</span>':h.k==='bp'?'<span class="bp-item-icon">'+legendBlueprintSVG(h.id)+'</span>':h.k==='m'?mold(h.s,"","f")
   :h.k==='d'?gem(h.t,"f")
   :h.k==='f'?tok("#c0392b","🔥",b)
@@ -40,10 +38,9 @@ const materialNote=w=>"材料基價 "+materialPrice(w)+" 金幣"
 const wp=w=>Math.round((isUltimate(w)?ultimateSaleQuote(w):isLegend(w)?Math.max(0,Math.round(w.legendPrice||0)):Math.round(materialPrice(w)*(1+(w.b||0))))*(validElement(w.element)?1.2:1)*(1+weaponStarBonus(w)));
 const recipe=c=>COMBO[c].split("").map(x=>TY[x]).join("");
 const oPrice=o=>o.c===null?PR[o.t]:Math.round(price(o.t,o.c)*1.3);
-const stage21_salePrice=(w,o)=>Math.round(
-  (wp(w)*(o.c===null?1:1.3)*pat(o)+(w.m||0))*(1+.1*sk('mc'))*(1+seasonSaleBonus(w))
+const salePrice=(w,o)=>Math.round(
+  Math.round((wp(w)*(o.c===null?1:1.3)*pat(o)+(w.m||0))*(1+.1*sk('mc'))*(1+seasonSaleBonus(w)))*(1+guestPreferenceBonus(w,o,false))
 );
-const salePrice=(w,o)=>Math.round(stage21_salePrice(w,o)*(1+guestPreferenceBonus(w,o,false)));
 
 function ov(t,p,b,f){
   $("ovt").textContent=t;$("ovp").textContent=p;$("ovb").textContent=b;

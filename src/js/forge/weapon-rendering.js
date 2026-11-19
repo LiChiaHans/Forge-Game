@@ -146,8 +146,7 @@ const MP=[
 const mold=(s,f,x="")=>{const cuts=['M12 3L15 7V20H9V7Z','M8 4h8v16H8z','M11 3h2v1h3v2h3v2h1v8h-1v2h-3v2h-3v1h-2v-1H8v-2H5v-2H4V8h1V6h3V4h3z','M7 4h10v2h3v3h1v3h-3v3h-3v3h-2v3h-2v-3H9v-3H6v-3H3V9h1V6h3z'];const cut=cuts[s];return `<svg class="mo ${x}" viewBox="0 0 24 24" shape-rendering="crispEdges"><path fill="#5a452e" d="M2 0h20v2h2v20h-2v2H2v-2H0V2h2z"/><path fill="#cdb27a" d="M2 2h20v20H2z"/><path fill="#f3dfaa" d="M2 2h20v2H4v16H2z"/><path fill="#967442" d="M4 20h16V4h2v18H4z"/><path fill="#e4cb92" d="M4 4h16v16H4z"/><path d="${cut}" fill="#f6e3b1" transform="translate(0 1)"/><path d="${cut}" fill="#806340"/><path d="${cut}" fill="${f||'#352a20'}" stroke="#4d3827" stroke-width="1"/><path fill="#fff1c9" opacity=".6" d="M3 3h2v1H3zM19 3h2v1h-2zM3 19h1v2H3zM20 19h1v2h-1z"/>${f?'<path fill="#ffffff" opacity=".35" d="M10 7h1v10h-1z"/>':'<path fill="#1d1815" opacity=".65" d="M10 7h1v10h-1z"/>'}</svg>`;};
 const magicOrbHTML=()=>'<svg class="magic-orb" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path fill="#392858" d="M5 1h6v1h2v2h1v7h-2v2H4v-1H2V4h1V2h2z"/><path fill="#9973e5" d="M5 3h6v1h1v6h-2v2H5v-1H4V5h1z"/><path fill="#ded7ff" d="M5 4h4v2H6v3H4V5h1z"/><path fill="#624bb2" d="M10 7h2v3h-2v2H6v-2h4z"/><path fill="#ffe7a1" d="M7 0h2v3H7zM0 7h3v2H0zM13 12h3v2h-3z"/></svg>';
 const mb=c=>c.m?'<span class="mb" aria-label="附魔 '+Math.floor(c.m/5)+' 層">+'+Math.floor(c.m/5)+magicOrbHTML()+'</span>':'';
-const stage20_oreH=(t,x="",m=0)=>`<div class="t o ${x}" style="background-color:${C[t]}">${NM[t]}${mb({m})}</div>`;
-const oreH=(t,x="",m=0)=>expandedGameEnabled()?workshopOreHTML(t,x,m):stage20_oreH(t,x,m);
+const oreH=(t,x="",m=0)=>workshopOreHTML(t,x,m);
 const bands=w=>w.cs&&new Set(w.cs).size>1
   ?`linear-gradient(to bottom,${C[w.cs[0]]} 0 33.33%,${C[w.cs[1]]} 33.33% 66.66%,${C[w.cs[2]]} 66.66% 100%)`
   :C[w.t];

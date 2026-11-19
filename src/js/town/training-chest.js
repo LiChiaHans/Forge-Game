@@ -44,14 +44,16 @@ function remindTownSkills(branch='forge'){
  $('townSkillP').style.display='flex';
 }
 function openRequiredTraining(){closeP('townSkillP');return performSceneTransition('城鎮',()=>{$('kitchenP').hidden=true;showTown();openSkills(false);trainingBranch=townSkillBranch;renderSk();});}
-function startTownForge(){if(forgeSettlementPending()){renderForgeSettlement();return;}if(isSandboxNight())return preview_startTownForge(...arguments);if(requireWorkshopTraining('forge'))return;return performSceneTransition('冶煉廠',()=>preview_startTownForge());}
-function stable_startTownForge(){
- $('townSkillP').style.display='none';phase='play';$('townP').style.display='none';render();saveNow();showPendingSeasonNotice();
-}
-function preview_startTownForge(){
+function openTownForgeBoard(){
  if(isSandboxNight()){toast('現在是晚餐時段，前往廚房餐廳營業。');return;}
  if(requireWorkshopTraining('forge'))return;
  $('townSkillP').style.display='none';phase='play';$('townP').style.display='none';render();saveNow();showPendingSeasonNotice();
+}
+function startTownForge(){
+ if(forgeSettlementPending()){renderForgeSettlement();return;}
+ if(isSandboxNight()){openTownForgeBoard();return;}
+ if(requireWorkshopTraining('forge'))return;
+ return performSceneTransition('冶煉廠',openTownForgeBoard);
 }
 function restoreTownProgress(t){
  pendingChests=Math.max(0,Math.floor(Number(t.pendingChests)||0));

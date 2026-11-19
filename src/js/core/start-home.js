@@ -1,36 +1,7 @@
 
 
-function start(){$('forgeSettlementP').style.display='none';if(formalSaveTimer!==null){clearTimeout(formalSaveTimer);formalSaveTimer=null;}cancelKitchenDrag();clearKitchenIngredientFlights();clearKitchenDepartures();reviewMetrics=freshPlayMetrics();forgeGuestSerial22=0;kitchenGuestSerial22=0;expeditionFoodSelected=null;const args=[...arguments];if(!booting&&args[0]==='tut')return performSceneTransition('冶煉廠',()=>preview_start(...args));return preview_start(...args);}
-function stable_start(mode,opt){
-  if(sandboxSession)opt={...opt,test:true};
-  clearForgeFeedback();autumnForgeCharges=0;weaponMastery=new Map();
-  $("townP").style.display="none";
-  mode=mode||(day===0?"tut":"normal");
-  runId=Date.now();runDate=todayStr();runTime=timeStr();
-  testRun=!!(opt&&opt.test);
-  if(mode==="normal"&&!booting&&!testRun){playerAvatar=normalizeAvatar(pendingNewAvatar||AVATAR_DEFAULT);pendingNewAvatar=null;}
-  if(!testRun){cheat.m=false;cheat.s=false}
-  active=!booting&&mode!=="tut"&&!testRun;
-  skills={mm:0,gc:0,mg:0,wb:0,mc:0,mn:0,cd:0};
-  pack=[];bag=[];gachaUsed=false;pendingChests=0;lastCompletedDay=0;chestOpening=false;
-  resetCity();resetEcology();resetRunCollections();legendProjects=[];blueprintSequence=0;blueprintGoalId=null;inspectedLiveWeapon=null;
-  legendDemoBlueprints.clear();legendDemoCollection.clear();
-  $("legendBlueprintP").style.display="none";$("blueprintProjectP").style.display="none";
-  stopExpeditionPlayback();expeditionState=freshExpeditionState();expeditionSelected="";expeditionStage=0;
-  $("expeditionP").style.display="none";$("weaponStatsP").style.display="none";
-  leaves=new Set();frozen=new Set();seasonEffects=new Map();seasonNoticePending=false;shopBought={m:0,tool:0,o:0};
-  $("seasonP").style.display="none";
-  $("sk").style.display="none";$("rw").style.display="none";$("gcP").style.display="none";$("townLootP").style.display="none";$("townSkillP").style.display="none";
-  g=Array(W*H).fill(null);best=Array(10).fill(null);
-  Q=Array(5).fill(0);MQ=Array.from({length:3},rollM);
-  fx=[];hold=new Set();pop=new Set();shown=new Map();busy=false;
-  heat=Array(W*H).fill(0);coins=0;earned=0;magic=0;
-  magicSet=new Set();lives=3;all=0;day=mode==="tut"?-1:0;sp=0;
-  quests=[];qDone=0;stepSales=0;justHeated.clear();
-  tutP2=false;tutStage=1;hand=null;tool=-1;fresh=-1;
-  clearPrediction();$("ov").style.display="none";newDay();
-}
-function preview_start(mode,opt){
+function start(){$('forgeSettlementP').style.display='none';if(formalSaveTimer!==null){clearTimeout(formalSaveTimer);formalSaveTimer=null;}cancelKitchenDrag();clearKitchenIngredientFlights();clearKitchenDepartures();reviewMetrics=freshPlayMetrics();forgeGuestSerial22=0;kitchenGuestSerial22=0;expeditionFoodSelected=null;const args=[...arguments];if(!booting&&args[0]==='tut')return performSceneTransition('冶煉廠',()=>resetRunState(...args));return resetRunState(...args);}
+function resetRunState(mode,opt){
  sandboxNight=false;kitchen=freshKitchen();
   if(sandboxSession)opt={...opt,test:true};
   clearForgeFeedback();autumnForgeCharges=0;weaponMastery=new Map();
@@ -70,9 +41,7 @@ function toggleMute(){
   try{gameStorage.setItem("forgeMute",muted?"1":"0")}catch(e){}
   render();
 }
-function goHome(){return performSceneTransition('遊戲首頁',()=>preview_goHome());}
-function stable_goHome(){clearForgeFeedback();if(architect.active){discardCityEdit();architect.active=false;closeCityPanels();}stopExpeditionPlayback();$("expeditionP").style.display="none";$("weaponStatsP").style.display="none";saveNow();finishSandbox();$("townP").style.display="none";render();$("title").style.display="flex"}
-function preview_goHome(){$('forgeSettlementP').style.display='none';clearKitchenIngredientFlights();cancelKitchenDrag();$("kitchenP").hidden=true;$("kitchenModal").hidden=true;clearForgeFeedback();if(architect.active){discardCityEdit();architect.active=false;closeCityPanels();}stopExpeditionPlayback();$("expeditionP").style.display="none";$("weaponStatsP").style.display="none";saveNow();finishSandbox();$("townP").style.display="none";render();$("title").style.display="flex"}
+function goHome(){return performSceneTransition('遊戲首頁',()=>{$('forgeSettlementP').style.display='none';clearKitchenIngredientFlights();cancelKitchenDrag();$("kitchenP").hidden=true;$("kitchenModal").hidden=true;clearForgeFeedback();if(architect.active){discardCityEdit();architect.active=false;closeCityPanels();}stopExpeditionPlayback();$("expeditionP").style.display="none";$("weaponStatsP").style.display="none";saveNow();finishSandbox();$("townP").style.display="none";render();$("title").style.display="flex";});}
 function openRec(){
   $("recS").textContent=recs.length
     ?"最多保留 5 筆，依分數由高到低排列。":"還沒有紀錄，快去玩一局吧！";

@@ -27,7 +27,6 @@ function renderTownNight(){
 }
 function ensureNightCityLayout(si){if(!cityState)cityState=freshCity();const key=DECOR_SEASONS[si];if(!cityState.nightLayouts)cityState.nightLayouts={};if(!cityState.nightLayouts[key])cityState.nightLayouts[key]=[];return cityState.nightLayouts[key];}
 function cityLayoutStore(){if(isSandboxNight()){ensureNightCityLayout(townVisualSeason());return cityState.nightLayouts;}return cityState.layouts;}
-function defaultNightCityItems(si){const items=JSON.parse(JSON.stringify(public_freshCity().layouts[DECOR_SEASONS[si]]));NIGHT_DECOR_ROWS.filter(r=>r[3]===DECOR_SEASONS[si]).forEach((r,i)=>items.push({uid:'night-default-'+si+'-'+i,id:r[0],x:[5,95,88][i],y:[74,70,24][i],s:.85,fx:false,fy:false,r:0,z:1,roam:false}));return items;}
 function nightDecorationSVG(d,si,uid){
  const color=['#d6b7e6','#8ee2e7','#ffbc68','#b0deff'][si],wood='#4b4140',edge='#283541';let shape='';
  if(d.art==='night-garland')shape='<path fill="none" stroke="'+wood+'" stroke-width="3" d="M4 28q28 24 56 0"/>'+[12,25,39,52].map((x,i)=>'<path fill="'+color+'" d="M'+x+' '+(32+(i===1||i===2?8:0))+'h7v10h-7z"/>').join('');

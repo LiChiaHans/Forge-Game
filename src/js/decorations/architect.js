@@ -1,13 +1,6 @@
 
-function renderCityDecor(){if(expandedGameEnabled())enforceCityPlacementLimits();return expandedGameEnabled()?preview_renderCityDecor(...arguments):stable_renderCityDecor(...arguments);}
-function stable_renderCityDecor(){
- if(!cityState)cityState=freshCity();const si=townVisualSeason(),key=runId+':'+si+':'+cityRevision+':'+architect.active;
- const back=$('townDecorBack'),front=$('townDecorFront');if(front.dataset.key===key){updateCitySelection();return;}
- stopCityAnimals();petNavigation=null;front.dataset.key=key;const nodes=[[],[]];
- cityLayout(si).slice().sort((a,b)=>a.y-b.y).forEach((i,k)=>{const d=DECOR_BY_ID.get(i.id);nodes[i.z].push('<button type="button" class="town-sticker'+(architect.active?' editable':'')+'" data-decor-uid="'+esc(i.uid)+'" aria-label="'+esc(d.name)+(architect.active?'，拖曳移動':'')+'" style="left:'+i.x+'%;top:'+i.y+'%;width:'+(d.w/360*100)+'%;aspect-ratio:'+d.w+'/'+d.h+';z-index:'+(k+1)+'"><span class="sticker-roamer"><span class="sticker-transform" style="transform:'+stickerTransform(i)+'">'+decorSVG(i.id,si,i.uid)+'</span></span></button>');});
- back.innerHTML=nodes[0].join('');front.innerHTML=nodes[1].join('');$('townP').classList.toggle('architect-editing',architect.active);updateCitySelection();ensureCityPetsMoving();
-}
-function preview_renderCityDecor(){
+function renderCityDecor(){
+ enforceCityPlacementLimits();
  if(!cityState)cityState=freshCity();const si=townVisualSeason(),key=runId+':'+si+':'+cityRevision+':'+architect.active+':'+isSandboxNight();
  const back=$('townDecorBack'),front=$('townDecorFront');if(front.dataset.key===key){updateCitySelection();return;}
  stopCityAnimals();petNavigation=null;front.dataset.key=key;const nodes=[[],[]];
@@ -37,22 +30,12 @@ function renderDecorInventory(){
  $('decorInventoryGrid').innerHTML=DECOR_CATALOG.filter(d=>decorMatchesContext(d,si)&&(cityState.owned[d.id]||0)>0).map(d=>{const n=cityAvailable(d.id,si);return '<article class="decor-card"><div class="decor-thumb">'+decorSVG(d.id,si,'inventory-'+d.id)+'</div><b>'+d.name+'</b><small>擁有 '+cityState.owned[d.id]+' · 可放 '+n+(expandedGameEnabled()?' · 上限 '+cityPlacementLimit(d.id):'')+'</small><button data-place-decor="'+d.id+'" '+(!n?'disabled':'')+'>放置</button></article>';}).join('')||'<p>還沒有這個季節的裝飾，可以到裝飾行購買。</p>';
 }
 function chooseDecoration(id){if(!cityContextEditable()||!DECOR_BY_ID.has(id)||cityAvailable(id)<1)return false;architect.placing=id;architect.selected=null;closeP('decorInventoryP');renderArchitect();return true;}
-function stowAllCityDecor(){return expandedGameEnabled()?preview_stowAllCityDecor(...arguments):stable_stowAllCityDecor(...arguments);}
-function stable_stowAllCityDecor(){const key=DECOR_SEASONS[townVisualSeason()],count=cityLayout().length;cityState.layouts[key]=[];architect.selected=null;architect.placing=null;architect.drag=null;commitCity();renderDecorInventory();toast('已收回'+SEASONS[townVisualSeason()].name+'的 '+count+' 件裝飾。');return count;}
-function preview_stowAllCityDecor(){if(!cityContextEditable())return 0;const key=DECOR_SEASONS[townVisualSeason()],count=cityLayout().length;cityLayoutStore()[key]=[];architect.selected=null;architect.placing=null;architect.drag=null;commitCity();renderDecorInventory();toast('已收回'+SEASONS[townVisualSeason()].name+'的 '+count+' 件裝飾。');return count;}
+function stowAllCityDecor(){if(!cityContextEditable())return 0;const key=DECOR_SEASONS[townVisualSeason()],count=cityLayout().length;cityLayoutStore()[key]=[];architect.selected=null;architect.placing=null;architect.drag=null;commitCity();renderDecorInventory();toast('已收回'+SEASONS[townVisualSeason()].name+'的 '+count+' 件裝飾。');return count;}
 function placeDecoration(id,x,y){
- if(expandedGameEnabled()&&cityLayout().filter(i=>i.id===id).length>=cityPlacementLimit(id)){toast(cityPlacementLimit(id)===1?'每種動物最多放置一隻。':'每種裝飾最多放置三件。');return false;}if(!cityContextEditable()||cityAvailable(id)<1||cityLayout().length>=100){toast('裝飾數量不足，或已達 100 件擺設上限。');return false;}
+ if(cityLayout().filter(i=>i.id===id).length>=cityPlacementLimit(id)){toast(cityPlacementLimit(id)===1?'每種動物最多放置一隻。':'每種裝飾最多放置三件。');return false;}if(!cityContextEditable()||cityAvailable(id)<1||cityLayout().length>=100){toast('裝飾數量不足，或已達 100 件擺設上限。');return false;}
  const item=cleanCityItem({uid:'d-'+cityState.next++,id,x,y,s:1,z:1});cityLayout().push(item);architect.selected=item.uid;architect.placing=null;commitCity();return true;
 }
-function cityTransform(){return expandedGameEnabled()?preview_cityTransform(...arguments):stable_cityTransform(...arguments);}
-function stable_cityTransform(action){
- const i=selectedCityItem();if(!i)return;
- if(action==='stow'){cityState.layouts[DECOR_SEASONS[townVisualSeason()]]=cityLayout().filter(x=>x!==i);architect.selected=null;}
- if(action==='flip')i.fx=!i.fx;if(action==='flipY')i.fy=!i.fy;if(action==='rotate')i.r=(i.r+45)%360;if(action==='depth')i.z=i.z?0:1;
- if(action==='roam'){const x=i.x*3.6,y=i.y*6.2;if(!i.roam&&!petGround(x,y)){toast('請先把小動物移到沒有建築的地面，再開始散步。');return;}i.roam=!i.roam;}
- commitCity();
-}
-function preview_cityTransform(action){if(!cityContextEditable())return;
+function cityTransform(action){if(!cityContextEditable())return;
  const i=selectedCityItem();if(!i)return;
  if(action==='stow'){cityLayoutStore()[DECOR_SEASONS[townVisualSeason()]]=cityLayout().filter(x=>x!==i);architect.selected=null;}
  if(action==='flip')i.fx=!i.fx;if(action==='flipY')i.fy=!i.fy;if(action==='rotate')i.r=(i.r+45)%360;if(action==='depth')i.z=i.z?0:1;
