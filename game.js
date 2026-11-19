@@ -2871,7 +2871,7 @@ function openBackup(){pendingBackup=null;$('backupRestore').disabled=true;$('bac
  {name:'靈能杖',stats:{},scale:{arcane:[.15,.2,.25,.3,.35,.4,.45]}},
  {name:'開拓者',stats:{atk:1.2},scale:{heal:[.04,.05,.06,.08,.1,.12,.14]}},
  {name:'裂甲',stats:{atk:2,def:.65,spd:.9},scale:{step:[.04,.05,.06,.07,.08,.09,.1],cap:[.3,.35,.4,.45,.5,.55,.6]}},
- {name:'盾返',stats:{},scale:{gain:[.25,.3,.35,.4,.45,.5,.6],cap:[.8,.9,1,1.15,1.3,1.45,1.6]}}
+ {name:'盾返',stats:{},scale:{bash:[.15,.18,.22,.26,.3,.35,.4],gain:[.25,.3,.35,.4,.45,.5,.6],cap:[.8,.9,1,1.15,1.3,1.45,1.6]}}
 ];
 const BOSS_TRAITS=[
  ['黏液外殼','首次受到的普通物理傷害減少20%；奧術與主動技能不受影響。'],
@@ -2913,7 +2913,7 @@ function weaponTraitText(w){
  if(c===6)return '每次普通攻擊額外造成速度 '+pct(v.arcane)+' 的奧術傷害。';
  if(c===7)return '每次普通命中回復防禦 '+pct(v.heal)+' 的生命，至少 1 點。';
  if(c===8)return '每次普通命中降低敵方初始防禦 '+pct(v.step)+'，累計最多 '+pct(v.cap)+'。';
- return '防禦架勢每次抵擋攻擊累積防禦 '+pct(v.gain)+' 的反擊傷害，最多防禦 '+pct(v.cap)+'；下一次普通攻擊釋放。';
+ return '每次普通攻擊額外造成防禦 '+pct(v.bash)+' 的盾擊傷害；防禦架勢每次抵擋攻擊再累積防禦 '+pct(v.gain)+' 反擊傷害，最多防禦 '+pct(v.cap)+'，下次普攻釋放。';
 }
 function weaponTraitHTML(w){const t=weaponTrait(w);return '<div class="weapon-trait"><b>武器特性 · '+t.name+'（'+weaponTraitTierLabel(w)+'）</b><span>'+weaponTraitText(w)+'</span></div>';}
 function bossTraitIndex(m){const i=Number.isInteger(m.traitIndex)?m.traitIndex:EXPEDITIONS.findIndex(x=>x.name===m.name);return i<0?-1:i%10;}
@@ -2921,7 +2921,7 @@ function bossRule(m){const i=bossTraitIndex(m);return baseBossRule(m)+(i<0?'':' 
 function initCombatTraits(b){if(bossTraitIndex(b.monster)===4)b.enemyWard=Math.round(b.monster.hp*.1);return b;}
 function weaponAttackProfile(b){
  b.heroTurns=(b.heroTurns||0)+1;const n=b.heroTurns,c=b.weapon.c,third=n%3===0,v=weaponTraitValues(b.weapon);
- return {power:third&&[0,1,5].includes(c)?1+v.third:1,ignore:c===3?(n===1?v.first:v.after):0,arcane:c===6?Math.max(1,Math.round(b.stats.spd*v.arcane)):0,counter:c===9?(b.counterBonus||0):0,text:third&&[0,1,5].includes(c)?weaponTrait(b.weapon).name:c===3&&n===1?'穿刺':c===6?'靈能':c===9&&b.counterBonus?'盾返':''};
+ return {power:third&&[0,1,5].includes(c)?1+v.third:1,ignore:c===3?(n===1?v.first:v.after):0,arcane:c===6?Math.max(1,Math.round(b.stats.spd*v.arcane)):0,counter:c===9?(b.counterBonus||0)+Math.max(1,Math.round(b.stats.def*v.bash)):0,text:third&&[0,1,5].includes(c)?weaponTrait(b.weapon).name:c===3&&n===1?'穿刺':c===6?'靈能':c===9?(b.counterBonus?'盾返':'盾擊'):''};
 }
 function bossPhysicalFactor(b){const id=bossTraitIndex(b.monster);return id===0&&(b.heroTurns||0)===1?.8:id===6&&(b.heroTurns||0)%3===0?.75:1;}
 function applyHeroExtra(b,row){
@@ -2950,16 +2950,16 @@ const EXPEDITIONS=[
  {name:'古王之鎧',area:'星隕王座',kind:'knight',color:'#e0c57a',hp:700,atk:75,def:45,spd:34,gold:2600,loot:{k:'d',t:4}}
 ];
 const SECOND_BOSSES=[
- ['深淵苔皇','潮汐深林','slime','#4f9f8b',950,90,60,45,3400],
- ['雷嵐獵王','碎雷海岸','wolf','#81c7e5',1200,110,75,58,4100],
- ['玄晶巨像','玄晶礦脈','golem','#a39ed5',1500,130,95,52,4900],
- ['永夜劍侯','暗影王道','knight','#b38ebf',1800,150,105,70,5800],
- ['極寒霜后','冰海王庭','knight','#b5e7ef',2150,170,120,74,6800],
- ['熔日龍王','赤日熔城','dragon','#ef9d72',2600,190,135,78,7900],
- ['虛空追獵者','斷星天梯','wolf','#aa8fe2',3100,215,150,98,9100],
- ['界門鎮守者','世界裂隙','golem','#d9b67c',3650,245,175,85,10500],
- ['星噬古龍','終夜星海','dragon','#b6a0eb',4250,275,190,106,12200],
- ['終焉星冕王','終焉王座','knight','#f0d7a2',5000,310,220,115,15000]
+ ['深淵苔皇','潮汐深林','slime','#4f9f8b',1100,99,66,47,3400],
+ ['雷嵐獵王','碎雷海岸','wolf','#81c7e5',1400,123,84,61,4100],
+ ['玄晶巨像','玄晶礦脈','golem','#a39ed5',1800,147,108,55,4900],
+ ['永夜劍侯','暗影王道','knight','#b38ebf',2250,173,121,75,5800],
+ ['極寒霜后','冰海王庭','knight','#b5e7ef',2750,198,140,79,6800],
+ ['熔日龍王','赤日熔城','dragon','#ef9d72',3400,225,160,84,7900],
+ ['虛空追獵者','斷星天梯','wolf','#aa8fe2',4200,258,180,106,9100],
+ ['界門鎮守者','世界裂隙','golem','#d9b67c',5050,298,213,93,10500],
+ ['星噬古龍','終夜星海','dragon','#b6a0eb',6000,339,234,116,12200],
+ ['終焉星冕王','終焉王座','knight','#f0d7a2',7250,388,275,127,15000]
 ];
 SECOND_BOSSES.forEach(([name,area,kind,color,hp,atk,def,spd,gold])=>EXPEDITIONS.push({name,area,kind,color,hp,atk,def,spd,gold,cycle:2}));
 function freshExpeditionState(){return {day:0,attempts:0,unlocked:0,cleared:[],wonToday:[],victories:0,endless:0,lastBattle:null};}

@@ -8,7 +8,7 @@ const WEAPON_ROLES=[
  {name:'靈能杖',stats:{},scale:{arcane:[.15,.2,.25,.3,.35,.4,.45]}},
  {name:'開拓者',stats:{atk:1.2},scale:{heal:[.04,.05,.06,.08,.1,.12,.14]}},
  {name:'裂甲',stats:{atk:2,def:.65,spd:.9},scale:{step:[.04,.05,.06,.07,.08,.09,.1],cap:[.3,.35,.4,.45,.5,.55,.6]}},
- {name:'盾返',stats:{},scale:{gain:[.25,.3,.35,.4,.45,.5,.6],cap:[.8,.9,1,1.15,1.3,1.45,1.6]}}
+ {name:'盾返',stats:{},scale:{bash:[.15,.18,.22,.26,.3,.35,.4],gain:[.25,.3,.35,.4,.45,.5,.6],cap:[.8,.9,1,1.15,1.3,1.45,1.6]}}
 ];
 const BOSS_TRAITS=[
  ['黏液外殼','首次受到的普通物理傷害減少20%；奧術與主動技能不受影響。'],
@@ -50,7 +50,7 @@ function weaponTraitText(w){
  if(c===6)return '每次普通攻擊額外造成速度 '+pct(v.arcane)+' 的奧術傷害。';
  if(c===7)return '每次普通命中回復防禦 '+pct(v.heal)+' 的生命，至少 1 點。';
  if(c===8)return '每次普通命中降低敵方初始防禦 '+pct(v.step)+'，累計最多 '+pct(v.cap)+'。';
- return '防禦架勢每次抵擋攻擊累積防禦 '+pct(v.gain)+' 的反擊傷害，最多防禦 '+pct(v.cap)+'；下一次普通攻擊釋放。';
+ return '每次普通攻擊額外造成防禦 '+pct(v.bash)+' 的盾擊傷害；防禦架勢每次抵擋攻擊再累積防禦 '+pct(v.gain)+' 反擊傷害，最多防禦 '+pct(v.cap)+'，下次普攻釋放。';
 }
 function weaponTraitHTML(w){const t=weaponTrait(w);return '<div class="weapon-trait"><b>武器特性 · '+t.name+'（'+weaponTraitTierLabel(w)+'）</b><span>'+weaponTraitText(w)+'</span></div>';}
 function bossTraitIndex(m){const i=Number.isInteger(m.traitIndex)?m.traitIndex:EXPEDITIONS.findIndex(x=>x.name===m.name);return i<0?-1:i%10;}
@@ -58,7 +58,7 @@ function bossRule(m){const i=bossTraitIndex(m);return baseBossRule(m)+(i<0?'':' 
 function initCombatTraits(b){if(bossTraitIndex(b.monster)===4)b.enemyWard=Math.round(b.monster.hp*.1);return b;}
 function weaponAttackProfile(b){
  b.heroTurns=(b.heroTurns||0)+1;const n=b.heroTurns,c=b.weapon.c,third=n%3===0,v=weaponTraitValues(b.weapon);
- return {power:third&&[0,1,5].includes(c)?1+v.third:1,ignore:c===3?(n===1?v.first:v.after):0,arcane:c===6?Math.max(1,Math.round(b.stats.spd*v.arcane)):0,counter:c===9?(b.counterBonus||0):0,text:third&&[0,1,5].includes(c)?weaponTrait(b.weapon).name:c===3&&n===1?'穿刺':c===6?'靈能':c===9&&b.counterBonus?'盾返':''};
+ return {power:third&&[0,1,5].includes(c)?1+v.third:1,ignore:c===3?(n===1?v.first:v.after):0,arcane:c===6?Math.max(1,Math.round(b.stats.spd*v.arcane)):0,counter:c===9?(b.counterBonus||0)+Math.max(1,Math.round(b.stats.def*v.bash)):0,text:third&&[0,1,5].includes(c)?weaponTrait(b.weapon).name:c===3&&n===1?'穿刺':c===6?'靈能':c===9?(b.counterBonus?'盾返':'盾擊'):''};
 }
 function bossPhysicalFactor(b){const id=bossTraitIndex(b.monster);return id===0&&(b.heroTurns||0)===1?.8:id===6&&(b.heroTurns||0)%3===0?.75:1;}
 function applyHeroExtra(b,row){
