@@ -11,8 +11,9 @@ const DECOR_CATALOG=[
 ].map(([id,name,price,season,art,w,h])=>({id,name,price,season,art,w,h}));
 const DECOR_BY_ID=new Map(DECOR_CATALOG.map(d=>[d.id,d]));
 function decorSVG(id,season=seasonIndex(),uid='preview'){
- const svg=cozyDecorSVG(...arguments);
- if(!DECOR_BY_ID.get(id)?.night)return svg;
+ const svg=cozyDecorSVG(...arguments),d=DECOR_BY_ID.get(id);
+ if(!d?.night)return svg;
+ if(decorIsLighted(d))return svg.replace(/<svg\b([^>]*)>/,'<svg$1 data-night-palette="3">');
  const filter='decor-moonlight-'+String(id+'-'+uid).replace(/[^a-zA-Z0-9_-]/g,'');
  return svg.replace(/<svg\b([^>]*)>/,'<svg$1 data-night-palette="3"><defs><filter id="'+filter+'" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="'+TOWN_NIGHT_COLOR_MATRIX+'"/></filter></defs><g filter="url(#'+filter+')">').replace(/<\/svg>\s*$/,'</g></svg>');
 }

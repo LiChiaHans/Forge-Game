@@ -5,11 +5,17 @@ body.cozy-items .cozy-ore::before{content:attr(data-ore-name);position:absolute;
 body.cozy-items #q .cozy-ore::before{font-size:10px}
 body.cozy-items [data-cozy-item],body.cozy-items [data-cozy-decor]{overflow:visible}
 .cozy-decor-halo{animation:cozy-lamp-breathe 4.6s ease-in-out infinite;pointer-events:none}
+.cozy-decor-halo.is-night{animation:cozy-night-breathe 4.2s ease-in-out infinite}
+.cozy-decor-bloom{animation:cozy-bloom-pulse 3.6s ease-in-out infinite;pointer-events:none}
 .cozy-fountain-water{animation:cozy-water-shimmer 2.2s ease-in-out infinite;pointer-events:none}
-@keyframes cozy-lamp-breathe{50%{opacity:.42}}
+@keyframes cozy-lamp-breathe{50%{opacity:.48}}
+@keyframes cozy-night-breathe{0%,100%{opacity:1}50%{opacity:.74}}
+@keyframes cozy-bloom-pulse{0%,100%{opacity:.95}50%{opacity:.62}}
 @keyframes cozy-water-shimmer{50%{opacity:.35;transform:translateY(.5px)}}
-.low-effects .cozy-decor-halo,.low-effects .cozy-fountain-water{animation:none}
-@media(prefers-reduced-motion:reduce){.cozy-decor-halo,.cozy-fountain-water{animation:none}}
+#townP[data-time="night"] .town-sticker svg[data-night-glow="true"]{filter:drop-shadow(0 0 7px var(--decor-glow,#ffd17a)) drop-shadow(0 0 16px var(--decor-glow,#ffd17a))}
+#decorShopP .decor-thumb svg[data-night-glow="true"],#decorInventoryP .decor-thumb svg[data-night-glow="true"]{filter:drop-shadow(0 0 5px var(--decor-glow,#ffd17a)) drop-shadow(0 0 10px var(--decor-glow,#ffd17a))}
+.low-effects .cozy-decor-halo,.low-effects .cozy-decor-bloom,.low-effects .cozy-fountain-water{animation:none}
+@media(prefers-reduced-motion:reduce){.cozy-decor-halo,.cozy-decor-bloom,.cozy-fountain-water{animation:none}}
 
 
 #townP[data-time="night"] .town-sticker[data-decor-kind="fountain"] .sticker-transform>svg[data-night-palette="3"]{filter:none}

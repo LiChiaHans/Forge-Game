@@ -186,8 +186,10 @@ cozyOreStyle	src/js/art/item-rendering.js	9
 cozyOreMarkup	src/js/art/item-rendering.js	10
 cozyPreparedSVG	src/js/art/item-rendering.js	11
 cozyDecorKey	src/js/art/item-rendering.js	15
-cozyDecorSVG	src/js/art/item-rendering.js	16
-prepareCozyItemSnapshot	src/js/art/item-rendering.js	24
+decorIsLighted	src/js/art/item-rendering.js	16
+decorGlowSpec	src/js/art/item-rendering.js	17
+cozyDecorSVG	src/js/art/item-rendering.js	38
+prepareCozyItemSnapshot	src/js/art/item-rendering.js	58
 kitchenShelfLife	src/js/kitchen/freshness-merging.js	4
 kitchenFreshen	src/js/kitchen/freshness-merging.js	5
 kitchenEnsureFresh	src/js/kitchen/freshness-merging.js	6
