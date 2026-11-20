@@ -3538,3 +3538,86 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 .mode-card:hover{transform:translateY(-1px);border-color:#f5d076}
 .mode-card small{font-size:12.5px;line-height:1.5;color:#d2dae6}
 
+/* ==========================================================================
+   11. SINGLE-COLUMN VERTICAL LABELS ("工序" & "道具箱" NEVER WRAP TO 2 COLS)
+   ========================================================================== */
+#kitchenProcesses>small,
+#kitchenHand>small{
+ white-space:nowrap!important;
+ font-size:12px!important;
+ line-height:1!important;
+ letter-spacing:1px!important;
+ max-height:none!important;
+ overflow:visible!important;
+}
+#app #side #q small,
+#app #side .tl2{
+ white-space:nowrap!important;
+ font-size:12px!important;
+ line-height:14px!important;
+ width:16px!important;
+ letter-spacing:1px!important;
+ overflow:visible!important;
+}
+@media(max-height:760px),(max-width:440px){
+ #kitchenProcesses>small,
+ #kitchenHand>small,
+ #app #side #q small,
+ #app #side .tl2{
+  font-size:11px!important;
+  letter-spacing:.5px!important;
+ }
+}
+
+/* ==========================================================================
+   12. TOWN BUILDING ARCHITECTURAL TIER-UP VISUALS (ALL 7 BUILDINGS)
+   ========================================================================== */
+.lm-title-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.lm-building-tag{
+ padding:1px 6px;border:1px solid #6b8876;border-radius:999px;
+ background:#172720;color:#cbe0cf;font-size:10.5px;font-weight:700
+}
+.lm-card.is-built{border-color:#9e8d58}
+.town-upgrade-art{
+ position:absolute;inset:0;pointer-events:none;z-index:3;overflow:visible
+}
+.town-upgrade-art>svg{
+ width:100%;height:100%;display:block;overflow:visible;
+ filter:drop-shadow(0 2px 3px #14191e99)
+}
+#townP[data-gemini-town="true"] .town-building[data-landmark-tier="1"] .gemini-building-sign,
+#townP[data-gemini-town="true"] #townExpedition[data-landmark-tier="1"] .gemini-building-sign{
+ filter:drop-shadow(1px 2px 0 #18242988) drop-shadow(0 0 4px #ffe59c66)
+}
+#townP[data-gemini-town="true"] .town-building[data-landmark-tier="2"] .gemini-building-sign,
+#townP[data-gemini-town="true"] #townExpedition[data-landmark-tier="2"] .gemini-building-sign{
+ filter:drop-shadow(1px 2px 0 #18242988) drop-shadow(0 0 6px #f7cf6499)
+}
+#townP[data-gemini-town="true"] .town-building[data-landmark-tier="3"] .gemini-building-sign,
+#townP[data-gemini-town="true"] #townExpedition[data-landmark-tier="3"] .gemini-building-sign{
+ filter:drop-shadow(1px 2px 0 #18242999) drop-shadow(0 0 8px #ffe488cc)
+}
+.town-upgrade-art .tu-halo{
+ transform-box:fill-box;transform-origin:center;
+ animation:tuHaloPulse 2.8s ease-in-out infinite
+}
+.town-upgrade-art .tu-spark{
+ transform-box:fill-box;transform-origin:center;
+ animation:tuSparkFloat 2.4s ease-in-out infinite
+}
+.town-upgrade-art .tu-spark:nth-of-type(2n){animation-delay:-.8s}
+.town-upgrade-art .tu-spark:nth-of-type(3n){animation-delay:-1.5s}
+@keyframes tuHaloPulse{
+ 0%,100%{opacity:.28;transform:scale(.95)}
+ 50%{opacity:.58;transform:scale(1.08)}
+}
+@keyframes tuSparkFloat{
+ 0%,100%{opacity:.45;transform:translateY(2px) scale(.88)}
+ 50%{opacity:1;transform:translateY(-4px) scale(1.14)}
+}
+@media(prefers-reduced-motion:reduce){
+ .town-upgrade-art .tu-halo,.town-upgrade-art .tu-spark{animation:none}
+}
+.low-effects .town-upgrade-art .tu-halo,.low-effects .town-upgrade-art .tu-spark{animation:none}
+
+

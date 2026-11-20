@@ -12,19 +12,43 @@ const RUN_MODES={
 };
 
 const TOWN_LANDMARKS={
+ forge:{
+  key:'forge',buildingId:'townForge',buildingName:'鐵火冶煉廠',icon:'🔥',name:'龍焰大鍛爐',max:3,costs:[1200,3200,6800],
+  tierNames:['精工鍛造擴建','龍焰雙爐改建','傳奇神匠殿堂'],
+  effects:['冶煉武器售價 +8% · 過熱縮短 2 步','冶煉武器售價 +16% · 過熱縮短 4 步','冶煉武器售價 +25% · 過熱縮短 6 步 · 鍛造狂熱充能 +20%']
+ },
+ kitchen:{
+  key:'kitchen',buildingId:'townKitchen',buildingName:'暖爐餐廳',icon:'🍲',name:'皇家星廚廳',max:3,costs:[1200,3200,6800],
+  tierNames:['暖燈露台擴建','星廚金頂改建','皇家饗宴殿堂'],
+  effects:['餐廳料理售價 +8% · 料理保鮮 +4 步','餐廳料理售價 +16% · 料理保鮮 +8 步','餐廳料理售價 +25% · 料理保鮮 +12 步 · 料理狂熱充能 +20%']
+ },
+ expedition:{
+  key:'expedition',buildingId:'townExpedition',buildingName:'遠征城堡',icon:'🏰',name:'英雄凱旋堡',max:3,costs:[1500,3800,7800],
+  tierNames:['金紋城垛擴建','皇家尖塔要塞','傳奇凱旋聖堡'],
+  effects:['遠征全隊攻防 +8% · 每日凱旋觀光 +100💰','遠征全隊攻防 +16% · 每日凱旋觀光 +220💰','遠征全隊攻防 +26% · 每日凱旋觀光 +380💰']
+ },
+ training:{
+  key:'training',buildingId:'townTraining',buildingName:'星盾訓練所',icon:'🔔',name:'星盾榮耀塔',max:3,costs:[1100,2800,6000],
+  tierNames:['金盾校場擴建','星輝鐘樓高塔','聖盾榮耀殿堂'],
+  effects:['每日雙工坊初始狂熱 +15% · 頭條津貼 +80💰','每日雙工坊初始狂熱 +30% · 頭條津貼 +180💰','每日雙工坊初始狂熱 +50% · 頭條津貼 +320💰']
+ },
  greenhouse:{
-  key:'greenhouse',icon:'🌿',name:'溫室魔導灌溉',max:3,costs:[500,1200,2400],
-  effects:['花種 -10% · 收成 +15% 額外精華','花種 -20% · 收成 +30% 額外精華','花種 -30% · 收成 +50% 額外精華，每次收成 +50💰']
+  key:'greenhouse',buildingId:'townGreenhouse',buildingName:'晨露溫室',icon:'🌿',name:'水晶魔導溫室',max:3,costs:[1000,2600,5600],
+  tierNames:['鎏金花脊擴建','翡翠水晶穹頂','精靈魔導聖園'],
+  effects:['花種 -15% · 收成 +20% 額外精華','花種 -25% · 收成 +35% 額外精華','花種 -35% · 收成 +55% 額外精華 · 收成 +100💰']
  },
- belltower:{
-  key:'belltower',icon:'🔔',name:'星盾鐘樓',max:3,costs:[500,1200,2400],
-  effects:['每日開場雙工坊狂熱 +15% · 頭條額外 +40💰','每日開場雙工坊狂熱 +30% · 頭條額外 +80💰','每日開場雙工坊狂熱 +45% · 頭條額外 +120💰']
+ archive:{
+  key:'archive',buildingId:'townArchive',buildingName:'星頁圖鑑館',icon:'📚',name:'星穹大圖書館',max:3,costs:[1100,2800,6000],
+  tierNames:['典藏書閣擴建','黃銅觀星圓頂','星穹典籍聖殿'],
+  effects:['指定訂單與藍圖成品 +6% · 每日研究贊助 +80💰','指定訂單與藍圖成品 +12% · 每日研究贊助 +180💰','指定訂單與藍圖成品 +20% · 每日研究贊助 +320💰']
  },
- monument:{
-  key:'monument',icon:'🏆',name:'英雄武器展台',max:3,costs:[700,1600,3000],
-  effects:['遠征全隊攻防 +8% · 每日觀光收益 +60💰','遠征全隊攻防 +16% · 每日觀光收益 +120💰','遠征全隊攻防 +24% · 每日觀光收益 +200💰']
+ decor:{
+  key:'decor',buildingId:'townDecorShop',buildingName:'彩匠裝飾行',icon:'🎨',name:'皇家工藝行',max:3,costs:[1000,2600,5600],
+  tierNames:['慶典彩旗擴建','彩繪玻璃藝廊','皇家工藝殿堂'],
+  effects:['城鎮裝飾購買 -12% · 每日繁榮分紅 +100💰','城鎮裝飾購買 -22% · 每日繁榮分紅 +220💰','城鎮裝飾購買 -35% · 每日繁榮分紅 +380💰']
  }
 };
+const TOWN_LANDMARK_KEYS=Object.keys(TOWN_LANDMARKS);
 
 const SEASON_CONTRACTS=[
  {id:'ember_temper',icon:'🔥',name:'餘熱淬火',tag:'位置策略',desc:'貼著過熱格鍛造的武器自動 +2 層附魔（+10💰）；貼著爐火餘熱完成的料理售價 +15%。'},
@@ -88,6 +112,12 @@ const DAILY_HEADLINES=[
 
 let workshopMomentum=null,chronicleTab='daily',pendingRunMode='normal';
 
+function freshTownLandmarks(){
+ const out={};
+ TOWN_LANDMARK_KEYS.forEach(k=>{out[k]=0;});
+ return out;
+}
+
 function freshWorkshopMomentum(mode='normal'){
  return {
   mode:RUN_MODES[mode]?mode:'normal',
@@ -101,7 +131,7 @@ function freshWorkshopMomentum(mode='normal'){
   forgeFeverTurns:0,
   kitchenFever:0,
   kitchenFeverTurns:0,
-  landmarks:{greenhouse:0,belltower:0,monument:0},
+  landmarks:freshTownLandmarks(),
   sprintDone:false
  };
 }
@@ -122,11 +152,13 @@ function cleanWorkshopMomentum(raw){
  base.forgeFeverTurns=Math.max(0,Math.min(12,Math.floor(Number(raw.forgeFeverTurns)||0)));
  base.kitchenFever=Math.max(0,Math.min(100,Math.round(Number(raw.kitchenFever)||0)));
  base.kitchenFeverTurns=Math.max(0,Math.min(12,Math.floor(Number(raw.kitchenFeverTurns)||0)));
- base.landmarks={
-  greenhouse:Math.max(0,Math.min(3,Math.floor(Number(raw.landmarks?.greenhouse)||0))),
-  belltower:Math.max(0,Math.min(3,Math.floor(Number(raw.landmarks?.belltower)||0))),
-  monument:Math.max(0,Math.min(3,Math.floor(Number(raw.landmarks?.monument)||0)))
- };
+ const srcL=raw.landmarks||{};
+ TOWN_LANDMARK_KEYS.forEach(k=>{
+  let v=Number(srcL[k])||0;
+  if(k==='training')v=Math.max(v,Number(srcL.belltower)||0);
+  if(k==='expedition')v=Math.max(v,Number(srcL.monument)||0);
+  base.landmarks[k]=Math.max(0,Math.min(3,Math.floor(v)));
+ });
  base.sprintDone=!!raw.sprintDone;
  return base;
 }
@@ -171,10 +203,10 @@ function syncWorkshopMomentumDay(seasonChanged=false){
   m.forgeFeverTurns=0;
   m.kitchenFeverTurns=0;
   if(firstDay&&m.mode==='sprint9'&&coins<150)coins+=150;
-  const bell=m.landmarks.belltower||0;
+  const bell=landmarkBonuses().startFever;
   if(bell>0){
-   m.forgeFever=Math.max(m.forgeFever,Math.min(100,bell*15));
-   m.kitchenFever=Math.max(m.kitchenFever,Math.min(100,bell*15));
+   m.forgeFever=Math.max(m.forgeFever,Math.min(100,bell));
+   m.kitchenFever=Math.max(m.kitchenFever,Math.min(100,bell));
   }
  }
 }
@@ -190,17 +222,30 @@ function activeDailyHeadline(){
  return day>0&&m.headlineId?DAILY_HEADLINES.find(h=>h.id===m.headlineId)||null:null;
 }
 
+function buildingLandmarkTier(kind){
+ if(day<1)return 0;
+ return ensureWorkshopMomentum().landmarks[kind]||0;
+}
+
 function landmarkBonuses(){
- const l=day>0?ensureWorkshopMomentum().landmarks:{greenhouse:0,belltower:0,monument:0};
+ const l=day>0?ensureWorkshopMomentum().landmarks:freshTownLandmarks();
  return {
-  seedDiscount:[0,.1,.2,.3][l.greenhouse]||0,
-  extraEssence:[0,.15,.3,.5][l.greenhouse]||0,
-  harvestGold:l.greenhouse>=3?50:0,
-  startFever:l.belltower*15,
-  headlineGold:l.belltower*40,
-  battleAtk:l.monument*.08,
-  battleDef:l.monument*.08,
-  tourismGold:[0,60,120,200][l.monument]||0
+  forgeSale:[0,.08,.16,.25][l.forge]||0,
+  forgeHeatReduce:[0,2,4,6][l.forge]||0,
+  forgeFeverMult:l.forge>=3?1.2:1,
+  kitchenSale:[0,.08,.16,.25][l.kitchen]||0,
+  kitchenFreshBonus:[0,4,8,12][l.kitchen]||0,
+  kitchenFeverMult:l.kitchen>=3?1.2:1,
+  battleAtk:[0,.08,.16,.26][l.expedition]||0,
+  battleDef:[0,.08,.16,.26][l.expedition]||0,
+  startFever:[0,15,30,50][l.training]||0,
+  headlineGold:[0,80,180,320][l.training]||0,
+  seedDiscount:[0,.15,.25,.35][l.greenhouse]||0,
+  extraEssence:[0,.2,.35,.55][l.greenhouse]||0,
+  harvestGold:l.greenhouse>=3?100:0,
+  archiveSpecifiedSale:[0,.06,.12,.2][l.archive]||0,
+  decorDiscount:[0,.12,.22,.35][l.decor]||0,
+  tourismGold:([0,100,220,380][l.expedition]||0)+([0,80,180,320][l.archive]||0)+([0,100,220,380][l.decor]||0)
  };
 }
 
@@ -212,17 +257,17 @@ function contractBonuses(){
   twinCraft:hasContract('twin_craft'),
   specifiedSale:hasContract('artisan_gild')?.20:0,
   saleFever:hasContract('artisan_gild')?10:0,
-  forgeHeatDelta:(hasContract('cool_breeze')?8:0)+(hl==='leyline_heat'&&dc==='a'?8:0),
+  forgeHeatDelta:(hasContract('cool_breeze')?8:0)+(hl==='leyline_heat'&&dc==='a'?8:0)+lm.forgeHeatReduce,
   kitchenHeatDelta:hasContract('cool_breeze')?2:0,
-  kitchenFreshBonus:hasContract('cool_breeze')?8:0,
+  kitchenFreshBonus:(hasContract('cool_breeze')?8:0)+lm.kitchenFreshBonus,
   battleAtk:(hasContract('war_forge')?.18:0)+(hl==='guild_bounty'&&dc==='a'?.15:0)+lm.battleAtk,
   battleDef:(hasContract('war_forge')?.15:0)+lm.battleDef,
   expeditionGold:hl==='guild_bounty'&&dc==='a'?.20:0,
   forgeCraftGold:hasContract('war_forge')?15:0,
   shopExtra:hasContract('bountiful_hearth')?1:0,
   feverDuration:hasContract('bountiful_hearth')?7:5,
-  dailyForgeSale:(hl==='gem_caravan'&&dc==='a'?.12:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale,
-  dailyKitchenSale:(hl==='food_critic'&&dc==='a'?.22:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale
+  dailyForgeSale:(hl==='gem_caravan'&&dc==='a'?.12:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale+lm.forgeSale,
+  dailyKitchenSale:(hl==='food_critic'&&dc==='a'?.22:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale+lm.kitchenSale
  };
 }
 
@@ -233,9 +278,10 @@ function isWorkshopFever(kind){
 
 function forgeSaleMomentumBonus(w,o){
  if(day<1)return 0;
- const cb=contractBonuses();
+ const cb=contractBonuses(),lm=landmarkBonuses();
  let bonus=cb.dailyForgeSale;
- if(o&&o.c!==null)bonus+=cb.specifiedSale;
+ if(o&&o.c!==null)bonus+=cb.specifiedSale+lm.archiveSpecifiedSale;
+ else if(w?.blueprint)bonus+=lm.archiveSpecifiedSale;
  if(w?.chainBonus&&cb.twinCraft)bonus+=.22;
  if(isWorkshopFever('forge'))bonus+=.25;
  return bonus;
@@ -243,9 +289,9 @@ function forgeSaleMomentumBonus(w,o){
 
 function kitchenSaleMomentumBonus(w,o){
  if(day<1)return 0;
- const cb=contractBonuses();
+ const cb=contractBonuses(),lm=landmarkBonuses();
  let bonus=cb.dailyKitchenSale;
- if(o&&o.c!==null)bonus+=cb.specifiedSale;
+ if(o&&o.c!==null)bonus+=cb.specifiedSale+lm.archiveSpecifiedSale;
  if(w?.emberDish&&cb.emberTemper)bonus+=.15;
  if(w?.chainBonus&&cb.twinCraft)bonus+=.22;
  if(isWorkshopFever('kitchen'))bonus+=.25;
@@ -254,7 +300,7 @@ function kitchenSaleMomentumBonus(w,o){
 
 function addWorkshopFever(kind,amount){
  if(day<1||amount<=0)return;
- const m=ensureWorkshopMomentum(),mult=m.mode==='sprint9'?1.35:1,delta=Math.round(amount*mult);
+ const m=ensureWorkshopMomentum(),lm=landmarkBonuses(),modeMult=m.mode==='sprint9'?1.35:1,lmMult=kind==='kitchen'?lm.kitchenFeverMult:lm.forgeFeverMult,delta=Math.round(amount*modeMult*lmMult);
  if(kind==='kitchen'){
   if(m.kitchenFeverTurns>0)return;
   const before=m.kitchenFever;
@@ -438,12 +484,14 @@ function upgradeLandmark(key){
  if(!sandboxSession&&coins<cost){toast('金幣不足，升級需要 '+cost+' 金幣。');return false;}
  if(!sandboxSession)coins-=cost;
  m.landmarks[key]=lv+1;
- if(key==='belltower'){
-  m.forgeFever=Math.max(m.forgeFever,Math.min(100,(lv+1)*15));
-  m.kitchenFever=Math.max(m.kitchenFever,Math.min(100,(lv+1)*15));
+ if(key==='training'){
+  const startF=landmarkBonuses().startFever;
+  m.forgeFever=Math.max(m.forgeFever,Math.min(100,startF));
+  m.kitchenFever=Math.max(m.kitchenFever,Math.min(100,startF));
  }
  workshopToolSound('upgrade');
- toast('🏛 城鎮大工程「'+lm.name+'」升至 Lv '+(lv+1)+'！');
+ const tierName=lm.tierNames?.[lv]||('Lv '+(lv+1));
+ toast('🏛 '+lm.buildingName+'進階「'+lm.name+' · '+tierName+'」(Lv '+(lv+1)+')！');
  renderTownChronicle();updateTownDailyBadge();render();if(kitchen&&!$('kitchenP').hidden)renderKitchen();if($('townP').style.display==='flex')renderTown();saveNow();
  return true;
 }
@@ -474,18 +522,20 @@ function renderTownChronicle(){
 
  if(chronicleTab==='landmarks'){
   const heroW=bestMonumentWeapon();
+  const totalLv=TOWN_LANDMARK_KEYS.reduce((sum,k)=>sum+(m.landmarks[k]||0),0),maxLv=TOWN_LANDMARK_KEYS.length*3;
   const cards=Object.values(TOWN_LANDMARKS).map(lm=>{
    const lv=m.landmarks[lm.key]||0,maxed=lv>=lm.max,cost=maxed?0:lm.costs[lv],canAfford=sandboxSession||coins>=cost;
    const pips=[0,1,2].map(i=>'<i class="lm-pip'+(i<lv?' is-on':'')+'"></i>').join('');
-   const heroPreview=lm.key==='monument'&&heroW?'<div class="lm-hero-showcase"><span class="lm-hero-art">'+hex(heroW.c,bands(heroW),'',heroW.t,heroW)+'</span><span><small>本局陳列代表作</small><b>'+esc(itemName(heroW))+'</b></span></div>':'';
-   return '<div class="lm-card'+(maxed?' is-max':'')+'">'
-    +'<div class="lm-head"><span class="tc-icon">'+lm.icon+'</span><div class="lm-title"><b>'+lm.name+'</b><span class="lm-pips">'+pips+' Lv '+lv+'/'+lm.max+'</span></div></div>'
+   const heroPreview=lm.key==='expedition'&&heroW?'<div class="lm-hero-showcase"><span class="lm-hero-art">'+hex(heroW.c,bands(heroW),'',heroW.t,heroW)+'</span><span><small>本局城門陳列代表作</small><b>'+esc(itemName(heroW))+'</b></span></div>':'';
+   const curTier=lv>0?lm.tierNames[lv-1]:'初始建築';
+   return '<div class="lm-card'+(maxed?' is-max':lv>0?' is-built':'')+'">'
+    +'<div class="lm-head"><span class="tc-icon">'+lm.icon+'</span><div class="lm-title"><div class="lm-title-row"><b>'+lm.name+'</b><span class="lm-building-tag">'+lm.buildingName+'</span></div><span class="lm-pips">'+pips+' Lv '+lv+'/'+lm.max+' · '+curTier+'</span></div></div>'
     +heroPreview
     +'<div class="lm-tiers">'+lm.effects.map((txt,i)=>'<div class="lm-tier'+(i<lv?' is-done':i===lv?' is-next':'')+'"><b>Lv'+(i+1)+'</b><span>'+txt+'</span></div>').join('')+'</div>'
-    +'<button type="button" class="lm-btn'+(canAfford&&!maxed?' is-ready':'')+'" data-upgrade-landmark="'+lm.key+'"'+(!canAfford||maxed?' disabled':'')+'>'+(maxed?'✦ 已竣工（滿級）':'🏛 花費 💰'+cost+' 升級至 Lv '+(lv+1))+'</button>'
+    +'<button type="button" class="lm-btn'+(canAfford&&!maxed?' is-ready':'')+'" data-upgrade-landmark="'+lm.key+'"'+(!canAfford||maxed?' disabled':'')+'>'+(maxed?'✦ 傳奇殿堂已竣工（滿級）':'🏛 花費 💰'+cost+' 擴建至 Lv '+(lv+1)+'（'+lm.tierNames[lv]+'）')+'</button>'
     +'</div>';
   }).join('');
-  body.innerHTML=tabs+'<p class="tc-intro">持有 💰 '+(sandboxSession?'∞':coins)+' 金幣 · 投資城鎮地標獲得本局永久強力增益！</p><div class="lm-list">'+cards+'</div>';
+  body.innerHTML=tabs+'<p class="tc-intro">持有 💰 '+(sandboxSession?'∞':coins)+' 金幣 · 城鎮建築進階總度 <b>'+totalLv+' / '+maxLv+'</b> · 升級後城鎮建築外觀也會同步晉升階級！</p><div class="lm-list">'+cards+'</div>';
   return;
  }
 
