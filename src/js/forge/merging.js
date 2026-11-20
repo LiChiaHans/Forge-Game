@@ -60,6 +60,7 @@ function auto(i,l0=0){
   }
   if(up){
     say(up>1?"連鎖升階 ×"+up+"！":"自動合成升階！");
+    if(up>=2&&typeof triggerChainComboFX==='function'){triggerChainComboFX('grid',up,'⚡ CHAIN ×'+up+' 連鎖升階');addWorkshopFever('forge',12*up);}
     qEach('chain',q=>{if(up>=q.n)qProg(q,q.n)});
   }
 }
@@ -90,6 +91,8 @@ function forge(i){
     parts:t.map(j=>({s:g[j].s,t:g[j].t})),
     mm:t.reduce((a,j)=>a+(g[j].m||0),0)
   }));
+  const cb=typeof contractBonuses==='function'?contractBonuses():{};
+  const hadHotNeighbor=info.map(f=>f.cells.some(j=>nb(j).some(n=>!path.includes(n)&&heat[n]>0)));
   const pt=path.map(j=>g[j].t);
   path.forEach(j=>{g[j]=null;heat[j]=hotSteps();justHeated.add(j)});
   const msgs=[];
@@ -101,8 +104,10 @@ function forge(i){
         b+=.3*(g[j].t+1);dm+=g[j].m||0;
         dts.push(g[j].t);g[j]=null;heat[j]=0;justHeated.delete(j);
       });
-    g[spots[k]]={k:'w',t:f.wt,c:f.w,b,cs:f.cs,parts:f.parts,m:f.mm+dm,dts,statVersion:1};
+    const emberM=(cb.emberTemper&&hadHotNeighbor[k])?10:0;
+    g[spots[k]]={k:'w',t:f.wt,c:f.w,b,cs:f.cs,parts:f.parts,m:f.mm+dm+emberM,dts,statVersion:1,...(info.length>=2?{chainBonus:true}:{})};
     const wo=applyWeaponElement(g[spots[k]],spots[k]);recordWeaponCraft(wo);
+    if(cb.forgeCraftGold){coins+=cb.forgeCraftGold;earned+=cb.forgeCraftGold;dEarn+=cb.forgeCraftGold;}
     const ev={step:0,tg:spots[k],from:f.cells.map(j=>({i:j,h:workshopPieceHTML(source.get(j)),key:workshopItemKey(source.get(j))})),to:[spots[k]],res:{[spots[k]]:workshopItemHTML(wo)},keys:{[spots[k]]:workshopItemKey(wo)},forged:[]};fx.push(ev);
     const emberGold=consumeAutumnForgeReward();if(emberGold)toast("🍂 落葉餘燼：鍛造獎金 +100 金幣（不計分）");
     (ev.forged||(ev.forged=[])).push({w:wo,i:spots[k]});
@@ -111,8 +116,12 @@ function forge(i){
       best[f.w]={t:wo.t,cs:wo.cs,parts:wo.parts,b:wo.b,dts:wo.dts,m:wo.m,element:wo.element,stars:wo.stars,starXp:wo.starXp,statVersion:1};
     qOnForgeStats(wo);
 
-    msgs.push(NM[f.wt]+"級"+WN[f.w]+"（"+materialNote(wo)+"）"+(b?"（💎+"+Math.round(b*100)+"%）":""));
+    msgs.push(NM[f.wt]+"級"+WN[f.w]+"（"+materialNote(wo)+"）"+(b?"（💎+"+Math.round(b*100)+"%）":"")+(emberM?"（🔥淬火+2層）":""));
   });
+  if(typeof addWorkshopFever==='function'){
+    addWorkshopFever('forge',16*info.length+(info.length>=2&&cb.twinCraft?20:0));
+    if(info.length>=2)triggerChainComboFX('grid',info.length,'🔥 CHAIN ×'+info.length+' 連續鍛造！');
+  }
   say("鍛造出 "+msgs.join("、")+"！");
   qEach('forge2',q=>{if(info.length>=q.n)qProg(q,q.n)});
   burnLeaves();

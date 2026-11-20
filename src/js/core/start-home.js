@@ -4,8 +4,8 @@ function start(){$('forgeSettlementP').style.display='none';if(formalSaveTimer!=
 function resetRunState(mode,opt){
  sandboxNight=false;kitchen=freshKitchen();
   if(sandboxSession)opt={...opt,test:true};
-  clearForgeFeedback();autumnForgeCharges=0;weaponMastery=new Map();
-  $("townP").style.display="none";
+  clearForgeFeedback();autumnForgeCharges=0;weaponMastery=new Map();resetWorkshopMomentum();
+  $("townP").style.display="none";$("townContractP").style.display="none";
   mode=mode||(day===0?"tut":"normal");
   runId=Date.now();runDate=todayStr();runTime=timeStr();
   testRun=!!(opt&&opt.test);

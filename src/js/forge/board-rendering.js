@@ -70,7 +70,7 @@ function render(){
       data-i="${i}" data-piece-kind="${c?.k||'empty'}">${h}${c?.k==='p'?'<span class="piece-stage">'+NM[c.t]+'胚</span>':''}${c?.k==='w'&&!hold.has(i)&&!shown.has(i)?forgeCellLabel(c):''}${seasonCellHTML(i)}${heat[i]>0?`<span class="ht">${heat[i]}</span>`:""}${magicSet.has(i)?`<span class="mgs" style="animation-delay:-${Date.now()%1800}ms">✦</span>`:""}</div>`;
   }).join("");
 
-  renderBlueprintCells();renderElementTiles();if($('greenhouseP').style.display==='flex')renderGreenhousePanel();
+  renderBlueprintCells();renderElementTiles();if(typeof renderWorkshopMomentumBars==='function')renderWorkshopMomentumBars();if($('greenhouseP').style.display==='flex')renderGreenhousePanel();
   $("tools").innerHTML=`<div class="tl2">模具</div>
     <span class="dm" data-drag="mold">${mold(MQ[0],"","f")}</span>
     <div class="mq">${MQ.slice(1,3).map(m=>mold(m,"","")).join("")}</div>`;

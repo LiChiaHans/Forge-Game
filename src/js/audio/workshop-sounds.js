@@ -16,7 +16,9 @@ function workshopToolSound(kind){
   upgrade:[{type:'triangle',hz:523,end:523,delay:0,time:.1,volume:.03},{type:'triangle',hz:659,end:659,delay:.065,time:.1,volume:.032},{type:'triangle',hz:784,end:784,delay:.13,time:.12,volume:.034},{type:'sine',hz:1046,end:1318,delay:.195,time:.24,volume:.036}],
   heal:[{type:'sine',hz:440,end:440,delay:0,time:.18,volume:.028},{type:'sine',hz:554,end:554,delay:.07,time:.2,volume:.03},{type:'sine',hz:659,end:659,delay:.14,time:.22,volume:.032},{type:'triangle',hz:880,end:1108,delay:.21,time:.3,volume:.026}],
   essence:[{type:'sine',hz:620,end:930,delay:0,time:.18,volume:.028},{type:'triangle',hz:930,end:1395,delay:.06,time:.22,volume:.024},{type:'sine',hz:1395,end:1860,delay:.13,time:.22,volume:.018}],
-  spice:[{type:'triangle',hz:580,end:880,delay:0,time:.14,volume:.026},{type:'sine',hz:880,end:1320,delay:.06,time:.18,volume:.022},{type:'sine',hz:1174,end:1568,delay:.12,time:.18,volume:.016}]
+  spice:[{type:'triangle',hz:580,end:880,delay:0,time:.14,volume:.026},{type:'sine',hz:880,end:1320,delay:.06,time:.18,volume:.022},{type:'sine',hz:1174,end:1568,delay:.12,time:.18,volume:.016}],
+  combo:[{type:'triangle',hz:587,end:587,delay:0,time:.08,volume:.03},{type:'triangle',hz:880,end:880,delay:.055,time:.1,volume:.034},{type:'sine',hz:1174,end:1480,delay:.11,time:.18,volume:.032}],
+  fever:[{type:'sawtooth',hz:261,end:523,delay:0,time:.16,volume:.025},{type:'triangle',hz:523,end:784,delay:.07,time:.18,volume:.032},{type:'triangle',hz:784,end:1046,delay:.14,time:.22,volume:.036},{type:'sine',hz:1046,end:1568,delay:.21,time:.32,volume:.034}]
  };
  for(const v of (profiles[kind]||[])){const osc=a.createOscillator(),g=a.createGain(),at=a.currentTime+v.delay;osc.type=v.type;osc.frequency.setValueAtTime(v.hz,at);osc.frequency.exponentialRampToValueAtTime(v.end,at+v.time);g.gain.setValueAtTime(.0001,at);g.gain.linearRampToValueAtTime(v.volume,at+.008);g.gain.exponentialRampToValueAtTime(.0001,at+v.time);osc.connect(g);g.connect(a.destination);osc.onended=()=>{osc.disconnect();g.disconnect();};osc.start(at);osc.stop(at+v.time+.02);}
 }

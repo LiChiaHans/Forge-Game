@@ -55,8 +55,8 @@ function bossIntent(b){const next=(b.enemyTurns||0)+1,m=b.monster;if(m.kind==='d
 function guardBattle(b){if(!b||b.resolved||b.outcome!=='ongoing'||b.guardUsed)return false;b.guardUsed=true;b.guarding=true;b.guardRemainingMs=EXPEDITION_GUARD_MS;b.effectStamp=Date.now();return true;}
 function useExpeditionGuard(){syncExpeditionEffects();if(guardBattle(expeditionState.lastBattle))renderExpeditionBattle();}
 function expeditionBattleState(w,monster){
- const base=weaponStats(w),mb=medalBonuses(),effective=Math.min(20,base.stacks||0);
- const stats={...base,atk:Math.round(base.atk*(1+mb.battleAtk)),def:Math.round(base.def*(1+mb.battleDef)),spd:Math.round(base.spd*(1+mb.battleSpd)),arcane:base.arcane+effective*mb.enchantExtra,ward:base.ward+effective*mb.enchantExtra};
+ const base=weaponStats(w),mb=medalBonuses(),cb=typeof contractBonuses==='function'?contractBonuses():{battleAtk:0,battleDef:0},effective=Math.min(20,base.stacks||0);
+ const stats={...base,atk:Math.round(base.atk*(1+mb.battleAtk+(cb.battleAtk||0))),def:Math.round(base.def*(1+mb.battleDef+(cb.battleDef||0))),spd:Math.round(base.spd*(1+mb.battleSpd)),arcane:base.arcane+effective*mb.enchantExtra,ward:base.ward+effective*mb.enchantExtra};
  const hpMax=100+stats.def*2,shield=stats.ward+Math.round(hpMax*mb.battleStartShield);
  return initCombatTraits({weapon:JSON.parse(JSON.stringify(w)),monster:JSON.parse(JSON.stringify(monster)),stats,hpMax,hp:hpMax,shield,enemyHp:monster.hp,heroClock:1000/Math.max(1,stats.spd),enemyClock:1000/Math.max(1,monster.spd),enemyDef:monster.def,skillUsed:false,guardUsed:false,guarding:false,guardRemainingMs:0,foodRecovered:0,enemyTurns:0,bossHardened:false,outcome:'ongoing',resolved:false,log:[]});
 }
@@ -127,7 +127,7 @@ function useExpeditionSkill(){syncExpeditionEffects();const b=expeditionState.la
 function settleExpeditionBattle(b){
  if(!b||b.resolved||b.outcome==='ongoing')return;stopExpeditionPlayback();b.resolved=true;b.guarding=false;b.guardRemainingMs=0;b.chargeName=null;b.chargeRemainingMs=0;
  if(b.outcome==='win'&&!expeditionCleared(b.stage)){
-  b.gold=Math.round(b.monster.gold*(1+medalBonuses().expeditionGold));b.loot=b.stage<20?{k:'bp',id:b.stage}:null;coins+=b.gold;earned+=b.gold;dEarn+=b.gold;expeditionState.victories++;expeditionState.wonToday.push(b.stage);if(b.stage<20){expeditionState.cleared.push(b.stage);grantBlueprintItem(b.stage);}else expeditionState.endless=Math.max(expeditionState.endless||0,b.stage-19);expeditionState.unlocked=b.stage+1;
+  b.gold=Math.round(b.monster.gold*(1+medalBonuses().expeditionGold+(typeof contractBonuses==='function'?contractBonuses().expeditionGold||0:0)));b.loot=b.stage<20?{k:'bp',id:b.stage}:null;coins+=b.gold;earned+=b.gold;dEarn+=b.gold;expeditionState.victories++;expeditionState.wonToday.push(b.stage);if(b.stage<20){expeditionState.cleared.push(b.stage);grantBlueprintItem(b.stage);}else expeditionState.endless=Math.max(expeditionState.endless||0,b.stage-19);expeditionState.unlocked=b.stage+1;
  }else if(b.outcome==='lose'&&!sandboxSession)lives=Math.max(0,lives-1);
  syncAchievementMedals();if(lives<=0)removeSave(runId);saveHi();render();saveNow();
  reviewMetrics.battles.push({stage:b.stage+1,result:b.outcome==='win'?'勝利':b.outcome==='lose'?'生命歸零':'回合上限或撤退',supplies:b.foodUsed||0});reviewMetrics.battles=reviewMetrics.battles.slice(-50);saveReviewProgress();

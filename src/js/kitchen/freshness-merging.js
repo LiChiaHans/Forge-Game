@@ -1,7 +1,7 @@
 
 const kitchenMergeQueue=[],kitchenMergeJobs=new Set();let kitchenMergeEpoch=0,kitchenGuestSerial=0;
 const KITCHEN_WASTE_FEE=50;
-function kitchenShelfLife(w){return w?.k==='w'?32+6*kitchenLevel('fresh')+medalBonuses().dishFreshBonus:0;}
+function kitchenShelfLife(w){const extra=typeof contractBonuses==='function'?(contractBonuses().kitchenFreshBonus||0):0;return w?.k==='w'?32+6*kitchenLevel('fresh')+medalBonuses().dishFreshBonus+extra:0;}
 function kitchenFreshen(w){if(!w)return w;if(w.k==='o'||w.k==='p'){delete w.fresh;delete w.born;}else if(w.k==='w'){w.fresh=kitchenShelfLife(w);w.born=kitchen.turn+1;}return w;}
 function kitchenEnsureFresh(w){if(w?.k==='o'||w?.k==='p')return kitchenFreshen(w);if(w?.k==='w'&&!Number.isFinite(w.fresh))kitchenFreshen(w);return w;}
 function kitchenWasteArt(){return gardenWasteSVG();}

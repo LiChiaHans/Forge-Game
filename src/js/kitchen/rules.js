@@ -41,20 +41,31 @@ function kitchenCraft(at,silent=false){
  const triples=kitchenTriples(at);if(!triples.length){if(!silent)kitchen.message='三份備料需要排成直線或彎線。';return false;}
  const old=kitchen.crafted,batches=triples.map(t=>({...t,parts:t.cells.map(i=>({...kitchen.g[i]}))})),made=[],paths=new Map();
  for(const batch of batches){const key=batch.path.join(',');if(!paths.has(key))paths.set(key,{cells:batch.path,parts:batch.path.map(i=>({...kitchen.g[i]}))});}
- const consumed=new Set(batches.flatMap(batch=>batch.cells));for(const i of consumed){kitchen.g[i]=null;kitchen.heat[i]=Math.max(2,8-2*kitchenLevel('cool'));kitchen.justHeated.add(i);}
- for(const batch of batches){const trio=batch.parts,c=COMBO.indexOf(trio.map(p=>p.s).sort().join('')),t=Math.floor(trio.reduce((sum,p)=>sum+p.t,0)/3);if(c<0)continue;
-  const target=batch.target,w=kitchenFreshen({k:'w',c,t,cs:trio.map(p=>p.t),spice:kitchen.tiles[target]||null});kitchen.g[target]=w;
+ const cb=typeof contractBonuses==='function'?contractBonuses():{};
+ const consumed=new Set(batches.flatMap(batch=>batch.cells));
+ const hadHotBatch=batches.map(batch=>batch.cells.some(i=>nb(i).some(n=>!consumed.has(n)&&kitchen.heat[n]>0)));
+ const baseHeat=Math.max(2,8-2*kitchenLevel('cool')-(cb.kitchenHeatDelta||0));
+ const stoveHeat=typeof isWorkshopFever==='function'&&isWorkshopFever('kitchen')?Math.max(1,Math.ceil(baseHeat/2)):baseHeat;
+ for(const i of consumed){kitchen.g[i]=null;kitchen.heat[i]=stoveHeat;kitchen.justHeated.add(i);}
+ for(let bi=0;bi<batches.length;bi++){const batch=batches[bi],trio=batch.parts,c=COMBO.indexOf(trio.map(p=>p.s).sort().join('')),t=Math.floor(trio.reduce((sum,p)=>sum+p.t,0)/3);if(c<0)continue;
+  const target=batch.target,w=kitchenFreshen({k:'w',c,t,cs:trio.map(p=>p.t),spice:kitchen.tiles[target]||null,...(batches.length>=2?{chainBonus:true}:{}),...(cb.emberTemper&&hadHotBatch[bi]?{emberDish:true}:{})});kitchen.g[target]=w;
   const key=c+':'+t,prev=kitchen.xp[key]||0;kitchen.xp[key]=prev+1;kitchen.crafted++;rememberDish(w);(kitchen.forgedAt||(kitchen.forgedAt={}))[target]=Date.now();made.push(KITCHEN_NAMES[c]);
   if(Math.floor((prev+1)/3)>Math.floor(prev/3)&&prev<9){kitchenLevelUps.add(w);toast(KITCHEN_NAMES[c]+' 升星！');}kitchenRecordMerge(batch.cells,trio,[target],target);
+ }
+ if(typeof addWorkshopFever==='function'&&made.length){
+  addWorkshopFever('kitchen',16*made.length+(made.length>=2&&cb.twinCraft?20:0));
+  if(made.length>=2)triggerChainComboFX('kitchenGrid',made.length,'🔥 CHAIN ×'+made.length+' 連續上菜！');
  }
  // Return one ingredient per consumed chain, as in embryo forging; never overwrite a dish.
  for(const path of paths.values()){const free=path.cells.filter(i=>!kitchen.g[i]);if(!free.length)continue;const target=free[rnd(free.length)],chance=[0,0,.25,.5][kitchenLevel('merge')],tier=Math.random()<chance?path.parts[rnd(path.parts.length)].t:0;kitchen.g[target]=kitchenFood(tier);kitchenAuto(target);}
  syncAchievementMedals();reviewMetrics.crafted+=kitchen.crafted-old;kitchen.message='料理完成：'+made.join('、')+'！拖曳到客人即可出餐。';return true;
 }
 function kitchenStep(){
+ const feverOn=typeof isWorkshopFever==='function'&&isWorkshopFever('kitchen');
  kitchenSpecial().locked=true;kitchen.turn++;kitchen.heat=kitchen.heat.map((h,i)=>h>0&&!kitchen.justHeated.has(i)?h-1:h);kitchen.justHeated.clear();
- kitchenTickFreshness();
- const expired=[];kitchen.orders.forEach((o,i)=>{if(--o.wait<=0)expired.push(i);});kitchen.missed+=expired.length;
+ if(!feverOn)kitchenTickFreshness();
+ const expired=[];if(!feverOn)kitchen.orders.forEach((o,i)=>{if(--o.wait<=0)expired.push(i);});kitchen.missed+=expired.length;
+ if(typeof tickWorkshopFever==='function')tickWorkshopFever('kitchen');
  for(let k=expired.length-1;k>=0;k--)kitchenRemoveOrder(expired[k]);
  if(expired.length){lives=Math.max(sandboxSession?1:0,lives-expired.length);kitchen.message+=' 訂單超時，生命 -'+expired.length+'。';if(lives<=0){saveHi();gameOver('晚餐訂單超時，最後一顆愛心已用完。');return;}}
  if(!kitchen.orders.length&&!kitchen.queue.length)completeKitchenNight();
@@ -76,8 +87,9 @@ function kitchenClick(i){
 }
 function kitchenSell(w,index,clear){
  if(!expandedGameEnabled()||!kitchen||kitchen.done)return false;const order=kitchen.orders[index];if(!order||w?.k!=='w')return false;if(order.c!==null&&order.c!==w.c){kitchen.message='這位客人需要'+KITCHEN_NAMES[order.c]+'。';return false;}if(w.t<order.t){kitchen.message='品質需要'+KITCHEN_GRADES[order.t]+'級以上。';return false;}
- const failed=kitchenRequirementFailure(w,order);if(failed){kitchen.message=failed;return false;}const menuBonus=kitchenMenuBonus(w),statBonus=order.need?.1:0,like=guestPreferenceBonus(w,order,true),medalBonus=medalBonuses().dishSale,price=Math.round(kitchenPrice(w)*(1+like)*(1+menuBonus)*(1+statBonus)*(1+medalBonus));if(menuBonus)kitchenSpecial().sold++;coins+=price;earned+=price;dEarn+=price;all++;kitchen.earned+=price;kitchen.served++;reviewMetrics.served++;if(kitchen.challenge===1&&COMBO[w.c].split('').filter(s=>s==='2').length>=2)kitchen.progress++;if(kitchen.challenge===2&&(w.t>=2||kitchenStars(w)>=1))kitchen.progress++;
- recordFestival('food',w);clear();kitchenRemoveOrder(index);kitchen.message='出餐成功！'+KITCHEN_NAMES[w.c]+' +'+price+' 金幣'+(like?' · 喜好 +10%':'')+(menuBonus?' · 主打 +20%':'')+(statBonus?' · 狀態訂單 +10%':'')+(medalBonus?' · 紀念章 +'+Math.round(medalBonus*100)+'%':'');if(!kitchen.orders.length&&!kitchen.queue.length)completeKitchenNight();else kitchenStep();saveHi();renderKitchen();saveNow();return true;
+ const failed=kitchenRequirementFailure(w,order);if(failed){kitchen.message=failed;return false;}const menuBonus=kitchenMenuBonus(w),statBonus=order.need?.1:0,like=guestPreferenceBonus(w,order,true),medalBonus=medalBonuses().dishSale,momBonus=typeof kitchenSaleMomentumBonus==='function'?kitchenSaleMomentumBonus(w,order):0,price=Math.round(kitchenPrice(w)*(1+like)*(1+menuBonus)*(1+statBonus)*(1+medalBonus)*(1+momBonus));if(menuBonus)kitchenSpecial().sold++;coins+=price;earned+=price;dEarn+=price;all++;kitchen.earned+=price;kitchen.served++;reviewMetrics.served++;if(kitchen.challenge===1&&COMBO[w.c].split('').filter(s=>s==='2').length>=2)kitchen.progress++;if(kitchen.challenge===2&&(w.t>=2||kitchenStars(w)>=1))kitchen.progress++;
+ if(typeof addWorkshopFever==='function')addWorkshopFever('kitchen',18+(contractBonuses().saleFever||0));
+ recordFestival('food',w);clear();kitchenRemoveOrder(index);kitchen.message='出餐成功！'+KITCHEN_NAMES[w.c]+' +'+price+' 金幣'+(like?' · 喜好 +10%':'')+(menuBonus?' · 主打 +20%':'')+(statBonus?' · 狀態訂單 +10%':'')+(medalBonus?' · 紀念章 +'+Math.round(medalBonus*100)+'%':'')+(momBonus?' · 契約／狂熱 +'+Math.round(momBonus*100)+'%':'');if(!kitchen.orders.length&&!kitchen.queue.length)completeKitchenNight();else kitchenStep();saveHi();renderKitchen();saveNow();return true;
 }
 function completeKitchenNight(){
  if(!kitchen||kitchen.done)return;kitchen.done=true;const c=KITCHEN_CHALLENGES[kitchen.challenge],passed=c.kind==='rush'?kitchen.served>=kitchen.total&&kitchen.missed===0:kitchen.progress>=c.goal,paid=kitchen.lastRewarded!==day;

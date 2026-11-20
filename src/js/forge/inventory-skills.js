@@ -79,7 +79,9 @@ const cool=()=>{
   heat=heat.map((h,j)=>h>0&&!justHeated.has(j)?h-1:h);
   justHeated.clear();stepSales=0;
   quests.forEach(q=>{if(q&&q.s==='a'&&q.t==='multi')q.p=0});
-  orders.forEach(o=>o.wait--);
+  const feverOn=typeof isWorkshopFever==='function'&&isWorkshopFever('forge');
+  if(!feverOn)orders.forEach(o=>o.wait--);
+  if(typeof tickWorkshopFever==='function')tickWorkshopFever('forge');
 };
 const hu=o=>{
   const r=Math.max(0,Math.min(1,o.wait/o.max));

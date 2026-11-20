@@ -45,7 +45,7 @@ const recipe=c=>COMBO[c].split("").map(x=>TY[x]).join("");
 const oPrice=o=>o.c===null?PR[o.t]:Math.round(price(o.t,o.c)*1.3);
 const medalWeaponSaleBonus=w=>{const b=medalBonuses();return b.weaponSale+(validElement(w?.element)?b.elementWeaponSale:0);};
 const salePrice=(w,o)=>Math.round(
-  Math.round((wp(w)*(o.c===null?1:1.3)*pat(o)+(w.m||0))*(1+.1*sk('mc'))*(1+seasonSaleBonus(w)))*(1+guestPreferenceBonus(w,o,false))*(1+medalWeaponSaleBonus(w))
+  Math.round((wp(w)*(o.c===null?1:1.3)*pat(o)+(w.m||0))*(1+.1*sk('mc'))*(1+seasonSaleBonus(w)))*(1+guestPreferenceBonus(w,o,false))*(1+medalWeaponSaleBonus(w))*(1+(typeof forgeSaleMomentumBonus==='function'?forgeSaleMomentumBonus(w,o):0))
 );
 
 function ov(t,p,b,f){

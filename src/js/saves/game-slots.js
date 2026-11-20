@@ -17,7 +17,7 @@ function saveNow(){
   g,coins,earned,all,day,dTot,dServed,dEarn,dLeft,orders,dq,best,Q,MQ,
   heat,hand,shopD,magic,magicSet:[...magicSet],dMagic,dSold,lives,
   skills,pack,sp,bag,gachaUsed,skillDone,spentToday,phase,quests,qDone,dLv,pendingChests,lastCompletedDay,expedition:expeditionState,legendProjects,blueprintGoalId,collections:snapshotRunCollections(),ecology:snapshotEcology(),orderCapVersion:1,city:snapshotCity(),avatar:normalizeAvatar(playerAvatar),
-  shopBought,leaves:[...leaves],frozen:[...frozen],seasonVersion:1,seasonNoticePending,seasonCraft:{day,charges:autumnForgeCharges},weaponMastery:snapshotWeaponMastery()
+  shopBought,leaves:[...leaves],frozen:[...frozen],seasonVersion:1,seasonNoticePending,seasonCraft:{day,charges:autumnForgeCharges},weaponMastery:snapshotWeaponMastery(),momentum:snapshotWorkshopMomentum()
  };
  const e={
   id:runId,name:playerName||"玩家",date:runDate,time:runTime,avatar:normalizeAvatar(playerAvatar),
@@ -65,8 +65,8 @@ function loadGame(id){
   stepSales=0;justHeated.clear();ensureQuests();
   tool=-1;fresh=-1;fx=[];hold=new Set();pop=new Set();shown=new Map();
   restoreRestaurant(t.restaurant);enter.clear();busy=false;tutP2=false;lead=0;flyI=-1;exitMs=0;active=true;
-  ["forgeSettlementP","ov","cf","sk","rw","gcP","svP","recP","help","seasonP","townLootP","townSkillP","expeditionP","weaponStatsP","legendBlueprintP","blueprintProjectP","avatarCreatorP","greenhouseP","seedP"].forEach(x=>$(x).style.display="none");
-  $("title").style.display="none";clearPrediction();render();
+  ["forgeSettlementP","ov","cf","sk","rw","gcP","svP","recP","help","seasonP","townLootP","townSkillP","townContractP","expeditionP","weaponStatsP","legendBlueprintP","blueprintProjectP","avatarCreatorP","greenhouseP","seedP"].forEach(x=>$(x).style.display="none");
+  $("title").style.display="none";clearPrediction();restoreWorkshopMomentum(t.momentum);render();
   restoreWeaponMastery(t.weaponMastery);render();
   restoreTownProgress(t);
   showPendingSeasonNotice();

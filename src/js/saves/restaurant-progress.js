@@ -17,7 +17,7 @@ function openFormalProgress(){
  $('reviewProgressP').querySelector('.modal-x').setAttribute('aria-label','關閉遊戲進度');
  if(sandboxSession){openReviewProgress();return;}saveNow();const m=reviewMetrics,last=m.battles.at(-1);$('reviewProgressBody').innerHTML='<p>遊戲會自動保存。備份包含冶煉廠、餐廳、冰箱、料理經驗、技能與日夜城鎮，可在其他裝置還原。</p><button class="exp-wide" onclick="saveNow();toast(\'遊戲進度已保存\')">立即保存</button><button class="exp-wide" onclick="closeP(\'reviewProgressP\');openBackup()">匯出／還原完整遊戲備份</button><hr><h3>本局遊玩紀錄</h3><p>製作 '+m.crafted+' 道 · 出餐 '+m.served+' 道 · 腐壞 '+m.spoiled+' 份 · 遠征補給 '+m.supplies+' 份</p><p>冰箱留存 '+(kitchen?.pack.length||0)+' 份 · 完成晚餐 '+m.nights+' 次，平均 '+(m.nights?Math.round(m.nightTurns/m.nights):0)+' 步。</p><p>'+(last?'最近遠征：第 '+last.stage+' 關，'+esc(last.result)+'，使用 '+last.supplies+' 份料理。':'尚無遠征結算。')+'</p><p>遊玩紀錄留在本機；排行榜沿用玩家的個人最高紀錄。</p>';$('reviewProgressP').querySelector('h2').textContent='💾 遊戲進度';$('reviewProgressP').style.display='flex';
 }
-function kitchenStockRemaining(kind){return sandboxSession?99:Math.max(0,({m:3,tool:1,o:3}[kind]||0)-(kitchen.stock[kind]||0));}
+function kitchenStockRemaining(kind){const extra=typeof contractBonuses==='function'?(contractBonuses().shopExtra||0):0;return sandboxSession?99:Math.max(0,({m:3,tool:1,o:3}[kind]||0)+extra-(kitchen.stock[kind]||0));}
 function productionEndForgeDay(){
  if(day<1||sandboxNight||lives<=0||orders.length||dq.length)return;
  if(lastCompletedDay>=day){renderForgeSettlement();return;}
