@@ -1,0 +1,318 @@
+/* ==========================================================================
+   1. Business Treasure Chest Showcase (#townLootP)
+   2. Autumn Leaf Fix (removes legacy double-leaf overlap)
+   3. Kitchen Customer Order Overlap Fix (prevents avatar blocking ≥ text)
+   4. Refined Forge & Kitchen Item / Shop / Bag UIs
+   5. iPhone 15 Pro Max (430×932, Dynamic Island & Home Indicator) Polish
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. BUSINESS TREASURE CHEST MODAL (#townLootP)
+   -------------------------------------------------------------------------- */
+#townLootP{background:#090606e0}
+#townLootP .hp{
+ position:relative;max-width:392px;padding:18px 16px;text-align:center;
+ border:2px solid #d6aa57;border-radius:11px;
+ background:
+  radial-gradient(95% 45% at 50% 18%,#ffd77028 0%,transparent 68%),
+  linear-gradient(180deg,#30241c 0%,#1d1512 58%,#15100e 100%);
+ box-shadow:inset 0 0 0 4px #18110e,inset 0 0 0 5px #c99d4e38,0 24px 52px #040202e0;
+ color:#f6ecd4
+}
+#townLootP h2{
+ margin:0 36px 10px;font-family:'Noto Serif TC',serif;font-size:22px;font-weight:900;
+ letter-spacing:1.2px;color:#ffe8a3;text-shadow:0 2px 0 #1c110b
+}
+#townLootArt{
+ width:132px;height:132px;margin:8px auto 12px;padding:12px;box-sizing:border-box;
+ border-radius:50%;border:1.5px solid #cfa35288;
+ background:radial-gradient(circle,#ffe18a33 0%,#281e1599 58%,#140f0cdd 100%);
+ box-shadow:inset 0 0 22px #090604aa,0 6px 20px #05030288;
+ display:flex;align-items:center;justify-content:center
+}
+#townLootArt>svg{width:100%;height:100%;display:block;filter:drop-shadow(0 4px 6px #090604aa)}
+.town-loot-item{
+ width:82px;height:82px;display:flex;align-items:center;justify-content:center;
+ animation:town-loot-pop .38s cubic-bezier(.22,1.35,.36,1) both
+}
+.town-loot-item>*{width:100%;height:100%}
+.town-loot-item svg{width:100%;height:100%;display:block;filter:drop-shadow(0 3px 6px #090604aa)}
+@keyframes town-loot-pop{0%{transform:scale(.45);opacity:0}100%{transform:scale(1);opacity:1}}
+#townLootName{
+ margin:4px 0 6px;font-family:'Noto Serif TC',serif;font-size:19px;font-weight:900;
+ color:#fff1c4
+}
+#townLootRemaining{
+ margin:0 0 14px;padding:6px 10px;border:1px solid #8a6d4088;border-radius:6px;
+ background:#17110ed6;color:#e5d6b5;font-size:13px;line-height:1.5
+}
+#townLootP .town-dialog-actions{display:flex;gap:10px}
+#townLootP .town-dialog-actions button{flex:1;min-height:44px;font-size:15px;font-weight:800;border-radius:7px}
+#townLootOpen{
+ border:1.5px solid #f6d57a!important;
+ background:linear-gradient(180deg,#b4802c 0%,#7a5116 100%)!important;background-image:none!important;
+ color:#fff8dc!important;text-shadow:0 1px 0 #452a08;
+ box-shadow:inset 0 1px 0 #fff2be66,0 4px 12px #07040299
+}
+#townLootOpen:disabled{
+ border-color:#594d3b!important;background:#241e19!important;color:#8e8372!important;
+ box-shadow:none;text-shadow:none
+}
+.town-chest-shimmer{animation:town-chest-shine 2.4s ease-in-out infinite alternate}
+
+
+/* --------------------------------------------------------------------------
+   2. AUTUMN LEAF BOARD FIX (Eliminates legacy base64 double-leaf overlap)
+   -------------------------------------------------------------------------- */
+.season-cell.leaf{
+ background-image:none!important;
+ background:radial-gradient(circle at 50% 54%,#e8923836 0%,#5e2c1438 100%)!important;
+ box-shadow:inset 0 0 0 1px #e8a8526e,inset 0 0 8px #3d180a66!important;
+ color:inherit
+}
+.season-cell.leaf svg{
+ width:82%;height:82%;display:block;
+ filter:drop-shadow(0 2px 2px #1a0c0699);
+ image-rendering:pixelated
+}
+.season-cell.burning{
+ background-image:none!important;
+ background:radial-gradient(circle,#ff9d3b55 0%,#c9381e38 100%)!important;
+ color:inherit
+}
+.season-cell.burning svg{width:76%;height:76%;display:block}
+.season-cell.burning img{position:absolute;inset:8%;width:84%;height:84%;object-fit:contain;pointer-events:none}
+
+
+/* --------------------------------------------------------------------------
+   3. KITCHEN & FORGE ORDER AVATAR OVERLAP FIX (≥ text always unobstructed)
+   -------------------------------------------------------------------------- */
+.kitchen-order>.order-guest{
+ left:2%;top:17%;width:21%;height:33%;z-index:1
+}
+.kitchen-order>div:not(.kitchen-recipe-strip){position:relative;z-index:2}
+.kitchen-order>b{
+ position:relative;z-index:3;max-width:100%;
+ padding:1px 4px;border-radius:3px;
+ background:#f0dfb6cc;color:#3d2b1c;font-weight:900;
+ box-sizing:border-box
+}
+.kitchen-order .kitchen-recipe-strip,
+.kitchen-order .kitchen-any-recipe,
+.kitchen-order .kitchen-stat-need{position:relative;z-index:3}
+.od>.order-guest{left:3%;top:20%;width:22%;height:38%;z-index:1}
+.od .order-name,.od .rc{position:relative;z-index:2}
+
+
+/* --------------------------------------------------------------------------
+   4. REFINED FORGE & KITCHEN ITEM / SHOP / BAG UI
+   -------------------------------------------------------------------------- */
+.forge-tool-icon{
+ display:inline-flex;align-items:center;justify-content:center;
+ width:44px;height:44px;padding:3px;box-sizing:border-box;
+ border-radius:8px;border:1.5px solid #8a7858;
+ background:radial-gradient(circle,#ffffff1c 0%,#141a24e6 74%);
+ box-shadow:inset 0 1px 0 #ffffff24,0 2px 5px #070a1088;
+ flex:none
+}
+.forge-tool-icon svg{width:100%;height:100%;display:block;image-rendering:pixelated;filter:drop-shadow(0 1px 2px #090d14aa)}
+.forge-tool-icon[data-tool="f"]{border-color:#d8784c;background:radial-gradient(circle,#ff803838 0%,#281517e8 74%)}
+.forge-tool-icon[data-tool="u"]{border-color:#6cb4f2;background:radial-gradient(circle,#68b8ff38 0%,#162336e8 74%)}
+.forge-tool-icon[data-tool="z"]{border-color:#84dff7;background:radial-gradient(circle,#82e6ff38 0%,#142836e8 74%)}
+.forge-tool-icon[data-tool="l"]{border-color:#eb7a98;background:radial-gradient(circle,#ff6e9638 0%,#2b1520e8 74%)}
+#handSlot .forge-tool-icon,.drag .forge-tool-icon{width:46px;height:46px}
+
+/* Forge Shop (#shopP) & Item Bag (#bagP) */
+#shopP .hp,#bagP .hp{
+ position:relative;max-width:448px;padding:17px 14px 18px;
+ border:2px solid #c49b56;border-radius:10px;
+ background:
+  radial-gradient(100% 35% at 50% 0%,#e5b65c20 0%,transparent 70%),
+  linear-gradient(180deg,#272e3a 0%,#1a202a 58%,#131821 100%);
+ box-shadow:inset 0 1px 0 #ffe9ad33,inset 0 -3px 0 #0a0e15cc,0 22px 48px #04070cdd;
+ color:#f4ead3
+}
+#shopP h2,#bagP h2{
+ margin:0 44px 10px;padding-bottom:8px;text-align:center;
+ font-family:'Noto Serif TC',serif;font-size:21px;font-weight:900;letter-spacing:1.2px;
+ color:#ffe6a1;border-bottom:1px solid #c49b5644;text-shadow:0 2px 0 #141922
+}
+#bagP .hp>p{
+ margin:0 0 12px;padding:7px 10px;border:1px solid #5c667a88;border-left:3px solid #d4aa57;
+ border-radius:6px;background:#111620cc;color:#d6dce6;font-size:12.5px;line-height:1.5
+}
+#shop .sh{
+ display:flex;align-items:center;justify-content:space-between;gap:8px;
+ margin:13px 0 7px;padding:5px 9px;border:1px solid #7d6b4a77;border-left:3px solid #e6be66;
+ border-radius:5px;background:#171d28d8;color:#f5d88d;
+ font-family:'Noto Serif TC',serif;font-size:14.5px;font-weight:800;letter-spacing:.5px
+}
+#shop .shop-stock{
+ padding:1px 8px;border-radius:99px;border:1px solid #967a48;
+ background:#252118;color:#ffe69e;font-family:'Noto Sans TC',sans-serif;
+ font-size:11.5px;font-weight:800
+}
+#shop .sg{gap:7px}
+#shop .sg.sg-tools{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#shop .si,#bagC .si{
+ display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;
+ padding:9px 6px 8px;border:1.5px solid #666b78;border-radius:8px;
+ background:linear-gradient(180deg,#2b3342 0%,#1d232f 100%);background-image:none;
+ color:#f4ebd4;box-shadow:inset 0 1px 0 #ffffff18,0 3px 8px #070a1088;
+ transition:transform .12s ease,border-color .14s ease,box-shadow .14s ease
+}
+#shop .si:not(:disabled):hover,#bagC .si:hover{
+ transform:translateY(-1px);border-color:#e4be6c;
+ box-shadow:inset 0 1px 0 #fff1bf33,0 5px 12px #06090faa
+}
+#shop .si:disabled{opacity:.52;filter:saturate(.6)}
+#shop .si small,#bagC .si small{
+ font-size:12.5px;font-weight:800;color:#ffeba8;line-height:1.3
+}
+#shop .si .tool-desc{
+ font-size:11px;line-height:1.4;color:#c3cdd9;text-align:center
+}
+#bagC.sg4{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#bagC .si{min-height:92px;justify-content:center}
+#bagC .bag-item-art{display:flex;align-items:center;justify-content:center;width:48px;height:48px}
+#bagC .bag-item-art svg{width:100%;height:100%}
+
+/* Kitchen Market / Bag / Fridge Modal (#kitchenModal) */
+body.workshop-backend #kitchenModal>div{
+ padding:18px 14px 18px;border:2px solid #cfa662;border-radius:11px;
+ background:
+  radial-gradient(100% 34% at 50% 0%,#e5b66024 0%,transparent 70%),
+  linear-gradient(180deg,#30392f 0%,#202821 58%,#171e18 100%);
+ box-shadow:inset 0 1px 0 #ffe9ad38,inset 0 -3px 0 #0d140ecc,0 24px 52px #050a06dd;
+ color:#f5ebd2
+}
+#kitchenModal h2{
+ margin:0 42px 11px;padding-bottom:8px;text-align:center;
+ font-family:'Noto Serif TC',serif;font-size:21px;font-weight:900;letter-spacing:1.1px;
+ color:#ffe8a4;border-bottom:1px solid #cfa66244;text-shadow:0 2px 0 #161d17
+}
+#kitchenModal h3{
+ display:flex;align-items:center;gap:6px;margin:13px 0 7px;padding-bottom:4px;
+ border-bottom:1px solid #b5925444;font-family:'Noto Serif TC',serif;
+ font-size:15.5px;color:#f4d489
+}
+#kitchenModal .kitchen-tool-list{display:flex;flex-direction:column;gap:8px}
+#kitchenModal .kitchen-tool-list button{
+ display:flex;align-items:center;gap:10px;padding:9px 10px;text-align:left;
+ border:1.5px solid #7d7458;border-radius:8px;
+ background:linear-gradient(180deg,#343f34 0%,#232c24 100%);background-image:none;
+ box-shadow:inset 0 1px 0 #ffffff18,0 3px 8px #09100988;
+ transition:transform .12s ease,border-color .14s ease
+}
+#kitchenModal .kitchen-tool-list button:not(:disabled):hover{transform:translateY(-1px);border-color:#ecc46e}
+#kitchenModal .kitchen-tool-list button>svg,
+#kitchenModal .kitchen-tool-list .kitchen-bag-art{
+ flex:none;width:48px;height:48px;padding:4px;box-sizing:border-box;
+ border-radius:8px;border:1px solid #8c7b55;background:#17211ae8;
+ box-shadow:inset 0 1px 3px #09100999;position:relative
+}
+#kitchenModal .kitchen-tool-list button>span:last-child{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+#kitchenModal .kitchen-tool-list b{font-size:14.5px;color:#fff1c4}
+#kitchenModal .kitchen-tool-list small{font-size:11.5px;line-height:1.4;color:#cbd6c3}
+#kitchenModal .kitchen-tool-list strong{
+ align-self:flex-start;margin-top:3px;padding:2px 8px;border-radius:99px;
+ border:1px solid #c99d50;background:#3a2c18;color:#ffe698;font-size:12px;font-weight:800
+}
+#kitchenModal .kitchen-item-list{gap:8px}
+#kitchenModal .kitchen-item-list button{
+ padding:9px 6px 8px;border:1.5px solid #746d54;border-radius:8px;
+ background:linear-gradient(180deg,#333d32 0%,#222a23 100%);background-image:none;
+ box-shadow:inset 0 1px 0 #ffffff18,0 3px 7px #09100988;gap:4px
+}
+#kitchenModal .kitchen-item-list button:not(:disabled):hover{border-color:#ecc46e}
+#kitchenModal .kitchen-item-list button>svg{
+ width:48px;height:48px;padding:3px;border-radius:7px;border:1px solid #7f745488;
+ background:#17211be0
+}
+#kitchenModal .kitchen-item-list strong{
+ padding:1px 8px;border-radius:99px;border:1px solid #c79c50;
+ background:#382a17;color:#ffe598;font-size:12px
+}
+#kitchenModal .kitchen-bag-count{
+ position:absolute;right:-4px;bottom:-4px;padding:1px 5px;border-radius:99px;
+ border:1px solid #f0c970;background:#4c3314;color:#fff3c4;font-size:11px;font-weight:900
+}
+
+
+/* --------------------------------------------------------------------------
+   5. iPHONE 15 PRO MAX (430×932) & iOS SAFE-AREA GLOBAL OPTIMIZATION
+   -------------------------------------------------------------------------- */
+button,a,select,input{-webkit-tap-highlight-color:transparent}
+
+/* Dynamic Island top + Home Indicator bottom safe-area clearances */
+#title{
+ padding-top:max(20px,calc(env(safe-area-inset-top) + 12px));
+ padding-bottom:max(26px,calc(env(safe-area-inset-bottom) + 16px));
+ padding-left:max(16px,env(safe-area-inset-left));
+ padding-right:max(16px,env(safe-area-inset-right))
+}
+#townP .town-header{
+ padding-top:max(10px,calc(env(safe-area-inset-top) + 4px));
+ padding-left:max(12px,env(safe-area-inset-left));
+ padding-right:max(12px,env(safe-area-inset-right))
+}
+#app{
+ padding-top:max(8px,calc(env(safe-area-inset-top) + 4px));
+ padding-bottom:max(8px,calc(env(safe-area-inset-bottom) + 4px));
+ padding-left:max(8px,env(safe-area-inset-left));
+ padding-right:max(8px,env(safe-area-inset-right))
+}
+#kitchenP.kitchen-screen{
+ padding:
+  max(8px,calc(env(safe-area-inset-top) + 4px))
+  max(8px,env(safe-area-inset-right))
+  max(8px,calc(env(safe-area-inset-bottom) + 4px))
+  max(8px,env(safe-area-inset-left))
+}
+#toasts{top:max(12px,calc(env(safe-area-inset-top) + 6px))}
+#architectBar{bottom:max(10px,calc(env(safe-area-inset-bottom) + 6px))}
+#architectPanel{padding-bottom:max(12px,calc(env(safe-area-inset-bottom) + 8px))}
+#workshopFinish{bottom:max(calc(var(--viewport-height,100dvh) * .13),calc(env(safe-area-inset-bottom) + 26px))}
+
+/* Safe-area aware modal shells & smooth iOS momentum scroll */
+#help,#shopP,#colP,#qP,#sk,#bagP,#rw,#gcP,#recP,#nm,#svP,#pw,#cf,#ov,#seasonP,#townLootP,#townSkillP,#weaponAlbumP,#weaponInspectP,.exp-overlay,.city-modal,.kitchen-modal{
+ padding:
+  max(12px,calc(env(safe-area-inset-top) + 8px))
+  max(10px,env(safe-area-inset-right))
+  max(12px,calc(env(safe-area-inset-bottom) + 8px))
+  max(10px,env(safe-area-inset-left))!important
+}
+.hp,.kitchen-modal>div,.exp-overlay .hp,.city-modal .hp{
+ max-height:calc(var(--viewport-height,100dvh) - max(24px,calc(env(safe-area-inset-top) + 16px)) - max(24px,calc(env(safe-area-inset-bottom) + 16px)))!important;
+ -webkit-overflow-scrolling:touch;
+ overscroll-behavior:contain
+}
+
+/* Ergonomic thumb close buttons (Apple HIG) */
+.modal-x{
+ min-width:36px;min-height:36px;
+ display:inline-flex;align-items:center;justify-content:center
+}
+
+/* Prevent iOS Safari accidental input auto-zoom (<16px inputs zoom on focus) */
+@media(max-width:600px){
+ input:not([type="checkbox"]):not([type="range"]),select,textarea{font-size:16px!important}
+}
+
+/* iPhone 15 Pro Max / Large Tall Portrait Phones (410px–450px wide, ≥820px tall) */
+@media(min-width:405px) and (max-width:460px) and (min-height:820px){
+ #app{max-width:430px;gap:6px}
+ #app .bar2>button{min-height:38px;font-size:14.5px}
+ #orders{gap:6px}
+ #kitchenP.kitchen-screen{gap:6px}
+ #kitchenP nav>button{min-height:38px;font-size:14.5px}
+ #kitchenOrders{height:134px;gap:6px}
+ #kitchenP footer{min-height:86px}
+ #title button{min-height:48px}
+ .town-header{padding-bottom:10px}
+}
+
+@media(prefers-reduced-motion:reduce){
+ .town-loot-item,.town-chest-shimmer{animation:none!important}
+}
+.low-effects .town-loot-item,.low-effects .town-chest-shimmer{animation:none!important}

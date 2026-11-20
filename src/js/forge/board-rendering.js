@@ -93,7 +93,7 @@ function render(){
     '<div class="sh">模具<span class="shop-stock">今日剩餘 '+shopRemaining('m')+'/3</span></div>'
     +'<div class="sg">'+[0,1,2].map(m=>'<button class="si" data-m="'+m+'" '+(coins<MPR||!shopRemaining('m')?'disabled':'')+'>'+mold(m,'','f')+'<small>'+TY[m]+'模 💰'+MPR+'</small></button>').join('')+'</div>'
     +'<div class="sh">工具<span class="shop-stock">今日剩餘 '+shopRemaining('tool')+'/1</span></div>'
-    +'<div class="sg">'+toolItems.map(it=>'<button class="si" data-'+it.key+'="1" '+(coins<it.price||!shopRemaining('tool')?'disabled':'')+'><div class="q" style="background-color:'+it.color+'">'+it.icon+'</div><small>'+it.name+' 💰'+it.price+'</small><span class="tool-desc">'+it.description+'</span></button>').join('')+'</div>'
+    +'<div class="sg sg-tools">'+toolItems.map(it=>'<button class="si si-tool" data-'+it.key+'="1" '+(coins<it.price||!shopRemaining('tool')?'disabled':'')+'><span class="forge-tool-icon" data-tool="'+it.key+'">'+forgeToolArt(it.key)+'</span><small>'+it.name+' 💰'+it.price+'</small><span class="tool-desc">'+it.description+'</span></button>').join('')+'</div>'
     +'<div class="sh">礦石<span class="shop-stock">今日剩餘 '+shopRemaining('o')+'/3</span></div>'
     +'<div class="sg sg5">'+[0,1,2,3,4].map(t=>'<button class="si" data-o="'+t+'" '+(coins<OP[t]||!shopRemaining('o')?'disabled':'')+'><div class="q" style="background-color:'+C[t]+'">'+NM[t]+'</div><small>💰'+OP[t]+'</small></button>').join('')+'</div>'
     +'<div class="sh '+(sk('gc')?'':'nogc')+'">鑽石（每日庫存，各限購一個）</div>'

@@ -154,7 +154,8 @@
     "src/styles/34-gameplay-roadmap.css",
     "src/styles/35-festival-badges-board.css",
     "src/styles/36-distinct-halls-ui.css",
-    "src/styles/37-workshop-ui-and-fx.css"
+    "src/styles/37-workshop-ui-and-fx.css",
+    "src/styles/38-chest-items-autumn-iphone15pm.css"
   ],
   "workers": [
     "src/workers/media-cache.js"

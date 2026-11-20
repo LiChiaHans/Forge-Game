@@ -385,9 +385,10 @@ seedPacketArt	src/js/garden/elements-greenhouse.js	83
 essenceArt	src/js/garden/elements-greenhouse.js	84
 plantArt	src/js/garden/elements-greenhouse.js	85
 elementChartHTML	src/js/garden/elements-greenhouse.js	86
-ov	src/js/forge/items-prices.js	46
-nb	src/js/forge/items-prices.js	51
-group	src/js/forge/items-prices.js	59
+forgeToolArt	src/js/forge/items-prices.js	8
+ov	src/js/forge/items-prices.js	51
+nb	src/js/forge/items-prices.js	56
+group	src/js/forge/items-prices.js	64
 capDailyOrders	src/js/forge/orders-quests.js	2
 renderHarvestAlert	src/js/forge/orders-quests.js	7
 mkOrder	src/js/forge/orders-quests.js	13
@@ -592,8 +593,8 @@ cancelBlueprintProject	src/js/blueprints/board-projects.js	94
 restoreBlueprintProjects	src/js/blueprints/board-projects.js	98
 blueprintDragPreview	src/js/blueprints/board-projects.js	106
 autumnLeafArt	src/js/blueprints/board-projects.js	113
-legendWeaponSVG	src/js/blueprints/board-projects.js	117
-legendBlueprintSVG	src/js/blueprints/board-projects.js	118
+legendWeaponSVG	src/js/blueprints/board-projects.js	129
+legendBlueprintSVG	src/js/blueprints/board-projects.js	130
 normalizeAvatar	src/js/avatar/editor.js	14
 avatarSVG	src/js/avatar/editor.js	17
 renderAvatarBadges	src/js/avatar/editor.js	57

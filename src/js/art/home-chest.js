@@ -1,8 +1,54 @@
 const HOME_ART={"welcome":"assets/home/welcome.7a5efc768b9e.webp"};
 function syncHomeArt(){$('title').style.setProperty('--home-art','url("'+HOME_ART.welcome+'")');}
 function workshopChestSVG(open=false){
- const grain='<path fill="#815032" d="M16 45h12v1H16zM35 48h12v1H35zM19 52h9v1h-9zM40 57h10v1H40zM18 56h15v1H18z"/><path fill="#ddb26e" d="M17 42h9v1h-9zM36 45h11v1H36zM31 59h11v1H31z"/>';
- const glow=open?'<g class="town-chest-light"><path fill="#ffdf8e" opacity=".5" d="M19 33L8 5l17 14L37 1l8 22L65 7l-7 29z"/><path fill="#fff4bb" d="M21 15h2v5h-2zM45 4h3v7h-3zM62 16h3v3h-3zM11 25h3v3h-3z"/></g>':'';
- return '<svg viewBox="0 0 80 76" shape-rendering="crispEdges" aria-hidden="true" data-chest-art="cozy-oak">'+glow+'<path fill="#1d302b" opacity=".4" d="M7 62h52v9H7zM57 60h16v7H57z"/><path fill="#302f2b" d="M8 30l49 8 17-9v31l-17 11L8 61z"/><path fill="#ad7846" d="M11 35l44 7v24l-44-8z"/><path fill="#6b4c32" d="M58 42l13-8v23l-13 9z"/><path fill="#c18b4e" d="M13 37l40 6v5l-40-6zM13 50l40 7v7l-40-7z"/><path fill="#784a2c" d="M12 47l42 7v2l-42-7z"/>'+grain+'<path fill="#5c4932" d="M11 35l7 1v23l-7-1zM48 41l7 1v24l-7-1zM60 41l5-3v24l-5 3z"/><path fill="#d9ad56" d="M12 36l4 1v21l-4-1zM49 42l4 1v21l-4-1zM61 42l3-2v21l-3 2zM11 58l44 8v3l-44-8z"/><path fill="#f2cf7d" d="M12 36l2 1v19l-2-1zM49 42h2v20h-2z"/><path fill="#333c37" d="M64 48l5-3v9l-5 3z"/><path fill="#b8a26e" d="M65 48l3-2v6l-3 2z"/><g class="town-chest-lid '+(open?'is-open':'')+'"><path fill="#302f2b" d="M7 34V22h4v-6h6v-4h39l18 10v13l-17 10z"/><path fill="#bf8a4c" d="M11 31v-8h4v-5h6v-3h32v24z"/><path fill="#deb06a" d="M19 16h33v5H16v3h-4v7h-2v-9h5v-4h4z"/><path fill="#9d683e" d="M15 29l38 6v5l-42-7v-8h4z"/><path fill="#755032" d="M56 17l14 8v7l-14 8z"/><path fill="#9e7746" d="M57 18l10 6-10 6z"/><path fill="#624a32" d="M19 16h5v21l-5-1zM46 15h7v25l-7-1z"/><path fill="#e4bb64" d="M20 16h3v20l-3-1zM47 16h4v23l-4-1zM10 32l45 7 17-9v4L55 44 10 36z"/><path fill="#f6d687" d="M20 16h2v18h-2zM47 16h2v21h-2zM12 33l41 7v2l-41-7z"/><path fill="#986139" d="M28 23h14v1H28zM27 29h16v1H27z"/><path fill="#f3cf7e" d="M23 19h2v2h-2zM49 20h2v2h-2zM13 30h2v2h-2zM49 34h2v2h-2z"/></g><path fill="#58462f" d="M28 36l15 2v19l-15-2z"/><path fill="#e0b25d" d="M30 38l11 2v14l-11-2z"/><path fill="#ffe5a1" d="M31 39l8 1v3l-8-1z"/><path fill="#3e6557" d="M33 44h5v6h-5z"/><path fill="#97c9a0" d="M34 44h2v3h-2z"/><path fill="#f6d98d" d="M13 39h2v2h-2zM50 45h2v2h-2zM13 55h2v2h-2zM50 59h2v2h-2z"/></svg>';
+ const shadow='<ellipse cx="40" cy="68" rx="31" ry="6" fill="#0f1d1b" opacity=".46"/>';
+ const glow=open
+  ?'<g class="town-chest-light">'
+   +'<defs><radialGradient id="chest-aura" cx="50%" cy="62%" r="55%"><stop offset="0%" stop-color="#fff8c9" stop-opacity=".95"/><stop offset="45%" stop-color="#ffd56b" stop-opacity=".48"/><stop offset="100%" stop-color="#ffb83d" stop-opacity="0"/></radialGradient></defs>'
+   +'<ellipse cx="40" cy="34" rx="35" ry="26" fill="url(#chest-aura)"/>'
+   +'<path fill="#ffe899" opacity=".55" d="M21 38L10 8l17 16L40 2l13 22L70 8 59 38z"/>'
+   +'<path fill="#fffbe0" d="M18 14h2v6h-2zM16 16h6v2h-6zM60 12h2v6h-2zM58 14h6v2h-6zM39 5h2v7h-2zM36 8h8v2h-8z"/>'
+   +'</g>'
+  :'<g class="town-chest-shimmer" opacity=".75"><path fill="#ffe9a3" d="M14 39h52v2H14z"/></g>';
+ const lidClosed='<g class="town-chest-lid">'
+  +'<path fill="#271d18" d="M9 39V24h3v-6h5v-5h46v5h5v6h3v15z"/>'
+  +'<path fill="#9d6438" d="M12 37V25h3v-5h4v-4h42v4h4v5h3v12z"/>'
+  +'<path fill="#bd7d47" d="M15 24h50v6H15zM18 18h44v5H18z"/>'
+  +'<path fill="#d99d5c" d="M20 17h40v3H20zM16 25h48v2H16z"/>'
+  +'<path fill="#7c4b28" d="M12 31h56v2H12zM16 22h48v1H16zM12 36h56v2H12z"/>'
+  +'<path fill="#533d28" d="M12 24h7v14h-7zM61 24h7v14h-7zM25 16h6v22h-6zM49 16h6v22h-6z"/>'
+  +'<path fill="#d8a84e" d="M13 25h5v12h-5zM62 25h5v12h-5zM26 16h4v21h-4zM50 16h4v21h-4zM10 36h60v4H10z"/>'
+  +'<path fill="#fae08c" d="M14 26h2v10h-2zM63 26h2v10h-2zM27 17h2v19h-2zM51 17h2v19h-2zM12 37h56v1H12z"/>'
+  +'<path fill="#fff3c4" d="M14 28h2v2h-2zM64 28h2v2h-2zM27 21h2v2h-2zM51 21h2v2h-2z"/>'
+  +'</g>';
+ const lidOpen='<g class="town-chest-lid is-open">'
+  +'<path fill="#271d18" d="M11 31V11h4V7h50v4h4v20z"/>'
+  +'<path fill="#734525" d="M14 29V13h3v-3h46v3h3v16z"/>'
+  +'<path fill="#4b2a1c" d="M16 14h48v15H16z"/>'
+  +'<path fill="#8f5830" d="M16 11h48v3H16z"/>'
+  +'<path fill="#d8a84e" d="M13 11h4v18h-4zM63 11h4v18h-4zM26 10h4v19h-4zM50 10h4v19h-4zM12 9h56v3H12z"/>'
+  +'<path fill="#fae08c" d="M14 10h52v1H14z"/>'
+  +'<path fill="#251a16" d="M13 30h54v11H13z"/>'
+  +'<path fill="#d99a2e" d="M17 38v-5h6v-3h9v-2h16v2h9v3h6v5z"/>'
+  +'<path fill="#f7cf63" d="M19 37v-4h5v-2h8v-2h16v2h8v2h5v4z"/>'
+  +'<path fill="#fff3b5" d="M24 33h4v3h-4zM35 30h5v4h-5zM47 32h4v3h-4zM55 34h3v2h-3z"/>'
+  +'<path fill="#5ee0b0" d="M31 32h4v4h-4z"/><path fill="#ff7c98" d="M44 33h4v4h-4z"/><path fill="#7fd8ff" d="M38 34h4v3h-4z"/>'
+  +'</g>';
+ const body='<path fill="#271d18" d="M10 38h60v29H10z"/>'
+  +'<path fill="#8e5830" d="M13 40h54v24H13z"/>'
+  +'<path fill="#a96c3c" d="M15 41h50v7H15zM15 51h50v7H15z"/>'
+  +'<path fill="#714323" d="M13 48h54v2H13zM13 58h54v2H13z"/>'
+  +'<path fill="#c4874d" d="M18 42h14v1H18zM46 43h14v1H46zM20 53h12v1H20zM48 54h13v1H48z"/>'
+  +'<path fill="#533d28" d="M12 39h7v26h-7zM61 39h7v26h-7zM25 39h6v26h-6zM49 39h6v26h-6z"/>'
+  +'<path fill="#d8a84e" d="M13 40h5v24h-5zM62 40h5v24h-5zM26 40h4v24h-4zM50 40h4v24h-4zM11 61h58v5H11zM11 39h58v3H11z"/>'
+  +'<path fill="#f7dc84" d="M14 41h2v22h-2zM63 41h2v22h-2zM27 41h2v21h-2zM51 41h2v21h-2zM13 62h54v1H13z"/>'
+  +'<path fill="#fff3c4" d="M14 44h2v2h-2zM64 44h2v2h-2zM14 56h2v2h-2zM64 56h2v2h-2z"/>'
+  +'<path fill="#382c21" d="M33 36h14v17l-7 4-7-4z"/>'
+  +'<path fill="#e3b558" d="M35 38h10v13l-5 3-5-3z"/>'
+  +'<path fill="#fff0b0" d="M36 39h8v2h-8z"/>'
+  +'<path fill="#2d6e5c" d="M37 42h6v7l-3 2-3-2z"/>'
+  +'<path fill="#7ee8bc" d="M38 43h4v4h-4z"/>'
+  +'<path fill="#e0fff0" d="M38 43h2v2h-2z"/>';
+ return '<svg viewBox="0 0 80 76" shape-rendering="crispEdges" aria-hidden="true" data-chest-art="cozy-oak">'+shadow+glow+(open?lidOpen:lidClosed)+body+'</svg>';
 }
 syncHomeArt();

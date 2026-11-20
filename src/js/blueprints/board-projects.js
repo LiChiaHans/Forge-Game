@@ -110,7 +110,19 @@ function blueprintDragPreview(e){
  drag.gh.style.setProperty('--bp-tile-size',rect.width+'px');drag.gh.style.setProperty('--bp-grid-gap',gap+'px');
  r.cells.filter(i=>i>=0).forEach(i=>markPrediction(i,r.why?'pv-bad':'pv-target'));showPrediction(r.why||'放開部署 '+LEGENDS[hand.id].name,r.why||'依黃色格的暗色圖樣投入武器，最後一件的位置產生成品。',!!r.why);
 }
-function autumnLeafArt(){return '<svg viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true"><path fill="#70432b" d="M14 2h4v7h3V6h5v7h4v5h-5v4h-6v6h-3v3h-3v-5H8v-4H3v-5H1v-5h6V7h4v4h3z"/><path fill="#d97835" d="M15 5h2v8h5v-4h2v6h4v2h-6v4h-5v6h-2v-3h-5v-4H5v-4H3v-2h6v-4h1v5h5z"/><path fill="#eeaa4e" d="M15 6h2v9h6v2h-6v7h-2v-7H9v-2h6zM6 16h3v2H6z"/><path fill="#9d4c2c" d="M16 17h2v8h-2zM10 18h4v2h-4zM20 18h4v2h-4z"/><path fill="#f4c672" d="M15 7h1v8h-1z"/></svg>';}
+function autumnLeafArt(){return '<svg viewBox="0 0 36 36" shape-rendering="crispEdges" aria-hidden="true">'
+ +'<ellipse cx="18" cy="29" rx="12" ry="3.5" fill="#1e0f08" opacity=".42"/>'
+ /* Companion smaller golden-amber leaf on bottom-right */
+ +'<path fill="#6d3a1a" d="M21 17h4v2h3v2h2v4h-2v2h-3v2h-2v-2h-3v-2h-1v-4h1v-2h1z"/>'
+ +'<path fill="#e39a38" d="M22 19h3v2h2v3h-2v2h-3v-2h-2v-3h2z"/>'
+ +'<path fill="#f8cb66" d="M23 20h2v4h-2zM21 22h5v1h-5z"/>'
+ /* Main crisp 5-lobe crimson-maple leaf slightly tilted */
+ +'<path fill="#5a2414" d="M14 4h4v3h3V6h4v4h3v4h-3v3h3v3h-4v2h-4v2h-2v5h-3v-5h-2v-2H9v-2H5v-3h3v-3H5v-4h3V6h4v1h2z"/>'
+ +'<path fill="#c84b26" d="M15 6h2v4h3V8h3v3h3v2h-3v3h3v2h-4v2h-4v2h-3v-2h-4v-2H7v-2h3v-3H7v-2h3V8h3v2h2z"/>'
+ +'<path fill="#e67e30" d="M15 8h2v5h4v-2h2v3h-4v2h3v2h-5v2h-2v-2h-5v-2h3v-2H9v-3h2v2h4z"/>'
+ +'<path fill="#f7be59" d="M15 9h2v10h-2zM11 14h10v2H11zM13 11h2v2h-2zM17 11h2v2h-2z"/>'
+ +'<path fill="#8c3c1b" d="M15 21h2v7h-2z"/>'
+ +'</svg>';}
 EXPEDITIONS.forEach((m,id)=>m.loot={k:'bp',id});
 
 
