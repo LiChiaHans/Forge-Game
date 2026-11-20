@@ -510,54 +510,84 @@
 }
 
 /* ==========================================================================
-   12. TOWN BUILDING ARCHITECTURAL TIER-UP VISUALS (ALL 7 BUILDINGS)
+   12. TOWN BUILDING ARCHITECTURAL TIER-UP VISUALS (UNIFIED 572x1024 LAYER)
    ========================================================================== */
+.lm-summary{
+ margin:0 0 11px;padding:10px 12px;border:1.5px solid #967f4d;border-radius:9px;
+ background:linear-gradient(180deg,#24332a,#17231c);
+ box-shadow:inset 0 1px 0 #ffeab026,0 3px 10px #060b0880
+}
+.lm-summary-top{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13.5px;color:#efe5cc;font-weight:700}
+.lm-summary-top b{color:#ffe592}
+.lm-wallet{padding:2px 8px;border:1px solid #c9a151;border-radius:999px;background:#2a2414;color:#ffea9e;font-size:12.5px;font-weight:800}
+.lm-progress{height:7px;margin:7px 0 6px;border-radius:999px;background:#0e1712;border:1px solid #445a4c;overflow:hidden}
+.lm-progress>i{display:block;height:100%;background:linear-gradient(90deg,#c88f32,#ffe286);transition:width .25s ease}
+.lm-summary small{display:block;font-size:11.5px;line-height:1.45;color:#bfd0be}
+.lm-emblem{
+ display:flex;align-items:center;justify-content:center;flex:none;
+ width:38px;height:38px;border:1.5px solid #917b4e;border-radius:8px;
+ background:radial-gradient(circle at 35% 28%,#3c4d3e,#1b2620);
+ font-size:20px;box-shadow:inset 0 1px 0 #ffe9ad38
+}
+.lm-card.is-built .lm-emblem{border-color:#d8b25d;background:radial-gradient(circle at 35% 28%,#4b4128,#22271e)}
+.lm-card.is-max .lm-emblem{border-color:#f8d474;background:radial-gradient(circle at 35% 28%,#694d22,#2e2414);box-shadow:0 0 10px #f6ce6744}
 .lm-title-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
 .lm-building-tag{
- padding:1px 6px;border:1px solid #6b8876;border-radius:999px;
+ padding:1px 7px;border:1px solid #6b8876;border-radius:999px;
  background:#172720;color:#cbe0cf;font-size:10.5px;font-weight:700
 }
-.lm-card.is-built{border-color:#9e8d58}
-.town-upgrade-art{
- position:absolute;inset:0;pointer-events:none;z-index:3;overflow:visible
+.lm-sub-row{display:flex;align-items:center;gap:6px;margin-top:2px}
+.lm-stars{display:inline-flex;gap:1px;font-size:12px;line-height:1;letter-spacing:1px}
+.lm-star{color:#495c51}
+.lm-star.is-on{color:#ffd86b;text-shadow:0 0 5px #f5c65488}
+.lm-tier-label{font-size:11.5px;color:#b8cab7;font-weight:700}
+.lm-card.is-built{border-color:#a89154;background:linear-gradient(180deg,#25362c,#17241d)}
+.lm-card.is-max{border-color:#f0c762;background:linear-gradient(180deg,#303421,#1c2319)}
+.gemini-town-upgrades{
+ position:absolute;inset:0;pointer-events:none;z-index:1
 }
-.town-upgrade-art>svg{
- width:100%;height:100%;display:block;overflow:visible;
- filter:drop-shadow(0 2px 3px #14191e99)
+.gemini-town-upgrades>svg{
+ width:100%;height:100%;display:block
+}
+#townP[data-gemini-town="true"][data-time="night"] .gemini-town-upgrades .tu-arch-layer{
+ filter:url(#geminiTownNightFilter)
+}
+.gemini-town-upgrades .tu-glow-layer{
+ mix-blend-mode:screen
 }
 #townP[data-gemini-town="true"] .town-building[data-landmark-tier="1"] .gemini-building-sign,
 #townP[data-gemini-town="true"] #townExpedition[data-landmark-tier="1"] .gemini-building-sign{
- filter:drop-shadow(1px 2px 0 #18242988) drop-shadow(0 0 4px #ffe59c66)
+ filter:drop-shadow(1px 2px 0 #18242988) drop-shadow(0 0 3px #ffe59c55)
 }
 #townP[data-gemini-town="true"] .town-building[data-landmark-tier="2"] .gemini-building-sign,
 #townP[data-gemini-town="true"] #townExpedition[data-landmark-tier="2"] .gemini-building-sign{
- filter:drop-shadow(1px 2px 0 #18242988) drop-shadow(0 0 6px #f7cf6499)
+ filter:drop-shadow(1px 2px 0 #18242988) drop-shadow(0 0 5px #f7cf6488)
 }
 #townP[data-gemini-town="true"] .town-building[data-landmark-tier="3"] .gemini-building-sign,
 #townP[data-gemini-town="true"] #townExpedition[data-landmark-tier="3"] .gemini-building-sign{
- filter:drop-shadow(1px 2px 0 #18242999) drop-shadow(0 0 8px #ffe488cc)
+ filter:drop-shadow(1px 2px 0 #18242999) drop-shadow(0 0 7px #ffe488bb)
 }
-.town-upgrade-art .tu-halo{
+.gemini-town-upgrades .tu-halo{
  transform-box:fill-box;transform-origin:center;
- animation:tuHaloPulse 2.8s ease-in-out infinite
+ animation:tuHaloPulse 3.2s ease-in-out infinite
 }
-.town-upgrade-art .tu-spark{
+.gemini-town-upgrades .tu-spark{
  transform-box:fill-box;transform-origin:center;
- animation:tuSparkFloat 2.4s ease-in-out infinite
+ animation:tuSparkFloat 2.8s ease-in-out infinite
 }
-.town-upgrade-art .tu-spark:nth-of-type(2n){animation-delay:-.8s}
-.town-upgrade-art .tu-spark:nth-of-type(3n){animation-delay:-1.5s}
+.gemini-town-upgrades .tu-spark:nth-of-type(2n){animation-delay:-.9s}
+.gemini-town-upgrades .tu-spark:nth-of-type(3n){animation-delay:-1.7s}
 @keyframes tuHaloPulse{
- 0%,100%{opacity:.28;transform:scale(.95)}
- 50%{opacity:.58;transform:scale(1.08)}
+ 0%,100%{opacity:.32;transform:scale(.95)}
+ 50%{opacity:.65;transform:scale(1.06)}
 }
 @keyframes tuSparkFloat{
- 0%,100%{opacity:.45;transform:translateY(2px) scale(.88)}
- 50%{opacity:1;transform:translateY(-4px) scale(1.14)}
+ 0%,100%{opacity:.4;transform:translateY(2px)}
+ 50%{opacity:.95;transform:translateY(-4px)}
 }
 @media(prefers-reduced-motion:reduce){
- .town-upgrade-art .tu-halo,.town-upgrade-art .tu-spark{animation:none}
+ .gemini-town-upgrades .tu-halo,.gemini-town-upgrades .tu-spark{animation:none}
 }
-.low-effects .town-upgrade-art .tu-halo,.low-effects .town-upgrade-art .tu-spark{animation:none}
+.low-effects .gemini-town-upgrades .tu-halo,.low-effects .gemini-town-upgrades .tu-spark{animation:none}
 
 

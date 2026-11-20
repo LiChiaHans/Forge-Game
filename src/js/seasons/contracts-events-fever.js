@@ -522,20 +522,22 @@ function renderTownChronicle(){
 
  if(chronicleTab==='landmarks'){
   const heroW=bestMonumentWeapon();
-  const totalLv=TOWN_LANDMARK_KEYS.reduce((sum,k)=>sum+(m.landmarks[k]||0),0),maxLv=TOWN_LANDMARK_KEYS.length*3;
+  const totalLv=TOWN_LANDMARK_KEYS.reduce((sum,k)=>sum+(m.landmarks[k]||0),0),maxLv=TOWN_LANDMARK_KEYS.length*3,pct=Math.round((totalLv/maxLv)*100);
   const cards=Object.values(TOWN_LANDMARKS).map(lm=>{
    const lv=m.landmarks[lm.key]||0,maxed=lv>=lm.max,cost=maxed?0:lm.costs[lv],canAfford=sandboxSession||coins>=cost;
-   const pips=[0,1,2].map(i=>'<i class="lm-pip'+(i<lv?' is-on':'')+'"></i>').join('');
+   const stars=[0,1,2].map(i=>'<span class="lm-star'+(i<lv?' is-on':'')+'">★</span>').join('');
    const heroPreview=lm.key==='expedition'&&heroW?'<div class="lm-hero-showcase"><span class="lm-hero-art">'+hex(heroW.c,bands(heroW),'',heroW.t,heroW)+'</span><span><small>本局城門陳列代表作</small><b>'+esc(itemName(heroW))+'</b></span></div>':'';
    const curTier=lv>0?lm.tierNames[lv-1]:'初始建築';
-   return '<div class="lm-card'+(maxed?' is-max':lv>0?' is-built':'')+'">'
-    +'<div class="lm-head"><span class="tc-icon">'+lm.icon+'</span><div class="lm-title"><div class="lm-title-row"><b>'+lm.name+'</b><span class="lm-building-tag">'+lm.buildingName+'</span></div><span class="lm-pips">'+pips+' Lv '+lv+'/'+lm.max+' · '+curTier+'</span></div></div>'
+   return '<div class="lm-card'+(maxed?' is-max':lv>0?' is-built':'')+'" data-lm-kind="'+lm.key+'" data-lm-lv="'+lv+'">'
+    +'<div class="lm-head"><span class="lm-emblem">'+lm.icon+'</span><div class="lm-title"><div class="lm-title-row"><b>'+lm.name+'</b><span class="lm-building-tag">'+lm.buildingName+'</span></div><div class="lm-sub-row"><span class="lm-stars">'+stars+'</span><span class="lm-tier-label">'+curTier+'</span></div></div></div>'
     +heroPreview
-    +'<div class="lm-tiers">'+lm.effects.map((txt,i)=>'<div class="lm-tier'+(i<lv?' is-done':i===lv?' is-next':'')+'"><b>Lv'+(i+1)+'</b><span>'+txt+'</span></div>').join('')+'</div>'
-    +'<button type="button" class="lm-btn'+(canAfford&&!maxed?' is-ready':'')+'" data-upgrade-landmark="'+lm.key+'"'+(!canAfford||maxed?' disabled':'')+'>'+(maxed?'✦ 傳奇殿堂已竣工（滿級）':'🏛 花費 💰'+cost+' 擴建至 Lv '+(lv+1)+'（'+lm.tierNames[lv]+'）')+'</button>'
+    +'<div class="lm-tiers">'+lm.effects.map((txt,i)=>'<div class="lm-tier'+(i<lv?' is-done':i===lv?' is-next':'')+'"><b>'+(i<lv?'✓':'Lv'+(i+1))+'</b><span>'+txt+'</span></div>').join('')+'</div>'
+    +'<button type="button" class="lm-btn'+(canAfford&&!maxed?' is-ready':'')+'" data-upgrade-landmark="'+lm.key+'"'+(!canAfford||maxed?' disabled':'')+'>'+(maxed?'✦ 傳奇殿堂已竣工（滿級）':'🏛 擴建至 Lv '+(lv+1)+' · '+lm.tierNames[lv]+'（💰'+cost.toLocaleString()+'）')+'</button>'
     +'</div>';
   }).join('');
-  body.innerHTML=tabs+'<p class="tc-intro">持有 💰 '+(sandboxSession?'∞':coins)+' 金幣 · 城鎮建築進階總度 <b>'+totalLv+' / '+maxLv+'</b> · 升級後城鎮建築外觀也會同步晉升階級！</p><div class="lm-list">'+cards+'</div>';
+  body.innerHTML=tabs
+   +'<div class="lm-summary"><div class="lm-summary-top"><span>🏛 城鎮建築進階 <b>'+totalLv+' / '+maxLv+'</b></span><span class="lm-wallet">💰 '+(sandboxSession?'∞':coins.toLocaleString())+'</span></div><div class="lm-progress"><i style="width:'+pct+'%"></i></div><small>每階段擴建皆會永久強化工坊，並同步升級城鎮地圖上的建築樣式與招牌！</small></div>'
+   +'<div class="lm-list">'+cards+'</div>';
   return;
  }
 
