@@ -15,6 +15,7 @@ combatSound	src/js/audio/sounds-music.js	137
 leave	src/js/audio/sounds-music.js	147
 workshopSoundProfile	src/js/audio/workshop-sounds.js	1
 workshopMergeSound	src/js/audio/workshop-sounds.js	5
+workshopToolSound	src/js/audio/workshop-sounds.js	9
 colHTML	src/js/core/records.js	46
 seasonBenefitText	src/js/core/game-state.js	14
 seasonSaleBonus	src/js/core/game-state.js	18
@@ -34,6 +35,7 @@ workshopAnimationNode	src/js/ui/workshop-animation.js	6
 workshopAnimate	src/js/ui/workshop-animation.js	9
 workshopAnimationWait	src/js/ui/workshop-animation.js	12
 startWorkshopMerge	src/js/ui/workshop-animation.js	13
+playWorkshopToolFX	src/js/ui/workshop-animation.js	34
 clearWorkshopMilestone	src/js/ui/workshop-milestones.js	2
 showWorkshopMilestone	src/js/ui/workshop-milestones.js	3
 presentKitchenResults	src/js/ui/workshop-milestones.js	10
@@ -189,7 +191,7 @@ cozyDecorKey	src/js/art/item-rendering.js	15
 decorIsLighted	src/js/art/item-rendering.js	16
 decorGlowSpec	src/js/art/item-rendering.js	17
 cozyDecorSVG	src/js/art/item-rendering.js	38
-prepareCozyItemSnapshot	src/js/art/item-rendering.js	58
+prepareCozyItemSnapshot	src/js/art/item-rendering.js	68
 kitchenShelfLife	src/js/kitchen/freshness-merging.js	4
 kitchenFreshen	src/js/kitchen/freshness-merging.js	5
 kitchenEnsureFresh	src/js/kitchen/freshness-merging.js	6

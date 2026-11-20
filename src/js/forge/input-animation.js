@@ -37,13 +37,16 @@ function magicAt(i){
 let forgeBlizzardJob=null;
 function cancelForgeBlizzard(){forgeBlizzardJob?.finish(false);}
 function castForgeBlizzard(){
- if(busy||hand?.k!=='z')return false;hand=null;busy=true;render();say('❄️ 暴風雪正在席捲棋盤…');
+ if(busy||hand?.k!=='z')return false;
+ const hotCells=heat.map((h,i)=>h>0?i:-1).filter(i=>i>=0);
+ hand=null;busy=true;render();say('❄️ 暴風雪正在席捲棋盤…');
+ playWorkshopToolFX('grid','blizzard',{cells:hotCells});
  const reduced=lowEffects||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches,grid=$('grid'),node=document.createElement('div');
  node.className='forge-blizzard';node.setAttribute('aria-hidden','true');
- node.innerHTML='<svg viewBox="0 0 100 120" preserveAspectRatio="none"><g fill="#f2fcff">'+Array.from({length:56},(_,i)=>{const a=i*2.39996,r=8+Math.sqrt(i/56)*49;return '<rect x="'+(50+Math.cos(a)*r).toFixed(2)+'" y="'+(60+Math.sin(a)*r).toFixed(2)+'" width="'+(i%3===0?1.8:.9)+'" height="'+(i%3===0?2.4:1.2)+'" opacity="'+(.45+i%5*.11)+'"/>';}).join('')+'</g></svg>';grid.appendChild(node);
+ node.innerHTML='<svg viewBox="0 0 100 120" preserveAspectRatio="none"><defs><radialGradient id="bliz-vortex"><stop offset="0%" stop-color="#e8fbff" stop-opacity=".75"/><stop offset="45%" stop-color="#76d3f7" stop-opacity=".38"/><stop offset="100%" stop-color="#3c8cc2" stop-opacity="0"/></radialGradient></defs><circle cx="50" cy="60" r="56" fill="url(#bliz-vortex)"/><g fill="#f2fcff">'+Array.from({length:64},(_,i)=>{const a=i*2.39996,r=6+Math.sqrt(i/64)*52,x=(50+Math.cos(a)*r).toFixed(2),y=(60+Math.sin(a)*r).toFixed(2),op=(.5+i%5*.12).toFixed(2);return i%5===0?'<path d="M'+x+' '+(+y-2.4)+'v4.8M'+(+x-2.4)+' '+y+'h4.8" stroke="#ffffff" stroke-width="1" opacity="'+op+'"/>':'<rect x="'+x+'" y="'+y+'" width="'+(i%3===0?2.1:1.1)+'" height="'+(i%3===0?2.6:1.3)+'" opacity="'+op+'"/>';}).join('')+'</g></svg>';grid.appendChild(node);
  const job={node,animation:null,timer:null,finish:null};forgeBlizzardJob=job;
  job.finish=(continuePlay=true)=>{if(forgeBlizzardJob!==job)return;forgeBlizzardJob=null;clearTimeout(job.timer);job.animation?.cancel?.();node.remove();heat=heat.map(()=>0);justHeated.clear();busy=false;if(continuePlay){say('❄️ 暴風雪！全盤過熱已歸零，棋盤物品保留。');settle();}};
- job.timer=setTimeout(()=>job.finish(),reduced?80:820);
- if(!reduced&&typeof node.animate==='function'){job.animation=node.animate([{transform:'scale(.08) rotate(0deg)',opacity:0},{transform:'scale(.42) rotate(110deg)',opacity:1,offset:.25},{transform:'scale(.95) rotate(300deg)',opacity:1,offset:.75},{transform:'scale(1.45) rotate(480deg)',opacity:0}],{duration:780,easing:'ease-in',fill:'forwards'});job.animation.onfinish=()=>job.finish();}
+ job.timer=setTimeout(()=>job.finish(),reduced?80:880);
+ if(!reduced&&typeof node.animate==='function'){job.animation=node.animate([{transform:'scale(.12) rotate(0deg)',opacity:0},{transform:'scale(.55) rotate(130deg)',opacity:1,offset:.22},{transform:'scale(1.06) rotate(330deg)',opacity:1,offset:.76},{transform:'scale(1.52) rotate(520deg)',opacity:0}],{duration:840,easing:'cubic-bezier(.22,.8,.36,1)',fill:'forwards'});job.animation.onfinish=()=>job.finish();}
  return true;
 }

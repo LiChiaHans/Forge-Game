@@ -68,7 +68,7 @@ function useEssence(i){
  if(hand?.k!=='ess'||!validElement(hand.element)||!Number.isInteger(i)||i<0||i>=W*H)return false;
  if(isOff(i)||frozen.has(i)||leaves.has(i)){say('冰凍、落葉或尚未開放的格子無法附魔。');render();return false;}
  const e=hand.element;if(elementTiles.get(i)===e){say('這格已經是'+ELEMENTS[e].name+'屬性附魔格，精華保留。');render();return false;}
- elementTiles.set(i,e);hand=null;render();saveNow();say('已設置'+ELEMENTS[e].name+'屬性附魔格，當天有效；在此生成的武器會取得屬性附魔。');return true;
+ elementTiles.set(i,e);hand=null;render();playWorkshopToolFX('grid','essence',{cell:i,color:ELEMENTS[e].color});saveNow();say('已設置'+ELEMENTS[e].name+'屬性附魔格，當天有效；在此生成的武器會取得屬性附魔。');return true;
 }
 function renderElementTiles(){
  elementTiles.forEach((e,i)=>{const el=$('grid').children[i];if(!el||!validElement(e))return;el.classList.add('element-cell');el.style.setProperty('--element',ELEMENTS[e].color);el.setAttribute('data-element',e);const badge=document.createElement('span');badge.className='element-cell-mark';badge.setAttribute('aria-label',ELEMENTS[e].name+'屬性附魔格');badge.innerHTML=elementIcon(e);el.appendChild(badge);});

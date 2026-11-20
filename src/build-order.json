@@ -153,7 +153,8 @@
     "src/styles/33-friends-city-contexts.css",
     "src/styles/34-gameplay-roadmap.css",
     "src/styles/35-festival-badges-board.css",
-    "src/styles/36-distinct-halls-ui.css"
+    "src/styles/36-distinct-halls-ui.css",
+    "src/styles/37-workshop-ui-and-fx.css"
   ],
   "workers": [
     "src/workers/media-cache.js"

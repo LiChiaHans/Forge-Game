@@ -16,43 +16,53 @@ function cozyDecorKey(id,si){id=DECOR_BY_ID.get(id)?.sourceId||id;if(id==='tree'
 function decorIsLighted(d){return !!d&&(!!d.lighted||/lamp|lantern|candle|garland/.test(d.art));}
 function decorGlowSpec(d,season){
  const map={
-  'night-jar':{c:'#e8ff82',core:'#fffce0',cx:.5,cy:.44,rx:.78,ry:.64},
-  'night-flower':{c:'#ffb6d6',core:'#fff0f7',cx:.5,cy:.34,rx:.78,ry:.6},
-  'night-garden':{c:'#dfd0ff',core:'#f9f4ff',cx:.5,cy:.44,rx:.84,ry:.68},
-  'night-jelly':{c:'#74f2ff',core:'#e8ffff',cx:.5,cy:.38,rx:.82,ry:.64},
-  'night-garland':{c:season===3?'#bfeaff':'#9ef6ee',core:'#f4ffff',cx:.5,cy:.46,rx:.88,ry:.64},
-  'night-star':{c:'#ffe682',core:'#fffbe0',cx:.5,cy:.3,rx:.8,ry:.58},
-  'night-pumpkin':{c:'#ff9c3b',core:'#fff0a8',cx:.5,cy:.55,rx:.82,ry:.66},
-  'night-lantern':{c:'#ffb34d',core:'#fff2c2',cx:.5,cy:.4,rx:.8,ry:.62},
-  'night-candle':{c:'#ffd26a',core:'#fff8d6',cx:.5,cy:.36,rx:.8,ry:.62},
-  'night-crystal':{c:'#96e8ff',core:'#eefcff',cx:.5,cy:.42,rx:.82,ry:.64},
-  'night-aurora':{c:'#84fae0',core:'#ebfff9',cx:.5,cy:.42,rx:.86,ry:.66},
-  lamp:{c:'#ffd170',core:'#fff6cc',cx:.5,cy:.28,rx:.84,ry:.56},
-  blossomlamp:{c:'#ffc0d8',core:'#fff2f7',cx:.5,cy:.28,rx:.84,ry:.56},
-  sunlamp:{c:'#ffcf60',core:'#fff7cc',cx:.5,cy:.26,rx:.84,ry:.56},
-  amberlamp:{c:'#ffac48',core:'#fff0c2',cx:.5,cy:.28,rx:.84,ry:.56},
-  starlamp:{c:'#ffe896',core:'#f2faff',cx:.5,cy:.26,rx:.84,ry:.56}
+  'night-jar':{c:'#d6f078',core:'#fffbd6',cx:.5,cy:.45,rx:.82,ry:.66,g:.92},
+  'night-flower':{c:'#f5a6c8',core:'#ffedf5',cx:.5,cy:.34,rx:.84,ry:.62,g:.92},
+  'night-garden':{c:'#cbbaf5',core:'#f5efff',cx:.5,cy:.48,rx:.9,ry:.68,g:.86},
+  'night-jelly':{c:'#68dff0',core:'#e2fbff',cx:.5,cy:.38,rx:.86,ry:.66,g:.92},
+  'night-garland':{c:season===3?'#a8dcfa':'#8ae8e0',core:'#edfaff',cx:.5,cy:.48,rx:.94,ry:.62,g:.88},
+  'night-star':{c:'#f7d872',core:'#fff8d6',cx:.5,cy:.3,rx:.84,ry:.6,g:.92},
+  'night-pumpkin':{c:'#f28c32',core:'#ffe699',cx:.5,cy:.56,rx:.88,ry:.68,g:.88},
+  'night-lantern':{c:'#f5a242',core:'#ffecc0',cx:.5,cy:.38,rx:.86,ry:.64,g:.92},
+  'night-candle':{c:'#f5c25b',core:'#fff3c9',cx:.5,cy:.36,rx:.86,ry:.64,g:.9},
+  'night-crystal':{c:'#82d9f7',core:'#e8faff',cx:.5,cy:.44,rx:.86,ry:.66,g:.9},
+  'night-aurora':{c:'#76ebd2',core:'#e2fff8',cx:.5,cy:.44,rx:.92,ry:.68,g:.88},
+  lamp:{c:'#f5be60',core:'#fff0bd',cx:.5,cy:.27,rx:.88,ry:.58,g:.93},
+  blossomlamp:{c:'#f5aec8',core:'#ffecf3',cx:.5,cy:.27,rx:.88,ry:.58,g:.93},
+  sunlamp:{c:'#f5be52',core:'#fff2be',cx:.5,cy:.25,rx:.88,ry:.58,g:.93},
+  amberlamp:{c:'#f29c3d',core:'#ffe9b3',cx:.5,cy:.27,rx:.88,ry:.58,g:.93},
+  starlamp:{c:'#f5db82',core:'#eef8ff',cx:.5,cy:.25,rx:.88,ry:.58,g:.93}
  };
- return map[d.art]||{c:season===3?'#bfeaff':season===0?'#f5d5b0':'#ffd18c',core:'#fff7d4',cx:.5,cy:.36,rx:.78,ry:.58};
+ return map[d.art]||{c:season===3?'#a8dcfa':season===0?'#f0c99e':'#f5c072',core:'#fff2c8',cx:.5,cy:.36,rx:.84,ry:.6,g:.92};
 }
 function cozyDecorSVG(id,season=seasonIndex(),uid='preview'){
  const d=DECOR_BY_ID.get(id),key=cozyDecorKey(id,season);if(!d||!COZY_ITEM_ART[key])return fallbackDecorSVG(id,season,uid);
  const lamp=decorIsLighted(d),nightGlow=!!d.night&&lamp,fountain=d.art==='fountain',w=d.w,h=d.h;
  const spec=lamp?decorGlowSpec(d,season):null,name='cozy-glow-'+String(id+'-'+uid).replace(/[^a-zA-Z0-9_-]/g,'');
- let halo='',bloom='';
+ let defs='',halo='',bloom='',bodyFilter='';
  if(lamp){
   const cx=(w*spec.cx).toFixed(1),cy=(h*spec.cy).toFixed(1);
   if(nightGlow){
-   halo='<defs><radialGradient id="'+name+'"><stop offset="0%" stop-color="'+spec.core+'" stop-opacity=".92"/><stop offset="34%" stop-color="'+spec.c+'" stop-opacity=".68"/><stop offset="68%" stop-color="'+spec.c+'" stop-opacity=".26"/><stop offset="100%" stop-color="'+spec.c+'" stop-opacity="0"/></radialGradient><radialGradient id="'+name+'-b"><stop offset="0%" stop-color="'+spec.core+'" stop-opacity=".52"/><stop offset="48%" stop-color="'+spec.c+'" stop-opacity=".24"/><stop offset="100%" stop-color="'+spec.c+'" stop-opacity="0"/></radialGradient></defs><ellipse class="cozy-decor-halo is-night" cx="'+cx+'" cy="'+cy+'" rx="'+(w*spec.rx).toFixed(1)+'" ry="'+(h*spec.ry).toFixed(1)+'" fill="url(#'+name+')"/>';
-   bloom='<ellipse class="cozy-decor-bloom" cx="'+cx+'" cy="'+cy+'" rx="'+(w*spec.rx*.62).toFixed(1)+'" ry="'+(h*spec.ry*.62).toFixed(1)+'" fill="url(#'+name+'-b)"/>';
+   const shade=d.lighted?'.84 0 0 0 .01 0 .85 0 0 .015 0 0 .93 0 .03 0 0 0 1 0':'.64 0 0 0 .015 0 .68 0 0 .02 0 0 .82 0 .045 0 0 0 1 0';
+   defs='<defs>'
+    +'<radialGradient id="'+name+'"><stop offset="0%" stop-color="'+spec.core+'" stop-opacity=".42"/><stop offset="22%" stop-color="'+spec.c+'" stop-opacity=".25"/><stop offset="48%" stop-color="'+spec.c+'" stop-opacity=".11"/><stop offset="74%" stop-color="'+spec.c+'" stop-opacity=".03"/><stop offset="100%" stop-color="'+spec.c+'" stop-opacity="0"/></radialGradient>'
+    +'<radialGradient id="'+name+'-g"><stop offset="0%" stop-color="'+spec.c+'" stop-opacity=".24"/><stop offset="45%" stop-color="'+spec.c+'" stop-opacity=".09"/><stop offset="100%" stop-color="'+spec.c+'" stop-opacity="0"/></radialGradient>'
+    +'<radialGradient id="'+name+'-b"><stop offset="0%" stop-color="'+spec.core+'" stop-opacity=".46"/><stop offset="42%" stop-color="'+spec.c+'" stop-opacity=".16"/><stop offset="100%" stop-color="'+spec.c+'" stop-opacity="0"/></radialGradient>'
+    +'<filter id="'+name+'-t" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="'+shade+'"/></filter>'
+    +'</defs>';
+   halo='<ellipse class="cozy-decor-ground" cx="'+(w*.5).toFixed(1)+'" cy="'+(h*spec.g).toFixed(1)+'" rx="'+(w*1.02).toFixed(1)+'" ry="'+(h*.22).toFixed(1)+'" fill="url(#'+name+'-g)"/>'
+    +'<ellipse class="cozy-decor-halo is-night" cx="'+cx+'" cy="'+cy+'" rx="'+(w*spec.rx).toFixed(1)+'" ry="'+(h*spec.ry).toFixed(1)+'" fill="url(#'+name+')"/>';
+   bloom='<ellipse class="cozy-decor-bloom" cx="'+cx+'" cy="'+cy+'" rx="'+(w*.32).toFixed(1)+'" ry="'+(h*.24).toFixed(1)+'" fill="url(#'+name+'-b)"/>';
+   bodyFilter=' filter="url(#'+name+'-t)"';
   }else{
-   halo='<defs><radialGradient id="'+name+'"><stop stop-color="'+spec.c+'" stop-opacity=".35"/><stop offset="1" stop-color="'+spec.c+'" stop-opacity="0"/></radialGradient></defs><ellipse class="cozy-decor-halo" cx="'+cx+'" cy="'+cy+'" rx="'+(w*.46).toFixed(1)+'" ry="'+(h*.3).toFixed(1)+'" fill="url(#'+name+')"/>';
+   defs='<defs><radialGradient id="'+name+'"><stop stop-color="'+spec.c+'" stop-opacity=".32"/><stop offset="1" stop-color="'+spec.c+'" stop-opacity="0"/></radialGradient></defs>';
+   halo='<ellipse class="cozy-decor-halo" cx="'+cx+'" cy="'+cy+'" rx="'+(w*.46).toFixed(1)+'" ry="'+(h*.3).toFixed(1)+'" fill="url(#'+name+')"/>';
   }
  }
  const water=fountain?'<g class="cozy-fountain-water"><ellipse cx="'+w*.5+'" cy="'+h*.7+'" rx="'+w*.23+'" ry="'+h*.055+'" fill="none" stroke="#bbf5ed" stroke-width=".9"/><path fill="#e4fffa" d="M'+w*.38+' '+h*.54+'h1v3h-1zM'+w*.64+' '+h*.53+'h1v3h-1z"/></g>':'';
  const pet=['cat','dog'].includes(d.art);
  const glowAttr=nightGlow?' data-night-glow="true" style="--decor-glow:'+spec.c+'"':'';
- return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+w+' '+h+'" data-cozy-decor="'+id+'"'+glowAttr+' aria-hidden="true">'+halo+(pet?'<g class="pet-facing" data-facing="left">':'')+'<g'+(pet?' class="pet-body"':'')+'><image href="'+cozyItemURL(key)+'" width="'+w+'" height="'+h+'" preserveAspectRatio="xMidYMax meet" style="image-rendering:pixelated;"/></g>'+(pet?'</g>':'')+bloom+water+'</svg>';
+ return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+w+' '+h+'" data-cozy-decor="'+id+'"'+glowAttr+' aria-hidden="true">'+defs+halo+(pet?'<g class="pet-facing" data-facing="left">':'')+'<g'+(pet?' class="pet-body"':'')+bodyFilter+'><image href="'+cozyItemURL(key)+'" width="'+w+'" height="'+h+'" preserveAspectRatio="xMidYMax meet" style="image-rendering:pixelated;"/></g>'+(pet?'</g>':'')+bloom+water+'</svg>';
 }
 const cozyItemSnapshotAssets=new Map(),cozyItemSnapshotRequests=new Map();
 async function prepareCozyItemSnapshot(items,si){

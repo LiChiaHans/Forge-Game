@@ -61,11 +61,11 @@ function kitchenStep(){
 }
 function kitchenUseHand(i){
  const item=kitchen.hand;if(!item)return false;if(item.k==='m')return kitchenPrepare(i,'hand');
- if(item.k==='z'){kitchen.heat.fill(0);kitchen.hand=null;kitchen.useHeld=false;kitchen.message='冰水桶：全盤餘熱歸零。';return true;}
- if(item.k==='f'){if(kitchen.g[i]?.k==='waste'){kitchen.message='廚餘需要支付清理費，不能用清潔工具清除。';kitchenWastePrompt(i);return false;}if(!kitchen.g[i]||kitchen.g[i].k==='w'){kitchen.message='清潔工具只清除食材或備料，不能丟掉料理。';return false;}kitchen.message='已清除'+kitchenItemName(kitchen.g[i])+'，完成料理不受影響。';kitchen.g[i]=null;kitchen.hand=null;kitchen.useHeld=false;return true;}
- if(item.k==='u'){const cell=kitchen.g[i];if(cell?.k!=='o'||cell.t>=4){kitchen.message='請選一包可升階的食材。';return false;}cell.t++;kitchenEnsureFresh(cell);kitchen.message='食材升為'+kitchenGradeName(cell.t)+'。';kitchen.hand=null;kitchen.useHeld=false;kitchenAuto(i);return true;}
+ if(item.k==='z'){const hotCells=kitchen.heat.map((h,idx)=>h>0?idx:-1).filter(idx=>idx>=0);kitchen.heat.fill(0);kitchen.hand=null;kitchen.useHeld=false;kitchen.message='冰水桶：全盤餘熱歸零。';playWorkshopToolFX('kitchenGrid','icebucket',{cells:hotCells});return true;}
+ if(item.k==='f'){if(kitchen.g[i]?.k==='waste'){kitchen.message='廚餘需要支付清理費，不能用清潔工具清除。';kitchenWastePrompt(i);return false;}if(!kitchen.g[i]||kitchen.g[i].k==='w'){kitchen.message='清潔工具只清除食材或備料，不能丟掉料理。';return false;}kitchen.message='已清除'+kitchenItemName(kitchen.g[i])+'，完成料理不受影響。';kitchen.g[i]=null;kitchen.hand=null;kitchen.useHeld=false;playWorkshopToolFX('kitchenGrid','clean',{cell:i});return true;}
+ if(item.k==='u'){const cell=kitchen.g[i];if(cell?.k!=='o'||cell.t>=4){kitchen.message='請選一包可升階的食材。';return false;}cell.t++;kitchenEnsureFresh(cell);kitchen.message='食材升為'+kitchenGradeName(cell.t)+'。';kitchen.hand=null;kitchen.useHeld=false;playWorkshopToolFX('kitchenGrid','upgrade',{cell:i});kitchenAuto(i);return true;}
  if(kitchen.g[i]||kitchen.heat[i]>0){kitchen.message='這格正在使用或仍有餘熱。';return false;}
- if(item.k==='spice'){kitchen.tiles[i]=item.spice;kitchen.message=KITCHEN_SPICES[item.spice].name+'調味格：'+KITCHEN_SPICES[item.spice].effect+'，售價 +'+kitchenSpiceBonus()+'%，本晚有效。';}else kitchen.g[i]=item.k==='o'?kitchenEnsureFresh({...item}):item;
+ if(item.k==='spice'){kitchen.tiles[i]=item.spice;kitchen.message=KITCHEN_SPICES[item.spice].name+'調味格：'+KITCHEN_SPICES[item.spice].effect+'，售價 +'+kitchenSpiceBonus()+'%，本晚有效。';playWorkshopToolFX('kitchenGrid','spice',{cell:i,color:KITCHEN_SPICES[item.spice].color});}else kitchen.g[i]=item.k==='o'?kitchenEnsureFresh({...item}):item;
  kitchen.hand=null;kitchen.useHeld=false;if(item.k==='o')kitchenAuto(i);return true;
 }
 function kitchenClick(i){

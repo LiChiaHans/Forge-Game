@@ -201,13 +201,13 @@ function dropOn(kind,x,y){
   if(kind==="hand"&&hand.k==='f'){
     if(!g[i]){say("要拖到有東西的格子上");render();return}
     if(g[i].k==='w'){say("焚燒工具不能焚燒武器，道具保留。");render();return;}
-    g[i]=null;hand=null;say("🔥 燒掉了一個物件");settle();return;
+    g[i]=null;hand=null;say("🔥 燒掉了一個物件");playWorkshopToolFX('grid','burn',{cell:i});settle();return;
   }
   if(kind==="hand"&&hand.k==='u'){
     if(!g[i]||g[i].k!=='o'){say("要拖到礦石上");render();return}
     if(g[i].t>=4){say("已是最高階礦石");render();return}
     g[i].t++;hand=null;fresh=i;say("⬆️ 礦石升了一階！");
-    thud();auto(i);settle();return;
+    playWorkshopToolFX('grid','upgrade',{cell:i});auto(i);settle();return;
   }
   if(g[i]){say("要放在空格上");render();return}
   if(heat[i]>0){say("過熱中，還要 "+heat[i]+" 步才能放置");render();return}
