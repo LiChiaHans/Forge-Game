@@ -45,7 +45,7 @@ function forgeSettlementPending(){return day>0&&!sandboxNight&&lastCompletedDay=
 function renderForgeSettlement(){
  if(!forgeSettlementPending())return;const r=kitchen.forgeSettlement;
  $('forgeSettlementTitle').textContent='第 '+day+' 天 · 白天營業完成';
- $('forgeSettlementBody').innerHTML='<p>服務 '+r.served+' / '+r.total+' 位客人 · 未完成訂單 '+r.unfulfilled+' 位</p><p>售出武器 '+r.served+' 把 · 白天收入 '+r.earned+' 金幣</p><p>'+(r.skillGold?'技能已滿轉換 '+r.skillGold+' 金幣':'冶煉技能點 '+r.points+' 點')+' · 營業寶箱 '+r.chests+' 個</p><p class="exp-note">技能點可在城鎮訓練所使用，寶箱會留在噴水池旁等候開啟。</p>';
+ $('forgeSettlementBody').innerHTML='<p>服務 '+r.served+' / '+r.total+' 位客人 · 未完成訂單 '+r.unfulfilled+' 位</p><p>售出武器 '+r.served+' 把 · 白天收入 '+r.earned+' 金幣'+(r.tourismGold?'（含 🏆 展台觀光 +'+r.tourismGold+'💰）':'')+'</p><p>'+(r.skillGold?'技能已滿轉換 '+r.skillGold+' 金幣':'冶煉技能點 '+r.points+' 點')+' · 營業寶箱 '+r.chests+' 個</p><p class="exp-note">技能點可在城鎮訓練所使用，寶箱會留在噴水池旁等候開啟。</p>'+(typeof settlementNextHookHTML==='function'?settlementNextHookHTML('forge'):'');
  $('forgeSettlementP').style.display='flex';
 }
 function finishForgeDay(){

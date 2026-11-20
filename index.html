@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="game.css?v=77d08ae8bfe51195">
+<link rel="stylesheet" href="game.css?v=41c3776c593edaf0">
 
 
 
@@ -132,7 +132,8 @@
 
 <div id="festivalBadgeP" class="city-modal"><div class="hp"><button class="modal-x" aria-label="關閉紀念章視窗" onclick="dismissModal('festivalBadgeP')">×</button><h2 id="festivalBadgeTitle"></h2><div id="festivalBadgeBody"></div></div></div>
 <div id="festivalP" class="city-modal"><div class="hp"><button class="modal-x" aria-label="關閉節慶視窗" onclick="dismissModal('festivalP')">×</button><h2 id="festivalTitle"></h2><div id="festivalBody"></div></div></div>
-<div id="townContractP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉契約與頭條視窗" onclick="dismissModal('townContractP')">×</button><h2 id="townContractTitle">📜 工坊契約與今日頭條</h2><div id="townContractBody"></div></div></div>
+<div id="townContractP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉契約與頭條視窗" onclick="dismissModal('townContractP')">×</button><h2 id="townContractTitle">📜 工坊契約與城鎮建設</h2><div id="townContractBody"></div></div></div>
+<div id="runModeP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉試煉模式視窗" onclick="dismissModal('runModeP')">×</button><h2>🔥 選擇試煉模式</h2><div id="runModeBody"></div></div></div>
 <div id="workshopFinish" role="status" aria-live="polite" hidden></div>
 <div id="title">
   <small id="assetCacheStatus" class="asset-cache-status" aria-live="off">素材會在背景逐步準備</small>
@@ -141,6 +142,7 @@
   <p id="hs"></p>
   <p>放礦石 · 合成升階 · 鍛造武器 · 賣給客人</p>
   <button class="pri" onclick="beginNewCharacter()">開始遊戲</button>
+  <button id="homeTrials" onclick="openRunModes()">🔥 試煉模式</button>
   <button id="ctn" onclick="openSaves('load')">▶ 繼續遊戲</button>
   <button onclick="$('title').style.display='none';start('tut')">教學關卡</button>
   
@@ -159,7 +161,7 @@
   <button  style="width:100%;margin-top:14px" onclick="closeP('weaponAlbumP')" class="legacy-modal-close" hidden>關閉圖鑑</button>
 </div></div>
 <div id="weaponInspectP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('weaponInspectP')">×</button><h2 id="inspectName"></h2><div id="inspectArt"></div><p id="inspectState"></p><div id="inspectStats"></div><div class="inspect-tiers"><button id="inspectPrev">上一階</button><button id="inspectNext">下一階</button></div><button  style="width:100%;margin-top:12px" onclick="closeP('weaponInspectP')" class="legacy-modal-close" hidden>回到圖鑑</button></div></div>
-<div id="seasonP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('seasonP')">×</button><h2 id="seasonTitle"></h2><div id="seasonBenefit" class="season-benefit"></div><p id="festivalNotice"></p><p id="seasonDescription" style="line-height:1.8"></p><button class="pri" style="width:100%" onclick="closeP('seasonP')">知道了</button><button class="exp-wide" onclick="openFestival()">查看本季目標與下一季預告</button></div></div>
+<div id="seasonP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('seasonP')">×</button><h2 id="seasonTitle"></h2><div id="seasonBenefit" class="season-benefit"></div><p id="festivalNotice"></p><p id="seasonDescription" style="line-height:1.8"></p><button class="pri" style="width:100%" onclick="closeP('seasonP')">知道了</button><button type="button" id="seasonContractBtn" class="exp-wide season-contract-cta" onclick="closeP('seasonP');openTownChronicle()">📜 挑選本季工坊契約與今日頭條</button><button class="exp-wide" onclick="openFestival()">查看本季目標與下一季預告</button></div></div>
 
 <div id="reviewProgressP" class="exp-overlay"><div class="hp"><button class="modal-x" aria-label="關閉測試進度" onclick="closeP('reviewProgressP')">×</button><h2>💾 後台測試進度</h2><div id="reviewProgressBody"></div></div></div><div id="help"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('help')">×</button>
   <h2>遊戲說明</h2>
@@ -280,6 +282,6 @@
 <div id="toasts"></div>
 
 <div id="sceneTransition" role="status" aria-live="polite" tabindex="-1" hidden></div>
-<script src="game.js?v=7335e38ca8a7617c"></script>
+<script src="game.js?v=3a373e25a2b74d8f"></script>
 </body>
 </html>

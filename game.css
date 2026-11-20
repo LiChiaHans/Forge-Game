@@ -3399,6 +3399,142 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
  #kitchenP.kitchen-screen nav>button{font-size:13px!important}
 }
 @media(prefers-reduced-motion:reduce){
- .town-daily-dot,.ws-fever-btn.is-ready,.wfx-combo-banner{animation:none!important}
+ .town-daily-dot,.ws-fever-btn.is-ready,.wfx-combo-banner,.od.is-match,.kitchen-order.is-match{animation:none!important}
 }
-.low-effects .town-daily-dot,.low-effects .ws-fever-btn.is-ready,.low-effects .wfx-combo-banner{animation:none!important}
+.low-effects .town-daily-dot,.low-effects .ws-fever-btn.is-ready,.low-effects .wfx-combo-banner,.low-effects .od.is-match,.low-effects .kitchen-order.is-match{animation:none!important}
+
+/* --------------------------------------------------------------------------
+   PART C: MATCHING ORDER HIGHLIGHT, LANDMARKS, SETTLEMENT HOOKS & TRIAL MODES
+   -------------------------------------------------------------------------- */
+/* Matching Ready-to-Sell Order Glow */
+#app[data-workshop="forge"] .od.is-match,
+#kitchenP[data-workshop="kitchen"] .kitchen-order.is-match{
+ border-color:#f6d475!important;
+ box-shadow:0 0 0 2px #ffe48a88,0 0 12px #f2c45a55!important;
+ animation:ws-match-pulse 1.9s ease-in-out infinite
+}
+#app[data-workshop="forge"] .od.is-pref-match,
+#kitchenP[data-workshop="kitchen"] .kitchen-order.is-pref-match{
+ border-color:#fff0a3!important;
+ box-shadow:0 0 0 2px #ffe896,0 0 16px #ffba4977!important
+}
+@keyframes ws-match-pulse{
+ 0%,100%{filter:brightness(1)}
+ 50%{filter:brightness(1.09)}
+}
+
+/* Season Modal Direct Contract CTA */
+.season-contract-cta{
+ margin-top:8px;border:1.5px solid #f2cc70!important;
+ background:linear-gradient(180deg,#6e5021,#493414)!important;background-image:none!important;
+ color:#fff5cf!important;font-weight:800
+}
+
+/* Town Mode Tag Pill */
+.town-mode-tag{
+ padding:1px 6px;border-radius:99px;border:1px solid #f0c970;
+ background:#4e3514;color:#fff4c4;font-size:10.5px;font-weight:900
+}
+
+/* Chronicle 2-Tab Bar & Mode Banner */
+.tc-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:11px;align-items:stretch}
+.tc-tabs button{
+ padding:9px 6px;font-size:14px;font-weight:800;border-radius:7px;
+ border:1.5px solid #6b7361;background:linear-gradient(180deg,#25342c,#192520);background-image:none;
+ color:#cdd8c4
+}
+.tc-tabs button[aria-pressed="true"]{
+ border-color:#f5d37b;color:#fff6d2;
+ background:linear-gradient(180deg,#664d24,#433217);
+ box-shadow:inset 0 1px 0 #fff1b844,0 0 10px #e8be5d33
+}
+.tc-mode-banner{
+ display:flex;align-items:center;gap:9px;margin-bottom:11px;padding:8px 10px;
+ border:1.5px solid #e2b85c;border-radius:8px;background:linear-gradient(90deg,#3d2c16,#202724)
+}
+.tc-mode-banner>span{font-size:22px;flex:none}
+.tc-mode-banner b{display:block;font-size:13.5px;color:#ffeaa0}
+.tc-mode-banner small{display:block;font-size:11.5px;color:#dad3b8;line-height:1.4}
+.tc-active-list{display:flex;flex-direction:column;gap:7px;margin-bottom:8px}
+
+/* Town Landmarks (大工程) */
+.lm-list{display:flex;flex-direction:column;gap:10px}
+.lm-card{
+ padding:11px;border:1.5px solid #8a754c;border-radius:9px;
+ background:linear-gradient(180deg,#23342c,#17241e);
+ box-shadow:inset 0 1px 0 #ffe9ad22,0 3px 9px #07100c88
+}
+.lm-card.is-max{border-color:#f2ce72;background:linear-gradient(180deg,#37321e,#1f2319)}
+.lm-head{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.lm-title{flex:1;min-width:0}
+.lm-title b{display:block;font-family:'Noto Serif TC',serif;font-size:16px;color:#fff0c2}
+.lm-pips{display:inline-flex;align-items:center;gap:4px;margin-top:2px;font-size:11.5px;color:#c9d6be;font-weight:700}
+.lm-pip{
+ display:inline-block;width:8px;height:8px;border-radius:2px;transform:rotate(45deg);
+ border:1px solid #6b7d6f;background:#101a16
+}
+.lm-pip.is-on{border-color:#fff2b3;background:linear-gradient(135deg,#fff3b0,#e8ad3f);box-shadow:0 0 6px #f6ca5c88}
+.lm-hero-showcase{
+ display:flex;align-items:center;gap:9px;margin:0 0 8px;padding:6px 8px;
+ border:1px solid #b5925466;border-radius:7px;background:#14201bcc
+}
+.lm-hero-art{width:40px;height:40px;flex:none}
+.lm-hero-art .hxo{width:100%;height:100%}
+.lm-hero-showcase small{display:block;font-size:10.5px;color:#b8c7b5}
+.lm-hero-showcase b{font-size:13.5px;color:#ffeba8}
+.lm-tiers{display:flex;flex-direction:column;gap:4px;margin-bottom:9px}
+.lm-tier{
+ display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;gap:6px;
+ padding:5px 7px;border:1px solid #415449;border-radius:5px;
+ background:#121e19c4;font-size:12px;color:#c7d3c0
+}
+.lm-tier b{text-align:center;font-size:11px;padding:1px 0;border-radius:3px;background:#1e3027;color:#aebea9}
+.lm-tier.is-done{border-color:#5b8f64;background:#1a3023d6;color:#dcf0d8}
+.lm-tier.is-done b{background:#2d563a;color:#ccf5cf}
+.lm-tier.is-next{border-color:#e4bc62;background:#2f2a19d8;color:#fff4d0;font-weight:700}
+.lm-tier.is-next b{background:#785821;color:#fff0bd}
+.lm-btn{
+ width:100%;padding:9px 10px;border:1.5px solid #596b60;border-radius:7px;
+ background:#16231d;background-image:none;color:#99aa9d;font-size:13.5px;font-weight:800
+}
+.lm-btn.is-ready{
+ border-color:#f6d479;background:linear-gradient(180deg,#a6792a,#734f17);
+ color:#fff8dc;text-shadow:0 1px 0 #3f2808;box-shadow:inset 0 1px 0 #fff2be55
+}
+
+/* Settlement Next-Step Hook Box */
+.settle-hooks{
+ margin:10px 0 12px;padding:9px 11px;text-align:left;
+ border:1.5px solid #cfa557;border-left:4px solid #f4cf72;border-radius:7px;
+ background:linear-gradient(180deg,#2a2618e6,#1a221ee6)
+}
+.settle-hooks b{display:block;margin-bottom:4px;font-size:13px;color:#ffe69a;letter-spacing:.4px}
+.settle-hooks p{margin:3px 0!important;font-size:12.5px!important;line-height:1.45!important;color:#efe6cc!important}
+
+/* Run Mode Picker Modal (#runModeP) */
+#runModeP{z-index:92;background:#080b12e4}
+#runModeP .hp{
+ position:relative;max-width:456px;padding:18px 14px 18px;
+ border:2px solid #d6aa57;border-radius:11px;
+ background:
+  radial-gradient(100% 35% at 50% 0%,#e8a24a24 0%,transparent 70%),
+  linear-gradient(180deg,#242938 0%,#171b26 58%,#11141d 100%);
+ box-shadow:inset 0 0 0 4px #141822,inset 0 0 0 5px #c99d4e38,0 24px 52px #04060bdd;
+ color:#f5edd6
+}
+#runModeP h2{
+ margin:0 42px 12px;padding-bottom:8px;text-align:center;
+ font-family:'Noto Serif TC',serif;font-size:21px;font-weight:900;letter-spacing:1.2px;
+ color:#ffe8a4;border-bottom:1px solid #d6aa5744
+}
+.mode-list{display:flex;flex-direction:column;gap:9px}
+.mode-card{
+ display:flex;flex-direction:column;gap:6px;width:100%;padding:11px 12px;text-align:left;
+ border:1.5px solid #757c94;border-radius:9px;
+ background:linear-gradient(180deg,#282f40,#1b202d);background-image:none;
+ color:#f4ecd5;box-shadow:inset 0 1px 0 #ffffff18,0 3px 8px #06080f88;
+ transition:transform .12s ease,border-color .14s ease
+}
+.mode-card:hover{transform:translateY(-1px);border-color:#f5d076}
+.mode-card small{font-size:12.5px;line-height:1.5;color:#d2dae6}
+

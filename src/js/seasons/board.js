@@ -5,7 +5,7 @@ const SEASONS=[
   {id:'autumn',name:'秋天',icon:'🍂',description:'秋風吹落葉！每天隨機在 3 個空格落下落葉，落葉格無法放置物品。當上下左右相鄰的格子過熱時，落葉會燃燒消失。未燒掉的落葉保留到秋季結束。'},
   {id:'winter',name:'冬天',icon:'❄️',description:'寒冬結冰！整個冬季維持 1 格冰凍，不會逐日增加。冰凍格不能放置物品，相鄰的過熱格及暴風雪都不會使它融化，換季後解除。'}
 ];
-function seasonIndex(d=day){return d>0?Math.floor((d-1)/3)%4:0;}
+function seasonIndex(d=day){if(d>0&&typeof activeRunMode==='function'&&activeRunMode()==='eternal_winter')return 3;return d>0?Math.floor((d-1)/3)%4:0;}
 function seasonDay(d=day){return d>0?(d-1)%3+1:1;}
 function hotSteps(){const cb=typeof contractBonuses==='function'?contractBonuses():{forgeHeatDelta:0};const base=Math.max(5,(seasonIndex()===1?60:50)-10*Math.max(0,Math.min(3,sk('cd')))-medalBonuses().forgeHeatReduce-(cb.forgeHeatDelta||0));return typeof isWorkshopFever==='function'&&isWorkshopFever('forge')?Math.max(3,Math.ceil(base/2)):base;}
 function cellBlock(i){return blueprintSlotAt(i)?'這是傳說藍圖格，請放入指定武器':frozen.has(i)?'這格已冰凍，換季後才能放置物品':leaves.has(i)?'這格有落葉，需要相鄰過熱格將它燒掉':'';}
@@ -33,8 +33,9 @@ function addSeasonCells(target,count,type,animate=true){
 }
 function normalizeWinterCells(animate=true){
  if(seasonIndex()!==3)return;
- frozen=new Set([...frozen].filter(i=>Number.isInteger(i)&&i>=0&&i<W*H&&!g[i]&&!blueprintSlotAt(i)).slice(0,1));
- addSeasonCells(frozen,Math.max(0,1-frozen.size),'ice',animate);
+ const cap=(typeof activeRunMode==='function'&&activeRunMode()==='eternal_winter')?2:1;
+ frozen=new Set([...frozen].filter(i=>Number.isInteger(i)&&i>=0&&i<W*H&&!g[i]&&!blueprintSlotAt(i)).slice(0,cap));
+ addSeasonCells(frozen,Math.max(0,cap-frozen.size),'ice',animate);
 }
 function openHandBag(){if(hand!==null||busy||drag)return;openP('bagP');}
 function prepareSeasonDay(previousDay){

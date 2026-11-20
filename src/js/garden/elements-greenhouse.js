@@ -28,11 +28,11 @@ function syncMonsterElements(){
  if(monsterElementDay===day&&monsterElements.length===EXPEDITIONS.length)return;
  const choices=['none',...ELEMENT_IDS];monsterElementDay=day;monsterElements=EXPEDITIONS.map(()=>day>0?choices[rnd(choices.length)]:'none');
 }
-function expeditionMonster(id){syncMonsterElements();return id>=20?endlessMonster(id):{...EXPEDITIONS[id],traitIndex:id%10,element:monsterElements[id]||'none'};}
+function expeditionMonster(id){syncMonsterElements();const m=id>=20?endlessMonster(id):{...EXPEDITIONS[id],traitIndex:id%10,element:monsterElements[id]||'none'};if(typeof activeRunMode==='function'&&activeRunMode()==='eternal_winter'){return {...m,atk:Math.round(m.atk*1.15),def:Math.round(m.def*1.15)};}return m;}
 function applyWeaponElement(w,i){const e=elementTiles.get(i);if(validElement(e))w.element=e;return w;}
 function elementBadge(e,cls=''){const color=validElement(e)?ELEMENTS[e].color:'#b8c3c9';return '<span class="element-badge '+cls+'" style="--element:'+color+'" aria-label="'+elementName(e)+'屬性">'+elementIcon(e)+'<b>'+elementName(e)+'</b></span>';}
 function elementWeaponHTML(w){const e=elementOf(w);return e==='none'?'<p class="element-weapon-note">無屬性</p>':'<div class="element-weapon-note">'+elementBadge(e)+'<span>屬性附魔 · 武器售價 +20%</span></div>';}
-function seedPrice(e){return Math.max(1,Math.round((ELEMENTS[e]?.price||350)*(1-medalBonuses().seedDiscount)));}
+function seedPrice(e){const lmDisc=typeof landmarkBonuses==='function'?(landmarkBonuses().seedDiscount||0):0;return Math.max(1,Math.round((ELEMENTS[e]?.price||350)*(1-medalBonuses().seedDiscount)*(1-lmDisc)));}
 function plantAge(p){return Math.max(0,Math.min(3,day-p.plantedDay+(p.growthBoost||0)+medalBonuses().flowerSpeed));}
 function plantReadyDay(p){return p.plantedDay+Math.max(1,3-(p.growthBoost||0)-medalBonuses().flowerSpeed);}
 function renderGreenhousePanel(){
@@ -45,8 +45,8 @@ function selectGreenhouseBed(i){
  if(!Number.isInteger(i)||i<0||i>=6||day<1)return;selectedPlantBed=i;const p=greenhouseBeds[i];
  if(!p){renderSeedPicker();$('seedP').style.display='flex';return;}
  if(plantAge(p)>=3){
-  const e=p.element,b=medalBonuses(),baseYield=harvestYield(),extraEss=b.extraEssenceChance>0&&Math.random()<b.extraEssenceChance?1:0,yieldCount=baseYield+extraEss,seedBack=b.seedReturnChance>0&&Math.random()<b.seedReturnChance?1:0;
-  greenhouseBeds[i]=null;for(let n=0;n<yieldCount;n++)bag.push({k:'ess',element:e});if(seedBack)seedStock[e]=(seedStock[e]||0)+seedBack;
+  const e=p.element,b=medalBonuses(),lm=typeof landmarkBonuses==='function'?landmarkBonuses():{extraEssence:0,harvestGold:0},baseYield=harvestYield(),extraEss=(b.extraEssenceChance+lm.extraEssence)>0&&Math.random()<(b.extraEssenceChance+lm.extraEssence)?1:0,yieldCount=baseYield+extraEss,seedBack=b.seedReturnChance>0&&Math.random()<b.seedReturnChance?1:0;
+  greenhouseBeds[i]=null;for(let n=0;n<yieldCount;n++)bag.push({k:'ess',element:e});if(seedBack)seedStock[e]=(seedStock[e]||0)+seedBack;if(lm.harvestGold){coins+=lm.harvestGold;earned+=lm.harvestGold;}
   recordMedalHarvest();selectedPlantBed=-1;renderGreenhousePanel();saveNow();
   $('greenhouseDetail').textContent='已收成 '+ELEMENTS[e].name+'之精華 ×'+yieldCount+(baseYield===2?'（春日豐收）':'')+(extraEss?'（花園章 +1）':'')+(seedBack?'，並返還 1 顆'+ELEMENTS[e].name+'之花種子':'')+'，放入道具箱。盆栽可重新播種。';return;
  }

@@ -21,7 +21,7 @@ function kitchenStockRemaining(kind){const extra=typeof contractBonuses==='funct
 function productionEndForgeDay(){
  if(day<1||sandboxNight||lives<=0||orders.length||dq.length)return;
  if(lastCompletedDay>=day){renderForgeSettlement();return;}
- qEach('safe',q=>{if(!q.failed&&lives>=dLv)qProg(q,q.n)});lastCompletedDay=day;const reward=grantDailyWorkshopSkill('forge');pendingChests++;gachaUsed=false;skillDone=false;spentToday=0;
- kitchen.forgeSettlement={day,total:dTot,served:dSold,unfulfilled:Math.max(0,dTot-dSold),earned:dEarn,points:reward.points,skillGold:reward.gold,chests:1};
+ qEach('safe',q=>{if(!q.failed&&lives>=dLv)qProg(q,q.n)});lastCompletedDay=day;const reward=grantDailyWorkshopSkill('forge'),tourismGold=typeof landmarkBonuses==='function'?(landmarkBonuses().tourismGold||0):0;if(tourismGold){coins+=tourismGold;earned+=tourismGold;dEarn+=tourismGold;}pendingChests++;gachaUsed=false;skillDone=false;spentToday=0;
+ kitchen.forgeSettlement={day,total:dTot,served:dSold,unfulfilled:Math.max(0,dTot-dSold),earned:dEarn,tourismGold,points:reward.points,skillGold:reward.gold,chests:1};
  saveHi();saveNow();renderForgeSettlement();
 }

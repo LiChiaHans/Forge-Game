@@ -28,11 +28,14 @@ function render(){
   $("srv").innerHTML=`<span class="season-info">${currentSeason.icon}${currentSeason.name}${seasonIndex()===2&&autumnForgeCharges?'<sup class="season-charge">🔥'+autumnForgeCharges+'</sup>':''}</span><span class="day-info">${day===0?"教學":"第 "+day+" 天"} · 客人 ${dServed}/${dTot}</span>`;
   renderQ();
 
+  const readyW=[...g,hand].filter(w=>w?.k==='w'&&!w.protected);
   $("orders").innerHTML=orders.map((o,k)=>{
     const dl=enter.has(k)?enter.get(k)-Date.now():null;
     if(dl!==null&&dl<=-600)enter.delete(k);
     const an=dl!==null&&dl>-600;
-    return `<div class="od${an?" in":""}" style="${an?`animation-delay:${dl}ms;`:""}background:linear-gradient(hsla(${hu(o).toFixed(0)},70%,52%,.42),hsla(${hu(o).toFixed(0)},70%,40%,.16)),#262e3b;border-color:hsl(${hu(o).toFixed(0)},60%,42%)" data-k="${k}">
+    const matched=readyW.filter(w=>(o.c===null||o.c===w.c)&&w.t>=o.t);
+    const matchCls=matched.length?(matched.some(w=>guestPreferenceBonus(w,o,false)>0)?' is-match is-pref-match':' is-match'):'';
+    return `<div class="od${an?" in":""}${matchCls}" style="${an?`animation-delay:${dl}ms;`:""}background:linear-gradient(hsla(${hu(o).toFixed(0)},70%,52%,.42),hsla(${hu(o).toFixed(0)},70%,40%,.16)),#262e3b;border-color:hsl(${hu(o).toFixed(0)},60%,42%)" data-k="${k}">
     ${orderGuestHTML(o)}${guestBadge22(o,false)}<span class="wt">⏳${o.c===null?"∞":Math.max(0,o.wait)}</span>
     <span class="em">${o.wait<=o.max/4?"😡":o.wait<=o.max/2?"😒":""}</span>
     ${o.c===null?`<div class="hxo"><div class="hxi" style="background:${C[o.t]}"><b>任意</b></div></div>`:hex(o.c,C[o.t],"",o.t)}
