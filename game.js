@@ -1031,16 +1031,21 @@ function townCivicBuildingArt(kind,p){
  const label=archive?'圖鑑館':training?'訓練所':'裝飾行',signColor=archive?'#4b506d':training?'#3c546d':'#6c557a',textTransform=flip?'translate(132 0) scale(-1 1)':'';
  return '<svg viewBox="0 -28 192 212" shape-rendering="crispEdges" aria-hidden="true" data-building-identity="'+(archive?'library':training?'academy':'artisan')+'"><g'+(flip?' transform="translate(192 0) scale(-1 1)"':'')+'><path fill="#25392f" opacity=".3" d="M8 148l114 31 65-23v9l-65 22L8 157z"/><path fill="#667064" d="M16 145l106 28 62-21v11l-62 22-106-29z"/><path fill="#b9b18f" d="M16 145l106 28 62-21-7-5-55 18-99-25z"/><path fill="'+wood+'" stroke="#344236" stroke-width="3" d="M22 79l101 26 57-17v65l-57 20-101-26z"/><path fill="'+light+'" d="M26 87l92 24v54l-92-23z"/><path fill="'+shade+'" d="M127 110l49-15v56l-49 16z"/><path fill="'+wood+'" d="M26 91l91 23v6L26 97zM26 133l91 24v6l-91-24zM27 87h6v58h-6zM112 109h7v59h-7zM125 111l50-15v6l-50 14zM173 95h6v58h-6z"/>'+face+'<path fill="#3c3831" d="M81 121l24 6v36l-24-6z"/><path fill="'+(training?'#687d84':'#9c764a')+'" d="M84 124l18 5v31l-18-5z"/><path fill="#ddc18c" d="M88 128l10 3v14l-10-3z"/><path fill="#f3dda1" d="M98 149h2v3h-2z"/><path fill="'+light+'" stroke="'+wood+'" stroke-width="3" d="M126 102l46-50 17 37z"/><path fill="'+wood+'" d="M168 58h4v31h-4zM149 82l30 8v4l-32-8z"/>'+townWorkshopRoof('civic-roof-'+kind,roof,training)+(archive?extra:'')+badge+'<g class="town-house-sign" data-sign-plane="front-wall" transform="matrix(1 .245 0 1 0 0)"><path fill="#cab07a" d="M28 86h79v23H28z"/><path fill="'+signColor+'" d="M31 89h73v17H31z"/><path stroke="#e7cb8c" d="M33 91h69M33 104h69"/><text'+(textTransform?' transform="'+textTransform+'"':'')+' x="66" y="102" font-size="15" font-family="serif" font-weight="bold" text-anchor="middle" fill="#fff0bd">'+label+'</text></g>'+(!archive?extra:'')+'<path fill="#a59b7c" d="M79 158l29 8 5 5-32-8z"/><path fill="#e2c78d" d="M84 158l20 5v3l-20-5z"/>'+(p.snow?'<path fill="#edf5ed" d="M13 75l50-50 110 27-4 4L63 31 19 77zM124 101l10-10 9 2-16 15z"/>':'')+'</g></svg>';
 }
-const GEMINI_TOWN_ART=["assets/town/0.ce3ce9d639bb.webp","assets/town/1.e66463ca4058.webp","assets/town/2.0a73b8a46fbe.webp","assets/town/3.ff18b8000d82.webp"];
+const GEMINI_TOWN_ART=["assets/town/0.a20b5ac9ee46.jpg","assets/town/1.ada009ad48ab.jpg","assets/town/2.5cd7840d6b3e.jpg","assets/town/3.5c7363e81561.jpg","assets/town/4.fbb597b8d879.jpg","assets/town/5.3d4a1bbfd1fe.jpg","assets/town/6.71b68468ba4f.jpg","assets/town/7.c957c51c346a.jpg"];
+const TOWN_BUILDING_ART={"expedition_0":"assets/town/b_expedition_0.0506bf97d57f.png","expedition_1":"assets/town/b_expedition_1.1d76412b13af.png","expedition_2":"assets/town/b_expedition_2.619f50daa4a4.png","expedition_3":"assets/town/b_expedition_3.833260a81b16.png","archive_0":"assets/town/b_archive_0.ced4022f3724.png","archive_1":"assets/town/b_archive_1.f004bf8faca1.png","archive_2":"assets/town/b_archive_2.e56de9a4ddd8.png","archive_3":"assets/town/b_archive_3.bb2941135828.png","kitchen_0":"assets/town/b_kitchen_0.efae53c5535b.png","kitchen_1":"assets/town/b_kitchen_1.a048ca744953.png","kitchen_2":"assets/town/b_kitchen_2.1a3bb640f7fc.png","kitchen_3":"assets/town/b_kitchen_3.7a4593f6f93b.png","greenhouse_0":"assets/town/b_greenhouse_0.d71ef7739fc4.png","greenhouse_1":"assets/town/b_greenhouse_1.a6ccdd27c41e.png","greenhouse_2":"assets/town/b_greenhouse_2.4a0b5cdf802a.png","greenhouse_3":"assets/town/b_greenhouse_3.4e8b3aa5c536.png","forge_0":"assets/town/b_forge_0.17c93ade9991.png","forge_1":"assets/town/b_forge_1.51dbc438b671.png","forge_2":"assets/town/b_forge_2.28077a8ef05c.png","forge_3":"assets/town/b_forge_3.2bd2399c49ab.png","decor_0":"assets/town/b_decor_0.821311796778.png","decor_1":"assets/town/b_decor_1.eab962f084f3.png","decor_2":"assets/town/b_decor_2.178631190b29.png","decor_3":"assets/town/b_decor_3.64fb4034fb33.png","training_0":"assets/town/b_training_0.2fe7302370ca.png","training_1":"assets/town/b_training_1.0be1ae0010fb.png","training_2":"assets/town/b_training_2.271911a3e6e4.png","training_3":"assets/town/b_training_3.99c236c2a24b.png"};
 const GEMINI_TOWN_BUILDINGS=[
- {id:'townExpedition',kind:'expedition',name:'遠征城堡',label:'遠征城堡，挑戰怪物',box:[.005,.01,.445,.245],sign:[.13,.58,.69,.17],angle:-2},
- {id:'townArchive',kind:'archive',name:'星頁圖鑑館',label:'星頁圖鑑館，查看武器收藏',box:[0,.25,.385,.205],sign:[.18,.44,.78,.19],angle:-5},
- {id:'townKitchen',kind:'kitchen',name:'暖爐餐廳',label:'暖爐餐廳，晚間料理營業',box:[.63,.085,.37,.245],sign:[.055,.48,.82,.16],angle:5},
- {id:'townGreenhouse',kind:'greenhouse',name:'晨露溫室',label:'晨露溫室，種植與收成',box:[.015,.465,.345,.195],sign:[.09,.42,.85,.20],angle:5},
- {id:'townForge',kind:'forge',name:'鐵火冶煉廠',label:'鐵火冶煉廠，進入鍛造棋盤',box:[.605,.465,.395,.205],sign:[.08,.38,.82,.19],angle:-5},
- {id:'townDecorShop',kind:'decor',name:'彩匠裝飾行',label:'彩匠裝飾行，購買城鎮裝飾',box:[.015,.675,.37,.225],sign:[.055,.40,.88,.18],angle:-5},
- {id:'townTraining',kind:'training',name:'星盾訓練所',label:'星盾訓練所，提升技能',box:[.61,.695,.39,.24],sign:[.13,.39,.82,.17],angle:5}
+ {id:'townExpedition',kind:'expedition',name:'遠征城堡',label:'遠征城堡，挑戰怪物',box:[.015,.025,.435,.225],sign:[.13,.66,.70,.17],angle:-2},
+ {id:'townArchive',kind:'archive',name:'星頁圖鑑館',label:'星頁圖鑑館，查看武器收藏',box:[.005,.25,.38,.20],sign:[.14,.64,.78,.19],angle:-5},
+ {id:'townKitchen',kind:'kitchen',name:'暖爐餐廳',label:'暖爐餐廳，晚間料理營業',box:[.61,.095,.385,.23],sign:[.07,.65,.82,.16],angle:5},
+ {id:'townGreenhouse',kind:'greenhouse',name:'晨露溫室',label:'晨露溫室，種植與收成',box:[.015,.47,.36,.185],sign:[.08,.62,.84,.20],angle:5},
+ {id:'townForge',kind:'forge',name:'鐵火冶煉廠',label:'鐵火冶煉廠，進入鍛造棋盤',box:[.60,.47,.395,.205],sign:[.08,.62,.82,.19],angle:-5},
+ {id:'townDecorShop',kind:'decor',name:'彩匠裝飾行',label:'彩匠裝飾行，購買城鎮裝飾',box:[.015,.68,.375,.215],sign:[.06,.62,.88,.18],angle:-5},
+ {id:'townTraining',kind:'training',name:'星盾訓練所',label:'星盾訓練所，提升技能',box:[.60,.695,.395,.215],sign:[.12,.64,.82,.17],angle:5}
 ];
+function townBuildingSpriteUrl(kind,tier=0){
+ const lv=Math.max(0,Math.min(3,Math.floor(Number(tier)||0)));
+ return TOWN_BUILDING_ART[kind+'_'+lv]||TOWN_BUILDING_ART[kind+'_0']||'';
+}
 function geminiTownSignArt(kind,name,tier=0){
  const colors={expedition:['#343e53','#8297ae','#d7c68c'],archive:['#42384e','#967d9f','#ead8a4'],kitchen:['#734332','#c48b55','#ffe0a0'],greenhouse:['#28564b','#6b9b73','#e8dd9c'],forge:['#333e45','#899ca0','#e9bd72'],decor:['#5b425e','#aa87a3','#f4dba4'],training:['#2e4b63','#799fb8','#edd080']};
  let [wood,rim,gold]=colors[kind];
@@ -1052,221 +1057,32 @@ function geminiTownSignArt(kind,name,tier=0){
  const stars=tier>0?'<rect x="'+(169-tier*11)+'" y="2" width="'+(tier*11+4)+'" height="12" fill="#222a2e" rx="2"/><text x="169" y="11.5" text-anchor="end" font-size="10" font-weight="900" fill="'+gold+'">'+('★'.repeat(Math.min(3,tier)))+'</text>':'';
  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 50" aria-hidden="true" shape-rendering="crispEdges" data-sign-kind="'+kind+'" data-sign-tier="'+tier+'"><path fill="#20292b" d="M8 2h164v5h6v36h-6v5H8v-5H2V7h6z"/><path fill="'+rim+'" d="M9 5h162v5h4v30h-4v5H9v-5H5V10h4z"/><path fill="'+gold+'" d="M11 7h158v3H11zM8 11h3v27H8z"/><path fill="'+wood+'" d="M12 12h156v27H12z"/>'+innerTrim+'<path stroke="'+rim+'" opacity=".4" d="M51 17h110M51 34h110"/><path fill="#1d303b" d="M15 11h29v29H15z"/>'+icons[kind]+'<path fill="'+gold+'" d="M9 10h3v3H9zM168 10h3v3h-3zM9 37h3v3H9zM168 37h3v3h-3z"/><text x="106" y="33" text-anchor="middle" font-size="'+(name.length>4?20:22)+'" font-weight="900" font-family="Noto Sans TC,Microsoft JhengHei,sans-serif" fill="#fff0c8" stroke="#20282a" stroke-width="1.5" paint-order="stroke">'+name+'</text>'+stars+'</svg>';
 }
-function townBuildingUpgradeParts(kind,tier){
- if(!tier||tier<1)return {arch:'',glow:''};
- const t2=tier>=2,t3=tier>=3;
- let arch='',glow='';
- if(kind==='expedition'){
-  // Lv1: gilded turret finials, royal gate crest, glowing gate braziers
-  arch+='<g data-upgrade-kind="expedition" data-upgrade-tier="'+tier+'">'
-   +'<path fill="#2a211b" d="M125 26h6v10h-6zM98 86h6v10h-6zM222 66h6v10h-6z"/>'
-   +'<path fill="#e8be59" d="M126 27h4v8h-4zM99 87h4v8h-4zM223 67h4v8h-4z"/>'
-   +'<path fill="#fff1b8" d="M127 25h2v4h-2zM100 85h2v4h-2zM224 65h2v4h-2z"/>'
-   +'<path fill="#2a211b" d="M160 156h16v14l-8 6-8-6z"/><path fill="#b8323c" d="M162 158h12v11l-6 4-6-4z"/><path fill="#f5d272" d="M166 160h4v9h-4zM164 163h8v3h-8z"/>';
-  glow+='<ellipse cx="158" cy="222" rx="14" ry="18" fill="url(#tu-gold-glow)" opacity=".7"/><ellipse cx="224" cy="214" rx="14" ry="18" fill="url(#tu-gold-glow)" opacity=".7"/>';
-  // Lv2: gold parapet trim, rich crimson-gold banners, crowned keep finial
-  if(t2){
-   arch+='<path fill="#2a211b" d="M90 116h80v6H90z"/><path fill="#d8ab49" d="M92 117h76v4H92z"/><path fill="#fff0b6" d="M94 117h12v2H94zM122 117h14v2h-14zM152 117h12v2h-12z"/>'
-    +'<path fill="#2a211b" d="M132 174h14v28l-7-5-7 5zM192 166h14v28l-7-5-7 5z"/>'
-    +'<path fill="#b72d38" d="M134 176h10v22l-5-4-5 4zM194 168h10v22l-5-4-5 4z"/>'
-    +'<path fill="#f5cf67" d="M134 176h10v3h-10zM138 179h2v14h-2zM194 168h10v3h-10zM198 171h2v14h-2z"/>'
-    +'<path fill="#2a211b" d="M126 6h4v22h-4zM130 8h28l-6 7 6 7h-28z"/><path fill="#c4303a" d="M130 10h24l-5 5 5 5h-24z"/><path fill="#f7d572" d="M130 10h24v2h-24zM130 18h24v2h-24zM134 13h6v4h-6z"/>';
-  }
-  // Lv3: radiant paladin star crown + delicate golden motes
-  if(t3){
-   arch+='<path fill="#2a211b" d="M126 1h4v10h-4zM122 4h12v4h-12z"/><path fill="#fff2b5" d="M127 2h2v8h-2zM123 5h10v2h-10z"/>';
-   glow+='<circle class="tu-halo" cx="128" cy="14" r="26" fill="url(#tu-gold-glow)"/>'
-    +'<rect class="tu-spark" x="98" y="64" width="3" height="3" fill="#fff2b8"/><rect class="tu-spark" x="224" y="48" width="3" height="3" fill="#fff2b8"/><rect class="tu-spark" x="168" y="142" width="3" height="3" fill="#ffe285"/>';
-  }
-  arch+='</g>';
- }else if(kind==='kitchen'){
-  // Lv1: brass chimney cap + warm festoon string-lights along front eaves
-  arch+='<g data-upgrade-kind="kitchen" data-upgrade-tier="'+tier+'">'
-   +'<path fill="#2a211b" d="M482 120h26v9h-26zM486 115h18v6h-18z"/><path fill="#c98e3d" d="M484 122h22v5h-22z"/><path fill="#f5d276" d="M488 117h14v3h-14zM484 122h22v2h-22z"/>'
-   +'<path fill="none" stroke="#2b211a" stroke-width="2" d="M366 205q52 22 108 30"/>'
-   +'<rect x="378" y="211" width="4" height="4" fill="#ffe180"/><rect x="398" y="219" width="4" height="4" fill="#ffe180"/><rect x="420" y="226" width="4" height="4" fill="#ffe180"/><rect x="442" y="231" width="4" height="4" fill="#ffe180"/><rect x="462" y="234" width="4" height="4" fill="#ffe180"/>';
-  glow+='<ellipse cx="420" cy="228" rx="48" ry="18" fill="url(#tu-gold-glow)" opacity=".55"/>';
-  // Lv2: copper gourmet cupola + crimson-cream striped bistro porch awning + patio lanterns
-  if(t2){
-   arch+='<path fill="#1b171455" d="M430 128h32v6h-32z"/>'
-    +'<path fill="#2a211b" d="M434 114h24v16h-24zM430 112l16-12 16 12v4h-32z"/><path fill="#9d5836" d="M436 115h20v13h-20z"/><path fill="#c77242" d="M434 112l12-9 12 9z"/>'
-    +'<path fill="#f6d170" d="M442 118h8v8h-8zM445 96h2v6h-2z"/><path fill="#fff3c0" d="M444 120h4v4h-4z"/>'
-    +'<path fill="#2a211b" d="M388 220h60l6 14h-72z"/><path fill="#b83838" d="M390 222h56l5 10h-66z"/>'
-    +'<path fill="#f5e7c6" d="M398 222h8l-1 10h-8zM414 222h8v10h-8zM430 222h8l1 10h-8z"/>'
-    +'<path fill="#2a211b" d="M384 282h6v10h-6zM462 310h6v10h-6z"/><rect x="385" y="284" width="4" height="5" fill="#ffe07c"/><rect x="463" y="312" width="4" height="5" fill="#ffe07c"/>';
-   glow+='<ellipse cx="387" cy="286" rx="14" ry="14" fill="url(#tu-gold-glow)" opacity=".65"/><ellipse cx="465" cy="314" rx="14" ry="14" fill="url(#tu-gold-glow)" opacity=".65"/>';
-  }
-  // Lv3: 3-star gourmet gable medallion + warm hearth shimmer
-  if(t3){
-   arch+='<path fill="#2a211b" d="M405 156h24v10h-24z"/><path fill="#9c2c34" d="M407 158h20v6h-20z"/><path fill="#ffe892" d="M410 159h3v4h-3zM416 159h3v4h-3zM422 159h3v4h-3z"/>';
-   glow+='<circle class="tu-halo" cx="446" cy="112" r="24" fill="url(#tu-gold-glow)"/>'
-    +'<rect class="tu-spark" x="492" y="96" width="3" height="3" fill="#fff1b8"/><rect class="tu-spark" x="444" y="88" width="3" height="3" fill="#ffe285"/><rect class="tu-spark" x="418" y="146" width="3" height="3" fill="#fff2be"/>';
-  }
-  arch+='</g>';
- }else if(kind==='archive'){
-  // Lv1: gilded roof ridge finials + stained-glass rose medallion on front gable
-  arch+='<g data-upgrade-kind="archive" data-upgrade-tier="'+tier+'">'
-   +'<path fill="#2a211b" d="M68 248h6v10h-6zM168 278h6v10h-6z"/><path fill="#e7be58" d="M69 249h4v8h-4zM169 279h4v8h-4z"/>'
-   +'<path fill="#2a211b" d="M161 307h14v14h-14z"/><path fill="#38649b" d="M163 309h10v10h-10z"/><path fill="#f5d16e" d="M167 309h2v10h-2zM163 313h10v2h-10z"/><rect x="167" y="313" width="2" height="2" fill="#fff4c4"/>';
-  glow+='<circle cx="168" cy="314" r="14" fill="url(#tu-blue-glow)" opacity=".55"/>';
-  // Lv2: pixel-art Brass & Sapphire Celestial Observatory Dome on the burgundy roof ridge
-  if(t2){
-   arch+='<path fill="#1b171466" d="M90 274h58v6H90z"/>'
-    +'<path fill="#2a211b" d="M94 264h50v12H94z"/><path fill="#8e6c45" d="M96 266h46v8H96z"/><path fill="#e7be5b" d="M94 264h50v3H94zM94 273h50v2H94z"/>'
-    +'<path fill="#2a211b" d="M96 264c0-20 10-30 23-30s23 10 23 30z"/>'
-    +'<path fill="#2f5686" d="M99 263c0-17 9-26 20-26s20 9 20 26z"/>'
-    +'<path fill="#4c7db8" d="M103 261c1-13 7-20 15-21-5 5-8 12-8 21z"/>'
-    +'<path fill="#e8be59" d="M118 236h2v28h-2zM108 242h2v22h-2zM128 242h2v22h-2zM98 254h42v2H98z"/>'
-    +'<path fill="#2a211b" d="M132 238l16-10 4 6-16 10z"/><path fill="#e8bf5c" d="M133 240l14-9 2 3-14 9z"/><path fill="#fff2bb" d="M146 230l3-2 2 3-3 2z"/>'
-    +'<path fill="#2a211b" d="M117 227h4v9h-4z"/><rect x="118" y="228" width="2" height="7" fill="#fff0b3"/>';
-  }
-  // Lv3: celestial astrolabe shimmer + starlight motes
-  if(t3){
-   arch+='<ellipse cx="119" cy="233" rx="18" ry="4" fill="none" stroke="#f7d87c" stroke-width="1.8" transform="rotate(-12 119 233)"/>';
-   glow+='<circle class="tu-halo" cx="119" cy="242" r="28" fill="url(#tu-blue-glow)"/>'
-    +'<rect class="tu-spark" x="94" y="226" width="3" height="3" fill="#fff2b8"/><rect class="tu-spark" x="148" y="220" width="3" height="3" fill="#b4e0ff"/><rect class="tu-spark" x="118" y="214" width="3" height="3" fill="#ffe68c"/>';
-  }
-  arch+='</g>';
- }else if(kind==='greenhouse'){
-  // Lv1: gilded wrought-iron ridge cresting + emerald fairy lanterns at doorway
-  arch+='<g data-upgrade-kind="greenhouse" data-upgrade-tier="'+tier+'">'
-   +'<path fill="none" stroke="#243026" stroke-width="4" d="M68 468l116 52"/>'
-   +'<path fill="none" stroke="#e8c362" stroke-width="2" d="M68 468l116 52"/>'
-   +'<path fill="#243026" d="M65 460h6v8h-6zM181 512h6v8h-6z"/><path fill="#8af0be" d="M67 462h2v4h-2zM183 514h2v4h-2z"/>'
-   +'<path fill="#243026" d="M144 558h6v8h-6zM180 572h6v8h-6z"/><rect x="145" y="560" width="4" height="4" fill="#8cf5c2"/><rect x="181" y="574" width="4" height="4" fill="#8cf5c2"/>';
-  glow+='<circle cx="147" cy="562" r="12" fill="url(#tu-mana-glow)" opacity=".65"/><circle cx="183" cy="576" r="12" fill="url(#tu-mana-glow)" opacity=".65"/>';
-  // Lv2: Victorian Glass-and-Gold Ridge Lantern Cupola seated cleanly on the roof spine
-  if(t2){
-   arch+='<path fill="#18241d55" d="M98 486l52 22-4 6-52-22z"/>'
-    +'<path fill="#233028" d="M102 470h48v24h-48zM98 470l28-18 28 18v4H98z"/>'
-    +'<path fill="#45aa7f" d="M105 473h42v19h-42z"/><path fill="#8deec0" d="M107 475h12v15h-12zM123 475h10v15h-10zM137 475h8v15h-8z"/>'
-    +'<path fill="#66c99b" d="M104 470l22-14 22 14z"/>'
-    +'<path fill="#edc662" d="M102 470h48v3h-48zM102 491h48v3h-48zM120 472h2v20h-2zM134 472h2v20h-2zM125 446h2v10h-2z"/>'
-    +'<rect x="124" y="444" width="4" height="4" fill="#fff2b5"/>';
-  }
-  // Lv3: bioluminescent mana radiance + drifting firefly motes
-  if(t3){
-   glow+='<circle class="tu-halo" cx="126" cy="476" r="32" fill="url(#tu-mana-glow)"/>'
-    +'<rect class="tu-spark" x="96" y="454" width="3" height="3" fill="#b4ffd8"/><rect class="tu-spark" x="156" y="462" width="3" height="3" fill="#ffe996"/><rect class="tu-spark" x="126" y="438" width="3" height="3" fill="#d9ffec"/>';
-  }
-  arch+='</g>';
- }else if(kind==='forge'){
-  // Lv1: gilded slate-roof ridge ornaments + guild anvil crest above gable
-  arch+='<g data-upgrade-kind="forge" data-upgrade-tier="'+tier+'">'
-   +'<path fill="none" stroke="#241c18" stroke-width="4" d="M418 512l84-30"/>'
-   +'<path fill="none" stroke="#e4b752" stroke-width="2" d="M418 512l84-30"/>'
-   +'<path fill="#241c18" d="M405 530h18v14h-18z"/><path fill="#a92f34" d="M407 532h14v10h-14z"/><path fill="#f5ce66" d="M409 535h10v3h-10zM412 538h4v3h-4z"/>';
-  glow+='<ellipse cx="526" cy="624" rx="22" ry="16" fill="url(#tu-ember-glow)" opacity=".55"/>';
-  // Lv2: heavy iron & brass Dragon-Ember Chimney Crown + crimson smithy banner
-  if(t2){
-   arch+='<path fill="#1a151266" d="M498 484h44v5h-44z"/>'
-    +'<path fill="#241c18" d="M500 462h40v24h-40zM496 476h48v8h-48z"/>'
-    +'<path fill="#4b535e" d="M502 464h36v20h-36z"/><path fill="#6d7682" d="M504 466h10v16h-10z"/>'
-    +'<path fill="#d8a746" d="M498 478h44v4h-44zM502 462h6v6h-6zM532 462h6v6h-6zM516 462h8v5h-8z"/>'
-    +'<path fill="#ff6a26" d="M509 462c2-7 8-10 11-10s9 3 11 10z"/><path fill="#ffe37c" d="M514 462c1-4 4-6 6-6s5 2 6 6z"/>'
-    +'<path fill="#241c18" d="M380 564h14v32l-7-5-7 5z"/><path fill="#b22c34" d="M382 566h10v26l-5-4-5 4z"/><path fill="#f5ce66" d="M382 566h10v3h-10zM385 573h4v6h-4z"/>';
-  }
-  // Lv3: molten dragonfire chimney radiance + rising ember sparks
-  if(t3){
-   glow+='<circle class="tu-halo" cx="520" cy="462" r="28" fill="url(#tu-ember-glow)"/>'
-    +'<rect class="tu-spark" x="510" y="440" width="3" height="3" fill="#ffe47a"/><rect class="tu-spark" x="530" y="446" width="3" height="3" fill="#ff9840"/><rect class="tu-spark" x="520" y="430" width="3" height="3" fill="#fff0a8"/>';
-  }
-  arch+='</g>';
- }else if(kind==='decor'){
-  // Lv1: pixel-art festival bunting pennants + brass corner lanterns
-  arch+='<g data-upgrade-kind="decor" data-upgrade-tier="'+tier+'">'
-   +'<path fill="none" stroke="#2a211b" stroke-width="2" d="M36 786q76 14 152-18"/>'
-   +'<path fill="#d84b65" d="M48 788h8l-4 8z"/><path fill="#48b288" d="M74 791h8l-4 8z"/><path fill="#4c8bd4" d="M102 790h8l-4 8z"/><path fill="#f0c44d" d="M130 785h8l-4 8z"/><path fill="#d84b65" d="M158 776h8l-4 8z"/>'
-   +'<path fill="#2a211b" d="M30 796h6v9h-6zM192 778h6v9h-6z"/><rect x="31" y="798" width="4" height="5" fill="#ffe180"/><rect x="193" y="780" width="4" height="5" fill="#ffe180"/>';
-  glow+='<circle cx="33" cy="800" r="12" fill="url(#tu-gold-glow)" opacity=".6"/><circle cx="195" cy="782" r="12" fill="url(#tu-gold-glow)" opacity=".6"/>';
-  // Lv2: Stained-Glass Artisan Dormer Arch seated cleanly on the patchwork roof ridge
-  if(t2){
-   arch+='<path fill="#1b171455" d="M84 722h52v6H84z"/>'
-    +'<path fill="#2a211b" d="M86 704c0-14 11-22 24-22s24 8 24 22v20H86z"/>'
-    +'<path fill="#5d426a" d="M89 704c0-11 9-18 21-18s21 7 21 18v17H89z"/>'
-    +'<path fill="#e9bf5c" d="M84 720h52v4H84zM109 676h2v8h-2z"/>'
-    +'<circle cx="110" cy="705" r="11" fill="#2a211b"/><circle cx="110" cy="705" r="9" fill="#e65c78"/>'
-    +'<path fill="#57c89c" d="M110 696a9 9 0 0 1 9 9h-9z"/><path fill="#5e9ce8" d="M110 705h9a9 9 0 0 1-9 9z"/><path fill="#f5d266" d="M101 705a9 9 0 0 1 9-9v9z"/>'
-    +'<path fill="#f5d266" d="M109 696h2v18h-2zM101 704h18v2h-18z"/>';
-  }
-  // Lv3: prismatic gallery glow + delicate rainbow-gold motes
-  if(t3){
-   glow+='<circle class="tu-halo" cx="110" cy="705" r="28" fill="url(#tu-gold-glow)"/>'
-    +'<rect class="tu-spark" x="82" y="684" width="3" height="3" fill="#ffe580"/><rect class="tu-spark" x="138" y="682" width="3" height="3" fill="#8cf5cf"/><rect class="tu-spark" x="110" y="670" width="3" height="3" fill="#ff9eb8"/>';
-  }
-  arch+='</g>';
- }else if(kind==='training'){
-  // Lv1: gilded roof finials + enhanced golden Star-Shield gable crest + twin stair pennants
-  arch+='<g data-upgrade-kind="training" data-upgrade-tier="'+tier+'">'
-   +'<path fill="#202833" d="M412 722h6v10h-6zM512 758h6v10h-6z"/><path fill="#e9bf5c" d="M413 723h4v8h-4zM513 759h4v8h-4z"/>'
-   +'<path fill="#202833" d="M390 830h4v26h-4zM464 852h4v26h-4z"/><path fill="#38689e" d="M394 832h14l-4 5 4 5h-14zM468 854h14l-4 5 4 5h-14z"/><path fill="#f5d16b" d="M394 832h14v2h-14zM468 854h14v2h-14z"/>';
-  glow+='<circle cx="428" cy="788" r="16" fill="url(#tu-gold-glow)" opacity=".5"/>';
-  // Lv2: pixel-art Star-Shield Clock & Bell Tower Turret seated cleanly on the blue roof ridge
-  if(t2){
-   arch+='<path fill="#1b1f2666" d="M442 748h52v6h-52z"/>'
-    +'<path fill="#202833" d="M448 714h40v36h-40z"/><path fill="#d8cbb0" d="M451 717h34v30h-34z"/><path fill="#b8aa8f" d="M475 717h10v30h-10z"/>'
-    +'<path fill="#202833" d="M458 722h20v20h-20z"/><path fill="#1f3149" d="M460 724h16v18h-16z"/>'
-    +'<path fill="#e8be56" d="M464 734c0-5 2-7 4-7s4 2 4 7h2v3h-12v-3z"/><rect x="467" y="737" width="2" height="3" fill="#fff2b5"/>'
-    +'<path fill="#202833" d="M442 714l26-22 26 22v4h-52z"/><path fill="#315887" d="M446 714l22-18 22 18z"/><path fill="#4c7cb2" d="M449 712l19-15v15z"/>'
-    +'<path fill="#e9bf5c" d="M446 713h44v3h-44zM467 682h2v10h-2z"/><path fill="#fff1b3" d="M465 680h6v4h-6z"/>';
-  }
-  // Lv3: starlight belfry halo + twinkling golden star motes
-  if(t3){
-   glow+='<circle class="tu-halo" cx="468" cy="712" r="30" fill="url(#tu-gold-glow)"/>'
-    +'<rect class="tu-spark" x="442" y="692" width="3" height="3" fill="#fff2b8"/><rect class="tu-spark" x="494" y="694" width="3" height="3" fill="#ffe68a"/><rect class="tu-spark" x="467" y="672" width="3" height="3" fill="#fff6cc"/>';
-  }
-  arch+='</g>';
- }
- return {arch,glow};
-}
-function geminiTownUpgradesArt(){
- let archAll='',glowAll='',any=false;
- for(const b of GEMINI_TOWN_BUILDINGS){
-  const tier=typeof buildingLandmarkTier==='function'?buildingLandmarkTier(b.kind):0;
-  if(tier>0){
-   any=true;
-   const parts=townBuildingUpgradeParts(b.kind,tier);
-   archAll+=parts.arch;
-   glowAll+=parts.glow;
-  }
- }
- if(!any)return '';
- return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 572 1024" preserveAspectRatio="none" aria-hidden="true" shape-rendering="crispEdges">'
-  +'<defs>'
-  +'<radialGradient id="tu-gold-glow"><stop stop-color="#ffe99e" stop-opacity=".75"/><stop offset=".45" stop-color="#f6be52" stop-opacity=".28"/><stop offset="1" stop-color="#f6be52" stop-opacity="0"/></radialGradient>'
-  +'<radialGradient id="tu-blue-glow"><stop stop-color="#a8dcff" stop-opacity=".72"/><stop offset=".45" stop-color="#4e8cd6" stop-opacity=".26"/><stop offset="1" stop-color="#4e8cd6" stop-opacity="0"/></radialGradient>'
-  +'<radialGradient id="tu-mana-glow"><stop stop-color="#9effd2" stop-opacity=".72"/><stop offset=".45" stop-color="#47c48b" stop-opacity=".25"/><stop offset="1" stop-color="#47c48b" stop-opacity="0"/></radialGradient>'
-  +'<radialGradient id="tu-ember-glow"><stop stop-color="#ffbe5c" stop-opacity=".78"/><stop offset=".45" stop-color="#f26724" stop-opacity=".3"/><stop offset="1" stop-color="#f26724" stop-opacity="0"/></radialGradient>'
-  +'</defs>'
-  +'<g class="tu-arch-layer">'+archAll+'</g>'
-  +'<g class="tu-glow-layer" shape-rendering="auto">'+glowAll+'</g>'
-  +'</svg>';
-}
 function geminiTownNightArt(){
- const windows=[[.445,.212,.020,.027],[.743,.255,.027,.028],[.829,.263,.022,.026],[.91,.252,.026,.025],[.883,.608,.028,.035],[.842,.632,.040,.028],[.434,.832,.018,.025],[.725,.827,.025,.025],[.868,.826,.032,.028],[.892,.87,.022,.020],[.265,.816,.035,.030],[.248,.345,.025,.033],[.287,.366,.023,.026]],lamps=[[.274,.242],[.385,.244],[.711,.31],[.581,.868],[.425,.919]];
- return '<svg viewBox="0 0 572 1024" preserveAspectRatio="none" aria-hidden="true"><defs><filter id="geminiTownNightFilter" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="'+TOWN_NIGHT_COLOR_MATRIX+'"/></filter><radialGradient id="gemini-lamp"><stop stop-color="#ffdf9a" stop-opacity=".8"/><stop offset=".25" stop-color="#ffbe60" stop-opacity=".32"/><stop offset="1" stop-color="#f6af53" stop-opacity="0"/></radialGradient></defs><path fill="#cfe5ef" opacity=".7" d="M494 17h8v3h-5v6h-3z"/><path fill="#c9deea" opacity=".6" d="M344 13h2v2h-2zM390 24h2v2h-2zM452 9h2v2h-2zM537 36h2v2h-2z"/><g class="gemini-window-light">'+windows.map(([x,y,w,h])=>'<ellipse fill="url(#gemini-lamp)" cx="'+x*572+'" cy="'+y*1024+'" rx="'+w*850+'" ry="'+h*1300+'"/>').join('')+'</g>'+lamps.map(([x,y],i)=>'<ellipse class="gemini-lamp-light" style="animation-delay:-'+i+'s" fill="url(#gemini-lamp)" cx="'+x*572+'" cy="'+y*1024+'" rx="22" ry="37"/>').join('')+'</svg>';
+ const lamps=[[.711,.31],[.581,.868],[.425,.919]];
+ return '<svg viewBox="0 0 572 1024" preserveAspectRatio="none" aria-hidden="true"><defs><filter id="geminiTownNightFilter" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="'+TOWN_NIGHT_COLOR_MATRIX+'"/></filter><radialGradient id="gemini-lamp"><stop stop-color="#ffdf9a" stop-opacity=".68"/><stop offset=".3" stop-color="#ffbe60" stop-opacity=".24"/><stop offset="1" stop-color="#f6af53" stop-opacity="0"/></radialGradient></defs>'+lamps.map(([x,y],i)=>'<ellipse class="gemini-lamp-light" style="animation-delay:-'+i+'s" fill="url(#gemini-lamp)" cx="'+x*572+'" cy="'+y*1024+'" rx="22" ry="34"/>').join('')+'</svg>';
 }
 function geminiTownEffects(){
- return '<div class="gemini-sea-shimmer" aria-hidden="true"></div><div class="gemini-town-upgrades" aria-hidden="true"></div><div class="gemini-night-lights">'+geminiTownNightArt()+'</div><div class="gemini-fountain-water" aria-hidden="true"><i></i><i></i><i></i></div><div class="gemini-chimney-smoke" aria-hidden="true"><i></i><i></i><i></i></div><i class="gemini-forge-fire" aria-hidden="true"></i>';
+ return '<div class="gemini-sea-shimmer" aria-hidden="true"></div><div class="gemini-night-lights">'+geminiTownNightArt()+'</div><div class="gemini-fountain-water" aria-hidden="true"><i></i><i></i><i></i></div><div class="gemini-chimney-smoke" aria-hidden="true"><i></i><i></i><i></i></div><i class="gemini-forge-fire" aria-hidden="true"></i>';
 }
 function renderGeminiTown(){
  if(!expandedGameEnabled())return;const si=townVisualSeason(),night=isSandboxNight(),p=$('townP'),image=$('geminiTownImage');p.dataset.geminiTown='true';
- const key=String(si);if(image.dataset.art!==key){image.src=GEMINI_TOWN_ART[si];image.dataset.art=key;image.alt=SEASONS[si].name+'鍛造小鎮';}
+ const mapIdx=si+(night?4:0),key=String(mapIdx);
+ if(image.dataset.art!==key){image.src=GEMINI_TOWN_ART[mapIdx]||GEMINI_TOWN_ART[si];image.dataset.art=key;image.alt=SEASONS[si].name+(night?'夜晚':'白天')+'鍛造小鎮';}
  $('geminiTownScene').dataset.season=SEASONS[si].id;$('geminiTownScene').dataset.time=night?'night':'day';
- const rear=$('townDecorBack');if(!rear.dataset.geminiMask){const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="none"><rect width="1000" height="1000" fill="white"/>'+GEMINI_TOWN_BUILDINGS.map(b=>'<rect x="'+b.box[0]*1000+'" y="'+b.box[1]*1000+'" width="'+b.box[2]*1000+'" height="'+b.box[3]*1000+'" fill="black"/>').join('')+'</svg>';rear.style.maskImage='url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';rear.style.maskSize='100% 100%';rear.style.maskMode='luminance';rear.dataset.geminiMask='true';}
+ const rear=$('townDecorBack');if(rear.dataset.geminiMask){rear.style.maskImage='';rear.dataset.geminiMask='';}
  if(!$('geminiTownEffects').dataset.built){$('geminiTownEffects').innerHTML=geminiTownEffects();$('geminiTownEffects').dataset.built='1';}
- const tierSig=GEMINI_TOWN_BUILDINGS.map(b=>typeof buildingLandmarkTier==='function'?buildingLandmarkTier(b.kind):0).join(',');
- const upLayer=$('geminiTownEffects').querySelector?.('.gemini-town-upgrades');
- if(upLayer&&upLayer.dataset.tierSig!==tierSig){upLayer.dataset.tierSig=tierSig;upLayer.innerHTML=geminiTownUpgradesArt();}
- GEMINI_TOWN_BUILDINGS.forEach(b=>{const el=$(b.id),[x,y,w,h]=b.box,tier=typeof buildingLandmarkTier==='function'?buildingLandmarkTier(b.kind):0,tierKey=String(tier);
+ GEMINI_TOWN_BUILDINGS.forEach(b=>{const el=$(b.id),[x,y,w,h]=b.box,tier=typeof buildingLandmarkTier==='function'?buildingLandmarkTier(b.kind):0,tierKey=String(tier),sprUrl=townBuildingSpriteUrl(b.kind,tier);
   el.style.left=x*100+'%';el.style.top=y*100+'%';el.style.width=w*100+'%';el.style.height=h*100+'%';el.setAttribute('aria-label',b.label+(tier?'（建築階級 Lv '+tier+'）':''));el.title=b.name+(tier?' · Lv '+tier:'');el.dataset.landmarkTier=tierKey;
+  let sprEl=el.querySelector?.('.gemini-building-sprite');
+  if(!sprEl&&typeof document.createElement==='function'){sprEl=document.createElement('img');sprEl.className='gemini-building-sprite';sprEl.alt='';sprEl.setAttribute('aria-hidden','true');sprEl.decoding='async';el.prepend?el.prepend(sprEl):el.appendChild(sprEl);}
+  if(sprEl&&sprEl.dataset.spriteKey!==b.kind+'_'+tierKey){sprEl.dataset.spriteKey=b.kind+'_'+tierKey;sprEl.src=sprUrl;}
   const [sx,sy,sw,sh]=b.sign,signEl=el.querySelector?.('.gemini-building-sign');
   if(!signEl){el.innerHTML+='<span class="gemini-building-sign" data-gemini-sign="true" data-sign-tier="'+tierKey+'" style="left:'+sx*100+'%;top:'+sy*100+'%;width:'+sw*100+'%;height:'+sh*100+'%;--sign-angle:'+b.angle+'deg">'+geminiTownSignArt(b.kind,b.name,tier)+'</span>';}
   else if(signEl.dataset.signTier!==tierKey){signEl.dataset.signTier=tierKey;signEl.innerHTML=geminiTownSignArt(b.kind,b.name,tier);}
  });
 }
 function clearGeminiTown(){
- $('townP').dataset.geminiTown='false';geminiSnapshotAssets.clear();const rear=$('townDecorBack');rear.style.maskImage='';rear.dataset.geminiMask='';GEMINI_TOWN_BUILDINGS.forEach(b=>{const el=$(b.id);for(const key of ['left','top','width','height'])el.style[key]='';el.title='';el.dataset.landmarkTier='0';});
+ $('townP').dataset.geminiTown='false';geminiSnapshotAssets.clear();const rear=$('townDecorBack');rear.style.maskImage='';rear.dataset.geminiMask='';GEMINI_TOWN_BUILDINGS.forEach(b=>{const el=$(b.id);for(const key of ['left','top','width','height'])el.style[key]='';el.title='';el.dataset.landmarkTier='0';el.querySelector?.('.gemini-building-sprite')?.remove();});
 }
 function geminiTownGuestPoint(i,night){
  // Coordinates mark the visitor's feet, aligned with the painted doorstep/paths.
@@ -1276,22 +1092,29 @@ function geminiTownGuestPoint(i,night){
 function geminiTownGuestRoute(i,night){const line=Array.from({length:Math.max(8,i+1)},(_,j)=>geminiTownGuestPoint(j,night));return [[177,650],[177,500],...(night?[[177,362],[218,335],[235,313]]:[]),...line.slice(i).reverse()];}
 function townBackgroundFountainBlocked(x,y){return expandedGameEnabled()&&((x-180)/44)**2+((y-293)/36)**2<=1;}
 function geminiTownSnapshot(items,si,savedHeight){
- const rect=$('townMap').getBoundingClientRect(),H=Number.isFinite(savedHeight)&&savedHeight>=360&&savedHeight<=1000?savedHeight:rect.width>100&&rect.height>200?Math.max(360,Math.min(1000,360*rect.height/rect.width)):620,night=isSandboxNight();
- let out='<image href="'+(geminiSnapshotAssets.get(si)||GEMINI_TOWN_ART[si])+'" width="360" height="'+H+'" preserveAspectRatio="none"'+(night?' filter="url(#gemini-snapshot-night)"':'')+'/>';
- const upArt=geminiTownUpgradesArt();
- if(upArt)out+=snapshotNestedSVG(upArt,0,0,360,H);
+ const rect=$('townMap').getBoundingClientRect(),H=Number.isFinite(savedHeight)&&savedHeight>=360&&savedHeight<=1000?savedHeight:rect.width>100&&rect.height>200?Math.max(360,Math.min(1000,360*rect.height/rect.width)):620,night=isSandboxNight(),mapIdx=si+(night?4:0);
+ let out='<image href="'+(geminiSnapshotAssets.get('map_'+mapIdx)||GEMINI_TOWN_ART[mapIdx]||GEMINI_TOWN_ART[si])+'" width="360" height="'+H+'" preserveAspectRatio="none"/>';
  const decor=z=>items.filter(i=>i.z===z).slice().sort((a,b)=>a.y-b.y).map((i,k)=>{const d=DECOR_BY_ID.get(i.id);return !d?'':'<g transform="translate('+i.x*3.6+' '+i.y*H/100+') rotate('+i.r+') scale('+(i.fx?-i.s:i.s)+' '+(i.fy?-i.s:i.s)+')">'+snapshotNestedSVG(kitchenSnapshotDecorSVG(decorSVG(i.id,si,'gemini-snapshot-'+z+'-'+k),d),-d.w/2,-d.h,d.w,d.h)+'</g>';}).join('');
- out+='<g mask="url(#gemini-snapshot-buildings)">'+decor(0)+'</g>';
- for(const b of GEMINI_TOWN_BUILDINGS){const [x,y,w,h]=b.box,[sx,sy,sw,sh]=b.sign,tier=typeof buildingLandmarkTier==='function'?buildingLandmarkTier(b.kind):0;out+=snapshotNestedSVG(geminiTownSignArt(b.kind,b.name,tier),(x+w*sx)*360,(y+h*sy)*H,w*sw*360,h*sh*H);}
- if(night)out+=snapshotNestedSVG(geminiTownNightArt(),0,0,360,H);out+=decor(1);
- return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 '+H+'" width="360" height="'+H+'"><defs><filter id="gemini-snapshot-night" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="'+TOWN_NIGHT_COLOR_MATRIX+'"/></filter><mask id="gemini-snapshot-buildings" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="white"/>'+GEMINI_TOWN_BUILDINGS.map(b=>'<rect x="'+b.box[0]+'" y="'+b.box[1]+'" width="'+b.box[2]+'" height="'+b.box[3]+'" fill="black"/>').join('')+'</mask></defs>'+out+'</svg>';
+ out+='<g>'+decor(0)+'</g>';
+ for(const b of GEMINI_TOWN_BUILDINGS){
+  const [x,y,w,h]=b.box,[sx,sy,sw,sh]=b.sign,tier=typeof buildingLandmarkTier==='function'?buildingLandmarkTier(b.kind):0,sKey=b.kind+'_'+tier,href=geminiSnapshotAssets.get('b_'+sKey)||townBuildingSpriteUrl(b.kind,tier);
+  if(href)out+='<image href="'+href+'" x="'+x*360+'" y="'+y*H+'" width="'+w*360+'" height="'+h*H+'" preserveAspectRatio="xMidYMax meet"'+(night?' filter="url(#gemini-snapshot-building-night)"':'')+'/>';
+  out+=snapshotNestedSVG(geminiTownSignArt(b.kind,b.name,tier),(x+w*sx)*360,(y+h*sy)*H,w*sw*360,h*sh*H);
+ }
+ out+=decor(1);
+ return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 '+H+'" width="360" height="'+H+'"><defs><filter id="gemini-snapshot-building-night" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.78 0 0 0 0 0 0.80 0 0 0 0 0 0.88 0 0.03 0 0 0 1 0"/></filter></defs>'+out+'</svg>';
 }
 const geminiSnapshotAssets=new Map(),geminiSnapshotRequests=new Map();
+async function cacheSnapshotUrl(cacheKey,url){
+ if(!url||url.startsWith('data:')||geminiSnapshotAssets.has(cacheKey))return;
+ if(geminiSnapshotRequests.has(cacheKey))return geminiSnapshotRequests.get(cacheKey);
+ const epoch=sandboxEpoch,job=(async()=>{const response=await fetch(url);if(!response.ok)throw new Error('Town asset unavailable');const blob=await response.blob(),data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error('Town asset unreadable'));reader.readAsDataURL(blob);});if(expandedGameEnabled()&&epoch===sandboxEpoch)geminiSnapshotAssets.set(cacheKey,data);})();
+ geminiSnapshotRequests.set(cacheKey,job);try{await job;}finally{geminiSnapshotRequests.delete(cacheKey);}
+}
 async function prepareGeminiSnapshot(si){
- if(GEMINI_TOWN_ART[si].startsWith('data:')||geminiSnapshotAssets.has(si))return;
- if(geminiSnapshotRequests.has(si))return geminiSnapshotRequests.get(si);
- const epoch=sandboxEpoch,job=(async()=>{const response=await fetch(GEMINI_TOWN_ART[si]);if(!response.ok)throw new Error('Town background unavailable');const blob=await response.blob(),data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error('Town image unreadable'));reader.readAsDataURL(blob);});if(expandedGameEnabled()&&epoch===sandboxEpoch)geminiSnapshotAssets.set(si,data);})();
- geminiSnapshotRequests.set(si,job);try{await job;}finally{geminiSnapshotRequests.delete(si);}
+ const night=isSandboxNight(),mapIdx=si+(night?4:0),jobs=[cacheSnapshotUrl('map_'+mapIdx,GEMINI_TOWN_ART[mapIdx]||GEMINI_TOWN_ART[si])];
+ for(const b of GEMINI_TOWN_BUILDINGS){const tier=typeof buildingLandmarkTier==='function'?buildingLandmarkTier(b.kind):0;jobs.push(cacheSnapshotUrl('b_'+b.kind+'_'+tier,townBuildingSpriteUrl(b.kind,tier)));}
+ await Promise.all(jobs);
 }
 
 const WORKSHOP_ART={"forge":"assets/interiors/forge.4296ba06a3b2.webp","kitchen":"assets/interiors/kitchen.957bd2e9fd2b.webp"};
@@ -6376,12 +6199,14 @@ syncHomeArt();
 // Background preparation never blocks navigation. Reuse the previous release's media cache.
 const gameAssetLoading={active:false,complete:false,running:null,entries:null,loaded:new Set(),failed:[],cache:null,networkFailures:0,objectURLs:new Map(),retryTimer:null};
 function collectGameAssets(){
- const groups={REVIEW_MONSTER_ART,SEASON_MUSIC_DATA,ULTIMATE_ART,GEMINI_TOWN_ART,WORKSHOP_ART,COZY_ITEM_ART,TOWN_GUEST_ART,GREENHOUSE_ART,PREP_BOARD_ART,HOME_ART};
+ const groups={REVIEW_MONSTER_ART,SEASON_MUSIC_DATA,ULTIMATE_ART,GEMINI_TOWN_ART,TOWN_BUILDING_ART,WORKSHOP_ART,COZY_ITEM_ART,TOWN_GUEST_ART,GREENHOUSE_ART,PREP_BOARD_ART,HOME_ART};
  return Object.values(groups).flatMap(group=>Object.entries(group).map(([id,url])=>({group,id,url,audio:group===SEASON_MUSIC_DATA})));
 }
 function gameAssetPriority(entry){
  if(entry.group===HOME_ART)return -1;
- if(entry.group===GEMINI_TOWN_ART&&+entry.id===seasonIndex())return 0;
+ if(entry.group===GEMINI_TOWN_ART&&(+entry.id%4)===seasonIndex())return 0;
+ if(entry.group===TOWN_BUILDING_ART&&/_0$/.test(entry.id))return 0;
+ if(entry.group===TOWN_BUILDING_ART)return 4;
  if(entry.group===WORKSHOP_ART)return 1;
  if(entry.group===COZY_ITEM_ART&&/^(ore|ingredient)-/.test(entry.id))return 2;
  if(entry.group===PREP_BOARD_ART||entry.group===GREENHOUSE_ART)return 3;

@@ -238,34 +238,6 @@
     "sha256": "dffb97620ad4fc04938d885d95d30f2dcb5eb784ca3b0da01ea0cfb4e6ebab8a"
   },
   {
-    "variable": "GEMINI_TOWN_ART",
-    "id": "0",
-    "url": "assets/town/0.ce3ce9d639bb.webp",
-    "bytes": 169962,
-    "sha256": "ce3ce9d639bb0eee1bcab099f2febd95e9ed2982128f48f5cac59448c7bf33a2"
-  },
-  {
-    "variable": "GEMINI_TOWN_ART",
-    "id": "1",
-    "url": "assets/town/1.e66463ca4058.webp",
-    "bytes": 573398,
-    "sha256": "e66463ca40584adfe716ae8cf821b17ea49776175fbf38a4f5959fc980ea99fd"
-  },
-  {
-    "variable": "GEMINI_TOWN_ART",
-    "id": "2",
-    "url": "assets/town/2.0a73b8a46fbe.webp",
-    "bytes": 605470,
-    "sha256": "0a73b8a46fbe6c8580124f4aeca6a71dfc25b966cd7cbb3de90bcf228b96df5e"
-  },
-  {
-    "variable": "GEMINI_TOWN_ART",
-    "id": "3",
-    "url": "assets/town/3.ff18b8000d82.webp",
-    "bytes": 594226,
-    "sha256": "ff18b8000d8207768870140f109eb69e09779599411dfa49926165329cd7f6b8"
-  },
-  {
     "variable": "WORKSHOP_ART",
     "id": "forge",
     "url": "assets/interiors/forge.4296ba06a3b2.webp",
@@ -1811,5 +1783,293 @@
     "url": "assets/home/welcome.7a5efc768b9e.webp",
     "bytes": 235976,
     "sha256": "7a5efc768b9e630d3d833409cb9f0149bf6d9fea4148bb444a837411a1372ab6"
+  },
+  {
+    "variable": "GEMINI_TOWN_ART",
+    "id": 0,
+    "url": "assets/town/0.a20b5ac9ee46.jpg",
+    "mime": "image/jpeg",
+    "bytes": 123972,
+    "sha256": "a20b5ac9ee46e2bb6cdb0a24d6585d8fc7ab1787cca5bb1316518e4e4af60e30"
+  },
+  {
+    "variable": "GEMINI_TOWN_ART",
+    "id": 1,
+    "url": "assets/town/1.ada009ad48ab.jpg",
+    "mime": "image/jpeg",
+    "bytes": 169412,
+    "sha256": "ada009ad48abd11dbe5f03044b0975a1ccc8c34b8f69d7a0074becb39a5af114"
+  },
+  {
+    "variable": "GEMINI_TOWN_ART",
+    "id": 2,
+    "url": "assets/town/2.5cd7840d6b3e.jpg",
+    "mime": "image/jpeg",
+    "bytes": 172196,
+    "sha256": "5cd7840d6b3e5b19e0210bd91b29eea71e3cc90a7f2d6129921b378af0ce0691"
+  },
+  {
+    "variable": "GEMINI_TOWN_ART",
+    "id": 3,
+    "url": "assets/town/3.5c7363e81561.jpg",
+    "mime": "image/jpeg",
+    "bytes": 179416,
+    "sha256": "5c7363e81561eacd2e796db2bebf635da8b7d846887e8f2bb5a8d406a298a131"
+  },
+  {
+    "variable": "GEMINI_TOWN_ART",
+    "id": 4,
+    "url": "assets/town/4.fbb597b8d879.jpg",
+    "mime": "image/jpeg",
+    "bytes": 96164,
+    "sha256": "fbb597b8d8795b4445ecf7e1d124bc6043619a685c44281fa423fc647573a69d"
+  },
+  {
+    "variable": "GEMINI_TOWN_ART",
+    "id": 5,
+    "url": "assets/town/5.3d4a1bbfd1fe.jpg",
+    "mime": "image/jpeg",
+    "bytes": 121226,
+    "sha256": "3d4a1bbfd1fe5e61a0d95793f493799e869c8b14c8ffed54aafe6aeb86b60e0c"
+  },
+  {
+    "variable": "GEMINI_TOWN_ART",
+    "id": 6,
+    "url": "assets/town/6.71b68468ba4f.jpg",
+    "mime": "image/jpeg",
+    "bytes": 139682,
+    "sha256": "71b68468ba4f01263b993454f695dabe9a0a7ff2263aeb0b485d6adc5f97a9a4"
+  },
+  {
+    "variable": "GEMINI_TOWN_ART",
+    "id": 7,
+    "url": "assets/town/7.c957c51c346a.jpg",
+    "mime": "image/jpeg",
+    "bytes": 164948,
+    "sha256": "c957c51c346a5ed2d9cb68c0f114a02516c756c0c87949d6894c8fb86bb68881"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "expedition_0",
+    "url": "assets/town/b_expedition_0.0506bf97d57f.png",
+    "mime": "image/png",
+    "bytes": 179954,
+    "sha256": "0506bf97d57f414821504d3456cabebf0638b845470c64ffbdee26bfe38249e7"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "expedition_1",
+    "url": "assets/town/b_expedition_1.1d76412b13af.png",
+    "mime": "image/png",
+    "bytes": 194811,
+    "sha256": "1d76412b13afba5d86e750d56b95051a58503749f1a9f290cd61aa3634407088"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "expedition_2",
+    "url": "assets/town/b_expedition_2.619f50daa4a4.png",
+    "mime": "image/png",
+    "bytes": 188803,
+    "sha256": "619f50daa4a4d8d0424df517ce40ecd3ad3a08cc3a3e524a9ed4a1220b1f4ecc"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "expedition_3",
+    "url": "assets/town/b_expedition_3.833260a81b16.png",
+    "mime": "image/png",
+    "bytes": 203532,
+    "sha256": "833260a81b16a504986aff9923741f2363602cb2143bd018af44ccbad3096864"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "archive_0",
+    "url": "assets/town/b_archive_0.ced4022f3724.png",
+    "mime": "image/png",
+    "bytes": 208151,
+    "sha256": "ced4022f37244ce018c2b99e8159f611f1d265c83713d8cad91096da1843a6ab"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "archive_1",
+    "url": "assets/town/b_archive_1.f004bf8faca1.png",
+    "mime": "image/png",
+    "bytes": 188029,
+    "sha256": "f004bf8faca1088b94a6101f04a3c87acc4a36f48a56afa048627c04e36e5e82"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "archive_2",
+    "url": "assets/town/b_archive_2.e56de9a4ddd8.png",
+    "mime": "image/png",
+    "bytes": 217698,
+    "sha256": "e56de9a4ddd8e60d9c74e0eb6dd9726fd3c7e1be36425a57f21fdb6553593313"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "archive_3",
+    "url": "assets/town/b_archive_3.bb2941135828.png",
+    "mime": "image/png",
+    "bytes": 216993,
+    "sha256": "bb294113582840ef3463f8fe94db28713f4348c741ff904944d4b66967030275"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "kitchen_0",
+    "url": "assets/town/b_kitchen_0.efae53c5535b.png",
+    "mime": "image/png",
+    "bytes": 163546,
+    "sha256": "efae53c5535bfc1fa8e69c532db645ce2646c84650e6de343f850b57474ff8b3"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "kitchen_1",
+    "url": "assets/town/b_kitchen_1.a048ca744953.png",
+    "mime": "image/png",
+    "bytes": 193609,
+    "sha256": "a048ca74495354503b335a3666f071d43457989f6c444ea67d1ee6ed6f7fe479"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "kitchen_2",
+    "url": "assets/town/b_kitchen_2.1a3bb640f7fc.png",
+    "mime": "image/png",
+    "bytes": 189169,
+    "sha256": "1a3bb640f7fc898065b4d57150836951fb06ea817464712d9e86f51099847c6e"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "kitchen_3",
+    "url": "assets/town/b_kitchen_3.7a4593f6f93b.png",
+    "mime": "image/png",
+    "bytes": 212594,
+    "sha256": "7a4593f6f93bc576e131c6c352c725a21a0f0f0e2fb82bbe77d52793cf6e927a"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "greenhouse_0",
+    "url": "assets/town/b_greenhouse_0.d71ef7739fc4.png",
+    "mime": "image/png",
+    "bytes": 164464,
+    "sha256": "d71ef7739fc44b60f53ebc40cbb6bf381aadf0fefc1f64e68883a75212cfbb59"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "greenhouse_1",
+    "url": "assets/town/b_greenhouse_1.a6ccdd27c41e.png",
+    "mime": "image/png",
+    "bytes": 164185,
+    "sha256": "a6ccdd27c41e018fbf7682d58a88adf24dbf4327f1fdfce876eb479c45219964"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "greenhouse_2",
+    "url": "assets/town/b_greenhouse_2.4a0b5cdf802a.png",
+    "mime": "image/png",
+    "bytes": 237918,
+    "sha256": "4a0b5cdf802af13d53d33e1bc69f3e5280815eaf8f4292e627eaf2b771bbcc02"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "greenhouse_3",
+    "url": "assets/town/b_greenhouse_3.4e8b3aa5c536.png",
+    "mime": "image/png",
+    "bytes": 232672,
+    "sha256": "4e8b3aa5c536f751f4db35c8a0f08ff1c430dffe7aefd0ed8b4d1fe0521fe705"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "forge_0",
+    "url": "assets/town/b_forge_0.17c93ade9991.png",
+    "mime": "image/png",
+    "bytes": 148940,
+    "sha256": "17c93ade99910097c7e5cdbe8275b7f3c4c4582c79f8243fc279770d98ec9669"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "forge_1",
+    "url": "assets/town/b_forge_1.51dbc438b671.png",
+    "mime": "image/png",
+    "bytes": 143017,
+    "sha256": "51dbc438b6715a4783964dd8df9ab395b37b9206a2066ab727fb7374b50263c4"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "forge_2",
+    "url": "assets/town/b_forge_2.28077a8ef05c.png",
+    "mime": "image/png",
+    "bytes": 186136,
+    "sha256": "28077a8ef05c51f23987198a442ad3f05d057da1570f851b1fba5d781be9877e"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "forge_3",
+    "url": "assets/town/b_forge_3.2bd2399c49ab.png",
+    "mime": "image/png",
+    "bytes": 200262,
+    "sha256": "2bd2399c49ab9e8b8add11fe3cf0e3033873b3fa667b7721dc53e6c837efbaf3"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "decor_0",
+    "url": "assets/town/b_decor_0.821311796778.png",
+    "mime": "image/png",
+    "bytes": 162011,
+    "sha256": "821311796778fd1303830e57ca708be986841180ee5748e7cdce6fea766edef6"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "decor_1",
+    "url": "assets/town/b_decor_1.eab962f084f3.png",
+    "mime": "image/png",
+    "bytes": 188762,
+    "sha256": "eab962f084f323e303277ac3c835d45e626cfcbd282864709c69a6ded4cd7e46"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "decor_2",
+    "url": "assets/town/b_decor_2.178631190b29.png",
+    "mime": "image/png",
+    "bytes": 241395,
+    "sha256": "178631190b297aebec521a0decd185c8530b89cc7444697ce4066588477bc0f8"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "decor_3",
+    "url": "assets/town/b_decor_3.64fb4034fb33.png",
+    "mime": "image/png",
+    "bytes": 215566,
+    "sha256": "64fb4034fb3366676e733f04cd4a73ac36b470c632e63de06e90918b33550feb"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "training_0",
+    "url": "assets/town/b_training_0.2fe7302370ca.png",
+    "mime": "image/png",
+    "bytes": 185612,
+    "sha256": "2fe7302370ca857ffdce86fb8dd51f9d40ea2514e0df567f4873115535190ea1"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "training_1",
+    "url": "assets/town/b_training_1.0be1ae0010fb.png",
+    "mime": "image/png",
+    "bytes": 174409,
+    "sha256": "0be1ae0010fb9e044c6ee49beb83f0997467027a8595cb7b7890cee277eb08b8"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "training_2",
+    "url": "assets/town/b_training_2.271911a3e6e4.png",
+    "mime": "image/png",
+    "bytes": 172246,
+    "sha256": "271911a3e6e47656cf92ecba7f9c9936fb5b72dfcefb4f5159076b500930ffcd"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "training_3",
+    "url": "assets/town/b_training_3.99c236c2a24b.png",
+    "mime": "image/png",
+    "bytes": 153500,
+    "sha256": "99c236c2a24b8edb1f34a0a610e02ac1825950d4a235feb46a194aa5d59d7903"
   }
 ]

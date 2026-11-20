@@ -1,12 +1,14 @@
 // Background preparation never blocks navigation. Reuse the previous release's media cache.
 const gameAssetLoading={active:false,complete:false,running:null,entries:null,loaded:new Set(),failed:[],cache:null,networkFailures:0,objectURLs:new Map(),retryTimer:null};
 function collectGameAssets(){
- const groups={REVIEW_MONSTER_ART,SEASON_MUSIC_DATA,ULTIMATE_ART,GEMINI_TOWN_ART,WORKSHOP_ART,COZY_ITEM_ART,TOWN_GUEST_ART,GREENHOUSE_ART,PREP_BOARD_ART,HOME_ART};
+ const groups={REVIEW_MONSTER_ART,SEASON_MUSIC_DATA,ULTIMATE_ART,GEMINI_TOWN_ART,TOWN_BUILDING_ART,WORKSHOP_ART,COZY_ITEM_ART,TOWN_GUEST_ART,GREENHOUSE_ART,PREP_BOARD_ART,HOME_ART};
  return Object.values(groups).flatMap(group=>Object.entries(group).map(([id,url])=>({group,id,url,audio:group===SEASON_MUSIC_DATA})));
 }
 function gameAssetPriority(entry){
  if(entry.group===HOME_ART)return -1;
- if(entry.group===GEMINI_TOWN_ART&&+entry.id===seasonIndex())return 0;
+ if(entry.group===GEMINI_TOWN_ART&&(+entry.id%4)===seasonIndex())return 0;
+ if(entry.group===TOWN_BUILDING_ART&&/_0$/.test(entry.id))return 0;
+ if(entry.group===TOWN_BUILDING_ART)return 4;
  if(entry.group===WORKSHOP_ART)return 1;
  if(entry.group===COZY_ITEM_ART&&/^(ore|ingredient)-/.test(entry.id))return 2;
  if(entry.group===PREP_BOARD_ART||entry.group===GREENHOUSE_ART)return 3;
