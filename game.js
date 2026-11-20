@@ -1032,16 +1032,17 @@ function townCivicBuildingArt(kind,p){
  return '<svg viewBox="0 -28 192 212" shape-rendering="crispEdges" aria-hidden="true" data-building-identity="'+(archive?'library':training?'academy':'artisan')+'"><g'+(flip?' transform="translate(192 0) scale(-1 1)"':'')+'><path fill="#25392f" opacity=".3" d="M8 148l114 31 65-23v9l-65 22L8 157z"/><path fill="#667064" d="M16 145l106 28 62-21v11l-62 22-106-29z"/><path fill="#b9b18f" d="M16 145l106 28 62-21-7-5-55 18-99-25z"/><path fill="'+wood+'" stroke="#344236" stroke-width="3" d="M22 79l101 26 57-17v65l-57 20-101-26z"/><path fill="'+light+'" d="M26 87l92 24v54l-92-23z"/><path fill="'+shade+'" d="M127 110l49-15v56l-49 16z"/><path fill="'+wood+'" d="M26 91l91 23v6L26 97zM26 133l91 24v6l-91-24zM27 87h6v58h-6zM112 109h7v59h-7zM125 111l50-15v6l-50 14zM173 95h6v58h-6z"/>'+face+'<path fill="#3c3831" d="M81 121l24 6v36l-24-6z"/><path fill="'+(training?'#687d84':'#9c764a')+'" d="M84 124l18 5v31l-18-5z"/><path fill="#ddc18c" d="M88 128l10 3v14l-10-3z"/><path fill="#f3dda1" d="M98 149h2v3h-2z"/><path fill="'+light+'" stroke="'+wood+'" stroke-width="3" d="M126 102l46-50 17 37z"/><path fill="'+wood+'" d="M168 58h4v31h-4zM149 82l30 8v4l-32-8z"/>'+townWorkshopRoof('civic-roof-'+kind,roof,training)+(archive?extra:'')+badge+'<g class="town-house-sign" data-sign-plane="front-wall" transform="matrix(1 .245 0 1 0 0)"><path fill="#cab07a" d="M28 86h79v23H28z"/><path fill="'+signColor+'" d="M31 89h73v17H31z"/><path stroke="#e7cb8c" d="M33 91h69M33 104h69"/><text'+(textTransform?' transform="'+textTransform+'"':'')+' x="66" y="102" font-size="15" font-family="serif" font-weight="bold" text-anchor="middle" fill="#fff0bd">'+label+'</text></g>'+(!archive?extra:'')+'<path fill="#a59b7c" d="M79 158l29 8 5 5-32-8z"/><path fill="#e2c78d" d="M84 158l20 5v3l-20-5z"/>'+(p.snow?'<path fill="#edf5ed" d="M13 75l50-50 110 27-4 4L63 31 19 77zM124 101l10-10 9 2-16 15z"/>':'')+'</g></svg>';
 }
 const GEMINI_TOWN_ART=["assets/town/0.a20b5ac9ee46.jpg","assets/town/1.ada009ad48ab.jpg","assets/town/2.5cd7840d6b3e.jpg","assets/town/3.5c7363e81561.jpg","assets/town/4.fbb597b8d879.jpg","assets/town/5.3d4a1bbfd1fe.jpg","assets/town/6.71b68468ba4f.jpg","assets/town/7.c957c51c346a.jpg"];
-const TOWN_BUILDING_ART={"expedition_0":"assets/town/b_expedition_0.0506bf97d57f.png","expedition_1":"assets/town/b_expedition_1.1d76412b13af.png","expedition_2":"assets/town/b_expedition_2.619f50daa4a4.png","expedition_3":"assets/town/b_expedition_3.833260a81b16.png","archive_0":"assets/town/b_archive_0.ced4022f3724.png","archive_1":"assets/town/b_archive_1.f004bf8faca1.png","archive_2":"assets/town/b_archive_2.e56de9a4ddd8.png","archive_3":"assets/town/b_archive_3.bb2941135828.png","kitchen_0":"assets/town/b_kitchen_0.efae53c5535b.png","kitchen_1":"assets/town/b_kitchen_1.a048ca744953.png","kitchen_2":"assets/town/b_kitchen_2.1a3bb640f7fc.png","kitchen_3":"assets/town/b_kitchen_3.7a4593f6f93b.png","greenhouse_0":"assets/town/b_greenhouse_0.d71ef7739fc4.png","greenhouse_1":"assets/town/b_greenhouse_1.a6ccdd27c41e.png","greenhouse_2":"assets/town/b_greenhouse_2.4a0b5cdf802a.png","greenhouse_3":"assets/town/b_greenhouse_3.4e8b3aa5c536.png","forge_0":"assets/town/b_forge_0.17c93ade9991.png","forge_1":"assets/town/b_forge_1.51dbc438b671.png","forge_2":"assets/town/b_forge_2.28077a8ef05c.png","forge_3":"assets/town/b_forge_3.2bd2399c49ab.png","decor_0":"assets/town/b_decor_0.821311796778.png","decor_1":"assets/town/b_decor_1.eab962f084f3.png","decor_2":"assets/town/b_decor_2.178631190b29.png","decor_3":"assets/town/b_decor_3.64fb4034fb33.png","training_0":"assets/town/b_training_0.2fe7302370ca.png","training_1":"assets/town/b_training_1.0be1ae0010fb.png","training_2":"assets/town/b_training_2.271911a3e6e4.png","training_3":"assets/town/b_training_3.99c236c2a24b.png"};
+const TOWN_BUILDING_ART={"expedition_0":"assets/town/b_expedition_0.0506bf97d57f.png","expedition_1":"assets/town/b_expedition_1.1d76412b13af.png","expedition_2":"assets/town/b_expedition_2.619f50daa4a4.png","expedition_3":"assets/town/b_expedition_3.833260a81b16.png","archive_0":"assets/town/b_archive_0.ced4022f3724.png","archive_1":"assets/town/b_archive_1.f004bf8faca1.png","archive_2":"assets/town/b_archive_2.e56de9a4ddd8.png","archive_3":"assets/town/b_archive_3.bb2941135828.png","kitchen_0":"assets/town/b_kitchen_0.efae53c5535b.png","kitchen_1":"assets/town/b_kitchen_1.a048ca744953.png","kitchen_2":"assets/town/b_kitchen_2.1a3bb640f7fc.png","kitchen_3":"assets/town/b_kitchen_3.7a4593f6f93b.png","greenhouse_0":"assets/town/b_greenhouse_0.d71ef7739fc4.png","greenhouse_1":"assets/town/b_greenhouse_1.a6ccdd27c41e.png","greenhouse_2":"assets/town/b_greenhouse_2.4a0b5cdf802a.png","greenhouse_3":"assets/town/b_greenhouse_3.4e8b3aa5c536.png","forge_0":"assets/town/b_forge_0.17c93ade9991.png","forge_1":"assets/town/b_forge_1.51dbc438b671.png","forge_2":"assets/town/b_forge_2.28077a8ef05c.png","forge_3":"assets/town/b_forge_3.2bd2399c49ab.png","decor_0":"assets/town/b_decor_0.ebe59411ec00.png","decor_1":"assets/town/b_decor_1.52b36564d6b8.png","decor_2":"assets/town/b_decor_2.ee1f9262d133.png","decor_3":"assets/town/b_decor_3.c83e66da4d68.png","training_0":"assets/town/b_training_0.2fe7302370ca.png","training_1":"assets/town/b_training_1.0be1ae0010fb.png","training_2":"assets/town/b_training_2.271911a3e6e4.png","training_3":"assets/town/b_training_3.99c236c2a24b.png","fountain_0":"assets/town/b_fountain_0.e421f94af38d.png","fountain_1":"assets/town/b_fountain_1.a5d7f2dc4044.png","fountain_2":"assets/town/b_fountain_2.cab35cd29645.png","fountain_3":"assets/town/b_fountain_3.e299c7e0b49a.png"};
 const GEMINI_TOWN_BUILDINGS=[
- {id:'townExpedition',kind:'expedition',name:'遠征城堡',label:'遠征城堡，挑戰怪物',box:[.015,.025,.435,.225],sign:[.13,.66,.70,.17],angle:-2},
- {id:'townArchive',kind:'archive',name:'星頁圖鑑館',label:'星頁圖鑑館，查看武器收藏',box:[.005,.25,.38,.20],sign:[.14,.64,.78,.19],angle:-5},
- {id:'townKitchen',kind:'kitchen',name:'暖爐餐廳',label:'暖爐餐廳，晚間料理營業',box:[.61,.095,.385,.23],sign:[.07,.65,.82,.16],angle:5},
- {id:'townGreenhouse',kind:'greenhouse',name:'晨露溫室',label:'晨露溫室，種植與收成',box:[.015,.47,.36,.185],sign:[.08,.62,.84,.20],angle:5},
- {id:'townForge',kind:'forge',name:'鐵火冶煉廠',label:'鐵火冶煉廠，進入鍛造棋盤',box:[.60,.47,.395,.205],sign:[.08,.62,.82,.19],angle:-5},
- {id:'townDecorShop',kind:'decor',name:'彩匠裝飾行',label:'彩匠裝飾行，購買城鎮裝飾',box:[.015,.68,.375,.215],sign:[.06,.62,.88,.18],angle:-5},
- {id:'townTraining',kind:'training',name:'星盾訓練所',label:'星盾訓練所，提升技能',box:[.60,.695,.395,.215],sign:[.12,.64,.82,.17],angle:5}
+ {id:'townExpedition',kind:'expedition',name:'遠征城堡',label:'遠征城堡，挑戰怪物',box:[.005,.02,.455,.238],sign:[.13,.66,.70,.17],angle:-2},
+ {id:'townArchive',kind:'archive',name:'星頁圖鑑館',label:'星頁圖鑑館，查看武器收藏',box:[0,.246,.415,.214],sign:[.14,.64,.78,.19],angle:-5},
+ {id:'townKitchen',kind:'kitchen',name:'暖爐餐廳',label:'暖爐餐廳，晚間料理營業',box:[.58,.09,.42,.248],sign:[.07,.65,.82,.16],angle:5},
+ {id:'townGreenhouse',kind:'greenhouse',name:'晨露溫室',label:'晨露溫室，種植與收成',box:[.005,.464,.398,.20],sign:[.08,.62,.84,.20],angle:5},
+ {id:'townForge',kind:'forge',name:'鐵火冶煉廠',label:'鐵火冶煉廠，進入鍛造棋盤',box:[.58,.466,.42,.218],sign:[.08,.62,.82,.19],angle:-5},
+ {id:'townDecorShop',kind:'decor',name:'彩匠裝飾行',label:'彩匠裝飾行，購買城鎮裝飾',box:[0,.68,.412,.226],sign:[.06,.62,.88,.18],angle:-5},
+ {id:'townTraining',kind:'training',name:'星盾訓練所',label:'星盾訓練所，提升技能',box:[.582,.69,.418,.226],sign:[.12,.64,.82,.17],angle:5}
 ];
+const GEMINI_FOUNTAIN_BOX=[.394,.394,.212,.122];
 function townBuildingSpriteUrl(kind,tier=0){
  const lv=Math.max(0,Math.min(3,Math.floor(Number(tier)||0)));
  return TOWN_BUILDING_ART[kind+'_'+lv]||TOWN_BUILDING_ART[kind+'_0']||'';
@@ -1061,8 +1062,15 @@ function geminiTownNightArt(){
  const lamps=[[.711,.31],[.581,.868],[.425,.919]];
  return '<svg viewBox="0 0 572 1024" preserveAspectRatio="none" aria-hidden="true"><defs><filter id="geminiTownNightFilter" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="'+TOWN_NIGHT_COLOR_MATRIX+'"/></filter><radialGradient id="gemini-lamp"><stop stop-color="#ffdf9a" stop-opacity=".68"/><stop offset=".3" stop-color="#ffbe60" stop-opacity=".24"/><stop offset="1" stop-color="#f6af53" stop-opacity="0"/></radialGradient></defs>'+lamps.map(([x,y],i)=>'<ellipse class="gemini-lamp-light" style="animation-delay:-'+i+'s" fill="url(#gemini-lamp)" cx="'+x*572+'" cy="'+y*1024+'" rx="22" ry="34"/>').join('')+'</svg>';
 }
+function geminiFountainFXHTML(tier){
+ const spr=tier>0?'<img class="gemini-fountain-sprite" src="'+townBuildingSpriteUrl('fountain',tier)+'" alt="" decoding="async">':'';
+ const ripples=tier>=1?'<span class="f-ripple"></span><span class="f-ripple f-ripple-2"></span>':'';
+ const jets=tier>=2?'<span class="f-jet f-jet-l"></span><span class="f-jet f-jet-r"></span>':'';
+ const stars=tier>=3?'<span class="f-halo"></span><span class="f-star f-s1">✦</span><span class="f-star f-s2">✦</span><span class="f-star f-s3">✦</span><span class="f-star f-s4">✦</span>':'';
+ return spr+'<div class="gemini-fountain-water" data-fountain-tier="'+tier+'" aria-hidden="true">'+ripples+jets+'<i></i><i></i><i></i>'+(tier>=1?'<i></i><i></i>':'')+stars+'</div>';
+}
 function geminiTownEffects(){
- return '<div class="gemini-sea-shimmer" aria-hidden="true"></div><div class="gemini-night-lights">'+geminiTownNightArt()+'</div><div class="gemini-fountain-water" aria-hidden="true"><i></i><i></i><i></i></div><div class="gemini-chimney-smoke" aria-hidden="true"><i></i><i></i><i></i></div><i class="gemini-forge-fire" aria-hidden="true"></i>';
+ return '<div class="gemini-sea-shimmer" aria-hidden="true"></div><div class="gemini-night-lights">'+geminiTownNightArt()+'</div><div class="gemini-fountain-stage" data-fountain-tier="0" aria-hidden="true">'+geminiFountainFXHTML(0)+'</div><div class="gemini-chimney-smoke" aria-hidden="true"><i></i><i></i><i></i></div><i class="gemini-forge-fire" aria-hidden="true"></i>';
 }
 function renderGeminiTown(){
  if(!expandedGameEnabled())return;const si=townVisualSeason(),night=isSandboxNight(),p=$('townP'),image=$('geminiTownImage');p.dataset.geminiTown='true';
@@ -1071,6 +1079,8 @@ function renderGeminiTown(){
  $('geminiTownScene').dataset.season=SEASONS[si].id;$('geminiTownScene').dataset.time=night?'night':'day';
  const rear=$('townDecorBack');if(rear.dataset.geminiMask){rear.style.maskImage='';rear.dataset.geminiMask='';}
  if(!$('geminiTownEffects').dataset.built){$('geminiTownEffects').innerHTML=geminiTownEffects();$('geminiTownEffects').dataset.built='1';}
+ const fTier=typeof buildingLandmarkTier==='function'?buildingLandmarkTier('fountain'):0,fStage=$('geminiTownEffects').querySelector?.('.gemini-fountain-stage');
+ if(fStage&&fStage.dataset.fountainTier!==String(fTier)){fStage.dataset.fountainTier=String(fTier);fStage.innerHTML=geminiFountainFXHTML(fTier);}
  GEMINI_TOWN_BUILDINGS.forEach(b=>{const el=$(b.id),[x,y,w,h]=b.box,tier=typeof buildingLandmarkTier==='function'?buildingLandmarkTier(b.kind):0,tierKey=String(tier),sprUrl=townBuildingSpriteUrl(b.kind,tier);
   el.style.left=x*100+'%';el.style.top=y*100+'%';el.style.width=w*100+'%';el.style.height=h*100+'%';el.setAttribute('aria-label',b.label+(tier?'（建築階級 Lv '+tier+'）':''));el.title=b.name+(tier?' · Lv '+tier:'');el.dataset.landmarkTier=tierKey;
   let sprEl=el.querySelector?.('.gemini-building-sprite');
@@ -1096,6 +1106,8 @@ function geminiTownSnapshot(items,si,savedHeight){
  let out='<image href="'+(geminiSnapshotAssets.get('map_'+mapIdx)||GEMINI_TOWN_ART[mapIdx]||GEMINI_TOWN_ART[si])+'" width="360" height="'+H+'" preserveAspectRatio="none"/>';
  const decor=z=>items.filter(i=>i.z===z).slice().sort((a,b)=>a.y-b.y).map((i,k)=>{const d=DECOR_BY_ID.get(i.id);return !d?'':'<g transform="translate('+i.x*3.6+' '+i.y*H/100+') rotate('+i.r+') scale('+(i.fx?-i.s:i.s)+' '+(i.fy?-i.s:i.s)+')">'+snapshotNestedSVG(kitchenSnapshotDecorSVG(decorSVG(i.id,si,'gemini-snapshot-'+z+'-'+k),d),-d.w/2,-d.h,d.w,d.h)+'</g>';}).join('');
  out+='<g>'+decor(0)+'</g>';
+ const fTier=typeof buildingLandmarkTier==='function'?buildingLandmarkTier('fountain'):0;
+ if(fTier>0){const [fx,fy,fw,fh]=GEMINI_FOUNTAIN_BOX,fHref=geminiSnapshotAssets.get('b_fountain_'+fTier)||townBuildingSpriteUrl('fountain',fTier);if(fHref)out+='<image href="'+fHref+'" x="'+fx*360+'" y="'+fy*H+'" width="'+fw*360+'" height="'+fh*H+'" preserveAspectRatio="xMidYMax meet"'+(night?' filter="url(#gemini-snapshot-building-night)"':'')+'/>';}
  for(const b of GEMINI_TOWN_BUILDINGS){
   const [x,y,w,h]=b.box,[sx,sy,sw,sh]=b.sign,tier=typeof buildingLandmarkTier==='function'?buildingLandmarkTier(b.kind):0,sKey=b.kind+'_'+tier,href=geminiSnapshotAssets.get('b_'+sKey)||townBuildingSpriteUrl(b.kind,tier);
   if(href)out+='<image href="'+href+'" x="'+x*360+'" y="'+y*H+'" width="'+w*360+'" height="'+h*H+'" preserveAspectRatio="xMidYMax meet"'+(night?' filter="url(#gemini-snapshot-building-night)"':'')+'/>';
@@ -1113,6 +1125,8 @@ async function cacheSnapshotUrl(cacheKey,url){
 }
 async function prepareGeminiSnapshot(si){
  const night=isSandboxNight(),mapIdx=si+(night?4:0),jobs=[cacheSnapshotUrl('map_'+mapIdx,GEMINI_TOWN_ART[mapIdx]||GEMINI_TOWN_ART[si])];
+ const fTier=typeof buildingLandmarkTier==='function'?buildingLandmarkTier('fountain'):0;
+ if(fTier>0)jobs.push(cacheSnapshotUrl('b_fountain_'+fTier,townBuildingSpriteUrl('fountain',fTier)));
  for(const b of GEMINI_TOWN_BUILDINGS){const tier=typeof buildingLandmarkTier==='function'?buildingLandmarkTier(b.kind):0;jobs.push(cacheSnapshotUrl('b_'+b.kind+'_'+tier,townBuildingSpriteUrl(b.kind,tier)));}
  await Promise.all(jobs);
 }
@@ -1249,7 +1263,7 @@ function kitchenCreateOrders(){
  const counts=[0,0,0,0,0],caps=[Infinity,Infinity,3,2,1],list=Array.from({length:total},(_,i)=>{const o=kitchenOrder(generics.has(i));while(o.t>0&&counts[o.t]>=caps[o.t])o.t--;counts[o.t]++;o.max=o.wait=kitchenOrderPatience(o.t);return o;});
  assignKitchenStatOrder(list);kitchen.total=total;kitchen.orders=list.splice(0,3);kitchen.queue=list;kitchen.orders.forEach((o,i)=>{o.slot=i;o.enteredAt=Date.now()+i*90;});
 }
-function kitchenOrderPatience(t){return 100+60*t+8*kitchenLevel('patience')+medalBonuses().kitchenPatienceBonus-(kitchen.challenge===0&&day>3?10:0);}
+function kitchenOrderPatience(t){const fp=typeof landmarkBonuses==='function'?(landmarkBonuses().fountainPatience||0):0;return 100+60*t+8*kitchenLevel('patience')+medalBonuses().kitchenPatienceBonus+fp-(kitchen.challenge===0&&day>3?10:0);}
 function kitchenEntryStyle(o){const elapsed=Date.now()-(o.enteredAt||0);return 'grid-column:'+((o.slot??0)+1)+';'+(elapsed<480&&!lowEffects?'animation:kitchen-guest-enter 480ms cubic-bezier(.2,.8,.3,1) both;animation-delay:'+(-elapsed)+'ms;':'');}
 function kitchenRecordMerge(cells,parts,dest,target=dest[0]){
  if(!expandedGameEnabled()||$('kitchenP').hidden)return;
@@ -2261,7 +2275,8 @@ function renderHarvestAlert(){
 function mkOrder(gn){
   const mx=Math.max(0,Math.min(4,Math.floor((day-1)/3)));
   const t=mx>0?(Math.random()<.4?mx:rnd(mx)):0;
-  const w=100+60*t,W2=gn?1e9:w;
+  const fp=typeof landmarkBonuses==='function'?(landmarkBonuses().fountainPatience||0):0;
+  const w=100+60*t+fp,W2=gn?1e9:w;
   return {guest:expandedGameEnabled()?guestForOrder22(forgeGuestSerial22++,false):undefined,c:gn?null:rnd(10),t,max:W2,wait:W2};
 }
 
@@ -5076,6 +5091,11 @@ const TOWN_LANDMARKS={
   key:'decor',buildingId:'townDecorShop',buildingName:'彩匠裝飾行',icon:'🎨',name:'皇家工藝行',max:3,costs:[1000,2600,5600],
   tierNames:['慶典彩旗擴建','彩繪玻璃藝廊','皇家工藝殿堂'],
   effects:['城鎮裝飾購買 -12% · 每日繁榮分紅 +100💰','城鎮裝飾購買 -22% · 每日繁榮分紅 +220💰','城鎮裝飾購買 -35% · 每日繁榮分紅 +380💰']
+ },
+ fountain:{
+  key:'fountain',buildingId:'townFountain',buildingName:'中央噴水池',icon:'⛲',name:'星輝許願噴泉',max:3,costs:[1400,3600,7500],
+  tierNames:['精雕花泉擴建','鎏金雙層噴泉','星輝聖泉奇觀'],
+  effects:['雙工坊客人耐心 +6 步 · 每日許願硬幣 +120💰','雙工坊客人耐心 +12 步 · 全工坊售價 +6% · 許願 +260💰','雙工坊客人耐心 +18 步 · 全工坊售價 +12% · 許願 +450💰']
  }
 };
 const TOWN_LANDMARK_KEYS=Object.keys(TOWN_LANDMARKS);
@@ -5275,7 +5295,9 @@ function landmarkBonuses(){
   harvestGold:l.greenhouse>=3?100:0,
   archiveSpecifiedSale:[0,.06,.12,.2][l.archive]||0,
   decorDiscount:[0,.12,.22,.35][l.decor]||0,
-  tourismGold:([0,100,220,380][l.expedition]||0)+([0,80,180,320][l.archive]||0)+([0,100,220,380][l.decor]||0)
+  fountainPatience:[0,6,12,18][l.fountain]||0,
+  fountainSale:[0,0,.06,.12][l.fountain]||0,
+  tourismGold:([0,100,220,380][l.expedition]||0)+([0,80,180,320][l.archive]||0)+([0,100,220,380][l.decor]||0)+([0,120,260,450][l.fountain]||0)
  };
 }
 
@@ -5296,8 +5318,8 @@ function contractBonuses(){
   forgeCraftGold:hasContract('war_forge')?15:0,
   shopExtra:hasContract('bountiful_hearth')?1:0,
   feverDuration:hasContract('bountiful_hearth')?7:5,
-  dailyForgeSale:(hl==='gem_caravan'&&dc==='a'?.12:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale+lm.forgeSale,
-  dailyKitchenSale:(hl==='food_critic'&&dc==='a'?.22:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale+lm.kitchenSale
+  dailyForgeSale:(hl==='gem_caravan'&&dc==='a'?.12:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale+lm.forgeSale+lm.fountainSale,
+  dailyKitchenSale:(hl==='food_critic'&&dc==='a'?.22:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale+lm.kitchenSale+lm.fountainSale
  };
 }
 

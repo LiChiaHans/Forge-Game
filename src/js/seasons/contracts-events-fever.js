@@ -46,6 +46,11 @@ const TOWN_LANDMARKS={
   key:'decor',buildingId:'townDecorShop',buildingName:'彩匠裝飾行',icon:'🎨',name:'皇家工藝行',max:3,costs:[1000,2600,5600],
   tierNames:['慶典彩旗擴建','彩繪玻璃藝廊','皇家工藝殿堂'],
   effects:['城鎮裝飾購買 -12% · 每日繁榮分紅 +100💰','城鎮裝飾購買 -22% · 每日繁榮分紅 +220💰','城鎮裝飾購買 -35% · 每日繁榮分紅 +380💰']
+ },
+ fountain:{
+  key:'fountain',buildingId:'townFountain',buildingName:'中央噴水池',icon:'⛲',name:'星輝許願噴泉',max:3,costs:[1400,3600,7500],
+  tierNames:['精雕花泉擴建','鎏金雙層噴泉','星輝聖泉奇觀'],
+  effects:['雙工坊客人耐心 +6 步 · 每日許願硬幣 +120💰','雙工坊客人耐心 +12 步 · 全工坊售價 +6% · 許願 +260💰','雙工坊客人耐心 +18 步 · 全工坊售價 +12% · 許願 +450💰']
  }
 };
 const TOWN_LANDMARK_KEYS=Object.keys(TOWN_LANDMARKS);
@@ -245,7 +250,9 @@ function landmarkBonuses(){
   harvestGold:l.greenhouse>=3?100:0,
   archiveSpecifiedSale:[0,.06,.12,.2][l.archive]||0,
   decorDiscount:[0,.12,.22,.35][l.decor]||0,
-  tourismGold:([0,100,220,380][l.expedition]||0)+([0,80,180,320][l.archive]||0)+([0,100,220,380][l.decor]||0)
+  fountainPatience:[0,6,12,18][l.fountain]||0,
+  fountainSale:[0,0,.06,.12][l.fountain]||0,
+  tourismGold:([0,100,220,380][l.expedition]||0)+([0,80,180,320][l.archive]||0)+([0,100,220,380][l.decor]||0)+([0,120,260,450][l.fountain]||0)
  };
 }
 
@@ -266,8 +273,8 @@ function contractBonuses(){
   forgeCraftGold:hasContract('war_forge')?15:0,
   shopExtra:hasContract('bountiful_hearth')?1:0,
   feverDuration:hasContract('bountiful_hearth')?7:5,
-  dailyForgeSale:(hl==='gem_caravan'&&dc==='a'?.12:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale+lm.forgeSale,
-  dailyKitchenSale:(hl==='food_critic'&&dc==='a'?.22:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale+lm.kitchenSale
+  dailyForgeSale:(hl==='gem_caravan'&&dc==='a'?.12:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale+lm.forgeSale+lm.fountainSale,
+  dailyKitchenSale:(hl==='food_critic'&&dc==='a'?.22:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale+lm.kitchenSale+lm.fountainSale
  };
 }
 

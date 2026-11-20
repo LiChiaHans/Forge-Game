@@ -23,7 +23,7 @@ function kitchenCreateOrders(){
  const counts=[0,0,0,0,0],caps=[Infinity,Infinity,3,2,1],list=Array.from({length:total},(_,i)=>{const o=kitchenOrder(generics.has(i));while(o.t>0&&counts[o.t]>=caps[o.t])o.t--;counts[o.t]++;o.max=o.wait=kitchenOrderPatience(o.t);return o;});
  assignKitchenStatOrder(list);kitchen.total=total;kitchen.orders=list.splice(0,3);kitchen.queue=list;kitchen.orders.forEach((o,i)=>{o.slot=i;o.enteredAt=Date.now()+i*90;});
 }
-function kitchenOrderPatience(t){return 100+60*t+8*kitchenLevel('patience')+medalBonuses().kitchenPatienceBonus-(kitchen.challenge===0&&day>3?10:0);}
+function kitchenOrderPatience(t){const fp=typeof landmarkBonuses==='function'?(landmarkBonuses().fountainPatience||0):0;return 100+60*t+8*kitchenLevel('patience')+medalBonuses().kitchenPatienceBonus+fp-(kitchen.challenge===0&&day>3?10:0);}
 function kitchenEntryStyle(o){const elapsed=Date.now()-(o.enteredAt||0);return 'grid-column:'+((o.slot??0)+1)+';'+(elapsed<480&&!lowEffects?'animation:kitchen-guest-enter 480ms cubic-bezier(.2,.8,.3,1) both;animation-delay:'+(-elapsed)+'ms;':'');}
 function kitchenRecordMerge(cells,parts,dest,target=dest[0]){
  if(!expandedGameEnabled()||$('kitchenP').hidden)return;

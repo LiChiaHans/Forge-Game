@@ -2011,34 +2011,34 @@
   {
     "variable": "TOWN_BUILDING_ART",
     "id": "decor_0",
-    "url": "assets/town/b_decor_0.821311796778.png",
+    "url": "assets/town/b_decor_0.ebe59411ec00.png",
     "mime": "image/png",
-    "bytes": 162011,
-    "sha256": "821311796778fd1303830e57ca708be986841180ee5748e7cdce6fea766edef6"
+    "bytes": 162187,
+    "sha256": "ebe59411ec0044b3412199664b29b63d9b66dd58e710ecc8e4a19da0633e2d76"
   },
   {
     "variable": "TOWN_BUILDING_ART",
     "id": "decor_1",
-    "url": "assets/town/b_decor_1.eab962f084f3.png",
+    "url": "assets/town/b_decor_1.52b36564d6b8.png",
     "mime": "image/png",
-    "bytes": 188762,
-    "sha256": "eab962f084f323e303277ac3c835d45e626cfcbd282864709c69a6ded4cd7e46"
+    "bytes": 188926,
+    "sha256": "52b36564d6b83bb76638b55842ddb9b910c45225afef2aea2c6382ba52ca5290"
   },
   {
     "variable": "TOWN_BUILDING_ART",
     "id": "decor_2",
-    "url": "assets/town/b_decor_2.178631190b29.png",
+    "url": "assets/town/b_decor_2.ee1f9262d133.png",
     "mime": "image/png",
-    "bytes": 241395,
-    "sha256": "178631190b297aebec521a0decd185c8530b89cc7444697ce4066588477bc0f8"
+    "bytes": 241667,
+    "sha256": "ee1f9262d133609527c8fd759a864b5f04c2958f62fcc89e6c2640806571d2ce"
   },
   {
     "variable": "TOWN_BUILDING_ART",
     "id": "decor_3",
-    "url": "assets/town/b_decor_3.64fb4034fb33.png",
+    "url": "assets/town/b_decor_3.c83e66da4d68.png",
     "mime": "image/png",
-    "bytes": 215566,
-    "sha256": "64fb4034fb3366676e733f04cd4a73ac36b470c632e63de06e90918b33550feb"
+    "bytes": 215637,
+    "sha256": "c83e66da4d685246037bbadb7ab7e8d5bd3c426af9ef54c1231e6b0c5d018ea5"
   },
   {
     "variable": "TOWN_BUILDING_ART",
@@ -2071,5 +2071,37 @@
     "mime": "image/png",
     "bytes": 153500,
     "sha256": "99c236c2a24b8edb1f34a0a610e02ac1825950d4a235feb46a194aa5d59d7903"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "fountain_0",
+    "url": "assets/town/b_fountain_0.e421f94af38d.png",
+    "mime": "image/png",
+    "bytes": 82973,
+    "sha256": "e421f94af38dddceefbea3e9fb55623586bdd2d84b27a40b34aa37fcc46b6bbe"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "fountain_1",
+    "url": "assets/town/b_fountain_1.a5d7f2dc4044.png",
+    "mime": "image/png",
+    "bytes": 112170,
+    "sha256": "a5d7f2dc404402143e127fb0ce12789f9fb530e4d0083a95ee706bec7a1f6c74"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "fountain_2",
+    "url": "assets/town/b_fountain_2.cab35cd29645.png",
+    "mime": "image/png",
+    "bytes": 115144,
+    "sha256": "cab35cd296456bd1bf6baa32decb1bed9e50b93bbb127d76c8b7246eba34672b"
+  },
+  {
+    "variable": "TOWN_BUILDING_ART",
+    "id": "fountain_3",
+    "url": "assets/town/b_fountain_3.e299c7e0b49a.png",
+    "mime": "image/png",
+    "bytes": 109380,
+    "sha256": "e299c7e0b49a9d4eac52a6dc099e92321780560409a3dfea99e5465d12f0fc53"
   }
 ]

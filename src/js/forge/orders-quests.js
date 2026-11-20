@@ -13,7 +13,8 @@ function renderHarvestAlert(){
 function mkOrder(gn){
   const mx=Math.max(0,Math.min(4,Math.floor((day-1)/3)));
   const t=mx>0?(Math.random()<.4?mx:rnd(mx)):0;
-  const w=100+60*t,W2=gn?1e9:w;
+  const fp=typeof landmarkBonuses==='function'?(landmarkBonuses().fountainPatience||0):0;
+  const w=100+60*t+fp,W2=gn?1e9:w;
   return {guest:expandedGameEnabled()?guestForOrder22(forgeGuestSerial22++,false):undefined,c:gn?null:rnd(10),t,max:W2,wait:W2};
 }
 
