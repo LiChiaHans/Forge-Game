@@ -53,7 +53,13 @@ async function loadGameAsset(entry){
  throw new Error('asset');
 }
 async function pruneGameAssetCache(){
- const s=gameAssetLoading;if(!s.cache)return;
+ const s=gameAssetLoading;
+ try{
+  if(typeof window.caches?.keys==='function'){
+   for(const name of await window.caches.keys())if(name.startsWith('forge-master-')&&name!=='forge-master-media-v1')await window.caches.delete(name);
+  }
+ }catch(e){}
+ if(!s.cache)return;
  try{const keep=new Set(s.entries.filter(e=>!e.url.startsWith('data:')).map(e=>new URL(e.url,document.baseURI).href)),prefix=new URL('assets/',document.baseURI).href;
   for(const request of await s.cache.keys())if(request.url.startsWith(prefix)&&!keep.has(request.url))await s.cache.delete(request);
  }catch(e){}
@@ -63,7 +69,9 @@ function beginGameAssetLoading(){
  const s=gameAssetLoading;if(s.running)return s.running;if(s.complete)return Promise.resolve();
  clearTimeout(s.retryTimer);s.retryTimer=null;s.entries=s.entries||collectGameAssets();s.active=true;s.failed=[];s.networkFailures=0;paintGameAssetProgress();
  const job=(async()=>{
-  s.cache=await openGameAssetCache();const pending=s.entries.filter(e=>!s.loaded.has(e));
+  s.cache=await openGameAssetCache();
+  await pruneGameAssetCache();
+  const pending=s.entries.filter(e=>!s.loaded.has(e));
   async function worker(){while(pending.length&&!document.hidden&&window.navigator?.onLine!==false&&s.networkFailures<4){
    pending.sort((a,b)=>gameAssetPriority(a)-gameAssetPriority(b));const entry=pending.shift();
    let downloaded=true;try{downloaded=await loadGameAsset(entry);}catch(e){s.failed.push(entry);}
@@ -81,7 +89,7 @@ function installGameMediaCache(){
  // The worker only handles hashed media. HTML, scripts, saves and leaderboard stay untouched.
  if(!sw||!window.isSecureContext||collectGameAssets().every(e=>e.url.startsWith('data:')))return;
  const status=()=>{document.documentElement.dataset.mediaCacheWorker=sw.controller?'active':'starting';};status();sw.addEventListener?.('controllerchange',status);
- sw.register(new URL('media-cache.js',document.baseURI).href,{scope:new URL('./',document.baseURI).href,updateViaCache:'none'}).then(status).catch(()=>{document.documentElement.dataset.mediaCacheWorker='unavailable';});
+ sw.register(new URL('media-cache.js',document.baseURI).href,{scope:new URL('./',document.baseURI).href,updateViaCache:'none'}).then(reg=>{reg?.update?.().catch?.(()=>{});status();}).catch(()=>{document.documentElement.dataset.mediaCacheWorker='unavailable';});
 }
 installGameMediaCache();
 window.addEventListener('load',()=>setTimeout(beginGameAssetLoading,800),{once:true});

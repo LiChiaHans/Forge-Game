@@ -10,12 +10,20 @@ function renderTownChest(){
  el.innerHTML=townChestArt()+'<span class="town-chest-count">'+pendingChests+'</span>';
  el.setAttribute('aria-label','營業寶箱，剩餘 '+pendingChests+' 次');
 }
+function syncTownLootAllBtn(){
+ const allBtn=$('townLootOpenAll');
+ if(!allBtn)return;
+ allBtn.hidden=pendingChests<2;
+ allBtn.disabled=chestOpening||pendingChests<2;
+ allBtn.textContent='✨ 一鍵全開（×'+pendingChests+'）';
+}
 function openTownChest(){
  if(pendingChests<=0||chestOpening)return;
  $('townLootArt').innerHTML=townChestArt();$('townLootName').textContent='營業完成的贈禮';
  $('townLootRemaining').textContent='累積 '+pendingChests+' 次，每次可獲得 1 個冶煉廠或餐廳道具。';
  $('townLootOpen').textContent='開啟寶箱';$('townLootOpen').disabled=false;
  $('townLootClose').textContent='稍後再開';$('townLootClose').disabled=false;
+ syncTownLootAllBtn();
  $('townLootP').style.display='flex';
 }
 function claimTownChest(){
@@ -23,14 +31,34 @@ function claimTownChest(){
  chestOpening=true;const reward=drawTownChestReward(),item=reward.item;pendingChests--;grantTownChestReward(reward);
  // Commit the item and counter together before animation so reloads cannot lose or duplicate a reward.
  saveNow();renderTown();
- $('townLootOpen').disabled=true;$('townLootClose').disabled=true;
+ $('townLootOpen').disabled=true;$('townLootClose').disabled=true;syncTownLootAllBtn();
  $('townLootArt').innerHTML=townChestArt(true);$('townLootName').textContent='寶箱開啟中…';
  gameTimeout(()=>{
    $('townLootArt').innerHTML='<div class="town-loot-item">'+(reward.workshop==='kitchen'?kitchenArt(item):itemH(item))+'</div>';
    $('townLootName').textContent=(reward.workshop==='kitchen'?'餐廳 · ':'冶煉廠 · ')+(reward.workshop==='kitchen'?kitchenItemName(item):itemName(item));$('townLootRemaining').textContent=(item.k==='seed'?'種子已送入溫室':reward.workshop==='kitchen'?'已放入廚房道具箱':'已放入冶煉廠道具箱')+' · 還有 '+pendingChests+' 次';
    $('townLootOpen').textContent='再開一個';$('townLootOpen').disabled=pendingChests<=0;
-   $('townLootClose').textContent='收下';$('townLootClose').disabled=false;chestOpening=false;
+   $('townLootClose').textContent='收下';$('townLootClose').disabled=false;chestOpening=false;syncTownLootAllBtn();
  },700);
+}
+function claimAllTownChests(){
+ if(chestOpening||pendingChests<=0)return;
+ chestOpening=true;const total=pendingChests,rewards=[];
+ while(pendingChests>0){const r=drawTownChestReward();pendingChests--;grantTownChestReward(r);rewards.push(r);}
+ saveNow();renderTown();
+ $('townLootOpen').disabled=true;$('townLootClose').disabled=true;syncTownLootAllBtn();
+ $('townLootArt').innerHTML=townChestArt(true);$('townLootName').textContent='正在開啟全部 '+total+' 個寶箱…';
+ gameTimeout(()=>{
+  const summary=new Map();
+  rewards.forEach(r=>{
+   const name=(r.workshop==='kitchen'?'餐廳 · ':'冶煉廠 · ')+(r.workshop==='kitchen'?kitchenItemName(r.item):itemName(r.item));
+   const cur=summary.get(name)||{r,name,n:0};cur.n++;summary.set(name,cur);
+  });
+  $('townLootArt').innerHTML='<div class="town-loot-batch">'+[...summary.values()].map(x=>'<div class="town-loot-batch-item"><span class="tlb-art">'+(x.r.workshop==='kitchen'?kitchenArt(x.r.item):itemH(x.r.item))+'</span><b>'+esc(x.name)+(x.n>1?' ×'+x.n:'')+'</b></div>').join('')+'</div>';
+  $('townLootName').textContent='🎉 已一鍵開啟全部 '+total+' 個寶箱！';
+  $('townLootRemaining').textContent='全部道具與種子已自動送入對應道具箱與溫室 · 還有 0 次';
+  $('townLootOpen').textContent='已全數開啟';$('townLootOpen').disabled=true;
+  $('townLootClose').textContent='收下';$('townLootClose').disabled=false;chestOpening=false;syncTownLootAllBtn();
+ },550);
 }
 let townSkillBranch='forge';
 function requireWorkshopTraining(branch){

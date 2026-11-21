@@ -11,6 +11,13 @@ async function gameMediaResponse(request){
  if(!job){job=(async()=>{const response=await fetch(request);if(cache&&validMediaResponse(response))try{await cache.put(request.url,response.clone());}catch(e){}return response;})();mediaInFlight.set(request.url,job);}
  try{return (await job).clone();}finally{if(mediaInFlight.get(request.url)===job)mediaInFlight.delete(request.url);}
 }
+async function purgeObsoleteMediaCaches(){
+ try{
+  if(typeof caches?.keys==='function'){
+   for(const name of await caches.keys())if(name.startsWith('forge-master-')&&name!==MEDIA_CACHE)await caches.delete(name);
+  }
+ }catch(e){}
+}
 self.addEventListener('install',event=>event.waitUntil(self.skipWaiting()));
-self.addEventListener('activate',event=>event.waitUntil(self.clients.claim()));
+self.addEventListener('activate',event=>event.waitUntil(Promise.all([self.clients.claim(),purgeObsoleteMediaCaches()])));
 self.addEventListener('fetch',event=>{if(isGameMediaRequest(event.request))event.respondWith(gameMediaResponse(event.request));});

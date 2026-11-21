@@ -3646,8 +3646,11 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
    West & East Town Outskirts Wings UI, Road Arrows, Swipe Transitions & Modals
    ========================================================================== */
 
+/* Ensure seasonal weather (Spring petals, Summer shimmer, Autumn leaves, Winter snow) plays over West & East wings too! */
+#townWeather{z-index:6!important}
+
 .town-road-arrow{
- position:absolute;top:45.5%;z-index:6;
+ position:absolute;top:45.5%;z-index:7;
  display:inline-flex;align-items:center;gap:4px;
  padding:7px 9px;min-height:36px;
  border:2px solid #e7c268;border-radius:10px;
@@ -3669,7 +3672,7 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 }
 
 .town-zone-dots{
- position:absolute;left:50%;bottom:8px;transform:translateX(-50%);z-index:7;
+ position:absolute;left:50%;bottom:8px;transform:translateX(-50%);z-index:8;
  display:flex;align-items:center;gap:4px;padding:3px 4px;
  border:1.5px solid #cba45a;border-radius:999px;
  background:#17211cd9;box-shadow:0 4px 12px #050a0899
@@ -3695,14 +3698,82 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 .town-wing-bg{
  display:block;width:100%;height:100%;object-fit:fill;pointer-events:none
 }
-.town-wing-fx{position:absolute;inset:0;pointer-events:none}
-.town-wing-fx.is-west .wf-foam{
- position:absolute;left:13%;top:43%;width:10%;height:11%;
- background:radial-gradient(ellipse,#e8ffffbb 0%,#7be6ff44 55%,transparent 75%);
- mix-blend-mode:screen;animation:wfShimmer 2.1s ease-in-out infinite
+.town-wing-fx{position:absolute;inset:0;pointer-events:none;z-index:2}
+/* West Wing Flowing Waterfall + Splashing Plunge Pool */
+.wf-waterfall{
+ position:absolute;left:13%;top:42.5%;width:9.5%;height:11.5%;
+ overflow:hidden;border-radius:6px 6px 10px 10px;opacity:.9
 }
-.town-wing-fx.is-west .wf-foam.f2{left:14%;top:51%;width:13%;height:5%;animation-delay:-1s}
-@keyframes wfShimmer{0%,100%{opacity:.45;transform:translateY(0)}50%{opacity:.95;transform:translateY(3px)}}
+.wf-stream{
+ position:absolute;left:14%;top:-100%;width:22%;height:200%;
+ background:repeating-linear-gradient(180deg,transparent 0 10px,#ecffffdd 10px 22px,#8ff0ff88 22px 28px,transparent 28px 42px);
+ animation:wfFlowDown .75s linear infinite
+}
+.wf-stream.s2{left:44%;width:24%;animation-duration:.62s;animation-delay:-.28s;opacity:.95}
+.wf-stream.s3{left:72%;width:18%;animation-duration:.82s;animation-delay:-.52s;opacity:.8}
+@keyframes wfFlowDown{from{transform:translateY(0)}to{transform:translateY(42px)}}
+.wf-plunge{position:absolute;left:10%;top:49%;width:19%;height:10%}
+.wf-plunge .wf-foam{
+ position:absolute;left:15%;top:22%;width:70%;height:42%;
+ background:radial-gradient(ellipse,#f4ffffdd 0%,#9af4ff88 45%,transparent 76%);
+ mix-blend-mode:screen;animation:wfSplashPulse 1.3s ease-in-out infinite
+}
+.wf-plunge .wf-foam.f2{left:22%;top:32%;width:58%;height:34%;animation-delay:-.65s}
+@keyframes wfSplashPulse{0%,100%{opacity:.55;transform:scale(.92)}50%{opacity:1;transform:scale(1.12)}}
+.wf-plunge .wf-ripple{
+ position:absolute;left:50%;top:56%;width:92%;height:48%;
+ border:1.5px solid #d6ffffcc;border-radius:50%;
+ transform:translate(-50%,-50%) scale(.3);opacity:0;
+ animation:wfPondRipple 2s ease-out infinite
+}
+.wf-plunge .wf-ripple.r2{animation-delay:-1s}
+@keyframes wfPondRipple{0%{opacity:.85;transform:translate(-50%,-50%) scale(.3)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.15)}}
+.wf-drop{
+ position:absolute;left:46%;top:34%;width:3px;height:3px;border-radius:50%;
+ background:#f0ffff;box-shadow:0 0 3px #8ef4ff;
+ animation:wfDropArcL 1.15s ease-out infinite
+}
+.wf-drop.d2{left:54%;animation-name:wfDropArcR;animation-delay:-.35s}
+.wf-drop.d3{left:42%;animation-duration:1.35s;animation-delay:-.6s}
+.wf-drop.d4{left:58%;animation-name:wfDropArcR;animation-duration:1.25s;animation-delay:-.85s}
+.wf-drop.d5{left:50%;animation-duration:1.05s;animation-delay:-.18s}
+@keyframes wfDropArcL{0%{opacity:0;transform:translate(0,0)}22%{opacity:1;transform:translate(-8px,-10px)}100%{opacity:0;transform:translate(-16px,8px)}}
+@keyframes wfDropArcR{0%{opacity:0;transform:translate(0,0)}22%{opacity:1;transform:translate(9px,-10px)}100%{opacity:0;transform:translate(17px,8px)}}
+
+/* East Wing Stream Glint */
+.es-stream-glint{
+ position:absolute;left:70%;top:76%;width:14%;height:6%;
+ background:radial-gradient(ellipse,#e8ffff99,transparent 70%);
+ mix-blend-mode:screen;animation:wfSplashPulse 2.4s ease-in-out infinite
+}
+.es-stream-glint.g2{left:56%;top:90%;width:12%;animation-delay:-1.2s}
+
+/* Wing Architectural Upgrade Overlay SVG */
+.tw-upgrade-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.town-wing-layer[data-time="night"] .tw-up-arch{filter:url(#geminiTownNightFilter)}
+.tw-up-glow{mix-blend-mode:screen}
+.tw-pulse{transform-box:fill-box;transform-origin:center;animation:wfSplashPulse 2.8s ease-in-out infinite}
+.tw-spark{transform-box:fill-box;transform-origin:center;animation:twSparkBob 2.4s ease-in-out infinite}
+.tw-spark:nth-of-type(2n){animation-delay:-.8s}
+.tw-spark:nth-of-type(3n){animation-delay:-1.6s}
+@keyframes twSparkBob{0%,100%{opacity:.45;transform:translateY(2px)}50%{opacity:1;transform:translateY(-5px)}}
+
+/* One-Click Open All Chests UI */
+.town-loot-all-btn{
+ background:linear-gradient(180deg,#b47e28,#7a5014)!important;
+ border-color:#f6d57a!important;color:#fff8dc!important
+}
+.town-loot-batch{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;
+ width:100%;max-height:220px;overflow-y:auto;padding:4px
+}
+.town-loot-batch-item{
+ display:flex;align-items:center;gap:7px;padding:6px 7px;
+ border:1px solid #967c4c;border-radius:7px;background:#1d2b24dd;text-align:left
+}
+.town-loot-batch-item .tlb-art{width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center}
+.town-loot-batch-item .tlb-art svg{width:34px;height:34px}
+.town-loot-batch-item b{font-size:11.5px;line-height:1.3;color:#fff0c4}
 
 .town-wing-spot{
  position:absolute;z-index:2;

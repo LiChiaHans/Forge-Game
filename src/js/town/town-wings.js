@@ -5,7 +5,7 @@
    - Navigation: Road Arrow Buttons, Zone Pill Bar, & Left/Right Swipe Gesture
    ========================================================================== */
 
-const TOWN_WING_ART={"west_0":"assets/town/west_0.e8f9bd50c935.jpg","west_1":"assets/town/west_1.2367ad9d0d8c.jpg","west_2":"assets/town/west_2.50a17eb52210.jpg","west_3":"assets/town/west_3.6fc70687a8a8.jpg","west_4":"assets/town/west_4.eb580b097f0a.jpg","west_5":"assets/town/west_5.06707389c570.jpg","west_6":"assets/town/west_6.2e6f3b06e3ad.jpg","west_7":"assets/town/west_7.b80182ca90e7.jpg","east_0":"assets/town/east_0.842d522abe83.jpg","east_1":"assets/town/east_1.ca65481bc645.jpg","east_2":"assets/town/east_2.0dbb9e420a1d.jpg","east_3":"assets/town/east_3.ca3a7fdf7196.jpg","east_4":"assets/town/east_4.97d746089428.jpg","east_5":"assets/town/east_5.dc2fe0b90505.jpg","east_6":"assets/town/east_6.cd4c103cb4bb.jpg","east_7":"assets/town/east_7.2893eca13779.jpg"};
+const TOWN_WING_ART={"west_0":"assets/town/west_0.e8f9bd50c935.jpg","west_1":"assets/town/west_1.2367ad9d0d8c.jpg","west_2":"assets/town/west_2.50a17eb52210.jpg","west_3":"assets/town/west_3.6fc70687a8a8.jpg","west_4":"assets/town/west_4.eb580b097f0a.jpg","west_5":"assets/town/west_5.06707389c570.jpg","west_6":"assets/town/west_6.2e6f3b06e3ad.jpg","west_7":"assets/town/west_7.b80182ca90e7.jpg","east_0":"assets/town/east_0.480a66adb479.jpg","east_1":"assets/town/east_1.6c11b3e58bca.jpg","east_2":"assets/town/east_2.5ebf1e4eaae8.jpg","east_3":"assets/town/east_3.a9e7ff711013.jpg","east_4":"assets/town/east_4.0c1c97fa36de.jpg","east_5":"assets/town/east_5.b830d777c365.jpg","east_6":"assets/town/east_6.903d44c0e43b.jpg","east_7":"assets/town/east_7.5ec3bb9556ce.jpg"};
 
 const FISH_CATALOG=[
  {id:'spring_trout',icon:'🐟',name:'晨露溪鱒',season:0,night:false,rarity:0,gold:55},
@@ -166,6 +166,54 @@ function setTownZone(zone){
  renderTownWing();
 }
 
+function wingUpgradeArtSVG(zone,lv){
+ if(!lv||lv<1)return '';
+ const t2=lv>=2,t3=lv>=3;
+ let arch='',glow='';
+ if(zone==='west'){
+  // Lv1: explorer guild pennant at tent + warm pier lantern post
+  arch+='<g><path fill="#2a211b" d="M276 220h4v44h-4zM280 222h28l-6 8 6 8h-28z"/><path fill="#2d7a64" d="M280 224h24l-5 6 5 6h-24z"/><path fill="#f5d16b" d="M280 224h24v2h-24zM284 228h6v4h-6z"/>'
+   +'<path fill="#2a211b" d="M242 544h6v36h-6zM236 544h18v12h-18z"/><rect x="239" y="547" width="12" height="7" fill="#ffe180"/></g>';
+  glow+='<circle cx="245" cy="550" r="22" fill="url(#tw-gold)"/>';
+  // Lv2: gilded museum cupola on lower-right cabin + glowing ruin crystal pedestal
+  if(t2){
+   arch+='<g><path fill="#1b171455" d="M430 618h54v6h-54z"/><path fill="#2a211b" d="M434 596h46v24h-46zM430 596l27-20 27 20v4h-54z"/>'
+    +'<path fill="#38856d" d="M437 598h40v20h-40z"/><path fill="#8ef2cb" d="M441 601h10v14h-10zM455 601h10v14h-10zM469 601h6v14h-6z"/>'
+    +'<path fill="#52aa8c" d="M435 596l22-16 22 16z"/><path fill="#f2ca63" d="M434 596h46v3h-46zM456 568h3v10h-3z"/><rect x="455" y="566" width="5" height="4" fill="#fff2b5"/>'
+    +'<path fill="#2a211b" d="M122 260h22v22h-22z"/><path fill="#7c8791" d="M124 268h18v12h-18z"/><path fill="#6ef7d2" stroke="#1f2e2b" stroke-width="1.8" d="M133 242l9 14-9 12-9-12z"/></g>';
+   glow+='<circle cx="133" cy="254" r="26" fill="url(#tw-mana)"/><circle cx="457" cy="592" r="24" fill="url(#tw-mana)"/>';
+  }
+  // Lv3: radiant starlight aura + floating crystal motes
+  if(t3){
+   glow+='<circle class="tw-pulse" cx="457" cy="586" r="40" fill="url(#tw-gold)"/><circle class="tw-pulse" cx="133" cy="254" r="38" fill="url(#tw-mana)"/>'
+    +'<rect class="tw-spark" x="112" y="232" width="4" height="4" fill="#b8ffe8"/><rect class="tw-spark" x="154" y="236" width="4" height="4" fill="#ffe994"/><rect class="tw-spark" x="442" y="562" width="4" height="4" fill="#fff3bc"/><rect class="tw-spark" x="478" y="572" width="4" height="4" fill="#a8ffe0"/>';
+  }
+ }else{
+  // East Boulevard Lv1: festive caravan bunting pennants + brass plaza lanterns
+  arch+='<g><path fill="none" stroke="#2a211b" stroke-width="2.5" d="M210 382q120 34 260-48"/>'
+   +'<path fill="#d84658" d="M236 388h10l-5 11z"/><path fill="#f0c44d" d="M276 394h10l-5 11z"/><path fill="#45b58a" d="M318 392h10l-5 11z"/><path fill="#4b8bd4" d="M360 382h10l-5 11z"/><path fill="#d84658" d="M402 366h10l-5 11z"/><path fill="#f0c44d" d="M442 346h10l-5 11z"/>'
+   +'<path fill="#2a211b" d="M204 374h6v30h-6zM468 326h6v30h-6z"/><rect x="205" y="376" width="4" height="6" fill="#ffe180"/><rect x="469" y="328" width="4" height="6" fill="#ffe180"/></g>';
+  glow+='<circle cx="207" cy="379" r="20" fill="url(#tw-gold)"/><circle cx="471" cy="331" r="20" fill="url(#tw-gold)"/>';
+  // Lv2: royal guild banner on dock crane + gilded tavern gable crest & bistro string lights
+  if(t2){
+   arch+='<g><path fill="#2a211b" d="M424 494h18v34l-9-6-9 6z"/><path fill="#b82e38" d="M426 496h14v28l-7-5-7 5z"/><path fill="#f5cf67" d="M426 496h14v3h-14zM431 503h4v12h-4z"/>'
+    +'<path fill="#2a211b" d="M214 630h28v16h-28z"/><path fill="#9c2c34" d="M216 632h24v12h-24z"/><path fill="#ffe892" d="M220 635h4v6h-4zM226 635h4v6h-4zM232 635h4v6h-4z"/>'
+    +'<path fill="none" stroke="#ffe592" stroke-width="2" stroke-dasharray="4 6" d="M126 742q74 28 176-18"/></g>';
+   glow+='<ellipse cx="228" cy="638" rx="28" ry="20" fill="url(#tw-gold)"/>';
+  }
+  // Lv3: golden starlight beacon on windmill + shimmering trade motes
+  if(t3){
+   arch+='<path fill="#2a211b" d="M466 56h4v14h-4zM461 61h14v4h-14z"/><path fill="#fff3b8" d="M467 57h2v12h-2zM462 62h12v2h-12z"/>';
+   glow+='<circle class="tw-pulse" cx="468" cy="63" r="30" fill="url(#tw-gold)"/><circle class="tw-pulse" cx="350" cy="316" r="42" fill="url(#tw-gold)"/>'
+    +'<rect class="tw-spark" x="282" y="290" width="4" height="4" fill="#fff2b8"/><rect class="tw-spark" x="418" y="256" width="4" height="4" fill="#ffe482"/><rect class="tw-spark" x="232" y="612" width="4" height="4" fill="#fff3c0"/><rect class="tw-spark" x="438" y="476" width="4" height="4" fill="#ffe68c"/>';
+  }
+ }
+ return '<svg class="tw-upgrade-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 572 1024" preserveAspectRatio="none" aria-hidden="true" shape-rendering="crispEdges">'
+  +'<defs><radialGradient id="tw-gold"><stop stop-color="#ffe99e" stop-opacity=".75"/><stop offset=".5" stop-color="#f5bc4f" stop-opacity=".24"/><stop offset="1" stop-color="#f5bc4f" stop-opacity="0"/></radialGradient>'
+  +'<radialGradient id="tw-mana"><stop stop-color="#9effd6" stop-opacity=".75"/><stop offset=".5" stop-color="#44c490" stop-opacity=".24"/><stop offset="1" stop-color="#44c490" stop-opacity="0"/></radialGradient></defs>'
+  +'<g class="tw-up-arch">'+arch+'</g><g class="tw-up-glow" shape-rendering="auto">'+glow+'</g></svg>';
+}
+
 function renderTownWing(){
  const layer=$('townWingLayer'),goW=$('townGoWest'),goE=$('townGoEast'),dots=$('townZoneDots');
  if(!layer||!goW||!goE||!dots)return;
@@ -190,8 +238,12 @@ function renderTownWing(){
  if(townZone==='west'){
   const tierBadge=westLv>0?'<div class="tw-tier-banner">🎣 '+TOWN_LANDMARKS.west_camp.tierNames[westLv-1]+' '+'★'.repeat(westLv)+'</div>':'';
   layer.innerHTML='<img class="town-wing-bg" src="'+bgUrl+'" alt="西側星露溪畔營地" decoding="async">'
+   +wingUpgradeArtSVG('west',westLv)
    +tierBadge
-   +'<div class="town-wing-fx is-west" aria-hidden="true"><span class="wf-foam"></span><span class="wf-foam f2"></span></div>'
+   +'<div class="town-wing-fx is-west" aria-hidden="true">'
+   +'<div class="wf-waterfall"><span class="wf-stream s1"></span><span class="wf-stream s2"></span><span class="wf-stream s3"></span></div>'
+   +'<div class="wf-plunge"><span class="wf-foam"></span><span class="wf-foam f2"></span><span class="wf-ripple"></span><span class="wf-ripple r2"></span><i class="wf-drop d1"></i><i class="wf-drop d2"></i><i class="wf-drop d3"></i><i class="wf-drop d4"></i><i class="wf-drop d5"></i></div>'
+   +'</div>'
    +'<button type="button" class="town-wing-spot" style="left:6%;top:17%;width:52%;height:24%" onclick="openTownWingModal(\'excavate\')"><span class="tw-plaque">⛏ 古物遺跡營地<small>3×3 探勘 · 體力 '+westRem+'/'+westMax+'</small></span></button>'
    +'<button type="button" class="town-wing-spot" style="left:16%;top:50%;width:42%;height:22%" onclick="openTownWingModal(\'fishing\')"><span class="tw-plaque">🎣 星露釣魚棧橋<small>'+(night?'🌙 夜間限定魚群':'☀ 白天溪畔魚群')+'</small></span></button>'
    +'<button type="button" class="town-wing-spot" style="left:55%;top:55%;width:41%;height:22%" onclick="openTownWingModal(\'museum\')"><span class="tw-plaque">🏛 星露博物小屋<small>大工程 Lv '+westLv+'/3</small></span></button>'
@@ -199,12 +251,13 @@ function renderTownWing(){
  }else{
   const theme=CARAVAN_THEMES[(day-1)%CARAVAN_THEMES.length];
   const tierBadge=eastLv>0?'<div class="tw-tier-banner">🛒 '+TOWN_LANDMARKS.east_post.tierNames[eastLv-1]+' '+'★'.repeat(eastLv)+'</div>':'';
-  layer.innerHTML='<img class="town-wing-bg" src="'+bgUrl+'" alt="東側旅商驛站" decoding="async">'
+  layer.innerHTML='<img class="town-wing-bg" src="'+bgUrl+'" alt="東側旅商大道" decoding="async">'
+   +wingUpgradeArtSVG('east',eastLv)
    +tierBadge
-   +'<div class="town-wing-fx is-east" aria-hidden="true"></div>'
-   +'<button type="button" class="town-wing-spot" style="left:50%;top:19%;width:44%;height:22%" onclick="openTownWingModal(\'caravan\')"><span class="tw-plaque">'+theme.icon+' '+theme.name+'<small>特賣＋以物易物 · Lv '+eastLv+'/3</small></span></button>'
-   +'<button type="button" class="town-wing-spot" style="left:6%;top:27%;width:35%;height:19%" onclick="openTownWingModal(\'depot\')"><span class="tw-plaque">📦 跨城商隊站<small>'+(shipReady?'✨ 商隊已返航！':w.shipment?'🚢 航行中':'投資賺翻倍')+'</small></span></button>'
-   +'<button type="button" class="town-wing-spot" style="left:56%;top:55%;width:42%;height:26%" onclick="openTownWingModal(\'tavern\')"><span class="tw-plaque">🍺 旅人常客酒館<small>常客委託與好感度</small></span></button>'
+   +'<div class="town-wing-fx is-east" aria-hidden="true"><span class="es-stream-glint g1"></span><span class="es-stream-glint g2"></span></div>'
+   +'<button type="button" class="town-wing-spot" style="left:36%;top:21%;width:58%;height:22%" onclick="openTownWingModal(\'caravan\')"><span class="tw-plaque">'+theme.icon+' '+theme.name+'<small>特賣＋以物易物 · Lv '+eastLv+'/3</small></span></button>'
+   +'<button type="button" class="town-wing-spot" style="left:58%;top:45%;width:39%;height:21%" onclick="openTownWingModal(\'depot\')"><span class="tw-plaque">📦 跨城商隊碼頭<small>'+(shipReady?'✨ 商隊已返航！':w.shipment?'🚢 航行中':'投資賺翻倍')+'</small></span></button>'
+   +'<button type="button" class="town-wing-spot" style="left:6%;top:56%;width:52%;height:32%" onclick="openTownWingModal(\'tavern\')"><span class="tw-plaque">🍺 旅人常客酒館<small>常客委託與好感度</small></span></button>'
    +'<button type="button" class="town-road-arrow is-west is-return" onclick="setTownZone(\'center\')" aria-label="返回主城鎮">◀<span>返回城鎮</span></button>';
  }
 }
