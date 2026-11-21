@@ -18,5 +18,4 @@ function performSceneTransition(name,action,force=false){
  };
  dark.oncancel=()=>finishSceneTransition(run);
 }
-window.addEventListener('load',()=>{if($('title').style.display!=='none')performSceneTransition('遊戲首頁',()=>{},true);});
 window.addEventListener('pagehide',()=>{if(sceneTransitionRun){sceneTransitionRun.next=null;finishSceneTransition(sceneTransitionRun);}});

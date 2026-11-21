@@ -2103,5 +2103,13 @@
     "mime": "image/png",
     "bytes": 109380,
     "sha256": "e299c7e0b49a9d4eac52a6dc099e92321780560409a3dfea99e5465d12f0fc53"
+  },
+  {
+    "variable": "SEASON_MUSIC_DATA",
+    "id": "home",
+    "url": "assets/music/home.eb2413bfbaed.mp3",
+    "mime": "audio/mpeg",
+    "bytes": 4024111,
+    "sha256": "eb2413bfbaedaee30de4bbdcd9496a00869689ad2b47706058191cfd3e40ff5c"
   }
 ]

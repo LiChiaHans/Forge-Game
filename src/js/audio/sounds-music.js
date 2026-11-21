@@ -5,7 +5,7 @@ try{muted=gameStorage.getItem("forgeMute")==="1"}catch(e){}
 const enter=new Map();
 let exitMs=0,ac=null;
 
-const SEASON_MUSIC_DATA={"spring":"assets/music/spring.0b5a6ee3a097.mp3","summer":"assets/music/summer.21c0e5ecb503.mp3","autumn":"assets/music/autumn.410f304ae451.mp3","winter":"assets/music/winter.e3da5cc9a782.mp3"};
+const SEASON_MUSIC_DATA={"home":"assets/music/home.eb2413bfbaed.mp3","spring":"assets/music/spring.0b5a6ee3a097.mp3","summer":"assets/music/summer.21c0e5ecb503.mp3","autumn":"assets/music/autumn.410f304ae451.mp3","winter":"assets/music/winter.e3da5cc9a782.mp3"};
 /* Decode only the current season. Normalize its faded PCM peak without re-encoding MP3. */
 const seasonMusic={wanted:null,pending:null,version:0,voice:null,master:null,cached:null,failed:null};
 function seasonMusicRamp(param,value,seconds){
@@ -40,7 +40,7 @@ async function decodeSeasonMusic(id,a){
  return buffer;
 }
 function syncSeasonMusic(){
- const id=$('title').style.display==='none'?SEASONS[seasonIndex()].id:null;
+ const id=$('title').style.display==='none'?SEASONS[seasonIndex()].id:'home';
  if(id!==seasonMusic.wanted){seasonMusic.wanted=id;seasonMusic.version++;seasonMusic.pending=null;seasonMusic.failed=null;}
  if(seasonMusic.master)seasonMusicRamp(seasonMusic.master.gain,muted?0:1,.08);
  if(!id){retireSeasonMusic();return;}
@@ -67,7 +67,6 @@ function syncSeasonMusic(){
 function installSeasonMusic(){
  if(typeof MutationObserver!=='undefined')new MutationObserver(syncSeasonMusic).observe($('title'),{attributes:true,attributeFilter:['style']});
  const unlock=()=>{
-  if($('title').style.display!=='none')return;
   seasonMusic.failed=null;const a=actx();if(a?.state==='suspended')a.resume().catch(()=>{});syncSeasonMusic();
  };
  document.addEventListener('pointerdown',unlock);document.addEventListener('keydown',unlock);
