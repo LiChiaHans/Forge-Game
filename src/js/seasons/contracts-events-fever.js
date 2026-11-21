@@ -51,6 +51,16 @@ const TOWN_LANDMARKS={
   key:'fountain',buildingId:'townFountain',buildingName:'中央噴水池',icon:'⛲',name:'星輝許願噴泉',max:3,costs:[1400,3600,7500],
   tierNames:['精雕花泉擴建','鎏金雙層噴泉','星輝聖泉奇觀'],
   effects:['雙工坊客人耐心 +6 步 · 每日許願硬幣 +120💰','雙工坊客人耐心 +12 步 · 全工坊售價 +6% · 許願 +260💰','雙工坊客人耐心 +18 步 · 全工坊售價 +12% · 許願 +450💰']
+ },
+ west_camp:{
+  key:'west_camp',buildingId:'townWingWest',buildingName:'西側溪畔營地',icon:'🎣',name:'星露棧橋與博物館',max:3,costs:[1200,3000,6400],
+  tierNames:['堅固木棧橋','星露探險營地','皇家自然博物館'],
+  effects:['每日西側探索體力 +1（共 4 次）· 稀有漁獲／古物 +15%','每日西側探索體力 +2（共 5 次）· 漁獲與古物收益 +35%','每日西側探索體力 +3（共 6 次）· 傳說機率大增 · 每日博物津貼 +280💰']
+ },
+ east_post:{
+  key:'east_post',buildingId:'townWingEast',buildingName:'東側旅商驛站',icon:'🛒',name:'皇家旅商驛站',max:3,costs:[1200,3000,6400],
+  tierNames:['旅商遮陽棚','繁榮商隊驛站','皇家跨國貿易港'],
+  effects:['旅商馬車商品 +1 格且享 9 折 · 商隊回報 +15%','旅商享 8 折 · 商隊回報 +30% · 常客好感雙倍提升','旅商享 7 折 · 黃金商隊回報 +50% · 每日關稅分紅 +320💰']
  }
 };
 const TOWN_LANDMARK_KEYS=Object.keys(TOWN_LANDMARKS);
@@ -123,6 +133,16 @@ function freshTownLandmarks(){
  return out;
 }
 
+function freshTownWings(){
+ return {
+  westDay:0,westUsed:0,westExtra:0,
+  eastDay:0,eastBought:[],
+  shipment:null,
+  regularDay:0,regularGifted:[],
+  regulars:{}
+ };
+}
+
 function freshWorkshopMomentum(mode='normal'){
  return {
   mode:RUN_MODES[mode]?mode:'normal',
@@ -137,6 +157,7 @@ function freshWorkshopMomentum(mode='normal'){
   kitchenFever:0,
   kitchenFeverTurns:0,
   landmarks:freshTownLandmarks(),
+  wings:freshTownWings(),
   sprintDone:false
  };
 }
@@ -164,6 +185,22 @@ function cleanWorkshopMomentum(raw){
   if(k==='expedition')v=Math.max(v,Number(srcL.monument)||0);
   base.landmarks[k]=Math.max(0,Math.min(3,Math.floor(v)));
  });
+ if(raw.wings&&typeof raw.wings==='object'){
+  const w=raw.wings;
+  base.wings.westDay=Math.max(0,Math.floor(Number(w.westDay)||0));
+  base.wings.westUsed=Math.max(0,Math.min(12,Math.floor(Number(w.westUsed)||0)));
+  base.wings.westExtra=Math.max(0,Math.min(4,Math.floor(Number(w.westExtra)||0)));
+  base.wings.eastDay=Math.max(0,Math.floor(Number(w.eastDay)||0));
+  base.wings.eastBought=Array.isArray(w.eastBought)?w.eastBought.filter(x=>typeof x==='string').slice(0,10):[];
+  base.wings.regularDay=Math.max(0,Math.floor(Number(w.regularDay)||0));
+  base.wings.regularGifted=Array.isArray(w.regularGifted)?w.regularGifted.filter(x=>typeof x==='string').slice(0,10):[];
+  if(w.shipment&&typeof w.shipment==='object'&&Number(w.shipment.returnDay)>0){
+   base.wings.shipment={id:String(w.shipment.id||'local'),cost:Math.max(0,Math.floor(Number(w.shipment.cost)||0)),returnDay:Math.floor(Number(w.shipment.returnDay))};
+  }
+  if(w.regulars&&typeof w.regulars==='object'){
+   Object.entries(w.regulars).forEach(([k,v])=>{base.wings.regulars[k]=Math.max(0,Math.min(5,Math.floor(Number(v)||0)));});
+  }
+ }
  base.sprintDone=!!raw.sprintDone;
  return base;
 }
@@ -252,12 +289,20 @@ function landmarkBonuses(){
   decorDiscount:[0,.12,.22,.35][l.decor]||0,
   fountainPatience:[0,6,12,18][l.fountain]||0,
   fountainSale:[0,0,.06,.12][l.fountain]||0,
-  tourismGold:([0,100,220,380][l.expedition]||0)+([0,80,180,320][l.archive]||0)+([0,100,220,380][l.decor]||0)+([0,120,260,450][l.fountain]||0)
+  westStaminaBonus:l.west_camp||0,
+  westRareBonus:[0,.15,.28,.45][l.west_camp]||0,
+  westRewardMult:[1,1.15,1.35,1.6][l.west_camp]||1,
+  eastDiscount:[0,.1,.2,.3][l.east_post]||0,
+  eastExtraSlots:l.east_post>=1?1:0,
+  eastTradeMult:[1,1.15,1.3,1.5][l.east_post]||1,
+  eastHeartStep:l.east_post>=2?2:1,
+  tourismGold:([0,100,220,380][l.expedition]||0)+([0,80,180,320][l.archive]||0)+([0,100,220,380][l.decor]||0)+([0,120,260,450][l.fountain]||0)+(l.west_camp>=3?280:0)+(l.east_post>=3?320:0)
  };
 }
 
 function contractBonuses(){
  const m=ensureWorkshopMomentum(),hl=day>0&&m.dailyDay===day?m.headlineId:null,dc=day>0&&m.dailyDay===day?m.dailyChoice:null,lm=landmarkBonuses();
+ const wb=typeof townWingBonuses==='function'?townWingBonuses():{forgeSale:0,kitchenSale:0,battleAtk:0,battleDef:0};
  const winterSale=activeRunMode()==='eternal_winter'?.35:0;
  return {
   emberTemper:hasContract('ember_temper'),
@@ -267,14 +312,14 @@ function contractBonuses(){
   forgeHeatDelta:(hasContract('cool_breeze')?8:0)+(hl==='leyline_heat'&&dc==='a'?8:0)+lm.forgeHeatReduce,
   kitchenHeatDelta:hasContract('cool_breeze')?2:0,
   kitchenFreshBonus:(hasContract('cool_breeze')?8:0)+lm.kitchenFreshBonus,
-  battleAtk:(hasContract('war_forge')?.18:0)+(hl==='guild_bounty'&&dc==='a'?.15:0)+lm.battleAtk,
-  battleDef:(hasContract('war_forge')?.15:0)+lm.battleDef,
+  battleAtk:(hasContract('war_forge')?.18:0)+(hl==='guild_bounty'&&dc==='a'?.15:0)+lm.battleAtk+wb.battleAtk,
+  battleDef:(hasContract('war_forge')?.15:0)+lm.battleDef+wb.battleDef,
   expeditionGold:hl==='guild_bounty'&&dc==='a'?.20:0,
   forgeCraftGold:hasContract('war_forge')?15:0,
   shopExtra:hasContract('bountiful_hearth')?1:0,
   feverDuration:hasContract('bountiful_hearth')?7:5,
-  dailyForgeSale:(hl==='gem_caravan'&&dc==='a'?.12:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale+lm.forgeSale+lm.fountainSale,
-  dailyKitchenSale:(hl==='food_critic'&&dc==='a'?.22:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale+lm.kitchenSale+lm.fountainSale
+  dailyForgeSale:(hl==='gem_caravan'&&dc==='a'?.12:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale+lm.forgeSale+lm.fountainSale+wb.forgeSale,
+  dailyKitchenSale:(hl==='food_critic'&&dc==='a'?.22:0)+(hl==='harvest_fair'&&dc==='a'?.15:0)+winterSale+lm.kitchenSale+lm.fountainSale+wb.kitchenSale
  };
 }
 

@@ -99,6 +99,7 @@
     "src/js/seasons/festivals.js",
     "src/js/seasons/badges-board.js",
     "src/js/seasons/contracts-events-fever.js",
+    "src/js/town/town-wings.js",
     "src/js/collections/medal-achievements.js",
     "src/js/admin/sandbox.js",
     "src/js/ui/modals-layout.js",
@@ -157,7 +158,8 @@
     "src/styles/36-distinct-halls-ui.css",
     "src/styles/37-workshop-ui-and-fx.css",
     "src/styles/38-chest-items-autumn-iphone15pm.css",
-    "src/styles/39-momentum-and-layout-alignment.css"
+    "src/styles/39-momentum-and-layout-alignment.css",
+    "src/styles/40-town-wings.css"
   ],
   "workers": [
     "src/workers/media-cache.js"

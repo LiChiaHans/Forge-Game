@@ -2111,5 +2111,133 @@
     "mime": "audio/mpeg",
     "bytes": 4024111,
     "sha256": "eb2413bfbaedaee30de4bbdcd9496a00869689ad2b47706058191cfd3e40ff5c"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "west_0",
+    "url": "assets/town/west_0.e8f9bd50c935.jpg",
+    "mime": "image/jpeg",
+    "bytes": 145469,
+    "sha256": "e8f9bd50c935768842b8b4f0679cd507aac7d841dd242fde09d0289ab3874a79"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "west_1",
+    "url": "assets/town/west_1.2367ad9d0d8c.jpg",
+    "mime": "image/jpeg",
+    "bytes": 167078,
+    "sha256": "2367ad9d0d8c801ea5a8291ae0c47a67f82c477f48efa6ff44e3366a0998719e"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "west_2",
+    "url": "assets/town/west_2.50a17eb52210.jpg",
+    "mime": "image/jpeg",
+    "bytes": 143979,
+    "sha256": "50a17eb522108eede1cf7263e793a525afc9e2bb575bb1aaa39bdb59409d8916"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "west_3",
+    "url": "assets/town/west_3.6fc70687a8a8.jpg",
+    "mime": "image/jpeg",
+    "bytes": 162483,
+    "sha256": "6fc70687a8a89c95c9bfa8e928ce048ca82ed809092c95ae7ec33ec6c896d0f4"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "west_4",
+    "url": "assets/town/west_4.eb580b097f0a.jpg",
+    "mime": "image/jpeg",
+    "bytes": 119932,
+    "sha256": "eb580b097f0acee4098f42674fbccbc43b2e8826aa250c847156aebcb0e4d968"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "west_5",
+    "url": "assets/town/west_5.06707389c570.jpg",
+    "mime": "image/jpeg",
+    "bytes": 134888,
+    "sha256": "06707389c5706eca1143862f4e5f6c3fc7f8ac6de20b32d0317caf5cc74ecd4b"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "west_6",
+    "url": "assets/town/west_6.2e6f3b06e3ad.jpg",
+    "mime": "image/jpeg",
+    "bytes": 121792,
+    "sha256": "2e6f3b06e3ad10fd56873f4d52755cb28cf592b23dd5cfb3d80aa86fe0861094"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "west_7",
+    "url": "assets/town/west_7.b80182ca90e7.jpg",
+    "mime": "image/jpeg",
+    "bytes": 147273,
+    "sha256": "b80182ca90e716778d100001d51cfb4f9134b58242c7823652a2fe42da0f51f6"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "east_0",
+    "url": "assets/town/east_0.842d522abe83.jpg",
+    "mime": "image/jpeg",
+    "bytes": 145765,
+    "sha256": "842d522abe83d32a9a6f972a02f939215c989cb4aff4151f3c2d4fce46a99b6d"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "east_1",
+    "url": "assets/town/east_1.ca65481bc645.jpg",
+    "mime": "image/jpeg",
+    "bytes": 175324,
+    "sha256": "ca65481bc645677a8da9b5b5736be56eae2d871672c6df2b62c7f9757a6cac54"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "east_2",
+    "url": "assets/town/east_2.0dbb9e420a1d.jpg",
+    "mime": "image/jpeg",
+    "bytes": 148538,
+    "sha256": "0dbb9e420a1d177c7ce2741873ad0d00b8ef40af17831ec4153e7f20baf0eb2b"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "east_3",
+    "url": "assets/town/east_3.ca3a7fdf7196.jpg",
+    "mime": "image/jpeg",
+    "bytes": 166555,
+    "sha256": "ca3a7fdf71963ae8d189ed2acd884e74243d34b59564d35d2a9061d1b6a246f5"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "east_4",
+    "url": "assets/town/east_4.97d746089428.jpg",
+    "mime": "image/jpeg",
+    "bytes": 123994,
+    "sha256": "97d7460894284ab35a5c00236df188de855740911493d74947c40fecdd70531e"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "east_5",
+    "url": "assets/town/east_5.dc2fe0b90505.jpg",
+    "mime": "image/jpeg",
+    "bytes": 152199,
+    "sha256": "dc2fe0b90505322a33db0aeb0c1797e807612308ea6eabe05de8b46a8973dd8f"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "east_6",
+    "url": "assets/town/east_6.cd4c103cb4bb.jpg",
+    "mime": "image/jpeg",
+    "bytes": 125053,
+    "sha256": "cd4c103cb4bb8442f158067b782797697565249bd73252f5ff4afbf87cb01393"
+  },
+  {
+    "variable": "TOWN_WING_ART",
+    "id": "east_7",
+    "url": "assets/town/east_7.2893eca13779.jpg",
+    "mime": "image/jpeg",
+    "bytes": 142967,
+    "sha256": "2893eca13779e212ca1a347c6cc43440c9330672e239cdc490575f2cde27cb37"
   }
 ]
