@@ -250,8 +250,9 @@ renderExpeditionFood	src/js/expedition/food-supplies.js	23
 toggleExpeditionFood	src/js/expedition/food-supplies.js	30
 useExpeditionFood	src/js/expedition/food-supplies.js	31
 setArchiveCategory	src/js/collections/dishes.js	3
-renderDishAlbum	src/js/collections/dishes.js	4
-inspectArchiveDish	src/js/collections/dishes.js	8
+renderMuseumAlbum	src/js/collections/dishes.js	4
+renderDishAlbum	src/js/collections/dishes.js	15
+inspectArchiveDish	src/js/collections/dishes.js	19
 kitchenConnected	src/js/kitchen/placement-preview.js	3
 kitchenPlanAt	src/js/kitchen/placement-preview.js	4
 clearKitchenPreview	src/js/kitchen/placement-preview.js	16
@@ -267,7 +268,7 @@ updateBattlePace	src/js/expedition/food-filter-feedback.js	9
 toggleBattlePause	src/js/expedition/food-filter-feedback.js	10
 clearBattleFeedback	src/js/expedition/food-filter-feedback.js	11
 showBattleFeedback	src/js/expedition/food-filter-feedback.js	12
-monsterSpriteIndex	src/js/expedition/food-filter-feedback.js	18
+monsterSpriteIndex	src/js/expedition/food-filter-feedback.js	20
 kitchenWasteFee	src/js/garden/compost.js	2
 kitchenCompostEligible	src/js/garden/compost.js	3
 earnKitchenCompost	src/js/garden/compost.js	4

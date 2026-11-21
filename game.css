@@ -4023,3 +4023,114 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 }
 
 
+/* ==========================================================================
+   Full-Game UI & Art Polish Pass:
+   1. Unified Warm-Oak & Gold Theme for Legacy Modals (#help, #svP, #shopP, #recP)
+   2. Slimmer, Cleaner Town Header (.town-header) for wider map viewport
+   3. 4-Tab Archive Bar (#archiveCategories) + Museum Album Styling
+   4. Expedition Arena Stage & Heavy Hit Impact Feedback
+   5. Workshop Fever Board Aura & Hand-Held Ready Pulse
+   ========================================================================== */
+
+/* 1. Unify Legacy Modals (#help, #svP, #shopP, #recP) with Stardew-Gilded Theme */
+#help .hp,#svP .hp,#shopP .hp,#recP .hp{
+ border:2px solid #cfa557!important;border-radius:11px!important;
+ background:linear-gradient(180deg,#23302a 0%,#16201c 62%,#101815 100%)!important;
+ box-shadow:inset 0 0 0 4px #121b17,inset 0 0 0 5px #cfa55736,0 24px 52px #040906dd!important;
+ color:#f4ebd2
+}
+#help h2,#svP h2,#shopP h2,#recP h2{
+ font-family:'Noto Serif TC',serif;color:#ffe8a4!important;
+ padding-bottom:8px;margin-bottom:10px;border-bottom:1px solid #cfa55748;
+ text-shadow:0 1px 2px #090d0b
+}
+#help h3{
+ margin:14px 0 6px;padding:4px 9px;border-left:3px solid #e6bf64;
+ background:#1b2922bb;border-radius:0 6px 6px 0;color:#ffe69a!important;font-size:14.5px
+}
+#help p{color:#dce5d8;line-height:1.68}
+#shopP .si,#svP .sv,#recP .rc{
+ border:1.5px solid #597264!important;border-radius:8px!important;
+ background:linear-gradient(180deg,#1d2d25,#14201a)!important;
+ box-shadow:inset 0 1px 0 #ffffff14
+}
+#shopP .si:hover,#svP .sv:hover{border-color:#d8b35e!important}
+
+/* 2. Slimmer, Cleaner Town Header (.town-header) */
+#townP .town-header{
+ padding:max(5px,env(safe-area-inset-top)) 8px 6px!important;
+ gap:4px!important
+}
+#townP .town-header-actions{
+ gap:3px!important;padding:2px 4px;border-radius:999px;
+ background:#141e19b8;border:1px solid #cfa55755;
+ box-shadow:inset 0 1px 0 #fff1b822
+}
+#townP .town-header-actions>button{
+ border-radius:999px!important;min-height:28px!important;
+ padding:2px 7px!important;border-color:transparent!important;background:transparent!important;
+ box-shadow:none!important
+}
+#townP .town-header-actions>button:hover,#townP .town-header-actions>button:active{
+ background:#cfa55733!important
+}
+#townP #townStats{font-size:12px!important;padding:3px 7px!important}
+#townP #townSeason{font-size:11.5px!important;padding:3px 7px!important}
+#townP #townDailyBtn{padding:4px 8px!important;font-size:11.5px!important;min-height:28px!important}
+
+/* 3. Archive 4-Tab Bar & Museum Album Section */
+#archiveCategories{
+ display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important
+}
+#archiveCategories button{
+ padding:6px 4px!important;font-size:12px!important;white-space:nowrap
+}
+.museum-album-section h3{
+ display:flex;align-items:center;justify-content:space-between;
+ margin:12px 0 7px;padding:5px 9px;border-left:3px solid #e6bf64;
+ background:#1b2b23cc;border-radius:0 7px 7px 0;color:#ffe69a;font-size:14px
+}
+.museum-album-section h3 small{color:#bfd2c0;font-weight:700}
+
+/* 4. Expedition Battle Arena Stage & Heavy Impact Popups */
+#expeditionArena{
+ position:relative;padding:12px 10px!important;border-radius:10px!important;
+ border:1.5px solid #cfa55766!important;
+ background:radial-gradient(ellipse at 50% 25%,#2d4252cc,#16202aee 70%,#0f161f)!important;
+ box-shadow:inset 0 0 24px #00000066,0 4px 14px #050a0d88
+}
+#expeditionArena .exp-fighter{position:relative}
+#expeditionArena .exp-fighter>div{
+ filter:drop-shadow(0 4px 6px #000000aa)
+}
+#expeditionArena .battle-damage22{
+ position:absolute;left:50%;top:18%;z-index:5;
+ font-size:16px;font-weight:900;letter-spacing:.4px;white-space:nowrap;
+ text-shadow:0 2px 4px #000,0 0 2px #000;pointer-events:none
+}
+#expeditionArena .battle-damage22.enemy-hit{color:#ffe675}
+#expeditionArena .battle-damage22.hero-hit{color:#ff7b7b}
+#expeditionArena .battle-damage22.is-heavy{
+ font-size:21px;color:#fff3a6;
+ text-shadow:0 0 10px #ff9c2a,0 2px 4px #000
+}
+
+/* 5. Workshop Board Fever Glow & Hand-Held Ready Pulse */
+@keyframes boardFeverAura{
+ 0%,100%{box-shadow:0 0 0 2px #f6c858,0 0 16px #ff983866,inset 0 0 14px #ffd26933}
+ 50%{box-shadow:0 0 0 3px #ffe894,0 0 24px #ffb84d99,inset 0 0 20px #ffe48844}
+}
+#grid.is-fever,#kitchenGrid.is-fever{
+ animation:boardFeverAura 1.8s ease-in-out infinite!important;
+ border-color:#ffe082!important
+}
+@keyframes handReadyPulse{
+ 0%,100%{box-shadow:0 0 0 1.5px #f0c96688,0 0 8px #f0c96644}
+ 50%{box-shadow:0 0 0 2.5px #ffe99e,0 0 15px #ffd25a88}
+}
+#handSlot:not(:empty),#kitchenHand:not(:empty){
+ animation:handReadyPulse 2s ease-in-out infinite
+}
+@media(prefers-reduced-motion:reduce){
+ #grid.is-fever,#kitchenGrid.is-fever,#handSlot:not(:empty),#kitchenHand:not(:empty){animation:none!important}
+}
