@@ -135,10 +135,11 @@ function freshTownLandmarks(){
 
 function freshTownWings(){
  return {
-  westDay:0,westUsed:0,westExtra:0,
-  eastDay:0,eastBought:[],
+  westDay:0,westUsed:0,westExtra:0,westFished:0,
+  digBoard:null,
+  eastDay:0,eastBought:[],barterDone:false,
   shipment:null,
-  regularDay:0,regularGifted:[],
+  regularDay:0,regularGifted:[],regularQuestDone:[],
   regulars:{}
  };
 }
@@ -190,10 +191,16 @@ function cleanWorkshopMomentum(raw){
   base.wings.westDay=Math.max(0,Math.floor(Number(w.westDay)||0));
   base.wings.westUsed=Math.max(0,Math.min(12,Math.floor(Number(w.westUsed)||0)));
   base.wings.westExtra=Math.max(0,Math.min(4,Math.floor(Number(w.westExtra)||0)));
+  base.wings.westFished=Math.max(0,Math.min(20,Math.floor(Number(w.westFished)||0)));
+  if(Array.isArray(w.digBoard)&&w.digBoard.length===9){
+   base.wings.digBoard=w.digBoard.map(cell=>cell&&typeof cell==='object'?{t:String(cell.t||'gold'),open:!!cell.open,v:cell.v||null}:null);
+  }
   base.wings.eastDay=Math.max(0,Math.floor(Number(w.eastDay)||0));
   base.wings.eastBought=Array.isArray(w.eastBought)?w.eastBought.filter(x=>typeof x==='string').slice(0,10):[];
+  base.wings.barterDone=!!w.barterDone;
   base.wings.regularDay=Math.max(0,Math.floor(Number(w.regularDay)||0));
   base.wings.regularGifted=Array.isArray(w.regularGifted)?w.regularGifted.filter(x=>typeof x==='string').slice(0,10):[];
+  base.wings.regularQuestDone=Array.isArray(w.regularQuestDone)?w.regularQuestDone.filter(x=>typeof x==='string').slice(0,10):[];
   if(w.shipment&&typeof w.shipment==='object'&&Number(w.shipment.returnDay)>0){
    base.wings.shipment={id:String(w.shipment.id||'local'),cost:Math.max(0,Math.floor(Number(w.shipment.cost)||0)),returnDay:Math.floor(Number(w.shipment.returnDay))};
   }
@@ -636,6 +643,13 @@ function settlementNextHookHTML(phase){
  if(readyWeapons&&expeditionState.unlocked<20)hooks.push('⚔ 已備妥高階武器，可前往城門挑戰第 '+(expeditionState.unlocked+1)+' 關遠征 Boss！');
  const affordLandmark=Object.values(TOWN_LANDMARKS).find(lm=>{const lv=m.landmarks[lm.key]||0;return lv<lm.max&&coins>=lm.costs[lv];});
  if(affordLandmark)hooks.push('🏛 金幣已足夠升級城鎮大工程「'+affordLandmark.name+'」！');
+ const wg=m.wings;
+ if(wg?.shipment){
+  if(day>=wg.shipment.returnDay)hooks.push('📦 東側跨城商隊已滿載返航，回城鎮右滑即可領取豐厚收益！');
+  else if(phase==='kitchen'&&day+1>=wg.shipment.returnDay)hooks.push('📦 東側跨城商隊明天早上返航，記得去領取收益！');
+ }
+ const westMax=3+(landmarkBonuses().westStaminaBonus||0),westRem=Math.max(0,westMax-(wg?.westDay===day?(wg.westUsed||0):0));
+ if(phase==='forge'&&westRem>0)hooks.push('🎣 西側溪畔還有 '+westRem+' 次免費釣魚／挖寶體力，夜晚限定魚種即將出沒！');
  if(!hooks.length)hooks.push(phase==='forge'?'🍲 晚餐時段即將開啟，準備好料理與主打菜大賺一筆！':'🌅 明天將刷新全新「今日城鎮頭條」與新一批客人！');
  return '<div class="settle-hooks"><b>✨ 下一步預告</b>'+hooks.slice(0,2).map(h=>'<p>'+h+'</p>').join('')+'</div>';
 }

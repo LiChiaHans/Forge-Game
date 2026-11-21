@@ -3784,3 +3784,88 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 @media(prefers-reduced-motion:reduce){
  .town-wing-layer,.town-wing-fx .wf-foam{animation:none}
 }
+
+/* Wing Tier Banner */
+.tw-tier-banner{
+ position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:4;
+ padding:4px 12px;border:1.5px solid #f4cf72;border-radius:999px;
+ background:linear-gradient(180deg,#44321ce6,#271c10ee);
+ color:#fff3c8;font-size:11.5px;font-weight:900;letter-spacing:.4px;white-space:nowrap;
+ box-shadow:0 3px 10px #060908aa
+}
+
+/* Fishing Timing Mini-Game */
+.tw-catch-banner{
+ display:flex;align-items:center;gap:10px;margin:0 0 10px;padding:9px 11px;
+ border:1.5px solid #e7c268;border-radius:9px;
+ background:linear-gradient(180deg,#293d32,#192820)
+}
+.tw-catch-banner>span{font-size:28px;line-height:1}
+.tw-catch-banner b{display:block;font-size:13.5px;color:#fff2c2}
+.tw-catch-banner small{display:block;font-size:11.5px;color:#cfe2d1;margin-top:2px}
+.fish-meter-box{
+ margin:6px 0 12px;padding:10px;border:1.5px solid #68a7b8;border-radius:9px;
+ background:linear-gradient(180deg,#1a333f,#12242d)
+}
+.fish-hint{margin:0 0 8px!important;font-size:12px!important;color:#d6f2ff!important;text-align:center}
+.fish-hint b{color:#ffe580}
+.fish-track{
+ position:relative;height:32px;margin:0 0 10px;
+ border:2px solid #96c7d6;border-radius:999px;
+ background:linear-gradient(90deg,#153547,#1f516b,#153547);overflow:hidden
+}
+.fish-zone-good{
+ position:absolute;top:0;bottom:0;left:28%;width:44%;
+ background:#42b87c66;border-left:1px solid #7cf0b0;border-right:1px solid #7cf0b0
+}
+.fish-zone-perfect{
+ position:absolute;top:0;bottom:0;left:42%;width:16%;
+ background:#ffd85999;border-left:1.5px solid #fff2a8;border-right:1.5px solid #fff2a8
+}
+.fish-bobber{
+ position:absolute;top:50%;transform:translate(-50%,-50%);
+ font-size:20px;line-height:1;filter:drop-shadow(0 1px 3px #000)
+}
+
+/* 3x3 Ancient Ruin Dig Grid */
+.dig-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:8px 0}
+.dig-cell{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+ min-height:84px;padding:8px 5px;text-align:center;
+ border:1.5px solid #786a52;border-radius:8px;
+ background:linear-gradient(180deg,#3d362b,#27221b);background-image:none;
+ color:#f4ebd2;box-shadow:inset 0 1px 0 #ffffff1c,0 2px 6px #070a0888
+}
+.dig-cell:not(:disabled):hover{border-color:#f0c969;transform:translateY(-1px)}
+.dig-cell.is-open{
+ border-color:#c9a659;background:linear-gradient(180deg,#23352a,#16241d)
+}
+.dig-cell>span{font-size:24px;line-height:1.1}
+.dig-cell>b{font-size:11.5px;color:#fff2ca;line-height:1.2}
+.dig-cell>small{font-size:10px;color:#bfd1be}
+
+/* Museum, Barter & Regular Side Quests */
+.tw-row.is-got-row{border-color:#c9a659;background:linear-gradient(180deg,#24372c,#17251e)}
+.tw-barter-box{
+ display:flex;align-items:center;gap:10px;margin:0 0 10px;padding:10px;
+ border:1.5px dashed #d8b35f;border-radius:9px;
+ background:linear-gradient(180deg,#2d2919,#1c2119)
+}
+.tw-barter-box b{display:block;font-size:13px;color:#ffe799;margin-bottom:2px}
+.tw-barter-box small{display:block;font-size:11px;line-height:1.4;color:#d6decb}
+.tw-reg-card{display:flex;flex-direction:column;gap:0}
+.tw-reg-card .tw-row{border-radius:8px}
+.tw-reg-card:has(.tw-quest-bar) .tw-row{border-radius:8px 8px 0 0;border-bottom:0}
+.tw-quote{color:#ffe6a8!important;font-style:italic}
+.tw-quest-bar{
+ display:flex;align-items:center;justify-content:space-between;gap:8px;
+ padding:7px 10px;border:1.5px solid #597264;border-top:1px dashed #829e8d;
+ border-radius:0 0 8px 8px;background:#1f3026;font-size:11.5px;color:#e5f2e0
+}
+.tw-qbtn{
+ flex:none;padding:5px 9px;border:1.5px solid #f4cf72;border-radius:6px;
+ background:linear-gradient(180deg,#9b6e26,#6b4915);background-image:none;
+ color:#fff8dc;font-size:11.5px;font-weight:900;white-space:nowrap
+}
+.tw-qbtn:disabled{opacity:.5;border-color:#5b6d62;background:#1a261f;color:#9eb0a1}
+
