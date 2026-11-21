@@ -3776,9 +3776,9 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 .town-loot-batch-item b{font-size:11.5px;line-height:1.3;color:#fff0c4}
 
 .town-wing-spot{
- position:absolute;z-index:2;
+ position:absolute;z-index:3;
  display:flex;align-items:flex-end;justify-content:center;padding:4px;
- border:0;background:transparent;background-image:none;box-shadow:none;cursor:pointer
+ border:0;background:transparent;background-image:none;box-shadow:none;cursor:pointer;touch-action:manipulation
 }
 .town-wing-spot:focus-visible{outline:2px solid #ffe49c;border-radius:10px}
 .tw-plaque{
@@ -3796,7 +3796,7 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 }
 
 /* Wing Modal (#townWingP) */
-#townWingP{z-index:94;background:#080e0be4}
+#townWingP{position:fixed;inset:0;z-index:94;display:none;align-items:center;justify-content:center;padding:12px;background:#080e0be4;backdrop-filter:blur(3px)}
 #townWingP .hp{
  position:relative;max-width:460px;max-height:86dvh;overflow-y:auto;
  padding:18px 14px 18px;border:2px solid #cfa557;border-radius:11px;
