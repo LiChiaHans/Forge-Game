@@ -99,6 +99,7 @@
     "src/js/seasons/festivals.js",
     "src/js/seasons/badges-board.js",
     "src/js/seasons/contracts-events-fever.js",
+    "src/js/art/town-wing-art.js",
     "src/js/town/town-wings.js",
     "src/js/collections/medal-achievements.js",
     "src/js/admin/sandbox.js",

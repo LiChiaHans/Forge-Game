@@ -296,3 +296,83 @@
 }
 .tw-qbtn:disabled{opacity:.5;border-color:#5b6d62;background:#1a261f;color:#9eb0a1}
 
+/* Thematic Modal Scene Headers & Per-Building Color Atmospheres */
+.tw-scene-banner{
+ margin:-2px 0 10px;border:2px solid #cfa557;border-radius:9px;overflow:hidden;
+ height:86px;background:#131f1a;box-shadow:inset 0 0 0 1px #fff1c033,0 4px 12px #050a08aa
+}
+.tw-scene-banner svg{display:block;width:100%;height:100%}
+#townWingP[data-mode="fishing"] .hp{background:linear-gradient(180deg,#162f3b 0%,#10222b 65%,#0c1921 100%);border-color:#74bdd4}
+#townWingP[data-mode="excavate"] .hp{background:linear-gradient(180deg,#2d2720 0%,#1f1b16 65%,#161310 100%);border-color:#c9a66b}
+#townWingP[data-mode="museum"] .hp{background:linear-gradient(180deg,#2e231a 0%,#1e1712 65%,#15100d 100%);border-color:#e0b760}
+#townWingP[data-mode="caravan"] .hp{background:linear-gradient(180deg,#331f1e 0%,#221515 65%,#180f10 100%);border-color:#e5a957}
+#townWingP[data-mode="tavern"] .hp{background:linear-gradient(180deg,#302016 0%,#211610 65%,#170f0b 100%);border-color:#db9e53}
+#townWingP[data-mode="depot"] .hp{background:linear-gradient(180deg,#192b3b 0%,#12202c 65%,#0d1720 100%);border-color:#8cb8d6}
+
+/* Bespoke Pixel-Art Fish & Relic Frames */
+.px-art{display:block;width:44px;height:44px;image-rendering:pixelated;filter:drop-shadow(0 2px 3px #0008)}
+.px-art.is-locked{filter:brightness(0) opacity(.42)}
+.tw-px-frame{
+ width:54px;height:54px;display:flex;align-items:center;justify-content:center;margin-bottom:2px;
+ border:1.5px solid #597264;border-radius:8px;
+ background:radial-gradient(circle at 50% 35%,#294036,#131e19)
+}
+.tw-item.is-got .tw-px-frame{border-color:#e3be68;background:radial-gradient(circle at 50% 35%,#3b5241,#1a2a21);box-shadow:inset 0 0 8px #ffe49433}
+.tw-px-badge{
+ width:48px;height:48px;flex:none;display:flex;align-items:center;justify-content:center;
+ border:1.5px solid #cfa557;border-radius:8px;
+ background:radial-gradient(circle at 50% 35%,#384d3f,#18241d)
+}
+.tw-px-badge .px-art{width:40px;height:40px}
+.dig-px{width:38px;height:38px;display:flex;align-items:center;justify-content:center}
+.dig-px .px-art{width:36px;height:36px}
+
+/* Bait & Excavation Tool Selector */
+.tw-bait-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:6px;margin:0 0 10px}
+.tw-bait-btn{
+ display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 6px;
+ border:1.5px solid #556e62;border-radius:8px;background:#14211b;background-image:none;
+ color:#d7e3d3;text-align:center;cursor:pointer
+}
+.tw-bait-btn b{font-size:11.5px;color:#fff2cc}
+.tw-bait-btn small{font-size:10px;color:#a9bfae;line-height:1.25}
+.tw-bait-btn.is-on{border-color:#f4cf72;background:linear-gradient(180deg,#3d3018,#261d0f);box-shadow:inset 0 1px 0 #fff1b844}
+.tw-bait-btn:disabled{opacity:.45}
+
+/* Enhanced Fishing Zones & Magnetic Chest */
+.fish-zone-good.is-wide{left:23%;width:54%}
+.fish-zone-perfect.is-wide{left:38%;width:24%}
+.fish-zone-chest{
+ position:absolute;top:50%;transform:translate(-50%,-50%);
+ font-size:16px;line-height:1;padding:2px 4px;border-radius:6px;
+ background:#ffe16955;border:1px solid #fff099;pointer-events:none
+}
+
+/* Excavation Proximity Radar & Cross-Shovel */
+.dig-cell.is-cross{border-color:#e89b48;background:linear-gradient(180deg,#4d2e1b,#301c11)}
+.dig-radar{
+ display:inline-block;margin-top:2px;padding:1px 6px;border-radius:999px;
+ font-style:normal;font-size:9.5px;font-weight:900;
+ background:#3c5426;color:#e6ff9e;border:1px solid #8fd158
+}
+.dig-radar.is-clear{background:#222c28;color:#8fa399;border-color:#44544c}
+
+/* Tavern Regular Half-Body Illustrated Portrait & RPG Dialogue Bubble */
+.tw-row.is-dialogue{align-items:flex-start;gap:10px}
+.tw-portrait{
+ width:60px;height:68px;flex:none;border-radius:10px;
+ border:2px solid #dfba64;overflow:hidden;
+ background:radial-gradient(circle at 50% 25%,#4e3824,#1f1610);
+ box-shadow:inset 0 0 0 1px #fff1c033,0 3px 8px #050a07aa
+}
+.tw-portrait img{
+ width:100%;height:165%;object-fit:cover;object-position:50% 4%;
+ image-rendering:pixelated;display:block
+}
+.tw-speech{
+ margin:3px 0 4px;padding:5px 8px;border-radius:7px;
+ border:1px solid #8a6d43;background:#291d14dd;
+ font-size:11.5px;line-height:1.4;color:#ffedc2
+}
+
+

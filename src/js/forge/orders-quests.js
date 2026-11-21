@@ -98,9 +98,13 @@ function ensureQuests(){
 }
 const qEach=(t,fn)=>quests.forEach(q=>{if(q&&q.s==='a'&&q.t===t)fn(q)});
 function toast(h){
-  const el=document.createElement("div");el.className="toast";el.innerHTML=h;
+  const el=document.createElement("div");el.className="toast";el.setAttribute("role","status");el.title="點擊關閉訊息";
+  el.innerHTML='<span class="toast-body">'+h+'</span><span class="toast-x" aria-hidden="true">✕</span>';
+  let done=false,t1=0,t2=0;
+  const dismiss=()=>{if(done)return;done=true;clearTimeout(t1);clearTimeout(t2);el.classList.add("out");t2=setTimeout(()=>el.remove(),260);};
+  el.addEventListener("click",dismiss);
   $("toasts").appendChild(el);
-  gameTimeout(()=>{el.classList.add("out");gameTimeout(()=>el.remove(),420)},3400);
+  t1=setTimeout(dismiss,3600);
 }
 function qFinish(q){
   q.s='d';q.p=q.n;qDone++;
