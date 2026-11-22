@@ -329,8 +329,12 @@ function renderTownWing(){
   layer.innerHTML='<img class="town-wing-bg" src="'+bgUrl+'" alt="西側星露溪畔營地" decoding="async">'
    +tierBadge
    +'<div class="town-wing-fx is-west" aria-hidden="true">'
+   +'<span class="tw-sunbeam b1"></span><span class="tw-sunbeam b2"></span>'
    +'<div class="wf-waterfall"><span class="wf-stream s1"></span><span class="wf-stream s2"></span><span class="wf-stream s3"></span></div>'
    +'<div class="wf-plunge"><span class="wf-foam"></span><span class="wf-foam f2"></span><span class="wf-ripple"></span><span class="wf-ripple r2"></span><i class="wf-drop d1"></i><i class="wf-drop d2"></i><i class="wf-drop d3"></i><i class="wf-drop d4"></i><i class="wf-drop d5"></i></div>'
+   +'<div class="wf-campfire"><span class="cf-flame"></span><span class="cf-flame f2"></span><i class="cf-smoke s1"></i><i class="cf-smoke s2"></i></div>'
+   +'<div class="wf-leap-fish"><span class="lf-fish">🐟</span><span class="lf-ring"></span></div>'
+   +'<span class="tw-night-halo is-pier"></span><span class="tw-night-halo is-camp"></span>'
    +'</div>'
    +'<button type="button" class="town-wing-spot" style="left:44%;top:17%;width:48%;height:23%" onclick="openTownWingModal(\'excavate\')"><span class="tw-plaque">⛏ 古物遺跡營地<small>3×3 探勘 · 體力 '+westRem+'/'+westMax+'</small></span></button>'
    +'<button type="button" class="town-wing-spot" style="left:20%;top:43%;width:32%;height:16%" onclick="openTownWingModal(\'fishing\')"><span class="tw-plaque">🎣 星露釣魚棧橋<small>'+(night?'🌙 夜間限定魚群':'☀ 白天溪畔魚群')+'</small></span></button>'
@@ -340,9 +344,17 @@ function renderTownWing(){
   const theme=CARAVAN_THEMES[(day-1)%CARAVAN_THEMES.length];
   const tierBadge=eastLv>0?'<div class="tw-tier-banner">🛒 '+TOWN_LANDMARKS.east_post.tierNames[eastLv-1]+' '+'★'.repeat(eastLv)+'</div>':'';
   const postSprite=TOWN_WING_BUILDING_ART['east_post_'+eastLv]||TOWN_WING_BUILDING_ART.east_post_0;
+  const g1=visitors[0],g2=visitors[1];
+  const npc1=g1&&typeof TOWN_GUEST_ART!=='undefined'&&TOWN_GUEST_ART[g1.guestId]?'<button type="button" class="es-guest-npc is-n1" onclick="openTownWingModal(\'tavern\')" title="'+g1.name+'（今日在店）"><span class="npc-bubble">🍻</span><img src="'+TOWN_GUEST_ART[g1.guestId]+'" alt="'+g1.name+'" decoding="async"></button>':'';
+  const npc2=g2&&typeof TOWN_GUEST_ART!=='undefined'&&TOWN_GUEST_ART[g2.guestId]?'<button type="button" class="es-guest-npc is-n2" onclick="openTownWingModal(\'tavern\')" title="'+g2.name+'（今日在店）"><span class="npc-bubble">🎵</span><img src="'+TOWN_GUEST_ART[g2.guestId]+'" alt="'+g2.name+'" decoding="async"></button>':'';
   layer.innerHTML='<img class="town-wing-bg" src="'+bgUrl+'" alt="東側旅商大道" decoding="async">'
    +tierBadge
-   +'<div class="town-wing-fx is-east" aria-hidden="true"><span class="es-stream-glint g1"></span><span class="es-stream-glint g2"></span></div>'
+   +'<div class="town-wing-fx is-east" aria-hidden="true">'
+   +'<span class="tw-sunbeam b1"></span>'
+   +'<span class="es-stream-glint g1"></span><span class="es-stream-glint g2"></span>'
+   +'<span class="tw-night-halo is-tavern"></span><span class="tw-night-halo is-dock"></span>'
+   +'</div>'
+   +npc1+npc2
    +'<button type="button" class="town-wing-spot is-building" data-landmark-tier="'+eastLv+'" style="left:52%;top:13%;width:46%;height:29%" onclick="openTownWingModal(\'caravan\')"><img class="tw-building-sprite" src="'+postSprite+'" alt="皇家旅商驛站" decoding="async"><span class="tw-plaque">'+theme.icon+' '+theme.name+'<small>特賣＋以物易物 · Lv '+eastLv+'/3</small></span></button>'
    +'<button type="button" class="town-wing-spot" style="left:54%;top:43%;width:38%;height:20%" onclick="openTownWingModal(\'depot\')"><span class="tw-plaque">📦 跨城商隊碼頭<small>'+(shipReady?'✨ 商隊已返航！':w.shipment?'🚢 航行中':'投資賺翻倍')+'</small></span></button>'
    +'<button type="button" class="town-wing-spot" style="left:6%;top:61%;width:48%;height:27%" onclick="openTownWingModal(\'tavern\')"><span class="tw-plaque">🍺 旅人常客酒館<small>常客委託與好感度</small></span></button>'
@@ -835,7 +847,7 @@ function renderTownWingModal(){
   const tabs='<div class="tc-tabs"><button type="button" aria-pressed="'+(museumTab==='fish')+'" onclick="setMuseumTab(\'fish\')">🐟 魚類 ('+mus.fish.length+'/'+FISH_CATALOG.length+')</button><button type="button" aria-pressed="'+(museumTab==='relic')+'" onclick="setMuseumTab(\'relic\')">🏺 古物 ('+mus.relics.length+'/'+RELIC_CATALOG.length+(readyRelics?' 🧩':'')+')</button><button type="button" aria-pressed="'+(museumTab==='milestone')+'" onclick="setMuseumTab(\'milestone\')">🏆 加成總覽</button></div>';
   let content='';
   if(museumTab==='fish'){
-   content='<div class="tw-grid">'+FISH_CATALOG.map(f=>{const cnt=mus.fishCounts?.[f.id]||0,got=cnt>0||mus.fish.includes(f.id),st=fishStarLevel(cnt);return '<button type="button" class="tw-item is-click'+(got?' is-got':'')+'" onclick="openMuseumInspect(\'fish\',\''+f.id+'\')"><div class="tw-px-frame">'+pixelFishArt(f.id,!got)+'</div><b>'+(got?f.name:'？？？')+'</b><small>'+(got?'★'.repeat(st)+'☆'.repeat(3-st)+' · '+cnt+'隻':SEASONS[f.season].icon+(f.night?'🌙 夜':'☀ 日'))+'</small></button>';}).join('')+'</div>';
+   content='<div class="tw-grid">'+FISH_CATALOG.map(f=>{const cnt=mus.fishCounts?.[f.id]||0,got=cnt>0||mus.fish.includes(f.id),st=fishStarLevel(cnt);return '<button type="button" class="tw-item is-click'+(got?' is-got':'')+'" data-stars="'+st+'" onclick="openMuseumInspect(\'fish\',\''+f.id+'\')"><div class="tw-px-frame">'+pixelFishArt(f.id,!got)+'</div><b>'+(got?f.name:'？？？')+'</b><small>'+(got?'★'.repeat(st)+'☆'.repeat(3-st)+' · '+cnt+'隻':SEASONS[f.season].icon+(f.night?'🌙 夜':'☀ 日'))+'</small></button>';}).join('')+'</div>';
   }else if(museumTab==='relic'){
    content='<div class="tw-list">'+RELIC_CATALOG.map(r=>{const sh=Math.min(9,mus.relicShards?.[r.id]||0),done=mus.relics.includes(r.id),seen=done||sh>0,canPuz=!done&&sh>=9;return '<button type="button" class="tw-row is-click'+(done?' is-got-row':canPuz?' is-ready-row':'')+'" onclick="openMuseumInspect(\'relic\',\''+r.id+'\')"><div class="tw-px-badge">'+pixelRelicArt(r.id,!seen)+'</div><div class="tw-info"><b>'+(seen?r.name:'未出土古物')+' <small class="tw-role">'+(done?'✓ 已修復':canPuz?'🧩 可拼圖！':'碎片 '+sh+'/9')+'</small></b><small>'+(done?'⚒ '+(r.perk||'冶煉售價 +2.5%'):canPuz?'✨ 9 片碎片已集齊！點擊立即進入 3×3 拼圖修復':seen?r.desc:'在西側古物遺跡營地探勘收集 9 片碎片。')+'</small></div></button>';}).join('')+'</div>';
   }else{

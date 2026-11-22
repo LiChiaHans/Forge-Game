@@ -4193,6 +4193,110 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
  box-shadow:0 0 12px #ffe575bb
 }
 
+/* Sunbeams, Night Halos, Campfire, Leaping Fish & East Regular Town NPCs */
+.tw-sunbeam{
+ position:absolute;top:-8%;left:18%;width:22%;height:68%;
+ background:linear-gradient(180deg,#fff6c830 0%,#ffe99918 55%,transparent 100%);
+ transform:rotate(-24deg);pointer-events:none;mix-blend-mode:screen;
+ animation:twSunbeamPulse 5.5s ease-in-out infinite
+}
+.tw-sunbeam.b2{left:54%;width:18%;height:56%;animation-delay:-2.7s}
+.town-wing-layer[data-time="night"] .tw-sunbeam{display:none}
+@keyframes twSunbeamPulse{0%,100%{opacity:.45}50%{opacity:.9}}
+
+.tw-night-halo{
+ display:none;position:absolute;border-radius:50%;pointer-events:none;
+ background:radial-gradient(circle,#ffcf6e66 0%,#ff9e3628 52%,transparent 75%);
+ mix-blend-mode:screen;animation:wfSplashPulse 2.8s ease-in-out infinite
+}
+.town-wing-layer[data-time="night"] .tw-night-halo{display:block}
+.tw-night-halo.is-pier{left:34%;top:37%;width:22%;height:14%}
+.tw-night-halo.is-camp{left:63%;top:26%;width:24%;height:15%;animation-delay:-1.2s}
+.tw-night-halo.is-tavern{left:12%;top:66%;width:34%;height:22%}
+.tw-night-halo.is-dock{left:58%;top:44%;width:24%;height:16%;animation-delay:-1.4s}
+
+.wf-campfire{position:absolute;left:71.2%;top:30.4%;width:6%;height:4.5%;pointer-events:none}
+.wf-campfire .cf-flame{
+ position:absolute;left:30%;bottom:8%;width:40%;height:55%;
+ border-radius:50% 50% 35% 35%;
+ background:radial-gradient(circle at 50% 70%,#fff5a8,#ff922b 60%,transparent 80%);
+ mix-blend-mode:screen;animation:cfFlicker .65s ease-in-out infinite alternate
+}
+.wf-campfire .cf-flame.f2{left:36%;width:30%;height:45%;animation-duration:.48s}
+@keyframes cfFlicker{from{transform:scale(.88) rotate(-4deg);opacity:.8}to{transform:scale(1.12) rotate(4deg);opacity:1}}
+.wf-campfire .cf-smoke{
+ position:absolute;left:42%;bottom:55%;width:7px;height:7px;border-radius:50%;
+ background:#e6ece855;animation:cfSmokeUp 2.6s ease-out infinite
+}
+.wf-campfire .cf-smoke.s2{animation-delay:-1.3s;left:48%}
+@keyframes cfSmokeUp{0%{transform:translate(0,0) scale(.6);opacity:.65}100%{transform:translate(-6px,-24px) scale(1.7);opacity:0}}
+
+.wf-leap-fish{position:absolute;left:22%;top:64%;width:14%;height:8%;pointer-events:none}
+.wf-leap-fish .lf-fish{
+ position:absolute;left:35%;top:30%;font-size:13px;opacity:0;
+ filter:drop-shadow(0 2px 2px #0008);
+ animation:lfJumpArc 6.5s ease-in-out infinite
+}
+.wf-leap-fish .lf-ring{
+ position:absolute;left:48%;top:58%;width:24px;height:11px;
+ border:1.5px solid #d6ffffaa;border-radius:50%;
+ transform:translate(-50%,-50%) scale(.2);opacity:0;
+ animation:lfSplashRing 6.5s ease-out infinite
+}
+@keyframes lfJumpArc{
+ 0%,74%,100%{opacity:0;transform:translate(0,6px) rotate(25deg) scale(.6)}
+ 80%{opacity:1;transform:translate(-7px,-12px) rotate(-18deg) scale(1)}
+ 86%{opacity:.95;transform:translate(-14px,2px) rotate(-55deg) scale(.85)}
+ 90%{opacity:0;transform:translate(-16px,8px) scale(.5)}
+}
+@keyframes lfSplashRing{
+ 0%,84%{opacity:0;transform:translate(-50%,-50%) scale(.25)}
+ 87%{opacity:.9;transform:translate(-50%,-50%) scale(.5)}
+ 98%,100%{opacity:0;transform:translate(-50%,-50%) scale(1.4)}
+}
+
+.es-guest-npc{
+ position:absolute;z-index:4;width:44px;height:62px;padding:0;
+ border:0;background:transparent;background-image:none;box-shadow:none;
+ cursor:pointer;animation:npcIdleBob 2.6s ease-in-out infinite
+}
+.es-guest-npc.is-n1{left:41%;top:72%}
+.es-guest-npc.is-n2{left:43%;top:36%;animation-delay:-1.3s}
+.es-guest-npc img{
+ width:100%;height:100%;object-fit:contain;image-rendering:pixelated;
+ filter:drop-shadow(0 3px 4px #060908cc)
+}
+.town-wing-layer[data-time="night"] .es-guest-npc img{filter:brightness(.78) drop-shadow(0 3px 4px #030506dd)}
+.es-guest-npc .npc-bubble{
+ position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+ padding:1px 5px;border-radius:999px;font-size:10px;
+ background:#fff8e4ee;border:1.5px solid #cba04a;box-shadow:0 2px 5px #0008
+}
+@keyframes npcIdleBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+/* Fish 1-3 Star Evolving Frames & Relic Museum Spotlight */
+.tw-item[data-stars="1"]{border-color:#cd8c52!important}
+.tw-item[data-stars="1"] .tw-px-frame{border-color:#d69458;box-shadow:inset 0 0 10px #d6945833}
+.tw-item[data-stars="2"]{border-color:#9ad0e8!important;background:linear-gradient(180deg,#203842,#15242b)!important}
+.tw-item[data-stars="2"] .tw-px-frame{border-color:#b8e6ff;box-shadow:inset 0 0 12px #8ce0ff44,0 0 8px #7cd4ff33}
+.tw-item[data-stars="3"]{
+ border-color:#ffe074!important;
+ background:linear-gradient(180deg,#3d3116,#211b0d)!important;
+ box-shadow:0 0 12px #ffd55644,inset 0 0 10px #ffe58822
+}
+.tw-item[data-stars="3"] .tw-px-frame{
+ border-color:#ffea94;
+ box-shadow:inset 0 0 14px #ffe47a66,0 0 10px #ffd24d55
+}
+.tw-row.is-got-row,.mi-showcase{
+ position:relative;overflow:hidden
+}
+.tw-row.is-got-row::before,.mi-showcase::before{
+ content:'';position:absolute;top:-20%;left:15%;width:70%;height:120%;
+ background:radial-gradient(ellipse at 50% 0%,#fff2b824 0%,transparent 70%);
+ pointer-events:none
+}
+
 
 
 /* ==========================================================================
@@ -4305,4 +4409,21 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 }
 @media(prefers-reduced-motion:reduce){
  #grid.is-fever,#kitchenGrid.is-fever,#handSlot:not(:empty),#kitchenHand:not(:empty){animation:none!important}
+}
+
+/* 6. Tactile Domain UI Framing (Forge Iron, Kitchen Walnut, Museum Velvet, Chronicle Seal) */
+#app[data-workshop="forge"] #workbench{
+ box-shadow:inset 0 0 22px #ff6e2618,0 6px 18px #05080bcc
+}
+#kitchenP main #kitchenGrid{
+ box-shadow:inset 0 0 20px #ffcf6e18,0 6px 18px #120b06bb
+}
+#weaponAlbumP .hp,#museumInspectP .hp,#townWingP[data-mode="museum"] .hp{
+ border-color:#e5bd62!important;
+ background:radial-gradient(ellipse at 50% 0%,#472b28 0%,#241816 48%,#140f0e 100%)!important;
+ box-shadow:inset 0 0 0 4px #181110,inset 0 0 0 5px #e5bd6240,0 24px 52px #030504ee!important
+}
+#townContractP .hp,#runModeP .hp{
+ border-color:#dfB45b!important;
+ background:linear-gradient(180deg,#2b251c 0%,#1d1913 62%,#14110d 100%)!important
 }

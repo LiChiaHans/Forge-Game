@@ -23,13 +23,22 @@ async function decodeSeasonMusic(id,a){
  if(seasonMusic.cached?.id===id)return seasonMusic.cached.buffer;
  const response=await fetch(SEASON_MUSIC_DATA[id]);
  const buffer=await a.decodeAudioData(await response.arrayBuffer());
- const fade=Math.min(2,buffer.duration/4)*buffer.sampleRate;
+ // Detect leading silence so Home BGM starts immediately on the first audible note.
+ let startSample=0;
+ if(buffer.numberOfChannels>0){
+  const ch0=buffer.getChannelData(0),limit=Math.min(ch0.length,Math.floor(buffer.sampleRate*8));
+  for(let i=0;i<limit;i++){if(Math.abs(ch0[i])>0.014){startSample=Math.max(0,i-Math.floor(buffer.sampleRate*0.03));break;}}
+ }
+ buffer.trimStart=startSample/buffer.sampleRate;
+ const fadeSec=id==='home'?0.18:Math.min(2,buffer.duration/4);
+ const fade=Math.max(1,fadeSec*buffer.sampleRate);
  let peak=0;
  // Bake both fades into the loop so they still work in background tabs.
  for(let channel=0;channel<buffer.numberOfChannels;channel++){
   const pcm=buffer.getChannelData(channel);
   for(let i=0;i<pcm.length;i++){
-   pcm[i]*=Math.min(1,i/fade,(pcm.length-1-i)/fade);
+   const rel=Math.max(0,i-startSample);
+   pcm[i]*=Math.min(1,rel/fade,(pcm.length-1-i)/fade);
    peak=Math.max(peak,Math.abs(pcm[i]));
   }
  }
@@ -52,11 +61,13 @@ function syncSeasonMusic(){
   if(version!==seasonMusic.version||seasonMusic.wanted!==id)return;
   seasonMusic.cached={id,buffer};
   const source=a.createBufferSource(),gain=a.createGain();
-  source.buffer=buffer;source.loop=true;gain.gain.value=0;
+  const offset=buffer.trimStart||0;
+  source.buffer=buffer;source.loop=true;if(offset>0)source.loopStart=offset;
+  gain.gain.value=0;
   source.connect(gain);gain.connect(seasonMusic.master);
   source.onended=()=>{source.disconnect();gain.disconnect();};
   retireSeasonMusic();
-  seasonMusic.voice={id,source,gain};source.start();seasonMusicRamp(gain.gain,1,1.2);
+  seasonMusic.voice={id,source,gain};source.start(0,offset);seasonMusicRamp(gain.gain,1,id==='home'?.15:1.2);
  }).catch(error=>{
   if(version===seasonMusic.version){seasonMusic.failed=id;retireSeasonMusic();console.warn('Season music could not load; will retry on the next interaction.',error);}
  }).finally(()=>{
