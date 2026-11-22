@@ -5,7 +5,7 @@
    - Navigation: Road Arrow Buttons, Zone Pill Bar, & Left/Right Swipe Gesture
    ========================================================================== */
 
-const TOWN_WING_ART={"west_0":"assets/town/west_0.075bfce16a90.jpg","west_1":"assets/town/west_1.9a1a559287f5.jpg","west_2":"assets/town/west_2.5737562b5fbc.jpg","west_3":"assets/town/west_3.aca7e972dba1.jpg","west_4":"assets/town/west_4.4c9fe378e9ad.jpg","west_5":"assets/town/west_5.55aa5f24657e.jpg","west_6":"assets/town/west_6.9d19bc03098f.jpg","west_7":"assets/town/west_7.9cacfe34a3b0.jpg","east_0":"assets/town/east_0.e27993b84a77.jpg","east_1":"assets/town/east_1.7906df80513d.jpg","east_2":"assets/town/east_2.b413bea356e2.jpg","east_3":"assets/town/east_3.4749600e226b.jpg","east_4":"assets/town/east_4.0c8174967348.jpg","east_5":"assets/town/east_5.a138ddcf97b7.jpg","east_6":"assets/town/east_6.165839312d72.jpg","east_7":"assets/town/east_7.b98f591da017.jpg"};
+const TOWN_WING_ART={"west_0":"assets/town/west_0.075bfce16a90.jpg","west_1":"assets/town/west_1.1c8f95637f92.jpg","west_2":"assets/town/west_2.4a5fb6e7865b.jpg","west_3":"assets/town/west_3.93da5c032c08.jpg","west_4":"assets/town/west_4.54f87444e33c.jpg","west_5":"assets/town/west_5.f3e9b1a74662.jpg","west_6":"assets/town/west_6.c392d1d03827.jpg","west_7":"assets/town/west_7.715f992360a1.jpg","east_0":"assets/town/east_0.e27993b84a77.jpg","east_1":"assets/town/east_1.7906df80513d.jpg","east_2":"assets/town/east_2.b413bea356e2.jpg","east_3":"assets/town/east_3.4749600e226b.jpg","east_4":"assets/town/east_4.0c8174967348.jpg","east_5":"assets/town/east_5.a138ddcf97b7.jpg","east_6":"assets/town/east_6.165839312d72.jpg","east_7":"assets/town/east_7.b98f591da017.jpg"};
 const TOWN_WING_BUILDING_ART={"west_camp_0":"assets/town/b_west_camp_0.93e31d1901f4.png","west_camp_1":"assets/town/b_west_camp_1.9f7b527e352d.png","west_camp_2":"assets/town/b_west_camp_2.02e8ef46a09f.png","west_camp_3":"assets/town/b_west_camp_3.e38aeb0b5887.png","east_post_0":"assets/town/b_east_post_0.8a9c177f8bd9.png","east_post_1":"assets/town/b_east_post_1.1d5c57224a39.png","east_post_2":"assets/town/b_east_post_2.af9a8a321b7f.png","east_post_3":"assets/town/b_east_post_3.e08c6f982c45.png"};
 
 const FISH_CATALOG=[
@@ -547,10 +547,15 @@ function renderTownWingModal(){
   const baitBar='<div class="tw-bait-row">'+FISH_BAITS.map(b=>'<button type="button" class="tw-bait-btn'+(fishBait===b.id?' is-on':'')+'" onclick="setFishBait(\''+b.id+'\')" '+(fishGame.active?'disabled':'')+'><b>'+b.icon+' '+b.name+(b.cost?' 💰'+b.cost:'')+'</b><small>'+b.desc+'</small></button>').join('')+'</div>';
   const banner=lastFishBanner?'<div class="tw-catch-banner"><div class="tw-px-badge">'+pixelFishArt(lastFishBanner.id)+'</div><div><b>'+lastFishBanner.qTag+' '+lastFishBanner.name+' ('+lastFishBanner.cm+'cm) '+'★'.repeat(lastFishBanner.rarity+1)+'</b><small>獲得 💰'+lastFishBanner.reward+(lastFishBanner.isNew?' · ✨ 博物館新登錄！':lastFishBanner.isRecord?' · 👑 刷新最長紀錄！':'')+(lastFishBanner.extra?' · '+lastFishBanner.extra:'')+'</small></div></div>':'';
   const perfCls=fishBait==='star'?' is-wide':'';
-  const chestEl=fishBait==='magnet'?'<span class="fish-zone-chest" style="left:'+fishGame.chestPos+'%">🎁</span>':'';
-  const miniGame=fishGame.active
-   ?'<div class="fish-meter-box"><p class="fish-hint">趁浮標滑進 <b>金色中心</b> 起竿觸發「🌟 完美起竿」（×1.4 金幣＋連釣加成）'+(fishBait==='magnet'?'，或瞄準 <b>🎁 漂流寶箱</b> 撈取額外大獎！':'！')+'</p><div class="fish-track"><span class="fish-zone-good'+perfCls+'"></span><span class="fish-zone-perfect'+perfCls+'"></span>'+chestEl+'<span class="fish-bobber" style="left:'+fishGame.pos+'%">🎣</span></div><button type="button" class="tw-big-btn is-gold" onclick="pullFishingLine()">⚡ 立即拉竿起魚！</button></div>'
-   :'<div class="tw-btn-row"><button type="button" class="tw-big-btn" onclick="startFishingCast()" '+(!sandboxSession&&westRem<=0?'disabled':'')+'>🎣 精準拋竿（小遊戲）</button><button type="button" class="tw-big-btn is-gold" onclick="doWestFish(\'normal\')" '+(!sandboxSession&&westRem<=0?'disabled':'')+'>⚡ 快速拋竿（-1 體力）</button></div>';
+  const chestEl=fishBait==='magnet'?'<span class="fish-zone-chest" style="left:'+(fishGame.active?fishGame.chestPos:74)+'%">🎁</span>':'';
+  const bobLeft=fishGame.active?fishGame.pos:50;
+  const meterHint=fishGame.active
+   ?'趁浮標滑進 <b>金色中心</b> 起竿觸發「🌟 完美起竿」（×1.4 金幣＋連釣加成）'+(fishBait==='magnet'?'，或瞄準 <b>🎁 漂流寶箱</b>！':'！')
+   :'點擊下方「🎣 精準拋竿」啟動浮標軌道，瞄準 <b>金色中心</b> 起竿拿高倍率獎勵！';
+  const meterBtns=fishGame.active
+   ?'<button type="button" class="tw-big-btn is-gold" onclick="pullFishingLine()">⚡ 立即拉竿起魚！</button>'
+   :'<div class="tw-btn-row"><button type="button" class="tw-big-btn" onclick="startFishingCast()" '+(!sandboxSession&&westRem<=0?'disabled':'')+'>🎣 精準拋竿（開始）</button><button type="button" class="tw-big-btn is-gold" onclick="doWestFish(\'normal\')" '+(!sandboxSession&&westRem<=0?'disabled':'')+'>⚡ 快速拋竿（-1 體力）</button></div>';
+  const miniGame='<div class="fish-meter-box'+(fishGame.active?' is-live':' is-idle')+'"><p class="fish-hint">'+meterHint+'</p><div class="fish-track"><span class="fish-zone-good'+perfCls+'"></span><span class="fish-zone-perfect'+perfCls+'"></span>'+chestEl+'<span class="fish-bobber" style="left:'+bobLeft+'%">🎣</span></div>'+meterBtns+'</div>';
   body.innerHTML=sceneHdr
    +'<p class="tc-intro">今日體力 <b>'+westRem+' / '+westMax+'</b> · '+SEASONS[si].icon+' '+SEASONS[si].name+(night?' 🌙夜晚':' ☀白天')+' · 💰'+(sandboxSession?'∞':coins)+streakBadge+'</p>'
    +baitBar+banner+miniGame

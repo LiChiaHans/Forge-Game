@@ -2153,46 +2153,6 @@
         "sha256":  "1f4b69c4ffe910f9f45fb402a600134b523fcff8f5fb8780720f8f26433ed386"
     },
     {
-        "url":  "assets/town/west_0.075bfce16a90.jpg",
-        "bytes":  185476,
-        "sha256":  "075bfce16a90d7e8c493e6ee6c611f436d438767fb3adfcaf29625294e1c1419"
-    },
-    {
-        "url":  "assets/town/west_1.9a1a559287f5.jpg",
-        "bytes":  191095,
-        "sha256":  "9a1a559287f5b0fb4af85481f06625cda7063e8bc5bae235757dec6b4f608e8e"
-    },
-    {
-        "url":  "assets/town/west_2.5737562b5fbc.jpg",
-        "bytes":  186833,
-        "sha256":  "5737562b5fbc752d29f91bdf2c99ea41891ffbcc309f1cf99d4194d648d808a6"
-    },
-    {
-        "url":  "assets/town/west_3.aca7e972dba1.jpg",
-        "bytes":  207604,
-        "sha256":  "aca7e972dba12889c070b9bf9c33fc595b2ae58ff977ae2c1464fe3de9a8bd38"
-    },
-    {
-        "url":  "assets/town/west_4.4c9fe378e9ad.jpg",
-        "bytes":  150433,
-        "sha256":  "4c9fe378e9ad2663a6f59b790eff3700dadc0c9df624573dfea9696c880bc1f7"
-    },
-    {
-        "url":  "assets/town/west_5.55aa5f24657e.jpg",
-        "bytes":  152988,
-        "sha256":  "55aa5f24657e38e70947ed6783b2e2cbc5b139856e4df411f4d09a158823dd49"
-    },
-    {
-        "url":  "assets/town/west_6.9d19bc03098f.jpg",
-        "bytes":  215293,
-        "sha256":  "9d19bc03098fb5f231310b73230ca7759fab56aabd5a396ba8a57f23f04ce431"
-    },
-    {
-        "url":  "assets/town/west_7.9cacfe34a3b0.jpg",
-        "bytes":  166268,
-        "sha256":  "9cacfe34a3b05d50c3019c2a7fe7e4c2c519013cbf10ef10a4ba7d5dea25fd12"
-    },
-    {
         "url":  "assets/town/east_0.e27993b84a77.jpg",
         "bytes":  189993,
         "sha256":  "e27993b84a777ab469124f375af57477c65e45c6cca57f4e6f5f0e68bc88ff31"
@@ -2271,5 +2231,45 @@
         "url":  "assets/town/b_east_post_3.e08c6f982c45.png",
         "bytes":  212559,
         "sha256":  "e08c6f982c45ccc07301dc643c30dcddb8c0411c90eeec19043385146ba9685a"
+    },
+    {
+        "url":  "assets/town/west_0.075bfce16a90.jpg",
+        "bytes":  185476,
+        "sha256":  "075bfce16a90d7e8c493e6ee6c611f436d438767fb3adfcaf29625294e1c1419"
+    },
+    {
+        "url":  "assets/town/west_1.1c8f95637f92.jpg",
+        "bytes":  190685,
+        "sha256":  "1c8f95637f92847c9beb80ad7c919186056cbf4f153749609f7d24bfde22aca4"
+    },
+    {
+        "url":  "assets/town/west_2.4a5fb6e7865b.jpg",
+        "bytes":  186089,
+        "sha256":  "4a5fb6e7865b10410c3af091ce1eec4c322e463498559abd2b1095fa3e4eebe2"
+    },
+    {
+        "url":  "assets/town/west_3.93da5c032c08.jpg",
+        "bytes":  206652,
+        "sha256":  "93da5c032c08b586d7aa9304270e36a1acc0d0dae5d1836ff2c195896136a165"
+    },
+    {
+        "url":  "assets/town/west_4.54f87444e33c.jpg",
+        "bytes":  150247,
+        "sha256":  "54f87444e33c9da8f9308d43acbd9300dbe9ca31a23010f345d51d66f7a8add7"
+    },
+    {
+        "url":  "assets/town/west_5.f3e9b1a74662.jpg",
+        "bytes":  152834,
+        "sha256":  "f3e9b1a74662ba3e666726ba1687ac739baf75010337d6c34bf6f66fa40aaf00"
+    },
+    {
+        "url":  "assets/town/west_6.c392d1d03827.jpg",
+        "bytes":  207879,
+        "sha256":  "c392d1d0382773582dd1c18179a46acf1e319c61f6f11695e677702b5d51b848"
+    },
+    {
+        "url":  "assets/town/west_7.715f992360a1.jpg",
+        "bytes":  165274,
+        "sha256":  "715f992360a132333fc1cb656b5ec633c5859df621c1cada8307ede6671ca542"
     }
 ]

@@ -842,10 +842,11 @@ medalSummary	src/js/collections/medal-achievements.js	88
 inspectMedal	src/js/collections/medal-achievements.js	89
 medalArt	src/js/collections/medal-achievements.js	109
 askPwd	src/js/admin/sandbox.js	5
-enterSandboxSession	src/js/admin/sandbox.js	17
-openAdmin	src/js/admin/sandbox.js	23
-nextSandboxDay	src/js/admin/sandbox.js	30
-finishSandbox	src/js/admin/sandbox.js	33
+restartSandboxFromScratch	src/js/admin/sandbox.js	17
+enterSandboxSession	src/js/admin/sandbox.js	33
+openAdmin	src/js/admin/sandbox.js	39
+nextSandboxDay	src/js/admin/sandbox.js	49
+finishSandbox	src/js/admin/sandbox.js	52
 showHelp	src/js/ui/modals-layout.js	3
 dismissModal	src/js/ui/modals-layout.js	5
 syncTownMotion	src/js/ui/modals-layout.js	21
