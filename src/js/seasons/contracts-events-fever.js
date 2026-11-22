@@ -135,9 +135,9 @@ function freshTownLandmarks(){
 
 function freshTownWings(){
  return {
-  westDay:0,westUsed:0,westExtra:0,westFished:0,
+  westDay:0,westUsed:0,westExtra:0,westFished:0,fishStreak:0,crossUsed:false,fishSupplyDay:0,
   digBoard:null,
-  eastDay:0,eastBought:[],barterDone:false,
+  eastDay:0,eastBought:[],barterDone:false,haggleDone:false,haggleDisc:0,
   shipment:null,
   regularDay:0,regularGifted:[],regularQuestDone:[],
   regulars:{}
@@ -196,11 +196,11 @@ function cleanWorkshopMomentum(raw){
    base.wings.digBoard=w.digBoard.map(cell=>cell&&typeof cell==='object'?{t:String(cell.t||'gold'),open:!!cell.open,v:cell.v||null}:null);
   }
   base.wings.eastDay=Math.max(0,Math.floor(Number(w.eastDay)||0));
-  base.wings.eastBought=Array.isArray(w.eastBought)?w.eastBought.filter(x=>typeof x==='string').slice(0,10):[];
-  base.wings.barterDone=!!w.barterDone;
+  base.wings.eastBought=Array.isArray(w.eastBought)?w.eastBought.filter(x=>typeof x==='string').slice(0,20):[];
+  base.wings.barterDone=!!w.barterDone;base.wings.haggleDone=!!w.haggleDone;base.wings.haggleDisc=Math.max(0,Math.min(.25,Number(w.haggleDisc)||0));base.wings.fishStreak=Math.max(0,Math.min(5,Math.floor(Number(w.fishStreak)||0)));base.wings.crossUsed=!!w.crossUsed;base.wings.fishSupplyDay=Math.max(0,Math.floor(Number(w.fishSupplyDay)||0));
   base.wings.regularDay=Math.max(0,Math.floor(Number(w.regularDay)||0));
-  base.wings.regularGifted=Array.isArray(w.regularGifted)?w.regularGifted.filter(x=>typeof x==='string').slice(0,10):[];
-  base.wings.regularQuestDone=Array.isArray(w.regularQuestDone)?w.regularQuestDone.filter(x=>typeof x==='string').slice(0,10):[];
+  base.wings.regularGifted=Array.isArray(w.regularGifted)?w.regularGifted.filter(x=>typeof x==='string').slice(0,20):[];
+  base.wings.regularQuestDone=Array.isArray(w.regularQuestDone)?w.regularQuestDone.filter(x=>typeof x==='string').slice(0,20):[];
   if(w.shipment&&typeof w.shipment==='object'&&Number(w.shipment.returnDay)>0){
    base.wings.shipment={id:String(w.shipment.id||'local'),cost:Math.max(0,Math.floor(Number(w.shipment.cost)||0)),returnDay:Math.floor(Number(w.shipment.returnDay))};
   }

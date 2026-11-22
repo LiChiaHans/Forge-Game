@@ -5,7 +5,7 @@
    - Navigation: Road Arrow Buttons, Zone Pill Bar, & Left/Right Swipe Gesture
    ========================================================================== */
 
-const TOWN_WING_ART={"west_0":"assets/town/west_0.6f9eac1c4e4d.jpg","west_1":"assets/town/west_1.2c0947918dd2.jpg","west_2":"assets/town/west_2.2ec3985460f6.jpg","west_3":"assets/town/west_3.4d6cf3838b3b.jpg","west_4":"assets/town/west_4.88e169d3f364.jpg","west_5":"assets/town/west_5.93eb26370aef.jpg","west_6":"assets/town/west_6.464da19f180b.jpg","west_7":"assets/town/west_7.af4b194bda7c.jpg","east_0":"assets/town/east_0.748b753a35a3.jpg","east_1":"assets/town/east_1.06f6aa42e5bd.jpg","east_2":"assets/town/east_2.594d6fc689d3.jpg","east_3":"assets/town/east_3.0f6ccb44b495.jpg","east_4":"assets/town/east_4.1d18c341491c.jpg","east_5":"assets/town/east_5.30c3369996aa.jpg","east_6":"assets/town/east_6.c352ac1ecfb2.jpg","east_7":"assets/town/east_7.7c9c34d691c6.jpg"};
+const TOWN_WING_ART={"west_0":"assets/town/west_0.6f9eac1c4e4d.jpg","west_1":"assets/town/west_1.2c0947918dd2.jpg","west_2":"assets/town/west_2.2ec3985460f6.jpg","west_3":"assets/town/west_3.4d6cf3838b3b.jpg","west_4":"assets/town/west_4.88e169d3f364.jpg","west_5":"assets/town/west_5.93eb26370aef.jpg","west_6":"assets/town/west_6.464da19f180b.jpg","west_7":"assets/town/west_7.af4b194bda7c.jpg","east_0":"assets/town/east_0.167e745b31b4.jpg","east_1":"assets/town/east_1.f848635b141a.jpg","east_2":"assets/town/east_2.64182c9f772f.jpg","east_3":"assets/town/east_3.a6aa1f34cd31.jpg","east_4":"assets/town/east_4.e84064eb1c90.jpg","east_5":"assets/town/east_5.3f78631bdc15.jpg","east_6":"assets/town/east_6.7a00c7d4daed.jpg","east_7":"assets/town/east_7.392a6d2b01cc.jpg"};
 const TOWN_WING_BUILDING_ART={"west_camp_0":"assets/town/b_west_camp_0.93e31d1901f4.png","west_camp_1":"assets/town/b_west_camp_1.9f7b527e352d.png","west_camp_2":"assets/town/b_west_camp_2.02e8ef46a09f.png","west_camp_3":"assets/town/b_west_camp_3.e38aeb0b5887.png","east_post_0":"assets/town/b_east_post_0.5bac6a60278b.png","east_post_1":"assets/town/b_east_post_1.e1db9a2a4ae3.png","east_post_2":"assets/town/b_east_post_2.f14815eed865.png","east_post_3":"assets/town/b_east_post_3.6cdddcb27135.png"};
 
 const FISH_CATALOG=[
@@ -28,18 +28,18 @@ const FISH_CATALOG=[
 ];
 
 const RELIC_CATALOG=[
- {id:'old_tongs',icon:'🔧',name:'古代鍛造火鉗',rarity:0,gold:65,desc:'遠古鐵匠留下的青銅火鉗。'},
- {id:'clay_pot',icon:'🏺',name:'彩紋陶罐碎片',rarity:0,gold:70,desc:'繪有四季稻穗的古老陶片。'},
- {id:'bronze_coin',icon:'🪙',name:'星盾古銀幣',rarity:0,gold:80,desc:'建鎮初期流通的銀質紀念幣。'},
- {id:'ember_fossil',icon:'🪨',name:'熔火琥珀化石',rarity:0,gold:85,desc:'封存著微弱地脈火花的礦石。'},
- {id:'spice_mortar',icon:'🥣',name:'御廚石臼',rarity:1,gold:130,desc:'散發著百年香料氣息的研磨臼。'},
- {id:'rune_tablet',icon:'📜',name:'失落符文石板',rarity:1,gold:145,desc:'刻著遠古鍛造口訣的石碑殘頁。'},
- {id:'star_compass',icon:'🧭',name:'星辰航海羅盤',rarity:1,gold:155,desc:'指針永遠指向星輝噴泉的奇物。'},
- {id:'crystal_lens',icon:'🔮',name:'觀星水晶鏡片',rarity:1,gold:165,desc:'能映出四季星象的打磨水晶。'},
- {id:'dwarf_hammer',icon:'🔨',name:'矮人秘銀聖錘',rarity:2,gold:250,desc:'傳說中打造神兵的矮人王族鍛錘。'},
- {id:'royal_cookbook',icon:'📖',name:'失落皇家食譜',rarity:2,gold:260,desc:'記載夢幻料理秘訣的金裝古籍。'},
- {id:'dragon_scale',icon:'🐲',name:'赤龍淬火鱗片',rarity:2,gold:280,desc:'觸感溫熱、永不熄滅的龍鱗古物。'},
- {id:'crown_seal',icon:'👑',name:'星露古王印璽',rarity:2,gold:320,desc:'象徵城鎮黃金年代的傳奇王印。'}
+ {id:'old_tongs',icon:'🔧',name:'古代鍛造火鉗',rarity:0,gold:65,desc:'遠古鐵匠留下的青銅火鉗。',perk:'冶煉售價 +2% · 釣魚與挖掘金幣 +4%',fx:{forge:.02,westGold:.04}},
+ {id:'clay_pot',icon:'🏺',name:'彩紋陶罐碎片',rarity:0,gold:70,desc:'繪有四季稻穗的古老陶片。',perk:'冶煉售價 +2% · 餐廳售價額外 +2%',fx:{forge:.02,kitchen:.02}},
+ {id:'bronze_coin',icon:'🪙',name:'星盾古銀幣',rarity:0,gold:80,desc:'建鎮初期流通的銀質紀念幣。',perk:'冶煉售價 +2% · 東側跨城商隊收益 +6%',fx:{forge:.02,trade:.06}},
+ {id:'ember_fossil',icon:'🪨',name:'熔火琥珀化石',rarity:0,gold:85,desc:'封存著微弱地脈火花的礦石。',perk:'冶煉售價 +2% · 遠征攻擊 +3%',fx:{forge:.02,atk:.03}},
+ {id:'spice_mortar',icon:'🥣',name:'御廚石臼',rarity:1,gold:130,desc:'散發著百年香料氣息的研磨臼。',perk:'冶煉售價 +2% · 餐廳售價額外 +3%',fx:{forge:.02,kitchen:.03}},
+ {id:'rune_tablet',icon:'📜',name:'失落符文石板',rarity:1,gold:145,desc:'刻著遠古鍛造口訣的石碑殘頁。',perk:'冶煉售價 +3.5%（遠古符文共鳴）',fx:{forge:.035}},
+ {id:'star_compass',icon:'🧭',name:'星辰航海羅盤',rarity:1,gold:155,desc:'指針永遠指向星輝噴泉的奇物。',perk:'冶煉售價 +2% · 東側跨城商隊收益 +8%',fx:{forge:.02,trade:.08}},
+ {id:'crystal_lens',icon:'🔮',name:'觀星水晶鏡片',rarity:1,gold:165,desc:'能映出四季星象的打磨水晶。',perk:'冶煉售價 +2% · 西側稀有魚與古物率 +8%',fx:{forge:.02,rare:.08}},
+ {id:'dwarf_hammer',icon:'🔨',name:'矮人秘銀聖錘',rarity:2,gold:250,desc:'傳說中打造神兵的矮人王族鍛錘。',perk:'冶煉售價 +4%（神匠鍛錘加持）',fx:{forge:.04}},
+ {id:'royal_cookbook',icon:'📖',name:'失落皇家食譜',rarity:2,gold:260,desc:'記載夢幻料理秘訣的金裝古籍。',perk:'冶煉售價 +2% · 餐廳售價額外 +4%',fx:{forge:.02,kitchen:.04}},
+ {id:'dragon_scale',icon:'🐲',name:'赤龍淬火鱗片',rarity:2,gold:280,desc:'觸感溫熱、永不熄滅的龍鱗古物。',perk:'冶煉售價 +2.5% · 遠征攻防 +4%',fx:{forge:.025,atk:.04,def:.04}},
+ {id:'crown_seal',icon:'👑',name:'星露古王印璽',rarity:2,gold:320,desc:'象徵城鎮黃金年代的傳奇王印。',perk:'冶煉售價 +3% · 東側旅商全品項 -5% 折扣',fx:{forge:.03,disc:.05}}
 ];
 
 const CARAVAN_THEMES=[
@@ -205,10 +205,34 @@ function museumFishKitchenBonus(mus){
  for(const f of FISH_CATALOG)stars+=fishStarLevel(m.fishCounts?.[f.id]||0);
  return {stars,bonus:Math.min(.42,stars*.015)};
 }
+function relicPassiveBonuses(mus){
+ const m=mus||loadTownMuseum();
+ const out={forge:0,kitchen:0,atk:0,def:0,trade:0,rare:0,disc:0,westGold:0};
+ for(const id of m.relics){
+  const r=RELIC_CATALOG.find(x=>x.id===id);
+  if(!r||!r.fx)continue;
+  for(const [k,v] of Object.entries(r.fx))out[k]=(out[k]||0)+v;
+ }
+ return out;
+}
 function museumRelicForgeBonus(mus){
  const m=mus||loadTownMuseum();
- const count=m.relics.length;
- return {count,bonus:Math.min(.36,count*.025)};
+ const fx=relicPassiveBonuses(m);
+ return {count:m.relics.length,bonus:Math.min(.40,fx.forge),fx};
+}
+function checkNightlyFishKitchenSupply(){
+ if(day<1||!kitchen)return;
+ const w=ensureTownWings();
+ if(w.fishSupplyDay===day)return;
+ const mus=loadTownMuseum(),si=townVisualSeason();
+ const seasonStars=FISH_CATALOG.filter(f=>f.season===si).reduce((mx,f)=>Math.max(mx,fishStarLevel(mus.fishCounts?.[f.id]||0)),0);
+ const totalStars=museumFishKitchenBonus(mus).stars;
+ if(seasonStars<2&&totalStars<4)return;
+ w.fishSupplyDay=day;
+ const tier=seasonStars>=3||totalStars>=8?3:2;
+ kitchen.bag.push({k:'o',t:tier});
+ addWorkshopFever('kitchen',20);
+ toast('🐟 博物鮮魚直送（'+SEASONS[si].name+'魚圖鑑 2★+）！獲贈高階食材入廚房道具箱＋餐廳狂熱 +20%！');
 }
 
 function createDailyDigBoard(){
@@ -247,8 +271,8 @@ function townWingBonuses(){
  if(day<1)return {forgeSale:0,kitchenSale:0,battleAtk:0,battleDef:0};
  const w=ensureTownWings(),reg=w.regulars||{},mus=loadTownMuseum();
  const fishK=museumFishKitchenBonus(mus).bonus;
- const relicF=museumRelicForgeBonus(mus).bonus;
- let forgeSale=relicF,kitchenSale=fishK,battleAtk=0,battleDef=0;
+ const rFx=relicPassiveBonuses(mus);
+ let forgeSale=rFx.forge,kitchenSale=fishK+rFx.kitchen,battleAtk=rFx.atk,battleDef=rFx.def;
  for(const r of TOWN_REGULARS){
   const lv=reg[r.id]||0;
   if(lv<3)continue;
@@ -260,7 +284,7 @@ function townWingBonuses(){
   else if(r.stat==='atk')battleAtk+=(hi?.08:.04);
   else if(r.stat==='def')battleDef+=(hi?.08:.04);
  }
- return {forgeSale:Math.min(.60,forgeSale),kitchenSale:Math.min(.60,kitchenSale),battleAtk:Math.min(.28,battleAtk),battleDef:Math.min(.28,battleDef)};
+ return {forgeSale:Math.min(.60,forgeSale),kitchenSale:Math.min(.60,kitchenSale),battleAtk:Math.min(.32,battleAtk),battleDef:Math.min(.32,battleDef)};
 }
 
 function setTownZone(zone){
@@ -278,15 +302,20 @@ function renderTownWing(){
  if(!enabled){layer.hidden=true;goW.hidden=true;goE.hidden=true;dots.hidden=true;townZone='center';if(archBtn)archBtn.disabled=false;return;}
  if(archBtn){archBtn.disabled=townZone!=='center';archBtn.title=townZone==='center'?'建築師':'建築師僅限中央主城鎮使用';}
  const si=townVisualSeason(),night=isSandboxNight(),mapIdx=si+(night?4:0);
- const w=ensureTownWings(),lm=landmarkBonuses();
+ const w=ensureTownWings(),lm=landmarkBonuses(),mus=loadTownMuseum();
  const westMax=3+(lm.westStaminaBonus||0),westRem=Math.max(0,westMax-w.westUsed);
+ const puzzleReady=RELIC_CATALOG.some(r=>(mus.relicShards?.[r.id]||0)>=9&&!mus.relics.includes(r.id));
  const shipReady=!!(w.shipment&&day>=w.shipment.returnDay);
+ const visitors=todayTavernRegulars(),qIds=[visitors[0]?.id,visitors[2]?.id].filter(Boolean);
+ const questReady=visitors.some(r=>qIds.includes(r.id)&&!w.regularQuestDone.includes(r.id)&&r.quest.check());
+ const westBadge=puzzleReady?' <em>🧩拼圖</em>':westRem>0?' <em>'+westRem+'</em>':'';
+ const eastBadge=shipReady?' <em>領取</em>':questReady?' <em>✦委託</em>':'';
  goW.hidden=townZone!=='center';
  goE.hidden=townZone!=='center';
- goW.innerHTML='◀<span>溪畔營地'+(westRem>0?' <em>'+westRem+'</em>':'')+'</span>';
- goE.innerHTML='<span>旅商驛站'+(shipReady?' <em>領取</em>':'')+'</span>▶';
+ goW.innerHTML='◀<span>溪畔營地'+westBadge+'</span>';
+ goE.innerHTML='<span>旅商驛站'+eastBadge+'</span>▶';
  dots.hidden=false;
- dots.innerHTML=[['west','🎣 西側營地'],['center','🏘 主城鎮'],['east','🛒 東側驛站']].map(([z,lbl])=>'<button type="button" class="'+(townZone===z?'is-active':'')+'" onclick="setTownZone(\''+z+'\')">'+lbl+'</button>').join('');
+ dots.innerHTML=[['west','🎣 西側營地'+(puzzleReady?'<em>🧩</em>':'')],['center','🏘 主城鎮'],['east','🛒 東側驛站'+((shipReady||questReady)?'<em>✦</em>':'')]].map(([z,lbl])=>'<button type="button" class="'+(townZone===z?'is-active':'')+'" onclick="setTownZone(\''+z+'\')">'+lbl+'</button>').join('');
  if(townZone==='center'){layer.hidden=true;layer.dataset.zone='center';return;}
  layer.hidden=false;
  layer.dataset.zone=townZone;
@@ -404,13 +433,14 @@ function doWestFish(quality='normal',hitChest=false){
  const baitBonus=fishBait==='star'?.28:0;
  const qBonus=quality==='perfect'?.35:quality==='good'?.12:0;
  const qMult=quality==='perfect'?1.4:quality==='good'?1.15:1;
- const roll=Math.random()+lm.westRareBonus*.35+qBonus+baitBonus+(w.fishStreak||0)*.04;
+ const rFx=relicPassiveBonuses();
+ const roll=Math.random()+lm.westRareBonus*.35+qBonus+baitBonus+(w.fishStreak||0)*.04+(rFx.rare||0);
  const targetR=roll>.92?2:roll>.56?1:0;
  const cands=pool.filter(f=>f.rarity===targetR);
  const fish=(cands.length?cands:pool)[rnd((cands.length?cands:pool).length)]||FISH_CATALOG[0];
  const baseCm=22+fish.rarity*28;
  const cm=Math.round(baseCm+rnd(26)+(quality==='perfect'?18:quality==='good'?8:0));
- const reward=Math.round(fish.gold*lm.westRewardMult*qMult*streakMult);
+ const reward=Math.round(fish.gold*lm.westRewardMult*(1+(rFx.westGold||0))*qMult*streakMult);
  coins+=reward;
  const reg=registerMuseumItem('fish',fish.id,cm);
  let extra='';
@@ -544,7 +574,7 @@ function buyCaravanItem(itemId){
  const items=theme.items.slice(0,3+(lm.eastExtraSlots||0));
  const it=items.find(x=>x.id===itemId);
  if(!it||w.eastBought.includes(itemId))return;
- const totalDisc=Math.min(.45,(lm.eastDiscount||0)+(w.haggleDisc||0));
+ const totalDisc=Math.min(.50,(lm.eastDiscount||0)+(w.haggleDisc||0)+(relicPassiveBonuses().disc||0));
  const price=Math.max(10,Math.round(it.cost*(1-totalDisc)));
  if(!sandboxSession&&coins<price){toast('金幣不足 '+price+'。');return;}
  if(!sandboxSession)coins-=price;
@@ -627,10 +657,10 @@ function dispatchTradeShipment(routeId){
 }
 
 function claimTradeShipment(){
- const w=ensureTownWings(),lm=landmarkBonuses();
+ const w=ensureTownWings(),lm=landmarkBonuses(),rFx=relicPassiveBonuses();
  if(!w.shipment||day<w.shipment.returnDay)return;
  const rt=TRADE_ROUTES.find(x=>x.id===w.shipment.id)||TRADE_ROUTES[0];
- const payout=Math.round(w.shipment.cost*rt.baseMult*(lm.eastTradeMult||1));
+ const payout=Math.round(w.shipment.cost*rt.baseMult*(lm.eastTradeMult||1)*(1+(rFx.trade||0)));
  coins+=payout;
  let bonusTxt='';
  if(rt.id==='local'){bag.push({k:'u'});bonusTxt='＋礦石升級道具';}
@@ -743,9 +773,9 @@ function renderMuseumInspect(kind,id){
   body.innerHTML='<div class="mi-showcase is-relic"><div class="mi-art-stage">'+museumShowcaseArt('relic',id,!seen)+'</div>'
    +'<div class="mi-badges"><span>稀有度 '+'★'.repeat(r.rarity+1)+'</span><span>'+(completed?'✓ 已修復完成':'碎片 '+shards+' / 9')+'</span></div></div>'
    +'<p class="mi-desc">'+(seen?r.desc:'尚未在西側古物遺跡營地發掘過此古物碎片。')+'</p>'
-   +'<div class="mi-stat-box"><div><b>⚒ 冶煉廠古物加成</b><span>'+(completed?'✓ 已生效：冶煉廠成交售價 +2.5%':'完成 9 片拼圖修復後啟動 +2.5% 冶煉售價')+'</span></div>'
+   +'<div class="mi-stat-box"><div><b>⚒ 冶煉廠與古物專屬加成</b><span>'+(completed?'✓ 已生效':'拼圖修復後啟動')+'</span></div>'
    +'<div class="mi-progress"><i style="width:'+Math.round(shards/9*100)+'%"></i></div>'
-   +'<small>碎片收集進度：<b>'+shards+' / 9 片</b>（集齊 9 片即可拼圖修復並獲得 💰200 賞金）</small></div>'
+   +'<small>專屬效果：<b>'+(r.perk||'冶煉廠成交售價 +2.5%')+'</b><br>碎片進度：<b>'+shards+' / 9 片</b>（集齊 9 片即可拼圖修復並獲得 💰200 賞金）</small></div>'
    +actionBtn;
  }
 }
@@ -815,7 +845,7 @@ function renderTownWingModal(){
   if(museumTab==='fish'){
    content='<div class="tw-grid">'+FISH_CATALOG.map(f=>{const cnt=mus.fishCounts?.[f.id]||0,got=cnt>0||mus.fish.includes(f.id),st=fishStarLevel(cnt);return '<button type="button" class="tw-item is-click'+(got?' is-got':'')+'" onclick="openMuseumInspect(\'fish\',\''+f.id+'\')"><div class="tw-px-frame">'+pixelFishArt(f.id,!got)+'</div><b>'+(got?f.name:'？？？')+'</b><small>'+(got?'★'.repeat(st)+'☆'.repeat(3-st)+' · '+cnt+'隻':SEASONS[f.season].icon+(f.night?'🌙 夜':'☀ 日'))+'</small></button>';}).join('')+'</div>';
   }else if(museumTab==='relic'){
-   content='<div class="tw-list">'+RELIC_CATALOG.map(r=>{const sh=Math.min(9,mus.relicShards?.[r.id]||0),done=mus.relics.includes(r.id),seen=done||sh>0,canPuz=!done&&sh>=9;return '<button type="button" class="tw-row is-click'+(done?' is-got-row':canPuz?' is-ready-row':'')+'" onclick="openMuseumInspect(\'relic\',\''+r.id+'\')"><div class="tw-px-badge">'+pixelRelicArt(r.id,!seen)+'</div><div class="tw-info"><b>'+(seen?r.name:'未出土古物')+' <small class="tw-role">'+(done?'✓ 已修復':canPuz?'🧩 可拼圖！':'碎片 '+sh+'/9')+'</small></b><small>'+(done?'⚒ 冶煉售價 +2.5% · 點擊查看介紹與重玩拼圖':canPuz?'✨ 9 片碎片已集齊！點擊立即進入 3×3 拼圖修復':seen?r.desc:'在西側古物遺跡營地探勘收集 9 片碎片。')+'</small></div></button>';}).join('')+'</div>';
+   content='<div class="tw-list">'+RELIC_CATALOG.map(r=>{const sh=Math.min(9,mus.relicShards?.[r.id]||0),done=mus.relics.includes(r.id),seen=done||sh>0,canPuz=!done&&sh>=9;return '<button type="button" class="tw-row is-click'+(done?' is-got-row':canPuz?' is-ready-row':'')+'" onclick="openMuseumInspect(\'relic\',\''+r.id+'\')"><div class="tw-px-badge">'+pixelRelicArt(r.id,!seen)+'</div><div class="tw-info"><b>'+(seen?r.name:'未出土古物')+' <small class="tw-role">'+(done?'✓ 已修復':canPuz?'🧩 可拼圖！':'碎片 '+sh+'/9')+'</small></b><small>'+(done?'⚒ '+(r.perk||'冶煉售價 +2.5%'):canPuz?'✨ 9 片碎片已集齊！點擊立即進入 3×3 拼圖修復':seen?r.desc:'在西側古物遺跡營地探勘收集 9 片碎片。')+'</small></div></button>';}).join('')+'</div>';
   }else{
    content='<div class="tw-list">'
     +'<div class="tw-row is-got-row"><span class="tw-ico">🍲</span><div class="tw-info"><b>魚類星級 · 廚房餐廳加成</b><small>目前累計 <b>'+fishB.stars+' ★</b>（每種魚 3/6/9 隻升 1/2/3★）→ 餐廳成交售價 <b>+'+(fishB.bonus*100).toFixed(1)+'%</b></small></div></div>'
