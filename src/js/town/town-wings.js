@@ -292,6 +292,7 @@ function setTownZone(zone){
  if(architect?.active&&zone!=='center'){toast('請先結束城鎮佈置模式，再前往左右道路區域。');return;}
  townZone=zone;
  renderTownWing();
+ if(typeof syncAmbientSound==='function')syncAmbientSound();
 }
 
 function renderTownWing(){
@@ -373,11 +374,13 @@ function openTownWingModal(mode){
  townWingModalMode=mode;
  renderTownWingModal();
  $('townWingP').style.display='flex';
+ if(typeof syncAmbientSound==='function')syncAmbientSound();
 }
 function closeTownWingModal(){
  stopFishGame();
  $('townWingP').style.display='none';
  townWingModalMode=null;
+ if(typeof syncAmbientSound==='function')syncAmbientSound();
 }
 
 function setFishBait(id){fishBait=id;renderTownWingModal();}

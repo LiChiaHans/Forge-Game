@@ -213,6 +213,7 @@ async function decodeSeasonMusic(id,a){
  return buffer;
 }
 function syncSeasonMusic(){
+ if(typeof syncAmbientSound==='function')syncAmbientSound();
  const id=$('title').style.display==='none'?SEASONS[seasonIndex()].id:'home';
  if(id!==seasonMusic.wanted){seasonMusic.wanted=id;seasonMusic.version++;seasonMusic.pending=null;seasonMusic.failed=null;}
  if(seasonMusic.master)seasonMusicRamp(seasonMusic.master.gain,muted?0:1,.08);
@@ -327,7 +328,196 @@ function leave(gh,r){
     {transform:"scale(.05)",opacity:0}
   ],{duration:600,easing:"ease-in"}).onfinish=()=>gh.remove();
 }
-const gem=(t,x="")=>`<svg class="gm ${x}" viewBox="0 0 24 24" shape-rendering="crispEdges"><path fill="#10202c" d="M6 1h12v3h3v3h2v6h-3v3h-3v3h-3v3h-4v-3H7v-3H4v-3H1V7h2V4h3z"/><path fill="${C[t]}" d="M6 3h12v3h3v6h-3v3h-3v3h-3v3h-1v-3H8v-3H5v-3H3V7h3z"/><path fill="#fff" opacity=".6" d="M7 4h10v3H7zM4 8h5v4H4z"/><path fill="#fff" opacity=".3" d="M10 8h4v8h-4z"/><path fill="#000" opacity=".2" d="M17 7h3v5h-3v3h-3v3h-2v-3h2v-3h3z"/><path class="sp" fill="#fff5d7" d="M6 5h2v2h2v2H8v2H6V9H4V7h2z"/></svg>`;function workshopSoundProfile(kind,phase){
+const gem=(t,x="")=>`<svg class="gm ${x}" viewBox="0 0 24 24" shape-rendering="crispEdges"><path fill="#10202c" d="M6 1h12v3h3v3h2v6h-3v3h-3v3h-3v3h-4v-3H7v-3H4v-3H1V7h2V4h3z"/><path fill="${C[t]}" d="M6 3h12v3h3v6h-3v3h-3v3h-3v3h-1v-3H8v-3H5v-3H3V7h3z"/><path fill="#fff" opacity=".6" d="M7 4h10v3H7zM4 8h5v4H4z"/><path fill="#fff" opacity=".3" d="M10 8h4v8h-4z"/><path fill="#000" opacity=".2" d="M17 7h3v5h-3v3h-3v3h-2v-3h2v-3h3z"/><path class="sp" fill="#fff5d7" d="M6 5h2v2h2v2H8v2H6V9H4V7h2z"/></svg>`;
+
+/* ==========================================================================
+   Procedural WebAudio Ambient Soundscape Engine (Independently Toggleable):
+   - West Wing: Flowing waterfall & babbling creek + water droplets
+   - Forge Workshop: Roaring blacksmith coal furnace + bellows & ember crackles
+   - Tavern / Kitchen: Crackling hearth fireplace & simmering pot
+   - East Wing / Central Town: Harbor river breeze / Starlight fountain trickle
+   ========================================================================== */
+let ambientEnabled=true;
+try{ambientEnabled=localStorage.getItem('forgeAmbientV1')!=='0';}catch(e){}
+const ambientState={scene:'none',ctx:null,noiseBuf:null,nodes:null,crackleTimer:0};
+
+function updateAmbientUI(){
+ const btn=$('townAmbient'),chk=$('ambientToggle');
+ if(btn){
+  btn.textContent=ambientEnabled?'🎧':'🔇';
+  btn.setAttribute('aria-pressed',String(ambientEnabled));
+  btn.style.opacity=ambientEnabled?'1':'.52';
+ }
+ if(chk)chk.checked=ambientEnabled;
+}
+
+function setAmbientSound(on,silent=false){
+ ambientEnabled=!!on;
+ try{localStorage.setItem('forgeAmbientV1',ambientEnabled?'1':'0');}catch(e){}
+ updateAmbientUI();
+ syncAmbientSound();
+ if(!silent&&typeof toast==='function'){
+  toast(ambientEnabled?'🎧 已開啟環境音場（西側瀑布水聲／冶煉爐火／酒館壁爐）':'🔇 已關閉環境音場');
+ }
+}
+
+function toggleAmbientSound(){setAmbientSound(!ambientEnabled,false);}
+
+function detectAmbientScene(){
+ if(!ambientEnabled||muted||document.hidden)return 'none';
+ const titleEl=$('title');
+ if(!titleEl||titleEl.style.display!=='none')return 'none';
+ const wingModal=$('townWingP');
+ if(wingModal&&wingModal.style.display==='flex'){
+  const m=typeof townWingModalMode!=='undefined'?townWingModalMode:'';
+  if(m==='tavern')return 'tavern';
+  if(m==='fishing'||m==='excavate')return 'west';
+  if(m==='depot'||m==='caravan')return 'east';
+ }
+ const kEl=$('kitchenP');
+ if(kEl&&!kEl.hidden)return 'kitchen';
+ const townEl=$('townP');
+ if(townEl&&townEl.style.display==='flex'){
+  const z=typeof townZone!=='undefined'?townZone:'center';
+  if(z==='west')return 'west';
+  if(z==='east')return 'east';
+  return 'center';
+ }
+ return 'forge';
+}
+
+function ensureAmbientPinkNoise(a){
+ if(ambientState.ctx===a&&ambientState.noiseBuf)return ambientState.noiseBuf;
+ ambientState.ctx=a;
+ const len=a.sampleRate*4,buf=a.createBuffer(1,len,a.sampleRate),d=buf.getChannelData(0);
+ let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+ for(let i=0;i<len;i++){
+  const w=Math.random()*2-1;
+  b0=0.99886*b0+w*0.0555179;b1=0.99332*b1+w*0.0750759;b2=0.96900*b2+w*0.1538520;
+  b3=0.86650*b3+w*0.3104856;b4=0.55000*b4+w*0.5329522;b5=-0.7616*b5-w*0.0168980;
+  d[i]=(b0+b1+b2+b3+b4+b5+b6+w*0.5362)*0.04;
+  b6=w*0.115926;
+ }
+ ambientState.noiseBuf=buf;
+ return buf;
+}
+
+function playAmbientMicroEvent(scene){
+ if(!ambientEnabled||muted||document.hidden)return;
+ const a=actx();if(!a||a.state!=='running'||!ambientState.noiseBuf)return;
+ const t=a.currentTime;
+ if(scene==='forge'||scene==='tavern'||scene==='kitchen'){
+  // Warm ember/hearth wood crackle pop
+  const src=a.createBufferSource(),flt=a.createBiquadFilter(),gn=a.createGain();
+  src.buffer=ambientState.noiseBuf;
+  flt.type='bandpass';flt.frequency.value=scene==='forge'?1800+Math.random()*1400:2200+Math.random()*1600;flt.Q.value=3.2;
+  const peak=scene==='tavern'?0.075:0.055;
+  gn.gain.setValueAtTime(0.0001,t);
+  gn.gain.linearRampToValueAtTime(peak,t+0.006);
+  gn.gain.exponentialRampToValueAtTime(0.0001,t+0.045+Math.random()*0.035);
+  src.connect(flt);flt.connect(gn);gn.connect(a.destination);
+  src.start(t,Math.random()*3.5,0.09);
+ }else if(scene==='west'){
+  // Soft crystal water droplet plink
+  const osc=a.createOscillator(),gn=a.createGain();
+  osc.type='sine';
+  const f0=1100+Math.random()*650;
+  osc.frequency.setValueAtTime(f0,t);
+  osc.frequency.exponentialRampToValueAtTime(f0*1.32,t+0.065);
+  gn.gain.setValueAtTime(0.0001,t);
+  gn.gain.linearRampToValueAtTime(0.016,t+0.008);
+  gn.gain.exponentialRampToValueAtTime(0.0001,t+0.075);
+  osc.connect(gn);gn.connect(a.destination);
+  osc.start(t);osc.stop(t+0.08);
+ }
+}
+
+function stopAmbientNodes(){
+ clearInterval(ambientState.crackleTimer);ambientState.crackleTimer=0;
+ const cur=ambientState.nodes;if(!cur)return;
+ ambientState.nodes=null;
+ try{
+  const a=ambientState.ctx;
+  if(a&&cur.gain){
+   const t=a.currentTime;
+   cur.gain.gain.cancelScheduledValues(t);
+   cur.gain.gain.setValueAtTime(cur.gain.gain.value,t);
+   cur.gain.gain.linearRampToValueAtTime(0.0001,t+0.25);
+   setTimeout(()=>{try{cur.src1?.stop();cur.src2?.stop();cur.lfo?.stop();cur.gain?.disconnect();}catch(e){}},280);
+   return;
+  }
+ }catch(e){}
+ try{cur.src1?.stop();cur.src2?.stop();cur.lfo?.stop();cur.gain?.disconnect();}catch(e){}
+}
+
+function syncAmbientSound(){
+ updateAmbientUI();
+ const target=detectAmbientScene();
+ if(target===ambientState.scene&&ambientState.nodes)return;
+ const a=actx();
+ if(!a||a.state!=='running'||target==='none'){
+  ambientState.scene='none';
+  stopAmbientNodes();
+  return;
+ }
+ stopAmbientNodes();
+ ambientState.scene=target;
+ const buf=ensureAmbientPinkNoise(a),t=a.currentTime;
+ const master=a.createGain();master.gain.setValueAtTime(0.0001,t);master.connect(a.destination);
+ const src1=a.createBufferSource(),flt1=a.createBiquadFilter();
+ src1.buffer=buf;src1.loop=true;
+ const lfo=a.createOscillator(),lfoGain=a.createGain();
+ let src2=null,targetVol=0.08;
+
+ if(target==='west'){
+  // Waterfall cascade + babbling creek stream
+  flt1.type='bandpass';flt1.frequency.value=620;flt1.Q.value=0.75;
+  lfo.frequency.value=0.32;lfoGain.gain.value=180;
+  lfo.connect(lfoGain);lfoGain.connect(flt1.frequency);
+  src2=a.createBufferSource();src2.buffer=buf;src2.loop=true;
+  const flt2=a.createBiquadFilter(),g2=a.createGain();
+  flt2.type='highpass';flt2.frequency.value=1450;g2.gain.value=0.28;
+  src2.connect(flt2);flt2.connect(g2);g2.connect(master);
+  targetVol=0.115;
+ }else if(target==='forge'){
+  // Deep blacksmith coal furnace draft + bellows breathing LFO
+  flt1.type='lowpass';flt1.frequency.value=175;flt1.Q.value=1.4;
+  lfo.frequency.value=0.24;lfoGain.gain.value=55;
+  lfo.connect(lfoGain);lfoGain.connect(flt1.frequency);
+  targetVol=0.13;
+ }else if(target==='tavern'||target==='kitchen'){
+  // Cozy hearth fireplace rumble
+  flt1.type='lowpass';flt1.frequency.value=240;flt1.Q.value=0.9;
+  lfo.frequency.value=0.45;lfoGain.gain.value=60;
+  lfo.connect(lfoGain);lfoGain.connect(flt1.frequency);
+  targetVol=0.095;
+ }else if(target==='east'){
+  // Harbor river lapping & warm breeze
+  flt1.type='bandpass';flt1.frequency.value=420;flt1.Q.value=1.1;
+  lfo.frequency.value=0.19;lfoGain.gain.value=130;
+  lfo.connect(lfoGain);lfoGain.connect(flt1.frequency);
+  targetVol=0.07;
+ }else{
+  // Central town fountain gentle trickle
+  flt1.type='bandpass';flt1.frequency.value=880;flt1.Q.value=1.2;
+  lfo.frequency.value=0.38;lfoGain.gain.value=140;
+  lfo.connect(lfoGain);lfoGain.connect(flt1.frequency);
+  targetVol=0.055;
+ }
+
+ src1.connect(flt1);flt1.connect(master);
+ src1.start(t,Math.random()*2);if(src2)src2.start(t,Math.random()*2);lfo.start(t);
+ master.gain.linearRampToValueAtTime(targetVol,t+0.45);
+ ambientState.nodes={src1,src2,lfo,gain:master};
+
+ if(['west','forge','tavern','kitchen'].includes(target)){
+  ambientState.crackleTimer=setInterval(()=>{
+   if(Math.random()<0.68)playAmbientMicroEvent(target);
+  },target==='tavern'||target==='forge'?680:1150);
+ }
+}
+document.addEventListener('pointerdown',()=>setTimeout(syncAmbientSound,40));
+document.addEventListener('visibilitychange',syncAmbientSound);function workshopSoundProfile(kind,phase){
  if(kind==='kitchen')return phase==='gather'?[{type:'sine',hz:240,end:130,delay:0,time:.07,volume:.04},{type:'triangle',hz:320,end:190,delay:.055,time:.055,volume:.025}]:[{type:'triangle',hz:330,end:250,delay:0,time:.09,volume:.035},{type:'sine',hz:720,end:920,delay:.04,time:.16,volume:.025},{type:'sine',hz:1080,end:1080,delay:.07,time:.12,volume:.012}];
  return phase==='gather'?[{type:'triangle',hz:1050,end:820,delay:0,time:.09,volume:.027},{type:'sine',hz:1480,end:1220,delay:.045,time:.1,volume:.02}]:[{type:'sine',hz:155,end:62,delay:0,time:.09,volume:.055},{type:'triangle',hz:1850,end:1720,delay:.015,time:.2,volume:.027},{type:'sine',hz:2620,end:2490,delay:.025,time:.17,volume:.013}];
 }
@@ -6214,6 +6404,7 @@ function setTownZone(zone){
  if(architect?.active&&zone!=='center'){toast('請先結束城鎮佈置模式，再前往左右道路區域。');return;}
  townZone=zone;
  renderTownWing();
+ if(typeof syncAmbientSound==='function')syncAmbientSound();
 }
 
 function renderTownWing(){
@@ -6295,11 +6486,13 @@ function openTownWingModal(mode){
  townWingModalMode=mode;
  renderTownWingModal();
  $('townWingP').style.display='flex';
+ if(typeof syncAmbientSound==='function')syncAmbientSound();
 }
 function closeTownWingModal(){
  stopFishGame();
  $('townWingP').style.display='none';
  townWingModalMode=null;
+ if(typeof syncAmbientSound==='function')syncAmbientSound();
 }
 
 function setFishBait(id){fishBait=id;renderTownWingModal();}
