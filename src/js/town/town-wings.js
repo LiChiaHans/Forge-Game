@@ -6,7 +6,7 @@
    ========================================================================== */
 
 const TOWN_WING_ART={"west_0":"assets/town/west_0.075bfce16a90.jpg","west_1":"assets/town/west_1.1c8f95637f92.jpg","west_2":"assets/town/west_2.4a5fb6e7865b.jpg","west_3":"assets/town/west_3.93da5c032c08.jpg","west_4":"assets/town/west_4.54f87444e33c.jpg","west_5":"assets/town/west_5.f3e9b1a74662.jpg","west_6":"assets/town/west_6.c392d1d03827.jpg","west_7":"assets/town/west_7.715f992360a1.jpg","east_0":"assets/town/east_0.e27993b84a77.jpg","east_1":"assets/town/east_1.7906df80513d.jpg","east_2":"assets/town/east_2.b413bea356e2.jpg","east_3":"assets/town/east_3.4749600e226b.jpg","east_4":"assets/town/east_4.0c8174967348.jpg","east_5":"assets/town/east_5.a138ddcf97b7.jpg","east_6":"assets/town/east_6.165839312d72.jpg","east_7":"assets/town/east_7.b98f591da017.jpg"};
-const TOWN_WING_BUILDING_ART={"west_camp_0":"assets/town/b_west_camp_0.93e31d1901f4.png","west_camp_1":"assets/town/b_west_camp_1.9f7b527e352d.png","west_camp_2":"assets/town/b_west_camp_2.02e8ef46a09f.png","west_camp_3":"assets/town/b_west_camp_3.e38aeb0b5887.png","east_post_0":"assets/town/b_east_post_0.8a9c177f8bd9.png","east_post_1":"assets/town/b_east_post_1.1d5c57224a39.png","east_post_2":"assets/town/b_east_post_2.af9a8a321b7f.png","east_post_3":"assets/town/b_east_post_3.e08c6f982c45.png"};
+const TOWN_WING_BUILDING_ART={"west_camp_0":"assets/town/b_west_camp_0.93e31d1901f4.png","west_camp_1":"assets/town/b_west_camp_1.9f7b527e352d.png","west_camp_2":"assets/town/b_west_camp_2.02e8ef46a09f.png","west_camp_3":"assets/town/b_west_camp_3.e38aeb0b5887.png","east_post_0":"assets/town/b_east_post_0.5bac6a60278b.png","east_post_1":"assets/town/b_east_post_1.e1db9a2a4ae3.png","east_post_2":"assets/town/b_east_post_2.f14815eed865.png","east_post_3":"assets/town/b_east_post_3.6cdddcb27135.png"};
 
 const FISH_CATALOG=[
  {id:'spring_trout',icon:'🐟',name:'晨露溪鱒',season:0,night:false,rarity:0,gold:55},
@@ -544,7 +544,7 @@ function renderTownWingModal(){
   title.textContent='🎣 星露釣魚棧橋';
   const curFish=FISH_CATALOG.filter(f=>f.season===si);
   const streakBadge=(w.fishStreak||0)>0?' · 🔥 連釣 ×'+w.fishStreak+' (+'+(w.fishStreak*10)+'%金幣)':'';
-  const baitBar='<div class="tw-bait-row">'+FISH_BAITS.map(b=>'<button type="button" class="tw-bait-btn'+(fishBait===b.id?' is-on':'')+'" onclick="setFishBait(\''+b.id+'\')" '+(fishGame.active?'disabled':'')+'><b>'+b.icon+' '+b.name+(b.cost?' 💰'+b.cost:'')+'</b><small>'+b.desc+'</small></button>').join('')+'</div>';
+  const baitBar='<div class="tw-bait-row">'+FISH_BAITS.map(b=>'<button type="button" class="tw-bait-btn'+(fishBait===b.id?' is-on':'')+'" onclick="setFishBait(\''+b.id+'\')" '+(fishGame.active?'disabled':'')+'><span class="tw-mini-px">'+pixelWingItemArt(b.id)+'</span><b>'+b.name+(b.cost?' 💰'+b.cost:'')+'</b><small>'+b.desc+'</small></button>').join('')+'</div>';
   const banner=lastFishBanner?'<div class="tw-catch-banner"><div class="tw-px-badge">'+pixelFishArt(lastFishBanner.id)+'</div><div><b>'+lastFishBanner.qTag+' '+lastFishBanner.name+' ('+lastFishBanner.cm+'cm) '+'★'.repeat(lastFishBanner.rarity+1)+'</b><small>獲得 💰'+lastFishBanner.reward+(lastFishBanner.isNew?' · ✨ 博物館新登錄！':lastFishBanner.isRecord?' · 👑 刷新最長紀錄！':'')+(lastFishBanner.extra?' · '+lastFishBanner.extra:'')+'</small></div></div>':'';
   const perfCls=fishBait==='star'?' is-wide':'';
   const chestEl=fishBait==='magnet'?'<span class="fish-zone-chest" style="left:'+(fishGame.active?fishGame.chestPos:74)+'%">🎁</span>':'';
@@ -566,8 +566,8 @@ function renderTownWingModal(){
   title.textContent='⛏ 古物遺跡探勘（3×3）';
   const opened=w.digBoard.filter(c=>c.open).length;
   const toolBar='<div class="tw-bait-row">'
-   +'<button type="button" class="tw-bait-btn'+(digTool==='pick'?' is-on':'')+'" onclick="setDigTool(\'pick\')"><b>⛏ 精準小鋤</b><small>消耗 1 體力，精準探勘 1 格</small></button>'
-   +'<button type="button" class="tw-bait-btn'+(digTool==='cross'?' is-on':'')+'" onclick="setDigTool(\'cross\')" '+(!sandboxSession&&w.crossUsed?'disabled':'')+'><b>💣 震波十字鏟 💰60</b><small>'+(w.crossUsed&&!sandboxSession?'今日已使用':'一次震開十字 5 格（每日 1 次）')+'</small></button>'
+   +'<button type="button" class="tw-bait-btn'+(digTool==='pick'?' is-on':'')+'" onclick="setDigTool(\'pick\')"><span class="tw-mini-px">'+pixelWingItemArt('rock')+'</span><b>精準小鋤</b><small>消耗 1 體力，精準探勘 1 格</small></button>'
+   +'<button type="button" class="tw-bait-btn'+(digTool==='cross'?' is-on':'')+'" onclick="setDigTool(\'cross\')" '+(!sandboxSession&&w.crossUsed?'disabled':'')+'><span class="tw-mini-px">'+pixelWingItemArt('cross')+'</span><b>震波十字鏟 💰60</b><small>'+(w.crossUsed&&!sandboxSession?'今日已使用':'一次震開十字 5 格（每日 1 次）')+'</small></button>'
    +'</div>';
   body.innerHTML=sceneHdr
    +'<p class="tc-intro">免費體力 <b>'+westRem+' / '+westMax+'</b> · 加場 <b>'+(2-w.westExtra)+'/2</b>（80💰）· 進度 <b>'+opened+'/9</b>（全清 +180💰）<br>🧭 已開地格會感應周圍未挖掘的<b>古物／寶匣數量</b>，推理再下鏟！</p>'
@@ -576,11 +576,11 @@ function renderTownWingModal(){
    +w.digBoard.map((c,i)=>{
     if(c.open){
      const near=ruinNeighborRelics(w.digBoard,i);
-     const art=c.v?.relicId?'<div class="dig-px">'+pixelRelicArt(c.v.relicId)+'</div>':'<span>'+(c.v?.icon||'✨')+'</span>';
+     const art=c.v?.relicId?'<div class="dig-px">'+pixelRelicArt(c.v.relicId)+'</div>':'<div class="dig-px">'+pixelWingItemArt(c.t==='seed'?'seed':c.t==='chest'?'chest':'gold')+'</div>';
      return '<div class="dig-cell is-open">'+art+'<b>'+(c.v?.label||'已發掘')+'</b><small>'+(c.v?.sub||'')+'</small>'+(near>0?'<em class="dig-radar">🧭 周圍 '+near+' 寶</em>':'<em class="dig-radar is-clear">✓ 周圍空</em>')+'</div>';
     }
     const disabled=digTool==='cross'?(!sandboxSession&&(w.crossUsed||coins<60)):(!sandboxSession&&westRem<=0&&(w.westExtra>=2||coins<80));
-    return '<button type="button" class="dig-cell'+(digTool==='cross'?' is-cross':'')+'" onclick="digRuinCell('+i+')" '+(disabled?'disabled':'')+'><span>'+(digTool==='cross'?'💣':'🪨')+'</span><b>'+(digTool==='cross'?'十字震波':'點擊探勘')+'</b><small>'+(digTool==='cross'?'💰60 開5格':westRem>0||sandboxSession?'免費體力':'💰80 加場')+'</small></button>';
+    return '<button type="button" class="dig-cell'+(digTool==='cross'?' is-cross':'')+'" onclick="digRuinCell('+i+')" '+(disabled?'disabled':'')+'><div class="dig-px">'+pixelWingItemArt(digTool==='cross'?'cross':'rock')+'</div><b>'+(digTool==='cross'?'十字震波':'點擊探勘')+'</b><small>'+(digTool==='cross'?'💰60 開5格':westRem>0||sandboxSession?'免費體力':'💰80 加場')+'</small></button>';
    }).join('')
    +'</div>'
    +'<p class="tc-intro" style="margin-top:8px">博物館古物進度：<b>'+mus.relics.length+' / '+RELIC_CATALOG.length+'</b></p>';
@@ -609,7 +609,7 @@ function renderTownWingModal(){
    +'<p class="tc-intro">'+theme.desc+(disc?' · 🏷 總折扣 -'+disc+'%':'')+' · 持有 💰'+(sandboxSession?'∞':coins)+'</p>'
    +'<div class="tw-barter-box" style="margin-bottom:8px"><div><b>🎲 旅商殺價交涉（每日 1 次）</b><small>'+(w.haggleDone?(w.haggleDisc>0?'✨ 今日殺價成功！全場額外 -15% 折扣生效中！':'今日已交涉過，明天再試手氣。'):'試著與商隊掌櫃議價，68% 機率獲得今日全場額外 -15% 折扣！')+'</small></div><button type="button" class="tw-act" onclick="doCaravanHaggle()" '+(w.haggleDone&&!sandboxSession?'disabled':'')+'>'+(w.haggleDone&&!sandboxSession?(w.haggleDisc>0?'已折 15%':'已交涉'):'🎲 試著殺價')+'</button></div>'
    +'<div class="tw-list">'
-   +items.map(it=>{const sold=w.eastBought.includes(it.id),price=Math.max(10,Math.round(it.cost*(1-totalDisc)));return '<div class="tw-row"><span class="tw-ico">'+it.icon+'</span><div class="tw-info"><b>'+it.name+(it.rare?' ✦':'')+'</b><small>'+it.desc+'</small></div><button type="button" class="tw-act" onclick="buyCaravanItem(\''+it.id+'\')" '+(sold||(!sandboxSession&&coins<price)?'disabled':'')+'>'+(sold?'已售出':'💰'+price)+'</button></div>';}).join('')
+   +items.map(it=>{const sold=w.eastBought.includes(it.id),price=Math.max(10,Math.round(it.cost*(1-totalDisc)));return '<div class="tw-row"><div class="tw-px-badge is-sm">'+pixelWingItemArt(it.id==='royal_chest'?'royal_chest_item':it.id)+'</div><div class="tw-info"><b>'+it.name+(it.rare?' ✦':'')+'</b><small>'+it.desc+'</small></div><button type="button" class="tw-act" onclick="buyCaravanItem(\''+it.id+'\')" '+(sold||(!sandboxSession&&coins<price)?'disabled':'')+'>'+(sold?'已售出':'💰'+price)+'</button></div>';}).join('')
    +'</div>'
    +'<div class="tw-barter-box"><div><b>🤝 旅商以物易物（每日 1 次）</b><small>交付 1 件多餘道具箱物資或花種（目前可用：'+barterCount+' 件），換取 💰140～200＋隨機元素精華＋雙狂熱 +30%！</small></div><button type="button" class="tw-act" onclick="doCaravanBarter()" '+(w.barterDone||barterCount<=0?'disabled':'')+'>'+(w.barterDone?'今日已換':'立即交換')+'</button></div>'
    +'<button type="button" class="tw-link-btn" onclick="closeTownWingModal();openTownChronicle(\'landmarks\')">🏛 升級「皇家旅商驛站」解鎖稀有格與折扣（Lv '+buildingLandmarkTier('east_post')+'/3）</button>';
@@ -638,7 +638,7 @@ function renderTownWingModal(){
   }else{
    body.innerHTML=sceneHdr
     +'<p class="tc-intro">投資跨城貿易航線，隔天獲得高倍率金幣與稀有工坊物資！持有 💰'+(sandboxSession?'∞':coins)+'</p><div class="tw-list">'
-    +TRADE_ROUTES.map(rt=>{const locked=eastLv<rt.minLv;return '<div class="tw-row"><span class="tw-ico">'+rt.icon+'</span><div class="tw-info"><b>'+rt.name+'</b><small>'+rt.desc+(locked?'（需驛站 Lv '+rt.minLv+'）':'')+'</small></div><button type="button" class="tw-act" onclick="dispatchTradeShipment(\''+rt.id+'\')" '+(locked||(!sandboxSession&&coins<rt.cost)?'disabled':'')+'>'+(locked?'🔒 Lv'+rt.minLv:'派遣 💰'+rt.cost)+'</button></div>';}).join('')
+    +TRADE_ROUTES.map(rt=>{const locked=eastLv<rt.minLv;return '<div class="tw-row"><div class="tw-px-badge is-sm">'+pixelWingItemArt(rt.id)+'</div><div class="tw-info"><b>'+rt.name+'</b><small>'+rt.desc+(locked?'（需驛站 Lv '+rt.minLv+'）':'')+'</small></div><button type="button" class="tw-act" onclick="dispatchTradeShipment(\''+rt.id+'\')" '+(locked||(!sandboxSession&&coins<rt.cost)?'disabled':'')+'>'+(locked?'🔒 Lv'+rt.minLv:'派遣 💰'+rt.cost)+'</button></div>';}).join('')
     +'</div>';
   }
  }

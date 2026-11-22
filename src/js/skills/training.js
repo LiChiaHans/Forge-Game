@@ -65,7 +65,7 @@ function renderTrainingNode(branch,key,opts){
   +'<button type="button" class="st-node-hit" data-skill-select="'+key+'" aria-pressed="'+selected+'">'
   +(isRoot?'<span class="st-root-kicker">'+cfg.rootTag+'</span>':'')
   +badgeHtml
-  +'<span class="st-node-head"><span class="st-icon">'+m.icon+'</span><b class="st-name">'+m.name+'</b></span>'
+  +'<span class="st-node-head"><span class="st-icon">'+(typeof pixelSkillArt==='function'&&pixelSkillArt(key)?pixelSkillArt(key):m.icon)+'</span><b class="st-name">'+m.name+'</b></span>'
   +'<span class="st-tag">'+m.tag+'</span>'
   +trainingPipsHtml(m.level)
   +'</button>'
@@ -93,7 +93,7 @@ function renderTrainingInspector(branch,key,opts){
  }
  return '<section class="st-inspector" data-accent="'+group.accent+'">'
   +'<div class="st-ins-head">'
-  +'<span class="st-ins-crest">'+m.icon+'</span>'
+  +'<span class="st-ins-crest">'+(typeof pixelSkillArt==='function'&&pixelSkillArt(key)?pixelSkillArt(key):m.icon)+'</span>'
   +'<div class="st-ins-title"><div class="st-ins-row"><b>'+m.name+'</b><span class="st-ins-branch">'+group.icon+' '+group.name+'</span></div><div class="st-ins-sub">'+trainingPipsHtml(m.level)+'<span>Lv '+m.level+' / 3 · '+m.tag+'</span></div></div>'
   +'</div>'
   +(m.tip?'<div class="st-tip">💡 '+m.tip+'</div>':'')

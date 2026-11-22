@@ -606,11 +606,11 @@ function renderTownChronicle(){
  }
  html+='<section class="tc-section"><div class="tc-sec-head"><h3>📜 本季工坊契約（'+s.icon+' '+s.name+' · 剩 '+remDays+' 天）</h3><span class="tc-pill">'+(contracts.length>=limit?'已簽 '+contracts.length+'/'+limit:'可選 '+contracts.length+'/'+limit)+'</span></div>';
  if(contracts.length){
-  html+='<div class="tc-active-list">'+contracts.map(c=>'<div class="tc-active-card"><div class="tc-card-top"><span class="tc-icon">'+c.icon+'</span><div><b>'+c.name+'</b><span class="tc-tag">'+c.tag+'</span></div></div><p>'+c.desc+'</p></div>').join('')+'</div>';
+  html+='<div class="tc-active-list">'+contracts.map(c=>'<div class="tc-active-card"><div class="tc-card-top"><span class="tc-icon is-px">'+(typeof pixelEmblemArt==='function'?pixelEmblemArt(c.id,c.name+c.tag):c.icon)+'</span><div><b>'+c.name+'</b><span class="tc-tag">'+c.tag+'</span></div></div><p>'+c.desc+'</p></div>').join('')+'</div>';
  }
  if(contracts.length<limit){
   html+='<p class="tc-intro">每季可從隨機契約中挑選 '+limit+' 張生效，換季重抽，為這一季打造專屬策略！</p><div class="tc-offer-grid">'
-   +m.seasonOffers.filter(id=>!m.contractIds.includes(id)).map(id=>{const c=SEASON_CONTRACTS.find(x=>x.id===id);return c?'<button type="button" class="tc-offer-card" data-pick-contract="'+c.id+'"><div class="tc-card-top"><span class="tc-icon">'+c.icon+'</span><div><b>'+c.name+'</b><span class="tc-tag">'+c.tag+'</span></div></div><small>'+c.desc+'</small><span class="tc-choose">簽署此契約 ✦</span></button>':'';}).join('')
+   +m.seasonOffers.filter(id=>!m.contractIds.includes(id)).map(id=>{const c=SEASON_CONTRACTS.find(x=>x.id===id);return c?'<button type="button" class="tc-offer-card" data-pick-contract="'+c.id+'"><div class="tc-card-top"><span class="tc-icon is-px">'+(typeof pixelEmblemArt==='function'?pixelEmblemArt(c.id,c.name+c.tag):c.icon)+'</span><div><b>'+c.name+'</b><span class="tc-tag">'+c.tag+'</span></div></div><small>'+c.desc+'</small><span class="tc-choose">簽署此契約 ✦</span></button>':'';}).join('')
    +'</div>';
  }
  html+='</section>';
@@ -657,7 +657,7 @@ function settlementNextHookHTML(phase){
 function openRunModes(){
  const body=$('runModeBody');if(!body)return;
  body.innerHTML='<p class="tc-intro">選擇一種規則開始新局（皆會保留你的角色外觀與永久圖鑑／紀念章紀錄）：</p><div class="mode-list">'
-  +Object.values(RUN_MODES).map(md=>'<button type="button" class="mode-card" data-start-mode="'+md.id+'"><div class="tc-card-top"><span class="tc-icon">'+md.icon+'</span><div><b>'+md.name+'</b><span class="tc-tag">'+md.tag+'</span></div></div><small>'+md.desc+'</small><span class="tc-choose">以此模式開局 ▶</span></button>').join('')
+  +Object.values(RUN_MODES).map(md=>'<button type="button" class="mode-card" data-start-mode="'+md.id+'"><div class="tc-card-top"><span class="tc-icon is-px">'+(typeof pixelEmblemArt==='function'?pixelEmblemArt(md.id,md.name):md.icon)+'</span><div><b>'+md.name+'</b><span class="tc-tag">'+md.tag+'</span></div></div><small>'+md.desc+'</small><span class="tc-choose">以此模式開局 ▶</span></button>').join('')
   +'</div>';
  $('runModeP').style.display='flex';
 }

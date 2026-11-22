@@ -791,9 +791,13 @@ renderTownChronicle	src/js/seasons/contracts-events-fever.js	572
 settlementNextHookHTML	src/js/seasons/contracts-events-fever.js	630
 openRunModes	src/js/seasons/contracts-events-fever.js	657
 startTrialRun	src/js/seasons/contracts-events-fever.js	665
-pixelFishArt	src/js/art/town-wing-art.js	23
-pixelRelicArt	src/js/art/town-wing-art.js	31
-wingModalSceneArt	src/js/art/town-wing-art.js	39
+_spriteCell	src/js/art/town-wing-art.js	62
+pixelFishArt	src/js/art/town-wing-art.js	68
+pixelRelicArt	src/js/art/town-wing-art.js	72
+pixelWingItemArt	src/js/art/town-wing-art.js	76
+pixelEmblemArt	src/js/art/town-wing-art.js	80
+pixelSkillArt	src/js/art/town-wing-art.js	98
+wingModalSceneArt	src/js/art/town-wing-art.js	104
 loadTownMuseum	src/js/town/town-wings.js	114
 saveTownMuseum	src/js/town/town-wings.js	124
 registerMuseumItem	src/js/town/town-wings.js	128

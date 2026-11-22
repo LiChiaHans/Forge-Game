@@ -2213,26 +2213,6 @@
         "sha256":  "e38aeb0b588771ad432bbcc04150adb1ef86b25de97b7ec72c7e3fb6e87a0bbc"
     },
     {
-        "url":  "assets/town/b_east_post_0.8a9c177f8bd9.png",
-        "bytes":  159402,
-        "sha256":  "8a9c177f8bd9ea5627687018b57bb934aa9de70f55aed946941acb4bc4910c0c"
-    },
-    {
-        "url":  "assets/town/b_east_post_1.1d5c57224a39.png",
-        "bytes":  184488,
-        "sha256":  "1d5c57224a399c22973aec85ca85dbdd15b54add182b7191cd1ee60546637db9"
-    },
-    {
-        "url":  "assets/town/b_east_post_2.af9a8a321b7f.png",
-        "bytes":  237483,
-        "sha256":  "af9a8a321b7fc08cc317ed037ae18a370580feaee06086ea36ca774714c740ea"
-    },
-    {
-        "url":  "assets/town/b_east_post_3.e08c6f982c45.png",
-        "bytes":  212559,
-        "sha256":  "e08c6f982c45ccc07301dc643c30dcddb8c0411c90eeec19043385146ba9685a"
-    },
-    {
         "url":  "assets/town/west_0.075bfce16a90.jpg",
         "bytes":  185476,
         "sha256":  "075bfce16a90d7e8c493e6ee6c611f436d438767fb3adfcaf29625294e1c1419"
@@ -2271,5 +2251,40 @@
         "url":  "assets/town/west_7.715f992360a1.jpg",
         "bytes":  165274,
         "sha256":  "715f992360a132333fc1cb656b5ec633c5859df621c1cada8307ede6671ca542"
+    },
+    {
+        "url":  "assets/town/b_east_post_0.5bac6a60278b.png",
+        "bytes":  144767,
+        "sha256":  "5bac6a60278bee80a7366d6f85ee92516c63fcf0301550077edf9a6da443804a"
+    },
+    {
+        "url":  "assets/town/b_east_post_1.e1db9a2a4ae3.png",
+        "bytes":  180045,
+        "sha256":  "e1db9a2a4ae3fb29cbe30f834bd9925ce6408aec09bcc7fb93b85905b1ed6d1f"
+    },
+    {
+        "url":  "assets/town/b_east_post_2.f14815eed865.png",
+        "bytes":  188768,
+        "sha256":  "f14815eed865a4041bc8ab27dc45f7d2ece2547fc25ba27d21f87a0545cbf52b"
+    },
+    {
+        "url":  "assets/town/b_east_post_3.6cdddcb27135.png",
+        "bytes":  187294,
+        "sha256":  "6cdddcb2713564b10853e673e1213b86907e4146a3b5f4a980a0584267447464"
+    },
+    {
+        "url":  "assets/wings/items_sheet.08bd92ae2efb.jpg",
+        "bytes":  94535,
+        "sha256":  "08bd92ae2efb3ed1c3e14a9e29568cee8733ec9e563a68fd6ec820553c267299"
+    },
+    {
+        "url":  "assets/wings/emblems_sheet.d6afa68412e4.jpg",
+        "bytes":  81465,
+        "sha256":  "d6afa68412e4b4b0a5451e676e18681dd3df440e457c0ad428d427f3923322fc"
+    },
+    {
+        "url":  "assets/wings/skills_sheet.fc003bafe774.jpg",
+        "bytes":  88724,
+        "sha256":  "fc003bafe774f5a79a23b5feb3369c8e365e72d1efb592d047966527c99e1854"
     }
 ]

@@ -1354,7 +1354,7 @@ function renderTrainingNode(branch,key,opts){
   +'<button type="button" class="st-node-hit" data-skill-select="'+key+'" aria-pressed="'+selected+'">'
   +(isRoot?'<span class="st-root-kicker">'+cfg.rootTag+'</span>':'')
   +badgeHtml
-  +'<span class="st-node-head"><span class="st-icon">'+m.icon+'</span><b class="st-name">'+m.name+'</b></span>'
+  +'<span class="st-node-head"><span class="st-icon">'+(typeof pixelSkillArt==='function'&&pixelSkillArt(key)?pixelSkillArt(key):m.icon)+'</span><b class="st-name">'+m.name+'</b></span>'
   +'<span class="st-tag">'+m.tag+'</span>'
   +trainingPipsHtml(m.level)
   +'</button>'
@@ -1382,7 +1382,7 @@ function renderTrainingInspector(branch,key,opts){
  }
  return '<section class="st-inspector" data-accent="'+group.accent+'">'
   +'<div class="st-ins-head">'
-  +'<span class="st-ins-crest">'+m.icon+'</span>'
+  +'<span class="st-ins-crest">'+(typeof pixelSkillArt==='function'&&pixelSkillArt(key)?pixelSkillArt(key):m.icon)+'</span>'
   +'<div class="st-ins-title"><div class="st-ins-row"><b>'+m.name+'</b><span class="st-ins-branch">'+group.icon+' '+group.name+'</span></div><div class="st-ins-sub">'+trainingPipsHtml(m.level)+'<span>Lv '+m.level+' / 3 · '+m.tag+'</span></div></div>'
   +'</div>'
   +(m.tip?'<div class="st-tip">💡 '+m.tip+'</div>':'')
@@ -5700,11 +5700,11 @@ function renderTownChronicle(){
  }
  html+='<section class="tc-section"><div class="tc-sec-head"><h3>📜 本季工坊契約（'+s.icon+' '+s.name+' · 剩 '+remDays+' 天）</h3><span class="tc-pill">'+(contracts.length>=limit?'已簽 '+contracts.length+'/'+limit:'可選 '+contracts.length+'/'+limit)+'</span></div>';
  if(contracts.length){
-  html+='<div class="tc-active-list">'+contracts.map(c=>'<div class="tc-active-card"><div class="tc-card-top"><span class="tc-icon">'+c.icon+'</span><div><b>'+c.name+'</b><span class="tc-tag">'+c.tag+'</span></div></div><p>'+c.desc+'</p></div>').join('')+'</div>';
+  html+='<div class="tc-active-list">'+contracts.map(c=>'<div class="tc-active-card"><div class="tc-card-top"><span class="tc-icon is-px">'+(typeof pixelEmblemArt==='function'?pixelEmblemArt(c.id,c.name+c.tag):c.icon)+'</span><div><b>'+c.name+'</b><span class="tc-tag">'+c.tag+'</span></div></div><p>'+c.desc+'</p></div>').join('')+'</div>';
  }
  if(contracts.length<limit){
   html+='<p class="tc-intro">每季可從隨機契約中挑選 '+limit+' 張生效，換季重抽，為這一季打造專屬策略！</p><div class="tc-offer-grid">'
-   +m.seasonOffers.filter(id=>!m.contractIds.includes(id)).map(id=>{const c=SEASON_CONTRACTS.find(x=>x.id===id);return c?'<button type="button" class="tc-offer-card" data-pick-contract="'+c.id+'"><div class="tc-card-top"><span class="tc-icon">'+c.icon+'</span><div><b>'+c.name+'</b><span class="tc-tag">'+c.tag+'</span></div></div><small>'+c.desc+'</small><span class="tc-choose">簽署此契約 ✦</span></button>':'';}).join('')
+   +m.seasonOffers.filter(id=>!m.contractIds.includes(id)).map(id=>{const c=SEASON_CONTRACTS.find(x=>x.id===id);return c?'<button type="button" class="tc-offer-card" data-pick-contract="'+c.id+'"><div class="tc-card-top"><span class="tc-icon is-px">'+(typeof pixelEmblemArt==='function'?pixelEmblemArt(c.id,c.name+c.tag):c.icon)+'</span><div><b>'+c.name+'</b><span class="tc-tag">'+c.tag+'</span></div></div><small>'+c.desc+'</small><span class="tc-choose">簽署此契約 ✦</span></button>':'';}).join('')
    +'</div>';
  }
  html+='</section>';
@@ -5751,7 +5751,7 @@ function settlementNextHookHTML(phase){
 function openRunModes(){
  const body=$('runModeBody');if(!body)return;
  body.innerHTML='<p class="tc-intro">選擇一種規則開始新局（皆會保留你的角色外觀與永久圖鑑／紀念章紀錄）：</p><div class="mode-list">'
-  +Object.values(RUN_MODES).map(md=>'<button type="button" class="mode-card" data-start-mode="'+md.id+'"><div class="tc-card-top"><span class="tc-icon">'+md.icon+'</span><div><b>'+md.name+'</b><span class="tc-tag">'+md.tag+'</span></div></div><small>'+md.desc+'</small><span class="tc-choose">以此模式開局 ▶</span></button>').join('')
+  +Object.values(RUN_MODES).map(md=>'<button type="button" class="mode-card" data-start-mode="'+md.id+'"><div class="tc-card-top"><span class="tc-icon is-px">'+(typeof pixelEmblemArt==='function'?pixelEmblemArt(md.id,md.name):md.icon)+'</span><div><b>'+md.name+'</b><span class="tc-tag">'+md.tag+'</span></div></div><small>'+md.desc+'</small><span class="tc-choose">以此模式開局 ▶</span></button>').join('')
   +'</div>';
  $('runModeP').style.display='flex';
 }
@@ -5778,13 +5778,28 @@ $('runModeBody')?.addEventListener('click',e=>{
  if(mBtn)startTrialRun(mBtn.dataset.startMode);
 });
 /* ==========================================================================
-   Gemini Pixel-Art Illustrated Assets for West & East Town Wings:
+   Gemini Pixel-Art Illustrated Assets for Town Wings, Contracts, Trials & Skills:
    - 6 Panoramic Illustrated Modal Scene Headers (fishing, excavate, museum, caravan, tavern, depot)
    - 16 Stardew-Style Pixel Fish Icons (4x4 Sprite Sheet)
    - 12 Stardew-Style Ancient Relic Icons (4x3 Sprite Sheet)
+   - 16 Wing Item / Dig / Caravan / Trade Route Icons (4x4 Sprite Sheet)
+   - 12 Workshop Contract & Trial Mode Wax-Seal Emblems (4x3 Sprite Sheet)
+   - 16 Training Hall Forge & Kitchen Skill Icons (4x4 Sprite Sheet)
    ========================================================================== */
 
-const WING_MODAL_ART={"fishing":"assets/wings/fishing.160d3fd090b1.jpg","excavate":"assets/wings/excavate.97ebe635984f.jpg","museum":"assets/wings/museum.e6779d1ef72e.jpg","caravan":"assets/wings/caravan.9a0ee157ea80.jpg","tavern":"assets/wings/tavern.cb98c1458ddf.jpg","depot":"assets/wings/depot.f752e6367723.jpg","fish_sheet":"assets/wings/fish_sheet.95f1d30773f0.jpg","relic_sheet":"assets/wings/relic_sheet.1f4b69c4ffe9.jpg"};
+const WING_MODAL_ART={
+ "fishing":"assets/wings/fishing.160d3fd090b1.jpg",
+ "excavate":"assets/wings/excavate.97ebe635984f.jpg",
+ "museum":"assets/wings/museum.e6779d1ef72e.jpg",
+ "caravan":"assets/wings/caravan.9a0ee157ea80.jpg",
+ "tavern":"assets/wings/tavern.cb98c1458ddf.jpg",
+ "depot":"assets/wings/depot.f752e6367723.jpg",
+ "fish_sheet":"assets/wings/fish_sheet.95f1d30773f0.jpg",
+ "relic_sheet":"assets/wings/relic_sheet.1f4b69c4ffe9.jpg",
+ "items_sheet":"assets/wings/items_sheet.08bd92ae2efb.jpg",
+ "emblems_sheet":"assets/wings/emblems_sheet.d6afa68412e4.jpg",
+ "skills_sheet":"assets/wings/skills_sheet.fc003bafe774.jpg"
+};
 
 const FISH_SHEET_INDEX={
  spring_trout:0,sakura_carp:1,spring_eel:2,moon_koi:3,
@@ -5799,20 +5814,70 @@ const RELIC_SHEET_INDEX={
  dwarf_hammer:8,royal_cookbook:9,dragon_scale:10,crown_seal:11
 };
 
+const WING_ITEM_SHEET_INDEX={
+ worm:0,star:1,magnet:2,cross:3,
+ rock:4,gold:5,chest:6,seed:7,
+ local:8,harbor:9,imperial:10,spice:11,
+ whetstone:12,frost:13,elixir:14,royal_chest:15,
+ // Caravan shop item IDs
+ spice_pack:11,fresh_ice:13,kitchen_fever:14,spice_rare:11,
+ forge_upg:12,forge_blizz:13,forge_fever:14,dwarf_diamond:12,
+ seed_pack:7,ess_bottle:14,dual_fever:14,elf_bundle:7,
+ royal_burn:12,royal_upg:12,royal_prep:11,royal_chest_item:15
+};
+
+const EMBLEM_SHEET_INDEX={
+ coin:0,forge:1,kitchen:2,fever:3,
+ expedition:4,rush:5,garden:6,contract:7,
+ ironman:8,glass:9,sprint9:10,landmark:11,
+ normal:7,iron_forge:8,gourmet_blitz:2
+};
+
+const SKILL_SHEET_INDEX={
+ mm:0,mn:1,gc:2,mg:3,mc:4,wb:6,cd:7,
+ merge:8,purchase:9,spice:10,patience:11,cool:12,fresh:13,pack:14
+};
+
+function _spriteCell(sheetUrl,idx,cols,rows,cls){
+ const col=idx%cols,row=Math.floor(idx/cols);
+ const x=(col/(cols-1)*100).toFixed(3)+'%',y=(row/(rows-1)*100).toFixed(3)+'%';
+ return '<span class="px-sprite '+cls+'" style="background-image:url(\''+sheetUrl+'\');background-position:'+x+' '+y+'" aria-hidden="true"></span>';
+}
+
 function pixelFishArt(id,locked=false){
- const idx=FISH_SHEET_INDEX[id]??0;
- const col=idx%4,row=Math.floor(idx/4);
- const x=(col/3*100).toFixed(3)+'%',y=(row/3*100).toFixed(3)+'%';
- const cls='px-sprite is-fish'+(locked?' is-locked':'');
- return '<span class="'+cls+'" style="background-image:url(\''+WING_MODAL_ART.fish_sheet+'\');background-position:'+x+' '+y+'" aria-hidden="true"></span>';
+ return _spriteCell(WING_MODAL_ART.fish_sheet,FISH_SHEET_INDEX[id]??0,4,4,'is-fish'+(locked?' is-locked':''));
 }
 
 function pixelRelicArt(id,locked=false){
- const idx=RELIC_SHEET_INDEX[id]??0;
- const col=idx%4,row=Math.floor(idx/4);
- const x=(col/3*100).toFixed(3)+'%',y=(row/2*100).toFixed(3)+'%';
- const cls='px-sprite is-relic'+(locked?' is-locked':'');
- return '<span class="'+cls+'" style="background-image:url(\''+WING_MODAL_ART.relic_sheet+'\');background-position:'+x+' '+y+'" aria-hidden="true"></span>';
+ return _spriteCell(WING_MODAL_ART.relic_sheet,RELIC_SHEET_INDEX[id]??0,4,3,'is-relic'+(locked?' is-locked':''));
+}
+
+function pixelWingItemArt(id){
+ return _spriteCell(WING_MODAL_ART.items_sheet,WING_ITEM_SHEET_INDEX[id]??6,4,4,'is-item');
+}
+
+function pixelEmblemArt(id,fallback=''){
+ let idx=EMBLEM_SHEET_INDEX[id];
+ if(idx===undefined){
+  const s=String(id||fallback||'');
+  if(/forge|冶煉|鍛|錘/.test(s))idx=1;
+  else if(/kitchen|廚|餐|料/.test(s))idx=2;
+  else if(/fever|狂熱|火/.test(s))idx=3;
+  else if(/exp|遠征|戰|劍/.test(s))idx=4;
+  else if(/rush|速|急|時|sprint/.test(s))idx=5;
+  else if(/seed|花|溫室|植/.test(s))idx=6;
+  else if(/iron|鐵人|硬派/.test(s))idx=8;
+  else if(/glass|脆|風險/.test(s))idx=9;
+  else if(/gold|金|商|財/.test(s))idx=0;
+  else idx=7;
+ }
+ return _spriteCell(WING_MODAL_ART.emblems_sheet,idx,4,3,'is-emblem');
+}
+
+function pixelSkillArt(key){
+ const idx=SKILL_SHEET_INDEX[key];
+ if(idx===undefined)return '';
+ return _spriteCell(WING_MODAL_ART.skills_sheet,idx,4,4,'is-skill');
 }
 
 function wingModalSceneArt(mode,night=false){
@@ -5829,7 +5894,7 @@ function wingModalSceneArt(mode,night=false){
    ========================================================================== */
 
 const TOWN_WING_ART={"west_0":"assets/town/west_0.075bfce16a90.jpg","west_1":"assets/town/west_1.1c8f95637f92.jpg","west_2":"assets/town/west_2.4a5fb6e7865b.jpg","west_3":"assets/town/west_3.93da5c032c08.jpg","west_4":"assets/town/west_4.54f87444e33c.jpg","west_5":"assets/town/west_5.f3e9b1a74662.jpg","west_6":"assets/town/west_6.c392d1d03827.jpg","west_7":"assets/town/west_7.715f992360a1.jpg","east_0":"assets/town/east_0.e27993b84a77.jpg","east_1":"assets/town/east_1.7906df80513d.jpg","east_2":"assets/town/east_2.b413bea356e2.jpg","east_3":"assets/town/east_3.4749600e226b.jpg","east_4":"assets/town/east_4.0c8174967348.jpg","east_5":"assets/town/east_5.a138ddcf97b7.jpg","east_6":"assets/town/east_6.165839312d72.jpg","east_7":"assets/town/east_7.b98f591da017.jpg"};
-const TOWN_WING_BUILDING_ART={"west_camp_0":"assets/town/b_west_camp_0.93e31d1901f4.png","west_camp_1":"assets/town/b_west_camp_1.9f7b527e352d.png","west_camp_2":"assets/town/b_west_camp_2.02e8ef46a09f.png","west_camp_3":"assets/town/b_west_camp_3.e38aeb0b5887.png","east_post_0":"assets/town/b_east_post_0.8a9c177f8bd9.png","east_post_1":"assets/town/b_east_post_1.1d5c57224a39.png","east_post_2":"assets/town/b_east_post_2.af9a8a321b7f.png","east_post_3":"assets/town/b_east_post_3.e08c6f982c45.png"};
+const TOWN_WING_BUILDING_ART={"west_camp_0":"assets/town/b_west_camp_0.93e31d1901f4.png","west_camp_1":"assets/town/b_west_camp_1.9f7b527e352d.png","west_camp_2":"assets/town/b_west_camp_2.02e8ef46a09f.png","west_camp_3":"assets/town/b_west_camp_3.e38aeb0b5887.png","east_post_0":"assets/town/b_east_post_0.5bac6a60278b.png","east_post_1":"assets/town/b_east_post_1.e1db9a2a4ae3.png","east_post_2":"assets/town/b_east_post_2.f14815eed865.png","east_post_3":"assets/town/b_east_post_3.6cdddcb27135.png"};
 
 const FISH_CATALOG=[
  {id:'spring_trout',icon:'🐟',name:'晨露溪鱒',season:0,night:false,rarity:0,gold:55},
@@ -6367,7 +6432,7 @@ function renderTownWingModal(){
   title.textContent='🎣 星露釣魚棧橋';
   const curFish=FISH_CATALOG.filter(f=>f.season===si);
   const streakBadge=(w.fishStreak||0)>0?' · 🔥 連釣 ×'+w.fishStreak+' (+'+(w.fishStreak*10)+'%金幣)':'';
-  const baitBar='<div class="tw-bait-row">'+FISH_BAITS.map(b=>'<button type="button" class="tw-bait-btn'+(fishBait===b.id?' is-on':'')+'" onclick="setFishBait(\''+b.id+'\')" '+(fishGame.active?'disabled':'')+'><b>'+b.icon+' '+b.name+(b.cost?' 💰'+b.cost:'')+'</b><small>'+b.desc+'</small></button>').join('')+'</div>';
+  const baitBar='<div class="tw-bait-row">'+FISH_BAITS.map(b=>'<button type="button" class="tw-bait-btn'+(fishBait===b.id?' is-on':'')+'" onclick="setFishBait(\''+b.id+'\')" '+(fishGame.active?'disabled':'')+'><span class="tw-mini-px">'+pixelWingItemArt(b.id)+'</span><b>'+b.name+(b.cost?' 💰'+b.cost:'')+'</b><small>'+b.desc+'</small></button>').join('')+'</div>';
   const banner=lastFishBanner?'<div class="tw-catch-banner"><div class="tw-px-badge">'+pixelFishArt(lastFishBanner.id)+'</div><div><b>'+lastFishBanner.qTag+' '+lastFishBanner.name+' ('+lastFishBanner.cm+'cm) '+'★'.repeat(lastFishBanner.rarity+1)+'</b><small>獲得 💰'+lastFishBanner.reward+(lastFishBanner.isNew?' · ✨ 博物館新登錄！':lastFishBanner.isRecord?' · 👑 刷新最長紀錄！':'')+(lastFishBanner.extra?' · '+lastFishBanner.extra:'')+'</small></div></div>':'';
   const perfCls=fishBait==='star'?' is-wide':'';
   const chestEl=fishBait==='magnet'?'<span class="fish-zone-chest" style="left:'+(fishGame.active?fishGame.chestPos:74)+'%">🎁</span>':'';
@@ -6389,8 +6454,8 @@ function renderTownWingModal(){
   title.textContent='⛏ 古物遺跡探勘（3×3）';
   const opened=w.digBoard.filter(c=>c.open).length;
   const toolBar='<div class="tw-bait-row">'
-   +'<button type="button" class="tw-bait-btn'+(digTool==='pick'?' is-on':'')+'" onclick="setDigTool(\'pick\')"><b>⛏ 精準小鋤</b><small>消耗 1 體力，精準探勘 1 格</small></button>'
-   +'<button type="button" class="tw-bait-btn'+(digTool==='cross'?' is-on':'')+'" onclick="setDigTool(\'cross\')" '+(!sandboxSession&&w.crossUsed?'disabled':'')+'><b>💣 震波十字鏟 💰60</b><small>'+(w.crossUsed&&!sandboxSession?'今日已使用':'一次震開十字 5 格（每日 1 次）')+'</small></button>'
+   +'<button type="button" class="tw-bait-btn'+(digTool==='pick'?' is-on':'')+'" onclick="setDigTool(\'pick\')"><span class="tw-mini-px">'+pixelWingItemArt('rock')+'</span><b>精準小鋤</b><small>消耗 1 體力，精準探勘 1 格</small></button>'
+   +'<button type="button" class="tw-bait-btn'+(digTool==='cross'?' is-on':'')+'" onclick="setDigTool(\'cross\')" '+(!sandboxSession&&w.crossUsed?'disabled':'')+'><span class="tw-mini-px">'+pixelWingItemArt('cross')+'</span><b>震波十字鏟 💰60</b><small>'+(w.crossUsed&&!sandboxSession?'今日已使用':'一次震開十字 5 格（每日 1 次）')+'</small></button>'
    +'</div>';
   body.innerHTML=sceneHdr
    +'<p class="tc-intro">免費體力 <b>'+westRem+' / '+westMax+'</b> · 加場 <b>'+(2-w.westExtra)+'/2</b>（80💰）· 進度 <b>'+opened+'/9</b>（全清 +180💰）<br>🧭 已開地格會感應周圍未挖掘的<b>古物／寶匣數量</b>，推理再下鏟！</p>'
@@ -6399,11 +6464,11 @@ function renderTownWingModal(){
    +w.digBoard.map((c,i)=>{
     if(c.open){
      const near=ruinNeighborRelics(w.digBoard,i);
-     const art=c.v?.relicId?'<div class="dig-px">'+pixelRelicArt(c.v.relicId)+'</div>':'<span>'+(c.v?.icon||'✨')+'</span>';
+     const art=c.v?.relicId?'<div class="dig-px">'+pixelRelicArt(c.v.relicId)+'</div>':'<div class="dig-px">'+pixelWingItemArt(c.t==='seed'?'seed':c.t==='chest'?'chest':'gold')+'</div>';
      return '<div class="dig-cell is-open">'+art+'<b>'+(c.v?.label||'已發掘')+'</b><small>'+(c.v?.sub||'')+'</small>'+(near>0?'<em class="dig-radar">🧭 周圍 '+near+' 寶</em>':'<em class="dig-radar is-clear">✓ 周圍空</em>')+'</div>';
     }
     const disabled=digTool==='cross'?(!sandboxSession&&(w.crossUsed||coins<60)):(!sandboxSession&&westRem<=0&&(w.westExtra>=2||coins<80));
-    return '<button type="button" class="dig-cell'+(digTool==='cross'?' is-cross':'')+'" onclick="digRuinCell('+i+')" '+(disabled?'disabled':'')+'><span>'+(digTool==='cross'?'💣':'🪨')+'</span><b>'+(digTool==='cross'?'十字震波':'點擊探勘')+'</b><small>'+(digTool==='cross'?'💰60 開5格':westRem>0||sandboxSession?'免費體力':'💰80 加場')+'</small></button>';
+    return '<button type="button" class="dig-cell'+(digTool==='cross'?' is-cross':'')+'" onclick="digRuinCell('+i+')" '+(disabled?'disabled':'')+'><div class="dig-px">'+pixelWingItemArt(digTool==='cross'?'cross':'rock')+'</div><b>'+(digTool==='cross'?'十字震波':'點擊探勘')+'</b><small>'+(digTool==='cross'?'💰60 開5格':westRem>0||sandboxSession?'免費體力':'💰80 加場')+'</small></button>';
    }).join('')
    +'</div>'
    +'<p class="tc-intro" style="margin-top:8px">博物館古物進度：<b>'+mus.relics.length+' / '+RELIC_CATALOG.length+'</b></p>';
@@ -6432,7 +6497,7 @@ function renderTownWingModal(){
    +'<p class="tc-intro">'+theme.desc+(disc?' · 🏷 總折扣 -'+disc+'%':'')+' · 持有 💰'+(sandboxSession?'∞':coins)+'</p>'
    +'<div class="tw-barter-box" style="margin-bottom:8px"><div><b>🎲 旅商殺價交涉（每日 1 次）</b><small>'+(w.haggleDone?(w.haggleDisc>0?'✨ 今日殺價成功！全場額外 -15% 折扣生效中！':'今日已交涉過，明天再試手氣。'):'試著與商隊掌櫃議價，68% 機率獲得今日全場額外 -15% 折扣！')+'</small></div><button type="button" class="tw-act" onclick="doCaravanHaggle()" '+(w.haggleDone&&!sandboxSession?'disabled':'')+'>'+(w.haggleDone&&!sandboxSession?(w.haggleDisc>0?'已折 15%':'已交涉'):'🎲 試著殺價')+'</button></div>'
    +'<div class="tw-list">'
-   +items.map(it=>{const sold=w.eastBought.includes(it.id),price=Math.max(10,Math.round(it.cost*(1-totalDisc)));return '<div class="tw-row"><span class="tw-ico">'+it.icon+'</span><div class="tw-info"><b>'+it.name+(it.rare?' ✦':'')+'</b><small>'+it.desc+'</small></div><button type="button" class="tw-act" onclick="buyCaravanItem(\''+it.id+'\')" '+(sold||(!sandboxSession&&coins<price)?'disabled':'')+'>'+(sold?'已售出':'💰'+price)+'</button></div>';}).join('')
+   +items.map(it=>{const sold=w.eastBought.includes(it.id),price=Math.max(10,Math.round(it.cost*(1-totalDisc)));return '<div class="tw-row"><div class="tw-px-badge is-sm">'+pixelWingItemArt(it.id==='royal_chest'?'royal_chest_item':it.id)+'</div><div class="tw-info"><b>'+it.name+(it.rare?' ✦':'')+'</b><small>'+it.desc+'</small></div><button type="button" class="tw-act" onclick="buyCaravanItem(\''+it.id+'\')" '+(sold||(!sandboxSession&&coins<price)?'disabled':'')+'>'+(sold?'已售出':'💰'+price)+'</button></div>';}).join('')
    +'</div>'
    +'<div class="tw-barter-box"><div><b>🤝 旅商以物易物（每日 1 次）</b><small>交付 1 件多餘道具箱物資或花種（目前可用：'+barterCount+' 件），換取 💰140～200＋隨機元素精華＋雙狂熱 +30%！</small></div><button type="button" class="tw-act" onclick="doCaravanBarter()" '+(w.barterDone||barterCount<=0?'disabled':'')+'>'+(w.barterDone?'今日已換':'立即交換')+'</button></div>'
    +'<button type="button" class="tw-link-btn" onclick="closeTownWingModal();openTownChronicle(\'landmarks\')">🏛 升級「皇家旅商驛站」解鎖稀有格與折扣（Lv '+buildingLandmarkTier('east_post')+'/3）</button>';
@@ -6461,7 +6526,7 @@ function renderTownWingModal(){
   }else{
    body.innerHTML=sceneHdr
     +'<p class="tc-intro">投資跨城貿易航線，隔天獲得高倍率金幣與稀有工坊物資！持有 💰'+(sandboxSession?'∞':coins)+'</p><div class="tw-list">'
-    +TRADE_ROUTES.map(rt=>{const locked=eastLv<rt.minLv;return '<div class="tw-row"><span class="tw-ico">'+rt.icon+'</span><div class="tw-info"><b>'+rt.name+'</b><small>'+rt.desc+(locked?'（需驛站 Lv '+rt.minLv+'）':'')+'</small></div><button type="button" class="tw-act" onclick="dispatchTradeShipment(\''+rt.id+'\')" '+(locked||(!sandboxSession&&coins<rt.cost)?'disabled':'')+'>'+(locked?'🔒 Lv'+rt.minLv:'派遣 💰'+rt.cost)+'</button></div>';}).join('')
+    +TRADE_ROUTES.map(rt=>{const locked=eastLv<rt.minLv;return '<div class="tw-row"><div class="tw-px-badge is-sm">'+pixelWingItemArt(rt.id)+'</div><div class="tw-info"><b>'+rt.name+'</b><small>'+rt.desc+(locked?'（需驛站 Lv '+rt.minLv+'）':'')+'</small></div><button type="button" class="tw-act" onclick="dispatchTradeShipment(\''+rt.id+'\')" '+(locked||(!sandboxSession&&coins<rt.cost)?'disabled':'')+'>'+(locked?'🔒 Lv'+rt.minLv:'派遣 💰'+rt.cost)+'</button></div>';}).join('')
     +'</div>';
   }
  }
