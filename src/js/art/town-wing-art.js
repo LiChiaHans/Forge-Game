@@ -74,10 +74,34 @@ function pixelRelicArt(id,locked=false){
 }
 
 const MUSEUM_REALISTIC_ART={
+ "spring_trout":"assets/museum/fish_spring_trout.645f3fb7e335.jpg",
+ "sakura_carp":"assets/museum/fish_sakura_carp.7399c54c4053.jpg",
+ "spring_eel":"assets/museum/fish_spring_eel.7895ce68b82f.jpg",
+ "moon_koi":"assets/museum/fish_moon_koi.ad2ebfad7034.jpg",
+ "sun_perch":"assets/museum/fish_sun_perch.971742ab2dc0.jpg",
+ "summer_crab":"assets/museum/fish_summer_crab.ce33d3a29de6.jpg",
+ "tide_squid":"assets/museum/fish_tide_squid.affffa6ede1f.jpg",
+ "sun_marlin":"assets/museum/fish_sun_marlin.77d6eedf887c.jpg",
+ "maple_salmon":"assets/museum/fish_maple_salmon.4950a67e6754.jpg",
+ "amber_catfish":"assets/museum/fish_amber_catfish.68f99e0d291f.jpg",
+ "harvest_shrimp":"assets/museum/fish_harvest_shrimp.4cded6e804d1.jpg",
+ "golden_sturgeon":"assets/museum/fish_golden_sturgeon.2c273389b429.jpg",
+ "frost_smelt":"assets/museum/fish_frost_smelt.2f7d438d559b.jpg",
+ "snow_pike":"assets/museum/fish_snow_pike.2122e76bc0b1.jpg",
+ "crystal_jelly":"assets/museum/fish_crystal_jelly.d2ff485dcb18.jpg",
+ "aurora_dragonfish":"assets/museum/fish_aurora_dragonfish.1f330d929a66.jpg",
  "old_tongs":"assets/museum/relic_old_tongs.10a5b8a9c6c9.jpg",
  "clay_pot":"assets/museum/relic_clay_pot.65bac3502bd1.jpg",
  "bronze_coin":"assets/museum/relic_bronze_coin.4f5f99dbbf0b.jpg",
- "ember_fossil":"assets/museum/relic_ember_fossil.c44df0a25972.jpg"
+ "ember_fossil":"assets/museum/relic_ember_fossil.c44df0a25972.jpg",
+ "spice_mortar":"assets/museum/relic_spice_mortar.e3c82148bd65.jpg",
+ "rune_tablet":"assets/museum/relic_rune_tablet.c665e8403360.jpg",
+ "star_compass":"assets/museum/relic_star_compass.72e6c320b5e7.jpg",
+ "crystal_lens":"assets/museum/relic_crystal_lens.7bedd4d7ce07.jpg",
+ "dwarf_hammer":"assets/museum/relic_dwarf_hammer.70b0c8d95686.jpg",
+ "royal_cookbook":"assets/museum/relic_royal_cookbook.a371dd0bd860.jpg",
+ "dragon_scale":"assets/museum/relic_dragon_scale.a06d3405c877.jpg",
+ "crown_seal":"assets/museum/relic_crown_seal.b6745c350ad9.jpg"
 };
 
 function museumShowcaseArt(kind,id,locked=false){

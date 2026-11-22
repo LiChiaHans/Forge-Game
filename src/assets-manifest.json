@@ -2208,84 +2208,84 @@
         "sha256":  "fc003bafe774f5a79a23b5feb3369c8e365e72d1efb592d047966527c99e1854"
     },
     {
-        "url":  "assets/town/west_0.6f9eac1c4e4d.jpg",
-        "bytes":  120631,
-        "sha256":  "6f9eac1c4e4d97b69d005d87737b3ee582ac1a9db1a35c2a4a4695e7fd2b5ba5"
+        "url":  "assets/museum/fish_spring_trout.645f3fb7e335.jpg",
+        "bytes":  30951,
+        "sha256":  "645f3fb7e335b5f89919e6d4ff25b57ac4d7574948765111dfadf393d817376c"
     },
     {
-        "url":  "assets/town/west_4.88e169d3f364.jpg",
-        "bytes":  77227,
-        "sha256":  "88e169d3f36499a1c99dc302a49be468670b98f6c62d02884fe12dc282603eb1"
+        "url":  "assets/museum/fish_sakura_carp.7399c54c4053.jpg",
+        "bytes":  31017,
+        "sha256":  "7399c54c40530ed881a0740c63b5ac4dc2f3c29d723ef4a9a99ccee2f5ca5941"
     },
     {
-        "url":  "assets/town/west_1.2c0947918dd2.jpg",
-        "bytes":  141809,
-        "sha256":  "2c0947918dd2310d87c8f6ef603edc1bfb138dfdaf8da8c7c696a3c24762c8cb"
+        "url":  "assets/museum/fish_spring_eel.7895ce68b82f.jpg",
+        "bytes":  24670,
+        "sha256":  "7895ce68b82fd7a9e42db420629a8239c3b7e4f0fe5a3c460300d305d7bd475e"
     },
     {
-        "url":  "assets/town/west_5.93eb26370aef.jpg",
-        "bytes":  90889,
-        "sha256":  "93eb26370aef26f41f47ff4a6fed55f3504bfcaf57a48e5324c3c6f08fe40185"
+        "url":  "assets/museum/fish_moon_koi.ad2ebfad7034.jpg",
+        "bytes":  28647,
+        "sha256":  "ad2ebfad7034e9f164d75a4c5058e3ff518035522f2510b67d7716310b0161e7"
     },
     {
-        "url":  "assets/town/west_2.2ec3985460f6.jpg",
-        "bytes":  132602,
-        "sha256":  "2ec3985460f6258b82c6adf12afae542e92204db84db28f72d90d5baf16da74d"
+        "url":  "assets/museum/fish_sun_perch.971742ab2dc0.jpg",
+        "bytes":  24992,
+        "sha256":  "971742ab2dc0bd9b767f158b18b8ee8b12562f4595336493229b3d7e4da0b123"
     },
     {
-        "url":  "assets/town/west_6.464da19f180b.jpg",
-        "bytes":  86300,
-        "sha256":  "464da19f180bca0b6ed6112e386ebe519d7ace349541efda0874c85bd02b328b"
+        "url":  "assets/museum/fish_summer_crab.ce33d3a29de6.jpg",
+        "bytes":  35055,
+        "sha256":  "ce33d3a29de603a16ff439d650b5b2db84c501289e30f050db3bab4f6545adcd"
     },
     {
-        "url":  "assets/town/west_3.4d6cf3838b3b.jpg",
-        "bytes":  142784,
-        "sha256":  "4d6cf3838b3bfa57ef7dc4bc1b637937a976d42517a9b38d1b9e39ebe791e1d0"
+        "url":  "assets/museum/fish_tide_squid.affffa6ede1f.jpg",
+        "bytes":  22919,
+        "sha256":  "affffa6ede1f4acbc4386bec4c1a2971374a4aa7644e0d656d9822f8faaf94cb"
     },
     {
-        "url":  "assets/town/west_7.af4b194bda7c.jpg",
-        "bytes":  91460,
-        "sha256":  "af4b194bda7cb69a607b1a75b1ebd96f6ee71042010047a7170547e892d36343"
+        "url":  "assets/museum/fish_sun_marlin.77d6eedf887c.jpg",
+        "bytes":  25502,
+        "sha256":  "77d6eedf887ca3a65ad5823d4cc02623716002c7d0fb67c9581110c34a356144"
     },
     {
-        "url":  "assets/town/east_0.748b753a35a3.jpg",
-        "bytes":  122889,
-        "sha256":  "748b753a35a386efdae02d68a9d892e9239ee1e0471e5814b27d1cf3e5c6eeb0"
+        "url":  "assets/museum/fish_maple_salmon.4950a67e6754.jpg",
+        "bytes":  23609,
+        "sha256":  "4950a67e6754b00fae77269656cad596bf6e6a9ed9be0eb884c7226100dc3d16"
     },
     {
-        "url":  "assets/town/east_4.1d18c341491c.jpg",
-        "bytes":  78127,
-        "sha256":  "1d18c341491cf493852b23965bb1275b10c489b25fcdb9d3e67c8799abf29ae5"
+        "url":  "assets/museum/fish_amber_catfish.68f99e0d291f.jpg",
+        "bytes":  34163,
+        "sha256":  "68f99e0d291f5251637ae49b9eabb6cdcff305df8a83560d63015bf129572fc9"
     },
     {
-        "url":  "assets/town/east_1.06f6aa42e5bd.jpg",
-        "bytes":  160198,
-        "sha256":  "06f6aa42e5bd1f9502e01a3969371caa5b5ef6768af12a9b3f0db4a1c839c7e7"
+        "url":  "assets/museum/fish_harvest_shrimp.4cded6e804d1.jpg",
+        "bytes":  30143,
+        "sha256":  "4cded6e804d14cb5479028c05d0e39473764488d0743748eaf0270c0d0da0dc4"
     },
     {
-        "url":  "assets/town/east_5.30c3369996aa.jpg",
-        "bytes":  101507,
-        "sha256":  "30c3369996aa4e88b318e0453b0532f03289dc5608259362f8e0d5d71f52f3be"
+        "url":  "assets/museum/fish_golden_sturgeon.2c273389b429.jpg",
+        "bytes":  30094,
+        "sha256":  "2c273389b4295caa2b6f26528f79aa65cbc0d1b932a89f6598fcdeee6b283c26"
     },
     {
-        "url":  "assets/town/east_2.594d6fc689d3.jpg",
-        "bytes":  133036,
-        "sha256":  "594d6fc689d36d504bd1f470ca4a47cc0b9bfa4ac15ff61ffb256a1d975df7b1"
+        "url":  "assets/museum/fish_frost_smelt.2f7d438d559b.jpg",
+        "bytes":  24814,
+        "sha256":  "2f7d438d559b615bc5621170564a54fe22dda36bea94a844d955fed92c73b8c4"
     },
     {
-        "url":  "assets/town/east_6.c352ac1ecfb2.jpg",
-        "bytes":  85337,
-        "sha256":  "c352ac1ecfb22eb2d6922be7ef0f5b0f0cbe4a5cfe45b5cbd03fc8e14a8d593d"
+        "url":  "assets/museum/fish_snow_pike.2122e76bc0b1.jpg",
+        "bytes":  28854,
+        "sha256":  "2122e76bc0b15fa99ae6869cbae647223c3abdf389d0a6e874922869c88aaf45"
     },
     {
-        "url":  "assets/town/east_3.0f6ccb44b495.jpg",
-        "bytes":  143139,
-        "sha256":  "0f6ccb44b495360ea3da53b09ce44978235250754c793f5e4689fb852b77a9b4"
+        "url":  "assets/museum/fish_crystal_jelly.d2ff485dcb18.jpg",
+        "bytes":  28585,
+        "sha256":  "d2ff485dcb180ec975f96c4209d5afc4c615f6e333d12102bc9dcf5a5fb441c5"
     },
     {
-        "url":  "assets/town/east_7.7c9c34d691c6.jpg",
-        "bytes":  94722,
-        "sha256":  "7c9c34d691c623e9e3727b2bdac61a3610351d8590f414f231e9b8b21585a7d0"
+        "url":  "assets/museum/fish_aurora_dragonfish.1f330d929a66.jpg",
+        "bytes":  26513,
+        "sha256":  "1f330d929a663315a68ec9decb1d5a7fda4e1c3b98def72cb62c12d64a9be00c"
     },
     {
         "url":  "assets/museum/relic_old_tongs.10a5b8a9c6c9.jpg",
@@ -2306,5 +2306,130 @@
         "url":  "assets/museum/relic_ember_fossil.c44df0a25972.jpg",
         "bytes":  24807,
         "sha256":  "c44df0a259723f93cc3fb821022572490705261a8d6f17be797366b865df647f"
+    },
+    {
+        "url":  "assets/museum/relic_spice_mortar.e3c82148bd65.jpg",
+        "bytes":  27651,
+        "sha256":  "e3c82148bd6590a4f85f657e708db68cd4ac2abdc8817f2e01b32da3d7137e8d"
+    },
+    {
+        "url":  "assets/museum/relic_rune_tablet.c665e8403360.jpg",
+        "bytes":  27248,
+        "sha256":  "c665e8403360881327b4b5b9ec3e82d52dfeaf8d2fb4e0d96e2b864ec973265b"
+    },
+    {
+        "url":  "assets/museum/relic_star_compass.72e6c320b5e7.jpg",
+        "bytes":  30874,
+        "sha256":  "72e6c320b5e7951e6a591708f502d913f4a0212be9c8a0e94440d89c960a60da"
+    },
+    {
+        "url":  "assets/museum/relic_crystal_lens.7bedd4d7ce07.jpg",
+        "bytes":  25759,
+        "sha256":  "7bedd4d7ce07c6e8295348164ea2809032dd8104b06b5dc5c4af9d7dc03d36d5"
+    },
+    {
+        "url":  "assets/museum/relic_dwarf_hammer.70b0c8d95686.jpg",
+        "bytes":  31210,
+        "sha256":  "70b0c8d95686bdc2c6bed4ec3f09da069dd05a2d3ce66698c0fe407401b0e135"
+    },
+    {
+        "url":  "assets/museum/relic_royal_cookbook.a371dd0bd860.jpg",
+        "bytes":  33292,
+        "sha256":  "a371dd0bd860c34232ff873a4b2b4249895ad9e1e8c1602a66f9da5b19d3e96f"
+    },
+    {
+        "url":  "assets/museum/relic_dragon_scale.a06d3405c877.jpg",
+        "bytes":  27469,
+        "sha256":  "a06d3405c877a9df1e0f9eca03eaf4c326422d7c04a236fa2c1ba241f0da020f"
+    },
+    {
+        "url":  "assets/museum/relic_crown_seal.b6745c350ad9.jpg",
+        "bytes":  29520,
+        "sha256":  "b6745c350ad956fa5179e17ef07469d5ebce593e43ceb16548d5efc46521a0f4"
+    },
+    {
+        "url":  "assets/town/west_0.0ae9465d4e62.jpg",
+        "bytes":  149135,
+        "sha256":  "0ae9465d4e62c66a2db88a87bdf2855b7792700b5c4782d8289b79ec5bbece52"
+    },
+    {
+        "url":  "assets/town/west_4.8ac8eac803bd.jpg",
+        "bytes":  96730,
+        "sha256":  "8ac8eac803bd0bffc4168fbf10672c9061bb653d3f7ae61f5a3f03f0d26c064a"
+    },
+    {
+        "url":  "assets/town/west_1.88521da6c69c.jpg",
+        "bytes":  166013,
+        "sha256":  "88521da6c69c85cfb6958d29ec9e1a5f025c57d73ce1c34286cbb92b2c515966"
+    },
+    {
+        "url":  "assets/town/west_5.ddde06675336.jpg",
+        "bytes":  108384,
+        "sha256":  "ddde06675336ebb5cc6e11ebd2f2c18926cf651307db1a12a1c87de9c9e53373"
+    },
+    {
+        "url":  "assets/town/west_2.380e2a2157ae.jpg",
+        "bytes":  151768,
+        "sha256":  "380e2a2157aed4e60c3a353f945e694df5ac77bc2e65f6e58406f58cd308953e"
+    },
+    {
+        "url":  "assets/town/west_6.eacc401f7d25.jpg",
+        "bytes":  95487,
+        "sha256":  "eacc401f7d25548a7c2f8cf77378dc024a985d1d98cd62f95dfc24406d18f371"
+    },
+    {
+        "url":  "assets/town/west_3.e1b896303b80.jpg",
+        "bytes":  161759,
+        "sha256":  "e1b896303b80e42100dec8929ac4e1a33bed61f59e867655c911d79c1cb21b8f"
+    },
+    {
+        "url":  "assets/town/west_7.6dffbec24930.jpg",
+        "bytes":  108098,
+        "sha256":  "6dffbec249300e182b3fe3247d71b43cdde41f646b0c7988ea9cabe7ce192ecc"
+    },
+    {
+        "url":  "assets/town/east_0.6140f77eabf7.jpg",
+        "bytes":  151438,
+        "sha256":  "6140f77eabf751079e3039ae706d246da2dc2c054d39ff2d87e22b5151f48ad8"
+    },
+    {
+        "url":  "assets/town/east_4.9b2a308c7028.jpg",
+        "bytes":  97618,
+        "sha256":  "9b2a308c7028dba8c6a486c68fcc6f001632c3a11b34088a75a82c8692805b5c"
+    },
+    {
+        "url":  "assets/town/east_1.362c74d1efac.jpg",
+        "bytes":  155455,
+        "sha256":  "362c74d1efac01d0dac4e3023f6243628006397bc3f3800552466ae190bce921"
+    },
+    {
+        "url":  "assets/town/east_5.4a903d4c1ca0.jpg",
+        "bytes":  99543,
+        "sha256":  "4a903d4c1ca073b4cc6db46c700015a94459ef00e46b1ab43a7b95333bd23dd1"
+    },
+    {
+        "url":  "assets/town/east_2.096f09a54b6c.jpg",
+        "bytes":  155489,
+        "sha256":  "096f09a54b6c551f1a8204772e3db21434ace3e03111d7b4f0c9660c9911ab45"
+    },
+    {
+        "url":  "assets/town/east_6.2b4909b284ef.jpg",
+        "bytes":  100112,
+        "sha256":  "2b4909b284ef283505f43cf852b372531f80de69b12bc53b8674757c8a82fdfd"
+    },
+    {
+        "url":  "assets/town/east_3.0a46f761098d.jpg",
+        "bytes":  174311,
+        "sha256":  "0a46f761098d75d60e526ec031ee918d66eeb4ee563a5eb30a6bfb54ee9bef5b"
+    },
+    {
+        "url":  "assets/town/east_7.2c4bad31e44a.jpg",
+        "bytes":  118360,
+        "sha256":  "2c4bad31e44a00e1556231e27288b35baa1ad6f2e7f255a223729e25ab51552a"
+    },
+    {
+        "url":  "assets/town/east_windmill_sails.ca9d356a4f8b.png",
+        "bytes":  86960,
+        "sha256":  "ca9d356a4f8b46ff515ce7fe52c07079d1eee071c7e325ce6957a8183cd8c99a"
     }
 ]

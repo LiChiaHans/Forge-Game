@@ -5,7 +5,7 @@
    - Navigation: Road Arrow Buttons, Zone Pill Bar, & Left/Right Swipe Gesture
    ========================================================================== */
 
-const TOWN_WING_ART={"west_0":"assets/town/west_0.6f9eac1c4e4d.jpg","west_1":"assets/town/west_1.2c0947918dd2.jpg","west_2":"assets/town/west_2.2ec3985460f6.jpg","west_3":"assets/town/west_3.4d6cf3838b3b.jpg","west_4":"assets/town/west_4.88e169d3f364.jpg","west_5":"assets/town/west_5.93eb26370aef.jpg","west_6":"assets/town/west_6.464da19f180b.jpg","west_7":"assets/town/west_7.af4b194bda7c.jpg","east_0":"assets/town/east_0.748b753a35a3.jpg","east_1":"assets/town/east_1.06f6aa42e5bd.jpg","east_2":"assets/town/east_2.594d6fc689d3.jpg","east_3":"assets/town/east_3.0f6ccb44b495.jpg","east_4":"assets/town/east_4.1d18c341491c.jpg","east_5":"assets/town/east_5.30c3369996aa.jpg","east_6":"assets/town/east_6.c352ac1ecfb2.jpg","east_7":"assets/town/east_7.7c9c34d691c6.jpg"};
+const TOWN_WING_ART={"west_0":"assets/town/west_0.0ae9465d4e62.jpg","west_1":"assets/town/west_1.88521da6c69c.jpg","west_2":"assets/town/west_2.380e2a2157ae.jpg","west_3":"assets/town/west_3.e1b896303b80.jpg","west_4":"assets/town/west_4.8ac8eac803bd.jpg","west_5":"assets/town/west_5.ddde06675336.jpg","west_6":"assets/town/west_6.eacc401f7d25.jpg","west_7":"assets/town/west_7.6dffbec24930.jpg","east_0":"assets/town/east_0.6140f77eabf7.jpg","east_1":"assets/town/east_1.362c74d1efac.jpg","east_2":"assets/town/east_2.096f09a54b6c.jpg","east_3":"assets/town/east_3.0a46f761098d.jpg","east_4":"assets/town/east_4.9b2a308c7028.jpg","east_5":"assets/town/east_5.4a903d4c1ca0.jpg","east_6":"assets/town/east_6.2b4909b284ef.jpg","east_7":"assets/town/east_7.2c4bad31e44a.jpg","east_windmill_sails":"assets/town/east_windmill_sails.ca9d356a4f8b.png"};
 const TOWN_WING_BUILDING_ART={"west_camp_0":"assets/town/b_west_camp_0.93e31d1901f4.png","west_camp_1":"assets/town/b_west_camp_1.9f7b527e352d.png","west_camp_2":"assets/town/b_west_camp_2.02e8ef46a09f.png","west_camp_3":"assets/town/b_west_camp_3.e38aeb0b5887.png","east_post_0":"assets/town/b_east_post_0.5bac6a60278b.png","east_post_1":"assets/town/b_east_post_1.e1db9a2a4ae3.png","east_post_2":"assets/town/b_east_post_2.f14815eed865.png","east_post_3":"assets/town/b_east_post_3.6cdddcb27135.png"};
 
 const FISH_CATALOG=[
@@ -351,6 +351,7 @@ function renderTownWing(){
    +tierBadge
    +'<div class="town-wing-fx is-east" aria-hidden="true">'
    +'<span class="tw-sunbeam b1"></span>'
+   +'<div class="es-windmill"><img class="wm-sails-img" src="'+TOWN_WING_ART.east_windmill_sails+'" alt="" decoding="async"></div>'
    +'<span class="es-stream-glint g1"></span><span class="es-stream-glint g2"></span>'
    +'<span class="tw-night-halo is-tavern"></span><span class="tw-night-halo is-dock"></span>'
    +'</div>'
