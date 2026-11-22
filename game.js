@@ -6457,9 +6457,8 @@ function renderTownWing(){
   const theme=CARAVAN_THEMES[(day-1)%CARAVAN_THEMES.length];
   const tierBadge=eastLv>0?'<div class="tw-tier-banner">🛒 '+TOWN_LANDMARKS.east_post.tierNames[eastLv-1]+' '+'★'.repeat(eastLv)+'</div>':'';
   const postSprite=TOWN_WING_BUILDING_ART['east_post_'+eastLv]||TOWN_WING_BUILDING_ART.east_post_0;
-  const g1=visitors[0],g2=visitors[1];
-  const npc1=g1&&typeof TOWN_GUEST_ART!=='undefined'&&TOWN_GUEST_ART[g1.guestId]?'<button type="button" class="es-guest-npc is-n1" onclick="openTownWingModal(\'tavern\')" title="'+g1.name+'（今日在店）"><span class="npc-bubble">🍻</span><img src="'+TOWN_GUEST_ART[g1.guestId]+'" alt="'+g1.name+'" decoding="async"></button>':'';
-  const npc2=g2&&typeof TOWN_GUEST_ART!=='undefined'&&TOWN_GUEST_ART[g2.guestId]?'<button type="button" class="es-guest-npc is-n2" onclick="openTownWingModal(\'tavern\')" title="'+g2.name+'（今日在店）"><span class="npc-bubble">🎵</span><img src="'+TOWN_GUEST_ART[g2.guestId]+'" alt="'+g2.name+'" decoding="async"></button>':'';
+  const bubbles=['🍻','🎵','💰'];
+  const npcsHtml=visitors.slice(0,3).map((g,idx)=>g&&typeof TOWN_GUEST_ART!=='undefined'&&TOWN_GUEST_ART[g.guestId]?'<button type="button" class="es-guest-npc is-n'+(idx+1)+'" onclick="openTownWingModal(\'tavern\')" title="'+g.name+'（今日在店）"><span class="npc-bubble">'+bubbles[idx%bubbles.length]+'</span><span class="npc-body"><img src="'+TOWN_GUEST_ART[g.guestId]+'" alt="'+g.name+'" decoding="async"></span></button>':'').join('');
   layer.innerHTML='<img class="town-wing-bg" src="'+bgUrl+'" alt="東側旅商大道" decoding="async">'
    +tierBadge
    +'<div class="town-wing-fx is-east" aria-hidden="true">'
@@ -6467,7 +6466,7 @@ function renderTownWing(){
    +'<span class="es-stream-glint g1"></span><span class="es-stream-glint g2"></span>'
    +'<span class="tw-night-halo is-tavern"></span><span class="tw-night-halo is-dock"></span>'
    +'</div>'
-   +npc1+npc2
+   +npcsHtml
    +'<button type="button" class="town-wing-spot is-building" data-landmark-tier="'+eastLv+'" style="left:52%;top:13%;width:46%;height:29%" onclick="openTownWingModal(\'caravan\')"><img class="tw-building-sprite" src="'+postSprite+'" alt="皇家旅商驛站" decoding="async"><span class="tw-plaque">'+theme.icon+' '+theme.name+'<small>特賣＋以物易物 · Lv '+eastLv+'/3</small></span></button>'
    +'<button type="button" class="town-wing-spot" style="left:54%;top:43%;width:38%;height:20%" onclick="openTownWingModal(\'depot\')"><span class="tw-plaque">📦 跨城商隊碼頭<small>'+(shipReady?'✨ 商隊已返航！':w.shipment?'🚢 航行中':'投資賺翻倍')+'</small></span></button>'
    +'<button type="button" class="town-wing-spot" style="left:6%;top:61%;width:48%;height:27%" onclick="openTownWingModal(\'tavern\')"><span class="tw-plaque">🍺 旅人常客酒館<small>常客委託與好感度</small></span></button>'
