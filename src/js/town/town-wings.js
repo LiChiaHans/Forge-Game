@@ -9,22 +9,22 @@ const TOWN_WING_ART={"west_0":"assets/town/west_0.6f9eac1c4e4d.jpg","west_1":"as
 const TOWN_WING_BUILDING_ART={"west_camp_0":"assets/town/b_west_camp_0.93e31d1901f4.png","west_camp_1":"assets/town/b_west_camp_1.9f7b527e352d.png","west_camp_2":"assets/town/b_west_camp_2.02e8ef46a09f.png","west_camp_3":"assets/town/b_west_camp_3.e38aeb0b5887.png","east_post_0":"assets/town/b_east_post_0.5bac6a60278b.png","east_post_1":"assets/town/b_east_post_1.e1db9a2a4ae3.png","east_post_2":"assets/town/b_east_post_2.f14815eed865.png","east_post_3":"assets/town/b_east_post_3.6cdddcb27135.png"};
 
 const FISH_CATALOG=[
- {id:'spring_trout',icon:'🐟',name:'晨露溪鱒',season:0,night:false,rarity:0,gold:55},
- {id:'sakura_carp',icon:'🎏',name:'櫻花錦鯉',season:0,night:false,rarity:1,gold:110},
- {id:'spring_eel',icon:'🐍',name:'星光鰻魚',season:0,night:true,rarity:1,gold:125},
- {id:'moon_koi',icon:'✨',name:'月光神鯉',season:0,night:true,rarity:2,gold:220},
- {id:'sun_perch',icon:'🐠',name:'珊瑚鱸魚',season:1,night:false,rarity:0,gold:60},
- {id:'summer_crab',icon:'🦀',name:'金殼溪蟹',season:1,night:false,rarity:1,gold:115},
- {id:'tide_squid',icon:'🦑',name:'螢光夜魷',season:1,night:true,rarity:1,gold:130},
- {id:'sun_marlin',icon:'🐬',name:'碧海旗魚王',season:1,night:false,rarity:2,gold:230},
- {id:'maple_salmon',icon:'🐟',name:'楓紅鮭魚',season:2,night:false,rarity:0,gold:65},
- {id:'amber_catfish',icon:'🐡',name:'琥珀鬍鯰',season:2,night:false,rarity:1,gold:120},
- {id:'harvest_shrimp',icon:'🦐',name:'秋月金蝦',season:2,night:true,rarity:1,gold:135},
- {id:'golden_sturgeon',icon:'👑',name:'黃金皇鱘',season:2,night:true,rarity:2,gold:240},
- {id:'frost_smelt',icon:'🐟',name:'寒冰香魚',season:3,night:false,rarity:0,gold:70},
- {id:'snow_pike',icon:'🦈',name:'雪紋冰梭',season:3,night:false,rarity:1,gold:125},
- {id:'crystal_jelly',icon:'🪼',name:'星晶水母',season:3,night:true,rarity:1,gold:140},
- {id:'aurora_dragonfish',icon:'🐉',name:'極光冰龍魚',season:3,night:true,rarity:2,gold:260}
+ {id:'spring_trout',icon:'🐟',name:'晨露溪鱒',season:0,night:false,rarity:0,gold:55,desc:'棲息在春季清澈溪流的銀青溪鱒，肉質細嫩甘甜，是暖爐餐廳春季招牌湯品的上選。'},
+ {id:'sakura_carp',icon:'🎏',name:'櫻花錦鯉',season:0,night:false,rarity:1,gold:110,desc:'背脊帶著粉嫩櫻花斑紋的稀有錦鯉，常在花瓣飄落水面時躍出溪潭。'},
+ {id:'spring_eel',icon:'🐍',name:'星光鰻魚',season:0,night:true,rarity:1,gold:125,desc:'只在春夜出沒的微光青藍長鰻，蒲燒後散發令人回味無窮的焦香。'},
+ {id:'moon_koi',icon:'✨',name:'月光神鯉',season:0,night:true,rarity:2,gold:220,desc:'傳說中額頭印有金月紋章的靈魚，在滿月春夜現身，象徵餐廳來年大吉。'},
+ {id:'sun_perch',icon:'🐠',name:'珊瑚鱸魚',season:1,night:false,rarity:0,gold:60,desc:'夏日陽光下閃耀橘紅條紋的肥美溪鱸，清蒸或香煎皆風味絕佳。'},
+ {id:'summer_crab',icon:'🦀',name:'金殼溪蟹',season:1,night:false,rarity:1,gold:115,desc:'藏身瀑布岩縫的黃金甲殼河蟹，蟹膏飽滿濃郁，深受饕客追捧。'},
+ {id:'tide_squid',icon:'🦑',name:'螢光夜魷',season:1,night:true,rarity:1,gold:130,desc:'夏夜裡散發紫藍螢光的神祕溪魷，彈性十足，適合搭配辛香快炒。'},
+ {id:'sun_marlin',icon:'🐬',name:'碧海旗魚王',season:1,night:false,rarity:2,gold:230,desc:'沿著盛夏暖流逆游而上的王者旗魚，生魚片與炙燒料理皆為王國頂級饗宴。'},
+ {id:'maple_salmon',icon:'🐟',name:'楓紅鮭魚',season:2,night:false,rarity:0,gold:65,desc:'秋季洄游的緋紅鮭魚，油脂豐厚，烤過後香氣四溢。'},
+ {id:'amber_catfish',icon:'🐡',name:'琥珀鬍鯰',season:2,night:false,rarity:1,gold:120,desc:'棲息在秋溪深潭底部的金色大鯰魚，燉煮濃湯時能釋放極致鮮味。'},
+ {id:'harvest_shrimp',icon:'🦐',name:'秋月金蝦',season:2,night:true,rarity:1,gold:135,desc:'秋夜水面泛金光時現身的晶瑩金蝦，甜脆多汁。'},
+ {id:'golden_sturgeon',icon:'👑',name:'黃金皇鱘',season:2,night:true,rarity:2,gold:240,desc:'頭戴天然金冠紋的傳說皇鱘，其魚子醬被譽為王室晚宴的夢幻極品。'},
+ {id:'frost_smelt',icon:'🐟',name:'寒冰香魚',season:3,night:false,rarity:0,gold:70,desc:'冬日冰溪中通體剔透的小型香魚，酥炸後外酥內嫩、清香不膩。'},
+ {id:'snow_pike',icon:'🦈',name:'雪紋冰梭',season:3,night:false,rarity:1,gold:125,desc:'身披銀白雪紋的敏捷冬魚，肉質緊實彈牙，適合冬季熱鍋料理。'},
+ {id:'crystal_jelly',icon:'🪼',name:'星晶水母',season:3,night:true,rarity:1,gold:140,desc:'冬夜冰潭中漂浮的藍晶水母，冰涼爽脆，是罕見的宮廷冷盤珍饈。'},
+ {id:'aurora_dragonfish',icon:'🐉',name:'極光冰龍魚',season:3,night:true,rarity:2,gold:260,desc:'只有在寒冬星夜瀑布下才會現身的幻獸級魚王，鱗片折射著極光色彩。'}
 ];
 
 const RELIC_CATALOG=[
@@ -151,31 +151,64 @@ const FISH_BAITS=[
 let townZone='center',townWingModalMode=null,museumTab='fish',tavernTab='today',lastFishBanner=null,fishBait='worm',digTool='pick';
 let fishGame={active:false,pos:50,dir:1,raf:0,lastTs:0,chestPos:74,speed:0.135};
 
+let relicPuzzle={active:false,id:null,tiles:[],selected:-1,moves:0};
+
+function fishStarLevel(count){return count>=9?3:count>=6?2:count>=3?1:0;}
+
 function loadTownMuseum(){
  try{
   const raw=JSON.parse(gameStorage.getItem(TOWN_MUSEUM_KEY)||'{}');
+  const fish=Array.isArray(raw.fish)?raw.fish.filter(id=>FISH_CATALOG.some(f=>f.id===id)):[];
+  const relics=Array.isArray(raw.relics)?raw.relics.filter(id=>RELIC_CATALOG.some(r=>r.id===id)):[];
+  const fishCounts=raw.fishCounts&&typeof raw.fishCounts==='object'?{...raw.fishCounts}:{};
+  fish.forEach(id=>{if(!fishCounts[id])fishCounts[id]=1;});
+  const relicShards=raw.relicShards&&typeof raw.relicShards==='object'?{...raw.relicShards}:{};
+  relics.forEach(id=>{if((relicShards[id]||0)<9)relicShards[id]=9;});
   return {
-   fish:Array.isArray(raw.fish)?raw.fish.filter(id=>FISH_CATALOG.some(f=>f.id===id)):[],
-   relics:Array.isArray(raw.relics)?raw.relics.filter(id=>RELIC_CATALOG.some(r=>r.id===id)):[],
+   fish,relics,fishCounts,relicShards,
    fishMax:raw.fishMax&&typeof raw.fishMax==='object'?raw.fishMax:{}
   };
- }catch(e){return {fish:[],relics:[],fishMax:{}};}
+ }catch(e){return {fish:[],relics:[],fishCounts:{},relicShards:{},fishMax:{}};}
 }
 function saveTownMuseum(m){
- if(sandboxSession)return;
+ // gameStorage automatically isolates sandboxStorage during backend testing and localStorage during formal play.
  try{gameStorage.setItem(TOWN_MUSEUM_KEY,JSON.stringify(m));}catch(e){}
 }
 function registerMuseumItem(kind,id,cm=0){
  const m=loadTownMuseum(),arr=kind==='fish'?m.fish:m.relics;
  const isNew=!arr.includes(id);
- let isRecord=false;
+ let isRecord=false,starUp=0;
  if(isNew)arr.push(id);
- if(kind==='fish'&&cm>0){
-  const prev=Number(m.fishMax[id]||0);
-  if(cm>prev){m.fishMax[id]=cm;if(!isNew)isRecord=true;}
+ if(kind==='fish'){
+  const prevC=Number(m.fishCounts[id]||0),nextC=prevC+1;
+  m.fishCounts[id]=nextC;
+  if(fishStarLevel(nextC)>fishStarLevel(prevC))starUp=fishStarLevel(nextC);
+  if(cm>0){
+   const prev=Number(m.fishMax[id]||0);
+   if(cm>prev){m.fishMax[id]=cm;if(!isNew)isRecord=true;}
+  }
  }
- if(isNew||isRecord)saveTownMuseum(m);
- return {isNew,isRecord,total:m.fish.length+m.relics.length};
+ saveTownMuseum(m);
+ return {isNew,isRecord,starUp,count:kind==='fish'?m.fishCounts[id]:1,total:m.fish.length+m.relics.length};
+}
+function registerRelicShard(id,gain=1){
+ const m=loadTownMuseum();
+ const prev=Math.min(9,Number(m.relicShards[id]||0));
+ const next=Math.min(9,prev+gain);
+ m.relicShards[id]=next;
+ saveTownMuseum(m);
+ return {prev,next,readyToAssemble:next>=9&&!m.relics.includes(id),completed:m.relics.includes(id)};
+}
+function museumFishKitchenBonus(mus){
+ const m=mus||loadTownMuseum();
+ let stars=0;
+ for(const f of FISH_CATALOG)stars+=fishStarLevel(m.fishCounts?.[f.id]||0);
+ return {stars,bonus:Math.min(.42,stars*.015)};
+}
+function museumRelicForgeBonus(mus){
+ const m=mus||loadTownMuseum();
+ const count=m.relics.length;
+ return {count,bonus:Math.min(.36,count*.025)};
 }
 
 function createDailyDigBoard(){
@@ -213,9 +246,9 @@ function setTavernTab(t){tavernTab=t;renderTownWingModal();}
 function townWingBonuses(){
  if(day<1)return {forgeSale:0,kitchenSale:0,battleAtk:0,battleDef:0};
  const w=ensureTownWings(),reg=w.regulars||{},mus=loadTownMuseum();
- const musCount=mus.fish.length+mus.relics.length;
- const musSale=Math.min(.14,Math.floor(musCount/4)*.02);
- let forgeSale=musSale,kitchenSale=musSale,battleAtk=0,battleDef=0;
+ const fishK=museumFishKitchenBonus(mus).bonus;
+ const relicF=museumRelicForgeBonus(mus).bonus;
+ let forgeSale=relicF,kitchenSale=fishK,battleAtk=0,battleDef=0;
  for(const r of TOWN_REGULARS){
   const lv=reg[r.id]||0;
   if(lv<3)continue;
@@ -227,7 +260,7 @@ function townWingBonuses(){
   else if(r.stat==='atk')battleAtk+=(hi?.08:.04);
   else if(r.stat==='def')battleDef+=(hi?.08:.04);
  }
- return {forgeSale:Math.min(.45,forgeSale),kitchenSale:Math.min(.45,kitchenSale),battleAtk:Math.min(.28,battleAtk),battleDef:Math.min(.28,battleDef)};
+ return {forgeSale:Math.min(.60,forgeSale),kitchenSale:Math.min(.60,kitchenSale),battleAtk:Math.min(.28,battleAtk),battleDef:Math.min(.28,battleDef)};
 }
 
 function setTownZone(zone){
@@ -241,7 +274,9 @@ function renderTownWing(){
  const layer=$('townWingLayer'),goW=$('townGoWest'),goE=$('townGoEast'),dots=$('townZoneDots');
  if(!layer||!goW||!goE||!dots)return;
  const enabled=expandedGameEnabled()&&day>0;
- if(!enabled){layer.hidden=true;goW.hidden=true;goE.hidden=true;dots.hidden=true;townZone='center';return;}
+ const archBtn=$('townArchitectBtn');
+ if(!enabled){layer.hidden=true;goW.hidden=true;goE.hidden=true;dots.hidden=true;townZone='center';if(archBtn)archBtn.disabled=false;return;}
+ if(archBtn){archBtn.disabled=townZone!=='center';archBtn.title=townZone==='center'?'建築師':'建築師僅限中央主城鎮使用';}
  const si=townVisualSeason(),night=isSandboxNight(),mapIdx=si+(night?4:0);
  const w=ensureTownWings(),lm=landmarkBonuses();
  const westMax=3+(lm.westStaminaBonus||0),westRem=Math.max(0,westMax-w.westUsed);
@@ -403,15 +438,19 @@ function openOneRuinCell(w,lm,idx,silent=false){
  if(!cell||cell.open)return null;
  cell.open=true;
  if(cell.t==='relic'){
+  const mNow=loadTownMuseum();
+  const unfinished=RELIC_CATALOG.filter(r=>(mNow.relicShards?.[r.id]||0)<9);
+  const pool=unfinished.length?unfinished:RELIC_CATALOG;
   const roll=Math.random()+lm.westRareBonus*.38;
   const targetR=roll>.90?2:roll>.52?1:0;
-  const cands=RELIC_CATALOG.filter(r=>r.rarity===targetR);
-  const relic=(cands.length?cands:RELIC_CATALOG)[rnd((cands.length?cands:RELIC_CATALOG).length)];
+  const cands=pool.filter(r=>r.rarity===targetR);
+  const relic=(cands.length?cands:pool)[rnd((cands.length?cands:pool).length)];
   const reward=Math.round(relic.gold*lm.westRewardMult);
   coins+=reward;
-  const reg=registerMuseumItem('relic',relic.id);
-  cell.v={relicId:relic.id,icon:relic.icon,label:relic.name,sub:'💰'+reward+(reg.isNew?' NEW':'')};
-  if(!silent)toast('🏺 挖出古物「'+relic.name+'」！鑑定獎金 💰'+reward+(reg.isNew?'（✨ 博物館新收藏！）':''));
+  const shardGain=sandboxSession?3:(Math.random()<.35?2:1);
+  const sh=registerRelicShard(relic.id,shardGain);
+  cell.v={relicId:relic.id,icon:relic.icon,label:relic.name,sub:sh.readyToAssemble?'🧩 9/9 可拼圖！':'碎片 '+sh.next+'/9 · 💰'+reward};
+  if(!silent)toast('🏺 挖出「'+relic.name+'」碎片 +'+shardGain+'（'+sh.next+'/9）· 💰'+reward+(sh.readyToAssemble?' · ✨ 碎片齊全！快到博物小屋拼圖修復！':''));
   return {kind:'relic',name:relic.name,reward};
  }else if(cell.t==='seed'){
   const e=ELEMENT_IDS[rnd(ELEMENT_IDS.length)];
@@ -589,6 +628,114 @@ function claimTradeShipment(){
  renderTownWingModal();renderTownWing();render();if($('townP').style.display==='flex')renderTown();saveNow();
 }
 
+function closeMuseumInspect(){
+ relicPuzzle.active=false;relicPuzzle.selected=-1;
+ const el=$('museumInspectP');if(el)el.style.display='none';
+}
+
+function openRelicPuzzle(relicId){
+ const r=RELIC_CATALOG.find(x=>x.id===relicId),mus=loadTownMuseum();
+ if(!r)return;
+ const shards=mus.relicShards?.[relicId]||0;
+ if(shards<9&&!mus.relics.includes(relicId)){toast('需要集齊 9 片「'+r.name+'」碎片才能進入拼圖修復（目前 '+shards+'/9）。');return;}
+ const tiles=[0,1,2,3,4,5,6,7,8];
+ // Deterministic non-trivial shuffle
+ for(let i=tiles.length-1;i>0;i--){const j=rnd(i+1);[tiles[i],tiles[j]]=[tiles[j],tiles[i]];}
+ if(tiles.every((v,i)=>v===i)){[tiles[0],tiles[4]]=[tiles[4],tiles[0]];}
+ relicPuzzle={active:true,id:relicId,tiles,selected:-1,moves:0};
+ renderMuseumInspect('relic',relicId);
+}
+
+function clickPuzzleTile(pos){
+ if(!relicPuzzle.active)return;
+ if(relicPuzzle.selected<0){
+  relicPuzzle.selected=pos;
+  renderMuseumInspect('relic',relicPuzzle.id);
+  return;
+ }
+ if(relicPuzzle.selected===pos){
+  relicPuzzle.selected=-1;
+  renderMuseumInspect('relic',relicPuzzle.id);
+  return;
+ }
+ const a=relicPuzzle.selected,b=pos;
+ [relicPuzzle.tiles[a],relicPuzzle.tiles[b]]=[relicPuzzle.tiles[b],relicPuzzle.tiles[a]];
+ relicPuzzle.selected=-1;relicPuzzle.moves++;
+ const solved=relicPuzzle.tiles.every((v,i)=>v===i);
+ if(solved){
+  const rid=relicPuzzle.id,r=RELIC_CATALOG.find(x=>x.id===rid);
+  relicPuzzle.active=false;
+  const mus=loadTownMuseum();
+  const firstTime=!mus.relics.includes(rid);
+  if(firstTime){
+   mus.relics.push(rid);
+   mus.relicShards[rid]=9;
+   saveTownMuseum(mus);
+   coins+=200;
+   toast('🎉 成功拼圖修復古物「'+(r?.name||rid)+'」！獲得修復賞金 💰200，永久啟動冶煉廠售價 +2.5%！');
+  }else{
+   toast('✨ 再次完成「'+(r?.name||rid)+'」拼圖修復（共 '+relicPuzzle.moves+' 步）！');
+  }
+  workshopToolSound('upgrade');
+  renderTownWingModal();
+  if($('weaponAlbumP')?.style.display==='flex'&&archiveCategory==='museum')renderWeaponAlbum();
+  render();saveNow();
+ }
+ renderMuseumInspect('relic',relicPuzzle.id);
+}
+
+function openMuseumInspect(kind,id){
+ relicPuzzle.active=false;relicPuzzle.selected=-1;
+ renderMuseumInspect(kind,id);
+ const el=$('museumInspectP');if(el)el.style.display='flex';
+}
+
+function renderMuseumInspect(kind,id){
+ const title=$('museumInspectTitle'),body=$('museumInspectBody');
+ if(!title||!body)return;
+ const mus=loadTownMuseum();
+ if(kind==='fish'){
+  const f=FISH_CATALOG.find(x=>x.id===id);if(!f)return;
+  const count=mus.fishCounts?.[id]||0,got=count>0||mus.fish.includes(id),stars=fishStarLevel(count),maxCm=mus.fishMax?.[id]||0;
+  const kBonus=(stars*1.5).toFixed(1);
+  title.textContent=got?(f.icon+' '+f.name):'❔ 未知魚種';
+  body.innerHTML='<div class="mi-showcase is-fish"><div class="mi-art-stage">'+pixelFishArt(id,!got)+'</div>'
+   +'<div class="mi-badges"><span>'+SEASONS[f.season].icon+' '+SEASONS[f.season].name+'</span><span>'+(f.night?'🌙 夜晚出沒':'☀ 白天出沒')+'</span><span>稀有度 '+'★'.repeat(f.rarity+1)+'</span></div></div>'
+   +'<p class="mi-desc">'+(got?f.desc:'尚未在西側溪畔釣起過此魚種。請依季節與日夜時段前往星露釣魚棧橋探索！')+'</p>'
+   +'<div class="mi-stat-box"><div><b>🍲 廚房餐廳星級加成</b><span>'+'★'.repeat(stars)+'☆'.repeat(3-stars)+'（目前 +'+(stars>0?kBonus:'0')+'% 餐廳售價）</span></div>'
+   +'<div class="mi-progress"><i style="width:'+Math.min(100,Math.round(count/9*100))+'%"></i></div>'
+   +'<small>累計釣起 <b>'+count+'</b> 隻'+(maxCm?' · 最長紀錄 <b>'+maxCm+' cm</b>':'')+' · 達成 3 隻 1★ (+1.5%) / 6 隻 2★ (+3.0%) / 9 隻 3★ (+4.5%)</small></div>';
+ }else{
+  const r=RELIC_CATALOG.find(x=>x.id===id);if(!r)return;
+  const shards=Math.min(9,mus.relicShards?.[id]||0),completed=mus.relics.includes(id),seen=completed||shards>0;
+  title.textContent=seen?(r.icon+' '+r.name):'❔ 未出土古物';
+  if(relicPuzzle.active&&relicPuzzle.id===id){
+   const rightCount=relicPuzzle.tiles.filter((v,i)=>v===i).length;
+   body.innerHTML='<p class="tc-intro">點擊兩塊碎片交換位置，將 9 片古物還原為完整圖案！（已歸位 <b>'+rightCount+'/9</b> · 步數 '+relicPuzzle.moves+'）</p>'
+    +'<div class="mi-puzzle-grid">'
+    +relicPuzzle.tiles.map((pieceIdx,pos)=>{
+     const isSel=relicPuzzle.selected===pos,isRight=pieceIdx===pos;
+     return '<button type="button" class="mi-puzzle-tile'+(isSel?' is-sel':'')+(isRight?' is-right':'')+'" style="'+relicPuzzleTileStyle(id,pieceIdx)+'" onclick="clickPuzzleTile('+pos+')" aria-label="拼圖格 '+(pos+1)+'"></button>';
+    }).join('')
+    +'</div>'
+    +'<button type="button" class="tw-link-btn" style="margin-top:10px" onclick="relicPuzzle.active=false;renderMuseumInspect(\'relic\',\''+id+'\')">返回文物介紹</button>';
+   return;
+  }
+  const actionBtn=completed
+   ?'<button type="button" class="tw-link-btn" onclick="openRelicPuzzle(\''+id+'\')">🧩 重玩 3×3 古物拼圖</button>'
+   :shards>=9
+    ?'<button type="button" class="tw-big-btn is-gold" onclick="openRelicPuzzle(\''+id+'\')">🧩 碎片齊全（9/9）！進入 3×3 拼圖修復</button>'
+    :'<button type="button" class="tw-big-btn" disabled>⛏ 還差 '+(9-shards)+' 片碎片（於西側遺跡探勘獲得）</button>';
+  body.innerHTML='<div class="mi-showcase is-relic"><div class="mi-art-stage">'+pixelRelicArt(id,!seen)+'</div>'
+   +'<div class="mi-badges"><span>稀有度 '+'★'.repeat(r.rarity+1)+'</span><span>'+(completed?'✓ 已修復完成':'碎片 '+shards+' / 9')+'</span></div></div>'
+   +'<p class="mi-desc">'+(seen?r.desc:'尚未在西側古物遺跡營地發掘過此古物碎片。')+'</p>'
+   +'<div class="mi-stat-box"><div><b>⚒ 冶煉廠古物加成</b><span>'+(completed?'✓ 已生效：冶煉廠成交售價 +2.5%':'完成 9 片拼圖修復後啟動 +2.5% 冶煉售價')+'</span></div>'
+   +'<div class="mi-progress"><i style="width:'+Math.round(shards/9*100)+'%"></i></div>'
+   +'<small>碎片收集進度：<b>'+shards+' / 9 片</b>（集齊 9 片即可拼圖修復並獲得 💰200 賞金）</small></div>'
+   +actionBtn;
+ }
+}
+
 function setMuseumTab(t){museumTab=t;renderTownWingModal();}
 
 function renderTownWingModal(){
@@ -644,20 +791,25 @@ function renderTownWingModal(){
    }).join('')
    +'</div>'
    +'<p class="tc-intro" style="margin-top:8px">博物館古物進度：<b>'+mus.relics.length+' / '+RELIC_CATALOG.length+'</b></p>';
- }else if(townWingModalMode==='museum'){
-  const tot=mus.fish.length+mus.relics.length,maxTot=FISH_CATALOG.length+RELIC_CATALOG.length,bonusPct=Math.min(14,Math.floor(tot/4)*2);
+  }else if(townWingModalMode==='museum'){
+  const fishB=museumFishKitchenBonus(mus),relicB=museumRelicForgeBonus(mus);
+  const tot=mus.fish.length+mus.relics.length,maxTot=FISH_CATALOG.length+RELIC_CATALOG.length;
+  const readyRelics=RELIC_CATALOG.filter(r=>(mus.relicShards?.[r.id]||0)>=9&&!mus.relics.includes(r.id)).length;
   title.textContent='🏛 星露博物小屋';
-  const tabs='<div class="tc-tabs"><button type="button" aria-pressed="'+(museumTab==='fish')+'" onclick="setMuseumTab(\'fish\')">🐟 魚類 ('+mus.fish.length+'/'+FISH_CATALOG.length+')</button><button type="button" aria-pressed="'+(museumTab==='relic')+'" onclick="setMuseumTab(\'relic\')">🏺 古物 ('+mus.relics.length+'/'+RELIC_CATALOG.length+')</button><button type="button" aria-pressed="'+(museumTab==='milestone')+'" onclick="setMuseumTab(\'milestone\')">🏆 里程碑</button></div>';
+  const tabs='<div class="tc-tabs"><button type="button" aria-pressed="'+(museumTab==='fish')+'" onclick="setMuseumTab(\'fish\')">🐟 魚類 ('+mus.fish.length+'/'+FISH_CATALOG.length+')</button><button type="button" aria-pressed="'+(museumTab==='relic')+'" onclick="setMuseumTab(\'relic\')">🏺 古物 ('+mus.relics.length+'/'+RELIC_CATALOG.length+(readyRelics?' 🧩':'')+')</button><button type="button" aria-pressed="'+(museumTab==='milestone')+'" onclick="setMuseumTab(\'milestone\')">🏆 加成總覽</button></div>';
   let content='';
   if(museumTab==='fish'){
-   content='<div class="tw-grid">'+FISH_CATALOG.map(f=>{const got=mus.fish.includes(f.id),maxCm=mus.fishMax?.[f.id];return '<div class="tw-item'+(got?' is-got':'')+'"><div class="tw-px-frame">'+pixelFishArt(f.id,!got)+'</div><b>'+(got?f.name:'？？？')+'</b><small>'+SEASONS[f.season].icon+(f.night?'🌙 夜晚':'☀ 白天')+' · '+'★'.repeat(f.rarity+1)+(got&&maxCm?' · '+maxCm+'cm':'')+'</small></div>';}).join('')+'</div>';
+   content='<div class="tw-grid">'+FISH_CATALOG.map(f=>{const cnt=mus.fishCounts?.[f.id]||0,got=cnt>0||mus.fish.includes(f.id),st=fishStarLevel(cnt);return '<button type="button" class="tw-item is-click'+(got?' is-got':'')+'" onclick="openMuseumInspect(\'fish\',\''+f.id+'\')"><div class="tw-px-frame">'+pixelFishArt(f.id,!got)+'</div><b>'+(got?f.name:'？？？')+'</b><small>'+(got?'★'.repeat(st)+'☆'.repeat(3-st)+' · '+cnt+'隻':SEASONS[f.season].icon+(f.night?'🌙 夜':'☀ 日'))+'</small></button>';}).join('')+'</div>';
   }else if(museumTab==='relic'){
-   content='<div class="tw-list">'+RELIC_CATALOG.map(r=>{const got=mus.relics.includes(r.id);return '<div class="tw-row'+(got?' is-got-row':'')+'"><div class="tw-px-badge">'+pixelRelicArt(r.id,!got)+'</div><div class="tw-info"><b>'+(got?r.name:'未出土古物')+' <small class="tw-role">'+'★'.repeat(r.rarity+1)+'</small></b><small>'+(got?r.desc:'在西側古物遺跡營地探勘有機會出土。')+'</small></div></div>';}).join('')+'</div>';
+   content='<div class="tw-list">'+RELIC_CATALOG.map(r=>{const sh=Math.min(9,mus.relicShards?.[r.id]||0),done=mus.relics.includes(r.id),seen=done||sh>0,canPuz=!done&&sh>=9;return '<button type="button" class="tw-row is-click'+(done?' is-got-row':canPuz?' is-ready-row':'')+'" onclick="openMuseumInspect(\'relic\',\''+r.id+'\')"><div class="tw-px-badge">'+pixelRelicArt(r.id,!seen)+'</div><div class="tw-info"><b>'+(seen?r.name:'未出土古物')+' <small class="tw-role">'+(done?'✓ 已修復':canPuz?'🧩 可拼圖！':'碎片 '+sh+'/9')+'</small></b><small>'+(done?'⚒ 冶煉售價 +2.5% · 點擊查看介紹與重玩拼圖':canPuz?'✨ 9 片碎片已集齊！點擊立即進入 3×3 拼圖修復':seen?r.desc:'在西側古物遺跡營地探勘收集 9 片碎片。')+'</small></div></button>';}).join('')+'</div>';
   }else{
-   content='<div class="tw-list">'+[4,8,12,16,20,24,28].map(n=>{const done=tot>=n;return '<div class="tw-row'+(done?' is-got-row':'')+'"><span class="tw-ico">'+(done?'🏆':'🔒')+'</span><div class="tw-info"><b>館藏達 '+n+' 件</b><small>跨局永久效果：冶煉廠與餐廳全成交售價 +'+(n/2)+'%</small></div></div>';}).join('')+'</div>';
+   content='<div class="tw-list">'
+    +'<div class="tw-row is-got-row"><span class="tw-ico">🍲</span><div class="tw-info"><b>魚類星級 · 廚房餐廳加成</b><small>目前累計 <b>'+fishB.stars+' ★</b>（每種魚 3/6/9 隻升 1/2/3★）→ 餐廳成交售價 <b>+'+(fishB.bonus*100).toFixed(1)+'%</b></small></div></div>'
+    +'<div class="tw-row is-got-row"><span class="tw-ico">⚒</span><div class="tw-info"><b>古物修復 · 冶煉廠加成</b><small>已拼圖修復 <b>'+relicB.count+' / '+RELIC_CATALOG.length+'</b> 件古物 → 冶煉廠成交售價 <b>+'+(relicB.bonus*100).toFixed(1)+'%</b></small></div></div>'
+    +'</div>';
   }
   body.innerHTML=sceneHdr
-   +'<div class="lm-summary"><div class="lm-summary-top"><span>🏛 跨局永久館藏 <b>'+tot+' / '+maxTot+'</b></span><span class="lm-wallet">全工坊 +'+bonusPct+'% 售價</span></div><div class="lm-progress"><i style="width:'+Math.round(tot/maxTot*100)+'%"></i></div><small>魚類與古物皆會跨局永久保存，收集越多永久收益越高！</small></div>'
+   +'<div class="lm-summary"><div class="lm-summary-top"><span>🏛 博物典藏 <b>'+tot+' / '+maxTot+'</b></span><span class="lm-wallet">⚒+'+(relicB.bonus*100).toFixed(1)+'% · 🍲+'+(fishB.bonus*100).toFixed(1)+'%</span></div><div class="lm-progress"><i style="width:'+Math.round(tot/maxTot*100)+'%"></i></div><small>點擊任意魚類或文物查看詳細介紹；古物集齊 9 碎片可拼圖修復！</small></div>'
    +'<button type="button" class="tw-big-btn is-gold" onclick="closeTownWingModal();openTownChronicle(\'landmarks\')">🏛 升級「星露棧橋與博物館」大工程（目前 Lv '+buildingLandmarkTier('west_camp')+'/3）</button>'
    +tabs+content;
  }else if(townWingModalMode==='caravan'){

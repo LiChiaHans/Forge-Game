@@ -73,6 +73,13 @@ function pixelRelicArt(id,locked=false){
  return _spriteCell(WING_MODAL_ART.relic_sheet,RELIC_SHEET_INDEX[id]??0,4,3,'is-relic'+(locked?' is-locked':''));
 }
 
+function relicPuzzleTileStyle(id,pieceIdx){
+ const rIdx=RELIC_SHEET_INDEX[id]??0,rCol=rIdx%4,rRow=Math.floor(rIdx/4);
+ const pCol=pieceIdx%3,pRow=Math.floor(pieceIdx/3);
+ const tx=rCol*3+pCol,ty=rRow*3+pRow;
+ return 'background-image:url(\''+WING_MODAL_ART.relic_sheet+'\');background-size:1200% 900%;background-position:'+(tx/11*100).toFixed(3)+'% '+(ty/8*100).toFixed(3)+'%';
+}
+
 function pixelWingItemArt(id){
  return _spriteCell(WING_MODAL_ART.items_sheet,WING_ITEM_SHEET_INDEX[id]??6,4,4,'is-item');
 }

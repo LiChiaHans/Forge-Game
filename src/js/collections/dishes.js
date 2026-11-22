@@ -2,14 +2,15 @@
 let archiveCategory='weapons';
 function setArchiveCategory(category){if(!expandedGameEnabled()||!['weapons','dishes','badges','museum'].includes(category)||albumTier===-2)return;archiveCategory=category;albumTier=-1;renderWeaponAlbum();}
 function renderMuseumAlbum(){
- const mus=typeof loadTownMuseum==='function'?loadTownMuseum():{fish:[],relics:[],fishMax:{}};
+ const mus=typeof loadTownMuseum==='function'?loadTownMuseum():{fish:[],relics:[],fishCounts:{},relicShards:{},fishMax:{}};
  const fishList=typeof FISH_CATALOG!=='undefined'?FISH_CATALOG:[],relicList=typeof RELIC_CATALOG!=='undefined'?RELIC_CATALOG:[];
- const tot=mus.fish.length+mus.relics.length,maxTot=fishList.length+relicList.length,bonusPct=Math.min(14,Math.floor(tot/4)*2);
- $('albumProgress').textContent='跨局博物收藏 · '+tot+'/'+maxTot+' 件（永久全工坊售價 +'+bonusPct+'%）';
- $('albumWeapons').innerHTML='<section class="album-section museum-album-section"><h3>🐟 星露魚類圖鑑 <small>'+mus.fish.length+'/'+fishList.length+'</small></h3><div class="tw-grid">'
-  +fishList.map(f=>{const got=mus.fish.includes(f.id),maxCm=mus.fishMax?.[f.id];return '<div class="tw-item'+(got?' is-got':'')+'"><div class="tw-px-frame">'+(typeof pixelFishArt==='function'?pixelFishArt(f.id,!got):f.icon)+'</div><b>'+(got?f.name:'？？？')+'</b><small>'+SEASONS[f.season].icon+(f.night?'🌙 夜':'☀ 日')+' · '+'★'.repeat(f.rarity+1)+(got&&maxCm?' · '+maxCm+'cm':'')+'</small></div>';}).join('')
-  +'</div></section><section class="album-section museum-album-section"><h3>🏺 古代文物館藏 <small>'+mus.relics.length+'/'+relicList.length+'</small></h3><div class="tw-list">'
-  +relicList.map(r=>{const got=mus.relics.includes(r.id);return '<div class="tw-row'+(got?' is-got-row':'')+'"><div class="tw-px-badge">'+(typeof pixelRelicArt==='function'?pixelRelicArt(r.id,!got):r.icon)+'</div><div class="tw-info"><b>'+(got?r.name:'未出土古物')+' <small class="tw-role">'+'★'.repeat(r.rarity+1)+'</small></b><small>'+(got?r.desc:'在西側古物遺跡營地探勘有機會出土。')+'</small></div></div>';}).join('')
+ const fishB=typeof museumFishKitchenBonus==='function'?museumFishKitchenBonus(mus):{stars:0,bonus:0};
+ const relicB=typeof museumRelicForgeBonus==='function'?museumRelicForgeBonus(mus):{count:0,bonus:0};
+ $('albumProgress').textContent='博物典藏 · 魚類 '+mus.fish.length+'/'+fishList.length+'（🍲+'+(fishB.bonus*100).toFixed(1)+'%）· 古物 '+mus.relics.length+'/'+relicList.length+'（⚒+'+(relicB.bonus*100).toFixed(1)+'%）';
+ $('albumWeapons').innerHTML='<section class="album-section museum-album-section"><h3>🐟 星露魚類圖鑑（廚房加成） <small>'+fishB.stars+' ★</small></h3><div class="tw-grid">'
+  +fishList.map(f=>{const cnt=mus.fishCounts?.[f.id]||0,got=cnt>0||mus.fish.includes(f.id),st=typeof fishStarLevel==='function'?fishStarLevel(cnt):0;return '<button type="button" class="tw-item is-click'+(got?' is-got':'')+'" onclick="openMuseumInspect(\'fish\',\''+f.id+'\')"><div class="tw-px-frame">'+(typeof pixelFishArt==='function'?pixelFishArt(f.id,!got):f.icon)+'</div><b>'+(got?f.name:'？？？')+'</b><small>'+(got?'★'.repeat(st)+'☆'.repeat(3-st)+' · '+cnt+'隻':SEASONS[f.season].icon+(f.night?'🌙 夜':'☀ 日'))+'</small></button>';}).join('')
+  +'</div></section><section class="album-section museum-album-section"><h3>🏺 古代文物館藏（冶煉加成） <small>'+mus.relics.length+'/'+relicList.length+'</small></h3><div class="tw-list">'
+  +relicList.map(r=>{const sh=Math.min(9,mus.relicShards?.[r.id]||0),done=mus.relics.includes(r.id),seen=done||sh>0,canPuz=!done&&sh>=9;return '<button type="button" class="tw-row is-click'+(done?' is-got-row':canPuz?' is-ready-row':'')+'" onclick="openMuseumInspect(\'relic\',\''+r.id+'\')"><div class="tw-px-badge">'+(typeof pixelRelicArt==='function'?pixelRelicArt(r.id,!seen):r.icon)+'</div><div class="tw-info"><b>'+(seen?r.name:'未出土古物')+' <small class="tw-role">'+(done?'✓ 已修復':canPuz?'🧩 可拼圖！':'碎片 '+sh+'/9')+'</small></b><small>'+(seen?r.desc:'在西側古物遺跡營地探勘收集 9 片碎片。')+'</small></div></button>';}).join('')
   +'</div></section>';
 }
 function renderDishAlbum(){

@@ -9,7 +9,7 @@ function renderCityDecor(){
 }
 function updateCitySelection(){document.querySelectorAll('#townMap .town-sticker').forEach(n=>n.classList.toggle('selected',architect.active&&n.dataset.decorUid===architect.selected));}
 function selectedCityItem(){return cityLayout().find(i=>i.uid===architect.selected)||null;}
-function toggleArchitect(){if(architect.active){confirmCityEdit();return;}beginCityEdit();renderTown();renderArchitect();}
+function toggleArchitect(){if(architect.active){confirmCityEdit();return;}if(typeof townZone!=='undefined'&&townZone!=='center'){toast('🏗 建築師佈置模式僅限中央主城鎮使用，請先返回主城鎮。');return;}beginCityEdit();renderTown();renderArchitect();}
 function setArchitectSeason(){if(architect.active)toast('只能編輯目前的'+cityContextLabel()+'造景。');}
 function renderArchitect(){
  const selected=architect.active?selectedCityItem():null;
