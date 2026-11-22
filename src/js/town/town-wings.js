@@ -5,7 +5,7 @@
    - Navigation: Road Arrow Buttons, Zone Pill Bar, & Left/Right Swipe Gesture
    ========================================================================== */
 
-const TOWN_WING_ART={"west_0":"assets/town/west_0.075bfce16a90.jpg","west_1":"assets/town/west_1.1c8f95637f92.jpg","west_2":"assets/town/west_2.4a5fb6e7865b.jpg","west_3":"assets/town/west_3.93da5c032c08.jpg","west_4":"assets/town/west_4.54f87444e33c.jpg","west_5":"assets/town/west_5.f3e9b1a74662.jpg","west_6":"assets/town/west_6.c392d1d03827.jpg","west_7":"assets/town/west_7.715f992360a1.jpg","east_0":"assets/town/east_0.e27993b84a77.jpg","east_1":"assets/town/east_1.7906df80513d.jpg","east_2":"assets/town/east_2.b413bea356e2.jpg","east_3":"assets/town/east_3.4749600e226b.jpg","east_4":"assets/town/east_4.0c8174967348.jpg","east_5":"assets/town/east_5.a138ddcf97b7.jpg","east_6":"assets/town/east_6.165839312d72.jpg","east_7":"assets/town/east_7.b98f591da017.jpg"};
+const TOWN_WING_ART={"west_0":"assets/town/west_0.6f9eac1c4e4d.jpg","west_1":"assets/town/west_1.2c0947918dd2.jpg","west_2":"assets/town/west_2.2ec3985460f6.jpg","west_3":"assets/town/west_3.4d6cf3838b3b.jpg","west_4":"assets/town/west_4.88e169d3f364.jpg","west_5":"assets/town/west_5.93eb26370aef.jpg","west_6":"assets/town/west_6.464da19f180b.jpg","west_7":"assets/town/west_7.af4b194bda7c.jpg","east_0":"assets/town/east_0.748b753a35a3.jpg","east_1":"assets/town/east_1.06f6aa42e5bd.jpg","east_2":"assets/town/east_2.594d6fc689d3.jpg","east_3":"assets/town/east_3.0f6ccb44b495.jpg","east_4":"assets/town/east_4.1d18c341491c.jpg","east_5":"assets/town/east_5.30c3369996aa.jpg","east_6":"assets/town/east_6.c352ac1ecfb2.jpg","east_7":"assets/town/east_7.7c9c34d691c6.jpg"};
 const TOWN_WING_BUILDING_ART={"west_camp_0":"assets/town/b_west_camp_0.93e31d1901f4.png","west_camp_1":"assets/town/b_west_camp_1.9f7b527e352d.png","west_camp_2":"assets/town/b_west_camp_2.02e8ef46a09f.png","west_camp_3":"assets/town/b_west_camp_3.e38aeb0b5887.png","east_post_0":"assets/town/b_east_post_0.5bac6a60278b.png","east_post_1":"assets/town/b_east_post_1.e1db9a2a4ae3.png","east_post_2":"assets/town/b_east_post_2.f14815eed865.png","east_post_3":"assets/town/b_east_post_3.6cdddcb27135.png"};
 
 const FISH_CATALOG=[
@@ -70,30 +70,70 @@ const CARAVAN_THEMES=[
 ];
 
 const TOWN_REGULARS=[
- {id:'renn',guestId:0,icon:'⚔',name:'雷恩團長',role:'遠征軍先鋒',giftCost:110,
+ {id:'renn',guestId:0,icon:'⚔',name:'雷恩團長',role:'遠征軍先鋒',giftCost:110,stat:'atk',
   quotes:['先來一杯麥酒暖身，明天還得巡守城門呢。','你的武器讓我這支小隊所向披靡！','只要有你在這座小鎮，魔物根本不足為懼！'],
-  perk:'Lv3：遠征攻擊 +6% · Lv5：遠征攻防 +12%',
+  perk:'Lv3：遠征攻擊 +4% · Lv5：遠征攻擊 +8%',
   quest:{text:'今日在冶煉廠成交至少 1 筆訂單',check:()=>dEarn>0||all>0,rewardGold:90}},
- {id:'elena',guestId:15,icon:'👑',name:'艾琳食評家',role:'皇家美食評論',giftCost:110,
-  quotes:['聽說暖爐餐廳的晚間料理頗有口碑，我會仔細品嚐的。','火候與調味恰到好處，我已把你寫進推薦名錄！','這絕對是王國數一數二的夢幻星級餐桌！'],
-  perk:'Lv3：餐廳售價 +6% · Lv5：餐廳售價 +12%',
-  quest:{text:'今日在西側溪畔釣起 1 條鮮魚',check:()=>ensureTownWings().westFished>=1,rewardGold:100}},
- {id:'thorin',guestId:12,icon:'⚒',name:'托爾老鐵匠',role:'退隱神匠',giftCost:110,
-  quotes:['年輕人，打鐵要聽火聲，別急著收錘。','好手藝！這鍛爐的節奏讓我想起當年！','你已經超越老頭子我了，這座小鎮以你為榮！'],
-  perk:'Lv3：冶煉售價 +6% · Lv5：冶煉售價 +12%',
-  quest:{text:'今日累積獲得金幣達 150💰',check:()=>dEarn>=150||coins>=300,rewardGold:95}},
- {id:'luna',guestId:3,icon:'🔮',name:'露娜占星師',role:'星頁館常客',giftCost:100,
-  quotes:['今晚的星象很平靜，適合去溪畔散步。','星軌交會於你的工坊，財運正在上升喔！','我從沒見過如此耀眼的星運，你注定名留青史！'],
-  perk:'Lv3：雙工坊售價 +4% · Lv5：雙工坊售價 +8%',
+ {id:'freya',guestId:1,icon:'🗡',name:'芙蕾雅騎士',role:'銀翼劍士',giftCost:110,stat:'atk',
+  quotes:['出征前總習慣來酒館擦亮長劍。','這把星露鍛造的刃口真是無可挑剔！','能與你並肩守護小鎮，是銀翼騎士團的榮耀！'],
+  perk:'Lv3：遠征攻擊 +4% · Lv5：遠征攻擊 +8%',
+  quest:{text:'今日進行至少 1 次西側探索',check:()=>ensureTownWings().westUsed>=1,rewardGold:90}},
+ {id:'austin',guestId:2,icon:'✨',name:'奧斯汀導師',role:'符文魔導師',giftCost:105,stat:'forge',
+  quotes:['你的鍛爐火候裡藏著迷人的魔力流動。','這件附魔武器的共鳴度簡直像藝術品！','你對元素鍛造的領悟已超越王立學院！'],
+  perk:'Lv3：冶煉售價 +4% · Lv5：冶煉售價 +8%',
   quest:{text:'本季已簽署至少 1 張工坊契約',check:()=>activeContracts().length>=1,rewardGold:90}},
- {id:'parker',guestId:4,icon:'🌿',name:'帕克花藝師',role:'溫室愛好者',giftCost:100,
+ {id:'luna',guestId:3,icon:'🔮',name:'露娜占星師',role:'星頁館常客',giftCost:100,stat:'dual',
+  quotes:['今晚的星象很平靜，適合去溪畔散步。','星軌交會於你的工坊，財運正在上升喔！','我從沒見過如此耀眼的星運，你注定名留青史！'],
+  perk:'Lv3：雙工坊售價 +3% · Lv5：雙工坊售價 +6%',
+  quest:{text:'今日已完成城鎮頭條抉擇',check:()=>!!ensureWorkshopMomentum().dailyChoice,rewardGold:85}},
+ {id:'parker',guestId:4,icon:'🌿',name:'帕克花藝師',role:'溫室愛好者',giftCost:100,stat:'def',
   quotes:['晨露溫室的土質真棒，記得多看看花盆喔！','你照料的花朵比王室花園還香甜！','精靈們都在傳頌你的溫室與溪畔聖園呢！'],
-  perk:'Lv3：遠征防禦 +6% · Lv5：遠征防禦 +12%',
+  perk:'Lv3：遠征防禦 +4% · Lv5：遠征防禦 +8%',
   quest:{text:'今日在西側進行至少 1 次探索',check:()=>ensureTownWings().westUsed>=1,rewardGold:85}},
- {id:'bard',guestId:10,icon:'🎸',name:'巴德吟遊詩人',role:'酒館駐唱',giftCost:95,
+ {id:'lia',guestId:5,icon:'🏹',name:'莉亞獵手',role:'溪畔巡林客',giftCost:100,stat:'def',
+  quotes:['西側瀑布那邊今天水色特別清澈呢。','你釣魚的架勢越來越有老手的風範了！','整片森林的精靈都把你當成最信任的朋友！'],
+  perk:'Lv3：遠征防禦 +4% · Lv5：遠征防禦 +8%',
+  quest:{text:'今日在西側溪畔釣起 1 條鮮魚',check:()=>ensureTownWings().westFished>=1,rewardGold:95}},
+ {id:'marcus',guestId:6,icon:'🛡',name:'馬庫斯修士',role:'聖堂守護者',giftCost:105,stat:'def',
+  quotes:['願星輝保佑這座安寧的鍛造小鎮。','你的堅盾與熱湯救了無數冒險者的性命！','這座城鎮因你的善意而閃耀著聖光！'],
+  perk:'Lv3：遠征防禦 +4% · Lv5：遠征防禦 +8%',
+  quest:{text:'今日累積獲得金幣達 150💰',check:()=>dEarn>=150||coins>=300,rewardGold:90}},
+ {id:'claire',guestId:7,icon:'💐',name:'克萊兒修女',role:'晨露治癒師',giftCost:100,stat:'kitchen',
+  quotes:['剛出爐的熱湯香氣總是能撫慰人心。','你端出的料理讓旅人們都露出了笑容！','願暖爐餐廳的燈火永遠溫暖每一位旅人！'],
+  perk:'Lv3：餐廳售價 +4% · Lv5：餐廳售價 +8%',
+  quest:{text:'今日已完成城鎮頭條抉擇',check:()=>!!ensureWorkshopMomentum().dailyChoice,rewardGold:85}},
+ {id:'kevin',guestId:8,icon:'🗝',name:'凱文影客',role:'遺跡尋寶人',giftCost:105,stat:'forge',
+  quotes:['西側古物遺跡底下可藏著不少好貨色喔。','眼光不錯嘛！那件古物的成色我一眼就看出來了！','以後有什麼秘寶情報，我一定第一個告訴你！'],
+  perk:'Lv3：冶煉售價 +4% · Lv5：冶煉售價 +8%',
+  quest:{text:'今日在西側進行至少 1 次探索',check:()=>ensureTownWings().westUsed>=1,rewardGold:95}},
+ {id:'vivian',guestId:9,icon:'💎',name:'薇薇安怪盜',role:'夜行鑑賞家',giftCost:110,stat:'dual',
+  quotes:['真正稀有的珍品，只會落在懂行的人手裡。','這座小鎮的藏品連王宮寶庫都相形見絀呢！','算我輸了，你的傑作我只願堂堂正正買下！'],
+  perk:'Lv3：雙工坊售價 +3% · Lv5：雙工坊售價 +6%',
+  quest:{text:'今日在冶煉廠成交至少 1 筆訂單',check:()=>dEarn>0||all>0,rewardGold:95}},
+ {id:'bard',guestId:10,icon:'🎸',name:'巴德吟遊詩人',role:'酒館駐唱',giftCost:95,stat:'bard',
   quotes:['請我喝一杯麥酒，我就幫你唱首小調！','你的名聲已經傳到隔壁城鎮啦！','這首《星露神匠之歌》將永遠在酒館流傳！'],
   perk:'Lv3：每日贈送 +15% 雙狂熱 · Lv5：全工坊 +6%',
-  quest:{text:'今日已完成城鎮頭條抉擇',check:()=>!!ensureWorkshopMomentum().dailyChoice,rewardGold:85}}
+  quest:{text:'今日已完成城鎮頭條抉擇',check:()=>!!ensureWorkshopMomentum().dailyChoice,rewardGold:85}},
+ {id:'serena',guestId:11,icon:'🎵',name:'賽琳娜歌姬',role:'星夜豎琴手',giftCost:100,stat:'kitchen',
+  quotes:['夜晚的酒館最適合配上輕柔的豎琴聲。','伴著美食與星光歌唱，真是最幸福的時刻！','我要為你的暖爐餐廳譜寫一首專屬夜曲！'],
+  perk:'Lv3：餐廳售價 +4% · Lv5：餐廳售價 +8%',
+  quest:{text:'本季已簽署至少 1 張工坊契約',check:()=>activeContracts().length>=1,rewardGold:90}},
+ {id:'thorin',guestId:12,icon:'⚒',name:'托爾老鐵匠',role:'退隱神匠',giftCost:110,stat:'forge',
+  quotes:['年輕人，打鐵要聽火聲，別急著收錘。','好手藝！這鍛爐的節奏讓我想起當年！','你已經超越老頭子我了，這座小鎮以你為榮！'],
+  perk:'Lv3：冶煉售價 +5% · Lv5：冶煉售價 +10%',
+  quest:{text:'今日累積獲得金幣達 150💰',check:()=>dEarn>=150||coins>=300,rewardGold:95}},
+ {id:'martha',guestId:13,icon:'📦',name:'瑪莎掌櫃',role:'遠洋商會會長',giftCost:110,stat:'dual',
+  quotes:['東側碼頭的貨船剛靠岸，今天就該大賺一筆！','你的經營頭腦連商會長老都讚不絕口！','只要你點頭，整個王國的商路都為你敞開！'],
+  perk:'Lv3：雙工坊售價 +3% · Lv5：雙工坊售價 +6%',
+  quest:{text:'今日累積獲得金幣達 150💰',check:()=>dEarn>=150||coins>=300,rewardGold:100}},
+ {id:'bruno',guestId:14,icon:'🍖',name:'布魯諾美食家',role:'環球老饕',giftCost:105,stat:'kitchen',
+  quotes:['我走遍七大王國，就為了尋找極致的香氣！','哇啊！這口鮮甜差點讓我把盤子也吞下去！','這裡就是我夢寐以求的美食聖地，我定居了！'],
+  perk:'Lv3：餐廳售價 +4% · Lv5：餐廳售價 +8%',
+  quest:{text:'今日在西側溪畔釣起 1 條鮮魚',check:()=>ensureTownWings().westFished>=1,rewardGold:95}},
+ {id:'elena',guestId:15,icon:'👑',name:'艾琳食評家',role:'皇家美食評論',giftCost:110,stat:'kitchen',
+  quotes:['聽說暖爐餐廳的晚間料理頗有口碑，我會仔細品嚐的。','火候與調味恰到好處，我已把你寫進推薦名錄！','這絕對是王國數一數二的夢幻星級餐桌！'],
+  perk:'Lv3：餐廳售價 +5% · Lv5：餐廳售價 +10%',
+  quest:{text:'今日在西側溪畔釣起 1 條鮮魚',check:()=>ensureTownWings().westFished>=1,rewardGold:100}}
 ];
 
 const TRADE_ROUTES=[
@@ -108,7 +148,7 @@ const FISH_BAITS=[
  {id:'star',icon:'✨',name:'星露香餌',cost:30,desc:'完美區加大＋高稀有率'},
  {id:'magnet',icon:'🧲',name:'磁力誘餌',cost:45,desc:'軌道出現🎁漂流寶箱區'}
 ];
-let townZone='center',townWingModalMode=null,museumTab='fish',lastFishBanner=null,fishBait='worm',digTool='pick';
+let townZone='center',townWingModalMode=null,museumTab='fish',tavernTab='today',lastFishBanner=null,fishBait='worm',digTool='pick';
 let fishGame={active:false,pos:50,dir:1,raf:0,lastTs:0,chestPos:74,speed:0.135};
 
 function loadTownMuseum(){
@@ -158,18 +198,36 @@ function ensureTownWings(){
  return w;
 }
 
+function todayTavernRegulars(){
+ const n=TOWN_REGULARS.length,count=5;
+ const start=((Math.max(1,day)-1)*count+(Math.floor((runId||0)/1000)%n))%n;
+ const list=[];
+ for(let i=0;i<count;i++)list.push(TOWN_REGULARS[(start+i*3)%n]);
+ // Ensure unique entries
+ const seen=new Set();
+ return list.filter(r=>{if(seen.has(r.id))return false;seen.add(r.id);return true;});
+}
+
+function setTavernTab(t){tavernTab=t;renderTownWingModal();}
+
 function townWingBonuses(){
  if(day<1)return {forgeSale:0,kitchenSale:0,battleAtk:0,battleDef:0};
  const w=ensureTownWings(),reg=w.regulars||{},mus=loadTownMuseum();
  const musCount=mus.fish.length+mus.relics.length;
  const musSale=Math.min(.14,Math.floor(musCount/4)*.02);
- const lunaSale=(reg.luna||0)>=5?.08:(reg.luna||0)>=3?.04:0;
- const bardSale=(reg.bard||0)>=5?.06:0;
- const forgeSale=musSale+lunaSale+bardSale+((reg.thorin||0)>=5?.12:(reg.thorin||0)>=3?.06:0);
- const kitchenSale=musSale+lunaSale+bardSale+((reg.elena||0)>=5?.12:(reg.elena||0)>=3?.06:0);
- const battleAtk=(reg.renn||0)>=5?.12:(reg.renn||0)>=3?.06:0;
- const battleDef=((reg.renn||0)>=5?.12:0)+((reg.parker||0)>=5?.12:(reg.parker||0)>=3?.06:0);
- return {forgeSale,kitchenSale,battleAtk,battleDef};
+ let forgeSale=musSale,kitchenSale=musSale,battleAtk=0,battleDef=0;
+ for(const r of TOWN_REGULARS){
+  const lv=reg[r.id]||0;
+  if(lv<3)continue;
+  const hi=lv>=5;
+  if(r.stat==='forge')forgeSale+=(r.id==='thorin'?(hi?.10:.05):(hi?.08:.04));
+  else if(r.stat==='kitchen')kitchenSale+=(r.id==='elena'?(hi?.10:.05):(hi?.08:.04));
+  else if(r.stat==='dual'){const v=hi?.06:.03;forgeSale+=v;kitchenSale+=v;}
+  else if(r.stat==='bard'&&hi){forgeSale+=.06;kitchenSale+=.06;}
+  else if(r.stat==='atk')battleAtk+=(hi?.08:.04);
+  else if(r.stat==='def')battleDef+=(hi?.08:.04);
+ }
+ return {forgeSale:Math.min(.45,forgeSale),kitchenSale:Math.min(.45,kitchenSale),battleAtk:Math.min(.28,battleAtk),battleDef:Math.min(.28,battleDef)};
 }
 
 function setTownZone(zone){
@@ -210,9 +268,9 @@ function renderTownWing(){
    +'<div class="wf-waterfall"><span class="wf-stream s1"></span><span class="wf-stream s2"></span><span class="wf-stream s3"></span></div>'
    +'<div class="wf-plunge"><span class="wf-foam"></span><span class="wf-foam f2"></span><span class="wf-ripple"></span><span class="wf-ripple r2"></span><i class="wf-drop d1"></i><i class="wf-drop d2"></i><i class="wf-drop d3"></i><i class="wf-drop d4"></i><i class="wf-drop d5"></i></div>'
    +'</div>'
-   +'<button type="button" class="town-wing-spot" style="left:34%;top:15%;width:50%;height:24%" onclick="openTownWingModal(\'excavate\')"><span class="tw-plaque">⛏ 古物遺跡營地<small>3×3 探勘 · 體力 '+westRem+'/'+westMax+'</small></span></button>'
-   +'<button type="button" class="town-wing-spot" style="left:14%;top:47%;width:38%;height:18%" onclick="openTownWingModal(\'fishing\')"><span class="tw-plaque">🎣 星露釣魚棧橋<small>'+(night?'🌙 夜間限定魚群':'☀ 白天溪畔魚群')+'</small></span></button>'
-   +'<button type="button" class="town-wing-spot is-building" data-landmark-tier="'+westLv+'" style="left:45%;top:55%;width:48%;height:30%" onclick="openTownWingModal(\'museum\')"><img class="tw-building-sprite" src="'+museumSprite+'" alt="星露博物小屋" decoding="async"><span class="tw-plaque">🏛 星露博物小屋<small>大工程 Lv '+westLv+'/3</small></span></button>'
+   +'<button type="button" class="town-wing-spot" style="left:44%;top:17%;width:48%;height:23%" onclick="openTownWingModal(\'excavate\')"><span class="tw-plaque">⛏ 古物遺跡營地<small>3×3 探勘 · 體力 '+westRem+'/'+westMax+'</small></span></button>'
+   +'<button type="button" class="town-wing-spot" style="left:20%;top:43%;width:32%;height:16%" onclick="openTownWingModal(\'fishing\')"><span class="tw-plaque">🎣 星露釣魚棧橋<small>'+(night?'🌙 夜間限定魚群':'☀ 白天溪畔魚群')+'</small></span></button>'
+   +'<button type="button" class="town-wing-spot is-building" data-landmark-tier="'+westLv+'" style="left:45%;top:59%;width:48%;height:29%" onclick="openTownWingModal(\'museum\')"><img class="tw-building-sprite" src="'+museumSprite+'" alt="星露博物小屋" decoding="async"><span class="tw-plaque">🏛 星露博物小屋<small>大工程 Lv '+westLv+'/3</small></span></button>'
    +'<button type="button" class="town-road-arrow is-east is-return" onclick="setTownZone(\'center\')" aria-label="返回主城鎮"><span>返回城鎮</span>▶</button>';
  }else{
   const theme=CARAVAN_THEMES[(day-1)%CARAVAN_THEMES.length];
@@ -221,9 +279,9 @@ function renderTownWing(){
   layer.innerHTML='<img class="town-wing-bg" src="'+bgUrl+'" alt="東側旅商大道" decoding="async">'
    +tierBadge
    +'<div class="town-wing-fx is-east" aria-hidden="true"><span class="es-stream-glint g1"></span><span class="es-stream-glint g2"></span></div>'
-   +'<button type="button" class="town-wing-spot is-building" data-landmark-tier="'+eastLv+'" style="left:49%;top:12%;width:48%;height:31%" onclick="openTownWingModal(\'caravan\')"><img class="tw-building-sprite" src="'+postSprite+'" alt="皇家旅商驛站" decoding="async"><span class="tw-plaque">'+theme.icon+' '+theme.name+'<small>特賣＋以物易物 · Lv '+eastLv+'/3</small></span></button>'
-   +'<button type="button" class="town-wing-spot" style="left:62%;top:47%;width:36%;height:20%" onclick="openTownWingModal(\'depot\')"><span class="tw-plaque">📦 跨城商隊碼頭<small>'+(shipReady?'✨ 商隊已返航！':w.shipment?'🚢 航行中':'投資賺翻倍')+'</small></span></button>'
-   +'<button type="button" class="town-wing-spot" style="left:6%;top:58%;width:54%;height:29%" onclick="openTownWingModal(\'tavern\')"><span class="tw-plaque">🍺 旅人常客酒館<small>常客委託與好感度</small></span></button>'
+   +'<button type="button" class="town-wing-spot is-building" data-landmark-tier="'+eastLv+'" style="left:52%;top:13%;width:46%;height:29%" onclick="openTownWingModal(\'caravan\')"><img class="tw-building-sprite" src="'+postSprite+'" alt="皇家旅商驛站" decoding="async"><span class="tw-plaque">'+theme.icon+' '+theme.name+'<small>特賣＋以物易物 · Lv '+eastLv+'/3</small></span></button>'
+   +'<button type="button" class="town-wing-spot" style="left:54%;top:43%;width:38%;height:20%" onclick="openTownWingModal(\'depot\')"><span class="tw-plaque">📦 跨城商隊碼頭<small>'+(shipReady?'✨ 商隊已返航！':w.shipment?'🚢 航行中':'投資賺翻倍')+'</small></span></button>'
+   +'<button type="button" class="town-wing-spot" style="left:6%;top:61%;width:48%;height:27%" onclick="openTownWingModal(\'tavern\')"><span class="tw-plaque">🍺 旅人常客酒館<small>常客委託與好感度</small></span></button>'
    +'<button type="button" class="town-road-arrow is-west is-return" onclick="setTownZone(\'center\')" aria-label="返回主城鎮">◀<span>返回城鎮</span></button>';
  }
 }
@@ -475,9 +533,11 @@ function doCaravanBarter(){
 function giftTownRegular(regId){
  const w=ensureTownWings(),lm=landmarkBonuses(),r=TOWN_REGULARS.find(x=>x.id===regId);
  if(!r)return;
+ const visiting=todayTavernRegulars().some(x=>x.id===regId);
+ if(!visiting){toast(r.name+' 今日不在酒館，改天再來招待吧！');return;}
  const cur=w.regulars[regId]||0;
  if(cur>=5){toast(r.name+' 好感度已達滿心！');return;}
- if(!sandboxSession&&w.regularGifted.includes(regId)){toast('今天已經招待過 '+r.name+' 了，明天再來吧！');return;}
+ if(w.regularGifted.includes(regId)){toast('今天已經招待過 '+r.name+' 了，明天再來吧！');return;}
  if(!sandboxSession&&coins<r.giftCost){toast('金幣不足 '+r.giftCost+'，無法招待 '+r.name+'。');return;}
  if(!sandboxSession)coins-=r.giftCost;
  w.regularGifted.push(regId);
@@ -615,16 +675,23 @@ function renderTownWingModal(){
    +'<button type="button" class="tw-link-btn" onclick="closeTownWingModal();openTownChronicle(\'landmarks\')">🏛 升級「皇家旅商驛站」解鎖稀有格與折扣（Lv '+buildingLandmarkTier('east_post')+'/3）</button>';
  }else if(townWingModalMode==='tavern'){
   title.textContent='🍺 旅人酒館與常客名冊';
-  const qIds=[TOWN_REGULARS[(day-1)%TOWN_REGULARS.length].id,TOWN_REGULARS[(day+2)%TOWN_REGULARS.length].id];
+  const visitors=todayTavernRegulars(),visitorIds=new Set(visitors.map(v=>v.id));
+  const qIds=[visitors[0]?.id,visitors[2]?.id].filter(Boolean);
+  const tabs='<div class="tc-tabs"><button type="button" aria-pressed="'+(tavernTab==='today')+'" onclick="setTavernTab(\'today\')">🍺 今日到訪 ('+visitors.length+'位)</button><button type="button" aria-pressed="'+(tavernTab==='all')+'" onclick="setTavernTab(\'all\')">📖 全部常客 ('+TOWN_REGULARS.length+'位)</button></div>';
+  const list=tavernTab==='today'?visitors:TOWN_REGULARS;
   body.innerHTML=sceneHdr
-   +'<p class="tc-intro">招待常客或完成「今日常客委託」免費升好感（達 ❤️3 與 ❤️5 解鎖本局常駐祝福）'+(lm.eastHeartStep>1?' · 🏛 驛站雙倍好感生效中！':'')+'</p><div class="tw-list">'
-   +TOWN_REGULARS.map(r=>{
-    const lv=w.regulars[r.id]||0,gifted=w.regularGifted.includes(r.id),qIdx=lv>=5?2:lv>=3?1:0;
-    const hasQ=qIds.includes(r.id),qDone=w.regularQuestDone.includes(r.id),qReady=hasQ&&!qDone&&r.quest.check();
+   +'<p class="tc-intro">每日輪替 <b>5 位常客</b>光臨酒館（共 16 位角色輪流出場），每位常客每日限招待 1 次！'+(lm.eastHeartStep>1?' · 🏛 驛站雙倍好感生效中！':'')+'</p>'
+   +tabs+'<div class="tw-list">'
+   +list.map(r=>{
+    const inToday=visitorIds.has(r.id),lv=w.regulars[r.id]||0,gifted=w.regularGifted.includes(r.id),qIdx=lv>=5?2:lv>=3?1:0;
+    const hasQ=inToday&&qIds.includes(r.id),qDone=w.regularQuestDone.includes(r.id),qReady=hasQ&&!qDone&&r.quest.check();
     const portraitUrl=typeof TOWN_GUEST_ART!=='undefined'?TOWN_GUEST_ART[r.guestId]:'';
     const portraitHtml=portraitUrl?'<div class="tw-portrait"><img src="'+portraitUrl+'" alt="'+r.name+'" decoding="async"></div>':'<span class="tw-ico">'+r.icon+'</span>';
     const qBlock=hasQ?'<div class="tw-quest-bar"><span>📜 今日委託：'+r.quest.text+'（免費升心＋💰'+r.quest.rewardGold+'）</span><button type="button" class="tw-qbtn" onclick="claimRegularQuest(\''+r.id+'\')" '+(qDone||!qReady?'disabled':'')+'>'+(qDone?'已領取 ✓':qReady?'領取謝禮 ✦':'進行中')+'</button></div>':'';
-    return '<div class="tw-reg-card"><div class="tw-row is-dialogue">'+portraitHtml+'<div class="tw-info"><b>'+r.name+' <small class="tw-role">'+r.role+'</small></b><div class="tw-hearts">'+'❤️'.repeat(lv)+'🤍'.repeat(5-lv)+'</div><div class="tw-speech">「'+r.quotes[qIdx]+'」</div><small>'+r.perk+'</small></div><button type="button" class="tw-act" onclick="giftTownRegular(\''+r.id+'\')" '+(lv>=5||(!sandboxSession&&(gifted||coins<r.giftCost))?'disabled':'')+'>'+(lv>=5?'滿心':gifted?'今日已招待':'🍻 💰'+r.giftCost)+'</button></div>'+qBlock+'</div>';
+    const actBtn=!inToday
+     ?'<button type="button" class="tw-act" disabled>🚶 今日未到</button>'
+     :'<button type="button" class="tw-act" onclick="giftTownRegular(\''+r.id+'\')" '+(lv>=5||gifted||(!sandboxSession&&coins<r.giftCost)?'disabled':'')+'>'+(lv>=5?'滿心':gifted?'✓ 今日已招待':'🍻 💰'+r.giftCost)+'</button>';
+    return '<div class="tw-reg-card"><div class="tw-row is-dialogue">'+portraitHtml+'<div class="tw-info"><b>'+r.name+' <small class="tw-role">'+r.role+(tavernTab==='all'&&inToday?' · 🍺今日在店':'')+'</small></b><div class="tw-hearts">'+'❤️'.repeat(lv)+'🤍'.repeat(5-lv)+'</div><div class="tw-speech">「'+r.quotes[qIdx]+'」</div><small>'+r.perk+'</small></div>'+actBtn+'</div>'+qBlock+'</div>';
    }).join('')
    +'</div>';
  }else if(townWingModalMode==='depot'){
