@@ -2113,134 +2113,6 @@
         "sha256":  "eb2413bfbaedaee30de4bbdcd9496a00869689ad2b47706058191cfd3e40ff5c"
     },
     {
-        "variable":  "TOWN_WING_ART",
-        "id":  "west_0",
-        "url":  "assets/town/west_0.e8f9bd50c935.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  145469,
-        "sha256":  "e8f9bd50c935768842b8b4f0679cd507aac7d841dd242fde09d0289ab3874a79"
-    },
-    {
-        "variable":  "TOWN_WING_ART",
-        "id":  "west_1",
-        "url":  "assets/town/west_1.2367ad9d0d8c.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  167078,
-        "sha256":  "2367ad9d0d8c801ea5a8291ae0c47a67f82c477f48efa6ff44e3366a0998719e"
-    },
-    {
-        "variable":  "TOWN_WING_ART",
-        "id":  "west_2",
-        "url":  "assets/town/west_2.50a17eb52210.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  143979,
-        "sha256":  "50a17eb522108eede1cf7263e793a525afc9e2bb575bb1aaa39bdb59409d8916"
-    },
-    {
-        "variable":  "TOWN_WING_ART",
-        "id":  "west_3",
-        "url":  "assets/town/west_3.6fc70687a8a8.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  162483,
-        "sha256":  "6fc70687a8a89c95c9bfa8e928ce048ca82ed809092c95ae7ec33ec6c896d0f4"
-    },
-    {
-        "variable":  "TOWN_WING_ART",
-        "id":  "west_4",
-        "url":  "assets/town/west_4.eb580b097f0a.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  119932,
-        "sha256":  "eb580b097f0acee4098f42674fbccbc43b2e8826aa250c847156aebcb0e4d968"
-    },
-    {
-        "variable":  "TOWN_WING_ART",
-        "id":  "west_5",
-        "url":  "assets/town/west_5.06707389c570.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  134888,
-        "sha256":  "06707389c5706eca1143862f4e5f6c3fc7f8ac6de20b32d0317caf5cc74ecd4b"
-    },
-    {
-        "variable":  "TOWN_WING_ART",
-        "id":  "west_6",
-        "url":  "assets/town/west_6.2e6f3b06e3ad.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  121792,
-        "sha256":  "2e6f3b06e3ad10fd56873f4d52755cb28cf592b23dd5cfb3d80aa86fe0861094"
-    },
-    {
-        "variable":  "TOWN_WING_ART",
-        "id":  "west_7",
-        "url":  "assets/town/west_7.b80182ca90e7.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  147273,
-        "sha256":  "b80182ca90e716778d100001d51cfb4f9134b58242c7823652a2fe42da0f51f6"
-    },
-    {
-        "variable":  "TOWN_WING_ART",
-        "id":  "east_0",
-        "url":  "assets/town/east_0.480a66adb479.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  181006,
-        "sha256":  "480a66adb47932e914afeedde13ed6d95da2261752304de4fc41db8a7d4245f8"
-    },
-    {
-        "variable":  "TOWN_WING_ART",
-        "id":  "east_1",
-        "url":  "assets/town/east_1.6c11b3e58bca.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  184256,
-        "sha256":  "6c11b3e58bca77558db80bee0e62a93d7a089d90d33073208de8d8944f737969"
-    },
-    {
-        "variable":  "TOWN_WING_ART",
-        "id":  "east_2",
-        "url":  "assets/town/east_2.5ebf1e4eaae8.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  188673,
-        "sha256":  "5ebf1e4eaae8f226700d36078251dd8dd80d2d98fe4bd96a43e758a0849a8cab"
-    },
-    {
-        "variable":  "TOWN_WING_ART",
-        "id":  "east_3",
-        "url":  "assets/town/east_3.a9e7ff711013.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  202548,
-        "sha256":  "a9e7ff711013bed3071c8fe0cf237c46d145b478e72760cfad7f31994ebb345a"
-    },
-    {
-        "variable":  "TOWN_WING_ART",
-        "id":  "east_4",
-        "url":  "assets/town/east_4.0c1c97fa36de.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  121654,
-        "sha256":  "0c1c97fa36def0e4ad6b777263b91556fd9c8ce347b7d7a5e07c1e39369a6f8d"
-    },
-    {
-        "variable":  "TOWN_WING_ART",
-        "id":  "east_5",
-        "url":  "assets/town/east_5.b830d777c365.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  123975,
-        "sha256":  "b830d777c36548d98e641e7e2d4d5b5b92509f673881b14868614506e67adf5f"
-    },
-    {
-        "variable":  "TOWN_WING_ART",
-        "id":  "east_6",
-        "url":  "assets/town/east_6.903d44c0e43b.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  124210,
-        "sha256":  "903d44c0e43be496ab51732ddbeaa8d09fa72a5b0ce833a7e751e133f27ae74d"
-    },
-    {
-        "variable":  "TOWN_WING_ART",
-        "id":  "east_7",
-        "url":  "assets/town/east_7.5ec3bb9556ce.jpg",
-        "mime":  "image/jpeg",
-        "bytes":  138437,
-        "sha256":  "5ec3bb9556ce81e77a140b853d49e742ebc7673c9bb5bce818c9b56635337faf"
-    },
-    {
         "url":  "assets/wings/fishing.160d3fd090b1.jpg",
         "bytes":  96904,
         "sha256":  "160d3fd090b19ffac83d301c4305857a0b0c58a2e6918a776a230eb35f3b3c1b"
@@ -2279,5 +2151,125 @@
         "url":  "assets/wings/relic_sheet.1f4b69c4ffe9.jpg",
         "bytes":  65108,
         "sha256":  "1f4b69c4ffe910f9f45fb402a600134b523fcff8f5fb8780720f8f26433ed386"
+    },
+    {
+        "url":  "assets/town/west_0.075bfce16a90.jpg",
+        "bytes":  185476,
+        "sha256":  "075bfce16a90d7e8c493e6ee6c611f436d438767fb3adfcaf29625294e1c1419"
+    },
+    {
+        "url":  "assets/town/west_1.9a1a559287f5.jpg",
+        "bytes":  191095,
+        "sha256":  "9a1a559287f5b0fb4af85481f06625cda7063e8bc5bae235757dec6b4f608e8e"
+    },
+    {
+        "url":  "assets/town/west_2.5737562b5fbc.jpg",
+        "bytes":  186833,
+        "sha256":  "5737562b5fbc752d29f91bdf2c99ea41891ffbcc309f1cf99d4194d648d808a6"
+    },
+    {
+        "url":  "assets/town/west_3.aca7e972dba1.jpg",
+        "bytes":  207604,
+        "sha256":  "aca7e972dba12889c070b9bf9c33fc595b2ae58ff977ae2c1464fe3de9a8bd38"
+    },
+    {
+        "url":  "assets/town/west_4.4c9fe378e9ad.jpg",
+        "bytes":  150433,
+        "sha256":  "4c9fe378e9ad2663a6f59b790eff3700dadc0c9df624573dfea9696c880bc1f7"
+    },
+    {
+        "url":  "assets/town/west_5.55aa5f24657e.jpg",
+        "bytes":  152988,
+        "sha256":  "55aa5f24657e38e70947ed6783b2e2cbc5b139856e4df411f4d09a158823dd49"
+    },
+    {
+        "url":  "assets/town/west_6.9d19bc03098f.jpg",
+        "bytes":  215293,
+        "sha256":  "9d19bc03098fb5f231310b73230ca7759fab56aabd5a396ba8a57f23f04ce431"
+    },
+    {
+        "url":  "assets/town/west_7.9cacfe34a3b0.jpg",
+        "bytes":  166268,
+        "sha256":  "9cacfe34a3b05d50c3019c2a7fe7e4c2c519013cbf10ef10a4ba7d5dea25fd12"
+    },
+    {
+        "url":  "assets/town/east_0.e27993b84a77.jpg",
+        "bytes":  189993,
+        "sha256":  "e27993b84a777ab469124f375af57477c65e45c6cca57f4e6f5f0e68bc88ff31"
+    },
+    {
+        "url":  "assets/town/east_1.7906df80513d.jpg",
+        "bytes":  193684,
+        "sha256":  "7906df80513df863e1abfdf4f81b941d0e38b35f5e79004fd5a8a60f131de731"
+    },
+    {
+        "url":  "assets/town/east_2.b413bea356e2.jpg",
+        "bytes":  188515,
+        "sha256":  "b413bea356e288772ec37dec3303133dcec4bdd7f1dbcac06e92119f7eebb112"
+    },
+    {
+        "url":  "assets/town/east_3.4749600e226b.jpg",
+        "bytes":  211627,
+        "sha256":  "4749600e226ba4fb71a056148a22cacdd09fbd5d2569e1ea2baf9741d3c33bd0"
+    },
+    {
+        "url":  "assets/town/east_4.0c8174967348.jpg",
+        "bytes":  147878,
+        "sha256":  "0c8174967348a73b97ebcd532f6208916c98265322725696c614214171c51ef2"
+    },
+    {
+        "url":  "assets/town/east_5.a138ddcf97b7.jpg",
+        "bytes":  151965,
+        "sha256":  "a138ddcf97b7d5bc36a43ee9fba26ab072c2535d7f7a08e73352effc42efda8a"
+    },
+    {
+        "url":  "assets/town/east_6.165839312d72.jpg",
+        "bytes":  222380,
+        "sha256":  "165839312d723d46b3ce59cabe9e7278fdc2c833a1d5b976cf484e9b32a528ba"
+    },
+    {
+        "url":  "assets/town/east_7.b98f591da017.jpg",
+        "bytes":  164728,
+        "sha256":  "b98f591da017886661b8b82b9863a479bb54c1d37acf4921da39e6a073f95d2a"
+    },
+    {
+        "url":  "assets/town/b_west_camp_0.93e31d1901f4.png",
+        "bytes":  235489,
+        "sha256":  "93e31d1901f46c81dfbef1f2d46de17c59496cb788180c1a3f55997326febbba"
+    },
+    {
+        "url":  "assets/town/b_west_camp_1.9f7b527e352d.png",
+        "bytes":  206600,
+        "sha256":  "9f7b527e352d58055566bffe9757250ca0c02eb44e010813a6bb7eee925beb57"
+    },
+    {
+        "url":  "assets/town/b_west_camp_2.02e8ef46a09f.png",
+        "bytes":  201742,
+        "sha256":  "02e8ef46a09f4b867a5be22e2ac581c0ebc3cf10e9895d68c2cfa38e42897111"
+    },
+    {
+        "url":  "assets/town/b_west_camp_3.e38aeb0b5887.png",
+        "bytes":  237375,
+        "sha256":  "e38aeb0b588771ad432bbcc04150adb1ef86b25de97b7ec72c7e3fb6e87a0bbc"
+    },
+    {
+        "url":  "assets/town/b_east_post_0.8a9c177f8bd9.png",
+        "bytes":  159402,
+        "sha256":  "8a9c177f8bd9ea5627687018b57bb934aa9de70f55aed946941acb4bc4910c0c"
+    },
+    {
+        "url":  "assets/town/b_east_post_1.1d5c57224a39.png",
+        "bytes":  184488,
+        "sha256":  "1d5c57224a399c22973aec85ca85dbdd15b54add182b7191cd1ee60546637db9"
+    },
+    {
+        "url":  "assets/town/b_east_post_2.af9a8a321b7f.png",
+        "bytes":  237483,
+        "sha256":  "af9a8a321b7fc08cc317ed037ae18a370580feaee06086ea36ca774714c740ea"
+    },
+    {
+        "url":  "assets/town/b_east_post_3.e08c6f982c45.png",
+        "bytes":  212559,
+        "sha256":  "e08c6f982c45ccc07301dc643c30dcddb8c0411c90eeec19043385146ba9685a"
     }
 ]
