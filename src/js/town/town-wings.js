@@ -5,7 +5,7 @@
    - Navigation: Road Arrow Buttons, Zone Pill Bar, & Left/Right Swipe Gesture
    ========================================================================== */
 
-const TOWN_WING_ART={"west_0":"assets/town/west_0.6f9eac1c4e4d.jpg","west_1":"assets/town/west_1.2c0947918dd2.jpg","west_2":"assets/town/west_2.2ec3985460f6.jpg","west_3":"assets/town/west_3.4d6cf3838b3b.jpg","west_4":"assets/town/west_4.88e169d3f364.jpg","west_5":"assets/town/west_5.93eb26370aef.jpg","west_6":"assets/town/west_6.464da19f180b.jpg","west_7":"assets/town/west_7.af4b194bda7c.jpg","east_0":"assets/town/east_0.167e745b31b4.jpg","east_1":"assets/town/east_1.f848635b141a.jpg","east_2":"assets/town/east_2.64182c9f772f.jpg","east_3":"assets/town/east_3.a6aa1f34cd31.jpg","east_4":"assets/town/east_4.e84064eb1c90.jpg","east_5":"assets/town/east_5.3f78631bdc15.jpg","east_6":"assets/town/east_6.7a00c7d4daed.jpg","east_7":"assets/town/east_7.392a6d2b01cc.jpg"};
+const TOWN_WING_ART={"west_0":"assets/town/west_0.6f9eac1c4e4d.jpg","west_1":"assets/town/west_1.2c0947918dd2.jpg","west_2":"assets/town/west_2.2ec3985460f6.jpg","west_3":"assets/town/west_3.4d6cf3838b3b.jpg","west_4":"assets/town/west_4.88e169d3f364.jpg","west_5":"assets/town/west_5.93eb26370aef.jpg","west_6":"assets/town/west_6.464da19f180b.jpg","west_7":"assets/town/west_7.af4b194bda7c.jpg","east_0":"assets/town/east_0.748b753a35a3.jpg","east_1":"assets/town/east_1.06f6aa42e5bd.jpg","east_2":"assets/town/east_2.594d6fc689d3.jpg","east_3":"assets/town/east_3.0f6ccb44b495.jpg","east_4":"assets/town/east_4.1d18c341491c.jpg","east_5":"assets/town/east_5.30c3369996aa.jpg","east_6":"assets/town/east_6.c352ac1ecfb2.jpg","east_7":"assets/town/east_7.7c9c34d691c6.jpg"};
 const TOWN_WING_BUILDING_ART={"west_camp_0":"assets/town/b_west_camp_0.93e31d1901f4.png","west_camp_1":"assets/town/b_west_camp_1.9f7b527e352d.png","west_camp_2":"assets/town/b_west_camp_2.02e8ef46a09f.png","west_camp_3":"assets/town/b_west_camp_3.e38aeb0b5887.png","east_post_0":"assets/town/b_east_post_0.5bac6a60278b.png","east_post_1":"assets/town/b_east_post_1.e1db9a2a4ae3.png","east_post_2":"assets/town/b_east_post_2.f14815eed865.png","east_post_3":"assets/town/b_east_post_3.6cdddcb27135.png"};
 
 const FISH_CATALOG=[
@@ -308,14 +308,14 @@ function renderTownWing(){
  const shipReady=!!(w.shipment&&day>=w.shipment.returnDay);
  const visitors=todayTavernRegulars(),qIds=[visitors[0]?.id,visitors[2]?.id].filter(Boolean);
  const questReady=visitors.some(r=>qIds.includes(r.id)&&!w.regularQuestDone.includes(r.id)&&r.quest.check());
- const westBadge=puzzleReady?' <em>🧩拼圖</em>':westRem>0?' <em>'+westRem+'</em>':'';
- const eastBadge=shipReady?' <em>領取</em>':questReady?' <em>✦委託</em>':'';
+ const westDotBadge=puzzleReady?'<em>🧩拼圖</em>':westRem>0?'<em>'+westRem+'</em>':'';
+ const eastDotBadge=shipReady?'<em>領取</em>':questReady?'<em>✦委託</em>':'';
  goW.hidden=townZone!=='center';
  goE.hidden=townZone!=='center';
- goW.innerHTML='◀<span>溪畔營地'+westBadge+'</span>';
- goE.innerHTML='<span>旅商驛站'+eastBadge+'</span>▶';
+ goW.innerHTML='◀<span>溪畔營地</span>';
+ goE.innerHTML='<span>旅商驛站</span>▶';
  dots.hidden=false;
- dots.innerHTML=[['west','🎣 西側營地'+(puzzleReady?'<em>🧩</em>':'')],['center','🏘 主城鎮'],['east','🛒 東側驛站'+((shipReady||questReady)?'<em>✦</em>':'')]].map(([z,lbl])=>'<button type="button" class="'+(townZone===z?'is-active':'')+'" onclick="setTownZone(\''+z+'\')">'+lbl+'</button>').join('');
+ dots.innerHTML=[['west','🎣 西側營地'+westDotBadge],['center','🏘 主城鎮'],['east','🛒 東側驛站'+eastDotBadge]].map(([z,lbl])=>'<button type="button" class="'+(townZone===z?'is-active':'')+'" onclick="setTownZone(\''+z+'\')">'+lbl+'</button>').join('');
  if(townZone==='center'){layer.hidden=true;layer.dataset.zone='center';return;}
  layer.hidden=false;
  layer.dataset.zone=townZone;
@@ -342,15 +342,7 @@ function renderTownWing(){
   const postSprite=TOWN_WING_BUILDING_ART['east_post_'+eastLv]||TOWN_WING_BUILDING_ART.east_post_0;
   layer.innerHTML='<img class="town-wing-bg" src="'+bgUrl+'" alt="東側旅商大道" decoding="async">'
    +tierBadge
-   +'<div class="town-wing-fx is-east" aria-hidden="true">'
-   +'<div class="es-windmill-wheel"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(50,50)">'
-   +'<g><rect x="-3" y="-44" width="6" height="44" fill="#5e3d22" stroke="#2c1d12" stroke-width="1.6"/><polygon points="2,-42 15,-38 13,-12 2,-10" fill="#efe4c8" stroke="#4a311c" stroke-width="1.5"/></g>'
-   +'<g transform="rotate(90)"><rect x="-3" y="-44" width="6" height="44" fill="#5e3d22" stroke="#2c1d12" stroke-width="1.6"/><polygon points="2,-42 15,-38 13,-12 2,-10" fill="#efe4c8" stroke="#4a311c" stroke-width="1.5"/></g>'
-   +'<g transform="rotate(180)"><rect x="-3" y="-44" width="6" height="44" fill="#5e3d22" stroke="#2c1d12" stroke-width="1.6"/><polygon points="2,-42 15,-38 13,-12 2,-10" fill="#efe4c8" stroke="#4a311c" stroke-width="1.5"/></g>'
-   +'<g transform="rotate(270)"><rect x="-3" y="-44" width="6" height="44" fill="#5e3d22" stroke="#2c1d12" stroke-width="1.6"/><polygon points="2,-42 15,-38 13,-12 2,-10" fill="#efe4c8" stroke="#4a311c" stroke-width="1.5"/></g>'
-   +'<circle r="5.5" fill="#7c5432" stroke="#2c1d12" stroke-width="1.8"/><circle r="2" fill="#e7c676"/>'
-   +'</g></svg></div>'
-   +'<span class="es-stream-glint g1"></span><span class="es-stream-glint g2"></span></div>'
+   +'<div class="town-wing-fx is-east" aria-hidden="true"><span class="es-stream-glint g1"></span><span class="es-stream-glint g2"></span></div>'
    +'<button type="button" class="town-wing-spot is-building" data-landmark-tier="'+eastLv+'" style="left:52%;top:13%;width:46%;height:29%" onclick="openTownWingModal(\'caravan\')"><img class="tw-building-sprite" src="'+postSprite+'" alt="皇家旅商驛站" decoding="async"><span class="tw-plaque">'+theme.icon+' '+theme.name+'<small>特賣＋以物易物 · Lv '+eastLv+'/3</small></span></button>'
    +'<button type="button" class="town-wing-spot" style="left:54%;top:43%;width:38%;height:20%" onclick="openTownWingModal(\'depot\')"><span class="tw-plaque">📦 跨城商隊碼頭<small>'+(shipReady?'✨ 商隊已返航！':w.shipment?'🚢 航行中':'投資賺翻倍')+'</small></span></button>'
    +'<button type="button" class="town-wing-spot" style="left:6%;top:61%;width:48%;height:27%" onclick="openTownWingModal(\'tavern\')"><span class="tw-plaque">🍺 旅人常客酒館<small>常客委託與好感度</small></span></button>'
