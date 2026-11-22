@@ -2286,5 +2286,25 @@
         "url":  "assets/town/east_7.7c9c34d691c6.jpg",
         "bytes":  94722,
         "sha256":  "7c9c34d691c623e9e3727b2bdac61a3610351d8590f414f231e9b8b21585a7d0"
+    },
+    {
+        "url":  "assets/museum/relic_old_tongs.10a5b8a9c6c9.jpg",
+        "bytes":  27848,
+        "sha256":  "10a5b8a9c6c92f83aeacd10f42a6a04f44b3712bfc99d07b129f268f5e6d81a5"
+    },
+    {
+        "url":  "assets/museum/relic_clay_pot.65bac3502bd1.jpg",
+        "bytes":  24850,
+        "sha256":  "65bac3502bd1fb12dc55bc82f161f845bc2e6bdaa8dfe2bd1576cf708b7b5ab7"
+    },
+    {
+        "url":  "assets/museum/relic_bronze_coin.4f5f99dbbf0b.jpg",
+        "bytes":  27293,
+        "sha256":  "4f5f99dbbf0b1d4b259fe5386fa4486dd08e6f37bf37476ee24552cafd361b95"
+    },
+    {
+        "url":  "assets/museum/relic_ember_fossil.c44df0a25972.jpg",
+        "bytes":  24807,
+        "sha256":  "c44df0a259723f93cc3fb821022572490705261a8d6f17be797366b865df647f"
     }
 ]

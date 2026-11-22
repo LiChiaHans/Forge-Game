@@ -5853,9 +5853,24 @@ function pixelRelicArt(id,locked=false){
  return _spriteCell(WING_MODAL_ART.relic_sheet,RELIC_SHEET_INDEX[id]??0,4,3,'is-relic'+(locked?' is-locked':''));
 }
 
+const MUSEUM_REALISTIC_ART={
+ "old_tongs":"assets/museum/relic_old_tongs.10a5b8a9c6c9.jpg",
+ "clay_pot":"assets/museum/relic_clay_pot.65bac3502bd1.jpg",
+ "bronze_coin":"assets/museum/relic_bronze_coin.4f5f99dbbf0b.jpg",
+ "ember_fossil":"assets/museum/relic_ember_fossil.c44df0a25972.jpg"
+};
+
+function museumShowcaseArt(kind,id,locked=false){
+ const oil=MUSEUM_REALISTIC_ART[id];
+ if(oil)return '<img class="mi-oil-img'+(locked?' is-locked':'')+'" src="'+oil+'" alt="" decoding="async">';
+ return kind==='fish'?pixelFishArt(id,locked):pixelRelicArt(id,locked);
+}
+
 function relicPuzzleTileStyle(id,pieceIdx){
- const rIdx=RELIC_SHEET_INDEX[id]??0,rCol=rIdx%4,rRow=Math.floor(rIdx/4);
  const pCol=pieceIdx%3,pRow=Math.floor(pieceIdx/3);
+ const oil=MUSEUM_REALISTIC_ART[id];
+ if(oil)return 'background-image:url(\''+oil+'\');background-size:300% 300%;background-position:'+(pCol/2*100).toFixed(3)+'% '+(pRow/2*100).toFixed(3)+'%';
+ const rIdx=RELIC_SHEET_INDEX[id]??0,rCol=rIdx%4,rRow=Math.floor(rIdx/4);
  const tx=rCol*3+pCol,ty=rRow*3+pRow;
  return 'background-image:url(\''+WING_MODAL_ART.relic_sheet+'\');background-size:1200% 900%;background-position:'+(tx/11*100).toFixed(3)+'% '+(ty/8*100).toFixed(3)+'%';
 }
@@ -6209,7 +6224,15 @@ function renderTownWing(){
   const postSprite=TOWN_WING_BUILDING_ART['east_post_'+eastLv]||TOWN_WING_BUILDING_ART.east_post_0;
   layer.innerHTML='<img class="town-wing-bg" src="'+bgUrl+'" alt="東側旅商大道" decoding="async">'
    +tierBadge
-   +'<div class="town-wing-fx is-east" aria-hidden="true"><span class="es-stream-glint g1"></span><span class="es-stream-glint g2"></span></div>'
+   +'<div class="town-wing-fx is-east" aria-hidden="true">'
+   +'<div class="es-windmill-wheel"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(50,50)">'
+   +'<g><rect x="-3" y="-44" width="6" height="44" fill="#5e3d22" stroke="#2c1d12" stroke-width="1.6"/><polygon points="2,-42 15,-38 13,-12 2,-10" fill="#efe4c8" stroke="#4a311c" stroke-width="1.5"/></g>'
+   +'<g transform="rotate(90)"><rect x="-3" y="-44" width="6" height="44" fill="#5e3d22" stroke="#2c1d12" stroke-width="1.6"/><polygon points="2,-42 15,-38 13,-12 2,-10" fill="#efe4c8" stroke="#4a311c" stroke-width="1.5"/></g>'
+   +'<g transform="rotate(180)"><rect x="-3" y="-44" width="6" height="44" fill="#5e3d22" stroke="#2c1d12" stroke-width="1.6"/><polygon points="2,-42 15,-38 13,-12 2,-10" fill="#efe4c8" stroke="#4a311c" stroke-width="1.5"/></g>'
+   +'<g transform="rotate(270)"><rect x="-3" y="-44" width="6" height="44" fill="#5e3d22" stroke="#2c1d12" stroke-width="1.6"/><polygon points="2,-42 15,-38 13,-12 2,-10" fill="#efe4c8" stroke="#4a311c" stroke-width="1.5"/></g>'
+   +'<circle r="5.5" fill="#7c5432" stroke="#2c1d12" stroke-width="1.8"/><circle r="2" fill="#e7c676"/>'
+   +'</g></svg></div>'
+   +'<span class="es-stream-glint g1"></span><span class="es-stream-glint g2"></span></div>'
    +'<button type="button" class="town-wing-spot is-building" data-landmark-tier="'+eastLv+'" style="left:52%;top:13%;width:46%;height:29%" onclick="openTownWingModal(\'caravan\')"><img class="tw-building-sprite" src="'+postSprite+'" alt="皇家旅商驛站" decoding="async"><span class="tw-plaque">'+theme.icon+' '+theme.name+'<small>特賣＋以物易物 · Lv '+eastLv+'/3</small></span></button>'
    +'<button type="button" class="town-wing-spot" style="left:54%;top:43%;width:38%;height:20%" onclick="openTownWingModal(\'depot\')"><span class="tw-plaque">📦 跨城商隊碼頭<small>'+(shipReady?'✨ 商隊已返航！':w.shipment?'🚢 航行中':'投資賺翻倍')+'</small></span></button>'
    +'<button type="button" class="town-wing-spot" style="left:6%;top:61%;width:48%;height:27%" onclick="openTownWingModal(\'tavern\')"><span class="tw-plaque">🍺 旅人常客酒館<small>常客委託與好感度</small></span></button>'
@@ -6465,6 +6488,11 @@ function doCaravanBarter(){
  renderTownWingModal();render();if($('townP').style.display==='flex')renderTown();saveNow();
 }
 
+function regularGiftCost(r,lv){
+ const base=(r?.giftCost||100)+70;
+ return Math.round(base*(1+Math.max(0,lv||0)*0.55)/10)*10;
+}
+
 function giftTownRegular(regId){
  const w=ensureTownWings(),lm=landmarkBonuses(),r=TOWN_REGULARS.find(x=>x.id===regId);
  if(!r)return;
@@ -6473,8 +6501,9 @@ function giftTownRegular(regId){
  const cur=w.regulars[regId]||0;
  if(cur>=5){toast(r.name+' 好感度已達滿心！');return;}
  if(w.regularGifted.includes(regId)){toast('今天已經招待過 '+r.name+' 了，明天再來吧！');return;}
- if(!sandboxSession&&coins<r.giftCost){toast('金幣不足 '+r.giftCost+'，無法招待 '+r.name+'。');return;}
- if(!sandboxSession)coins-=r.giftCost;
+ const cost=regularGiftCost(r,cur);
+ if(!sandboxSession&&coins<cost){toast('金幣不足 '+cost+'，無法招待 '+r.name+'。');return;}
+ if(!sandboxSession)coins-=cost;
  w.regularGifted.push(regId);
  w.regulars[regId]=Math.min(5,cur+(lm.eastHeartStep||1));
  const qIdx=w.regulars[regId]>=5?2:w.regulars[regId]>=3?1:0;
@@ -6595,7 +6624,7 @@ function renderMuseumInspect(kind,id){
   const count=mus.fishCounts?.[id]||0,got=count>0||mus.fish.includes(id),stars=fishStarLevel(count),maxCm=mus.fishMax?.[id]||0;
   const kBonus=(stars*1.5).toFixed(1);
   title.textContent=got?(f.icon+' '+f.name):'❔ 未知魚種';
-  body.innerHTML='<div class="mi-showcase is-fish"><div class="mi-art-stage">'+pixelFishArt(id,!got)+'</div>'
+  body.innerHTML='<div class="mi-showcase is-fish"><div class="mi-art-stage">'+museumShowcaseArt('fish',id,!got)+'</div>'
    +'<div class="mi-badges"><span>'+SEASONS[f.season].icon+' '+SEASONS[f.season].name+'</span><span>'+(f.night?'🌙 夜晚出沒':'☀ 白天出沒')+'</span><span>稀有度 '+'★'.repeat(f.rarity+1)+'</span></div></div>'
    +'<p class="mi-desc">'+(got?f.desc:'尚未在西側溪畔釣起過此魚種。請依季節與日夜時段前往星露釣魚棧橋探索！')+'</p>'
    +'<div class="mi-stat-box"><div><b>🍲 廚房餐廳星級加成</b><span>'+'★'.repeat(stars)+'☆'.repeat(3-stars)+'（目前 +'+(stars>0?kBonus:'0')+'% 餐廳售價）</span></div>'
@@ -6622,7 +6651,7 @@ function renderMuseumInspect(kind,id){
    :shards>=9
     ?'<button type="button" class="tw-big-btn is-gold" onclick="openRelicPuzzle(\''+id+'\')">🧩 碎片齊全（9/9）！進入 3×3 拼圖修復</button>'
     :'<button type="button" class="tw-big-btn" disabled>⛏ 還差 '+(9-shards)+' 片碎片（於西側遺跡探勘獲得）</button>';
-  body.innerHTML='<div class="mi-showcase is-relic"><div class="mi-art-stage">'+pixelRelicArt(id,!seen)+'</div>'
+  body.innerHTML='<div class="mi-showcase is-relic"><div class="mi-art-stage">'+museumShowcaseArt('relic',id,!seen)+'</div>'
    +'<div class="mi-badges"><span>稀有度 '+'★'.repeat(r.rarity+1)+'</span><span>'+(completed?'✓ 已修復完成':'碎片 '+shards+' / 9')+'</span></div></div>'
    +'<p class="mi-desc">'+(seen?r.desc:'尚未在西側古物遺跡營地發掘過此古物碎片。')+'</p>'
    +'<div class="mi-stat-box"><div><b>⚒ 冶煉廠古物加成</b><span>'+(completed?'✓ 已生效：冶煉廠成交售價 +2.5%':'完成 9 片拼圖修復後啟動 +2.5% 冶煉售價')+'</span></div>'
@@ -6732,14 +6761,15 @@ function renderTownWingModal(){
    +tabs+'<div class="tw-list">'
    +list.map(r=>{
     const inToday=visitorIds.has(r.id),lv=w.regulars[r.id]||0,gifted=w.regularGifted.includes(r.id),qIdx=lv>=5?2:lv>=3?1:0;
+    const cost=regularGiftCost(r,lv);
     const hasQ=inToday&&qIds.includes(r.id),qDone=w.regularQuestDone.includes(r.id),qReady=hasQ&&!qDone&&r.quest.check();
     const portraitUrl=typeof TOWN_GUEST_ART!=='undefined'?TOWN_GUEST_ART[r.guestId]:'';
     const portraitHtml=portraitUrl?'<div class="tw-portrait"><img src="'+portraitUrl+'" alt="'+r.name+'" decoding="async"></div>':'<span class="tw-ico">'+r.icon+'</span>';
     const qBlock=hasQ?'<div class="tw-quest-bar"><span>📜 今日委託：'+r.quest.text+'（免費升心＋💰'+r.quest.rewardGold+'）</span><button type="button" class="tw-qbtn" onclick="claimRegularQuest(\''+r.id+'\')" '+(qDone||!qReady?'disabled':'')+'>'+(qDone?'已領取 ✓':qReady?'領取謝禮 ✦':'進行中')+'</button></div>':'';
     const actBtn=!inToday
      ?'<button type="button" class="tw-act" disabled>🚶 今日未到</button>'
-     :'<button type="button" class="tw-act" onclick="giftTownRegular(\''+r.id+'\')" '+(lv>=5||gifted||(!sandboxSession&&coins<r.giftCost)?'disabled':'')+'>'+(lv>=5?'滿心':gifted?'✓ 今日已招待':'🍻 💰'+r.giftCost)+'</button>';
-    return '<div class="tw-reg-card"><div class="tw-row is-dialogue">'+portraitHtml+'<div class="tw-info"><b>'+r.name+' <small class="tw-role">'+r.role+(tavernTab==='all'&&inToday?' · 🍺今日在店':'')+'</small></b><div class="tw-hearts">'+'❤️'.repeat(lv)+'🤍'.repeat(5-lv)+'</div><div class="tw-speech">「'+r.quotes[qIdx]+'」</div><small>'+r.perk+'</small></div>'+actBtn+'</div>'+qBlock+'</div>';
+     :'<button type="button" class="tw-act" onclick="giftTownRegular(\''+r.id+'\')" '+(lv>=5||gifted||(!sandboxSession&&coins<cost)?'disabled':'')+'>'+(lv>=5?'滿心':gifted?'✓ 已招待':'🍻 💰'+cost)+'</button>';
+    return '<div class="tw-reg-card"><div class="tw-row is-dialogue">'+portraitHtml+'<div class="tw-info"><div class="tw-reg-top"><div><b>'+r.name+' <small class="tw-role">'+r.role+(tavernTab==='all'&&inToday?' · 🍺在店':'')+'</small></b><div class="tw-hearts">'+'❤️'.repeat(lv)+'🤍'.repeat(5-lv)+'</div></div>'+actBtn+'</div><div class="tw-speech">「'+r.quotes[qIdx]+'」</div><small class="tw-perk">'+r.perk+'</small></div></div>'+qBlock+'</div>';
    }).join('')
    +'</div>';
  }else if(townWingModalMode==='depot'){
@@ -7349,7 +7379,7 @@ syncHomeArt();
 // Background preparation never blocks navigation. Reuse the previous release's media cache.
 const gameAssetLoading={active:false,complete:false,running:null,entries:null,loaded:new Set(),failed:[],cache:null,networkFailures:0,objectURLs:new Map(),retryTimer:null};
 function collectGameAssets(){
- const groups={REVIEW_MONSTER_ART,SEASON_MUSIC_DATA,ULTIMATE_ART,GEMINI_TOWN_ART,TOWN_BUILDING_ART,TOWN_WING_ART,TOWN_WING_BUILDING_ART,WING_MODAL_ART,WORKSHOP_ART,COZY_ITEM_ART,TOWN_GUEST_ART,GREENHOUSE_ART,PREP_BOARD_ART,HOME_ART};
+ const groups={REVIEW_MONSTER_ART,SEASON_MUSIC_DATA,ULTIMATE_ART,GEMINI_TOWN_ART,TOWN_BUILDING_ART,TOWN_WING_ART,TOWN_WING_BUILDING_ART,WING_MODAL_ART,MUSEUM_REALISTIC_ART,WORKSHOP_ART,COZY_ITEM_ART,TOWN_GUEST_ART,GREENHOUSE_ART,PREP_BOARD_ART,HOME_ART};
  return Object.values(groups).flatMap(group=>Object.entries(group).map(([id,url])=>({group,id,url,audio:group===SEASON_MUSIC_DATA})));
 }
 function gameAssetPriority(entry){

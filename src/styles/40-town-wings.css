@@ -96,7 +96,20 @@
 @keyframes wfDropArcL{0%{opacity:0;transform:translate(0,0)}22%{opacity:1;transform:translate(-8px,-10px)}100%{opacity:0;transform:translate(-16px,8px)}}
 @keyframes wfDropArcR{0%{opacity:0;transform:translate(0,0)}22%{opacity:1;transform:translate(9px,-10px)}100%{opacity:0;transform:translate(17px,8px)}}
 
-/* East Wing Stream Glint */
+/* East Wing Stream Glint & Rotating Windmill Sails */
+.es-windmill-wheel{
+ position:absolute;left:24.8%;top:19.6%;width:21.5%;aspect-ratio:1/1;
+ transform:translate(-50%,-50%);pointer-events:none;
+ filter:drop-shadow(0 2px 3px #090e0b66)
+}
+.es-windmill-wheel svg{
+ display:block;width:100%;height:100%;
+ animation:esWindmillSpin 9.5s linear infinite
+}
+.town-wing-layer[data-time="night"] .es-windmill-wheel{
+ filter:brightness(.55) saturate(.88) hue-rotate(-10deg) drop-shadow(0 2px 3px #04070a88)
+}
+@keyframes esWindmillSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .es-stream-glint{
  position:absolute;left:70%;top:76%;width:14%;height:6%;
  background:radial-gradient(ellipse,#e8ffff99,transparent 70%);
@@ -432,8 +445,13 @@
 }
 .dig-radar.is-clear{background:#222c28;color:#8fa399;border-color:#44544c}
 
-/* Tavern Regular 2x Larger Half-Body Illustrated Portrait & RPG Dialogue Bubble */
-.tw-row.is-dialogue{align-items:flex-start;gap:12px}
+/* Tavern Regular 2x Larger Half-Body Illustrated Portrait & Full-Width RPG Dialogue */
+.tw-row.is-dialogue{align-items:flex-start;gap:11px}
+.tw-reg-top{
+ display:flex;align-items:flex-start;justify-content:space-between;gap:6px;width:100%
+}
+.tw-reg-top .tw-act{padding:5px 8px;font-size:11.5px}
+.tw-perk{display:block;width:100%;font-size:11px;color:#c2d4c2}
 .tw-portrait{
  width:112px;height:128px;flex:none;border-radius:12px;
  border:2.5px solid #e6c26b;overflow:hidden;
@@ -445,9 +463,10 @@
  image-rendering:pixelated;display:block
 }
 .tw-speech{
- margin:3px 0 4px;padding:6px 9px;border-radius:8px;
+ width:100%;box-sizing:border-box;
+ margin:5px 0 4px;padding:6px 9px;border-radius:8px;
  border:1px solid #8a6d43;background:#291d14dd;
- font-size:11.5px;line-height:1.42;color:#ffedc2
+ font-size:12px;line-height:1.45;color:#ffedc2
 }
 
 /* Clickable Museum Cards, Inspect Showcase & 3x3 Relic Jigsaw Puzzle */
@@ -483,10 +502,12 @@
 }
 .mi-showcase.is-relic{background:radial-gradient(circle at 50% 40%,#3d2f22,#171310)}
 .mi-art-stage{
- width:148px;height:148px;border-radius:12px;overflow:hidden;
+ width:188px;height:188px;border-radius:12px;overflow:hidden;
  border:2.5px solid #e6c26b;background:#18261f;
  box-shadow:0 8px 20px #040806bb,inset 0 0 18px #ffe49422
 }
+.mi-oil-img{display:block;width:100%;height:100%;object-fit:cover}
+.mi-oil-img.is-locked{filter:brightness(0) opacity(.45)}
 .mi-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
 .mi-badges span{
  padding:2px 8px;border-radius:999px;font-size:11px;font-weight:800;

@@ -73,9 +73,24 @@ function pixelRelicArt(id,locked=false){
  return _spriteCell(WING_MODAL_ART.relic_sheet,RELIC_SHEET_INDEX[id]??0,4,3,'is-relic'+(locked?' is-locked':''));
 }
 
+const MUSEUM_REALISTIC_ART={
+ "old_tongs":"assets/museum/relic_old_tongs.10a5b8a9c6c9.jpg",
+ "clay_pot":"assets/museum/relic_clay_pot.65bac3502bd1.jpg",
+ "bronze_coin":"assets/museum/relic_bronze_coin.4f5f99dbbf0b.jpg",
+ "ember_fossil":"assets/museum/relic_ember_fossil.c44df0a25972.jpg"
+};
+
+function museumShowcaseArt(kind,id,locked=false){
+ const oil=MUSEUM_REALISTIC_ART[id];
+ if(oil)return '<img class="mi-oil-img'+(locked?' is-locked':'')+'" src="'+oil+'" alt="" decoding="async">';
+ return kind==='fish'?pixelFishArt(id,locked):pixelRelicArt(id,locked);
+}
+
 function relicPuzzleTileStyle(id,pieceIdx){
- const rIdx=RELIC_SHEET_INDEX[id]??0,rCol=rIdx%4,rRow=Math.floor(rIdx/4);
  const pCol=pieceIdx%3,pRow=Math.floor(pieceIdx/3);
+ const oil=MUSEUM_REALISTIC_ART[id];
+ if(oil)return 'background-image:url(\''+oil+'\');background-size:300% 300%;background-position:'+(pCol/2*100).toFixed(3)+'% '+(pRow/2*100).toFixed(3)+'%';
+ const rIdx=RELIC_SHEET_INDEX[id]??0,rCol=rIdx%4,rRow=Math.floor(rIdx/4);
  const tx=rCol*3+pCol,ty=rRow*3+pRow;
  return 'background-image:url(\''+WING_MODAL_ART.relic_sheet+'\');background-size:1200% 900%;background-position:'+(tx/11*100).toFixed(3)+'% '+(ty/8*100).toFixed(3)+'%';
 }
