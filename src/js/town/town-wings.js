@@ -331,8 +331,6 @@ function renderTownWing(){
    +tierBadge
    +'<div class="town-wing-fx is-west" aria-hidden="true">'
    +'<span class="tw-sunbeam b1"></span><span class="tw-sunbeam b2"></span>'
-   +'<div class="wf-waterfall"><span class="wf-stream s1"></span><span class="wf-stream s2"></span><span class="wf-stream s3"></span></div>'
-   +'<div class="wf-plunge"><span class="wf-foam"></span><span class="wf-foam f2"></span><span class="wf-ripple"></span><span class="wf-ripple r2"></span><i class="wf-drop d1"></i><i class="wf-drop d2"></i><i class="wf-drop d3"></i><i class="wf-drop d4"></i><i class="wf-drop d5"></i></div>'
    +'<div class="wf-campfire"><span class="cf-flame"></span><span class="cf-flame f2"></span><i class="cf-smoke s1"></i><i class="cf-smoke s2"></i></div>'
    +'<div class="wf-leap-fish"><span class="lf-fish">🐟</span><span class="lf-ring"></span></div>'
    +'<span class="tw-night-halo is-pier"></span><span class="tw-night-halo is-camp"></span>'
@@ -777,8 +775,9 @@ function renderMuseumInspect(kind,id){
    :shards>=9
     ?'<button type="button" class="tw-big-btn is-gold" onclick="openRelicPuzzle(\''+id+'\')">🧩 碎片齊全（9/9）！進入 3×3 拼圖修復</button>'
     :'<button type="button" class="tw-big-btn" disabled>⛏ 還差 '+(9-shards)+' 片碎片（於西側遺跡探勘獲得）</button>';
-  body.innerHTML='<div class="mi-showcase is-relic"><div class="mi-art-stage">'+museumShowcaseArt('relic',id,!seen)+'</div>'
-   +'<div class="mi-badges"><span>稀有度 '+'★'.repeat(r.rarity+1)+'</span><span>'+(completed?'✓ 已修復完成':'碎片 '+shards+' / 9')+'</span></div></div>'
+  const relicArtHtml=completed?museumShowcaseArt('relic',id,false):pixelRelicArt(id,!seen);
+  body.innerHTML='<div class="mi-showcase is-relic"><div class="mi-art-stage">'+relicArtHtml+'</div>'
+   +'<div class="mi-badges"><span>稀有度 '+'★'.repeat(r.rarity+1)+'</span><span>'+(completed?'✓ 已修復完成（高清典藏已解鎖）':'碎片 '+shards+' / 9（修復後解鎖高清圖案）')+'</span></div></div>'
    +'<p class="mi-desc">'+(seen?r.desc:'尚未在西側古物遺跡營地發掘過此古物碎片。')+'</p>'
    +'<div class="mi-stat-box"><div><b>⚒ 冶煉廠與古物專屬加成</b><span>'+(completed?'✓ 已生效':'拼圖修復後啟動')+'</span></div>'
    +'<div class="mi-progress"><i style="width:'+Math.round(shards/9*100)+'%"></i></div>'
@@ -838,7 +837,7 @@ function renderTownWingModal(){
      return '<div class="dig-cell is-open">'+art+'<b>'+(c.v?.label||'已發掘')+'</b><small>'+(c.v?.sub||'')+'</small>'+(near>0?'<em class="dig-radar">🧭 周圍 '+near+' 寶</em>':'<em class="dig-radar is-clear">✓ 周圍空</em>')+'</div>';
     }
     const disabled=digTool==='cross'?(!sandboxSession&&(w.crossUsed||coins<60)):(!sandboxSession&&westRem<=0&&(w.westExtra>=2||coins<80));
-    return '<button type="button" class="dig-cell'+(digTool==='cross'?' is-cross':'')+'" onclick="digRuinCell('+i+')" '+(disabled?'disabled':'')+'><div class="dig-px">'+pixelWingItemArt(digTool==='cross'?'cross':'rock')+'</div><b>'+(digTool==='cross'?'十字震波':'點擊探勘')+'</b><small>'+(digTool==='cross'?'💰60 開5格':westRem>0||sandboxSession?'免費體力':'💰80 加場')+'</small></button>';
+    return '<button type="button" class="dig-cell'+(digTool==='cross'?' is-cross':'')+'" onclick="digRuinCell('+i+')" '+(disabled?'disabled':'')+'><div class="dig-px">'+pixelWingItemArt(digTool==='cross'?'cross':'rock')+'</div><b>'+(digTool==='cross'?'十字震波':'點擊探勘')+'</b><small>'+(digTool==='cross'?'💰60 開5格':westRem>0||sandboxSession?'免費體力':'💰80 加場')+'</small><em class="dig-radar is-unopened">🧭 待探測</em></button>';
    }).join('')
    +'</div>'
    +'<p class="tc-intro" style="margin-top:8px">博物館古物進度：<b>'+mus.relics.length+' / '+RELIC_CATALOG.length+'</b></p>';
