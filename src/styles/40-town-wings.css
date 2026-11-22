@@ -298,10 +298,21 @@
 
 /* Thematic Modal Scene Headers & Per-Building Color Atmospheres */
 .tw-scene-banner{
- margin:-2px 0 10px;border:2px solid #cfa557;border-radius:9px;overflow:hidden;
- height:86px;background:#131f1a;box-shadow:inset 0 0 0 1px #fff1c033,0 4px 12px #050a08aa
+ position:relative;margin:-2px 0 11px;border:2px solid #dfba64;border-radius:10px;overflow:hidden;
+ height:136px;background:#131f1a;
+ box-shadow:inset 0 0 0 1px #fff1c044,0 6px 16px #040806cc
 }
-.tw-scene-banner svg{display:block;width:100%;height:100%}
+.tw-scene-banner img{
+ display:block;width:100%;height:100%;object-fit:cover;object-position:50% 45%;
+ image-rendering:auto
+}
+.tw-scene-banner[data-time="night"] img{
+ filter:brightness(.76) saturate(1.08) hue-rotate(-8deg)
+}
+.tw-scene-banner::after{
+ content:'';position:absolute;inset:0;pointer-events:none;
+ background:linear-gradient(180deg,transparent 56%,#0d1511b8 100%),radial-gradient(ellipse at center,transparent 62%,#070c0955 100%)
+}
 #townWingP[data-mode="fishing"] .hp{background:linear-gradient(180deg,#162f3b 0%,#10222b 65%,#0c1921 100%);border-color:#74bdd4}
 #townWingP[data-mode="excavate"] .hp{background:linear-gradient(180deg,#2d2720 0%,#1f1b16 65%,#161310 100%);border-color:#c9a66b}
 #townWingP[data-mode="museum"] .hp{background:linear-gradient(180deg,#2e231a 0%,#1e1712 65%,#15100d 100%);border-color:#e0b760}
@@ -309,23 +320,31 @@
 #townWingP[data-mode="tavern"] .hp{background:linear-gradient(180deg,#302016 0%,#211610 65%,#170f0b 100%);border-color:#db9e53}
 #townWingP[data-mode="depot"] .hp{background:linear-gradient(180deg,#192b3b 0%,#12202c 65%,#0d1720 100%);border-color:#8cb8d6}
 
-/* Bespoke Pixel-Art Fish & Relic Frames */
-.px-art{display:block;width:44px;height:44px;image-rendering:pixelated;filter:drop-shadow(0 2px 3px #0008)}
-.px-art.is-locked{filter:brightness(0) opacity(.42)}
+/* Gemini Pixel-Art Fish & Relic Sprite Frames */
+.px-sprite{
+ display:block;width:100%;height:100%;background-repeat:no-repeat;
+ image-rendering:pixelated
+}
+.px-sprite.is-fish{background-size:400% 400%}
+.px-sprite.is-relic{background-size:400% 300%}
+.px-sprite.is-locked{filter:brightness(0) contrast(1.4) opacity(.42)}
 .tw-px-frame{
- width:54px;height:54px;display:flex;align-items:center;justify-content:center;margin-bottom:2px;
- border:1.5px solid #597264;border-radius:8px;
- background:radial-gradient(circle at 50% 35%,#294036,#131e19)
+ width:62px;height:62px;display:flex;align-items:center;justify-content:center;margin-bottom:3px;
+ border:2px solid #597264;border-radius:10px;overflow:hidden;
+ background:#182824;box-shadow:inset 0 0 0 1px #ffffff14,0 2px 6px #060a0888
 }
-.tw-item.is-got .tw-px-frame{border-color:#e3be68;background:radial-gradient(circle at 50% 35%,#3b5241,#1a2a21);box-shadow:inset 0 0 8px #ffe49433}
+.tw-item.is-got .tw-px-frame{
+ border-color:#e3be68;box-shadow:inset 0 0 10px #ffe49433,0 3px 8px #060a08aa
+}
 .tw-px-badge{
- width:48px;height:48px;flex:none;display:flex;align-items:center;justify-content:center;
- border:1.5px solid #cfa557;border-radius:8px;
- background:radial-gradient(circle at 50% 35%,#384d3f,#18241d)
+ width:56px;height:56px;flex:none;display:flex;align-items:center;justify-content:center;
+ border:2px solid #cfa557;border-radius:10px;overflow:hidden;
+ background:#18261f;box-shadow:inset 0 0 0 1px #fff1c028,0 2px 6px #060a08aa
 }
-.tw-px-badge .px-art{width:40px;height:40px}
-.dig-px{width:38px;height:38px;display:flex;align-items:center;justify-content:center}
-.dig-px .px-art{width:36px;height:36px}
+.dig-px{
+ width:48px;height:48px;display:flex;align-items:center;justify-content:center;
+ border:1.5px solid #cfa557;border-radius:8px;overflow:hidden;background:#18261f
+}
 
 /* Bait & Excavation Tool Selector */
 .tw-bait-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:6px;margin:0 0 10px}
