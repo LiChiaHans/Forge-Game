@@ -45,16 +45,12 @@
  content:'';position:absolute;left:6px;right:6px;bottom:-3px;height:2px;
  background:linear-gradient(90deg,#e4bc6255,#fff2bf99,#e4bc6255);pointer-events:none
 }
-#orders .od,#kitchenOrders .kitchen-order{
+#kitchenOrders .kitchen-order{
  border-radius:7px 7px 3px 3px!important;
  border:1.5px solid #c9a76a!important;border-bottom:3px solid #8e6d3b!important;
  background:linear-gradient(180deg,#f5e8ca 0%,#e6d1a5 100%)!important;
  color:#2b1b0e!important;
  box-shadow:0 4px 10px #160c05aa,inset 0 1px 0 #fff9ea!important
-}
-#orders .od{
- height:auto!important;min-height:0!important;max-height:100%!important;
- padding:4px 3px 3px!important;align-self:stretch
 }
 #kitchenOrders{height:132px!important;min-height:132px!important;max-height:132px!important}
 #kitchenOrders .kitchen-order{
@@ -67,14 +63,13 @@
  #kitchenOrders .kitchen-order{padding:12px 2px 2px!important}
  #kitchenOrders .kitchen-order>div:not(.kitchen-recipe-strip){width:40px;height:40px}
 }
-#orders .od .order-name,#orders .od .rc,#orders .od small,
 #kitchenOrders .kitchen-order b{
  color:#2f1d0f!important;text-shadow:none!important
 }
-#orders .od .wt,#kitchenOrders .kitchen-order>span{
+#kitchenOrders .kitchen-order>span{
  color:#ffefc0!important;text-shadow:none!important
 }
-#orders .od.is-match,#kitchenOrders .kitchen-order.is-match{
+#kitchenOrders .kitchen-order.is-match{
  border-color:#ffd859!important;
  background:linear-gradient(180deg,#fff4d2 0%,#f5df9c 100%)!important;
  box-shadow:0 0 14px #ffd45988,0 4px 10px #160c05aa!important
@@ -235,7 +230,7 @@
 }
 .tw-winter-night-sky svg{display:block;width:100%;height:100%}
 
-/* 7. Forge Polish: No Item-Box Glow, Row-2 Quest Button, Expanded Orders & Seasonal Board */
+/* 7. Forge Polish: No Item-Box Glow, Row-2 Quest Button, Customer Windows & Seasonal Board */
 #handSlot,#handSlot:not(:empty),#app[data-workshop="forge"] #side #handSlot:has([data-drag="hand"]){
  animation:none!important;
  border-color:#998160!important;
@@ -253,19 +248,74 @@
  border-color:#9ad88c!important;color:#e7ffd9!important
 }
 #app #orders{
- height:174px!important;min-height:174px!important;max-height:174px!important
+ --forge-orders-height:174px;
+ height:var(--forge-orders-height)!important;min-height:var(--forge-orders-height)!important;max-height:var(--forge-orders-height)!important;
+ gap:5px;background:linear-gradient(#553e31,#35271f)!important
 }
-@media(max-height:820px){
- #app #orders{height:152px!important;min-height:152px!important;max-height:152px!important}
+#app[data-compact="true"] #orders{--forge-orders-height:160px}
+@media(max-height:600px){
+ #app[data-compact="true"] #orders{--forge-orders-height:134px}
 }
-#app[data-compact="true"] #orders{
- height:134px!important;min-height:134px!important;max-height:134px!important
+#app #orders.is-tutorial{--forge-orders-height:91px}
+.od.forge-order{
+ --order-icon-size:clamp(34px,11vw,47px);
+ --order-mold-size:clamp(11px,3.6vw,16px);
+ display:grid;grid-template-rows:21px 1fr;
+ min-height:0;max-height:none;padding:3px;
+ border:1.5px solid #c9a76a;border-bottom:3px solid #8e6d3b;border-radius:7px 7px 3px 3px;
+ background:linear-gradient(#382f26,#272627);
+ box-shadow:0 4px 10px #160c05aa,inset 0 1px 0 #fff1c565
 }
-#app #orders .od>.order-guest{
- left:3%!important;top:17%!important;width:34%!important;height:48%!important;z-index:1!important
+#app #orders .forge-order{height:auto;min-height:0;max-height:none;align-self:stretch}
+.forge-order:has(.forge-order-window){grid-template-rows:21px minmax(0,1fr) 56px}
+.forge-order-status,.forge-order-bonus{display:flex;align-items:center;gap:2px}
+.forge-order-status{justify-content:space-between;min-width:0;padding:0 1px}
+.forge-order .wt,.forge-order .em,.forge-order .guest-like22{position:static;flex:none;white-space:nowrap}
+.forge-order .wt,#app[data-workshop="forge"] .forge-order .wt{
+ padding:2px 4px;border-radius:99px;border:1px solid #d4aa5a88;
+ background:#151a24e0;color:#ffeab0;font-size:clamp(9px,2.8vw,11px);font-variant-numeric:tabular-nums;
+ text-shadow:none;box-shadow:0 1px 3px #090c12aa
 }
-#app #orders .od .hxo{width:48px!important;height:48px!important}
-#app #orders .od .order-name{font-size:12.5px!important;line-height:17px!important}
+.forge-order .guest-like22{padding:2px 3px!important}
+.forge-order .em:empty{display:none}
+.forge-order .em{font-size:11px!important}
+.forge-order-window{
+ position:relative;overflow:hidden;border:1px solid #9e764d;border-radius:31px 31px 3px 3px;
+ background:radial-gradient(ellipse at 50% 72%,#dea67588,transparent 75%),linear-gradient(#374b42,#705442);
+ box-shadow:inset 0 0 10px #20161277
+}
+.forge-order-window .order-guest{
+ position:absolute;inset:0 0 7px;display:flex;justify-content:center;align-items:flex-start;
+ overflow:hidden;pointer-events:none
+}
+.forge-order-window img{width:auto;height:150%;max-width:none;flex:none;image-rendering:pixelated}
+.forge-order-window::after{
+ content:"";position:absolute;inset:auto 0 0;height:7px;
+ background:linear-gradient(#e3b574 0 1px,#a26b3c 2px,#704627 4px,#56341d 7px);
+ box-shadow:0 -2px 4px #1d140b55;pointer-events:none
+}
+.forge-order-details{
+ display:grid;grid-template-columns:var(--order-icon-size) minmax(0,1fr);align-items:center;gap:3px;
+ margin-top:3px;padding:2px;border:1px solid #daae67;border-radius:4px;
+ background:linear-gradient(#f9e8c3,#e9cb93);color:#2f1d0f
+}
+.forge-order-icon{width:var(--order-icon-size);height:var(--order-icon-size)}
+.forge-order-icon>.hxo{width:100%!important;height:100%!important;margin:0}
+.forge-order-icon .hxi b{color:#f6e6ff;font-size:calc(var(--order-icon-size)*.52);line-height:1}
+.forge-order-copy{display:flex;flex-direction:column;gap:2px;min-width:0;text-align:left}
+.forge-order .order-name{
+ display:flex;flex-wrap:wrap;font-size:clamp(10px,2.95vw,12.5px);line-height:1.2;font-weight:900
+}
+.forge-order .order-name span{white-space:nowrap}
+.forge-order .rc,#app[data-compact="true"] .forge-order .rc{
+ justify-content:flex-start;gap:2px;height:auto;min-height:var(--order-mold-size);margin:0;overflow:visible
+}
+.forge-order .rc .mo.s,#app[data-compact="true"] .forge-order .rc .mo.s{width:var(--order-mold-size);height:var(--order-mold-size)}
+.forge-order .rc small,#app[data-compact="true"] .forge-order .rc small{color:inherit;font-size:clamp(9px,2.65vw,11px);line-height:1.2}
+.forge-order.is-match .forge-order-details{background:linear-gradient(#fff3cf,#f4d991)}
+.forge-order.is-pref-match .guest-like22{background:#6a501e}
+.forge-order.pv-sale .forge-order-details{background:linear-gradient(#eff8cf,#c6e1a1)}
+.forge-order.pv-bad .forge-order-details{background:linear-gradient(#fbe7cb,#ecb4a2)}
 
 /* Seasonal Forge Board Themes (Spring / Summer / Autumn / Winter) */
 #app[data-workshop="forge"][data-season="spring"] #grid{

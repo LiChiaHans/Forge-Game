@@ -35,8 +35,7 @@
 .c.pv-use{outline:3px solid #f4c563;outline-offset:-4px}
 .c.pv-forge{outline:3px dashed #bba0ff;outline-offset:-4px}
 .c.pv-target{outline:3px solid #68dbc0;outline-offset:-4px}
-.c.pv-bad,.od.pv-bad{outline:3px solid #ff8080;outline-offset:-3px}
-.od.pv-sale{outline:3px solid #68dbc0}
+.c.pv-bad{outline:3px solid #ff8080;outline-offset:-3px}
 
 /* 防止出現多餘捲軸 */
 *{scrollbar-width:thin;scrollbar-color:#566280 transparent}

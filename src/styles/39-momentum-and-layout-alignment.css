@@ -339,7 +339,7 @@
  #kitchenP.kitchen-screen nav>button{font-size:13px!important}
 }
 @media(prefers-reduced-motion:reduce){
- .town-daily-dot,.ws-fever-btn.is-ready,.wfx-combo-banner,.od.is-match,.kitchen-order.is-match{animation:none!important}
+ .town-daily-dot,.ws-fever-btn.is-ready,.wfx-combo-banner,.kitchen-order.is-match{animation:none!important}
 }
 .low-effects .town-daily-dot,.low-effects .ws-fever-btn.is-ready,.low-effects .wfx-combo-banner,.low-effects .od.is-match,.low-effects .kitchen-order.is-match{animation:none!important}
 
@@ -347,13 +347,11 @@
    PART C: MATCHING ORDER HIGHLIGHT, LANDMARKS, SETTLEMENT HOOKS & TRIAL MODES
    -------------------------------------------------------------------------- */
 /* Matching Ready-to-Sell Order Glow */
-#app[data-workshop="forge"] .od.is-match,
 #kitchenP[data-workshop="kitchen"] .kitchen-order.is-match{
  border-color:#f6d475!important;
  box-shadow:0 0 0 2px #ffe48a88,0 0 12px #f2c45a55!important;
  animation:ws-match-pulse 1.9s ease-in-out infinite
 }
-#app[data-workshop="forge"] .od.is-pref-match,
 #kitchenP[data-workshop="kitchen"] .kitchen-order.is-pref-match{
  border-color:#fff0a3!important;
  box-shadow:0 0 0 2px #ffe896,0 0 16px #ffba4977!important

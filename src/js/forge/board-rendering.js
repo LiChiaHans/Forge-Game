@@ -29,24 +29,32 @@ function render(){
   renderQ();
 
   const readyW=[...g,hand].filter(w=>w?.k==='w'&&!w.protected);
+  $("orders").classList.toggle("is-tutorial",day===0);
   $("orders").innerHTML=orders.map((o,k)=>{
     const dl=enter.has(k)?enter.get(k)-Date.now():null;
     if(dl!==null&&dl<=-600)enter.delete(k);
     const an=dl!==null&&dl>-600;
     const matched=readyW.filter(w=>(o.c===null||o.c===w.c)&&w.t>=o.t);
     const matchCls=matched.length?(matched.some(w=>guestPreferenceBonus(w,o,false)>0)?' is-match is-pref-match':' is-match'):'';
-    return `<div class="od${an?" in":""}${matchCls}" style="${an?`animation-delay:${dl}ms;`:""}background:linear-gradient(hsla(${hu(o).toFixed(0)},70%,52%,.42),hsla(${hu(o).toFixed(0)},70%,40%,.16)),#262e3b;border-color:hsl(${hu(o).toFixed(0)},60%,42%)" data-k="${k}">
-    ${orderGuestHTML(o)}${guestBadge22(o,false)}<span class="wt">⏳${o.c===null?"∞":Math.max(0,o.wait)}</span>
-    <span class="em">${o.wait<=o.max/4?"😡":o.wait<=o.max/2?"😒":""}</span>
-    ${o.c===null?`<div class="hxo"><div class="hxi" style="background:${C[o.t]}"><b>任意</b></div></div>`:hex(o.c,C[o.t],"",o.t)}
-    <div class="order-name">${o.c===null?"≥任意"+NM[o.t]+"級道具":"≥"+NM[o.t]+"級"+WN[o.c]}</div>
-    <div class="rc">${o.c===null?"<small>任何配方</small>":COMBO[o.c].split("").map(s=>mold(+s,"","s")).join("")}</div>
+    const openOrder=o.c===null;
+    const grade=(openOrder?'':'≥')+NM[o.t]+'級';
+    const item=openOrder?'道具':WN[o.c];
+    const icon=openOrder?`<div class="hxo" aria-hidden="true"><div class="hxi" style="background:${C[o.t]}"><b>⚔︎</b></div></div>`:hex(o.c,C[o.t],"",o.t);
+    const recipe=openOrder?'<small>配方不限</small>':COMBO[o.c].split('').map(s=>mold(+s,'','s')).join('');
+    const portrait=orderGuestHTML(o,true);
+    return `<div class="od forge-order${an?' in':''}${matchCls}"${an?` style="animation-delay:${dl}ms"`:''} data-k="${k}">
+    <div class="forge-order-status"><span class="wt">⏳${openOrder?'∞':Math.max(0,o.wait)}</span><span class="forge-order-bonus"><span class="em">${o.wait<=o.max/4?'😡':o.wait<=o.max/2?'😒':''}</span>${guestBadge22(o,false)}</span></div>
+    ${portrait?`<div class="forge-order-window">${portrait}</div>`:''}
+    <div class="forge-order-details">
+      <div class="forge-order-icon">${icon}</div>
+      <div class="forge-order-copy"><div class="order-name"><span>${grade}</span><span>${item}</span></div><div class="rc">${recipe}</div></div>
+    </div>
     </div>`;
   }).join("")+(()=>{
     /* 補上看不見的空位，讓外框大小固定；客人全部離開後顯示打烊字樣 */
     let h="";
     for(let i=orders.length;i<(day===0?1:3);i++)
-      h+=`<div class="od odg"><span class="wt">⏳0</span>${hex(0,C[0],"",0)}${WN[0]}<div class="rc">${COMBO[0].split("").map(s=>mold(+s,"","s")).join("")}</div></div>`;
+      h+='<div class="od odg" aria-hidden="true"></div>';
     return h+(orders.length?"":`<div id="closed">🌙 今日已打烊</div>`);
   })();
 

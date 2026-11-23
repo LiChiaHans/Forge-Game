@@ -96,14 +96,8 @@ body::before{background:#1f2531}
  #app[data-compact="true"] #msg{height:28px;min-height:28px}
 }
 
-/* Square weapon storage and clearer customer requests. */
+/* Square weapon storage. */
 #pack .pk{height:auto;aspect-ratio:1}
-#app #orders .od{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
-#app #orders .od .hxo{flex:none;width:42px;height:42px;margin:0}
-#app #orders .od .order-name{flex:none;width:100%;font-size:12px;line-height:16px;font-weight:900;white-space:nowrap}
-#app #orders .od .rc{flex:none;height:26px;margin:0;gap:2px}
-#app #orders .od .rc .mo{width:26px;height:26px}
-#app #orders .od .rc small{font-size:11px;line-height:26px}
 @media(min-width:0px){
  #app .bar2>button:nth-child(n+2):nth-child(-n+5){font-size:14px;padding-left:1px;padding-right:1px;letter-spacing:0}
 }

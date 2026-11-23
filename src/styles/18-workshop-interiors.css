@@ -9,7 +9,6 @@
 #app[data-workshop="forge"][data-season="winter"] #srv .season-info{color:#31577e}
 #app[data-workshop="forge"] .bar2>button{background-color:#564336;background-image:radial-gradient(circle at 5px 5px,#ded2a6 0 1px,#746d64 1px 3px,transparent 3px),radial-gradient(circle at calc(100% - 5px) 5px,#ded2a6 0 1px,#746d64 1px 3px,transparent 3px),linear-gradient(#79563c,#4b382e);background-size:auto;color:#fff0c9;border-color:#a78f6b;box-shadow:inset 0 2px #c7a17466,inset 0 -3px #28272b99,0 2px #130e12;border-radius:3px;text-shadow:1px 1px #241c1c}
 #app[data-workshop="forge"] #orders{background-color:#130f17aa;border-color:#816c4c;box-shadow:inset 0 0 0 1px #17181b,inset 0 3px 9px #08070b80;border-radius:4px}
-#app[data-workshop="forge"] .od{box-shadow:inset 0 2px #f5dfaa44,inset 0 -3px #111c2088,0 2px #100d13aa;border-radius:4px}
 #app[data-workshop="forge"] .wt{color:#fff0c9;text-shadow:1px 1px #1e2424}
 #app[data-workshop="forge"] .qc{background-color:#ecd7aa;background-image:linear-gradient(125deg,#fff0c766,#bc94501f);background-size:auto;color:#523e2e;border-color:#b18d56;box-shadow:inset 0 1px #fff4d2,inset 0 -2px #b88d5555,0 2px #130e1299;border-radius:3px}
 #app[data-workshop="forge"] .qc small{color:#7a5637}

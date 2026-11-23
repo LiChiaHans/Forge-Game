@@ -290,7 +290,7 @@ guestPreferenceText	src/js/town/customer-preferences.js	4
 guestPreferenceBonus	src/js/town/customer-preferences.js	7
 guestBadge22	src/js/town/customer-preferences.js	12
 orderGuestHTML	src/js/town/customer-preferences.js	13
-ensureOrderGuests22	src/js/town/customer-preferences.js	14
+ensureOrderGuests22	src/js/town/customer-preferences.js	19
 snapshotKitchenProgress	src/js/saves/backend-progress.js	5
 validKitchenProgress	src/js/saves/backend-progress.js	6
 snapshotReviewProgress	src/js/saves/backend-progress.js	25

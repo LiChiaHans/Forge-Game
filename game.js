@@ -1856,7 +1856,12 @@ function guestPreferenceBonus(w,o,food){
  else yes=({劍士:()=>count('0')>=2,法師:()=>enchanted,遊俠:()=>count('1')>=2,僧侶:()=>count('2')>=2,盜賊:()=>[0,2].includes(w.c),吟遊詩人:()=>(w.m||0)>0||(w.b||0)>0,商人:()=>fast,饕客:()=>w.t>o.t}[role]||(()=>false))();return yes?.1:0;
 }
 function guestBadge22(o,food){return expandedGameEnabled()&&o?.guest?'<em class="guest-like22" title="'+esc(guestPreferenceText(o,food))+'">♥10%</em>':'';}
-function orderGuestHTML(o){const guest=o?.guest;return expandedGameEnabled()&&guest&&TOWN_GUEST_ART[guest.id]?'<span class="order-guest" role="img" aria-label="'+esc(guest.gender+guest.role)+'">'+townGuestArt(guest.id)+'</span>':'';}
+function orderGuestHTML(o,portrait=false){
+ const guest=o?.guest,source=TOWN_GUEST_ART[guest?.id];
+ if(!expandedGameEnabled()||!source)return '';
+ const art=portrait?`<img src="${source}" alt="" data-town-guest-art="${guest.id}">`:townGuestArt(guest.id);
+ return `<span class="order-guest" role="img" aria-label="${esc(guest.gender+guest.role)}">${art}</span>`;
+}
 function ensureOrderGuests22(){[orders.concat(dq),[...(kitchen?.orders||[]),...(kitchen?.queue||[])]].forEach((list,night)=>list.forEach((o,i)=>{if(!o.guest)o.guest=guestForOrder22(i,!!night);}));}
 
 const REVIEW_SAVE_KEY='forgeBackendProgressV1',REVIEW_PREVIOUS_KEY='forgeBackendProgressPreviousV1';
@@ -2309,10 +2314,7 @@ const cool=()=>{
   if(!feverOn)orders.forEach(o=>o.wait--);
   if(typeof tickWorkshopFever==='function')tickWorkshopFever('forge');
 };
-const hu=o=>{
-  const r=Math.max(0,Math.min(1,o.wait/o.max));
-  return r>=.5?55+(r-.5)/.5*65:r>=.25?28+(r-.25)/.25*27:28*r/.25;
-};const GREENHOUSE_ART={"interior":"assets/greenhouse/greenhouse.1631eba6d696.webp"};
+const GREENHOUSE_ART={"interior":"assets/greenhouse/greenhouse.1631eba6d696.webp"};
 const PREP_BOARD_ART={"0":"assets/prepared/grain-board.8a96f7ccff88.webp","1":"assets/prepared/meat-board.65f743e73e52.webp","2":"assets/prepared/vegetable-board.d930a25bad04.webp"};
 function gardenPlantSVG(element,age=0){
  const p=ELEMENTS[element],stage=Math.max(0,Math.min(3,Math.floor(age))),soil='<path fill="#26342b" d="M17 62h61v7H17z"/><path fill="#493626" d="M22 62h51v5H22z"/><path fill="#8a6440" d="M25 63h5v2h-5zM42 65h4v2h-4zM63 63h5v2h-5z"/>',pot='<path fill="#293d32" opacity=".3" d="M24 88h48v3H24zM18 85h59v3H18z"/><path fill="#71402c" d="M25 64h48l-6 21H31z"/><path fill="#bd7547" d="M28 67h40l-4 15H33z"/><path fill="#df9d60" d="M29 68h8v11h-4zM37 79h25v3H37z"/><path fill="#965331" d="M63 68h7l-5 15h-5zM43 71h2v7h-2zM53 72h2v6h-2z"/><path fill="#e6ad6c" d="M28 64h40v4H28z"/><path fill="#743e29" d="M17 58h61v8H17z"/><path fill="#d78c50" d="M19 59h57v4H19zM21 64h53v3H21z"/><path fill="#f0bd7b" d="M21 59h51v2H21zM20 61h4v3h-4z"/>'+soil;
@@ -2710,24 +2712,32 @@ function render(){
   renderQ();
 
   const readyW=[...g,hand].filter(w=>w?.k==='w'&&!w.protected);
+  $("orders").classList.toggle("is-tutorial",day===0);
   $("orders").innerHTML=orders.map((o,k)=>{
     const dl=enter.has(k)?enter.get(k)-Date.now():null;
     if(dl!==null&&dl<=-600)enter.delete(k);
     const an=dl!==null&&dl>-600;
     const matched=readyW.filter(w=>(o.c===null||o.c===w.c)&&w.t>=o.t);
     const matchCls=matched.length?(matched.some(w=>guestPreferenceBonus(w,o,false)>0)?' is-match is-pref-match':' is-match'):'';
-    return `<div class="od${an?" in":""}${matchCls}" style="${an?`animation-delay:${dl}ms;`:""}background:linear-gradient(hsla(${hu(o).toFixed(0)},70%,52%,.42),hsla(${hu(o).toFixed(0)},70%,40%,.16)),#262e3b;border-color:hsl(${hu(o).toFixed(0)},60%,42%)" data-k="${k}">
-    ${orderGuestHTML(o)}${guestBadge22(o,false)}<span class="wt">⏳${o.c===null?"∞":Math.max(0,o.wait)}</span>
-    <span class="em">${o.wait<=o.max/4?"😡":o.wait<=o.max/2?"😒":""}</span>
-    ${o.c===null?`<div class="hxo"><div class="hxi" style="background:${C[o.t]}"><b>任意</b></div></div>`:hex(o.c,C[o.t],"",o.t)}
-    <div class="order-name">${o.c===null?"≥任意"+NM[o.t]+"級道具":"≥"+NM[o.t]+"級"+WN[o.c]}</div>
-    <div class="rc">${o.c===null?"<small>任何配方</small>":COMBO[o.c].split("").map(s=>mold(+s,"","s")).join("")}</div>
+    const openOrder=o.c===null;
+    const grade=(openOrder?'':'≥')+NM[o.t]+'級';
+    const item=openOrder?'道具':WN[o.c];
+    const icon=openOrder?`<div class="hxo" aria-hidden="true"><div class="hxi" style="background:${C[o.t]}"><b>⚔︎</b></div></div>`:hex(o.c,C[o.t],"",o.t);
+    const recipe=openOrder?'<small>配方不限</small>':COMBO[o.c].split('').map(s=>mold(+s,'','s')).join('');
+    const portrait=orderGuestHTML(o,true);
+    return `<div class="od forge-order${an?' in':''}${matchCls}"${an?` style="animation-delay:${dl}ms"`:''} data-k="${k}">
+    <div class="forge-order-status"><span class="wt">⏳${openOrder?'∞':Math.max(0,o.wait)}</span><span class="forge-order-bonus"><span class="em">${o.wait<=o.max/4?'😡':o.wait<=o.max/2?'😒':''}</span>${guestBadge22(o,false)}</span></div>
+    ${portrait?`<div class="forge-order-window">${portrait}</div>`:''}
+    <div class="forge-order-details">
+      <div class="forge-order-icon">${icon}</div>
+      <div class="forge-order-copy"><div class="order-name"><span>${grade}</span><span>${item}</span></div><div class="rc">${recipe}</div></div>
+    </div>
     </div>`;
   }).join("")+(()=>{
     /* 補上看不見的空位，讓外框大小固定；客人全部離開後顯示打烊字樣 */
     let h="";
     for(let i=orders.length;i<(day===0?1:3);i++)
-      h+=`<div class="od odg"><span class="wt">⏳0</span>${hex(0,C[0],"",0)}${WN[0]}<div class="rc">${COMBO[0].split("").map(s=>mold(+s,"","s")).join("")}</div></div>`;
+      h+='<div class="od odg" aria-hidden="true"></div>';
     return h+(orders.length?"":`<div id="closed">🌙 今日已打烊</div>`);
   })();
 

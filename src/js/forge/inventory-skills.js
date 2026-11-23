@@ -83,7 +83,3 @@ const cool=()=>{
   if(!feverOn)orders.forEach(o=>o.wait--);
   if(typeof tickWorkshopFever==='function')tickWorkshopFever('forge');
 };
-const hu=o=>{
-  const r=Math.max(0,Math.min(1,o.wait/o.max));
-  return r>=.5?55+(r-.5)/.5*65:r>=.25?28+(r-.25)/.25*27:28*r/.25;
-};
