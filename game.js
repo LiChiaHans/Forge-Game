@@ -798,7 +798,10 @@ function presentForgeResults(results,playSound=true){
  const leveled=forgeLevelUps.has(w);if(playSound||rank||leveled)forgeSound(rank||(leveled?1:0));if(!rank&&!leveled){showWorkshopMilestone('forge',w,live.length);return;}forgeLevelUps.delete(w);
  const color=isLegend(w)?LEGENDS[w.legendId].color:C[w.t],stats=weaponStats(w),box=$('forgeCelebration');
  if(forgeFeedbackTimer!==null)clearTimeout(forgeFeedbackTimer);
- box.dataset.rank=String(rank);box.style.setProperty('--forge-color',color);box.innerHTML='<div class="forge-reveal"><span class="forge-rarity">'+(rank===2?'終極鍛造':rank===1?'傳說鍛造':'工藝升星')+' · 完成</span><div class="forge-trophy">'+hex(w.c,bands(w),'',w.t,w)+'</div><strong>'+esc(itemName(w))+'</strong><span class="forge-kind">'+esc(weaponKindLabel(w))+(validElement(w.element)?' · '+esc(elementName(w.element))+'屬性':'')+'</span>'+weaponStarsHTML(w,true)+'<span class="forge-values">⚔ '+stats.atk+'　🛡 '+stats.def+'　💨 '+stats.spd+'</span><small>已加入本局收藏</small></div>';
+ box.dataset.rank=String(rank);box.style.setProperty('--forge-color',color);
+ const crestHtml=rank>=1&&typeof WORKSHOP_FAMILIAR_ART!=='undefined'?'<img class="forge-crest-img" src="'+WORKSHOP_FAMILIAR_ART.crest+'" alt="" decoding="async">':'';
+ box.innerHTML='<div class="forge-reveal">'+crestHtml+'<span class="forge-rarity">'+(rank===2?'終極鍛造':rank===1?'傳說鍛造':'工藝升星')+' · 完成</span><div class="forge-trophy">'+hex(w.c,bands(w),'',w.t,w)+'</div><strong>'+esc(itemName(w))+'</strong><span class="forge-kind">'+esc(weaponKindLabel(w))+(validElement(w.element)?' · '+esc(elementName(w.element))+'屬性':'')+'</span>'+weaponStarsHTML(w,true)+'<span class="forge-values">⚔ '+stats.atk+'　🛡 '+stats.def+'　💨 '+stats.spd+'</span><small>已加入本局收藏</small></div>';
+ if(typeof cheerWorkshopFamiliar==='function')cheerWorkshopFamiliar('forge',rank>=1?'神兵降臨！🔥':'鍛造漂亮！✨');
  box.hidden=false;forgeFeedbackTimer=gameTimeout(()=>{if(epoch===forgeFeedbackEpoch){box.hidden=true;forgeFeedbackTimer=null;}},lowEffects?1200:rank===2?1800:1450);
 }
 
@@ -1270,7 +1273,7 @@ function geminiFountainFXHTML(tier){
  return spr+'<div class="gemini-fountain-water" data-fountain-tier="'+tier+'" aria-hidden="true">'+ripples+jets+'<i></i><i></i><i></i>'+(tier>=1?'<i></i><i></i>':'')+stars+'</div>';
 }
 function geminiTownEffects(){
- return '<div class="gemini-sea-shimmer" aria-hidden="true"></div><div class="gemini-night-lights">'+geminiTownNightArt()+'</div><div class="gemini-fountain-stage" data-fountain-tier="0" aria-hidden="true">'+geminiFountainFXHTML(0)+'</div><div class="gemini-chimney-smoke" aria-hidden="true"><i></i><i></i><i></i></div><div class="gemini-kitchen-smoke" aria-hidden="true"><i></i><i></i><i></i></div><div class="gemini-town-banners" aria-hidden="true"><span class="tb b1"></span><span class="tb b2"></span></div><div class="gemini-sun-dapples" aria-hidden="true"><span></span><span></span></div><i class="gemini-forge-fire" aria-hidden="true"></i>';
+ return '<div class="gemini-sea-shimmer" aria-hidden="true"></div><div class="gemini-night-lights">'+geminiTownNightArt()+'</div><div class="gemini-fountain-stage" data-fountain-tier="0" aria-hidden="true">'+geminiFountainFXHTML(0)+'</div><div class="gemini-chimney-smoke" aria-hidden="true"><i></i><i></i><i></i></div><div class="gemini-kitchen-smoke" aria-hidden="true"><i></i><i></i><i></i></div><div class="gemini-town-banners" aria-hidden="true"><span class="tb b1"></span><span class="tb b2"></span></div><div class="gemini-sun-dapples" aria-hidden="true"><span></span><span></span></div><div class="gemini-cloud-shadow" aria-hidden="true"></div><div class="gemini-night-skyfx" aria-hidden="true"><span class="town-aurora"></span><i class="town-shooting-star"></i></div><i class="gemini-forge-fire" aria-hidden="true"></i>';
 }
 function renderGeminiTown(){
  if(!expandedGameEnabled())return;const si=townVisualSeason(),night=isSandboxNight(),p=$('townP'),image=$('geminiTownImage');p.dataset.geminiTown='true';
@@ -1824,6 +1827,14 @@ function showBattleFeedback(row){
  }
  if(heavy&&arena?.animate)arena.animate([{transform:'translate(0,0)'},{transform:'translate(-4px,2px)',offset:.25},{transform:'translate(4px,-2px)',offset:.55},{transform:'translate(0,0)'}],{duration:220});
  const label=document.createElement('span');label.className='battle-damage22 '+(row.actor==='hero'?'enemy-hit':'hero-hit')+(heavy?' is-heavy':'');label.setAttribute('aria-hidden','true');label.textContent=row.charge?'⚡ 蓄力':row.damage?(row.skill?'✦ ':(row.effect?row.effect+' ':''))+'-'+row.damage:row.absorbed?'🛡 護盾':'🛡 抵擋';target.appendChild(label);battleFeedbackNodes.add(label);const done=()=>{label.remove();battleFeedbackNodes.delete(label);};if(label.animate){const a=label.animate([{transform:'translate(-50%,0) scale(.75)',opacity:0},{transform:'translate(-50%,-10px) scale('+(heavy?1.18:1.05)+')',opacity:1,offset:.22},{transform:'translate(-50%,-34px) scale(1)',opacity:0}],{duration:heavy?780:650,easing:'ease-out'});a.onfinish=done;a.oncancel=done;}else gameTimeout(done,650);
+}
+function triggerExpeditionCutIn(weapon){
+ if(!expandedGameEnabled()||!weapon||lowEffects||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
+ const arena=$('expeditionArena'),sk=ultimateSkill(weapon);if(!arena||!sk)return;
+ const banner=document.createElement('div');banner.className='exp-cutin-banner';banner.setAttribute('aria-hidden','true');
+ banner.innerHTML='<span class="cutin-art">'+hex(weapon.c,bands(weapon),'',weapon.t,weapon)+'</span><div class="cutin-text"><small>終極奧義解放</small><b>'+esc(sk.name)+'</b></div>';
+ arena.appendChild(banner);battleFeedbackNodes.add(banner);
+ gameTimeout(()=>{banner.remove();battleFeedbackNodes.delete(banner);},920);
 }
 function monsterSpriteIndex(m){let index=EXPEDITIONS.findIndex(x=>x.name===m.name);if(index<0)index=m.endless?({dragon:18,golem:17,wolf:16,knight:19}[m.kind]??10):EXPEDITIONS.findIndex(x=>x.kind===m.kind);return Math.max(0,index);}
 
@@ -3704,7 +3715,7 @@ function advanceExpeditionBattle(){
  if((b.guarding||b.heroClock>b.enemyClock)&&b.chargeName&&b.chargeRemainingMs>0)return;
  battleLastAdvance=now;const rows=b.log.length;stepExpeditionBattle();if(b.log.length>rows)showBattleFeedback(b.log.at(-1));
 }
-function useExpeditionSkill(){syncExpeditionEffects();const b=expeditionState.lastBattle;if(!b||!castBattleSkill(b))return;expeditionBattleStep=b.log.length;combatSound('hero');if(b.outcome!=='ongoing')settleExpeditionBattle(b);renderExpeditionBattle();}
+function useExpeditionSkill(){syncExpeditionEffects();const b=expeditionState.lastBattle;if(!b||!castBattleSkill(b))return;expeditionBattleStep=b.log.length;combatSound('hero');if(b.outcome!=='ongoing')settleExpeditionBattle(b);renderExpeditionBattle();if(typeof triggerExpeditionCutIn==='function')triggerExpeditionCutIn(b.weapon);}
 function settleExpeditionBattle(b){
  if(!b||b.resolved||b.outcome==='ongoing')return;stopExpeditionPlayback();b.resolved=true;b.guarding=false;b.guardRemainingMs=0;b.chargeName=null;b.chargeRemainingMs=0;
  if(b.outcome==='win'&&!expeditionCleared(b.stage)){
@@ -3770,6 +3781,12 @@ const EXPEDITION_ARENA_ART={
  frost:'assets/arena/arena_frost.28c4121b2cef.jpg',
  sanctum:'assets/arena/arena_sanctum.d4060a08cb02.jpg'
 };
+const WORKSHOP_FAMILIAR_ART={
+ forge:'assets/arena/forge_familiar.e183ae1722af.png',
+ kitchen:'assets/arena/kitchen_familiar.169e28c0ed42.png',
+ hero:'assets/arena/expedition_hero.5c3b4c17bbe7.png',
+ crest:'assets/arena/legend_anvil_crest.0c9710eeecad.png'
+};
 function expeditionArenaTheme(stage){
  const s=Math.max(0,Number(stage)||0);
  if(s>=15)return 'sanctum';
@@ -3782,7 +3799,7 @@ function renderExpeditionBattle(){
  const b=expeditionState.lastBattle;if(!b)return;syncExpeditionEffects();updateBattlePace();renderExpeditionFood();const m=b.monster||{...EXPEDITIONS[b.stage],element:'none'},done=b.resolved;
  const arena=$('expeditionArena'),theme=expeditionArenaTheme(b.stage);
  if(arena){arena.dataset.arena=theme;arena.style.setProperty('--arena-bg','url("'+EXPEDITION_ARENA_ART[theme]+'")');}
- arena.innerHTML='<div class="exp-fighter is-hero"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</div><b>'+itemName(b.weapon)+'</b><small>♥ '+b.hp+' / '+b.hpMax+'</small>'+expeditionHealthHTML(b)+'</div><strong>VS</strong><div class="exp-fighter is-enemy"><div><span class="exp-rune-ring" aria-hidden="true"></span>'+monsterArt(m)+elementBadge(m.element,'battle-element')+'</div><b>'+m.name+'</b><small>♥ '+b.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+b.enemyHp+'" aria-label="怪物生命值"></progress><span class="exp-health-key exp-monster-key" aria-hidden="true"></span></div>';
+ arena.innerHTML='<div class="exp-stage-fx" aria-hidden="true"><span></span><span></span><span></span><span></span></div><div class="exp-fighter is-hero"><div class="exp-hero-rig"><img class="exp-hero-sprite" src="'+WORKSHOP_FAMILIAR_ART.hero+'" alt="鍛造冒險者" decoding="async"><span class="exp-held-weapon">'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</span></div><b>'+itemName(b.weapon)+'</b><small>♥ '+b.hp+' / '+b.hpMax+'</small>'+expeditionHealthHTML(b)+'</div><strong>VS</strong><div class="exp-fighter is-enemy"><div><span class="exp-rune-ring" aria-hidden="true"></span>'+monsterArt(m)+elementBadge(m.element,'battle-element')+'</div><b>'+m.name+'</b><small>♥ '+b.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+b.enemyHp+'" aria-label="怪物生命值"></progress><span class="exp-health-key exp-monster-key" aria-hidden="true"></span></div>';
  $('expeditionLog').innerHTML=(done?b.log:b.log.slice(-5)).map(x=>'<p class="'+x.actor+(x.skill?' skill-hit':'')+'">'+esc(x.text)+'</p>').join('')||'<p>武器已投入遠征；可在戰鬥中施放終極武器技能。</p>';
  $('expeditionLog').dataset.complete=String(done);$('expeditionGuard').hidden=done;$('expeditionIntent').textContent=done?'本次戰鬥已結束':('敵方下次：'+bossIntent(b)+(b.bossHardened?' · 現正硬化':'')+(b.guarding?' · 防禦中（停止攻擊、減傷60%）':''));if(!done&&expandedGameEnabled()&&b.foodAttackTurns>0)$('expeditionIntent').textContent+=' · 🍖 攻擊 +'+Math.round((b.foodAttack||0)*100)+'%（剩 '+b.foodAttackTurns+' 次）';if(!done&&b.enemyWard)$('expeditionIntent').textContent+=' · 怪物護盾 '+b.enemyWard;$('expeditionGuard').disabled=done||b.guardUsed;$('expeditionGuard').textContent=b.guardUsed?'🛡 已使用防禦架勢':'🛡 防禦3秒 · 停止攻擊、減傷60%（每場一次）';const skill=ultimateSkill(b.weapon);$('expeditionSkill').hidden=done||!skill;$('expeditionSkill').disabled=done||b.skillUsed||b.guarding;$('expeditionSkill').textContent=skill?(b.skillUsed?'✓ 已施放 '+skill.name:'✦ 施放 '+skill.name):'';
  $('expeditionResult').innerHTML=done?'<h3>'+({win:'🏆 遠征勝利',lose:'遠征落敗',draw:'已撤退'}[b.outcome])+'</h3><p>'+(b.outcome==='win'?'獲得 '+b.gold+' 金幣'+(b.loot?'＋'+itemName(b.loot):'')+'。':b.outcome==='lose'?'失去一顆愛心，剩餘 '+lives+' 顆。':'未獲得獎勵，出戰武器已消耗。')+'</p>'+(b.outcome==='win'&&b.stage>=10&&b.stage<20?'<button class="ultimate-unlocked" onclick="openUltimateArt('+b.stage+')">'+ultimatePixelArt(b.stage)+'<span>終極藍圖已解鎖 · 查看高清美術 ↗</span></button>':''):'';
@@ -5744,10 +5761,18 @@ function triggerChainComboFX(boardId,count,label){
  setTimeout(()=>el.remove(),reduced?350:960);
 }
 
+function cheerWorkshopFamiliar(kind,msg){
+ const bar=$(kind==='kitchen'?'kitchenFeverBar':'forgeFeverBar');
+ const fam=bar?.querySelector?.('.ws-familiar');if(!fam)return;
+ fam.classList.remove('is-cheering');void fam.offsetWidth;fam.classList.add('is-cheering');
+ const tip=fam.querySelector('.ws-fam-tip');if(tip&&msg){tip.textContent=msg;tip.hidden=false;setTimeout(()=>{tip.hidden=true;},1450);}
+}
+
 function renderWorkshopMomentumBars(){
  const m=ensureWorkshopMomentum(),contracts=activeContracts(),limit=contractLimit();
  const chipLabel=contracts.length?contracts.map(c=>c.icon+(contracts.length===1?' '+c.name:'')).join(' '):'📜 選契約';
  const chipClass=contracts.length?'ws-contract-chip':'ws-contract-chip is-empty';
+ const famArt=typeof WORKSHOP_FAMILIAR_ART!=='undefined'?WORKSHOP_FAMILIAR_ART:null;
  const fBar=$('forgeFeverBar');
  if(fBar){
   const showForge=day>0;
@@ -5755,12 +5780,13 @@ function renderWorkshopMomentumBars(){
   if(showForge){
    const active=m.forgeFeverTurns>0,ready=!active&&m.forgeFever>=100,pct=active?Math.round((m.forgeFeverTurns/contractBonuses().feverDuration)*100):m.forgeFever;
    const badge='<button type="button" class="'+chipClass+'" onclick="openTownChronicle()" title="查看本季契約與城鎮大工程">'+chipLabel+(contracts.length<limit?' +':'')+'</button>';
+   const fam=famArt?'<span class="ws-familiar'+(active?' is-fever':'')+'" title="熔爐小火龍 · 陪伴鍛造"><img src="'+famArt.forge+'" alt="熔爐小火龍" decoding="async"><em class="ws-fam-tip" hidden></em></span>':'';
    const btn=active?'<span class="ws-fever-state is-active">🔥 狂熱剩 '+m.forgeFeverTurns+' 步</span>'
     :ready?'<button type="button" class="ws-fever-btn is-ready" onclick="activateWorkshopFever(\'forge\')">🔥 開啟狂熱！</button>'
     :'<span class="ws-fever-state">🔥 狂熱 '+m.forgeFever+'%</span>';
    fBar.classList.toggle('is-fever',active);
    fBar.classList.toggle('is-ready',ready);
-   fBar.innerHTML=badge+'<div class="ws-fever-track"><i style="width:'+pct+'%"></i></div>'+btn;
+   fBar.innerHTML=fam+badge+'<div class="ws-fever-track"><i style="width:'+pct+'%"></i></div>'+btn;
    $('grid')?.classList.toggle('is-fever',active);
   }
  }
@@ -5771,12 +5797,13 @@ function renderWorkshopMomentumBars(){
   if(showKitchen){
    const active=m.kitchenFeverTurns>0,ready=!active&&m.kitchenFever>=100,pct=active?Math.round((m.kitchenFeverTurns/contractBonuses().feverDuration)*100):m.kitchenFever;
    const badge='<button type="button" class="'+chipClass+'" onclick="openTownChronicle()" title="查看本季契約與城鎮大工程">'+chipLabel+(contracts.length<limit?' +':'')+'</button>';
+   const fam=famArt?'<span class="ws-familiar'+(active?' is-fever':'')+'" title="橘貓主廚 · 陪伴烹飪"><img src="'+famArt.kitchen+'" alt="橘貓主廚" decoding="async"><em class="ws-fam-tip" hidden></em></span>':'';
    const btn=active?'<span class="ws-fever-state is-active">🔥 狂熱剩 '+m.kitchenFeverTurns+' 步</span>'
     :ready?'<button type="button" class="ws-fever-btn is-ready" onclick="activateWorkshopFever(\'kitchen\')">🔥 開啟狂熱！</button>'
     :'<span class="ws-fever-state">🔥 狂熱 '+m.kitchenFever+'%</span>';
    kBar.classList.toggle('is-fever',active);
    kBar.classList.toggle('is-ready',ready);
-   kBar.innerHTML=badge+'<div class="ws-fever-track"><i style="width:'+pct+'%"></i></div>'+btn;
+   kBar.innerHTML=fam+badge+'<div class="ws-fever-track"><i style="width:'+pct+'%"></i></div>'+btn;
    $('kitchenGrid')?.classList.toggle('is-fever',active);
   }
  }
@@ -6917,7 +6944,7 @@ function renderMuseumInspect(kind,id){
   const count=mus.fishCounts?.[id]||0,got=count>0||mus.fish.includes(id),stars=fishStarLevel(count),maxCm=mus.fishMax?.[id]||0;
   const kBonus=(stars*1.5).toFixed(1);
   title.textContent=got?(f.icon+' '+f.name):'❔ 未知魚種';
-  body.innerHTML='<div class="mi-showcase is-fish"><div class="mi-art-stage">'+museumShowcaseArt('fish',id,!got)+'</div>'
+  body.innerHTML='<div class="mi-showcase is-fish"><div class="mi-gallery-frame"><div class="mi-art-stage">'+museumShowcaseArt('fish',id,!got)+'</div><div class="mi-brass-plaque"><span>'+(got?f.name:'未知魚種')+'</span><small>'+(got?'★'.repeat(stars)+'☆'.repeat(3-stars):'未登錄')+'</small></div></div>'
    +'<div class="mi-badges"><span>'+SEASONS[f.season].icon+' '+SEASONS[f.season].name+'</span><span>'+(f.night?'🌙 夜晚出沒':'☀ 白天出沒')+'</span><span>稀有度 '+'★'.repeat(f.rarity+1)+'</span></div></div>'
    +'<p class="mi-desc">'+(got?f.desc:'尚未在西側溪畔釣起過此魚種。請依季節與日夜時段前往星露釣魚棧橋探索！')+'</p>'
    +'<div class="mi-stat-box"><div><b>🍲 廚房餐廳星級加成</b><span>'+'★'.repeat(stars)+'☆'.repeat(3-stars)+'（目前 +'+(stars>0?kBonus:'0')+'% 餐廳售價）</span></div>'
@@ -6945,7 +6972,7 @@ function renderMuseumInspect(kind,id){
     ?'<button type="button" class="tw-big-btn is-gold" onclick="openRelicPuzzle(\''+id+'\')">🧩 碎片齊全（9/9）！進入 3×3 拼圖修復</button>'
     :'<button type="button" class="tw-big-btn" disabled>⛏ 還差 '+(9-shards)+' 片碎片（於西側遺跡探勘獲得）</button>';
   const relicArtHtml=completed?museumShowcaseArt('relic',id,false):pixelRelicArt(id,!seen);
-  body.innerHTML='<div class="mi-showcase is-relic"><div class="mi-art-stage">'+relicArtHtml+'</div>'
+  body.innerHTML='<div class="mi-showcase is-relic"><div class="mi-gallery-frame'+(completed?' is-hd':'')+'"><div class="mi-art-stage">'+relicArtHtml+'</div><div class="mi-brass-plaque"><span>'+(seen?r.name:'未出土古物')+'</span><small>'+(completed?'典藏真跡':'碎片 '+shards+'/9')+'</small></div></div>'
    +'<div class="mi-badges"><span>稀有度 '+'★'.repeat(r.rarity+1)+'</span><span>'+(completed?'✓ 已修復完成（高清典藏已解鎖）':'碎片 '+shards+' / 9（修復後解鎖高清圖案）')+'</span></div></div>'
    +'<p class="mi-desc">'+(seen?r.desc:'尚未在西側古物遺跡營地發掘過此古物碎片。')+'</p>'
    +'<div class="mi-stat-box"><div><b>⚒ 冶煉廠與古物專屬加成</b><span>'+(completed?'✓ 已生效':'拼圖修復後啟動')+'</span></div>'
@@ -7673,7 +7700,7 @@ syncHomeArt();
 // Background preparation never blocks navigation. Reuse the previous release's media cache.
 const gameAssetLoading={active:false,complete:false,running:null,entries:null,loaded:new Set(),failed:[],cache:null,networkFailures:0,objectURLs:new Map(),retryTimer:null};
 function collectGameAssets(){
- const groups={REVIEW_MONSTER_ART,SEASON_MUSIC_DATA,ULTIMATE_ART,EXPEDITION_ARENA_ART,GEMINI_TOWN_ART,TOWN_BUILDING_ART,TOWN_WING_ART,TOWN_WING_BUILDING_ART,WING_MODAL_ART,MUSEUM_REALISTIC_ART,WORKSHOP_ART,COZY_ITEM_ART,TOWN_GUEST_ART,GREENHOUSE_ART,PREP_BOARD_ART,HOME_ART};
+ const groups={REVIEW_MONSTER_ART,SEASON_MUSIC_DATA,ULTIMATE_ART,EXPEDITION_ARENA_ART,WORKSHOP_FAMILIAR_ART,GEMINI_TOWN_ART,TOWN_BUILDING_ART,TOWN_WING_ART,TOWN_WING_BUILDING_ART,WING_MODAL_ART,MUSEUM_REALISTIC_ART,WORKSHOP_ART,COZY_ITEM_ART,TOWN_GUEST_ART,GREENHOUSE_ART,PREP_BOARD_ART,HOME_ART};
  return Object.values(groups).flatMap(group=>Object.entries(group).map(([id,url])=>({group,id,url,audio:group===SEASON_MUSIC_DATA})));
 }
 function gameAssetPriority(entry){

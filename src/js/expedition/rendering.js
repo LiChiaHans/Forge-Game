@@ -5,6 +5,12 @@ const EXPEDITION_ARENA_ART={
  frost:'assets/arena/arena_frost.28c4121b2cef.jpg',
  sanctum:'assets/arena/arena_sanctum.d4060a08cb02.jpg'
 };
+const WORKSHOP_FAMILIAR_ART={
+ forge:'assets/arena/forge_familiar.e183ae1722af.png',
+ kitchen:'assets/arena/kitchen_familiar.169e28c0ed42.png',
+ hero:'assets/arena/expedition_hero.5c3b4c17bbe7.png',
+ crest:'assets/arena/legend_anvil_crest.0c9710eeecad.png'
+};
 function expeditionArenaTheme(stage){
  const s=Math.max(0,Number(stage)||0);
  if(s>=15)return 'sanctum';
@@ -17,7 +23,7 @@ function renderExpeditionBattle(){
  const b=expeditionState.lastBattle;if(!b)return;syncExpeditionEffects();updateBattlePace();renderExpeditionFood();const m=b.monster||{...EXPEDITIONS[b.stage],element:'none'},done=b.resolved;
  const arena=$('expeditionArena'),theme=expeditionArenaTheme(b.stage);
  if(arena){arena.dataset.arena=theme;arena.style.setProperty('--arena-bg','url("'+EXPEDITION_ARENA_ART[theme]+'")');}
- arena.innerHTML='<div class="exp-fighter is-hero"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</div><b>'+itemName(b.weapon)+'</b><small>♥ '+b.hp+' / '+b.hpMax+'</small>'+expeditionHealthHTML(b)+'</div><strong>VS</strong><div class="exp-fighter is-enemy"><div><span class="exp-rune-ring" aria-hidden="true"></span>'+monsterArt(m)+elementBadge(m.element,'battle-element')+'</div><b>'+m.name+'</b><small>♥ '+b.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+b.enemyHp+'" aria-label="怪物生命值"></progress><span class="exp-health-key exp-monster-key" aria-hidden="true"></span></div>';
+ arena.innerHTML='<div class="exp-stage-fx" aria-hidden="true"><span></span><span></span><span></span><span></span></div><div class="exp-fighter is-hero"><div class="exp-hero-rig"><img class="exp-hero-sprite" src="'+WORKSHOP_FAMILIAR_ART.hero+'" alt="鍛造冒險者" decoding="async"><span class="exp-held-weapon">'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</span></div><b>'+itemName(b.weapon)+'</b><small>♥ '+b.hp+' / '+b.hpMax+'</small>'+expeditionHealthHTML(b)+'</div><strong>VS</strong><div class="exp-fighter is-enemy"><div><span class="exp-rune-ring" aria-hidden="true"></span>'+monsterArt(m)+elementBadge(m.element,'battle-element')+'</div><b>'+m.name+'</b><small>♥ '+b.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+b.enemyHp+'" aria-label="怪物生命值"></progress><span class="exp-health-key exp-monster-key" aria-hidden="true"></span></div>';
  $('expeditionLog').innerHTML=(done?b.log:b.log.slice(-5)).map(x=>'<p class="'+x.actor+(x.skill?' skill-hit':'')+'">'+esc(x.text)+'</p>').join('')||'<p>武器已投入遠征；可在戰鬥中施放終極武器技能。</p>';
  $('expeditionLog').dataset.complete=String(done);$('expeditionGuard').hidden=done;$('expeditionIntent').textContent=done?'本次戰鬥已結束':('敵方下次：'+bossIntent(b)+(b.bossHardened?' · 現正硬化':'')+(b.guarding?' · 防禦中（停止攻擊、減傷60%）':''));if(!done&&expandedGameEnabled()&&b.foodAttackTurns>0)$('expeditionIntent').textContent+=' · 🍖 攻擊 +'+Math.round((b.foodAttack||0)*100)+'%（剩 '+b.foodAttackTurns+' 次）';if(!done&&b.enemyWard)$('expeditionIntent').textContent+=' · 怪物護盾 '+b.enemyWard;$('expeditionGuard').disabled=done||b.guardUsed;$('expeditionGuard').textContent=b.guardUsed?'🛡 已使用防禦架勢':'🛡 防禦3秒 · 停止攻擊、減傷60%（每場一次）';const skill=ultimateSkill(b.weapon);$('expeditionSkill').hidden=done||!skill;$('expeditionSkill').disabled=done||b.skillUsed||b.guarding;$('expeditionSkill').textContent=skill?(b.skillUsed?'✓ 已施放 '+skill.name:'✦ 施放 '+skill.name):'';
  $('expeditionResult').innerHTML=done?'<h3>'+({win:'🏆 遠征勝利',lose:'遠征落敗',draw:'已撤退'}[b.outcome])+'</h3><p>'+(b.outcome==='win'?'獲得 '+b.gold+' 金幣'+(b.loot?'＋'+itemName(b.loot):'')+'。':b.outcome==='lose'?'失去一顆愛心，剩餘 '+lives+' 顆。':'未獲得獎勵，出戰武器已消耗。')+'</p>'+(b.outcome==='win'&&b.stage>=10&&b.stage<20?'<button class="ultimate-unlocked" onclick="openUltimateArt('+b.stage+')">'+ultimatePixelArt(b.stage)+'<span>終極藍圖已解鎖 · 查看高清美術 ↗</span></button>':''):'';

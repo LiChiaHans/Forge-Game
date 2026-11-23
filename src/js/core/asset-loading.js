@@ -1,7 +1,7 @@
 // Background preparation never blocks navigation. Reuse the previous release's media cache.
 const gameAssetLoading={active:false,complete:false,running:null,entries:null,loaded:new Set(),failed:[],cache:null,networkFailures:0,objectURLs:new Map(),retryTimer:null};
 function collectGameAssets(){
- const groups={REVIEW_MONSTER_ART,SEASON_MUSIC_DATA,ULTIMATE_ART,EXPEDITION_ARENA_ART,GEMINI_TOWN_ART,TOWN_BUILDING_ART,TOWN_WING_ART,TOWN_WING_BUILDING_ART,WING_MODAL_ART,MUSEUM_REALISTIC_ART,WORKSHOP_ART,COZY_ITEM_ART,TOWN_GUEST_ART,GREENHOUSE_ART,PREP_BOARD_ART,HOME_ART};
+ const groups={REVIEW_MONSTER_ART,SEASON_MUSIC_DATA,ULTIMATE_ART,EXPEDITION_ARENA_ART,WORKSHOP_FAMILIAR_ART,GEMINI_TOWN_ART,TOWN_BUILDING_ART,TOWN_WING_ART,TOWN_WING_BUILDING_ART,WING_MODAL_ART,MUSEUM_REALISTIC_ART,WORKSHOP_ART,COZY_ITEM_ART,TOWN_GUEST_ART,GREENHOUSE_ART,PREP_BOARD_ART,HOME_ART};
  return Object.values(groups).flatMap(group=>Object.entries(group).map(([id,url])=>({group,id,url,audio:group===SEASON_MUSIC_DATA})));
 }
 function gameAssetPriority(entry){

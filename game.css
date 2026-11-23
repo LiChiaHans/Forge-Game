@@ -4668,3 +4668,150 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 .tc-tabs button[aria-pressed="true"]{
  box-shadow:inset 0 1px 0 #fff1b855,0 2px 6px #060a0888!important
 }
+
+/* 6. Expedition Blacksmith Hero Rig, Biome Foreground FX & Ultimate Cut-In */
+.exp-hero-rig{
+ position:relative;display:inline-flex;align-items:flex-end;justify-content:center;
+ width:86px;height:78px
+}
+.exp-hero-sprite{
+ width:76px;height:76px;object-fit:contain;
+ filter:drop-shadow(0 4px 6px #030508cc);display:block
+}
+.exp-held-weapon{
+ position:absolute;right:-10px;top:6px;width:40px;height:40px;
+ transform:rotate(14deg);transform-origin:bottom left;
+ filter:drop-shadow(0 2px 6px #000b)
+}
+.exp-held-weapon .hxo{width:100%!important;height:100%!important;margin:0!important}
+
+.exp-stage-fx{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.exp-stage-fx span{position:absolute;border-radius:50%;opacity:0}
+#expeditionArena[data-arena="forest"] .exp-stage-fx span{
+ width:6px;height:6px;background:#d8ff9a99;box-shadow:0 0 8px #baff6b88;
+ animation:stageFloatUp 5.5s ease-in-out infinite
+}
+#expeditionArena[data-arena="magma"] .exp-stage-fx span{
+ width:4px;height:4px;background:#ffaa3b;box-shadow:0 0 8px #ff5e1a;
+ animation:stageEmberRise 3.4s ease-out infinite
+}
+#expeditionArena[data-arena="frost"] .exp-stage-fx span{
+ width:80px;height:22px;background:radial-gradient(ellipse,#e0f8ff2b 0%,transparent 72%);
+ animation:stageMistDrift 7.5s linear infinite
+}
+#expeditionArena[data-arena="sanctum"] .exp-stage-fx span{
+ top:-15%;width:36px;height:140%;border-radius:0;
+ background:linear-gradient(180deg,#ffe99c28 0%,transparent 80%);
+ transform:rotate(16deg);animation:stageBeamPulse 5s ease-in-out infinite alternate
+}
+.exp-stage-fx span:nth-child(1){left:14%;bottom:18%;animation-delay:0s}
+.exp-stage-fx span:nth-child(2){left:38%;bottom:10%;animation-delay:-1.3s}
+.exp-stage-fx span:nth-child(3){left:64%;bottom:22%;animation-delay:-2.6s}
+.exp-stage-fx span:nth-child(4){left:82%;bottom:14%;animation-delay:-3.8s}
+@keyframes stageFloatUp{0%,100%{transform:translate(0,0);opacity:0}40%{opacity:.75}80%{transform:translate(16px,-38px);opacity:.3}}
+@keyframes stageEmberRise{0%{transform:translate(0,0) scale(.7);opacity:0}25%{opacity:.95}100%{transform:translate(-12px,-95px) scale(.2);opacity:0}}
+@keyframes stageMistDrift{0%{transform:translateX(-40px);opacity:0}30%,70%{opacity:.65}100%{transform:translateX(80px);opacity:0}}
+@keyframes stageBeamPulse{from{opacity:.35}to{opacity:.8}}
+
+.exp-cutin-banner{
+ position:absolute;left:-6%;right:-6%;top:50%;height:62px;z-index:8;
+ transform:translateY(-50%) skewY(-3deg);pointer-events:none;
+ display:flex;align-items:center;justify-content:center;gap:12px;
+ background:linear-gradient(90deg,transparent 0%,#141a24ee 18%,#2c1d11f5 50%,#141a24ee 82%,transparent 100%);
+ border-top:2px solid #ffe07d;border-bottom:2px solid #ffe07d;
+ box-shadow:0 0 28px #ffaa2b88;
+ animation:expCutInSlide .9s cubic-bezier(.16,.84,.44,1) forwards
+}
+.exp-cutin-banner .cutin-art{width:46px;height:46px;flex:none;filter:drop-shadow(0 0 10px #ffe588)}
+.exp-cutin-banner .cutin-art .hxo{width:100%!important;height:100%!important}
+.exp-cutin-banner .cutin-text{display:flex;flex-direction:column;text-align:left}
+.exp-cutin-banner small{font-size:10px;letter-spacing:1.5px;color:#ffd878;font-weight:900}
+.exp-cutin-banner b{font-family:'Noto Serif TC',serif;font-size:18px;color:#fff8dc;text-shadow:0 2px 6px #000}
+@keyframes expCutInSlide{
+ 0%{opacity:0;transform:translate(-30%,-50%) skewY(-3deg) scaleY(.7)}
+ 18%{opacity:1;transform:translate(0,-50%) skewY(-3deg) scaleY(1)}
+ 78%{opacity:1;transform:translate(0,-50%) skewY(-3deg) scaleY(1)}
+ 100%{opacity:0;transform:translate(28%,-50%) skewY(-3deg) scaleY(.85)}
+}
+
+/* 7. Workshop Familiars (Baby Forge Dragon & Chef Cat) & Legend Anvil Crest */
+.ws-familiar{
+ position:relative;flex:none;width:30px;height:30px;margin-right:2px;
+ display:inline-flex;align-items:center;justify-content:center;
+ filter:drop-shadow(0 2px 3px #0008);
+ animation:famBreathe 2.6s ease-in-out infinite
+}
+.ws-familiar img{width:100%;height:100%;object-fit:contain;display:block}
+.ws-familiar.is-fever{
+ filter:drop-shadow(0 0 6px #ffae38);
+ animation:famCheer .55s ease-in-out infinite alternate
+}
+.ws-familiar.is-cheering{animation:famCheer .35s ease-in-out 3 alternate}
+.ws-fam-tip{
+ position:absolute;bottom:108%;left:0;z-index:12;
+ padding:2px 7px;border-radius:999px;font-style:normal;font-size:10px;font-weight:900;
+ background:#fff8e3;color:#3d2612;border:1.5px solid #d49d44;
+ box-shadow:0 3px 8px #0008;white-space:nowrap;pointer-events:none
+}
+@keyframes famBreathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.03)}}
+@keyframes famCheer{from{transform:translateY(0) rotate(-4deg)}to{transform:translateY(-5px) rotate(4deg) scale(1.08)}}
+
+.forge-crest-img{
+ display:block;width:54px;height:54px;margin:0 auto 2px;object-fit:contain;
+ filter:drop-shadow(0 0 12px #ffd24d88);
+ animation:crestPop .5s cubic-bezier(.22,1.35,.36,1) both
+}
+@keyframes crestPop{from{transform:scale(.4) rotate(-12deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+
+/* 8. Central Town Cloud Shadows, Winter Night Aurora & Shooting Stars */
+.gemini-cloud-shadow{
+ position:absolute;inset:-20%;pointer-events:none;z-index:2;
+ background:radial-gradient(38% 18% at 30% 40%,#0b14121f 0%,transparent 70%);
+ animation:townCloudDrift 24s linear infinite
+}
+#geminiTownScene[data-time="night"] .gemini-cloud-shadow{display:none}
+@keyframes townCloudDrift{
+ 0%{transform:translate3d(-35%,-15%,0)}
+ 100%{transform:translate3d(45%,25%,0)}
+}
+.gemini-night-skyfx{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden;display:none}
+#geminiTownScene[data-time="night"] .gemini-night-skyfx{display:block}
+.town-aurora{display:none}
+#geminiTownScene[data-season="winter"][data-time="night"] .town-aurora{
+ display:block;position:absolute;left:-10%;right:-10%;top:0;height:18%;
+ background:linear-gradient(105deg,transparent 15%,#4effb826 38%,#8a7dff2a 62%,transparent 85%);
+ filter:blur(9px);animation:auroraWave 11s ease-in-out infinite alternate
+}
+@keyframes auroraWave{from{transform:translateX(-4%) scaleY(.9)}to{transform:translateX(4%) scaleY(1.12)}}
+.town-shooting-star{
+ position:absolute;top:5%;left:78%;width:42px;height:2px;opacity:0;
+ background:linear-gradient(90deg,transparent,#fff8d6);border-radius:999px;
+ transform:rotate(-28deg);animation:shootingStar 16s ease-out infinite 4s
+}
+@keyframes shootingStar{
+ 0%,88%,100%{opacity:0;transform:translate(0,0) rotate(-28deg)}
+ 90%{opacity:.95}
+ 95%{opacity:0;transform:translate(-130px,62px) rotate(-28deg)}
+}
+
+/* 9. Museum Gallery Mahogany Frame, Glass Sheen & Engraved Brass Plaque */
+.mi-gallery-frame{
+ position:relative;padding:8px 8px 6px;border-radius:10px;
+ border:3px solid #6b4528;
+ background:linear-gradient(145deg,#3e2618,#24150d);
+ box-shadow:inset 0 0 0 1.5px #cfa55799,0 8px 20px #040303cc
+}
+.mi-gallery-frame::before{
+ content:'';position:absolute;inset:8px;bottom:28px;pointer-events:none;z-index:3;border-radius:6px;
+ background:linear-gradient(125deg,#ffffff1c 0%,transparent 36%,transparent 68%,#ffffff0d 100%)
+}
+.mi-gallery-frame .mi-art-stage{margin:0!important}
+.mi-brass-plaque{
+ display:flex;align-items:center;justify-content:space-between;gap:8px;
+ margin:7px auto 0;padding:3px 10px;max-width:190px;border-radius:4px;
+ border:1px solid #f2cf75;
+ background:linear-gradient(180deg,#cfa248,#8f6722);
+ color:#231507;font-family:'Noto Serif TC',serif;font-weight:900;font-size:11.5px;
+ box-shadow:inset 0 1px 0 #fff2be99,0 2px 4px #0008
+}
+.mi-brass-plaque small{font-family:inherit;font-size:10px;color:#3b240c}

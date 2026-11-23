@@ -2451,5 +2451,25 @@
         "url":  "assets/arena/arena_sanctum.d4060a08cb02.jpg",
         "bytes":  54049,
         "sha256":  "d4060a08cb02a3dafacc96ee8b9c7a114f512b9c7e2133308bbc2c84dc8d9721"
+    },
+    {
+        "url":  "assets/arena/forge_familiar.e183ae1722af.png",
+        "bytes":  114755,
+        "sha256":  "e183ae1722af21e2fc62b665d18f5cdd9ab5e4ca6666e1ff1f2d72a339bb4c16"
+    },
+    {
+        "url":  "assets/arena/kitchen_familiar.169e28c0ed42.png",
+        "bytes":  102511,
+        "sha256":  "169e28c0ed42bfec9561e914dda9fa1c5cd75e84c78e1dc253c637f1c4bdcff7"
+    },
+    {
+        "url":  "assets/arena/expedition_hero.5c3b4c17bbe7.png",
+        "bytes":  74952,
+        "sha256":  "5c3b4c17bbe729240c356765bd4f8630f02ab44353aa7378afc5d3df1d6bd370"
+    },
+    {
+        "url":  "assets/arena/legend_anvil_crest.0c9710eeecad.png",
+        "bytes":  99469,
+        "sha256":  "0c9710eeecadfaaf4042c17003e892c9885835b744882ded5f5e50915d0fc22b"
     }
 ]

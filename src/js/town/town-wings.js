@@ -748,7 +748,7 @@ function renderMuseumInspect(kind,id){
   const count=mus.fishCounts?.[id]||0,got=count>0||mus.fish.includes(id),stars=fishStarLevel(count),maxCm=mus.fishMax?.[id]||0;
   const kBonus=(stars*1.5).toFixed(1);
   title.textContent=got?(f.icon+' '+f.name):'❔ 未知魚種';
-  body.innerHTML='<div class="mi-showcase is-fish"><div class="mi-art-stage">'+museumShowcaseArt('fish',id,!got)+'</div>'
+  body.innerHTML='<div class="mi-showcase is-fish"><div class="mi-gallery-frame"><div class="mi-art-stage">'+museumShowcaseArt('fish',id,!got)+'</div><div class="mi-brass-plaque"><span>'+(got?f.name:'未知魚種')+'</span><small>'+(got?'★'.repeat(stars)+'☆'.repeat(3-stars):'未登錄')+'</small></div></div>'
    +'<div class="mi-badges"><span>'+SEASONS[f.season].icon+' '+SEASONS[f.season].name+'</span><span>'+(f.night?'🌙 夜晚出沒':'☀ 白天出沒')+'</span><span>稀有度 '+'★'.repeat(f.rarity+1)+'</span></div></div>'
    +'<p class="mi-desc">'+(got?f.desc:'尚未在西側溪畔釣起過此魚種。請依季節與日夜時段前往星露釣魚棧橋探索！')+'</p>'
    +'<div class="mi-stat-box"><div><b>🍲 廚房餐廳星級加成</b><span>'+'★'.repeat(stars)+'☆'.repeat(3-stars)+'（目前 +'+(stars>0?kBonus:'0')+'% 餐廳售價）</span></div>'
@@ -776,7 +776,7 @@ function renderMuseumInspect(kind,id){
     ?'<button type="button" class="tw-big-btn is-gold" onclick="openRelicPuzzle(\''+id+'\')">🧩 碎片齊全（9/9）！進入 3×3 拼圖修復</button>'
     :'<button type="button" class="tw-big-btn" disabled>⛏ 還差 '+(9-shards)+' 片碎片（於西側遺跡探勘獲得）</button>';
   const relicArtHtml=completed?museumShowcaseArt('relic',id,false):pixelRelicArt(id,!seen);
-  body.innerHTML='<div class="mi-showcase is-relic"><div class="mi-art-stage">'+relicArtHtml+'</div>'
+  body.innerHTML='<div class="mi-showcase is-relic"><div class="mi-gallery-frame'+(completed?' is-hd':'')+'"><div class="mi-art-stage">'+relicArtHtml+'</div><div class="mi-brass-plaque"><span>'+(seen?r.name:'未出土古物')+'</span><small>'+(completed?'典藏真跡':'碎片 '+shards+'/9')+'</small></div></div>'
    +'<div class="mi-badges"><span>稀有度 '+'★'.repeat(r.rarity+1)+'</span><span>'+(completed?'✓ 已修復完成（高清典藏已解鎖）':'碎片 '+shards+' / 9（修復後解鎖高清圖案）')+'</span></div></div>'
    +'<p class="mi-desc">'+(seen?r.desc:'尚未在西側古物遺跡營地發掘過此古物碎片。')+'</p>'
    +'<div class="mi-stat-box"><div><b>⚒ 冶煉廠與古物專屬加成</b><span>'+(completed?'✓ 已生效':'拼圖修復後啟動')+'</span></div>'

@@ -26,4 +26,12 @@ function showBattleFeedback(row){
  if(heavy&&arena?.animate)arena.animate([{transform:'translate(0,0)'},{transform:'translate(-4px,2px)',offset:.25},{transform:'translate(4px,-2px)',offset:.55},{transform:'translate(0,0)'}],{duration:220});
  const label=document.createElement('span');label.className='battle-damage22 '+(row.actor==='hero'?'enemy-hit':'hero-hit')+(heavy?' is-heavy':'');label.setAttribute('aria-hidden','true');label.textContent=row.charge?'⚡ 蓄力':row.damage?(row.skill?'✦ ':(row.effect?row.effect+' ':''))+'-'+row.damage:row.absorbed?'🛡 護盾':'🛡 抵擋';target.appendChild(label);battleFeedbackNodes.add(label);const done=()=>{label.remove();battleFeedbackNodes.delete(label);};if(label.animate){const a=label.animate([{transform:'translate(-50%,0) scale(.75)',opacity:0},{transform:'translate(-50%,-10px) scale('+(heavy?1.18:1.05)+')',opacity:1,offset:.22},{transform:'translate(-50%,-34px) scale(1)',opacity:0}],{duration:heavy?780:650,easing:'ease-out'});a.onfinish=done;a.oncancel=done;}else gameTimeout(done,650);
 }
+function triggerExpeditionCutIn(weapon){
+ if(!expandedGameEnabled()||!weapon||lowEffects||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
+ const arena=$('expeditionArena'),sk=ultimateSkill(weapon);if(!arena||!sk)return;
+ const banner=document.createElement('div');banner.className='exp-cutin-banner';banner.setAttribute('aria-hidden','true');
+ banner.innerHTML='<span class="cutin-art">'+hex(weapon.c,bands(weapon),'',weapon.t,weapon)+'</span><div class="cutin-text"><small>終極奧義解放</small><b>'+esc(sk.name)+'</b></div>';
+ arena.appendChild(banner);battleFeedbackNodes.add(banner);
+ gameTimeout(()=>{banner.remove();battleFeedbackNodes.delete(banner);},920);
+}
 function monsterSpriteIndex(m){let index=EXPEDITIONS.findIndex(x=>x.name===m.name);if(index<0)index=m.endless?({dragon:18,golem:17,wolf:16,knight:19}[m.kind]??10):EXPEDITIONS.findIndex(x=>x.kind===m.kind);return Math.max(0,index);}
