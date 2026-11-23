@@ -1270,7 +1270,7 @@ function geminiFountainFXHTML(tier){
  return spr+'<div class="gemini-fountain-water" data-fountain-tier="'+tier+'" aria-hidden="true">'+ripples+jets+'<i></i><i></i><i></i>'+(tier>=1?'<i></i><i></i>':'')+stars+'</div>';
 }
 function geminiTownEffects(){
- return '<div class="gemini-sea-shimmer" aria-hidden="true"></div><div class="gemini-night-lights">'+geminiTownNightArt()+'</div><div class="gemini-fountain-stage" data-fountain-tier="0" aria-hidden="true">'+geminiFountainFXHTML(0)+'</div><div class="gemini-chimney-smoke" aria-hidden="true"><i></i><i></i><i></i></div><i class="gemini-forge-fire" aria-hidden="true"></i>';
+ return '<div class="gemini-sea-shimmer" aria-hidden="true"></div><div class="gemini-night-lights">'+geminiTownNightArt()+'</div><div class="gemini-fountain-stage" data-fountain-tier="0" aria-hidden="true">'+geminiFountainFXHTML(0)+'</div><div class="gemini-chimney-smoke" aria-hidden="true"><i></i><i></i><i></i></div><div class="gemini-kitchen-smoke" aria-hidden="true"><i></i><i></i><i></i></div><div class="gemini-town-banners" aria-hidden="true"><span class="tb b1"></span><span class="tb b2"></span></div><div class="gemini-sun-dapples" aria-hidden="true"><span></span><span></span></div><i class="gemini-forge-fire" aria-hidden="true"></i>';
 }
 function renderGeminiTown(){
  if(!expandedGameEnabled())return;const si=townVisualSeason(),night=isSandboxNight(),p=$('townP'),image=$('geminiTownImage');p.dataset.geminiTown='true';
@@ -1334,9 +1334,17 @@ async function prepareGeminiSnapshot(si){
 const WORKSHOP_ART={"forge":"assets/interiors/forge.4296ba06a3b2.webp","kitchen":"assets/interiors/kitchen.957bd2e9fd2b.webp"};
 function syncWorkshopLook(){
  syncCozyItemLook();const enabled=expandedGameEnabled()&&day>0,app=$('app'),screen=$('kitchenP');
+ const si=typeof townVisualSeason==='function'?townVisualSeason():0,sId=typeof SEASONS!=='undefined'&&SEASONS[si]?SEASONS[si].id:'spring';
+ const tMode=typeof isSandboxNight==='function'&&isSandboxNight()?'night':'day';
  app.dataset.workshop=enabled?'forge':'';screen.dataset.workshop=enabled?'kitchen':'';document.body.classList.toggle('workshop-backend',enabled);
- if(enabled){if(app.dataset.wallArt!=='forge17'){app.style.setProperty('--workshop-wall','url("'+WORKSHOP_ART.forge+'")');app.dataset.wallArt='forge17';}if(screen.dataset.wallArt!=='kitchen17'){screen.style.setProperty('--workshop-wall','url("'+WORKSHOP_ART.kitchen+'")');screen.dataset.wallArt='kitchen17';}}
- else{app.style.setProperty('--workshop-wall','none');screen.style.setProperty('--workshop-wall','none');app.dataset.wallArt='';screen.dataset.wallArt='';}
+ if(enabled){
+  app.dataset.season=sId;app.dataset.time=tMode;screen.dataset.season=sId;screen.dataset.time=tMode;
+  if(app.dataset.wallArt!=='forge17'){app.style.setProperty('--workshop-wall','url("'+WORKSHOP_ART.forge+'")');app.dataset.wallArt='forge17';}
+  if(screen.dataset.wallArt!=='kitchen17'){screen.style.setProperty('--workshop-wall','url("'+WORKSHOP_ART.kitchen+'")');screen.dataset.wallArt='kitchen17';}
+ }else{
+  app.dataset.season='';app.dataset.time='';screen.dataset.season='';screen.dataset.time='';
+  app.style.setProperty('--workshop-wall','none');screen.style.setProperty('--workshop-wall','none');app.dataset.wallArt='';screen.dataset.wallArt='';
+ }
 }
 const kitchenIngredientFlights=new Set();
 let kitchenIngredientFlightEpoch=0;
@@ -1805,6 +1813,15 @@ function showBattleFeedback(row){
  const heavy=!!(row.skill||row.damage>=35);
  const art=target.querySelector('div');art?.animate?.([{transform:'translateX(0) scale(1)',filter:'brightness(1)'},{transform:'translateX('+(heavy?8:5)+'px) scale('+(heavy?.93:.96)+')',filter:'brightness('+(heavy?2.1:1.75)+')',offset:.24},{transform:'translateX('+(heavy?-6:-3)+'px)',filter:'brightness(1.25)',offset:.56},{transform:'translateX(0) scale(1)',filter:'brightness(1)'}],{duration:heavy?320:260,easing:'ease-out'});
  source?.querySelector('div')?.animate?.([{transform:'translateX(0)'},{transform:'translateX('+(row.actor==='hero'?(heavy?12:8):(heavy?-12:-8))+'px) scale('+(heavy?1.12:1.06)+')',offset:.38},{transform:'translateX(0)'}],{duration:260});
+ if(row.actor==='hero'&&row.damage>0){
+  const slash=document.createElement('span');slash.className='exp-slash-arc'+(heavy?' is-heavy':'');slash.setAttribute('aria-hidden','true');
+  target.appendChild(slash);battleFeedbackNodes.add(slash);
+  gameTimeout(()=>{slash.remove();battleFeedbackNodes.delete(slash);},360);
+ }
+ if(row.charge){
+  arena.classList.add('is-boss-charging');
+  gameTimeout(()=>arena.classList.remove('is-boss-charging'),1550);
+ }
  if(heavy&&arena?.animate)arena.animate([{transform:'translate(0,0)'},{transform:'translate(-4px,2px)',offset:.25},{transform:'translate(4px,-2px)',offset:.55},{transform:'translate(0,0)'}],{duration:220});
  const label=document.createElement('span');label.className='battle-damage22 '+(row.actor==='hero'?'enemy-hit':'hero-hit')+(heavy?' is-heavy':'');label.setAttribute('aria-hidden','true');label.textContent=row.charge?'⚡ 蓄力':row.damage?(row.skill?'✦ ':(row.effect?row.effect+' ':''))+'-'+row.damage:row.absorbed?'🛡 護盾':'🛡 抵擋';target.appendChild(label);battleFeedbackNodes.add(label);const done=()=>{label.remove();battleFeedbackNodes.delete(label);};if(label.animate){const a=label.animate([{transform:'translate(-50%,0) scale(.75)',opacity:0},{transform:'translate(-50%,-10px) scale('+(heavy?1.18:1.05)+')',opacity:1,offset:.22},{transform:'translate(-50%,-34px) scale(1)',opacity:0}],{duration:heavy?780:650,easing:'ease-out'});a.onfinish=done;a.oncancel=done;}else gameTimeout(done,650);
 }
@@ -3192,7 +3209,7 @@ function renderTownWeather(si){
  if(si===3||si===2){const count=si===3?14:8;for(let i=0;i<count;i++)particles+=`<i class="town-weather-particle ${si===3?'town-snow':'town-leaf'}" style="left:${(i*37+13)%100}%;top:-16px;animation-duration:${si===3?11+i%7:13+i%6}s;animation-delay:-${(i*2.7)%19}s;${si===2?'background:'+['#db9741','#c96a36','#e8b756'][i%3]+';':''}scale:${si===3?.55+(i%3)*.25:.7+(i%3)*.2}"></i>`;}
  else if(isSandboxNight()){particles=Array.from({length:10},(_,i)=>'<i class="night-firefly" style="left:'+((i*37+7)%100)+'%;top:'+((i*23+15)%80)+'%;animation-delay:-'+i+'s"></i>').join('');}
  else if(si===1){for(let i=0;i<3;i++)particles+=`<i class="town-weather-particle town-sunray" style="left:${15+i*23}%;animation-delay:-${i%2?7:1}s;animation-duration:${13+i%2*3}s;width:${10+i%3*5}%"></i>`;}
- else particles='';
+ else{for(let i=0;i<10;i++)particles+=`<i class="town-weather-particle town-petal" style="left:${(i*29+9)%100}%;top:-14px;animation-duration:${10+i%5}s;animation-delay:-${(i*1.9)%12}s;scale:${.65+(i%3)*.2}"></i>`;}
  el.innerHTML=particles;
 }
 function renderTown(){
@@ -3747,9 +3764,25 @@ function expeditionHealthHTML(b){
 }
 document.addEventListener('visibilitychange',()=>{const b=expeditionState.lastBattle;if(b)b.effectStamp=Date.now();battleLastAdvance=Date.now();});
 
+const EXPEDITION_ARENA_ART={
+ forest:'assets/arena/arena_forest.5528812724e2.jpg',
+ magma:'assets/arena/arena_magma.3f8c6a56711e.jpg',
+ frost:'assets/arena/arena_frost.28c4121b2cef.jpg',
+ sanctum:'assets/arena/arena_sanctum.d4060a08cb02.jpg'
+};
+function expeditionArenaTheme(stage){
+ const s=Math.max(0,Number(stage)||0);
+ if(s>=15)return 'sanctum';
+ if(s>=10)return 'frost';
+ if(s>=5)return 'magma';
+ return 'forest';
+}
+
 function renderExpeditionBattle(){
  const b=expeditionState.lastBattle;if(!b)return;syncExpeditionEffects();updateBattlePace();renderExpeditionFood();const m=b.monster||{...EXPEDITIONS[b.stage],element:'none'},done=b.resolved;
- $('expeditionArena').innerHTML='<div class="exp-fighter"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</div><b>'+itemName(b.weapon)+'</b><small>♥ '+b.hp+' / '+b.hpMax+'</small>'+expeditionHealthHTML(b)+'</div><strong>VS</strong><div class="exp-fighter"><div>'+monsterArt(m)+elementBadge(m.element,'battle-element')+'</div><b>'+m.name+'</b><small>♥ '+b.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+b.enemyHp+'" aria-label="怪物生命值"></progress><span class="exp-health-key exp-monster-key" aria-hidden="true"></span></div>';
+ const arena=$('expeditionArena'),theme=expeditionArenaTheme(b.stage);
+ if(arena){arena.dataset.arena=theme;arena.style.setProperty('--arena-bg','url("'+EXPEDITION_ARENA_ART[theme]+'")');}
+ arena.innerHTML='<div class="exp-fighter is-hero"><div>'+hex(b.weapon.c,bands(b.weapon),'',b.weapon.t,b.weapon)+'</div><b>'+itemName(b.weapon)+'</b><small>♥ '+b.hp+' / '+b.hpMax+'</small>'+expeditionHealthHTML(b)+'</div><strong>VS</strong><div class="exp-fighter is-enemy"><div><span class="exp-rune-ring" aria-hidden="true"></span>'+monsterArt(m)+elementBadge(m.element,'battle-element')+'</div><b>'+m.name+'</b><small>♥ '+b.enemyHp+' / '+m.hp+'</small><progress max="'+m.hp+'" value="'+b.enemyHp+'" aria-label="怪物生命值"></progress><span class="exp-health-key exp-monster-key" aria-hidden="true"></span></div>';
  $('expeditionLog').innerHTML=(done?b.log:b.log.slice(-5)).map(x=>'<p class="'+x.actor+(x.skill?' skill-hit':'')+'">'+esc(x.text)+'</p>').join('')||'<p>武器已投入遠征；可在戰鬥中施放終極武器技能。</p>';
  $('expeditionLog').dataset.complete=String(done);$('expeditionGuard').hidden=done;$('expeditionIntent').textContent=done?'本次戰鬥已結束':('敵方下次：'+bossIntent(b)+(b.bossHardened?' · 現正硬化':'')+(b.guarding?' · 防禦中（停止攻擊、減傷60%）':''));if(!done&&expandedGameEnabled()&&b.foodAttackTurns>0)$('expeditionIntent').textContent+=' · 🍖 攻擊 +'+Math.round((b.foodAttack||0)*100)+'%（剩 '+b.foodAttackTurns+' 次）';if(!done&&b.enemyWard)$('expeditionIntent').textContent+=' · 怪物護盾 '+b.enemyWard;$('expeditionGuard').disabled=done||b.guardUsed;$('expeditionGuard').textContent=b.guardUsed?'🛡 已使用防禦架勢':'🛡 防禦3秒 · 停止攻擊、減傷60%（每場一次）';const skill=ultimateSkill(b.weapon);$('expeditionSkill').hidden=done||!skill;$('expeditionSkill').disabled=done||b.skillUsed||b.guarding;$('expeditionSkill').textContent=skill?(b.skillUsed?'✓ 已施放 '+skill.name:'✦ 施放 '+skill.name):'';
  $('expeditionResult').innerHTML=done?'<h3>'+({win:'🏆 遠征勝利',lose:'遠征落敗',draw:'已撤退'}[b.outcome])+'</h3><p>'+(b.outcome==='win'?'獲得 '+b.gold+' 金幣'+(b.loot?'＋'+itemName(b.loot):'')+'。':b.outcome==='lose'?'失去一顆愛心，剩餘 '+lives+' 顆。':'未獲得獎勵，出戰武器已消耗。')+'</p>'+(b.outcome==='win'&&b.stage>=10&&b.stage<20?'<button class="ultimate-unlocked" onclick="openUltimateArt('+b.stage+')">'+ultimatePixelArt(b.stage)+'<span>終極藍圖已解鎖 · 查看高清美術 ↗</span></button>':''):'';
@@ -7640,7 +7673,7 @@ syncHomeArt();
 // Background preparation never blocks navigation. Reuse the previous release's media cache.
 const gameAssetLoading={active:false,complete:false,running:null,entries:null,loaded:new Set(),failed:[],cache:null,networkFailures:0,objectURLs:new Map(),retryTimer:null};
 function collectGameAssets(){
- const groups={REVIEW_MONSTER_ART,SEASON_MUSIC_DATA,ULTIMATE_ART,GEMINI_TOWN_ART,TOWN_BUILDING_ART,TOWN_WING_ART,TOWN_WING_BUILDING_ART,WING_MODAL_ART,MUSEUM_REALISTIC_ART,WORKSHOP_ART,COZY_ITEM_ART,TOWN_GUEST_ART,GREENHOUSE_ART,PREP_BOARD_ART,HOME_ART};
+ const groups={REVIEW_MONSTER_ART,SEASON_MUSIC_DATA,ULTIMATE_ART,EXPEDITION_ARENA_ART,GEMINI_TOWN_ART,TOWN_BUILDING_ART,TOWN_WING_ART,TOWN_WING_BUILDING_ART,WING_MODAL_ART,MUSEUM_REALISTIC_ART,WORKSHOP_ART,COZY_ITEM_ART,TOWN_GUEST_ART,GREENHOUSE_ART,PREP_BOARD_ART,HOME_ART};
  return Object.values(groups).flatMap(group=>Object.entries(group).map(([id,url])=>({group,id,url,audio:group===SEASON_MUSIC_DATA})));
 }
 function gameAssetPriority(entry){

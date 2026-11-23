@@ -14,6 +14,15 @@ function showBattleFeedback(row){
  const heavy=!!(row.skill||row.damage>=35);
  const art=target.querySelector('div');art?.animate?.([{transform:'translateX(0) scale(1)',filter:'brightness(1)'},{transform:'translateX('+(heavy?8:5)+'px) scale('+(heavy?.93:.96)+')',filter:'brightness('+(heavy?2.1:1.75)+')',offset:.24},{transform:'translateX('+(heavy?-6:-3)+'px)',filter:'brightness(1.25)',offset:.56},{transform:'translateX(0) scale(1)',filter:'brightness(1)'}],{duration:heavy?320:260,easing:'ease-out'});
  source?.querySelector('div')?.animate?.([{transform:'translateX(0)'},{transform:'translateX('+(row.actor==='hero'?(heavy?12:8):(heavy?-12:-8))+'px) scale('+(heavy?1.12:1.06)+')',offset:.38},{transform:'translateX(0)'}],{duration:260});
+ if(row.actor==='hero'&&row.damage>0){
+  const slash=document.createElement('span');slash.className='exp-slash-arc'+(heavy?' is-heavy':'');slash.setAttribute('aria-hidden','true');
+  target.appendChild(slash);battleFeedbackNodes.add(slash);
+  gameTimeout(()=>{slash.remove();battleFeedbackNodes.delete(slash);},360);
+ }
+ if(row.charge){
+  arena.classList.add('is-boss-charging');
+  gameTimeout(()=>arena.classList.remove('is-boss-charging'),1550);
+ }
  if(heavy&&arena?.animate)arena.animate([{transform:'translate(0,0)'},{transform:'translate(-4px,2px)',offset:.25},{transform:'translate(4px,-2px)',offset:.55},{transform:'translate(0,0)'}],{duration:220});
  const label=document.createElement('span');label.className='battle-damage22 '+(row.actor==='hero'?'enemy-hit':'hero-hit')+(heavy?' is-heavy':'');label.setAttribute('aria-hidden','true');label.textContent=row.charge?'⚡ 蓄力':row.damage?(row.skill?'✦ ':(row.effect?row.effect+' ':''))+'-'+row.damage:row.absorbed?'🛡 護盾':'🛡 抵擋';target.appendChild(label);battleFeedbackNodes.add(label);const done=()=>{label.remove();battleFeedbackNodes.delete(label);};if(label.animate){const a=label.animate([{transform:'translate(-50%,0) scale(.75)',opacity:0},{transform:'translate(-50%,-10px) scale('+(heavy?1.18:1.05)+')',opacity:1,offset:.22},{transform:'translate(-50%,-34px) scale(1)',opacity:0}],{duration:heavy?780:650,easing:'ease-out'});a.onfinish=done;a.oncancel=done;}else gameTimeout(done,650);
 }

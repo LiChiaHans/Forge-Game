@@ -2431,5 +2431,25 @@
         "url":  "assets/town/east_windmill_sails.ca9d356a4f8b.png",
         "bytes":  86960,
         "sha256":  "ca9d356a4f8b46ff515ce7fe52c07079d1eee071c7e325ce6957a8183cd8c99a"
+    },
+    {
+        "url":  "assets/arena/arena_forest.5528812724e2.jpg",
+        "bytes":  51951,
+        "sha256":  "5528812724e25319e460c4924222cfabe51973ec21384dd17eaa635c7d14a8e0"
+    },
+    {
+        "url":  "assets/arena/arena_magma.3f8c6a56711e.jpg",
+        "bytes":  41145,
+        "sha256":  "3f8c6a56711e7221b947f1a1fac64ea9db2bdaa0675bf4c4916d5d09179a903c"
+    },
+    {
+        "url":  "assets/arena/arena_frost.28c4121b2cef.jpg",
+        "bytes":  55070,
+        "sha256":  "28c4121b2cefc5b33938da4f441db380418feef9965a2b26de9e2713398e83dd"
+    },
+    {
+        "url":  "assets/arena/arena_sanctum.d4060a08cb02.jpg",
+        "bytes":  54049,
+        "sha256":  "d4060a08cb02a3dafacc96ee8b9c7a114f512b9c7e2133308bbc2c84dc8d9721"
     }
 ]

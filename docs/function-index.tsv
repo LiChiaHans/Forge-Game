@@ -276,7 +276,7 @@ updateBattlePace	src/js/expedition/food-filter-feedback.js	9
 toggleBattlePause	src/js/expedition/food-filter-feedback.js	10
 clearBattleFeedback	src/js/expedition/food-filter-feedback.js	11
 showBattleFeedback	src/js/expedition/food-filter-feedback.js	12
-monsterSpriteIndex	src/js/expedition/food-filter-feedback.js	20
+monsterSpriteIndex	src/js/expedition/food-filter-feedback.js	29
 kitchenWasteFee	src/js/garden/compost.js	2
 kitchenCompostEligible	src/js/garden/compost.js	3
 earnKitchenCompost	src/js/garden/compost.js	4
@@ -556,9 +556,10 @@ renderExpeditionProgress	src/js/expedition/timing-feedback.js	22
 startExpeditionFeedbackClock	src/js/expedition/timing-feedback.js	29
 stopExpeditionFeedbackClock	src/js/expedition/timing-feedback.js	32
 expeditionHealthHTML	src/js/expedition/timing-feedback.js	33
-renderExpeditionBattle	src/js/expedition/rendering.js	2
-renderExpedition	src/js/expedition/rendering.js	11
-startExpeditionDemo	src/js/expedition/rendering.js	28
+expeditionArenaTheme	src/js/expedition/rendering.js	8
+renderExpeditionBattle	src/js/expedition/rendering.js	16
+renderExpedition	src/js/expedition/rendering.js	27
+startExpeditionDemo	src/js/expedition/rendering.js	44
 isUltimate	src/js/blueprints/ultimate-weapons.js	2
 ultimateSkill	src/js/blueprints/ultimate-weapons.js	3
 legendKind	src/js/blueprints/ultimate-weapons.js	4

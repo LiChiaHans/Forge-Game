@@ -38,7 +38,7 @@ function geminiFountainFXHTML(tier){
  return spr+'<div class="gemini-fountain-water" data-fountain-tier="'+tier+'" aria-hidden="true">'+ripples+jets+'<i></i><i></i><i></i>'+(tier>=1?'<i></i><i></i>':'')+stars+'</div>';
 }
 function geminiTownEffects(){
- return '<div class="gemini-sea-shimmer" aria-hidden="true"></div><div class="gemini-night-lights">'+geminiTownNightArt()+'</div><div class="gemini-fountain-stage" data-fountain-tier="0" aria-hidden="true">'+geminiFountainFXHTML(0)+'</div><div class="gemini-chimney-smoke" aria-hidden="true"><i></i><i></i><i></i></div><i class="gemini-forge-fire" aria-hidden="true"></i>';
+ return '<div class="gemini-sea-shimmer" aria-hidden="true"></div><div class="gemini-night-lights">'+geminiTownNightArt()+'</div><div class="gemini-fountain-stage" data-fountain-tier="0" aria-hidden="true">'+geminiFountainFXHTML(0)+'</div><div class="gemini-chimney-smoke" aria-hidden="true"><i></i><i></i><i></i></div><div class="gemini-kitchen-smoke" aria-hidden="true"><i></i><i></i><i></i></div><div class="gemini-town-banners" aria-hidden="true"><span class="tb b1"></span><span class="tb b2"></span></div><div class="gemini-sun-dapples" aria-hidden="true"><span></span><span></span></div><i class="gemini-forge-fire" aria-hidden="true"></i>';
 }
 function renderGeminiTown(){
  if(!expandedGameEnabled())return;const si=townVisualSeason(),night=isSandboxNight(),p=$('townP'),image=$('geminiTownImage');p.dataset.geminiTown='true';

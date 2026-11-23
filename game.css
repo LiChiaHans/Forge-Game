@@ -4471,3 +4471,200 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
  border-color:#dfB45b!important;
  background:linear-gradient(180deg,#2b251c 0%,#1d1913 62%,#14110d 100%)!important
 }
+/* ==========================================================================
+   Art Mastery Pass (5 Key Visual & UI Polish Upgrades):
+   1. Expedition Arena Illustrated Backdrops, Idle Breathing, Slash Arc & Boss Charge Ring
+   2. Central Town Ambient Life (Kitchen Smoke, Swaying Banners, Sun Dapples, Spring Petals)
+   3. Workshop Seasonal Atmosphere & High-Tier Forge/Kitchen Celebration Glow
+   4. Architect Decor & Greenhouse Ground Contact Shadows
+   5. Unified Wood-Parchment x Brass-Rivet UI System (Scrollbars, Endcaps, Tabs)
+   ========================================================================== */
+
+/* 1. Expedition Arena Backdrops & Combat Animations */
+#expeditionArena{
+ position:relative;overflow:hidden;min-height:178px;
+ background-image:linear-gradient(180deg,#0c12187a 0%,#0b101540 52%,#0a0e12d4 100%),var(--arena-bg,none)!important;
+ background-size:cover!important;background-position:center 60%!important;
+ border:2px solid #cfa55799!important;
+ box-shadow:inset 0 0 28px #05080b99,0 8px 22px #030608aa!important
+}
+#expeditionArena strong{
+ position:relative;z-index:2;padding:4px 8px;border-radius:999px;
+ background:#141a20cc;border:1px solid #e6c16a77;color:#ffe699;
+ text-shadow:0 2px 4px #000
+}
+#expeditionArena .exp-fighter{position:relative;z-index:2}
+#expeditionArena .exp-fighter>div{
+ position:relative;
+ filter:drop-shadow(0 6px 8px #040608cc);
+ animation:expIdleBreath 2.8s ease-in-out infinite
+}
+#expeditionArena .exp-fighter.is-enemy>div{animation-delay:-1.4s}
+#expeditionArena .exp-fighter::after{
+ content:'';position:absolute;left:50%;bottom:44px;width:72px;height:14px;
+ transform:translateX(-50%);border-radius:50%;
+ background:radial-gradient(ellipse,#05070999 0%,transparent 72%);
+ pointer-events:none;z-index:-1
+}
+@keyframes expIdleBreath{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.02)}}
+
+.exp-slash-arc{
+ position:absolute;left:50%;top:36%;width:78px;height:78px;
+ transform:translate(-50%,-50%) rotate(-32deg);pointer-events:none;z-index:6;
+ border-top:4px solid #fff7c2;border-right:3px solid #ffc954;border-radius:50%;
+ filter:drop-shadow(0 0 8px #ffb73b);
+ animation:expSlashSweep .34s cubic-bezier(.16,.84,.44,1) forwards
+}
+.exp-slash-arc.is-heavy{
+ width:96px;height:96px;border-top-width:6px;border-top-color:#fffbe0;
+ filter:drop-shadow(0 0 14px #ff7b29)
+}
+@keyframes expSlashSweep{
+ 0%{opacity:0;transform:translate(-65%,-35%) rotate(-65deg) scale(.55)}
+ 35%{opacity:1;transform:translate(-48%,-50%) rotate(-12deg) scale(1.06)}
+ 100%{opacity:0;transform:translate(-34%,-62%) rotate(28deg) scale(1.18)}
+}
+
+.exp-rune-ring{
+ position:absolute;left:50%;bottom:-6px;width:94px;height:26px;
+ transform:translateX(-50%) scale(.75);border-radius:50%;opacity:0;
+ border:2px dashed #ff6848;box-shadow:0 0 14px #ff4d2e88,inset 0 0 10px #ff9a3c55;
+ pointer-events:none;transition:opacity .2s ease
+}
+#expeditionArena.is-boss-charging .exp-rune-ring{
+ opacity:1;animation:expRunePulse .55s ease-in-out infinite alternate
+}
+@keyframes expRunePulse{
+ from{transform:translateX(-50%) scale(.92);box-shadow:0 0 12px #ff4d2e88}
+ to{transform:translateX(-50%) scale(1.08);box-shadow:0 0 22px #ffae3b}
+}
+
+/* 2. Central Town Ambient Life (Kitchen Smoke, Banners, Sun Dapples, Spring Petals) */
+.gemini-kitchen-smoke{
+ position:absolute;left:76%;top:9.5%;width:24px;height:44px;pointer-events:none;z-index:2
+}
+.gemini-kitchen-smoke i{
+ position:absolute;left:40%;bottom:0;width:9px;height:9px;border-radius:50%;
+ background:#f4efe466;filter:blur(1.5px);
+ animation:kitchenSmokeRise 3.8s ease-out infinite
+}
+.gemini-kitchen-smoke i:nth-child(2){animation-delay:-1.25s;left:52%}
+.gemini-kitchen-smoke i:nth-child(3){animation-delay:-2.5s;left:34%}
+@keyframes kitchenSmokeRise{
+ 0%{transform:translate(0,0) scale(.65);opacity:0}
+ 20%{opacity:.62}
+ 100%{transform:translate(10px,-38px) scale(2.1);opacity:0}
+}
+
+.gemini-town-banners{position:absolute;inset:0;pointer-events:none;z-index:2}
+.gemini-town-banners .tb{
+ position:absolute;width:11px;height:18px;transform-origin:top center;
+ border-radius:2px 2px 6px 6px;box-shadow:0 2px 4px #00000055;
+ animation:townBannerSway 3.4s ease-in-out infinite alternate
+}
+.gemini-town-banners .tb.b1{
+ left:11.5%;top:11%;
+ background:linear-gradient(180deg,#c94148,#8e2329);border:1px solid #ffd57888
+}
+.gemini-town-banners .tb.b2{
+ left:33.5%;top:11.5%;animation-delay:-1.6s;
+ background:linear-gradient(180deg,#3d73a8,#24486e);border:1px solid #ffd57888
+}
+@keyframes townBannerSway{from{transform:skewX(-4deg) rotate(-3deg)}to{transform:skewX(5deg) rotate(4deg)}}
+
+.gemini-sun-dapples{position:absolute;inset:0;pointer-events:none;z-index:2}
+#geminiTownScene[data-time="night"] .gemini-sun-dapples{display:none}
+.gemini-sun-dapples span{
+ position:absolute;width:92px;height:52px;border-radius:50%;
+ background:radial-gradient(ellipse,#fff5be2e 0%,transparent 70%);
+ animation:dappleFloat 7.5s ease-in-out infinite alternate
+}
+.gemini-sun-dapples span:first-child{left:24%;top:36%}
+.gemini-sun-dapples span:last-child{left:54%;top:58%;animation-delay:-3.6s}
+@keyframes dappleFloat{from{transform:translate(0,0) scale(1);opacity:.65}to{transform:translate(10px,6px) scale(1.12);opacity:1}}
+
+.town-weather-particle.town-petal{
+ width:9px;height:7px;border-radius:70% 30% 70% 30%;
+ background:linear-gradient(135deg,#ffd9e8,#f79bc0);
+ box-shadow:0 0 4px #ffb8d466;
+ animation:townPetalFall linear infinite
+}
+@keyframes townPetalFall{
+ 0%{transform:translate3d(0,-10px,0) rotate(0deg);opacity:0}
+ 10%{opacity:.92}
+ 90%{opacity:.85}
+ 100%{transform:translate3d(48px,640px,0) rotate(320deg);opacity:0}
+}
+
+/* 3. Workshop Seasonal Window Glow & High-Tier Forge Celebration */
+#app[data-workshop="forge"]::before,
+#kitchenP[data-workshop="kitchen"]::before{
+ content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+ transition:background .4s ease
+}
+#app[data-workshop="forge"][data-season="spring"]::before,
+#kitchenP[data-workshop="kitchen"][data-season="spring"]::before{
+ background:radial-gradient(85% 40% at 50% 0%,#ffb7d524 0%,transparent 70%)
+}
+#app[data-workshop="forge"][data-season="summer"]::before,
+#kitchenP[data-workshop="kitchen"][data-season="summer"]::before{
+ background:radial-gradient(85% 40% at 50% 0%,#ffe37828 0%,transparent 70%)
+}
+#app[data-workshop="forge"][data-season="autumn"]::before,
+#kitchenP[data-workshop="kitchen"][data-season="autumn"]::before{
+ background:radial-gradient(85% 40% at 50% 0%,#ff9f4528 0%,transparent 70%)
+}
+#app[data-workshop="forge"][data-season="winter"]::before,
+#kitchenP[data-workshop="kitchen"][data-season="winter"]::before{
+ background:radial-gradient(85% 40% at 50% 0%,#b8ecff26 0%,transparent 70%)
+}
+#app[data-workshop="forge"][data-time="night"]::after,
+#kitchenP[data-workshop="kitchen"][data-time="night"]::after{
+ content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+ background:radial-gradient(75% 45% at 50% 100%,#ff8c2e26 0%,transparent 72%)
+}
+#forgeCelebration{
+ box-shadow:0 0 22px #ffd45955,inset 0 0 14px #fff1b833!important
+}
+
+/* 4. Architect Decor & Greenhouse Ground Contact Shadows */
+.town-sticker::after{
+ content:'';position:absolute;left:50%;bottom:1%;width:76%;height:18%;
+ transform:translateX(-50%);border-radius:50%;
+ background:radial-gradient(ellipse,#05090866 0%,transparent 72%);
+ pointer-events:none;z-index:-1
+}
+.gemini-building-sprite{
+ filter:drop-shadow(0 5px 7px #070b0977)
+}
+#townGreenhouse svg,#townFountain .gemini-fountain-sprite{
+ filter:drop-shadow(0 4px 6px #070b0966)
+}
+
+/* 5. Unified Wood-Parchment x Brass-Rivet UI System */
+.hp::-webkit-scrollbar,#townWingBody::-webkit-scrollbar,#archiveList::-webkit-scrollbar{
+ width:7px;height:7px
+}
+.hp::-webkit-scrollbar-track,#townWingBody::-webkit-scrollbar-track,#archiveList::-webkit-scrollbar-track{
+ background:#111915;border-radius:999px
+}
+.hp::-webkit-scrollbar-thumb,#townWingBody::-webkit-scrollbar-thumb,#archiveList::-webkit-scrollbar-thumb{
+ background:linear-gradient(180deg,#cfa557,#8e692b);
+ border-radius:999px;border:1px solid #18241d
+}
+.hp::before{
+ content:'';position:absolute;inset:7px;pointer-events:none;border-radius:8px;
+ background:
+  radial-gradient(circle at 6px 6px,#f3cf73 0 2.5px,transparent 3px),
+  radial-gradient(circle at calc(100% - 6px) 6px,#f3cf73 0 2.5px,transparent 3px),
+  radial-gradient(circle at 6px calc(100% - 6px),#f3cf73 0 2.5px,transparent 3px),
+  radial-gradient(circle at calc(100% - 6px) calc(100% - 6px),#f3cf73 0 2.5px,transparent 3px);
+ opacity:.55
+}
+.lm-progress>i,.mi-progress>i{
+ position:relative;
+ box-shadow:inset 0 1px 0 #fff8d688,0 0 8px #ffd45955
+}
+.tc-tabs button[aria-pressed="true"]{
+ box-shadow:inset 0 1px 0 #fff1b855,0 2px 6px #060a0888!important
+}

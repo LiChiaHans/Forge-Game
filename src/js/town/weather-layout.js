@@ -32,6 +32,6 @@ function renderTownWeather(si){
  if(si===3||si===2){const count=si===3?14:8;for(let i=0;i<count;i++)particles+=`<i class="town-weather-particle ${si===3?'town-snow':'town-leaf'}" style="left:${(i*37+13)%100}%;top:-16px;animation-duration:${si===3?11+i%7:13+i%6}s;animation-delay:-${(i*2.7)%19}s;${si===2?'background:'+['#db9741','#c96a36','#e8b756'][i%3]+';':''}scale:${si===3?.55+(i%3)*.25:.7+(i%3)*.2}"></i>`;}
  else if(isSandboxNight()){particles=Array.from({length:10},(_,i)=>'<i class="night-firefly" style="left:'+((i*37+7)%100)+'%;top:'+((i*23+15)%80)+'%;animation-delay:-'+i+'s"></i>').join('');}
  else if(si===1){for(let i=0;i<3;i++)particles+=`<i class="town-weather-particle town-sunray" style="left:${15+i*23}%;animation-delay:-${i%2?7:1}s;animation-duration:${13+i%2*3}s;width:${10+i%3*5}%"></i>`;}
- else particles='';
+ else{for(let i=0;i<10;i++)particles+=`<i class="town-weather-particle town-petal" style="left:${(i*29+9)%100}%;top:-14px;animation-duration:${10+i%5}s;animation-delay:-${(i*1.9)%12}s;scale:${.65+(i%3)*.2}"></i>`;}
  el.innerHTML=particles;
 }
