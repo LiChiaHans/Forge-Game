@@ -6503,35 +6503,49 @@ function townWingBonuses(){
  return {forgeSale:Math.min(.60,forgeSale),kitchenSale:Math.min(.60,kitchenSale),battleAtk:Math.min(.32,battleAtk),battleDef:Math.min(.32,battleDef)};
 }
 
-const TOWN_ZONE_ORDER={west:0,center:1,east:2};
-const TOWN_ZONE_NAMES={west:'西側 · 溪畔營地',center:'鍛造小鎮',east:'東側 · 旅商驛站'};
-let townZoneTransitionTimer=null;
-function playTownZoneTransition(dir,zone){
- const map=$('townMap');if(!map||typeof document==='undefined'||typeof document.createElement!=='function')return;
- const reduced=(typeof lowEffects!=='undefined'&&lowEffects)||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
- if(reduced)return;
- clearTimeout(townZoneTransitionTimer);
- map.querySelector?.('.town-zone-wipe')?.remove();
- const wipe=document.createElement('div');
- wipe.className='town-zone-wipe '+(dir>0?'is-to-east':'is-to-west');
- wipe.setAttribute('aria-hidden','true');
- wipe.innerHTML='<span class="tzw-label">'+(TOWN_ZONE_NAMES[zone]||'')+'</span>';
- map.appendChild(wipe);
- map.dataset.zoneDir=dir>0?'east':'west';
- townZoneTransitionTimer=setTimeout(()=>{wipe.remove();delete map.dataset.zoneDir;},420);
-}
+let townZoneTransition=null;
 function winterNightHorizonSVG(){
  return '<div class="tw-winter-night-sky" aria-hidden="true"><svg viewBox="0 0 360 88" preserveAspectRatio="none"><defs><linearGradient id="wnSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1730"/><stop offset=".68" stop-color="#193055"/><stop offset="1" stop-color="#223b62" stop-opacity="0"/></linearGradient><linearGradient id="wnAur" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#45f0b8" stop-opacity="0"/><stop offset=".32" stop-color="#58ffc4" stop-opacity=".34"/><stop offset=".62" stop-color="#8b7dff" stop-opacity=".32"/><stop offset="1" stop-color="#45f0b8" stop-opacity="0"/></linearGradient></defs><rect width="360" height="88" fill="url(#wnSky)"/><path d="M10 38 Q95 8 180 26 T350 20 L350 50 Q260 36 180 48 T10 56 Z" fill="url(#wnAur)"/><circle cx="268" cy="22" r="10" fill="#e6f2ff" opacity=".92"/><circle cx="272" cy="19" r="9" fill="#102140"/><g fill="#eef6ff" opacity=".88"><circle cx="28" cy="14" r="1.2"/><circle cx="64" cy="24" r="1"/><circle cx="108" cy="12" r="1.3"/><circle cx="152" cy="20" r="1"/><circle cx="204" cy="13" r="1.2"/><circle cx="316" cy="16" r="1.3"/><circle cx="340" cy="26" r="1"/></g><path d="M0 78 L34 42 L68 62 L112 34 L156 58 L208 38 L254 60 L304 32 L344 54 L360 46 L360 88 L0 88 Z" fill="#2c4972"/><path d="M0 80 L34 44 L54 58 L38 56 L34 48 L18 68 Z M112 36 L136 52 L120 50 L112 41 L92 56 Z M208 40 L232 54 L216 52 L208 45 L188 58 Z M304 34 L330 50 L312 49 L304 40 L282 54 Z" fill="#8bb4dc" opacity=".55"/><path d="M0 82 L52 62 L106 74 L168 58 L224 72 L286 58 L360 74 L360 88 L0 88 Z" fill="#1f3557" opacity=".85"/></svg></div>';
 }
 function setTownZone(zone){
  if(!['west','center','east'].includes(zone))return;
  if(architect?.active&&zone!=='center'){toast('請先結束城鎮佈置模式，再前往左右道路區域。');return;}
+ const map=$('townMap');
+ townZoneTransition?.skipTransition();
+ townZoneTransition=null;
+ map?.classList.remove('is-zone-transitioning');
  if(townZone===zone)return;
- const dir=(TOWN_ZONE_ORDER[zone]??1)-(TOWN_ZONE_ORDER[townZone]??1);
- townZone=zone;
- playTownZoneTransition(dir,zone);
- renderTownWing();
- if(typeof syncAmbientSound==='function')syncAmbientSound();
+ const changeZone=()=>{
+  townZone=zone;
+  renderTownWing();
+  if(typeof syncAmbientSound==='function')syncAmbientSound();
+ };
+ const reduced=lowEffects||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+ if(reduced||!map||typeof document.startViewTransition!=='function'){
+  changeZone();
+  return;
+ }
+ map.classList.add('is-zone-transitioning');
+ const transition=document.startViewTransition(()=>{
+  if(townZoneTransition!==transition)return;
+  changeZone();
+  const image=zone==='center'?null:$('townWingLayer').querySelector('.town-wing-bg');
+  if(!image?.decode||image.complete)return;
+  // Give an uncached map time to decode without holding up navigation indefinitely.
+  let timeout;
+  return Promise.race([
+   image.decode().catch(()=>{}),
+   new Promise(resolve=>{timeout=setTimeout(resolve,200);})
+  ]).finally(()=>clearTimeout(timeout));
+ });
+ townZoneTransition=transition;
+ const cleanup=()=>{
+  if(townZoneTransition!==transition)return;
+  townZoneTransition=null;
+  map.classList.remove('is-zone-transitioning');
+ };
+ transition.ready.catch(()=>{});
+ transition.finished.then(cleanup,cleanup);
 }
 
 function renderTownWing(){

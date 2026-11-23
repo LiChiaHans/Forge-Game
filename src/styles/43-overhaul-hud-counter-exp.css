@@ -228,33 +228,7 @@
  box-shadow:inset 0 0 24px #00000077
 }
 
-/* 6. Directional Town Map-Switch Transitions & Winter Night Outskirts Horizon */
-.town-zone-wipe{
- position:absolute;inset:0;z-index:16;pointer-events:none;
- display:flex;align-items:center;justify-content:center;
- background:radial-gradient(circle at 50% 48%,#22312be0 0%,#0b1210f2 78%);
- animation:townZoneWipeEast .42s cubic-bezier(.22,.82,.26,1) forwards
-}
-.town-zone-wipe.is-to-west{animation-name:townZoneWipeWest}
-.town-zone-wipe .tzw-label{
- padding:6px 16px;border-radius:999px;
- border:1.5px solid #f0ca6d;
- background:linear-gradient(180deg,#2d2215f0,#19120bf5);
- color:#fff3cc;font-family:'Noto Serif TC',serif;font-size:15px;font-weight:900;letter-spacing:.1em;
- box-shadow:0 4px 16px #000000aa
-}
-@keyframes townZoneWipeEast{
- 0%{opacity:0;transform:translateX(28%)}
- 28%{opacity:1;transform:translateX(0)}
- 70%{opacity:.92;transform:translateX(0)}
- 100%{opacity:0;transform:translateX(-24%)}
-}
-@keyframes townZoneWipeWest{
- 0%{opacity:0;transform:translateX(-28%)}
- 28%{opacity:1;transform:translateX(0)}
- 70%{opacity:.92;transform:translateX(0)}
- 100%{opacity:0;transform:translateX(24%)}
-}
+/* 6. Winter Night Outskirts Horizon */
 .tw-winter-night-sky{
  position:absolute;left:0;right:0;top:0;height:13.5%;
  pointer-events:none;z-index:1;overflow:hidden
@@ -349,7 +323,3 @@
   max-width:var(--portrait-layout-width)!important
  }
 }
-@media(prefers-reduced-motion:reduce){
- .town-zone-wipe{animation:none!important;display:none!important}
-}
-.low-effects .town-zone-wipe{animation:none!important;display:none!important}

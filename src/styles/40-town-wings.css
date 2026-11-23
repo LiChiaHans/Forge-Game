@@ -49,11 +49,13 @@
 
 .town-wing-layer{
  position:absolute;inset:0;z-index:5;overflow:hidden;
- background:#1b2620;animation:townWingFade .22s ease-out
+ background:#1b2620
 }
-@keyframes townWingFade{
- from{opacity:.25;transform:scale(1.015)}
- to{opacity:1;transform:scale(1)}
+:root:has(#townMap.is-zone-transitioning){view-transition-name:none}
+#townMap.is-zone-transitioning{view-transition-name:town-zone}
+::view-transition{pointer-events:none}
+::view-transition-group(town-zone){
+ animation-duration:.26s;animation-timing-function:ease-in-out
 }
 .town-wing-bg{
  display:block;width:100%;height:100%;object-fit:fill;pointer-events:none
