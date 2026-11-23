@@ -7397,10 +7397,17 @@ function fit(){
     const usableHeight=ap.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom);
     const compact=usableHeight<720?"true":"false";
     if(ap.dataset.compact!==compact)ap.dataset.compact=compact;
-    const cell=Math.max(24,Math.min((pl.clientWidth-64-6-36)/5,(pl.clientHeight-40)/6));
+    const qW=$("q")?.offsetWidth||64;
+    const cell=Math.max(24,Math.floor(Math.min((pl.clientWidth-qW-6-36)/5,(pl.clientHeight-40)/6)));
     ap.style.setProperty("--cs",cell+"px");
     ap.style.setProperty("--ch",cell+"px");
     ap.dataset.boardOverflow=Math.max(wb.offsetHeight,$("q").offsetHeight)>pl.clientHeight+1?"true":"false";
+    const kp=$("kitchenP"),kMain=kp&&kp.querySelector?kp.querySelector("main"):null;
+    if(kMain&&kMain.clientWidth>0&&kMain.clientHeight>0){
+      const kqW=$("kitchenQueue")?.offsetWidth||49;
+      const kCell=Math.max(24,Math.floor(Math.min((kMain.clientWidth-kqW-6-36)/5,(kMain.clientHeight-40)/6)));
+      kp.style.setProperty("--kcs",kCell+"px");
+    }
   });
 }
 // Keep the saved web app at a fixed page scale while preserving single-finger play.
@@ -7439,6 +7446,8 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
 try{
   const ro=new ResizeObserver(fit);
   ro.observe($("play"));ro.observe($("app"));
+  const kMain=$("kitchenP")?.querySelector?.("main");
+  if(kMain)ro.observe(kMain);
 }catch(e){}
 $("tl").innerHTML=[0,1,4,9].map((c,k)=>'<button type="button" class="home-admin-icon" onclick="askPwd()" aria-label="開啟後台測試密碼">'+hex(c,C[k+1],"",k+1)+'</button>').join("");
 setInterval(()=>{if(!busy)saveNow()},3000);
