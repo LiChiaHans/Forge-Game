@@ -4573,7 +4573,7 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 @keyframes townBannerSway{from{transform:skewX(-4deg) rotate(-3deg)}to{transform:skewX(5deg) rotate(4deg)}}
 
 .gemini-sun-dapples{position:absolute;inset:0;pointer-events:none;z-index:2}
-#geminiTownScene[data-time="night"] .gemini-sun-dapples{display:none}
+#townP[data-gemini-town="true"][data-time="night"] .gemini-sun-dapples{display:none}
 .gemini-sun-dapples span{
  position:absolute;width:92px;height:52px;border-radius:50%;
  background:radial-gradient(ellipse,#fff5be2e 0%,transparent 70%);
@@ -4599,7 +4599,7 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 /* 3. Workshop Seasonal Window Glow & High-Tier Forge Celebration */
 #app[data-workshop="forge"]::before,
 #kitchenP[data-workshop="kitchen"]::before{
- content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+ content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
  transition:background .4s ease
 }
 #app[data-workshop="forge"][data-season="spring"]::before,
@@ -4620,7 +4620,7 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 }
 #app[data-workshop="forge"][data-time="night"]::after,
 #kitchenP[data-workshop="kitchen"][data-time="night"]::after{
- content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+ content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
  background:radial-gradient(75% 45% at 50% 100%,#ff8c2e26 0%,transparent 72%)
 }
 #forgeCelebration{
@@ -4769,15 +4769,15 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
  background:radial-gradient(38% 18% at 30% 40%,#0b14121f 0%,transparent 70%);
  animation:townCloudDrift 24s linear infinite
 }
-#geminiTownScene[data-time="night"] .gemini-cloud-shadow{display:none}
+#townP[data-gemini-town="true"][data-time="night"] .gemini-cloud-shadow{display:none}
 @keyframes townCloudDrift{
  0%{transform:translate3d(-35%,-15%,0)}
  100%{transform:translate3d(45%,25%,0)}
 }
 .gemini-night-skyfx{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden;display:none}
-#geminiTownScene[data-time="night"] .gemini-night-skyfx{display:block}
+#townP[data-gemini-town="true"][data-time="night"] .gemini-night-skyfx{display:block}
 .town-aurora{display:none}
-#geminiTownScene[data-season="winter"][data-time="night"] .town-aurora{
+#townP[data-gemini-town="true"][data-season="winter"][data-time="night"] .town-aurora{
  display:block;position:absolute;left:-10%;right:-10%;top:0;height:18%;
  background:linear-gradient(105deg,transparent 15%,#4effb826 38%,#8a7dff2a 62%,transparent 85%);
  filter:blur(9px);animation:auroraWave 11s ease-in-out infinite alternate
@@ -5052,3 +5052,129 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
  border:1.5px solid #e6c16a55;
  box-shadow:inset 0 0 24px #00000077
 }
+
+/* 6. Directional Town Map-Switch Transitions & Winter Night Outskirts Horizon */
+.town-zone-wipe{
+ position:absolute;inset:0;z-index:16;pointer-events:none;
+ display:flex;align-items:center;justify-content:center;
+ background:radial-gradient(circle at 50% 48%,#22312be0 0%,#0b1210f2 78%);
+ animation:townZoneWipeEast .42s cubic-bezier(.22,.82,.26,1) forwards
+}
+.town-zone-wipe.is-to-west{animation-name:townZoneWipeWest}
+.town-zone-wipe .tzw-label{
+ padding:6px 16px;border-radius:999px;
+ border:1.5px solid #f0ca6d;
+ background:linear-gradient(180deg,#2d2215f0,#19120bf5);
+ color:#fff3cc;font-family:'Noto Serif TC',serif;font-size:15px;font-weight:900;letter-spacing:.1em;
+ box-shadow:0 4px 16px #000000aa
+}
+@keyframes townZoneWipeEast{
+ 0%{opacity:0;transform:translateX(28%)}
+ 28%{opacity:1;transform:translateX(0)}
+ 70%{opacity:.92;transform:translateX(0)}
+ 100%{opacity:0;transform:translateX(-24%)}
+}
+@keyframes townZoneWipeWest{
+ 0%{opacity:0;transform:translateX(-28%)}
+ 28%{opacity:1;transform:translateX(0)}
+ 70%{opacity:.92;transform:translateX(0)}
+ 100%{opacity:0;transform:translateX(24%)}
+}
+.tw-winter-night-sky{
+ position:absolute;left:0;right:0;top:0;height:13.5%;
+ pointer-events:none;z-index:1;overflow:hidden
+}
+.tw-winter-night-sky svg{display:block;width:100%;height:100%}
+
+/* 7. Forge Polish: No Item-Box Glow, Row-2 Quest Button, Expanded Orders & Seasonal Board */
+#handSlot,#handSlot:not(:empty),#app[data-workshop="forge"] #side #handSlot:has([data-drag="hand"]){
+ animation:none!important;
+ border-color:#998160!important;
+ box-shadow:inset 0 2px #cfb98a55,inset 0 -3px #121c26aa,0 2px #100e15!important
+}
+#app #qbar{display:none!important}
+#app>.bar.bar2:has(#questBtn:not([hidden])){
+ grid-template-columns:28px repeat(4,minmax(0,1fr)) 30px auto!important;
+ gap:3px!important
+}
+#app>.bar.bar2:has(#questBtn:not([hidden]))>button{
+ font-size:12px!important;padding:0 2px!important
+}
+#app>.bar.bar2 #questBtn.is-all-done{
+ border-color:#9ad88c!important;color:#e7ffd9!important
+}
+#app #orders{
+ height:174px!important;min-height:174px!important;max-height:174px!important
+}
+@media(max-height:820px){
+ #app #orders{height:152px!important;min-height:152px!important;max-height:152px!important}
+}
+#app[data-compact="true"] #orders{
+ height:134px!important;min-height:134px!important;max-height:134px!important
+}
+#app #orders .od>.order-guest{
+ left:3%!important;top:17%!important;width:34%!important;height:48%!important;z-index:1!important
+}
+#app #orders .od .hxo{width:48px!important;height:48px!important}
+#app #orders .od .order-name{font-size:12.5px!important;line-height:17px!important}
+
+/* Seasonal Forge Board Themes (Spring / Summer / Autumn / Winter) */
+#app[data-workshop="forge"][data-season="spring"] #grid{
+ border-color:#72a87b!important;
+ background:linear-gradient(180deg,#233028 0%,#16201b 100%)!important;
+ box-shadow:inset 0 2px 0 #d8ffd826,inset 0 0 24px #ff9ec424,0 10px 26px #040806cc!important
+}
+#app[data-workshop="forge"][data-season="spring"] #grid>.c{
+ border-color:#4b6953!important;
+ background:radial-gradient(circle at 50% 35%,#2b3b31,#1a261f)!important
+}
+#app[data-workshop="forge"][data-season="summer"] #grid{
+ border-color:#d47744!important;
+ background:linear-gradient(180deg,#331e19 0%,#1f1311 100%)!important;
+ box-shadow:inset 0 2px 0 #ffd09c2b,inset 0 0 26px #ff6a1f2e,0 10px 26px #090403cc!important
+}
+#app[data-workshop="forge"][data-season="summer"] #grid>.c{
+ border-color:#734232!important;
+ background:radial-gradient(circle at 50% 35%,#3e2620,#261613)!important
+}
+#app[data-workshop="forge"][data-season="autumn"] #grid{
+ border-color:#cc9444!important;
+ background:linear-gradient(180deg,#302318 0%,#1e160f 100%)!important;
+ box-shadow:inset 0 2px 0 #ffe0a32b,inset 0 0 24px #e8962e26,0 10px 26px #080503cc!important
+}
+#app[data-workshop="forge"][data-season="autumn"] #grid>.c{
+ border-color:#6d5133!important;
+ background:radial-gradient(circle at 50% 35%,#3b2b1d,#241911)!important
+}
+#app[data-workshop="forge"][data-season="winter"] #grid{
+ border-color:#74b0e0!important;
+ background:linear-gradient(180deg,#1c2a3a 0%,#121b27 100%)!important;
+ box-shadow:inset 0 2px 0 #d4f1ff30,inset 0 0 26px #6ec8ff28,0 10px 26px #03070ecc!important
+}
+#app[data-workshop="forge"][data-season="winter"] #grid>.c{
+ border-color:#456482!important;
+ background:radial-gradient(circle at 50% 35%,#23364a,#152230)!important
+}
+
+/* 8. Edge-to-Edge Full-Bleed Forge & Kitchen Containers (Zero Side Background Strip) */
+#app{position:relative}
+@media(max-width:600px){
+ #app,#kitchenP.kitchen-screen,#townP,#title{
+  width:100%!important;max-width:100%!important;
+  left:0!important;right:0!important;margin-left:0!important;margin-right:0!important
+ }
+ #app,#kitchenP.kitchen-screen{
+  padding-left:max(4px,env(safe-area-inset-left))!important;
+  padding-right:max(4px,env(safe-area-inset-right))!important
+ }
+}
+@media(min-width:601px){
+ #app,#kitchenP.kitchen-screen,#townP,#title{
+  width:var(--portrait-layout-width)!important;
+  max-width:var(--portrait-layout-width)!important
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .town-zone-wipe{animation:none!important;display:none!important}
+}
+.low-effects .town-zone-wipe{animation:none!important;display:none!important}

@@ -2645,9 +2645,19 @@ function qOnSale(w,price){
   if(notes.length)say(forgeMessageText()+" 📋 "+notes.join("、"));
 }
 function renderQ(){
-  const bar=$("qbar");
-  if(day<1||!quests.length){bar.style.display="none";return}
+  const bar=$("qbar"),btn=$("questBtn");
+  if(day<1||!quests.length){
+    bar.style.display="none";
+    if(btn)btn.hidden=true;
+    return;
+  }
   bar.style.display="flex";
+  if(btn){
+    const doneCnt=quests.filter(q=>q&&q.s==='d').length;
+    btn.hidden=false;
+    btn.textContent=doneCnt>=quests.length?"✅任務":"📋任務"+(doneCnt?" "+doneCnt+"/"+quests.length:"");
+    btn.classList.toggle("is-all-done",doneCnt>=quests.length);
+  }
   const pg=q=>q.s==='d'?100:q.s==='x'?0:Math.round(q.p/q.n*100);
   bar.innerHTML=quests.map((q,k)=>{
     const d=QD[q.t];
@@ -6493,10 +6503,33 @@ function townWingBonuses(){
  return {forgeSale:Math.min(.60,forgeSale),kitchenSale:Math.min(.60,kitchenSale),battleAtk:Math.min(.32,battleAtk),battleDef:Math.min(.32,battleDef)};
 }
 
+const TOWN_ZONE_ORDER={west:0,center:1,east:2};
+const TOWN_ZONE_NAMES={west:'西側 · 溪畔營地',center:'鍛造小鎮',east:'東側 · 旅商驛站'};
+let townZoneTransitionTimer=null;
+function playTownZoneTransition(dir,zone){
+ const map=$('townMap');if(!map||typeof document==='undefined'||typeof document.createElement!=='function')return;
+ const reduced=(typeof lowEffects!=='undefined'&&lowEffects)||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+ if(reduced)return;
+ clearTimeout(townZoneTransitionTimer);
+ map.querySelector?.('.town-zone-wipe')?.remove();
+ const wipe=document.createElement('div');
+ wipe.className='town-zone-wipe '+(dir>0?'is-to-east':'is-to-west');
+ wipe.setAttribute('aria-hidden','true');
+ wipe.innerHTML='<span class="tzw-label">'+(TOWN_ZONE_NAMES[zone]||'')+'</span>';
+ map.appendChild(wipe);
+ map.dataset.zoneDir=dir>0?'east':'west';
+ townZoneTransitionTimer=setTimeout(()=>{wipe.remove();delete map.dataset.zoneDir;},420);
+}
+function winterNightHorizonSVG(){
+ return '<div class="tw-winter-night-sky" aria-hidden="true"><svg viewBox="0 0 360 88" preserveAspectRatio="none"><defs><linearGradient id="wnSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1730"/><stop offset=".68" stop-color="#193055"/><stop offset="1" stop-color="#223b62" stop-opacity="0"/></linearGradient><linearGradient id="wnAur" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#45f0b8" stop-opacity="0"/><stop offset=".32" stop-color="#58ffc4" stop-opacity=".34"/><stop offset=".62" stop-color="#8b7dff" stop-opacity=".32"/><stop offset="1" stop-color="#45f0b8" stop-opacity="0"/></linearGradient></defs><rect width="360" height="88" fill="url(#wnSky)"/><path d="M10 38 Q95 8 180 26 T350 20 L350 50 Q260 36 180 48 T10 56 Z" fill="url(#wnAur)"/><circle cx="268" cy="22" r="10" fill="#e6f2ff" opacity=".92"/><circle cx="272" cy="19" r="9" fill="#102140"/><g fill="#eef6ff" opacity=".88"><circle cx="28" cy="14" r="1.2"/><circle cx="64" cy="24" r="1"/><circle cx="108" cy="12" r="1.3"/><circle cx="152" cy="20" r="1"/><circle cx="204" cy="13" r="1.2"/><circle cx="316" cy="16" r="1.3"/><circle cx="340" cy="26" r="1"/></g><path d="M0 78 L34 42 L68 62 L112 34 L156 58 L208 38 L254 60 L304 32 L344 54 L360 46 L360 88 L0 88 Z" fill="#2c4972"/><path d="M0 80 L34 44 L54 58 L38 56 L34 48 L18 68 Z M112 36 L136 52 L120 50 L112 41 L92 56 Z M208 40 L232 54 L216 52 L208 45 L188 58 Z M304 34 L330 50 L312 49 L304 40 L282 54 Z" fill="#8bb4dc" opacity=".55"/><path d="M0 82 L52 62 L106 74 L168 58 L224 72 L286 58 L360 74 L360 88 L0 88 Z" fill="#1f3557" opacity=".85"/></svg></div>';
+}
 function setTownZone(zone){
  if(!['west','center','east'].includes(zone))return;
  if(architect?.active&&zone!=='center'){toast('請先結束城鎮佈置模式，再前往左右道路區域。');return;}
+ if(townZone===zone)return;
+ const dir=(TOWN_ZONE_ORDER[zone]??1)-(TOWN_ZONE_ORDER[townZone]??1);
  townZone=zone;
+ playTownZoneTransition(dir,zone);
  renderTownWing();
  if(typeof syncAmbientSound==='function')syncAmbientSound();
 }
@@ -6526,14 +6559,17 @@ function renderTownWing(){
  if(townZone==='center'){layer.hidden=true;layer.dataset.zone='center';return;}
  layer.hidden=false;
  layer.dataset.zone=townZone;
+ layer.dataset.season=SEASONS[si].id;
  layer.dataset.time=night?'night':'day';
  const bgUrl=TOWN_WING_ART[townZone+'_'+mapIdx]||TOWN_WING_ART[townZone+'_'+si]||'';
+ const winterSky=(si===3&&night)?winterNightHorizonSVG():'';
  const westLv=Math.min(3,Math.max(0,buildingLandmarkTier('west_camp')));
  const eastLv=Math.min(3,Math.max(0,buildingLandmarkTier('east_post')));
  if(townZone==='west'){
   const tierBadge=westLv>0?'<div class="tw-tier-banner">🎣 '+TOWN_LANDMARKS.west_camp.tierNames[westLv-1]+' '+'★'.repeat(westLv)+'</div>':'';
   const museumSprite=TOWN_WING_BUILDING_ART['west_camp_'+westLv]||TOWN_WING_BUILDING_ART.west_camp_0;
   layer.innerHTML='<img class="town-wing-bg" src="'+bgUrl+'" alt="西側星露溪畔營地" decoding="async">'
+   +winterSky
    +tierBadge
    +'<div class="town-wing-fx is-west" aria-hidden="true">'
    +'<span class="tw-sunbeam b1"></span><span class="tw-sunbeam b2"></span>'
@@ -6552,6 +6588,7 @@ function renderTownWing(){
   const bubbles=['🍻','🎵','💰'];
   const npcsHtml=visitors.slice(0,3).map((g,idx)=>g&&typeof TOWN_GUEST_ART!=='undefined'&&TOWN_GUEST_ART[g.guestId]?'<button type="button" class="es-guest-npc is-n'+(idx+1)+'" onclick="openTownWingModal(\'tavern\')" title="'+g.name+'（今日在店）"><span class="npc-bubble">'+bubbles[idx%bubbles.length]+'</span><span class="npc-body"><img src="'+TOWN_GUEST_ART[g.guestId]+'" alt="'+g.name+'" decoding="async"></span></button>':'').join('');
   layer.innerHTML='<img class="town-wing-bg" src="'+bgUrl+'" alt="東側旅商大道" decoding="async">'
+   +winterSky
    +tierBadge
    +'<div class="town-wing-fx is-east" aria-hidden="true">'
    +'<span class="tw-sunbeam b1"></span>'

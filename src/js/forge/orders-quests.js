@@ -141,9 +141,19 @@ function qOnSale(w,price){
   if(notes.length)say(forgeMessageText()+" 📋 "+notes.join("、"));
 }
 function renderQ(){
-  const bar=$("qbar");
-  if(day<1||!quests.length){bar.style.display="none";return}
+  const bar=$("qbar"),btn=$("questBtn");
+  if(day<1||!quests.length){
+    bar.style.display="none";
+    if(btn)btn.hidden=true;
+    return;
+  }
   bar.style.display="flex";
+  if(btn){
+    const doneCnt=quests.filter(q=>q&&q.s==='d').length;
+    btn.hidden=false;
+    btn.textContent=doneCnt>=quests.length?"✅任務":"📋任務"+(doneCnt?" "+doneCnt+"/"+quests.length:"");
+    btn.classList.toggle("is-all-done",doneCnt>=quests.length);
+  }
   const pg=q=>q.s==='d'?100:q.s==='x'?0:Math.round(q.p/q.n*100);
   bar.innerHTML=quests.map((q,k)=>{
     const d=QD[q.t];

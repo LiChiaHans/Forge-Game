@@ -100,7 +100,7 @@
 @keyframes townBannerSway{from{transform:skewX(-4deg) rotate(-3deg)}to{transform:skewX(5deg) rotate(4deg)}}
 
 .gemini-sun-dapples{position:absolute;inset:0;pointer-events:none;z-index:2}
-#geminiTownScene[data-time="night"] .gemini-sun-dapples{display:none}
+#townP[data-gemini-town="true"][data-time="night"] .gemini-sun-dapples{display:none}
 .gemini-sun-dapples span{
  position:absolute;width:92px;height:52px;border-radius:50%;
  background:radial-gradient(ellipse,#fff5be2e 0%,transparent 70%);
@@ -126,7 +126,7 @@
 /* 3. Workshop Seasonal Window Glow & High-Tier Forge Celebration */
 #app[data-workshop="forge"]::before,
 #kitchenP[data-workshop="kitchen"]::before{
- content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+ content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
  transition:background .4s ease
 }
 #app[data-workshop="forge"][data-season="spring"]::before,
@@ -147,7 +147,7 @@
 }
 #app[data-workshop="forge"][data-time="night"]::after,
 #kitchenP[data-workshop="kitchen"][data-time="night"]::after{
- content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+ content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
  background:radial-gradient(75% 45% at 50% 100%,#ff8c2e26 0%,transparent 72%)
 }
 #forgeCelebration{
@@ -296,15 +296,15 @@
  background:radial-gradient(38% 18% at 30% 40%,#0b14121f 0%,transparent 70%);
  animation:townCloudDrift 24s linear infinite
 }
-#geminiTownScene[data-time="night"] .gemini-cloud-shadow{display:none}
+#townP[data-gemini-town="true"][data-time="night"] .gemini-cloud-shadow{display:none}
 @keyframes townCloudDrift{
  0%{transform:translate3d(-35%,-15%,0)}
  100%{transform:translate3d(45%,25%,0)}
 }
 .gemini-night-skyfx{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden;display:none}
-#geminiTownScene[data-time="night"] .gemini-night-skyfx{display:block}
+#townP[data-gemini-town="true"][data-time="night"] .gemini-night-skyfx{display:block}
 .town-aurora{display:none}
-#geminiTownScene[data-season="winter"][data-time="night"] .town-aurora{
+#townP[data-gemini-town="true"][data-season="winter"][data-time="night"] .town-aurora{
  display:block;position:absolute;left:-10%;right:-10%;top:0;height:18%;
  background:linear-gradient(105deg,transparent 15%,#4effb826 38%,#8a7dff2a 62%,transparent 85%);
  filter:blur(9px);animation:auroraWave 11s ease-in-out infinite alternate
