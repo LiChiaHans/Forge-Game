@@ -25,7 +25,7 @@ function render(){
   }else $("tut").style.display="none";
   $("sc").textContent="⭐ "+score()+" · 🏆 "+hi;
   $("hs").textContent="🏆 歷史最高分："+hi;
-  $("srv").innerHTML=`<span class="season-info">${currentSeason.icon}${currentSeason.name}${seasonIndex()===2&&autumnForgeCharges?'<sup class="season-charge">🔥'+autumnForgeCharges+'</sup>':''}</span><span class="day-info">${day===0?"教學":"第 "+day+" 天"} · 客人 ${dServed}/${dTot}</span>`;
+  $("srv").innerHTML=`${typeof seasonalCompassHTML==='function'?seasonalCompassHTML(seasonIndex(),false):''}<span class="season-info">${currentSeason.icon}${currentSeason.name}${seasonIndex()===2&&autumnForgeCharges?'<sup class="season-charge">🔥'+autumnForgeCharges+'</sup>':''}</span><span class="day-info">${day===0?"教學":"第 "+day+" 天"} · 客人 ${dServed}/${dTot}</span>`;
   renderQ();
 
   const readyW=[...g,hand].filter(w=>w?.k==='w'&&!w.protected);

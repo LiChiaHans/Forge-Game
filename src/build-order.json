@@ -162,7 +162,8 @@
     "src/styles/39-momentum-and-layout-alignment.css",
     "src/styles/40-town-wings.css",
     "src/styles/41-ui-polish-pass.css",
-    "src/styles/42-art-mastery-pass.css"
+    "src/styles/42-art-mastery-pass.css",
+    "src/styles/43-overhaul-hud-counter-exp.css"
   ],
   "workers": [
     "src/workers/media-cache.js"
