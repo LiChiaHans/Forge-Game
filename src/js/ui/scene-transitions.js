@@ -9,7 +9,9 @@ function performSceneTransition(name,action,force=false){
  // Shared gameplay functions stay usable on browsers without the full animation API.
  if(booting||sceneTransitionApplying||reduced||typeof cover.animate!=='function'||typeof cover.getAnimations!=='function'||!force&&!sceneTransitionRun&&sceneTransitionCurrent===name){const result=action();sceneTransitionCurrent=name;return result;}
  if(sceneTransitionRun){if(sceneTransitionRun.name!==name)sceneTransitionRun.next={name,action,force};return;}
- const run={name,animations:[],timer:null,next:null,switched:false};sceneTransitionRun=run;cover.textContent='進入'+name;cover.hidden=false;cover.style.opacity='0';cover.setAttribute('aria-busy','true');cover.focus?.({preventScroll:true});
+ const run={name,animations:[],timer:null,next:null,switched:false};sceneTransitionRun=run;
+ const sceneType=/冶煉|鍛造/.test(name)?'forge':/餐廳|廚房/.test(name)?'kitchen':/城鎮/.test(name)?'town':'default';
+ cover.dataset.scene=sceneType;cover.textContent='進入'+name;cover.hidden=false;cover.style.opacity='0';cover.setAttribute('aria-busy','true');cover.focus?.({preventScroll:true});
  const dark=cover.animate([{opacity:0},{opacity:1}],{duration:180,easing:'ease-in',fill:'forwards'});run.animations.push(dark);
  dark.onfinish=()=>{
   if(sceneTransitionRun!==run||run.switched)return;run.switched=true;sceneTransitionApplying=true;
