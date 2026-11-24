@@ -26,7 +26,7 @@ function fit(){
     const kp=$("kitchenP"),kMain=kp&&kp.querySelector?kp.querySelector("main"):null;
     if(kMain&&kMain.clientWidth>0&&kMain.clientHeight>0){
       const kqW=$("kitchenQueue")?.offsetWidth||49;
-      const kCell=Math.max(24,Math.floor(Math.min((kMain.clientWidth-kqW-6-36)/5,(kMain.clientHeight-40)/6)));
+      const kCell=Math.max(18,Math.floor(Math.min((kMain.clientWidth-kqW-6-36)/5,(kMain.clientHeight-40)/6)));
       kp.style.setProperty("--kcs",kCell+"px");
     }
   });

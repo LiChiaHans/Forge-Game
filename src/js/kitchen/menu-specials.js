@@ -16,7 +16,10 @@ function assignKitchenStatOrder(list){
 }
 function kitchenNeedText(o){return o?.need?KITCHEN_STAT_NAMES[o.need.key]+' ≥'+o.need.value:'';}
 function kitchenRequirementFailure(w,o){if(!o?.need)return '';const value=kitchenDishStats(w)[o.need.key];return value<o.need.value?'這位客人需要'+kitchenNeedText(o)+'，目前為 '+value+'。':'';}
-function kitchenOrderRecipeHTML(o){return o.need?'<small class="kitchen-stat-need">'+kitchenNeedText(o)+' · 合格訂單額外 +10%</small>':kitchenRecipeStrip(o.c);}
+function kitchenOrderRecipeHTML(o){
+ if(o.need)return `<small class="kitchen-stat-need"><span>${kitchenNeedText(o)}</span><span>成交 +10%</span></small>`;
+ return o.c===null?'<small>配方不限</small>':kitchenRecipeStrip(o.c);
+}
 function kitchenMenuBonus(w){return kitchenSpecial().recipe===w.c ? .2 : 0;}
 function validateKitchenMenu(k){
  const s=k.special;k.special=s&&s.day===k.day&&(s.recipe===null||Number.isInteger(s.recipe)&&s.recipe>=0&&s.recipe<10)?{day:s.day,recipe:s.recipe,locked:!!s.locked||k.turn>0,sold:Number.isSafeInteger(s.sold)&&s.sold>=0?s.sold:0}:{day:k.day,recipe:null,locked:k.turn>0,sold:0};

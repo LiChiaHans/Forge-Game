@@ -10,10 +10,22 @@ function guestPreferenceBonus(w,o,food){
  else yes=({劍士:()=>count('0')>=2,法師:()=>enchanted,遊俠:()=>count('1')>=2,僧侶:()=>count('2')>=2,盜賊:()=>[0,2].includes(w.c),吟遊詩人:()=>(w.m||0)>0||(w.b||0)>0,商人:()=>fast,饕客:()=>w.t>o.t}[role]||(()=>false))();return yes?.1:0;
 }
 function guestBadge22(o,food){return expandedGameEnabled()&&o?.guest?'<em class="guest-like22" title="'+esc(guestPreferenceText(o,food))+'">♥10%</em>':'';}
-function orderGuestHTML(o,portrait=false){
+function orderGuestHTML(o){
  const guest=o?.guest,source=TOWN_GUEST_ART[guest?.id];
  if(!expandedGameEnabled()||!source)return '';
- const art=portrait?`<img src="${source}" alt="" data-town-guest-art="${guest.id}">`:townGuestArt(guest.id);
- return `<span class="order-guest" role="img" aria-label="${esc(guest.gender+guest.role)}">${art}</span>`;
+ return `<span class="order-guest" role="img" aria-label="${esc(guest.gender+guest.role)}"><img src="${source}" alt="" data-town-guest-art="${guest.id}"></span>`;
+}
+function workshopAnyOrderIcon(color){
+ return `<span class="hxo" aria-hidden="true"><span class="hxi" style="background:${color}"><b>任意</b></span></span>`;
+}
+function workshopOrderContent(order,{food=false,wait=Math.max(0,order.wait),grade,item,icon,recipe}){
+ const portrait=orderGuestHTML(order);
+ const mood=order.wait<=order.max/4?'😡':order.wait<=order.max/2?'😒':'';
+ return `<span class="workshop-order-status"><span class="wt">⏳${wait}</span><span class="workshop-order-bonus"><span class="em">${mood}</span>${guestBadge22(order,food)}</span></span>
+ ${portrait?`<span class="workshop-order-window">${portrait}</span>`:''}
+ <span class="workshop-order-details">
+   <span class="workshop-order-icon">${icon}</span>
+   <span class="workshop-order-copy"><span class="order-name"><span>${grade}</span><span>${item}</span></span><span class="workshop-order-recipe">${recipe}</span></span>
+ </span>`;
 }
 function ensureOrderGuests22(){[orders.concat(dq),[...(kitchen?.orders||[]),...(kitchen?.queue||[])]].forEach((list,night)=>list.forEach((o,i)=>{if(!o.guest)o.guest=guestForOrder22(i,!!night);}));}

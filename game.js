@@ -962,7 +962,10 @@ function assignKitchenStatOrder(list){
 }
 function kitchenNeedText(o){return o?.need?KITCHEN_STAT_NAMES[o.need.key]+' ≥'+o.need.value:'';}
 function kitchenRequirementFailure(w,o){if(!o?.need)return '';const value=kitchenDishStats(w)[o.need.key];return value<o.need.value?'這位客人需要'+kitchenNeedText(o)+'，目前為 '+value+'。':'';}
-function kitchenOrderRecipeHTML(o){return o.need?'<small class="kitchen-stat-need">'+kitchenNeedText(o)+' · 合格訂單額外 +10%</small>':kitchenRecipeStrip(o.c);}
+function kitchenOrderRecipeHTML(o){
+ if(o.need)return `<small class="kitchen-stat-need"><span>${kitchenNeedText(o)}</span><span>成交 +10%</span></small>`;
+ return o.c===null?'<small>配方不限</small>':kitchenRecipeStrip(o.c);
+}
 function kitchenMenuBonus(w){return kitchenSpecial().recipe===w.c ? .2 : 0;}
 function validateKitchenMenu(k){
  const s=k.special;k.special=s&&s.day===k.day&&(s.recipe===null||Number.isInteger(s.recipe)&&s.recipe>=0&&s.recipe<10)?{day:s.day,recipe:s.recipe,locked:!!s.locked||k.turn>0,sold:Number.isSafeInteger(s.sold)&&s.sold>=0?s.sold:0}:{day:k.day,recipe:null,locked:k.turn>0,sold:0};
@@ -1001,7 +1004,15 @@ function kitchenModal(title,html){$('kitchenModalTitle').textContent=title;$('ki
 function renderKitchen(){
  if(!kitchen)return;if(!kitchen.hand)kitchen.useHeld=false;clearKitchenPreview(false);kitchen.g.forEach(kitchenEnsureFresh);syncWorkshopLook();$('kitchenDate').innerHTML=(typeof seasonalCompassHTML==='function'?seasonalCompassHTML(seasonIndex(),true):'')+'<span>'+SEASONS[seasonIndex()].icon+' '+SEASONS[seasonIndex()].name+' · 第 '+day+' 天夜晚</span>';$('kitchenMoney').textContent='💰 '+(sandboxSession?'∞':coins)+'　❤️'+lives;$('kitchenMute').textContent=muted?'🔇':'🔊';
  const readyDishes=[...kitchen.g,kitchen.hand].filter(w=>w?.k==='w');
- $('kitchenOrders').innerHTML=kitchen.orders.map((o,i)=>{const matched=readyDishes.filter(w=>(o.c===null||o.c===w.c)&&w.t>=o.t&&!kitchenRequirementFailure(w,o));const matchCls=matched.length?(matched.some(w=>guestPreferenceBonus(w,o,true)>0||kitchenMenuBonus(w)>0)?' is-match is-pref-match':' is-match'):'';return '<button class="kitchen-order'+matchCls+'" data-ko="'+i+'" style="'+kitchenEntryStyle(o)+'" onclick="kitchenOrderHelp('+i+')"><span>⏳ '+o.wait+'</span><div>'+ (o.c===null?'<b class="kitchen-any">任意</b>':kitchenArt({k:'w',c:o.c,t:o.t}))+'</div><b>'+'≥'+kitchenGradeName(o.t)+(o.c===null?'任意料理':KITCHEN_NAMES[o.c])+'</b>'+kitchenOrderRecipeHTML(o)+orderGuestHTML(o)+guestBadge22(o,true)+'</button>';}).join('');
+ $('kitchenOrders').innerHTML=kitchen.orders.map((o,i)=>{
+  const openOrder=o.c===null;
+  const matched=readyDishes.filter(w=>(openOrder||o.c===w.c)&&w.t>=o.t&&!kitchenRequirementFailure(w,o));
+  const matchCls=matched.length?(matched.some(w=>guestPreferenceBonus(w,o,true)>0||kitchenMenuBonus(w)>0)?' is-match is-pref-match':' is-match'):'';
+  const grade=`≥${o.t+1}階`,item=openOrder?'料理':KITCHEN_NAMES[o.c];
+  const icon=openOrder?workshopAnyOrderIcon(kitchenTierPalette(o.t).dark):kitchenArt({k:'w',c:o.c,t:o.t});
+  const recipe=kitchenOrderRecipeHTML(o);
+  return `<button type="button" class="kitchen-order workshop-order${matchCls}" data-ko="${i}" style="${kitchenEntryStyle(o)}" onclick="kitchenOrderHelp(${i})">${workshopOrderContent(o,{food:true,grade,item,icon,recipe})}</button>`;
+ }).join('');
  const ch=KITCHEN_CHALLENGES[kitchen.challenge],progress=ch.kind==='rush'?kitchen.served:kitchen.progress;$('kitchenChallenge').textContent=kitchen.done?'晚餐營業完成 · 點此查看結算':kitchenSpecialLabel()+' · '+ch.icon+' '+ch.name+' '+progress+'/'+(ch.kind==='rush'?kitchen.total:ch.goal)+' · 出餐 '+kitchen.served+'/'+kitchen.total;$('kitchenChallenge').title=ch.text;
  $('kitchenQueue').innerHTML='<small>接下來</small>'+kitchen.q.map((t,i)=>'<span class="kitchen-next" '+(i===0?'data-kdrag="ore" onclick="selectKitchenIngredients()" aria-label="選擇放置食材"':'')+'>'+kitchenArt({k:'o',t})+'<b>'+(i+1)+'</b><b class="kitchen-queue-grade">'+(t+1)+'階 '+KITCHEN_GRADES[t]+'</b></span>').join('');
  $('kitchenGrid').innerHTML=kitchen.g.map((w,i)=>'<button class="kc '+(w?.k==='w'?'kitchen-dish':w?.k==='waste'?'kitchen-waste':'')+(w?.k==='w'&&Date.now()-(kitchen.forgedAt?.[i]||0)<650?' kitchen-complete':'')+'" data-ki="'+i+'" data-piece-kind="'+(w?.k||'empty')+'" '+(w?.k==='w'?'data-kdrag="dish"':'')+' onclick="kitchenClick('+i+')" aria-label="第'+(i+1)+'格 '+esc(w?kitchenItemName(w):kitchen.heat[i]?'餘熱':'空格')+'" style="'+(kitchen.heat[i]?'background:#8a4437;':'')+(kitchen.tiles[i]?'box-shadow:inset 0 0 0 2px '+KITCHEN_SPICES[kitchen.tiles[i]].color+';':'')+'">'+(w?kitchenArt(w):'')+(w?.k==='p'?'<span class="piece-stage">備料</span>':'')+(w?.k==='w'?'<small class="kitchen-star">'+('★'.repeat(kitchenStars(w)))+('☆'.repeat(3-kitchenStars(w)))+'</small><span class="kitchen-food-label">'+(w.t+1)+'階 '+KITCHEN_NAMES[w.c]+'</span>':'')+(w?.k==='w'?'<small class="kitchen-fresh'+(w.fresh<=5?' urgent':'')+'" title="剩餘保鮮步數">'+w.fresh+'</small>':'')+(w?.k==='waste'?'<span class="kitchen-waste-label">廚餘</span>':'')+(kitchen.heat[i]?'<small class="kitchen-heat">'+kitchen.heat[i]+'</small>':'')+(kitchen.tiles[i]?'<span class="kitchen-seasoning">'+KITCHEN_SPICES[kitchen.tiles[i]].icon+'</span>':'')+'</button>').join('');
@@ -1014,6 +1025,7 @@ function kitchenOrderHelp(i){
  const o=kitchen.orders[i];if(!o)return;kitchenCancelTarget=o;const target=o.c===null?'任意料理':KITCHEN_NAMES[o.c];
  kitchenModal('客人訂單 · '+target,'<p>'+esc(guestPreferenceText(o,true))+'</p><p>需要 ≥'+kitchenGradeName(o.t)+' '+target+'，剩餘 '+o.wait+' 步。'+(o.need?' '+kitchenNeedText(o)+'；合格成交額外 +10%。':'')+'</p>'+(o.c===null?'<p>任意三份相連備料皆可組合料理。</p>':'<div class="kitchen-dish-preview">'+kitchenArt({k:'w',c:o.c,t:o.t})+'</div>'+kitchenRecipeStrip(o.c,true))+'<ol class="kitchen-method"><li>至少兩包同階食材旁放工序卡（相連同階會一起消耗）：炊煮→主食、煎烤→主菜、切拌→配菜。</li><li>依配方湊出三份備料；第三份連成直線或彎線時，會在最後放置的格子自動完成料理。備料的平均階級取整數，須達客人要求。</li><li>將完成料理拖到這位客人即可出餐。</li></ol><button class="kitchen-wide" onclick="openKitchenRecipes('+o.t+')">查看全部食譜與階級</button><p>無法完成時可取消這張訂單，會扣一顆愛心。</p><div class="kitchen-order-actions"><button onclick="kitchenCancelTarget=null;document.getElementById(\'kitchenModal\').hidden=true">保留訂單</button><button class="kitchen-cancel" onclick="cancelKitchenOrder('+i+')">取消訂單 · ❤️−1</button></div>');
 }
+
 function kitchenStow(){if(!kitchen.hand)return;if(kitchen.hand.k==='w'){if(kitchen.pack.length>=2*kitchenLevel('pack')){toast('冰箱已滿，請先把料理放回棋盤。');return;}kitchen.pack.push(kitchen.hand);}else kitchen.bag.push(kitchen.hand);kitchen.hand=null;kitchen.useHeld=false;kitchen.mode='ore';renderKitchen();saveNow();}
 function kitchenBagGroups(){
  const groups=new Map();kitchen.bag.forEach((w,i)=>{const key=JSON.stringify(w,Object.keys(w).sort()),row=groups.get(key);if(row)row.count++;else groups.set(key,{w,index:i,count:1});});return [...groups.values()];
@@ -1132,7 +1144,7 @@ function kitchenDishStats(w,baseOnly=false){
  const trio=COMBO[w.c].split(''),mult=baseOnly?1:1+[0,.05,.1,.2][kitchenStars(w)],raw={taste:10+8*w.t+trio.filter(s=>s==='1').length*5,fullness:8+6*w.t+trio.filter(s=>s==='0').length*6,aroma:8+7*w.t+trio.filter(s=>s==='2').length*5};
  const boost=baseOnly?undefined:KITCHEN_SPICES[w.spice]?.stat;return Object.fromEntries(Object.entries(raw).map(([key,value])=>[key,Math.round(value*mult*(boost===key?1.2:1))]));
 }
-function kitchenRecipeStrip(c,labels=false){if(c===null)return '<small class="kitchen-any-recipe">任意三份備料</small>';return '<div class="kitchen-recipe-strip" aria-label="配方：'+COMBO[c].split('').map(s=>KITCHEN_TYPES[+s]).join('＋')+'">'+COMBO[c].split('').map((s,i)=>(i?'<em>＋</em>':'')+'<span>'+kitchenProcessArt(+s)+(labels?'<small>'+KITCHEN_TYPES[+s]+'</small>':'')+'</span>').join('')+'</div>';}
+function kitchenRecipeStrip(c,labels=false){if(c===null)return '<small class="kitchen-any-recipe">任意三份備料</small>';return '<span class="kitchen-recipe-strip" aria-label="配方：'+COMBO[c].split('').map(s=>KITCHEN_TYPES[+s]).join('＋')+'">'+COMBO[c].split('').map((s,i)=>(i?'<em>＋</em>':'')+'<span>'+kitchenProcessArt(+s)+(labels?'<small>'+KITCHEN_TYPES[+s]+'</small>':'')+'</span>').join('')+'</span>';}
 
 const kitchenDepartures=new Set();
 function clearKitchenDepartures(){clearWorkshopMilestone();for(const d of kitchenDepartures){d.animation?.cancel?.();d.node.remove();}kitchenDepartures.clear();}
@@ -1856,11 +1868,23 @@ function guestPreferenceBonus(w,o,food){
  else yes=({劍士:()=>count('0')>=2,法師:()=>enchanted,遊俠:()=>count('1')>=2,僧侶:()=>count('2')>=2,盜賊:()=>[0,2].includes(w.c),吟遊詩人:()=>(w.m||0)>0||(w.b||0)>0,商人:()=>fast,饕客:()=>w.t>o.t}[role]||(()=>false))();return yes?.1:0;
 }
 function guestBadge22(o,food){return expandedGameEnabled()&&o?.guest?'<em class="guest-like22" title="'+esc(guestPreferenceText(o,food))+'">♥10%</em>':'';}
-function orderGuestHTML(o,portrait=false){
+function orderGuestHTML(o){
  const guest=o?.guest,source=TOWN_GUEST_ART[guest?.id];
  if(!expandedGameEnabled()||!source)return '';
- const art=portrait?`<img src="${source}" alt="" data-town-guest-art="${guest.id}">`:townGuestArt(guest.id);
- return `<span class="order-guest" role="img" aria-label="${esc(guest.gender+guest.role)}">${art}</span>`;
+ return `<span class="order-guest" role="img" aria-label="${esc(guest.gender+guest.role)}"><img src="${source}" alt="" data-town-guest-art="${guest.id}"></span>`;
+}
+function workshopAnyOrderIcon(color){
+ return `<span class="hxo" aria-hidden="true"><span class="hxi" style="background:${color}"><b>任意</b></span></span>`;
+}
+function workshopOrderContent(order,{food=false,wait=Math.max(0,order.wait),grade,item,icon,recipe}){
+ const portrait=orderGuestHTML(order);
+ const mood=order.wait<=order.max/4?'😡':order.wait<=order.max/2?'😒':'';
+ return `<span class="workshop-order-status"><span class="wt">⏳${wait}</span><span class="workshop-order-bonus"><span class="em">${mood}</span>${guestBadge22(order,food)}</span></span>
+ ${portrait?`<span class="workshop-order-window">${portrait}</span>`:''}
+ <span class="workshop-order-details">
+   <span class="workshop-order-icon">${icon}</span>
+   <span class="workshop-order-copy"><span class="order-name"><span>${grade}</span><span>${item}</span></span><span class="workshop-order-recipe">${recipe}</span></span>
+ </span>`;
 }
 function ensureOrderGuests22(){[orders.concat(dq),[...(kitchen?.orders||[]),...(kitchen?.queue||[])]].forEach((list,night)=>list.forEach((o,i)=>{if(!o.guest)o.guest=guestForOrder22(i,!!night);}));}
 
@@ -2722,17 +2746,10 @@ function render(){
     const openOrder=o.c===null;
     const grade=(openOrder?'':'≥')+NM[o.t]+'級';
     const item=openOrder?'道具':WN[o.c];
-    const icon=openOrder?`<div class="hxo" aria-hidden="true"><div class="hxi" style="background:${C[o.t]}"><b>⚔︎</b></div></div>`:hex(o.c,C[o.t],"",o.t);
+    const icon=openOrder?workshopAnyOrderIcon(C[o.t]):hex(o.c,C[o.t],"",o.t);
     const recipe=openOrder?'<small>配方不限</small>':COMBO[o.c].split('').map(s=>mold(+s,'','s')).join('');
-    const portrait=orderGuestHTML(o,true);
-    return `<div class="od forge-order${an?' in':''}${matchCls}"${an?` style="animation-delay:${dl}ms"`:''} data-k="${k}">
-    <div class="forge-order-status"><span class="wt">⏳${openOrder?'∞':Math.max(0,o.wait)}</span><span class="forge-order-bonus"><span class="em">${o.wait<=o.max/4?'😡':o.wait<=o.max/2?'😒':''}</span>${guestBadge22(o,false)}</span></div>
-    ${portrait?`<div class="forge-order-window">${portrait}</div>`:''}
-    <div class="forge-order-details">
-      <div class="forge-order-icon">${icon}</div>
-      <div class="forge-order-copy"><div class="order-name"><span>${grade}</span><span>${item}</span></div><div class="rc">${recipe}</div></div>
-    </div>
-    </div>`;
+    const wait=openOrder?'∞':Math.max(0,o.wait);
+    return `<div class="od workshop-order${an?' in':''}${matchCls}"${an?` style="animation-delay:${dl}ms"`:''} data-k="${k}">${workshopOrderContent(o,{wait,grade,item,icon,recipe})}</div>`;
   }).join("")+(()=>{
     /* 補上看不見的空位，讓外框大小固定；客人全部離開後顯示打烊字樣 */
     let h="";
@@ -7466,7 +7483,7 @@ function fit(){
     const kp=$("kitchenP"),kMain=kp&&kp.querySelector?kp.querySelector("main"):null;
     if(kMain&&kMain.clientWidth>0&&kMain.clientHeight>0){
       const kqW=$("kitchenQueue")?.offsetWidth||49;
-      const kCell=Math.max(24,Math.floor(Math.min((kMain.clientWidth-kqW-6-36)/5,(kMain.clientHeight-40)/6)));
+      const kCell=Math.max(18,Math.floor(Math.min((kMain.clientWidth-kqW-6-36)/5,(kMain.clientHeight-40)/6)));
       kp.style.setProperty("--kcs",kCell+"px");
     }
   });
@@ -7523,7 +7540,8 @@ document.addEventListener("visibilitychange",()=>{
     e.style.cssText=`left:${Math.random()*100}%;--d:${5+Math.random()*6}s;--s:${2+Math.random()*3}px;animation-delay:-${Math.random()*8}s`;
     t.appendChild(e);
   }
-})();let friendsRequestVersion=0,friendsRows=[],friendLayouts=[],mySharedLayouts=[],friendsSelected=null,friendsMutating=false;
+})();
+let friendsRequestVersion=0,friendsRows=[],friendLayouts=[],mySharedLayouts=[],friendsSelected=null,friendsMutating=false;
 function socialAllowed(){return !!onlinePlayer&&!sandboxSession&&!testRun&&!booting;}
 function friendCanApply(){return active&&day>0&&lives>0&&$('townP').style.display==='flex'&&$('title').style.display==='none';}
 function friendCityPreset(id){return friendLayouts.find(p=>p.id===id)||null;}

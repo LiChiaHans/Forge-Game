@@ -96,10 +96,10 @@ assignKitchenStatOrder	src/js/kitchen/menu-specials.js	14
 kitchenNeedText	src/js/kitchen/menu-specials.js	17
 kitchenRequirementFailure	src/js/kitchen/menu-specials.js	18
 kitchenOrderRecipeHTML	src/js/kitchen/menu-specials.js	19
-kitchenMenuBonus	src/js/kitchen/menu-specials.js	20
-validateKitchenMenu	src/js/kitchen/menu-specials.js	21
-kitchenProcessWeights	src/js/kitchen/menu-specials.js	26
-kitchenRollProcess	src/js/kitchen/menu-specials.js	27
+kitchenMenuBonus	src/js/kitchen/menu-specials.js	23
+validateKitchenMenu	src/js/kitchen/menu-specials.js	24
+kitchenProcessWeights	src/js/kitchen/menu-specials.js	29
+kitchenRollProcess	src/js/kitchen/menu-specials.js	30
 kitchenSVG	src/js/kitchen/rendering.js	3
 kitchenArt	src/js/kitchen/rendering.js	4
 kitchenProcessArt	src/js/kitchen/rendering.js	13
@@ -107,8 +107,8 @@ kitchenHouseArt	src/js/kitchen/rendering.js	19
 kitchenItemName	src/js/kitchen/rendering.js	26
 kitchenModal	src/js/kitchen/rendering.js	27
 renderKitchen	src/js/kitchen/rendering.js	28
-fitKitchen	src/js/kitchen/rendering.js	39
-kitchenOrderHelp	src/js/kitchen/rendering.js	40
+fitKitchen	src/js/kitchen/rendering.js	47
+kitchenOrderHelp	src/js/kitchen/rendering.js	48
 kitchenStow	src/js/kitchen/inventory-market.js	2
 kitchenBagGroups	src/js/kitchen/inventory-market.js	3
 openKitchenBag	src/js/kitchen/inventory-market.js	6
@@ -290,7 +290,9 @@ guestPreferenceText	src/js/town/customer-preferences.js	4
 guestPreferenceBonus	src/js/town/customer-preferences.js	7
 guestBadge22	src/js/town/customer-preferences.js	12
 orderGuestHTML	src/js/town/customer-preferences.js	13
-ensureOrderGuests22	src/js/town/customer-preferences.js	19
+workshopAnyOrderIcon	src/js/town/customer-preferences.js	18
+workshopOrderContent	src/js/town/customer-preferences.js	21
+ensureOrderGuests22	src/js/town/customer-preferences.js	31
 snapshotKitchenProgress	src/js/saves/backend-progress.js	5
 validKitchenProgress	src/js/saves/backend-progress.js	6
 snapshotReviewProgress	src/js/saves/backend-progress.js	25

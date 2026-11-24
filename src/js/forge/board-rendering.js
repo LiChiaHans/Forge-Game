@@ -39,17 +39,10 @@ function render(){
     const openOrder=o.c===null;
     const grade=(openOrder?'':'≥')+NM[o.t]+'級';
     const item=openOrder?'道具':WN[o.c];
-    const icon=openOrder?`<div class="hxo" aria-hidden="true"><div class="hxi" style="background:${C[o.t]}"><b>⚔︎</b></div></div>`:hex(o.c,C[o.t],"",o.t);
+    const icon=openOrder?workshopAnyOrderIcon(C[o.t]):hex(o.c,C[o.t],"",o.t);
     const recipe=openOrder?'<small>配方不限</small>':COMBO[o.c].split('').map(s=>mold(+s,'','s')).join('');
-    const portrait=orderGuestHTML(o,true);
-    return `<div class="od forge-order${an?' in':''}${matchCls}"${an?` style="animation-delay:${dl}ms"`:''} data-k="${k}">
-    <div class="forge-order-status"><span class="wt">⏳${openOrder?'∞':Math.max(0,o.wait)}</span><span class="forge-order-bonus"><span class="em">${o.wait<=o.max/4?'😡':o.wait<=o.max/2?'😒':''}</span>${guestBadge22(o,false)}</span></div>
-    ${portrait?`<div class="forge-order-window">${portrait}</div>`:''}
-    <div class="forge-order-details">
-      <div class="forge-order-icon">${icon}</div>
-      <div class="forge-order-copy"><div class="order-name"><span>${grade}</span><span>${item}</span></div><div class="rc">${recipe}</div></div>
-    </div>
-    </div>`;
+    const wait=openOrder?'∞':Math.max(0,o.wait);
+    return `<div class="od workshop-order${an?' in':''}${matchCls}"${an?` style="animation-delay:${dl}ms"`:''} data-k="${k}">${workshopOrderContent(o,{wait,grade,item,icon,recipe})}</div>`;
   }).join("")+(()=>{
     /* 補上看不見的空位，讓外框大小固定；客人全部離開後顯示打烊字樣 */
     let h="";

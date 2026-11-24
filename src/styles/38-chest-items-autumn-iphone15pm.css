@@ -85,26 +85,6 @@
 
 
 /* --------------------------------------------------------------------------
-   3. KITCHEN & FORGE ORDER AVATAR OVERLAP FIX (≥ text always unobstructed)
-   -------------------------------------------------------------------------- */
-.kitchen-order>.order-guest{
- left:2%;top:17%;width:21%;height:33%;z-index:1
-}
-.kitchen-order>div:not(.kitchen-recipe-strip){position:relative;z-index:2}
-.kitchen-order>b{
- position:relative;z-index:3;max-width:100%;
- padding:1px 4px;border-radius:3px;
- background:#f0dfb6cc;color:#3d2b1c;font-weight:900;
- box-sizing:border-box
-}
-.kitchen-order .kitchen-recipe-strip,
-.kitchen-order .kitchen-any-recipe,
-.kitchen-order .kitchen-stat-need{position:relative;z-index:3}
-.od>.order-guest{left:3%;top:20%;width:22%;height:38%;z-index:1}
-.od .order-name,.od .rc{position:relative;z-index:2}
-
-
-/* --------------------------------------------------------------------------
    4. REFINED FORGE & KITCHEN ITEM / SHOP / BAG UI
    -------------------------------------------------------------------------- */
 .forge-tool-icon{
@@ -306,7 +286,6 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
  #orders{gap:6px}
  #kitchenP.kitchen-screen{gap:6px}
  #kitchenP nav>button{min-height:38px;font-size:14.5px}
- #kitchenOrders{height:134px;gap:6px}
  #kitchenP footer{min-height:86px}
  #title button{min-height:48px}
  .town-header{padding-bottom:10px}

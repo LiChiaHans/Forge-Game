@@ -247,20 +247,6 @@
  padding:0 6px!important;font-size:12.5px!important;letter-spacing:-1px
 }
 
-/* 3. Forge & Kitchen Customer Orders: zero badge / avatar / text overlap */
-.od .guest-like22,.kitchen-order .guest-like22{
- top:3px!important;right:3px!important;padding:2px 4px!important;
- font-size:9.5px!important;line-height:1!important;z-index:4!important
-}
-.od .wt,.kitchen-order>span{
- top:3px!important;left:3px!important;z-index:4!important;line-height:1.15!important
-}
-.od .em{
- top:20px!important;right:3px!important;font-size:13px!important;line-height:1!important;z-index:4!important
-}
-.od>.order-guest{left:2%!important;top:21%!important;width:20%!important;height:34%!important;z-index:1!important}
-.kitchen-order>.order-guest{left:2%!important;top:21%!important;width:20%!important;height:30%!important;z-index:1!important}
-
 /* 4. Forge Grid Badges: keep diamond bonus clear of bottom weapon name */
 #grid .c .bd{
  bottom:16px!important;right:2px!important;z-index:5;
@@ -339,28 +325,13 @@
  #kitchenP.kitchen-screen nav>button{font-size:13px!important}
 }
 @media(prefers-reduced-motion:reduce){
- .town-daily-dot,.ws-fever-btn.is-ready,.wfx-combo-banner,.kitchen-order.is-match{animation:none!important}
+ .town-daily-dot,.ws-fever-btn.is-ready,.wfx-combo-banner{animation:none!important}
 }
-.low-effects .town-daily-dot,.low-effects .ws-fever-btn.is-ready,.low-effects .wfx-combo-banner,.low-effects .od.is-match,.low-effects .kitchen-order.is-match{animation:none!important}
+.low-effects .town-daily-dot,.low-effects .ws-fever-btn.is-ready,.low-effects .wfx-combo-banner{animation:none!important}
 
 /* --------------------------------------------------------------------------
-   PART C: MATCHING ORDER HIGHLIGHT, LANDMARKS, SETTLEMENT HOOKS & TRIAL MODES
+   PART C: LANDMARKS, SETTLEMENT HOOKS & TRIAL MODES
    -------------------------------------------------------------------------- */
-/* Matching Ready-to-Sell Order Glow */
-#kitchenP[data-workshop="kitchen"] .kitchen-order.is-match{
- border-color:#f6d475!important;
- box-shadow:0 0 0 2px #ffe48a88,0 0 12px #f2c45a55!important;
- animation:ws-match-pulse 1.9s ease-in-out infinite
-}
-#kitchenP[data-workshop="kitchen"] .kitchen-order.is-pref-match{
- border-color:#fff0a3!important;
- box-shadow:0 0 0 2px #ffe896,0 0 16px #ffba4977!important
-}
-@keyframes ws-match-pulse{
- 0%,100%{filter:brightness(1)}
- 50%{filter:brightness(1.09)}
-}
-
 /* Season Modal Direct Contract CTA */
 .season-contract-cta{
  margin-top:8px;border:1.5px solid #f2cc70!important;

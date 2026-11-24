@@ -961,7 +961,6 @@ body::before{filter:brightness(.68) saturate(.78)}
 .kitchen-screen[hidden],.kitchen-modal[hidden]{display:none!important}.kitchen-screen{position:fixed;inset:0;z-index:59;width:min(100%,var(--portrait-layout-width,500px));height:var(--viewport-height,100dvh);margin:auto;display:flex;flex-direction:column;gap:5px;padding:7px 7px 0;background:linear-gradient(#26313c,#43392e);overflow:hidden;color:#fff0ce}
 .kitchen-screen header{display:flex;align-items:center;gap:5px;min-height:32px;flex:none;font-size:13px}.kitchen-screen header>span{margin-left:auto;font-size:12px}.kitchen-screen header button{padding:3px 5px;min-width:30px;font-size:20px}
 .kitchen-screen nav{display:flex;gap:4px;flex:none}.kitchen-screen nav button{flex:1;min-width:0;padding:8px 3px;font-size:14px}.kitchen-screen nav button:first-child{flex:0 0 30px}
-#kitchenOrders{height:105px;display:flex;gap:5px;flex:none}.kitchen-order{position:relative;display:flex;flex:1;min-width:0;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 2px 3px;background:linear-gradient(#586647,#3a4939);border-color:#a7a35f}.kitchen-order>span{position:absolute;top:2px;left:4px;font-size:12px}.kitchen-order>div{width:52px;height:52px}.kitchen-order svg{width:100%;height:100%}.kitchen-order>b{font-size:11px;white-space:nowrap}.kitchen-any{font-size:21px;display:flex;align-items:center;justify-content:center;height:100%;color:#ffe7a4}
 #kitchenChallenge{flex:none;min-height:33px;text-align:left;padding:5px 8px;font-size:13px;color:#ffe5a5;background:#3a3d45}
 .kitchen-screen main{display:flex;align-items:flex-start;justify-content:space-between;gap:5px;flex:1;min-height:0;overflow:auto;scrollbar-width:none}#kitchenQueue{width:49px;flex:none;display:flex;align-items:center;flex-direction:column;gap:5px;padding:5px 2px;border:1px solid #8b7b5c;background:#2b3641}#kitchenQueue small{font-size:11px;color:#efd99a}.kitchen-next{display:block;width:42px;height:42px;position:relative}.kitchen-next>b{position:absolute;right:0;top:0;background:#17232e;border-radius:50%;width:14px;height:14px;text-align:center;font-size:10px;line-height:14px}.kitchen-next svg{width:100%;height:100%}
 #kitchenGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:5px;width:calc(100% - 54px);max-height:100%;aspect-ratio:5/6;background:#72684c;border:2px solid #aa996a;border-radius:5px;flex:none}.kc{position:relative;min-width:0;min-height:0;aspect-ratio:1;padding:1px;border:0;border-radius:3px;background:#1c252d;box-shadow:inset 0 2px 5px #0d1625;touch-action:none}.kc svg{display:block;width:100%;height:100%}.kitchen-fresh,.kitchen-heat{position:absolute;top:1px;right:2px;color:#ffe7ac;font-size:10px;line-height:1}.kitchen-heat{left:2px;right:auto;color:#fff}.kitchen-food-label{position:absolute;bottom:1px;left:0;right:0;white-space:nowrap;font-size:8px;background:#162129dd;color:#ffefd1}.kitchen-star{position:absolute;bottom:13px;left:0;right:0;color:#f4d37b;font-size:9px;letter-spacing:-1px}.kitchen-seasoning{position:absolute;bottom:1px;right:2px;font-size:8px;opacity:.8}.kitchen-dish .kitchen-seasoning{display:none}
@@ -969,7 +968,7 @@ body::before{filter:brightness(.68) saturate(.78)}
 #kitchenMessage{flex:none;min-height:39px;padding:5px 7px;background:#151f2adc;font-size:13px;line-height:1.4;color:#eee0c4}
 .kitchen-modal{position:fixed;inset:0;z-index:79;display:flex;align-items:center;justify-content:center;background:#070f1adb;padding:12px}.kitchen-modal>div{position:relative;width:100%;max-width:420px;max-height:88dvh;overflow:auto;padding:18px;background:#303b43;border:2px solid #b2a16d}.kitchen-modal h2{margin:0 30px 13px 0;font-size:22px}.kitchen-modal h3{font-size:17px}.kitchen-modal p{font-size:14px;line-height:1.7}.kitchen-modal button{font-size:14px}.kitchen-wide{display:block;width:100%;margin:8px 0;padding:10px}
 .kitchen-item-list,.kitchen-recipe-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.kitchen-item-list>button,.kitchen-recipe-list>article{display:flex;min-width:0;flex-direction:column;align-items:center;gap:5px;padding:5px;text-align:center}.kitchen-item-list svg,.kitchen-recipe-list svg{display:block;width:55px;height:55px}.kitchen-item-list small,.kitchen-recipe-list small{font-size:11px;line-height:1.4}.kitchen-recipe-list b{font-size:13px}.kitchen-skill{display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid #83775b}.kitchen-skill span{min-width:0}.kitchen-skill small{display:block;margin-top:5px;font-size:12px}.kitchen-skill button{flex:none;align-self:center;padding:7px}.kitchen-dish-preview{width:160px;height:160px;margin:auto}.kitchen-dish-preview svg{width:100%;height:100%}.kitchen-tool-emoji{font-size:32px}.kitchen-drag-ghost{position:fixed;z-index:150;width:60px;height:60px;pointer-events:none;filter:drop-shadow(0 2px 3px #0008)}.kitchen-drag-ghost svg{width:100%;height:100%}[data-kdrag]{touch-action:none;cursor:grab}
-@media(max-height:760px){.kitchen-screen{gap:3px}.kitchen-screen nav button{padding:5px 2px}#kitchenOrders{height:87px}.kitchen-order>div{width:43px;height:43px}.kitchen-screen footer{min-height:75px}#kitchenMessage{min-height:32px;font-size:12px}}
+@media(max-height:760px){.kitchen-screen{gap:3px}.kitchen-screen nav button{padding:5px 2px}.kitchen-screen footer{min-height:75px}#kitchenMessage{min-height:32px;font-size:12px}}
 @media(prefers-reduced-motion:reduce){.kitchen-steam{animation:none!important}}
 
 #sandboxNightToggle{font-size:11px;padding:4px;min-width:44px}#townKitchen{position:absolute;left:64%;top:47%;width:34%;height:18%;z-index:3;padding:0;border:0;background:none;box-shadow:none}#townKitchen[hidden]{display:none!important}#townKitchen svg{width:100%;height:100%;display:block}
@@ -985,13 +984,13 @@ body::before{filter:brightness(.68) saturate(.78)}
 
 
 
-#kitchenOrders{height:126px}.kitchen-order{gap:1px;padding:17px 2px 3px}.kitchen-order>span{font-size:13px}.kitchen-order>div:not(.kitchen-recipe-strip){width:53px;height:53px}.kitchen-order>b{font-size:11px;line-height:1.3;white-space:normal}.kitchen-order .kitchen-recipe-strip{display:flex;width:auto;height:24px;gap:0;margin:0}.kitchen-order .kitchen-recipe-strip>span{width:23px}.kitchen-order .kitchen-recipe-strip em{font-size:9px}.kitchen-any-recipe{font-size:10px;color:#e5dcbb;line-height:24px}
+.kitchen-any-recipe{font-size:10px;color:#e5dcbb;line-height:24px}
 .kitchen-recipe-strip{display:flex;align-items:center;justify-content:center;gap:4px;margin:5px 0}.kitchen-recipe-strip>span{display:flex;flex-direction:column;align-items:center;min-width:0;width:52px}.kitchen-recipe-strip svg{display:block!important;width:100%!important;height:auto!important;aspect-ratio:1}.kitchen-recipe-strip small{font-size:12px;white-space:nowrap}.kitchen-recipe-strip em{font-style:normal;color:#d7c49b;font-size:16px}.kitchen-method{padding-left:21px;font-size:14px;line-height:1.7}.kitchen-method li{margin:7px 0}
 #kitchenQueue{gap:6px}.kitchen-next{height:49px;width:44px}.kitchen-next svg{height:44px}.kitchen-next>.kitchen-queue-grade{position:absolute;left:0;right:0;bottom:-2px;top:auto;background:none;border-radius:0;width:auto;height:auto;font-size:9px;line-height:11px;color:#eedcba;white-space:nowrap}.kitchen-next>b:not(.kitchen-queue-grade){z-index:2}.kitchen-food-label{font-size:8px;line-height:11px}.kitchen-fresh{font-size:11px}.kitchen-seasoning{background:#17242dd9;padding:1px 2px;color:#fff6dd;font-size:10px}
 #kitchenProcesses{gap:4px;padding:19px 5px 3px;align-items:center}#kitchenProcesses>button{flex:1;width:auto!important;min-width:0;padding:1px;opacity:.65;display:flex;flex-direction:column;align-items:center;justify-content:center}#kitchenProcesses>button.kitchen-process-ready{position:relative;flex:1.35;opacity:1;outline:2px dashed #e7bf68;outline-offset:1px;border-radius:5px;background:#504c3c55}#kitchenProcesses>button.kitchen-process-ready.selected{background:#92713a77;outline-color:#fff0ad;box-shadow:0 0 7px #d3aa4933}#kitchenProcesses>button.kitchen-process-ready:after{content:'可用';position:absolute;top:-8px;left:50%;transform:translateX(-50%);padding:0 3px;background:#38413f;color:#f7dc99;font-size:9px;line-height:12px;white-space:nowrap}#kitchenProcesses svg{width:100%;max-height:63px}#kitchenProcesses>button:not(.kitchen-process-ready) svg{max-height:45px;width:87%}#kitchenProcesses b{font-size:10px;line-height:12px}#kitchenProcesses>button.kitchen-process-ready b{color:#fff0bc}
 .kitchen-tool-list{display:flex;flex-direction:column;gap:9px}.kitchen-tool-list>button{display:flex;align-items:center;text-align:left;gap:12px;padding:10px;min-width:0}.kitchen-tool-list>button>svg{width:66px;height:66px;flex:0 0 66px}.kitchen-tool-list>button>span{display:flex;flex-direction:column;gap:5px;min-width:0}.kitchen-tool-list b{font-size:16px;color:#ffedb9}.kitchen-tool-list small{font-size:13px;line-height:1.65;font-weight:400;color:#e6ddc9}.kitchen-tool-list strong{font-size:13px;color:#f5d987}.kitchen-item-list b{font-size:13px}.kitchen-item-list>button>svg{width:68px;height:68px}.kitchen-item-list strong{font-size:12px;color:#f2d787}
 .kitchen-grade-tabs{display:flex;gap:4px}.kitchen-grade-tabs>button{flex:1;min-width:0;padding:7px 1px;font-size:13px;line-height:1.4}.kitchen-grade-tabs [aria-pressed=true],.kitchen-tier-gallery [aria-pressed=true]{border-color:#f4d38d;background:#756345;color:#fff1ba}.kitchen-recipe-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.kitchen-recipe-list>button{display:flex;flex-direction:column;align-items:center;padding:6px;gap:3px;min-width:0}.kitchen-recipe-list>button>svg{width:89px;height:89px}.kitchen-recipe-list>button>b{font-size:15px}.kitchen-recipe-list .kitchen-recipe-strip{gap:0;width:100%}.kitchen-recipe-list .kitchen-recipe-strip>span{width:30px}.kitchen-recipe-list .kitchen-recipe-strip small{font-size:10px}.kitchen-recipe-list .kitchen-recipe-strip em{font-size:10px}.kitchen-tier-gallery{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px}.kitchen-tier-gallery button{min-width:0;padding:3px 0;display:flex;flex-direction:column;align-items:center}.kitchen-tier-gallery svg{width:100%;aspect-ratio:1}.kitchen-tier-gallery small{font-size:11px;line-height:1.4}.kitchen-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center}.kitchen-stat-row>span{background:#223039;padding:8px;border:1px solid #867652;color:#c9c5ae;font-size:13px}.kitchen-stat-row b{display:block;color:#ffe5a1;font-size:23px}.kitchen-star-summary{color:#f7d686;text-align:center}
-@media(max-height:760px){#kitchenOrders{height:112px}.kitchen-order>div:not(.kitchen-recipe-strip){width:43px;height:43px}.kitchen-order .kitchen-recipe-strip{height:22px}.kitchen-order .kitchen-recipe-strip>span{width:21px}#kitchenProcesses svg{max-height:51px}#kitchenProcesses>button:not(.kitchen-process-ready) svg{max-height:37px}#kitchenProcesses b{font-size:9px}.kitchen-order>b{font-size:10px}}
+@media(max-height:760px){#kitchenProcesses svg{max-height:51px}#kitchenProcesses>button:not(.kitchen-process-ready) svg{max-height:37px}#kitchenProcesses b{font-size:9px}}
 
 
 /* Match the forge's left-hand vertical labels and three-card tool rail. */
@@ -1000,7 +999,7 @@ body::before{filter:brightness(.68) saturate(.78)}
 #kitchenProcesses,#kitchenHand{padding:6px 5px 6px 23px;gap:5px;background:linear-gradient(#394759,#2d3849);border-color:#58677b;border-radius:11px}
 #kitchenProcesses>small,#kitchenHand>small{position:absolute;left:5px;top:50%;bottom:auto;transform:translateY(-50%);writing-mode:vertical-rl;text-orientation:upright;letter-spacing:2px;line-height:1.05;font-size:13px;color:#e9ca7d}
 #kitchenProcesses>button.kitchen-process-ready:after{content:none}#kitchenProcesses>button.kitchen-process-ready{outline:2px dashed #e7c36d;outline-offset:1px}#kitchenProcesses svg{max-height:66px}#kitchenProcesses>button:not(.kitchen-process-ready) svg{max-height:48px}#kitchenHand>span{width:58px;height:58px;min-width:0;max-width:100%}#kitchenHand>button:not(.kitchen-stow){padding:2px;font-size:40px}#kitchenHand .kitchen-stow{top:2px;right:2px}
-.kitchen-screen nav button{border-radius:10px}.kitchen-order{border-radius:10px}.kitchen-screen main{gap:5px}#kitchenQueue{border-radius:11px;border-color:#5e6a7c;background:linear-gradient(#394759,#2b3645)}#kitchenGrid{border-radius:12px;border-color:#99875e;background:#6b674f}.kc{border-radius:8px}.kitchen-customer-exit{box-sizing:border-box;overflow:hidden;contain:layout style}
+.kitchen-screen nav button{border-radius:10px}.kitchen-screen main{gap:5px}#kitchenQueue{border-radius:11px;border-color:#5e6a7c;background:linear-gradient(#394759,#2b3645)}#kitchenGrid{border-radius:12px;border-color:#99875e;background:#6b674f}.kc{border-radius:8px}.kitchen-customer-exit{box-sizing:border-box;overflow:hidden;contain:layout style}
 #kitchenP .kitchen-complete{animation:kitchen-finished .65s ease-out}@keyframes kitchen-finished{0%{box-shadow:inset 0 0 0 3px #fff1bc,0 0 10px #f5c96b}100%{box-shadow:inset 0 2px 5px #0d1625}}
 #townP[data-preview-kitchen="true"] #townExpedition{left:2%;top:1%;width:48%;height:25%}
 #townP[data-preview-kitchen="true"] #townForge{left:58%;top:11%;width:42%;height:25%}
@@ -1122,9 +1121,6 @@ body.workshop-backend #shop .si{background-color:#3a3834;background-image:linear
 #kitchenP[data-workshop="kitchen"]{background-color:#5c412b;background-image:linear-gradient(#2b1c0810,#21150620),var(--workshop-wall);background-size:cover;background-position:center;color:#fff0c9}
 #kitchenP[data-workshop="kitchen"] header>b,#kitchenP[data-workshop="kitchen"] header>span{background-color:#f0ddb3;background-image:linear-gradient(120deg,#fff4d266,#d7b57d26);background-size:auto;border-color:#ad874f;color:#503a29;box-shadow:inset 0 1px #fff6d5,inset 0 -2px #b78b5966,0 2px #24190f88;border-radius:3px}
 #kitchenP[data-workshop="kitchen"] header>button,#kitchenP[data-workshop="kitchen"] nav>button{background-color:#785035;background-image:radial-gradient(circle at 5px 5px,#f5dfa7 0 1px,#ad8a56 1px 3px,transparent 3px),radial-gradient(circle at calc(100% - 5px) 5px,#f5dfa7 0 1px,#ad8a56 1px 3px,transparent 3px),linear-gradient(#97643e,#644530);background-size:auto;border-color:#c09a5f;color:#fff1ca;box-shadow:inset 0 2px #d8b77d88,inset 0 -3px #412b2199,0 2px #33261daa;text-shadow:1px 1px #38271e;border-radius:3px}
-#kitchenP[data-workshop="kitchen"] .kitchen-order{background-color:#e7d3a8;background-image:linear-gradient(140deg,#f6e6bf,#c8b082);background-size:auto;border-color:#93744b;box-shadow:inset 0 2px #fff1cb,inset 0 -3px #a5834d66,0 3px #33271f88;color:#473f2d;border-radius:4px}
-#kitchenP[data-workshop="kitchen"] .kitchen-order>span{color:#684b2d}
-#kitchenP[data-workshop="kitchen"] .kitchen-any{color:#80572d;text-shadow:none}
 #kitchenP[data-workshop="kitchen"] .kitchen-any-recipe,#kitchenP[data-workshop="kitchen"] .kitchen-recipe-strip em{color:#71593b}
 #kitchenP[data-workshop="kitchen"] #kitchenChallenge{background-color:#e4d3a7;background-image:linear-gradient(120deg,#fff0c633,#a7865522);background-size:auto;color:#51422d;border-color:#9e7a47;box-shadow:inset 0 1px #fff3ce,inset 0 -2px #a7834e66,0 2px #241b1488;border-radius:3px}
 #kitchenP[data-workshop="kitchen"] #kitchenQueue{background-color:#384a3c;background-image:linear-gradient(135deg,#6f806444,#28372eaa);background-size:auto;border-color:#b39562;box-shadow:inset 0 2px #c8bb8b88,inset 0 -3px #1d3025aa,0 2px #251c1b99;border-radius:4px}
@@ -1567,8 +1563,6 @@ body.cozy-items [data-cozy-item],body.cozy-items [data-cozy-decor]{overflow:visi
 /* Feet anchors follow the painted doorsteps; only town visitors are enlarged. */
 #townQueue .town-visitor[data-guest-feet="true"]{width:32px;height:52px;margin-left:-16px;margin-top:-52px}
 #townQueue .town-visitor[data-guest-feet="true"]{transform-origin:50% 100%}
-.od>.order-guest,.kitchen-order>.order-guest{position:absolute;left:4%;top:25%;width:23%;height:44%;display:block;pointer-events:none;line-height:1}
-.order-guest svg{display:block;width:100%;height:100%;image-rendering:pixelated;filter:drop-shadow(0 2px 1px #15201966)}
 .hxo>.weapon-protected{top:auto;bottom:4%;right:2%;font-size:clamp(12px,3vw,18px);line-height:1;z-index:7;text-shadow:0 1px 2px #000}
 .mb{display:inline-flex;align-items:center;gap:1px;line-height:1.1;padding:1px 3px;right:0;top:0}
 .mb>.magic-orb{display:inline-block;width:1.15em;height:1.15em;vertical-align:middle;flex:none}
@@ -1621,7 +1615,7 @@ body.cozy-items [data-cozy-item],body.cozy-items [data-cozy-decor]{overflow:visi
 
 .weapon-trait{display:grid;gap:4px;margin:8px 0;padding:10px;border:1px solid #ab9664;background:#314239;color:#f5dfac;font-size:13px;line-height:1.5}.weapon-trait b{color:#ffe69b}
 
-.kitchen-stat-need{display:block;color:#ffe29a;font-size:11px;font-weight:900;line-height:1.2}.kitchen-order .kitchen-stat-need{max-width:100%;background:#4b4939;padding:3px 0}#kitchenChallenge{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#kitchenChallenge{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 .c[data-piece-kind="p"],.kc[data-piece-kind="p"]{box-shadow:inset 0 0 0 2px #b79d65,inset 0 0 12px #a57f3526}.c[data-piece-kind="w"],.kc[data-piece-kind="w"]{box-shadow:inset 0 0 0 2px #e1c785,inset 0 0 12px #e0bd5933}
 .piece-stage{position:absolute;bottom:3%;left:4%;font-size:10px;font-weight:900;line-height:1.2;color:#fff0c1;text-shadow:1px 1px #1c2725;background:#293e3ce8;padding:1px 3px;border:1px solid #ac955c;pointer-events:none;z-index:6}
@@ -2431,12 +2425,6 @@ body.cozy-items [data-cozy-item],body.cozy-items [data-cozy-decor]{overflow:visi
 #kitchenP[data-workshop="kitchen"] header>button:active,
 #kitchenP[data-workshop="kitchen"] nav>button:active{transform:translateY(1px)}
 
-/* Dinner Order Cards */
-#kitchenP[data-workshop="kitchen"] .kitchen-order>span{
- display:inline-block;padding:1px 6px;border-radius:99px;
- border:1px solid #c99d5599;background:#3c2718eb;color:#ffeba8;
- font-weight:900;font-variant-numeric:tabular-nums
-}
 #kitchenP[data-workshop="kitchen"] #kitchenChallenge{
  border-left:3px solid #cf943a;font-weight:800;
  transition:filter .12s ease
@@ -2828,26 +2816,6 @@ body.cozy-items [data-cozy-item],body.cozy-items [data-cozy-decor]{overflow:visi
 
 
 /* --------------------------------------------------------------------------
-   3. KITCHEN & FORGE ORDER AVATAR OVERLAP FIX (≥ text always unobstructed)
-   -------------------------------------------------------------------------- */
-.kitchen-order>.order-guest{
- left:2%;top:17%;width:21%;height:33%;z-index:1
-}
-.kitchen-order>div:not(.kitchen-recipe-strip){position:relative;z-index:2}
-.kitchen-order>b{
- position:relative;z-index:3;max-width:100%;
- padding:1px 4px;border-radius:3px;
- background:#f0dfb6cc;color:#3d2b1c;font-weight:900;
- box-sizing:border-box
-}
-.kitchen-order .kitchen-recipe-strip,
-.kitchen-order .kitchen-any-recipe,
-.kitchen-order .kitchen-stat-need{position:relative;z-index:3}
-.od>.order-guest{left:3%;top:20%;width:22%;height:38%;z-index:1}
-.od .order-name,.od .rc{position:relative;z-index:2}
-
-
-/* --------------------------------------------------------------------------
    4. REFINED FORGE & KITCHEN ITEM / SHOP / BAG UI
    -------------------------------------------------------------------------- */
 .forge-tool-icon{
@@ -3049,7 +3017,6 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
  #orders{gap:6px}
  #kitchenP.kitchen-screen{gap:6px}
  #kitchenP nav>button{min-height:38px;font-size:14.5px}
- #kitchenOrders{height:134px;gap:6px}
  #kitchenP footer{min-height:86px}
  #title button{min-height:48px}
  .town-header{padding-bottom:10px}
@@ -3308,20 +3275,6 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
  padding:0 6px!important;font-size:12.5px!important;letter-spacing:-1px
 }
 
-/* 3. Forge & Kitchen Customer Orders: zero badge / avatar / text overlap */
-.od .guest-like22,.kitchen-order .guest-like22{
- top:3px!important;right:3px!important;padding:2px 4px!important;
- font-size:9.5px!important;line-height:1!important;z-index:4!important
-}
-.od .wt,.kitchen-order>span{
- top:3px!important;left:3px!important;z-index:4!important;line-height:1.15!important
-}
-.od .em{
- top:20px!important;right:3px!important;font-size:13px!important;line-height:1!important;z-index:4!important
-}
-.od>.order-guest{left:2%!important;top:21%!important;width:20%!important;height:34%!important;z-index:1!important}
-.kitchen-order>.order-guest{left:2%!important;top:21%!important;width:20%!important;height:30%!important;z-index:1!important}
-
 /* 4. Forge Grid Badges: keep diamond bonus clear of bottom weapon name */
 #grid .c .bd{
  bottom:16px!important;right:2px!important;z-index:5;
@@ -3400,28 +3353,13 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
  #kitchenP.kitchen-screen nav>button{font-size:13px!important}
 }
 @media(prefers-reduced-motion:reduce){
- .town-daily-dot,.ws-fever-btn.is-ready,.wfx-combo-banner,.kitchen-order.is-match{animation:none!important}
+ .town-daily-dot,.ws-fever-btn.is-ready,.wfx-combo-banner{animation:none!important}
 }
-.low-effects .town-daily-dot,.low-effects .ws-fever-btn.is-ready,.low-effects .wfx-combo-banner,.low-effects .od.is-match,.low-effects .kitchen-order.is-match{animation:none!important}
+.low-effects .town-daily-dot,.low-effects .ws-fever-btn.is-ready,.low-effects .wfx-combo-banner{animation:none!important}
 
 /* --------------------------------------------------------------------------
-   PART C: MATCHING ORDER HIGHLIGHT, LANDMARKS, SETTLEMENT HOOKS & TRIAL MODES
+   PART C: LANDMARKS, SETTLEMENT HOOKS & TRIAL MODES
    -------------------------------------------------------------------------- */
-/* Matching Ready-to-Sell Order Glow */
-#kitchenP[data-workshop="kitchen"] .kitchen-order.is-match{
- border-color:#f6d475!important;
- box-shadow:0 0 0 2px #ffe48a88,0 0 12px #f2c45a55!important;
- animation:ws-match-pulse 1.9s ease-in-out infinite
-}
-#kitchenP[data-workshop="kitchen"] .kitchen-order.is-pref-match{
- border-color:#fff0a3!important;
- box-shadow:0 0 0 2px #ffe896,0 0 16px #ffba4977!important
-}
-@keyframes ws-match-pulse{
- 0%,100%{filter:brightness(1)}
- 50%{filter:brightness(1.09)}
-}
-
 /* Season Modal Direct Contract CTA */
 .season-contract-cta{
  margin-top:8px;border:1.5px solid #f2cc70!important;
@@ -4843,36 +4781,6 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
  content:'';position:absolute;left:6px;right:6px;bottom:-3px;height:2px;
  background:linear-gradient(90deg,#e4bc6255,#fff2bf99,#e4bc6255);pointer-events:none
 }
-#kitchenOrders .kitchen-order{
- border-radius:7px 7px 3px 3px!important;
- border:1.5px solid #c9a76a!important;border-bottom:3px solid #8e6d3b!important;
- background:linear-gradient(180deg,#f5e8ca 0%,#e6d1a5 100%)!important;
- color:#2b1b0e!important;
- box-shadow:0 4px 10px #160c05aa,inset 0 1px 0 #fff9ea!important
-}
-#kitchenOrders{height:132px!important;min-height:132px!important;max-height:132px!important}
-#kitchenOrders .kitchen-order{
- height:auto!important;min-height:0!important;max-height:100%!important;
- padding:14px 3px 3px!important;align-self:stretch
-}
-#kitchenOrders .kitchen-order>div:not(.kitchen-recipe-strip){width:46px;height:46px}
-@media(max-height:760px){
- #kitchenOrders{height:114px!important;min-height:114px!important;max-height:114px!important}
- #kitchenOrders .kitchen-order{padding:12px 2px 2px!important}
- #kitchenOrders .kitchen-order>div:not(.kitchen-recipe-strip){width:40px;height:40px}
-}
-#kitchenOrders .kitchen-order b{
- color:#2f1d0f!important;text-shadow:none!important
-}
-#kitchenOrders .kitchen-order>span{
- color:#ffefc0!important;text-shadow:none!important
-}
-#kitchenOrders .kitchen-order.is-match{
- border-color:#ffd859!important;
- background:linear-gradient(180deg,#fff4d2 0%,#f5df9c 100%)!important;
- box-shadow:0 0 14px #ffd45988,0 4px 10px #160c05aa!important
-}
-
 /* 3. Expedition Bounty Parchment Scroll, Wooden Weapon Rack & Delayed-Drain HP Bars */
 #expeditionP .hp.exp-panel{
  border:2.5px solid #d5aa56!important;border-radius:14px!important;
@@ -4968,12 +4876,12 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
  box-shadow:inset 0 1px 0 #ffffff14,inset 0 -2px 4px #00000066!important
 }
 #kitchenP[data-workshop="kitchen"] main{
- justify-content:center!important;align-items:flex-start!important;gap:6px!important;overflow:hidden!important
+ justify-content:center!important;align-items:flex-start!important;gap:6px!important;overflow:hidden auto!important
 }
 #kitchenP[data-workshop="kitchen"] #kitchenGrid{
  width:auto!important;height:auto!important;max-height:none!important;aspect-ratio:auto!important;
  grid-template-columns:repeat(5,var(--kcs,56px))!important;
- grid-auto-rows:var(--kcs,56px)!important;
+ grid-template-rows:repeat(6,var(--kcs,56px))!important;
  padding:8px!important;gap:4px!important;border-radius:14px!important;
  border:2px solid #a87643!important;
  background:
@@ -5028,7 +4936,7 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 }
 .tw-winter-night-sky svg{display:block;width:100%;height:100%}
 
-/* 7. Forge Polish: No Item-Box Glow, Row-2 Quest Button, Customer Windows & Seasonal Board */
+/* 7. Forge Polish: No Item-Box Glow, Row-2 Quest Button, Seasonal Board */
 #handSlot,#handSlot:not(:empty),#app[data-workshop="forge"] #side #handSlot:has([data-drag="hand"]){
  animation:none!important;
  border-color:#998160!important;
@@ -5045,75 +4953,84 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 #app>.bar.bar2 #questBtn.is-all-done{
  border-color:#9ad88c!important;color:#e7ffd9!important
 }
-#app #orders{
- --forge-orders-height:174px;
- height:var(--forge-orders-height)!important;min-height:var(--forge-orders-height)!important;max-height:var(--forge-orders-height)!important;
- gap:5px;background:linear-gradient(#553e31,#35271f)!important
+/* Shared forge and kitchen customer windows. */
+#app #orders,#kitchenP #kitchenOrders{
+ --workshop-orders-height:174px;
+ height:var(--workshop-orders-height)!important;min-height:var(--workshop-orders-height)!important;max-height:var(--workshop-orders-height)!important;
+ flex:none;gap:5px;background:linear-gradient(#553e31,#35271f)!important
 }
-#app[data-compact="true"] #orders{--forge-orders-height:160px}
+#app[data-compact="true"] #orders{--workshop-orders-height:160px}
+@media(max-height:740px){
+ #kitchenP #kitchenOrders{--workshop-orders-height:160px}
+}
 @media(max-height:600px){
- #app[data-compact="true"] #orders{--forge-orders-height:134px}
+ #app[data-compact="true"] #orders,#kitchenP #kitchenOrders{--workshop-orders-height:134px}
 }
-#app #orders.is-tutorial{--forge-orders-height:91px}
-.od.forge-order{
+#app #orders.is-tutorial{--workshop-orders-height:91px}
+.workshop-order{
  --order-icon-size:clamp(34px,11vw,47px);
- --order-mold-size:clamp(11px,3.6vw,16px);
- display:grid;grid-template-rows:21px 1fr;
+ --order-component-size:clamp(11px,3.6vw,16px);
+ position:relative;display:grid;grid-template-rows:21px 1fr;overflow:hidden;
  min-height:0;max-height:none;padding:3px;
  border:1.5px solid #c9a76a;border-bottom:3px solid #8e6d3b;border-radius:7px 7px 3px 3px;
  background:linear-gradient(#382f26,#272627);
  box-shadow:0 4px 10px #160c05aa,inset 0 1px 0 #fff1c565
 }
-#app #orders .forge-order{height:auto;min-height:0;max-height:none;align-self:stretch}
-.forge-order:has(.forge-order-window){grid-template-rows:21px minmax(0,1fr) 56px}
-.forge-order-status,.forge-order-bonus{display:flex;align-items:center;gap:2px}
-.forge-order-status{justify-content:space-between;min-width:0;padding:0 1px}
-.forge-order .wt,.forge-order .em,.forge-order .guest-like22{position:static;flex:none;white-space:nowrap}
-.forge-order .wt,#app[data-workshop="forge"] .forge-order .wt{
+#app #orders .workshop-order{height:auto;min-height:0;max-height:none;align-self:stretch}
+.workshop-order:has(.workshop-order-window){grid-template-rows:21px minmax(0,1fr) 56px}
+.workshop-order-status,.workshop-order-bonus{display:flex;align-items:center;gap:2px}
+.workshop-order-status{justify-content:space-between;min-width:0;padding:0 1px}
+.workshop-order .wt,.workshop-order .em,.workshop-order .guest-like22{position:static;flex:none;white-space:nowrap}
+.workshop-order .wt,#app[data-workshop="forge"] .workshop-order .wt{
  padding:2px 4px;border-radius:99px;border:1px solid #d4aa5a88;
  background:#151a24e0;color:#ffeab0;font-size:clamp(9px,2.8vw,11px);font-variant-numeric:tabular-nums;
- text-shadow:none;box-shadow:0 1px 3px #090c12aa
+ font-weight:900;line-height:1.15;text-shadow:none;box-shadow:0 1px 3px #090c12aa
 }
-.forge-order .guest-like22{padding:2px 3px!important}
-.forge-order .em:empty{display:none}
-.forge-order .em{font-size:11px!important}
-.forge-order-window{
+.workshop-order .guest-like22{padding:2px 3px;font-size:9.5px;line-height:1}
+.workshop-order .em:empty{display:none}
+.workshop-order .em{font-size:11px;line-height:1}
+.workshop-order-window{
  position:relative;overflow:hidden;border:1px solid #9e764d;border-radius:31px 31px 3px 3px;
  background:radial-gradient(ellipse at 50% 72%,#dea67588,transparent 75%),linear-gradient(#374b42,#705442);
  box-shadow:inset 0 0 10px #20161277
 }
-.forge-order-window .order-guest{
+.workshop-order-window .order-guest{
  position:absolute;inset:0 0 7px;display:flex;justify-content:center;align-items:flex-start;
  overflow:hidden;pointer-events:none
 }
-.forge-order-window img{width:auto;height:150%;max-width:none;flex:none;image-rendering:pixelated}
-.forge-order-window::after{
+.workshop-order-window img{width:auto;height:150%;max-width:none;flex:none;image-rendering:pixelated}
+.workshop-order-window::after{
  content:"";position:absolute;inset:auto 0 0;height:7px;
  background:linear-gradient(#e3b574 0 1px,#a26b3c 2px,#704627 4px,#56341d 7px);
  box-shadow:0 -2px 4px #1d140b55;pointer-events:none
 }
-.forge-order-details{
+.workshop-order-details{
  display:grid;grid-template-columns:var(--order-icon-size) minmax(0,1fr);align-items:center;gap:3px;
  margin-top:3px;padding:2px;border:1px solid #daae67;border-radius:4px;
  background:linear-gradient(#f9e8c3,#e9cb93);color:#2f1d0f
 }
-.forge-order-icon{width:var(--order-icon-size);height:var(--order-icon-size)}
-.forge-order-icon>.hxo{width:100%!important;height:100%!important;margin:0}
-.forge-order-icon .hxi b{color:#f6e6ff;font-size:calc(var(--order-icon-size)*.52);line-height:1}
-.forge-order-copy{display:flex;flex-direction:column;gap:2px;min-width:0;text-align:left}
-.forge-order .order-name{
+.workshop-order-icon{width:var(--order-icon-size);height:var(--order-icon-size)}
+.workshop-order-icon>.hxo,.workshop-order-icon>svg{width:100%!important;height:100%!important;margin:0}
+.workshop-order-icon>svg{display:block}
+.workshop-order-icon .hxi b{color:#fff3da;font-size:clamp(11px,3.5vw,15px);line-height:1;white-space:nowrap}
+.workshop-order-copy{display:flex;flex-direction:column;gap:2px;min-width:0;text-align:left}
+.workshop-order .order-name{
  display:flex;flex-wrap:wrap;font-size:clamp(10px,2.95vw,12.5px);line-height:1.2;font-weight:900
 }
-.forge-order .order-name span{white-space:nowrap}
-.forge-order .rc,#app[data-compact="true"] .forge-order .rc{
- justify-content:flex-start;gap:2px;height:auto;min-height:var(--order-mold-size);margin:0;overflow:visible
+.workshop-order .order-name span{white-space:nowrap}
+.workshop-order-recipe,.workshop-order-recipe .kitchen-recipe-strip{
+ display:flex;align-items:center;justify-content:flex-start;gap:2px;min-height:var(--order-component-size);margin:0
 }
-.forge-order .rc .mo.s,#app[data-compact="true"] .forge-order .rc .mo.s{width:var(--order-mold-size);height:var(--order-mold-size)}
-.forge-order .rc small,#app[data-compact="true"] .forge-order .rc small{color:inherit;font-size:clamp(9px,2.65vw,11px);line-height:1.2}
-.forge-order.is-match .forge-order-details{background:linear-gradient(#fff3cf,#f4d991)}
-.forge-order.is-pref-match .guest-like22{background:#6a501e}
-.forge-order.pv-sale .forge-order-details{background:linear-gradient(#eff8cf,#c6e1a1)}
-.forge-order.pv-bad .forge-order-details{background:linear-gradient(#fbe7cb,#ecb4a2)}
+.workshop-order-recipe .mo.s{width:var(--order-component-size);height:var(--order-component-size)}
+.workshop-order-recipe .kitchen-recipe-strip>span{width:var(--order-component-size);flex:none}
+.workshop-order-recipe .kitchen-recipe-strip>em{display:none}
+.workshop-order-recipe small{color:inherit;font-size:clamp(9px,2.65vw,11px);line-height:1.2}
+.workshop-order-recipe .kitchen-stat-need{display:grid;gap:1px;color:#663416;font-weight:800}
+.workshop-order-recipe .kitchen-stat-need span{white-space:nowrap}
+.workshop-order.is-match .workshop-order-details{background:linear-gradient(#fff3cf,#f4d991)}
+.workshop-order.is-pref-match .guest-like22{background:#6a501e}
+.workshop-order.pv-sale .workshop-order-details{background:linear-gradient(#eff8cf,#c6e1a1)}
+.workshop-order.pv-bad .workshop-order-details{background:linear-gradient(#fbe7cb,#ecb4a2)}
 
 /* Seasonal Forge Board Themes (Spring / Summer / Autumn / Winter) */
 #app[data-workshop="forge"][data-season="spring"] #grid{

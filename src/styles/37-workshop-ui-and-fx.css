@@ -87,12 +87,6 @@
 #kitchenP[data-workshop="kitchen"] header>button:active,
 #kitchenP[data-workshop="kitchen"] nav>button:active{transform:translateY(1px)}
 
-/* Dinner Order Cards */
-#kitchenP[data-workshop="kitchen"] .kitchen-order>span{
- display:inline-block;padding:1px 6px;border-radius:99px;
- border:1px solid #c99d5599;background:#3c2718eb;color:#ffeba8;
- font-weight:900;font-variant-numeric:tabular-nums
-}
 #kitchenP[data-workshop="kitchen"] #kitchenChallenge{
  border-left:3px solid #cf943a;font-weight:800;
  transition:filter .12s ease
