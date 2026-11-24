@@ -44,7 +44,7 @@ function kitchenCraft(at,silent=false){
  const cb=typeof contractBonuses==='function'?contractBonuses():{};
  const consumed=new Set(batches.flatMap(batch=>batch.cells));
  const hadHotBatch=batches.map(batch=>batch.cells.some(i=>nb(i).some(n=>!consumed.has(n)&&kitchen.heat[n]>0)));
- const baseHeat=Math.max(2,8-2*kitchenLevel('cool')-(cb.kitchenHeatDelta||0));
+ const baseHeat=Math.max(2,baseWorkshopHeatSteps()-2*kitchenLevel('cool')-(cb.kitchenHeatDelta||0));
  const stoveHeat=typeof isWorkshopFever==='function'&&isWorkshopFever('kitchen')?Math.max(1,Math.ceil(baseHeat/2)):baseHeat;
  for(const i of consumed){kitchen.g[i]=null;kitchen.heat[i]=stoveHeat;kitchen.justHeated.add(i);}
  for(let bi=0;bi<batches.length;bi++){const batch=batches[bi],trio=batch.parts,c=COMBO.indexOf(trio.map(p=>p.s).sort().join('')),t=Math.floor(trio.reduce((sum,p)=>sum+p.t,0)/3);if(c<0)continue;

@@ -1,13 +1,15 @@
 
 const SEASONS=[
-  {id:'spring',name:'春天',icon:'🌱',description:'春回大地！鍛造格過熱 50 步。春季持續 3 天。'},
-  {id:'summer',name:'夏天',icon:'☀️',description:'盛夏高溫！鍛造格的過熱時間增加 10 步，由 50 步變成 60 步。夏季持續 3 天。'},
+  {id:'spring',name:'春天',icon:'🌱',description:'春回大地！冶煉廠與餐廳的基礎過熱都是 50 步。春季持續 3 天。'},
+  {id:'summer',name:'夏天',icon:'☀️',description:'盛夏高溫！冶煉廠與餐廳的基礎過熱由 50 步增加到 60 步。夏季持續 3 天。'},
   {id:'autumn',name:'秋天',icon:'🍂',description:'秋風吹落葉！每天隨機在 3 個空格落下落葉，落葉格無法放置物品。當上下左右相鄰的格子過熱時，落葉會燃燒消失。未燒掉的落葉保留到秋季結束。'},
   {id:'winter',name:'冬天',icon:'❄️',description:'寒冬結冰！整個冬季維持 1 格冰凍，不會逐日增加。冰凍格不能放置物品，相鄰的過熱格及暴風雪都不會使它融化，換季後解除。'}
 ];
 function seasonIndex(d=day){if(d>0&&typeof activeRunMode==='function'&&activeRunMode()==='eternal_winter')return 3;return d>0?Math.floor((d-1)/3)%4:0;}
 function seasonDay(d=day){return d>0?(d-1)%3+1:1;}
-function hotSteps(){const cb=typeof contractBonuses==='function'?contractBonuses():{forgeHeatDelta:0};const base=Math.max(5,(seasonIndex()===1?60:50)-10*Math.max(0,Math.min(3,sk('cd')))-medalBonuses().forgeHeatReduce-(cb.forgeHeatDelta||0));return typeof isWorkshopFever==='function'&&isWorkshopFever('forge')?Math.max(3,Math.ceil(base/2)):base;}
+function baseWorkshopHeatSteps(){return seasonIndex()===1?60:50;}
+function hotSteps(){const cb=typeof contractBonuses==='function'?contractBonuses():{forgeHeatDelta:0};const base=Math.max(5,baseWorkshopHeatSteps()-10*Math.max(0,Math.min(3,sk('cd')))-medalBonuses().forgeHeatReduce-(cb.forgeHeatDelta||0));return typeof isWorkshopFever==='function'&&isWorkshopFever('forge')?Math.max(3,Math.ceil(base/2)):base;}
+function workshopHeatStyle(remaining){return '--heat-opacity:'+Math.min(1,.24+.76*remaining/baseWorkshopHeatSteps()).toFixed(2)+';';}
 function cellBlock(i){return blueprintSlotAt(i)?'這是傳說藍圖格，請放入指定武器':frozen.has(i)?'這格已冰凍，換季後才能放置物品':leaves.has(i)?'這格有落葉，需要相鄰過熱格將它燒掉':'';}
 function seasonEffect(i,type){
   const effect={type,start:Date.now(),duration:type==='burning'?800:900};

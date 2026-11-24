@@ -1,6 +1,7 @@
 
 const kitchenMergeQueue=[],kitchenMergeJobs=new Set();let kitchenMergeEpoch=0,kitchenGuestSerial=0;
 const KITCHEN_WASTE_FEE=50;
+const KITCHEN_FRESH_WARNING_STEPS=10;
 function kitchenShelfLife(w){const extra=typeof contractBonuses==='function'?(contractBonuses().kitchenFreshBonus||0):0;return w?.k==='w'?32+6*kitchenLevel('fresh')+medalBonuses().dishFreshBonus+extra:0;}
 function kitchenFreshen(w){if(!w)return w;if(w.k==='o'||w.k==='p'){delete w.fresh;delete w.born;}else if(w.k==='w'){w.fresh=kitchenShelfLife(w);w.born=kitchen.turn+1;}return w;}
 function kitchenEnsureFresh(w){if(w?.k==='o'||w?.k==='p')return kitchenFreshen(w);if(w?.k==='w'&&!Number.isFinite(w.fresh))kitchenFreshen(w);return w;}
@@ -14,8 +15,23 @@ function clearKitchenWaste(i){
  const compost=earnKitchenCompost(kitchen.g[i]);clearKitchenMerges();kitchen.g[i]=null;$('kitchenModal').hidden=true;kitchen.message='廚餘已清理。請愛護食物，適量備料、及時出餐。';if(compost)kitchen.message+=' 已回收一包溫室堆肥。';if(!kitchen.done)kitchenStep();renderKitchen();return true;
 }
 function kitchenTickFreshness(){
- const expired=[],tick=(w,replace)=>{if(!w)return;if(w.k==='o'||w.k==='p'){kitchenEnsureFresh(w);return;}if(w.k!=='w')return;kitchenEnsureFresh(w);if(w.born<kitchen.turn&&w.fresh>0)w.fresh--;if(w.fresh<=0){expired.push(w);replace({k:'waste',fromKind:'w',fromName:kitchenItemName(w)});}};
+ let expiring=0;
+ const expired=[],tick=(w,replace)=>{
+  if(!w)return;
+  kitchenEnsureFresh(w);
+  if(w.k!=='w')return;
+  if(w.born<kitchen.turn&&w.fresh>0){
+   w.fresh--;
+   if(w.fresh===KITCHEN_FRESH_WARNING_STEPS)expiring++;
+  }
+  if(w.fresh<=0){expired.push(w);replace({k:'waste',fromKind:'w',fromName:kitchenItemName(w)});}
+ };
  kitchen.g.forEach((w,i)=>tick(w,v=>kitchen.g[i]=v));tick(kitchen.hand,v=>kitchen.hand=v);
+ if(expiring){
+  const warning=expiring+' 份料理只剩 '+KITCHEN_FRESH_WARNING_STEPS+' 步保鮮，記得放進冰箱或趕快出餐。';
+  kitchen.message+=' '+warning;
+  toast('⏳ '+warning);
+ }
  if(expired.length){reviewMetrics.spoiled+=expired.length;kitchen.message+=' '+expired.length+' 份食物腐壞成廚餘；請珍惜食物，清理每格需 '+kitchenWasteFee()+' 金幣。';toast('食物腐壞了！請愛護食物，適量備料並善用冰箱。');}
 }
 function kitchenCreateOrders(){

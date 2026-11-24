@@ -55,7 +55,7 @@ const TOWN_LANDMARKS={
  west_camp:{
   key:'west_camp',buildingId:'townWingWest',buildingName:'西側溪畔營地',icon:'🎣',name:'星露棧橋與博物館',max:3,costs:[1200,3000,6400],
   tierNames:['堅固木棧橋','星露探險營地','皇家自然博物館'],
-  effects:['每日西側探索體力 +1（共 4 次）· 稀有漁獲／古物 +15%','每日西側探索體力 +2（共 5 次）· 漁獲與古物收益 +35%','每日西側探索體力 +3（共 6 次）· 傳說機率大增 · 每日博物津貼 +280💰']
+  effects:['每日釣魚 +1 次（共 4 次）· 稀有漁獲／古物 +15%','每日釣魚 +2 次（共 5 次）· 漁獲與古物收益 +35%','每日釣魚 +3 次（共 6 次）· 傳說機率大增 · 每日博物津貼 +280💰']
  },
  east_post:{
   key:'east_post',buildingId:'townWingEast',buildingName:'東側旅商驛站',icon:'🛒',name:'皇家旅商驛站',max:3,costs:[1200,3000,6400],
@@ -126,6 +126,7 @@ const DAILY_HEADLINES=[
 ];
 
 let workshopMomentum=null,chronicleTab='daily',pendingRunMode='normal';
+const WEST_DAILY_DIGS=3,WEST_BASE_FISH_CASTS=3,WEST_CROSS_SHOVEL_COST=150;
 
 function freshTownLandmarks(){
  const out={};
@@ -135,7 +136,7 @@ function freshTownLandmarks(){
 
 function freshTownWings(){
  return {
-  westDay:0,westUsed:0,westExtra:0,westFished:0,fishStreak:0,crossUsed:false,fishSupplyDay:0,
+  westDay:0,westDigs:0,westFished:0,fishStreak:0,crossUsed:false,fishSupplyDay:0,
   digBoard:null,
   eastDay:0,eastBought:[],barterDone:false,haggleDone:false,haggleDisc:0,
   shipment:null,
@@ -189,9 +190,11 @@ function cleanWorkshopMomentum(raw){
  if(raw.wings&&typeof raw.wings==='object'){
   const w=raw.wings;
   base.wings.westDay=Math.max(0,Math.floor(Number(w.westDay)||0));
-  base.wings.westUsed=Math.max(0,Math.min(12,Math.floor(Number(w.westUsed)||0)));
-  base.wings.westExtra=Math.max(0,Math.min(4,Math.floor(Number(w.westExtra)||0)));
   base.wings.westFished=Math.max(0,Math.min(20,Math.floor(Number(w.westFished)||0)));
+  // Older saves pooled free casts and digs, and tracked paid tools separately.
+  const legacyFreeDigs=Math.max(0,Math.floor(Number(w.westUsed)||0)-base.wings.westFished);
+  const legacyDigs=legacyFreeDigs+Math.max(0,Math.floor(Number(w.westExtra)||0))+Number(!!w.crossUsed);
+  base.wings.westDigs=Math.max(0,Math.min(WEST_DAILY_DIGS,Math.floor(Number(w.westDigs??legacyDigs)||0)));
   if(Array.isArray(w.digBoard)&&w.digBoard.length===9){
    base.wings.digBoard=w.digBoard.map(cell=>cell&&typeof cell==='object'?{t:String(cell.t||'gold'),open:!!cell.open,v:cell.v||null}:null);
   }
@@ -296,7 +299,7 @@ function landmarkBonuses(){
   decorDiscount:[0,.12,.22,.35][l.decor]||0,
   fountainPatience:[0,6,12,18][l.fountain]||0,
   fountainSale:[0,0,.06,.12][l.fountain]||0,
-  westStaminaBonus:l.west_camp||0,
+  westFishingBonus:l.west_camp||0,
   westRareBonus:[0,.15,.28,.45][l.west_camp]||0,
   westRewardMult:[1,1.15,1.35,1.6][l.west_camp]||1,
   eastDiscount:[0,.1,.2,.3][l.east_post]||0,
@@ -658,8 +661,10 @@ function settlementNextHookHTML(phase){
   if(day>=wg.shipment.returnDay)hooks.push('📦 東側跨城商隊已滿載返航，回城鎮右滑即可領取豐厚收益！');
   else if(phase==='kitchen'&&day+1>=wg.shipment.returnDay)hooks.push('📦 東側跨城商隊明天早上返航，記得去領取收益！');
  }
- const westMax=3+(landmarkBonuses().westStaminaBonus||0),westRem=Math.max(0,westMax-(wg?.westDay===day?(wg.westUsed||0):0));
- if(phase==='forge'&&westRem>0)hooks.push('🎣 西側溪畔還有 '+westRem+' 次免費釣魚／挖寶體力，夜晚限定魚種即將出沒！');
+ const todayWest=wg?.westDay===day?wg:null;
+ const remainingFish=Math.max(0,westFishingLimit()-(todayWest?.westFished||0));
+ const remainingDigs=Math.max(0,WEST_DAILY_DIGS-(todayWest?.westDigs||0));
+ if(phase==='forge'&&remainingFish+remainingDigs>0)hooks.push('🎣 西側溪畔今日剩餘釣魚 '+remainingFish+' 次、挖掘 '+remainingDigs+' 次。');
  if(!hooks.length)hooks.push(phase==='forge'?'🍲 晚餐時段即將開啟，準備好料理與主打菜大賺一筆！':'🌅 明天將刷新全新「今日城鎮頭條」與新一批客人！');
  return '<div class="settle-hooks"><b>✨ 下一步預告</b>'+hooks.slice(0,2).map(h=>'<p>'+h+'</p>').join('')+'</div>';
 }

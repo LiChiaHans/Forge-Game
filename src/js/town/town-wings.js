@@ -77,7 +77,7 @@ const TOWN_REGULARS=[
  {id:'freya',guestId:1,icon:'🗡',name:'芙蕾雅騎士',role:'銀翼劍士',giftCost:110,stat:'atk',
   quotes:['出征前總習慣來酒館擦亮長劍。','這把星露鍛造的刃口真是無可挑剔！','能與你並肩守護小鎮，是銀翼騎士團的榮耀！'],
   perk:'Lv3：遠征攻擊 +4% · Lv5：遠征攻擊 +8%',
-  quest:{text:'今日進行至少 1 次西側探索',check:()=>ensureTownWings().westUsed>=1,rewardGold:90}},
+  quest:{text:'今日進行至少 1 次西側探索',check:hasExploredWestToday,rewardGold:90}},
  {id:'austin',guestId:2,icon:'✨',name:'奧斯汀導師',role:'符文魔導師',giftCost:105,stat:'forge',
   quotes:['你的鍛爐火候裡藏著迷人的魔力流動。','這件附魔武器的共鳴度簡直像藝術品！','你對元素鍛造的領悟已超越王立學院！'],
   perk:'Lv3：冶煉售價 +4% · Lv5：冶煉售價 +8%',
@@ -89,7 +89,7 @@ const TOWN_REGULARS=[
  {id:'parker',guestId:4,icon:'🌿',name:'帕克花藝師',role:'溫室愛好者',giftCost:100,stat:'def',
   quotes:['晨露溫室的土質真棒，記得多看看花盆喔！','你照料的花朵比王室花園還香甜！','精靈們都在傳頌你的溫室與溪畔聖園呢！'],
   perk:'Lv3：遠征防禦 +4% · Lv5：遠征防禦 +8%',
-  quest:{text:'今日在西側進行至少 1 次探索',check:()=>ensureTownWings().westUsed>=1,rewardGold:85}},
+  quest:{text:'今日在西側進行至少 1 次探索',check:hasExploredWestToday,rewardGold:85}},
  {id:'lia',guestId:5,icon:'🏹',name:'莉亞獵手',role:'溪畔巡林客',giftCost:100,stat:'def',
   quotes:['西側瀑布那邊今天水色特別清澈呢。','你釣魚的架勢越來越有老手的風範了！','整片森林的精靈都把你當成最信任的朋友！'],
   perk:'Lv3：遠征防禦 +4% · Lv5：遠征防禦 +8%',
@@ -105,7 +105,7 @@ const TOWN_REGULARS=[
  {id:'kevin',guestId:8,icon:'🗝',name:'凱文影客',role:'遺跡尋寶人',giftCost:105,stat:'forge',
   quotes:['西側古物遺跡底下可藏著不少好貨色喔。','眼光不錯嘛！那件古物的成色我一眼就看出來了！','以後有什麼秘寶情報，我一定第一個告訴你！'],
   perk:'Lv3：冶煉售價 +4% · Lv5：冶煉售價 +8%',
-  quest:{text:'今日在西側進行至少 1 次探索',check:()=>ensureTownWings().westUsed>=1,rewardGold:95}},
+  quest:{text:'今日在西側進行至少 1 次探索',check:hasExploredWestToday,rewardGold:95}},
  {id:'vivian',guestId:9,icon:'💎',name:'薇薇安怪盜',role:'夜行鑑賞家',giftCost:110,stat:'dual',
   quotes:['真正稀有的珍品，只會落在懂行的人手裡。','這座小鎮的藏品連王宮寶庫都相形見絀呢！','算我輸了，你的傑作我只願堂堂正正買下！'],
   perk:'Lv3：雙工坊售價 +3% · Lv5：雙工坊售價 +6%',
@@ -245,7 +245,7 @@ function ensureTownWings(){
  const m=ensureWorkshopMomentum();
  if(!m.wings)m.wings=freshTownWings();
  const w=m.wings;
- if(day>0&&w.westDay!==day){w.westDay=day;w.westUsed=0;w.westExtra=0;w.westFished=0;w.fishStreak=0;w.crossUsed=false;w.digBoard=createDailyDigBoard();}
+ if(day>0&&w.westDay!==day){w.westDay=day;w.westDigs=0;w.westFished=0;w.fishStreak=0;w.crossUsed=false;w.digBoard=createDailyDigBoard();}
  if(!Array.isArray(w.digBoard)||w.digBoard.length!==9)w.digBoard=createDailyDigBoard();
  if(day>0&&w.eastDay!==day){w.eastDay=day;w.eastBought=[];w.barterDone=false;w.haggleDone=false;w.haggleDisc=0;}
  if(day>0&&w.regularDay!==day){
@@ -254,6 +254,9 @@ function ensureTownWings(){
  }
  return w;
 }
+
+function westFishingLimit(bonuses=landmarkBonuses()){return WEST_BASE_FISH_CASTS+bonuses.westFishingBonus;}
+function hasExploredWestToday(){const w=ensureTownWings();return w.westDigs+w.westFished>0;}
 
 function todayTavernRegulars(){
  const n=TOWN_REGULARS.length,count=5;
@@ -341,12 +344,13 @@ function renderTownWing(){
  if(archBtn){archBtn.disabled=townZone!=='center';archBtn.title=townZone==='center'?'建築師':'建築師僅限中央主城鎮使用';}
  const si=townVisualSeason(),night=isSandboxNight(),mapIdx=si+(night?4:0);
  const w=ensureTownWings(),lm=landmarkBonuses(),mus=loadTownMuseum();
- const westMax=3+(lm.westStaminaBonus||0),westRem=Math.max(0,westMax-w.westUsed);
+ const fishMax=westFishingLimit(lm),fishRemaining=Math.max(0,fishMax-w.westFished);
+ const digsRemaining=Math.max(0,WEST_DAILY_DIGS-w.westDigs),westRemaining=fishRemaining+digsRemaining;
  const puzzleReady=RELIC_CATALOG.some(r=>(mus.relicShards?.[r.id]||0)>=9&&!mus.relics.includes(r.id));
  const shipReady=!!(w.shipment&&day>=w.shipment.returnDay);
  const visitors=todayTavernRegulars(),qIds=[visitors[0]?.id,visitors[2]?.id].filter(Boolean);
  const questReady=visitors.some(r=>qIds.includes(r.id)&&!w.regularQuestDone.includes(r.id)&&r.quest.check());
- const westDotBadge=puzzleReady?'<em>🧩拼圖</em>':westRem>0?'<em>'+westRem+'</em>':'';
+ const westDotBadge=puzzleReady?'<em>🧩拼圖</em>':westRemaining>0?'<em>'+westRemaining+'</em>':'';
  const eastDotBadge=shipReady?'<em>領取</em>':questReady?'<em>✦委託</em>':'';
  goW.hidden=townZone!=='center';
  goE.hidden=townZone!=='center';
@@ -375,8 +379,8 @@ function renderTownWing(){
    +'<div class="wf-leap-fish"><span class="lf-fish">🐟</span><span class="lf-ring"></span></div>'
    +'<span class="tw-night-halo is-pier"></span><span class="tw-night-halo is-camp"></span>'
    +'</div>'
-   +'<button type="button" class="town-wing-spot" style="left:44%;top:17%;width:48%;height:23%" onclick="openTownWingModal(\'excavate\')"><span class="tw-plaque">⛏ 古物遺跡營地<small>3×3 探勘 · 體力 '+westRem+'/'+westMax+'</small></span></button>'
-   +'<button type="button" class="town-wing-spot" style="left:20%;top:43%;width:32%;height:16%" onclick="openTownWingModal(\'fishing\')"><span class="tw-plaque">🎣 星露釣魚棧橋<small>'+(night?'🌙 夜間限定魚群':'☀ 白天溪畔魚群')+'</small></span></button>'
+   +'<button type="button" class="town-wing-spot" style="left:44%;top:17%;width:48%;height:23%" onclick="openTownWingModal(\'excavate\')"><span class="tw-plaque">⛏ 古物遺跡營地<small>3×3 探勘 · 剩 '+(sandboxSession?'∞':digsRemaining+'/'+WEST_DAILY_DIGS)+' 次</small></span></button>'
+   +'<button type="button" class="town-wing-spot" style="left:20%;top:43%;width:32%;height:16%" onclick="openTownWingModal(\'fishing\')"><span class="tw-plaque">🎣 星露釣魚棧橋<small>'+(night?'🌙 夜間魚群':'☀ 白天魚群')+' · 剩 '+(sandboxSession?'∞':fishRemaining+'/'+fishMax)+' 次</small></span></button>'
    +'<button type="button" class="town-wing-spot is-building" data-landmark-tier="'+westLv+'" style="left:45%;top:59%;width:48%;height:29%" onclick="openTownWingModal(\'museum\')"><img class="tw-building-sprite" src="'+museumSprite+'" alt="星露博物小屋" decoding="async"><span class="tw-plaque">🏛 星露博物小屋<small>大工程 Lv '+westLv+'/3</small></span></button>'
    +'<button type="button" class="town-road-arrow is-east is-return" onclick="setTownZone(\'center\')" aria-label="返回主城鎮"><span>返回城鎮</span>▶</button>';
  }else{
@@ -426,8 +430,8 @@ function setFishBait(id){fishBait=id;renderTownWingModal();}
 function setDigTool(id){digTool=id;renderTownWingModal();}
 
 function startFishingCast(){
- const w=ensureTownWings(),lm=landmarkBonuses(),maxStam=3+(lm.westStaminaBonus||0);
- if(!sandboxSession&&w.westUsed>=maxStam){toast('今日西側探索體力已用完（可升級「星露棧橋與博物館」增加體力）。');return;}
+ const w=ensureTownWings();
+ if(!sandboxSession&&w.westFished>=westFishingLimit()){toast('今日釣魚次數已用完。');return;}
  const bait=FISH_BAITS.find(b=>b.id===fishBait)||FISH_BAITS[0];
  if(!sandboxSession&&bait.cost>0&&coins<bait.cost){toast('金幣不足 '+bait.cost+'，無法使用「'+bait.name+'」。');return;}
  stopFishGame();
@@ -462,14 +466,13 @@ function pullFishingLine(){
 }
 
 function doWestFish(quality='normal',hitChest=false){
- const w=ensureTownWings(),lm=landmarkBonuses(),maxStam=3+(lm.westStaminaBonus||0);
- if(!sandboxSession&&w.westUsed>=maxStam){toast('今日西側探索體力已用完（可升級「星露棧橋與博物館」增加體力）。');return;}
+ const w=ensureTownWings(),lm=landmarkBonuses();
+ if(!sandboxSession&&w.westFished>=westFishingLimit(lm)){toast('今日釣魚次數已用完。');return;}
  const bait=FISH_BAITS.find(b=>b.id===fishBait)||FISH_BAITS[0];
  if(!sandboxSession&&bait.cost>0){
   if(coins<bait.cost){toast('金幣不足 '+bait.cost+'，已改用免費蚯蚓。');fishBait='worm';}
   else coins-=bait.cost;
  }
- if(!sandboxSession)w.westUsed++;
  w.westFished=(w.westFished||0)+1;
  if(quality==='perfect'||quality==='good')w.fishStreak=Math.min(5,(w.fishStreak||0)+1);
  else w.fishStreak=0;
@@ -558,13 +561,15 @@ function openOneRuinCell(w,lm,idx,silent=false){
 }
 
 function digRuinCell(idx){
- const w=ensureTownWings(),lm=landmarkBonuses(),maxStam=3+(lm.westStaminaBonus||0);
+ const w=ensureTownWings(),lm=landmarkBonuses();
  const cell=w.digBoard?.[idx];
  if(!cell||cell.open)return;
+ if(!sandboxSession&&w.westDigs>=WEST_DAILY_DIGS){toast('今日 '+WEST_DAILY_DIGS+' 次挖掘機會已用完。');return;}
  if(digTool==='cross'){
   if(!sandboxSession&&w.crossUsed){toast('今日震波十字鏟已使用過，請改用精準小鋤。');digTool='pick';renderTownWingModal();return;}
-  if(!sandboxSession&&coins<60){toast('金幣不足 60，無法啟動震波十字鏟。');return;}
-  if(!sandboxSession){coins-=60;w.crossUsed=true;}
+  if(!sandboxSession&&coins<WEST_CROSS_SHOVEL_COST){toast('金幣不足 '+WEST_CROSS_SHOVEL_COST+'，無法啟動震波十字鏟。');return;}
+  if(!sandboxSession){coins-=WEST_CROSS_SHOVEL_COST;w.crossUsed=true;}
+  w.westDigs++;
   const r=Math.floor(idx/3),c=idx%3,targets=[[r,c],[r-1,c],[r+1,c],[r,c-1],[r,c+1]];
   const hits=[];
   for(const [nr,nc] of targets){
@@ -577,14 +582,7 @@ function digRuinCell(idx){
   const totG=hits.reduce((s,h)=>s+h.reward,0),relN=hits.filter(h=>h.kind==='relic').length;
   toast('💣 震波十字鏟發掘 '+hits.length+' 格！出土 '+relN+' 件古物 · 獲得 💰'+totG+'！');
  }else{
-  const freeAvail=sandboxSession||w.westUsed<maxStam;
-  if(freeAvail){
-   if(!sandboxSession)w.westUsed++;
-  }else{
-   if(w.westExtra>=2){toast('今日免費體力與加場挖掘次數皆已用完！');return;}
-   if(coins<80){toast('金幣不足 80，無法加場挖掘。');return;}
-   coins-=80;w.westExtra++;
-  }
+  w.westDigs++;
   openOneRuinCell(w,lm,idx,false);
  }
  if(w.digBoard.every(c=>c.open)){coins+=180;toast('🏆 今日 3×3 遺跡全數發掘完畢！獲得考古清場獎勵 +180💰！');}
@@ -593,7 +591,7 @@ function digRuinCell(idx){
 }
 
 // Keep backward-compatible doWestExcavate for tests & quick-dig
-function doWestExcavate(paid=false){
+function doWestExcavate(){
  const w=ensureTownWings();
  const idx=w.digBoard.findIndex(c=>!c.open);
  if(idx>=0){digTool='pick';digRuinCell(idx);return;}
@@ -834,7 +832,8 @@ function renderTownWingModal(){
  if(!title||!body||!townWingModalMode)return;
  if(modal)modal.dataset.mode=townWingModalMode;
  const w=ensureTownWings(),lm=landmarkBonuses(),mus=loadTownMuseum();
- const westMax=3+(lm.westStaminaBonus||0),westRem=Math.max(0,westMax-w.westUsed);
+ const fishMax=westFishingLimit(lm),fishRemaining=Math.max(0,fishMax-w.westFished);
+ const digsRemaining=Math.max(0,WEST_DAILY_DIGS-w.westDigs);
  const si=townVisualSeason(),night=isSandboxNight();
  const sceneHdr=typeof wingModalSceneArt==='function'?wingModalSceneArt(townWingModalMode,night):'';
 
@@ -852,10 +851,10 @@ function renderTownWingModal(){
    :'點擊下方「🎣 精準拋竿」啟動浮標軌道，瞄準 <b>金色中心</b> 起竿拿高倍率獎勵！';
   const meterBtns=fishGame.active
    ?'<button type="button" class="tw-big-btn is-gold" onclick="pullFishingLine()">⚡ 立即拉竿起魚！</button>'
-   :'<div class="tw-btn-row"><button type="button" class="tw-big-btn" onclick="startFishingCast()" '+(!sandboxSession&&westRem<=0?'disabled':'')+'>🎣 精準拋竿（開始）</button><button type="button" class="tw-big-btn is-gold" onclick="doWestFish(\'normal\')" '+(!sandboxSession&&westRem<=0?'disabled':'')+'>⚡ 快速拋竿（-1 體力）</button></div>';
+   :'<div class="tw-btn-row"><button type="button" class="tw-big-btn" onclick="startFishingCast()" '+(!sandboxSession&&fishRemaining<=0?'disabled':'')+'>🎣 精準拋竿（開始）</button><button type="button" class="tw-big-btn is-gold" onclick="doWestFish(\'normal\')" '+(!sandboxSession&&fishRemaining<=0?'disabled':'')+'>⚡ 快速拋竿（用 1 次）</button></div>';
   const miniGame='<div class="fish-meter-box'+(fishGame.active?' is-live':' is-idle')+'"><p class="fish-hint">'+meterHint+'</p><div class="fish-track"><span class="fish-zone-good'+perfCls+'"></span><span class="fish-zone-perfect'+perfCls+'"></span>'+chestEl+'<span class="fish-bobber" style="left:'+bobLeft+'%">🎣</span></div>'+meterBtns+'</div>';
   body.innerHTML=sceneHdr
-   +'<p class="tc-intro">今日體力 <b>'+westRem+' / '+westMax+'</b> · '+SEASONS[si].icon+' '+SEASONS[si].name+(night?' 🌙夜晚':' ☀白天')+' · 💰'+(sandboxSession?'∞':coins)+streakBadge+'</p>'
+   +'<p class="tc-intro">今日剩餘釣魚 <b>'+(sandboxSession?'∞':fishRemaining+' / '+fishMax)+'</b> 次 · '+SEASONS[si].icon+' '+SEASONS[si].name+(night?' 🌙夜晚':' ☀白天')+' · 💰'+(sandboxSession?'∞':coins)+streakBadge+'</p>'
    +baitBar+banner+miniGame
    +'<h4 class="tw-sub">本季出沒魚種</h4><div class="tw-grid">'
    +curFish.map(f=>{const got=mus.fish.includes(f.id),maxCm=mus.fishMax?.[f.id];return '<div class="tw-item'+(got?' is-got':'')+'"><div class="tw-px-frame">'+pixelFishArt(f.id,!got)+'</div><b>'+(got?f.name:'未知魚種')+'</b><small>'+(f.night?'🌙 夜晚':'☀ 白天')+' · '+'★'.repeat(f.rarity+1)+(got&&maxCm?' · '+maxCm+'cm':'')+'</small></div>';}).join('')
@@ -864,11 +863,11 @@ function renderTownWingModal(){
   title.textContent='⛏ 古物遺跡探勘（3×3）';
   const opened=w.digBoard.filter(c=>c.open).length;
   const toolBar='<div class="tw-bait-row">'
-   +'<button type="button" class="tw-bait-btn'+(digTool==='pick'?' is-on':'')+'" onclick="setDigTool(\'pick\')"><span class="tw-mini-px">'+pixelWingItemArt('rock')+'</span><b>精準小鋤</b><small>消耗 1 體力，精準探勘 1 格</small></button>'
-   +'<button type="button" class="tw-bait-btn'+(digTool==='cross'?' is-on':'')+'" onclick="setDigTool(\'cross\')" '+(!sandboxSession&&w.crossUsed?'disabled':'')+'><span class="tw-mini-px">'+pixelWingItemArt('cross')+'</span><b>震波十字鏟 💰60</b><small>'+(w.crossUsed&&!sandboxSession?'今日已使用':'一次震開十字 5 格（每日 1 次）')+'</small></button>'
+   +'<button type="button" class="tw-bait-btn'+(digTool==='pick'?' is-on':'')+'" onclick="setDigTool(\'pick\')"><span class="tw-mini-px">'+pixelWingItemArt('rock')+'</span><b>精準小鋤</b><small>免費挖 1 格，使用 1 次挖掘機會</small></button>'
+   +'<button type="button" class="tw-bait-btn'+(digTool==='cross'?' is-on':'')+'" onclick="setDigTool(\'cross\')" '+(!sandboxSession&&(w.crossUsed||digsRemaining<=0)?'disabled':'')+'><span class="tw-mini-px">'+pixelWingItemArt('cross')+'</span><b>震波十字鏟 💰'+WEST_CROSS_SHOVEL_COST+'</b><small>'+(w.crossUsed&&!sandboxSession?'今日已使用':'最多震開 5 格，佔 1 次挖掘機會（每日限用 1 次）')+'</small></button>'
    +'</div>';
   body.innerHTML=sceneHdr
-   +'<p class="tc-intro">免費體力 <b>'+westRem+' / '+westMax+'</b> · 加場 <b>'+(2-w.westExtra)+'/2</b>（80💰）· 進度 <b>'+opened+'/9</b>（全清 +180💰）<br>🧭 已開地格會感應周圍未挖掘的<b>古物／寶匣數量</b>，推理再下鏟！</p>'
+   +'<p class="tc-intro">今日剩餘挖掘 <b>'+(sandboxSession?'∞':digsRemaining+' / '+WEST_DAILY_DIGS)+'</b> 次 · 進度 <b>'+opened+'/9</b><br>🧭 已開地格會感應周圍未挖掘的<b>古物／寶匣數量</b>，推理再下鏟！</p>'
    +toolBar
    +'<div class="dig-grid">'
    +w.digBoard.map((c,i)=>{
@@ -877,8 +876,8 @@ function renderTownWingModal(){
      const art=c.v?.relicId?'<div class="dig-px">'+pixelRelicArt(c.v.relicId)+'</div>':'<div class="dig-px">'+pixelWingItemArt(c.t==='seed'?'seed':c.t==='chest'?'chest':'gold')+'</div>';
      return '<div class="dig-cell is-open">'+art+'<b>'+(c.v?.label||'已發掘')+'</b><small>'+(c.v?.sub||'')+'</small>'+(near>0?'<em class="dig-radar">🧭 周圍 '+near+' 寶</em>':'<em class="dig-radar is-clear">✓ 周圍空</em>')+'</div>';
     }
-    const disabled=digTool==='cross'?(!sandboxSession&&(w.crossUsed||coins<60)):(!sandboxSession&&westRem<=0&&(w.westExtra>=2||coins<80));
-    return '<button type="button" class="dig-cell'+(digTool==='cross'?' is-cross':'')+'" onclick="digRuinCell('+i+')" '+(disabled?'disabled':'')+'><div class="dig-px">'+pixelWingItemArt(digTool==='cross'?'cross':'rock')+'</div><b>'+(digTool==='cross'?'十字震波':'點擊探勘')+'</b><small>'+(digTool==='cross'?'💰60 開5格':westRem>0||sandboxSession?'免費體力':'💰80 加場')+'</small><em class="dig-radar is-unopened">🧭 待探測</em></button>';
+    const disabled=!sandboxSession&&(digsRemaining<=0||digTool==='cross'&&(w.crossUsed||coins<WEST_CROSS_SHOVEL_COST));
+    return '<button type="button" class="dig-cell'+(digTool==='cross'?' is-cross':'')+'" onclick="digRuinCell('+i+')" '+(disabled?'disabled':'')+'><div class="dig-px">'+pixelWingItemArt(digTool==='cross'?'cross':'rock')+'</div><b>'+(digTool==='cross'?'十字震波':'點擊探勘')+'</b><small>'+(digTool==='cross'?'💰'+WEST_CROSS_SHOVEL_COST:'免費挖掘')+'</small><em class="dig-radar is-unopened">🧭 待探測</em></button>';
    }).join('')
    +'</div>'
    +'<p class="tc-intro" style="margin-top:8px">博物館古物進度：<b>'+mus.relics.length+' / '+RELIC_CATALOG.length+'</b></p>';

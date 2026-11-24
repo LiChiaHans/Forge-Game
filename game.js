@@ -889,7 +889,7 @@ function kitchenCraft(at,silent=false){
  const cb=typeof contractBonuses==='function'?contractBonuses():{};
  const consumed=new Set(batches.flatMap(batch=>batch.cells));
  const hadHotBatch=batches.map(batch=>batch.cells.some(i=>nb(i).some(n=>!consumed.has(n)&&kitchen.heat[n]>0)));
- const baseHeat=Math.max(2,8-2*kitchenLevel('cool')-(cb.kitchenHeatDelta||0));
+ const baseHeat=Math.max(2,baseWorkshopHeatSteps()-2*kitchenLevel('cool')-(cb.kitchenHeatDelta||0));
  const stoveHeat=typeof isWorkshopFever==='function'&&isWorkshopFever('kitchen')?Math.max(1,Math.ceil(baseHeat/2)):baseHeat;
  for(const i of consumed){kitchen.g[i]=null;kitchen.heat[i]=stoveHeat;kitchen.justHeated.add(i);}
  for(let bi=0;bi<batches.length;bi++){const batch=batches[bi],trio=batch.parts,c=COMBO.indexOf(trio.map(p=>p.s).sort().join('')),t=Math.floor(trio.reduce((sum,p)=>sum+p.t,0)/3);if(c<0)continue;
@@ -1015,7 +1015,7 @@ function renderKitchen(){
  }).join('');
  const ch=KITCHEN_CHALLENGES[kitchen.challenge],progress=ch.kind==='rush'?kitchen.served:kitchen.progress;$('kitchenChallenge').textContent=kitchen.done?'晚餐營業完成 · 點此查看結算':kitchenSpecialLabel()+' · '+ch.icon+' '+ch.name+' '+progress+'/'+(ch.kind==='rush'?kitchen.total:ch.goal)+' · 出餐 '+kitchen.served+'/'+kitchen.total;$('kitchenChallenge').title=ch.text;
  $('kitchenQueue').innerHTML='<small>接下來</small>'+kitchen.q.map((t,i)=>'<span class="kitchen-next" '+(i===0?'data-kdrag="ore" onclick="selectKitchenIngredients()" aria-label="選擇放置食材"':'')+'>'+kitchenArt({k:'o',t})+'<b>'+(i+1)+'</b><b class="kitchen-queue-grade">'+(t+1)+'階 '+KITCHEN_GRADES[t]+'</b></span>').join('');
- $('kitchenGrid').innerHTML=kitchen.g.map((w,i)=>'<button class="kc '+(w?.k==='w'?'kitchen-dish':w?.k==='waste'?'kitchen-waste':'')+(w?.k==='w'&&Date.now()-(kitchen.forgedAt?.[i]||0)<650?' kitchen-complete':'')+'" data-ki="'+i+'" data-piece-kind="'+(w?.k||'empty')+'" '+(w?.k==='w'?'data-kdrag="dish"':'')+' onclick="kitchenClick('+i+')" aria-label="第'+(i+1)+'格 '+esc(w?kitchenItemName(w):kitchen.heat[i]?'餘熱':'空格')+'" style="'+(kitchen.heat[i]?'background:#8a4437;':'')+(kitchen.tiles[i]?'box-shadow:inset 0 0 0 2px '+KITCHEN_SPICES[kitchen.tiles[i]].color+';':'')+'">'+(w?kitchenArt(w):'')+(w?.k==='p'?'<span class="piece-stage">備料</span>':'')+(w?.k==='w'?'<small class="kitchen-star">'+('★'.repeat(kitchenStars(w)))+('☆'.repeat(3-kitchenStars(w)))+'</small><span class="kitchen-food-label">'+(w.t+1)+'階 '+KITCHEN_NAMES[w.c]+'</span>':'')+(w?.k==='w'?'<small class="kitchen-fresh'+(w.fresh<=5?' urgent':'')+'" title="剩餘保鮮步數">'+w.fresh+'</small>':'')+(w?.k==='waste'?'<span class="kitchen-waste-label">廚餘</span>':'')+(kitchen.heat[i]?'<small class="kitchen-heat">'+kitchen.heat[i]+'</small>':'')+(kitchen.tiles[i]?'<span class="kitchen-seasoning">'+KITCHEN_SPICES[kitchen.tiles[i]].icon+'</span>':'')+'</button>').join('');
+ $('kitchenGrid').innerHTML=kitchen.g.map((w,i)=>'<button class="kc '+(w?.k==='w'?'kitchen-dish':w?.k==='waste'?'kitchen-waste':'')+(w?.k==='w'&&Date.now()-(kitchen.forgedAt?.[i]||0)<650?' kitchen-complete':'')+(kitchen.heat[i]>0?' is-overheated':'')+'" data-ki="'+i+'" data-piece-kind="'+(w?.k||'empty')+'" '+(w?.k==='w'?'data-kdrag="dish"':'')+' onclick="kitchenClick('+i+')" aria-label="第'+(i+1)+'格 '+esc(w?kitchenItemName(w):kitchen.heat[i]?'餘熱':'空格')+'" style="'+(kitchen.heat[i]>0?workshopHeatStyle(kitchen.heat[i]):'')+(kitchen.tiles[i]?'box-shadow:inset 0 0 0 2px '+KITCHEN_SPICES[kitchen.tiles[i]].color+';':'')+'">'+(w?kitchenArt(w):'')+(w?.k==='p'?'<span class="piece-stage">備料</span>':'')+(w?.k==='w'?'<small class="kitchen-star">'+('★'.repeat(kitchenStars(w)))+('☆'.repeat(3-kitchenStars(w)))+'</small><span class="kitchen-food-label">'+(w.t+1)+'階 '+KITCHEN_NAMES[w.c]+'</span>':'')+(w?.k==='w'?'<small class="kitchen-fresh'+(w.fresh<=KITCHEN_FRESH_WARNING_STEPS?' urgent':'')+'" title="剩餘保鮮步數">'+w.fresh+'</small>':'')+(w?.k==='waste'?'<span class="kitchen-waste-label">廚餘</span>':'')+(kitchen.heat[i]?'<small class="kitchen-heat">'+kitchen.heat[i]+'</small>':'')+(kitchen.tiles[i]?'<span class="kitchen-seasoning">'+KITCHEN_SPICES[kitchen.tiles[i]].icon+'</span>':'')+'</button>').join('');
  $('kitchenProcesses').innerHTML='<small>工序</small>'+kitchen.mq.map((s,i)=>'<button '+(i===0?'data-kdrag="process" onclick="selectKitchenProcess()"':'disabled')+' class="'+(i===0?'kitchen-process-ready ':'')+(i===0&&kitchen.mode==='prep'?'selected':'')+'">'+kitchenProcessArt(s)+'<b>'+KITCHEN_PROCESS[s]+'</b></button>').join('');
  $('kitchenHand').innerHTML=kitchen.hand?'<small>手持</small><button class="kitchen-held-item '+(kitchen.useHeld?'selected':'')+'" data-kdrag="hand" onclick="selectKitchenHeld()" aria-label="選擇使用手持物品" aria-pressed="'+kitchen.useHeld+'">'+kitchenArt(kitchen.hand)+'</button><button class="kitchen-stow" onclick="kitchenStow()" aria-label="收回手持物品">×</button>':'<small>道具箱</small><button class="kitchen-hand-bag" onclick="openKitchenBag()" aria-label="廚房道具箱"><span>🎒</span></button>';
  $('kitchenFridge').innerHTML=kitchenFridgeArt()+'<small>'+kitchen.pack.length+'/'+(2*kitchenLevel('pack'))+'</small>';if(typeof renderWorkshopMomentumBars==='function')renderWorkshopMomentumBars();renderKitchenMessage(kitchen.message);syncKitchenFlightTargets();requestAnimationFrame(fitKitchen);queueReviewSave();
@@ -1464,6 +1464,7 @@ async function prepareCozyItemSnapshot(items,si){
 }
 const kitchenMergeQueue=[],kitchenMergeJobs=new Set();let kitchenMergeEpoch=0,kitchenGuestSerial=0;
 const KITCHEN_WASTE_FEE=50;
+const KITCHEN_FRESH_WARNING_STEPS=10;
 function kitchenShelfLife(w){const extra=typeof contractBonuses==='function'?(contractBonuses().kitchenFreshBonus||0):0;return w?.k==='w'?32+6*kitchenLevel('fresh')+medalBonuses().dishFreshBonus+extra:0;}
 function kitchenFreshen(w){if(!w)return w;if(w.k==='o'||w.k==='p'){delete w.fresh;delete w.born;}else if(w.k==='w'){w.fresh=kitchenShelfLife(w);w.born=kitchen.turn+1;}return w;}
 function kitchenEnsureFresh(w){if(w?.k==='o'||w?.k==='p')return kitchenFreshen(w);if(w?.k==='w'&&!Number.isFinite(w.fresh))kitchenFreshen(w);return w;}
@@ -1477,8 +1478,23 @@ function clearKitchenWaste(i){
  const compost=earnKitchenCompost(kitchen.g[i]);clearKitchenMerges();kitchen.g[i]=null;$('kitchenModal').hidden=true;kitchen.message='廚餘已清理。請愛護食物，適量備料、及時出餐。';if(compost)kitchen.message+=' 已回收一包溫室堆肥。';if(!kitchen.done)kitchenStep();renderKitchen();return true;
 }
 function kitchenTickFreshness(){
- const expired=[],tick=(w,replace)=>{if(!w)return;if(w.k==='o'||w.k==='p'){kitchenEnsureFresh(w);return;}if(w.k!=='w')return;kitchenEnsureFresh(w);if(w.born<kitchen.turn&&w.fresh>0)w.fresh--;if(w.fresh<=0){expired.push(w);replace({k:'waste',fromKind:'w',fromName:kitchenItemName(w)});}};
+ let expiring=0;
+ const expired=[],tick=(w,replace)=>{
+  if(!w)return;
+  kitchenEnsureFresh(w);
+  if(w.k!=='w')return;
+  if(w.born<kitchen.turn&&w.fresh>0){
+   w.fresh--;
+   if(w.fresh===KITCHEN_FRESH_WARNING_STEPS)expiring++;
+  }
+  if(w.fresh<=0){expired.push(w);replace({k:'waste',fromKind:'w',fromName:kitchenItemName(w)});}
+ };
  kitchen.g.forEach((w,i)=>tick(w,v=>kitchen.g[i]=v));tick(kitchen.hand,v=>kitchen.hand=v);
+ if(expiring){
+  const warning=expiring+' 份料理只剩 '+KITCHEN_FRESH_WARNING_STEPS+' 步保鮮，記得放進冰箱或趕快出餐。';
+  kitchen.message+=' '+warning;
+  toast('⏳ '+warning);
+ }
  if(expired.length){reviewMetrics.spoiled+=expired.length;kitchen.message+=' '+expired.length+' 份食物腐壞成廚餘；請珍惜食物，清理每格需 '+kitchenWasteFee()+' 金幣。';toast('食物腐壞了！請愛護食物，適量備料並善用冰箱。');}
 }
 function kitchenCreateOrders(){
@@ -2023,14 +2039,16 @@ function cancelKitchenOrder(index){
  if(lives<=0){renderKitchen();gameOver('取消晚餐訂單，最後一顆愛心已用完。');return true;}if(!kitchen.orders.length&&!kitchen.queue.length)completeKitchenNight();renderKitchen();saveNow();return true;
 }
 const SEASONS=[
-  {id:'spring',name:'春天',icon:'🌱',description:'春回大地！鍛造格過熱 50 步。春季持續 3 天。'},
-  {id:'summer',name:'夏天',icon:'☀️',description:'盛夏高溫！鍛造格的過熱時間增加 10 步，由 50 步變成 60 步。夏季持續 3 天。'},
+  {id:'spring',name:'春天',icon:'🌱',description:'春回大地！冶煉廠與餐廳的基礎過熱都是 50 步。春季持續 3 天。'},
+  {id:'summer',name:'夏天',icon:'☀️',description:'盛夏高溫！冶煉廠與餐廳的基礎過熱由 50 步增加到 60 步。夏季持續 3 天。'},
   {id:'autumn',name:'秋天',icon:'🍂',description:'秋風吹落葉！每天隨機在 3 個空格落下落葉，落葉格無法放置物品。當上下左右相鄰的格子過熱時，落葉會燃燒消失。未燒掉的落葉保留到秋季結束。'},
   {id:'winter',name:'冬天',icon:'❄️',description:'寒冬結冰！整個冬季維持 1 格冰凍，不會逐日增加。冰凍格不能放置物品，相鄰的過熱格及暴風雪都不會使它融化，換季後解除。'}
 ];
 function seasonIndex(d=day){if(d>0&&typeof activeRunMode==='function'&&activeRunMode()==='eternal_winter')return 3;return d>0?Math.floor((d-1)/3)%4:0;}
 function seasonDay(d=day){return d>0?(d-1)%3+1:1;}
-function hotSteps(){const cb=typeof contractBonuses==='function'?contractBonuses():{forgeHeatDelta:0};const base=Math.max(5,(seasonIndex()===1?60:50)-10*Math.max(0,Math.min(3,sk('cd')))-medalBonuses().forgeHeatReduce-(cb.forgeHeatDelta||0));return typeof isWorkshopFever==='function'&&isWorkshopFever('forge')?Math.max(3,Math.ceil(base/2)):base;}
+function baseWorkshopHeatSteps(){return seasonIndex()===1?60:50;}
+function hotSteps(){const cb=typeof contractBonuses==='function'?contractBonuses():{forgeHeatDelta:0};const base=Math.max(5,baseWorkshopHeatSteps()-10*Math.max(0,Math.min(3,sk('cd')))-medalBonuses().forgeHeatReduce-(cb.forgeHeatDelta||0));return typeof isWorkshopFever==='function'&&isWorkshopFever('forge')?Math.max(3,Math.ceil(base/2)):base;}
+function workshopHeatStyle(remaining){return '--heat-opacity:'+Math.min(1,.24+.76*remaining/baseWorkshopHeatSteps()).toFixed(2)+';';}
 function cellBlock(i){return blueprintSlotAt(i)?'這是傳說藍圖格，請放入指定武器':frozen.has(i)?'這格已冰凍，換季後才能放置物品':leaves.has(i)?'這格有落葉，需要相鄰過熱格將它燒掉':'';}
 function seasonEffect(i,type){
   const effect={type,start:Date.now(),duration:type==='burning'?800:900};
@@ -2080,6 +2098,7 @@ function showSeasonNotice(){
   $('seasonP').style.display='flex';seasonNoticePending=false;
 }
 function showPendingSeasonNotice(){if(seasonNoticePending&&$('title').style.display==='none')showSeasonNotice();}
+
 const SHOP_LIMIT={m:3,tool:1,o:3};
 function shopRemaining(type){const extra=typeof contractBonuses==='function'?(contractBonuses().shopExtra||0):0;return Math.max(0,(SHOP_LIMIT[type]||0)+extra-(shopBought[type]||0));}
 function useLifePotion(){
@@ -2776,8 +2795,8 @@ function render(){
     if(shown.has(i))h=shown.get(i);
     else if(hold.has(i)&&h)
       h=`<div style="display:contents;visibility:hidden">${h}</div>`;
-    return `<div class="c${c&&c.k==='w'?" wc":""}${forgeFlashes.get(i)===c?" forge-complete":""}${magicSet.has(i)?" mg":""}${isOff(i)?" off":""}${leaves.has(i)?" has-leaf":""}${frozen.has(i)?" is-frozen":""}"
-      style="${heat[i]>0?`background:rgba(192,57,43,${(.12+.88*heat[i]/hotSteps()).toFixed(2)});`:""}${magicSet.has(i)?`animation-delay:-${Date.now()%1400}ms`:""}"
+    return `<div class="c${c&&c.k==='w'?" wc":""}${forgeFlashes.get(i)===c?" forge-complete":""}${magicSet.has(i)?" mg":""}${isOff(i)?" off":""}${leaves.has(i)?" has-leaf":""}${frozen.has(i)?" is-frozen":""}${heat[i]>0?" is-overheated":""}"
+      style="${heat[i]>0?workshopHeatStyle(heat[i]):""}${magicSet.has(i)?`animation-delay:-${Date.now()%1400}ms`:""}"
       data-i="${i}" data-piece-kind="${c?.k||'empty'}">${h}${c?.k==='p'?'<span class="piece-stage">'+NM[c.t]+'胚</span>':''}${c?.k==='w'&&!hold.has(i)&&!shown.has(i)?forgeCellLabel(c):''}${seasonCellHTML(i)}${heat[i]>0?`<span class="ht">${heat[i]}</span>`:""}${magicSet.has(i)?`<span class="mgs" style="animation-delay:-${Date.now()%1800}ms">✦</span>`:""}</div>`;
   }).join("");
 
@@ -5448,7 +5467,7 @@ const TOWN_LANDMARKS={
  west_camp:{
   key:'west_camp',buildingId:'townWingWest',buildingName:'西側溪畔營地',icon:'🎣',name:'星露棧橋與博物館',max:3,costs:[1200,3000,6400],
   tierNames:['堅固木棧橋','星露探險營地','皇家自然博物館'],
-  effects:['每日西側探索體力 +1（共 4 次）· 稀有漁獲／古物 +15%','每日西側探索體力 +2（共 5 次）· 漁獲與古物收益 +35%','每日西側探索體力 +3（共 6 次）· 傳說機率大增 · 每日博物津貼 +280💰']
+  effects:['每日釣魚 +1 次（共 4 次）· 稀有漁獲／古物 +15%','每日釣魚 +2 次（共 5 次）· 漁獲與古物收益 +35%','每日釣魚 +3 次（共 6 次）· 傳說機率大增 · 每日博物津貼 +280💰']
  },
  east_post:{
   key:'east_post',buildingId:'townWingEast',buildingName:'東側旅商驛站',icon:'🛒',name:'皇家旅商驛站',max:3,costs:[1200,3000,6400],
@@ -5519,6 +5538,7 @@ const DAILY_HEADLINES=[
 ];
 
 let workshopMomentum=null,chronicleTab='daily',pendingRunMode='normal';
+const WEST_DAILY_DIGS=3,WEST_BASE_FISH_CASTS=3,WEST_CROSS_SHOVEL_COST=150;
 
 function freshTownLandmarks(){
  const out={};
@@ -5528,7 +5548,7 @@ function freshTownLandmarks(){
 
 function freshTownWings(){
  return {
-  westDay:0,westUsed:0,westExtra:0,westFished:0,fishStreak:0,crossUsed:false,fishSupplyDay:0,
+  westDay:0,westDigs:0,westFished:0,fishStreak:0,crossUsed:false,fishSupplyDay:0,
   digBoard:null,
   eastDay:0,eastBought:[],barterDone:false,haggleDone:false,haggleDisc:0,
   shipment:null,
@@ -5582,9 +5602,11 @@ function cleanWorkshopMomentum(raw){
  if(raw.wings&&typeof raw.wings==='object'){
   const w=raw.wings;
   base.wings.westDay=Math.max(0,Math.floor(Number(w.westDay)||0));
-  base.wings.westUsed=Math.max(0,Math.min(12,Math.floor(Number(w.westUsed)||0)));
-  base.wings.westExtra=Math.max(0,Math.min(4,Math.floor(Number(w.westExtra)||0)));
   base.wings.westFished=Math.max(0,Math.min(20,Math.floor(Number(w.westFished)||0)));
+  // Older saves pooled free casts and digs, and tracked paid tools separately.
+  const legacyFreeDigs=Math.max(0,Math.floor(Number(w.westUsed)||0)-base.wings.westFished);
+  const legacyDigs=legacyFreeDigs+Math.max(0,Math.floor(Number(w.westExtra)||0))+Number(!!w.crossUsed);
+  base.wings.westDigs=Math.max(0,Math.min(WEST_DAILY_DIGS,Math.floor(Number(w.westDigs??legacyDigs)||0)));
   if(Array.isArray(w.digBoard)&&w.digBoard.length===9){
    base.wings.digBoard=w.digBoard.map(cell=>cell&&typeof cell==='object'?{t:String(cell.t||'gold'),open:!!cell.open,v:cell.v||null}:null);
   }
@@ -5689,7 +5711,7 @@ function landmarkBonuses(){
   decorDiscount:[0,.12,.22,.35][l.decor]||0,
   fountainPatience:[0,6,12,18][l.fountain]||0,
   fountainSale:[0,0,.06,.12][l.fountain]||0,
-  westStaminaBonus:l.west_camp||0,
+  westFishingBonus:l.west_camp||0,
   westRareBonus:[0,.15,.28,.45][l.west_camp]||0,
   westRewardMult:[1,1.15,1.35,1.6][l.west_camp]||1,
   eastDiscount:[0,.1,.2,.3][l.east_post]||0,
@@ -6051,8 +6073,10 @@ function settlementNextHookHTML(phase){
   if(day>=wg.shipment.returnDay)hooks.push('📦 東側跨城商隊已滿載返航，回城鎮右滑即可領取豐厚收益！');
   else if(phase==='kitchen'&&day+1>=wg.shipment.returnDay)hooks.push('📦 東側跨城商隊明天早上返航，記得去領取收益！');
  }
- const westMax=3+(landmarkBonuses().westStaminaBonus||0),westRem=Math.max(0,westMax-(wg?.westDay===day?(wg.westUsed||0):0));
- if(phase==='forge'&&westRem>0)hooks.push('🎣 西側溪畔還有 '+westRem+' 次免費釣魚／挖寶體力，夜晚限定魚種即將出沒！');
+ const todayWest=wg?.westDay===day?wg:null;
+ const remainingFish=Math.max(0,westFishingLimit()-(todayWest?.westFished||0));
+ const remainingDigs=Math.max(0,WEST_DAILY_DIGS-(todayWest?.westDigs||0));
+ if(phase==='forge'&&remainingFish+remainingDigs>0)hooks.push('🎣 西側溪畔今日剩餘釣魚 '+remainingFish+' 次、挖掘 '+remainingDigs+' 次。');
  if(!hooks.length)hooks.push(phase==='forge'?'🍲 晚餐時段即將開啟，準備好料理與主打菜大賺一筆！':'🌅 明天將刷新全新「今日城鎮頭條」與新一批客人！');
  return '<div class="settle-hooks"><b>✨ 下一步預告</b>'+hooks.slice(0,2).map(h=>'<p>'+h+'</p>').join('')+'</div>';
 }
@@ -6320,7 +6344,7 @@ const TOWN_REGULARS=[
  {id:'freya',guestId:1,icon:'🗡',name:'芙蕾雅騎士',role:'銀翼劍士',giftCost:110,stat:'atk',
   quotes:['出征前總習慣來酒館擦亮長劍。','這把星露鍛造的刃口真是無可挑剔！','能與你並肩守護小鎮，是銀翼騎士團的榮耀！'],
   perk:'Lv3：遠征攻擊 +4% · Lv5：遠征攻擊 +8%',
-  quest:{text:'今日進行至少 1 次西側探索',check:()=>ensureTownWings().westUsed>=1,rewardGold:90}},
+  quest:{text:'今日進行至少 1 次西側探索',check:hasExploredWestToday,rewardGold:90}},
  {id:'austin',guestId:2,icon:'✨',name:'奧斯汀導師',role:'符文魔導師',giftCost:105,stat:'forge',
   quotes:['你的鍛爐火候裡藏著迷人的魔力流動。','這件附魔武器的共鳴度簡直像藝術品！','你對元素鍛造的領悟已超越王立學院！'],
   perk:'Lv3：冶煉售價 +4% · Lv5：冶煉售價 +8%',
@@ -6332,7 +6356,7 @@ const TOWN_REGULARS=[
  {id:'parker',guestId:4,icon:'🌿',name:'帕克花藝師',role:'溫室愛好者',giftCost:100,stat:'def',
   quotes:['晨露溫室的土質真棒，記得多看看花盆喔！','你照料的花朵比王室花園還香甜！','精靈們都在傳頌你的溫室與溪畔聖園呢！'],
   perk:'Lv3：遠征防禦 +4% · Lv5：遠征防禦 +8%',
-  quest:{text:'今日在西側進行至少 1 次探索',check:()=>ensureTownWings().westUsed>=1,rewardGold:85}},
+  quest:{text:'今日在西側進行至少 1 次探索',check:hasExploredWestToday,rewardGold:85}},
  {id:'lia',guestId:5,icon:'🏹',name:'莉亞獵手',role:'溪畔巡林客',giftCost:100,stat:'def',
   quotes:['西側瀑布那邊今天水色特別清澈呢。','你釣魚的架勢越來越有老手的風範了！','整片森林的精靈都把你當成最信任的朋友！'],
   perk:'Lv3：遠征防禦 +4% · Lv5：遠征防禦 +8%',
@@ -6348,7 +6372,7 @@ const TOWN_REGULARS=[
  {id:'kevin',guestId:8,icon:'🗝',name:'凱文影客',role:'遺跡尋寶人',giftCost:105,stat:'forge',
   quotes:['西側古物遺跡底下可藏著不少好貨色喔。','眼光不錯嘛！那件古物的成色我一眼就看出來了！','以後有什麼秘寶情報，我一定第一個告訴你！'],
   perk:'Lv3：冶煉售價 +4% · Lv5：冶煉售價 +8%',
-  quest:{text:'今日在西側進行至少 1 次探索',check:()=>ensureTownWings().westUsed>=1,rewardGold:95}},
+  quest:{text:'今日在西側進行至少 1 次探索',check:hasExploredWestToday,rewardGold:95}},
  {id:'vivian',guestId:9,icon:'💎',name:'薇薇安怪盜',role:'夜行鑑賞家',giftCost:110,stat:'dual',
   quotes:['真正稀有的珍品，只會落在懂行的人手裡。','這座小鎮的藏品連王宮寶庫都相形見絀呢！','算我輸了，你的傑作我只願堂堂正正買下！'],
   perk:'Lv3：雙工坊售價 +3% · Lv5：雙工坊售價 +6%',
@@ -6488,7 +6512,7 @@ function ensureTownWings(){
  const m=ensureWorkshopMomentum();
  if(!m.wings)m.wings=freshTownWings();
  const w=m.wings;
- if(day>0&&w.westDay!==day){w.westDay=day;w.westUsed=0;w.westExtra=0;w.westFished=0;w.fishStreak=0;w.crossUsed=false;w.digBoard=createDailyDigBoard();}
+ if(day>0&&w.westDay!==day){w.westDay=day;w.westDigs=0;w.westFished=0;w.fishStreak=0;w.crossUsed=false;w.digBoard=createDailyDigBoard();}
  if(!Array.isArray(w.digBoard)||w.digBoard.length!==9)w.digBoard=createDailyDigBoard();
  if(day>0&&w.eastDay!==day){w.eastDay=day;w.eastBought=[];w.barterDone=false;w.haggleDone=false;w.haggleDisc=0;}
  if(day>0&&w.regularDay!==day){
@@ -6497,6 +6521,9 @@ function ensureTownWings(){
  }
  return w;
 }
+
+function westFishingLimit(bonuses=landmarkBonuses()){return WEST_BASE_FISH_CASTS+bonuses.westFishingBonus;}
+function hasExploredWestToday(){const w=ensureTownWings();return w.westDigs+w.westFished>0;}
 
 function todayTavernRegulars(){
  const n=TOWN_REGULARS.length,count=5;
@@ -6584,12 +6611,13 @@ function renderTownWing(){
  if(archBtn){archBtn.disabled=townZone!=='center';archBtn.title=townZone==='center'?'建築師':'建築師僅限中央主城鎮使用';}
  const si=townVisualSeason(),night=isSandboxNight(),mapIdx=si+(night?4:0);
  const w=ensureTownWings(),lm=landmarkBonuses(),mus=loadTownMuseum();
- const westMax=3+(lm.westStaminaBonus||0),westRem=Math.max(0,westMax-w.westUsed);
+ const fishMax=westFishingLimit(lm),fishRemaining=Math.max(0,fishMax-w.westFished);
+ const digsRemaining=Math.max(0,WEST_DAILY_DIGS-w.westDigs),westRemaining=fishRemaining+digsRemaining;
  const puzzleReady=RELIC_CATALOG.some(r=>(mus.relicShards?.[r.id]||0)>=9&&!mus.relics.includes(r.id));
  const shipReady=!!(w.shipment&&day>=w.shipment.returnDay);
  const visitors=todayTavernRegulars(),qIds=[visitors[0]?.id,visitors[2]?.id].filter(Boolean);
  const questReady=visitors.some(r=>qIds.includes(r.id)&&!w.regularQuestDone.includes(r.id)&&r.quest.check());
- const westDotBadge=puzzleReady?'<em>🧩拼圖</em>':westRem>0?'<em>'+westRem+'</em>':'';
+ const westDotBadge=puzzleReady?'<em>🧩拼圖</em>':westRemaining>0?'<em>'+westRemaining+'</em>':'';
  const eastDotBadge=shipReady?'<em>領取</em>':questReady?'<em>✦委託</em>':'';
  goW.hidden=townZone!=='center';
  goE.hidden=townZone!=='center';
@@ -6618,8 +6646,8 @@ function renderTownWing(){
    +'<div class="wf-leap-fish"><span class="lf-fish">🐟</span><span class="lf-ring"></span></div>'
    +'<span class="tw-night-halo is-pier"></span><span class="tw-night-halo is-camp"></span>'
    +'</div>'
-   +'<button type="button" class="town-wing-spot" style="left:44%;top:17%;width:48%;height:23%" onclick="openTownWingModal(\'excavate\')"><span class="tw-plaque">⛏ 古物遺跡營地<small>3×3 探勘 · 體力 '+westRem+'/'+westMax+'</small></span></button>'
-   +'<button type="button" class="town-wing-spot" style="left:20%;top:43%;width:32%;height:16%" onclick="openTownWingModal(\'fishing\')"><span class="tw-plaque">🎣 星露釣魚棧橋<small>'+(night?'🌙 夜間限定魚群':'☀ 白天溪畔魚群')+'</small></span></button>'
+   +'<button type="button" class="town-wing-spot" style="left:44%;top:17%;width:48%;height:23%" onclick="openTownWingModal(\'excavate\')"><span class="tw-plaque">⛏ 古物遺跡營地<small>3×3 探勘 · 剩 '+(sandboxSession?'∞':digsRemaining+'/'+WEST_DAILY_DIGS)+' 次</small></span></button>'
+   +'<button type="button" class="town-wing-spot" style="left:20%;top:43%;width:32%;height:16%" onclick="openTownWingModal(\'fishing\')"><span class="tw-plaque">🎣 星露釣魚棧橋<small>'+(night?'🌙 夜間魚群':'☀ 白天魚群')+' · 剩 '+(sandboxSession?'∞':fishRemaining+'/'+fishMax)+' 次</small></span></button>'
    +'<button type="button" class="town-wing-spot is-building" data-landmark-tier="'+westLv+'" style="left:45%;top:59%;width:48%;height:29%" onclick="openTownWingModal(\'museum\')"><img class="tw-building-sprite" src="'+museumSprite+'" alt="星露博物小屋" decoding="async"><span class="tw-plaque">🏛 星露博物小屋<small>大工程 Lv '+westLv+'/3</small></span></button>'
    +'<button type="button" class="town-road-arrow is-east is-return" onclick="setTownZone(\'center\')" aria-label="返回主城鎮"><span>返回城鎮</span>▶</button>';
  }else{
@@ -6669,8 +6697,8 @@ function setFishBait(id){fishBait=id;renderTownWingModal();}
 function setDigTool(id){digTool=id;renderTownWingModal();}
 
 function startFishingCast(){
- const w=ensureTownWings(),lm=landmarkBonuses(),maxStam=3+(lm.westStaminaBonus||0);
- if(!sandboxSession&&w.westUsed>=maxStam){toast('今日西側探索體力已用完（可升級「星露棧橋與博物館」增加體力）。');return;}
+ const w=ensureTownWings();
+ if(!sandboxSession&&w.westFished>=westFishingLimit()){toast('今日釣魚次數已用完。');return;}
  const bait=FISH_BAITS.find(b=>b.id===fishBait)||FISH_BAITS[0];
  if(!sandboxSession&&bait.cost>0&&coins<bait.cost){toast('金幣不足 '+bait.cost+'，無法使用「'+bait.name+'」。');return;}
  stopFishGame();
@@ -6705,14 +6733,13 @@ function pullFishingLine(){
 }
 
 function doWestFish(quality='normal',hitChest=false){
- const w=ensureTownWings(),lm=landmarkBonuses(),maxStam=3+(lm.westStaminaBonus||0);
- if(!sandboxSession&&w.westUsed>=maxStam){toast('今日西側探索體力已用完（可升級「星露棧橋與博物館」增加體力）。');return;}
+ const w=ensureTownWings(),lm=landmarkBonuses();
+ if(!sandboxSession&&w.westFished>=westFishingLimit(lm)){toast('今日釣魚次數已用完。');return;}
  const bait=FISH_BAITS.find(b=>b.id===fishBait)||FISH_BAITS[0];
  if(!sandboxSession&&bait.cost>0){
   if(coins<bait.cost){toast('金幣不足 '+bait.cost+'，已改用免費蚯蚓。');fishBait='worm';}
   else coins-=bait.cost;
  }
- if(!sandboxSession)w.westUsed++;
  w.westFished=(w.westFished||0)+1;
  if(quality==='perfect'||quality==='good')w.fishStreak=Math.min(5,(w.fishStreak||0)+1);
  else w.fishStreak=0;
@@ -6801,13 +6828,15 @@ function openOneRuinCell(w,lm,idx,silent=false){
 }
 
 function digRuinCell(idx){
- const w=ensureTownWings(),lm=landmarkBonuses(),maxStam=3+(lm.westStaminaBonus||0);
+ const w=ensureTownWings(),lm=landmarkBonuses();
  const cell=w.digBoard?.[idx];
  if(!cell||cell.open)return;
+ if(!sandboxSession&&w.westDigs>=WEST_DAILY_DIGS){toast('今日 '+WEST_DAILY_DIGS+' 次挖掘機會已用完。');return;}
  if(digTool==='cross'){
   if(!sandboxSession&&w.crossUsed){toast('今日震波十字鏟已使用過，請改用精準小鋤。');digTool='pick';renderTownWingModal();return;}
-  if(!sandboxSession&&coins<60){toast('金幣不足 60，無法啟動震波十字鏟。');return;}
-  if(!sandboxSession){coins-=60;w.crossUsed=true;}
+  if(!sandboxSession&&coins<WEST_CROSS_SHOVEL_COST){toast('金幣不足 '+WEST_CROSS_SHOVEL_COST+'，無法啟動震波十字鏟。');return;}
+  if(!sandboxSession){coins-=WEST_CROSS_SHOVEL_COST;w.crossUsed=true;}
+  w.westDigs++;
   const r=Math.floor(idx/3),c=idx%3,targets=[[r,c],[r-1,c],[r+1,c],[r,c-1],[r,c+1]];
   const hits=[];
   for(const [nr,nc] of targets){
@@ -6820,14 +6849,7 @@ function digRuinCell(idx){
   const totG=hits.reduce((s,h)=>s+h.reward,0),relN=hits.filter(h=>h.kind==='relic').length;
   toast('💣 震波十字鏟發掘 '+hits.length+' 格！出土 '+relN+' 件古物 · 獲得 💰'+totG+'！');
  }else{
-  const freeAvail=sandboxSession||w.westUsed<maxStam;
-  if(freeAvail){
-   if(!sandboxSession)w.westUsed++;
-  }else{
-   if(w.westExtra>=2){toast('今日免費體力與加場挖掘次數皆已用完！');return;}
-   if(coins<80){toast('金幣不足 80，無法加場挖掘。');return;}
-   coins-=80;w.westExtra++;
-  }
+  w.westDigs++;
   openOneRuinCell(w,lm,idx,false);
  }
  if(w.digBoard.every(c=>c.open)){coins+=180;toast('🏆 今日 3×3 遺跡全數發掘完畢！獲得考古清場獎勵 +180💰！');}
@@ -6836,7 +6858,7 @@ function digRuinCell(idx){
 }
 
 // Keep backward-compatible doWestExcavate for tests & quick-dig
-function doWestExcavate(paid=false){
+function doWestExcavate(){
  const w=ensureTownWings();
  const idx=w.digBoard.findIndex(c=>!c.open);
  if(idx>=0){digTool='pick';digRuinCell(idx);return;}
@@ -7077,7 +7099,8 @@ function renderTownWingModal(){
  if(!title||!body||!townWingModalMode)return;
  if(modal)modal.dataset.mode=townWingModalMode;
  const w=ensureTownWings(),lm=landmarkBonuses(),mus=loadTownMuseum();
- const westMax=3+(lm.westStaminaBonus||0),westRem=Math.max(0,westMax-w.westUsed);
+ const fishMax=westFishingLimit(lm),fishRemaining=Math.max(0,fishMax-w.westFished);
+ const digsRemaining=Math.max(0,WEST_DAILY_DIGS-w.westDigs);
  const si=townVisualSeason(),night=isSandboxNight();
  const sceneHdr=typeof wingModalSceneArt==='function'?wingModalSceneArt(townWingModalMode,night):'';
 
@@ -7095,10 +7118,10 @@ function renderTownWingModal(){
    :'點擊下方「🎣 精準拋竿」啟動浮標軌道，瞄準 <b>金色中心</b> 起竿拿高倍率獎勵！';
   const meterBtns=fishGame.active
    ?'<button type="button" class="tw-big-btn is-gold" onclick="pullFishingLine()">⚡ 立即拉竿起魚！</button>'
-   :'<div class="tw-btn-row"><button type="button" class="tw-big-btn" onclick="startFishingCast()" '+(!sandboxSession&&westRem<=0?'disabled':'')+'>🎣 精準拋竿（開始）</button><button type="button" class="tw-big-btn is-gold" onclick="doWestFish(\'normal\')" '+(!sandboxSession&&westRem<=0?'disabled':'')+'>⚡ 快速拋竿（-1 體力）</button></div>';
+   :'<div class="tw-btn-row"><button type="button" class="tw-big-btn" onclick="startFishingCast()" '+(!sandboxSession&&fishRemaining<=0?'disabled':'')+'>🎣 精準拋竿（開始）</button><button type="button" class="tw-big-btn is-gold" onclick="doWestFish(\'normal\')" '+(!sandboxSession&&fishRemaining<=0?'disabled':'')+'>⚡ 快速拋竿（用 1 次）</button></div>';
   const miniGame='<div class="fish-meter-box'+(fishGame.active?' is-live':' is-idle')+'"><p class="fish-hint">'+meterHint+'</p><div class="fish-track"><span class="fish-zone-good'+perfCls+'"></span><span class="fish-zone-perfect'+perfCls+'"></span>'+chestEl+'<span class="fish-bobber" style="left:'+bobLeft+'%">🎣</span></div>'+meterBtns+'</div>';
   body.innerHTML=sceneHdr
-   +'<p class="tc-intro">今日體力 <b>'+westRem+' / '+westMax+'</b> · '+SEASONS[si].icon+' '+SEASONS[si].name+(night?' 🌙夜晚':' ☀白天')+' · 💰'+(sandboxSession?'∞':coins)+streakBadge+'</p>'
+   +'<p class="tc-intro">今日剩餘釣魚 <b>'+(sandboxSession?'∞':fishRemaining+' / '+fishMax)+'</b> 次 · '+SEASONS[si].icon+' '+SEASONS[si].name+(night?' 🌙夜晚':' ☀白天')+' · 💰'+(sandboxSession?'∞':coins)+streakBadge+'</p>'
    +baitBar+banner+miniGame
    +'<h4 class="tw-sub">本季出沒魚種</h4><div class="tw-grid">'
    +curFish.map(f=>{const got=mus.fish.includes(f.id),maxCm=mus.fishMax?.[f.id];return '<div class="tw-item'+(got?' is-got':'')+'"><div class="tw-px-frame">'+pixelFishArt(f.id,!got)+'</div><b>'+(got?f.name:'未知魚種')+'</b><small>'+(f.night?'🌙 夜晚':'☀ 白天')+' · '+'★'.repeat(f.rarity+1)+(got&&maxCm?' · '+maxCm+'cm':'')+'</small></div>';}).join('')
@@ -7107,11 +7130,11 @@ function renderTownWingModal(){
   title.textContent='⛏ 古物遺跡探勘（3×3）';
   const opened=w.digBoard.filter(c=>c.open).length;
   const toolBar='<div class="tw-bait-row">'
-   +'<button type="button" class="tw-bait-btn'+(digTool==='pick'?' is-on':'')+'" onclick="setDigTool(\'pick\')"><span class="tw-mini-px">'+pixelWingItemArt('rock')+'</span><b>精準小鋤</b><small>消耗 1 體力，精準探勘 1 格</small></button>'
-   +'<button type="button" class="tw-bait-btn'+(digTool==='cross'?' is-on':'')+'" onclick="setDigTool(\'cross\')" '+(!sandboxSession&&w.crossUsed?'disabled':'')+'><span class="tw-mini-px">'+pixelWingItemArt('cross')+'</span><b>震波十字鏟 💰60</b><small>'+(w.crossUsed&&!sandboxSession?'今日已使用':'一次震開十字 5 格（每日 1 次）')+'</small></button>'
+   +'<button type="button" class="tw-bait-btn'+(digTool==='pick'?' is-on':'')+'" onclick="setDigTool(\'pick\')"><span class="tw-mini-px">'+pixelWingItemArt('rock')+'</span><b>精準小鋤</b><small>免費挖 1 格，使用 1 次挖掘機會</small></button>'
+   +'<button type="button" class="tw-bait-btn'+(digTool==='cross'?' is-on':'')+'" onclick="setDigTool(\'cross\')" '+(!sandboxSession&&(w.crossUsed||digsRemaining<=0)?'disabled':'')+'><span class="tw-mini-px">'+pixelWingItemArt('cross')+'</span><b>震波十字鏟 💰'+WEST_CROSS_SHOVEL_COST+'</b><small>'+(w.crossUsed&&!sandboxSession?'今日已使用':'最多震開 5 格，佔 1 次挖掘機會（每日限用 1 次）')+'</small></button>'
    +'</div>';
   body.innerHTML=sceneHdr
-   +'<p class="tc-intro">免費體力 <b>'+westRem+' / '+westMax+'</b> · 加場 <b>'+(2-w.westExtra)+'/2</b>（80💰）· 進度 <b>'+opened+'/9</b>（全清 +180💰）<br>🧭 已開地格會感應周圍未挖掘的<b>古物／寶匣數量</b>，推理再下鏟！</p>'
+   +'<p class="tc-intro">今日剩餘挖掘 <b>'+(sandboxSession?'∞':digsRemaining+' / '+WEST_DAILY_DIGS)+'</b> 次 · 進度 <b>'+opened+'/9</b><br>🧭 已開地格會感應周圍未挖掘的<b>古物／寶匣數量</b>，推理再下鏟！</p>'
    +toolBar
    +'<div class="dig-grid">'
    +w.digBoard.map((c,i)=>{
@@ -7120,8 +7143,8 @@ function renderTownWingModal(){
      const art=c.v?.relicId?'<div class="dig-px">'+pixelRelicArt(c.v.relicId)+'</div>':'<div class="dig-px">'+pixelWingItemArt(c.t==='seed'?'seed':c.t==='chest'?'chest':'gold')+'</div>';
      return '<div class="dig-cell is-open">'+art+'<b>'+(c.v?.label||'已發掘')+'</b><small>'+(c.v?.sub||'')+'</small>'+(near>0?'<em class="dig-radar">🧭 周圍 '+near+' 寶</em>':'<em class="dig-radar is-clear">✓ 周圍空</em>')+'</div>';
     }
-    const disabled=digTool==='cross'?(!sandboxSession&&(w.crossUsed||coins<60)):(!sandboxSession&&westRem<=0&&(w.westExtra>=2||coins<80));
-    return '<button type="button" class="dig-cell'+(digTool==='cross'?' is-cross':'')+'" onclick="digRuinCell('+i+')" '+(disabled?'disabled':'')+'><div class="dig-px">'+pixelWingItemArt(digTool==='cross'?'cross':'rock')+'</div><b>'+(digTool==='cross'?'十字震波':'點擊探勘')+'</b><small>'+(digTool==='cross'?'💰60 開5格':westRem>0||sandboxSession?'免費體力':'💰80 加場')+'</small><em class="dig-radar is-unopened">🧭 待探測</em></button>';
+    const disabled=!sandboxSession&&(digsRemaining<=0||digTool==='cross'&&(w.crossUsed||coins<WEST_CROSS_SHOVEL_COST));
+    return '<button type="button" class="dig-cell'+(digTool==='cross'?' is-cross':'')+'" onclick="digRuinCell('+i+')" '+(disabled?'disabled':'')+'><div class="dig-px">'+pixelWingItemArt(digTool==='cross'?'cross':'rock')+'</div><b>'+(digTool==='cross'?'十字震波':'點擊探勘')+'</b><small>'+(digTool==='cross'?'💰'+WEST_CROSS_SHOVEL_COST:'免費挖掘')+'</small><em class="dig-radar is-unopened">🧭 待探測</em></button>';
    }).join('')
    +'</div>'
    +'<p class="tc-intro" style="margin-top:8px">博物館古物進度：<b>'+mus.relics.length+' / '+RELIC_CATALOG.length+'</b></p>';

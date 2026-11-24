@@ -5070,6 +5070,11 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
  background:radial-gradient(circle at 50% 35%,#23364a,#152230)!important
 }
 
+#app[data-workshop="forge"] #grid>.c.is-overheated,
+#kitchenP[data-workshop="kitchen"] #kitchenGrid>.kc.is-overheated{
+ background:linear-gradient(rgb(211 79 50 / var(--heat-opacity)),rgb(143 43 31 / var(--heat-opacity))),#392622!important
+}
+
 /* 8. Edge-to-Edge Full-Bleed Forge & Kitchen Containers (Zero Side Background Strip) */
 #app{position:relative}
 @media(max-width:600px){

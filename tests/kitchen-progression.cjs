@@ -25,5 +25,24 @@ const death=runtime(file);death.run("start('normal');orders=[];dq=[]");death.c.e
 const legacy=fs.readFileSync(__dirname+'/legacy-restaurant-save.json','utf8'),old={storage:new Map([['forgeSaves',legacy]])},saved=JSON.parse(legacy)[0],migrated=runtime(file,{forgeSaves:legacy});migrated.c.loadGame(saved.id);assert.equal(migrated.run('kitchen.q.every(t=>t===0)'),true);assert.equal(migrated.run('kitchen.g[8].t'),2);assert.equal(migrated.run('kitchen.skills.pack'),1);assert.equal(migrated.run('kitchen.sp'),2);assert.equal(migrated.run('kitchen.hand.k'),'u');assert.equal(migrated.run('kitchen.useHeld'),false);assert.equal(migrated.run('kitchen.cancelled'),0);
 const invalid=JSON.parse(old.storage.get('forgeSaves'))[0].state.restaurant.kitchen;invalid.settlement={served:0,missed:0,earned:0,bonus:0,points:0,spice:0,challenge:0,passed:false,cancelled:'<img>'};assert.throws(()=>c.validKitchenProgress(invalid,1));
 const formal=same([...storage].filter(([k])=>!k.startsWith('forgeBackendProgress')).sort());c.openAdmin();c.setSandboxNight(true);c.openKitchen();run('kitchen.sp=1');c.saveReviewProgress();c.goHome();assert.equal(same([...storage].filter(([k])=>!k.startsWith('forgeBackendProgress')).sort()),formal);
+// Cooked tiles share seasonal base heat with the forge. Freshness alerts fire on the threshold crossing.
+const heatRun=runtime(file),play=heatRun.run;
+play("start('normal',{test:true})");
+for(const [day,steps] of [[1,50],[4,60],[7,50],[10,50]]){
+ play(`day=${day};kitchen=freshKitchen();[11,12,13].forEach(i=>kitchen.g[i]={k:'p',s:0,t:0})`);
+ assert.equal(heatRun.c.kitchenCraft(13),true);
+ assert.equal(play('kitchen.heat[13]'),steps);
+ assert.equal(play('hotSteps()'),steps);
+}
+const warnings=[];
+heatRun.c.toast=message=>warnings.push(message);
+play("kitchen=freshKitchen();kitchen.turn=12;kitchen.g[0]={k:'w',c:0,t:0,born:1,fresh:11};kitchen.hand={k:'w',c:1,t:0,born:1,fresh:11};kitchen.pack=[{k:'w',c:2,t:0,born:1,fresh:11}]");
+heatRun.c.kitchenTickFreshness();
+assert.equal(play('kitchen.g[0].fresh'),10);
+assert.equal(play('kitchen.hand.fresh'),10);
+assert.equal(play('kitchen.pack[0].fresh'),11);
+assert.match(warnings[0],/2 份料理只剩 10 步保鮮.*冰箱.*出餐/);
+heatRun.c.kitchenTickFreshness();
+assert.equal(warnings.length,1);
 const manifest=JSON.parse(fs.readFileSync(__dirname+'/../src/assets-manifest.json'));assert.ok(manifest.length>=250);for(const a of manifest){const bytes=fs.readFileSync(__dirname+'/../'+a.url);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),a.sha256);}
 console.log('PASS: tier1/zero-skill start; mandatory cooking master; exact forge-matched roll thresholds; master-gated ingredient merge; held vs queue input and animation sources; explicit tool click/drag; no free held-dish steps or bag bypass; cancel/replenish/double-click/timers/last-heart/reward-once; normal save and legacy migration; safe backup fields; backend isolation; '+manifest.length+' assets.');

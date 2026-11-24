@@ -24,4 +24,37 @@ C.closeExpedition();R("g[0]={k:'w',c:0,t:0,cs:[0,0,0],m:0,b:0,dts:[]}");C.openEx
 R("g[0]={k:'w',c:0,t:0,cs:[0,0,0],m:0,b:0,dts:[]}");C.openExpedition();C.selectExpeditionFood(0);R('kitchen.pack.splice(0,1)');C.beginExpedition();assert.notEqual(R('g[0]'),null,'Stale food selection must not consume the weapon');
 // Backend changes still cannot write formal saves or collections.
 const formal=JSON.stringify([...storage].filter(([k])=>!k.startsWith('forgeBackendProgress')).sort());c.openAdmin();c.setSandboxNight(true);run('kitchen.skills.purchase=3');c.saveReviewProgress();c.goHome();assert.equal(JSON.stringify([...storage].filter(([k])=>!k.startsWith('forgeBackendProgress')).sort()),formal);
-console.log('PASS: independent cooking/purchasing mastery; all-board separate chains and leftovers/preview; first-night fridge prompt; fountain-safe routes/door queues; morning/night banners; legacy skills; prebattle one-meal choice/identity/consumption/resume; backend isolation.');
+// Day-one fishing and archaeology have independent daily limits, including paid tools.
+const west=runtime(file),visit=west.run;
+visit("start('normal',{test:true});coins=0;digTool='pick';fishBait='worm';ensureTownWings().digBoard=Array.from({length:9},()=>({open:false,t:'seed'}))");
+assert.equal(visit('day'),1);
+for(let i=0;i<4;i++)west.c.digRuinCell(i);
+assert.equal(visit('ensureTownWings().westDigs'),3);
+assert.equal(visit('ensureTownWings().digBoard.filter(cell=>cell.open).length'),3);
+assert.equal(visit('coins'),0);
+for(let i=0;i<4;i++)west.c.doWestFish();
+assert.equal(visit('ensureTownWings().westFished'),3);
+assert.equal(visit('ensureTownWings().westDigs'),3);
+
+visit("day=2;digTool='cross';coins=149;ensureTownWings().digBoard=Array.from({length:9},()=>({open:false,t:'seed'}))");
+west.c.digRuinCell(4);
+assert.equal(visit('ensureTownWings().westDigs'),0);
+assert.equal(visit('ensureTownWings().westFished'),0);
+assert.equal(visit('coins'),149);
+visit('coins=150');
+west.c.digRuinCell(4);
+assert.equal(visit('coins'),0);
+assert.equal(visit('ensureTownWings().westDigs'),1);
+assert.equal(visit('ensureTownWings().digBoard.filter(cell=>cell.open).length'),5);
+visit("digTool='cross';coins=150");
+west.c.digRuinCell(0);
+assert.equal(visit('coins'),150);
+assert.equal(visit('ensureTownWings().westDigs'),1);
+west.c.digRuinCell(0);
+west.c.digRuinCell(2);
+west.c.digRuinCell(6);
+assert.equal(visit('ensureTownWings().westDigs'),3);
+assert.equal(visit('ensureTownWings().digBoard.filter(cell=>cell.open).length'),7);
+assert.equal(visit('cleanWorkshopMomentum({wings:{westDay:2,westUsed:3,westFished:2,westExtra:1,crossUsed:true}}).wings.westDigs'),3);
+assert.equal(visit('cleanWorkshopMomentum(snapshotWorkshopMomentum()).wings.westDigs'),3);
+console.log('PASS: independent cooking/purchasing mastery; all-board separate chains and leftovers/preview; first-night fridge prompt; fountain-safe routes/door queues; morning/night banners; legacy skills; prebattle one-meal choice/identity/consumption/resume; backend isolation; independent west-wing budgets, cross-shovel payment and legacy migration.');
