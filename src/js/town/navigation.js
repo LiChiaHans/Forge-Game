@@ -3,8 +3,8 @@ function seasonalCompassHTML(){return '';}
 
 function renderTown(){
  const si=townVisualSeason(),p=nightTownPalette(TOWN_SEASONS[si]),s=SEASONS[si],night=isSandboxNight(),remaining=night?(kitchen?.orders.length||0)+(kitchen?.queue.length||0):orders.length+dq.length;
- $('sandboxNextDay').hidden=!sandboxSession;$('sandboxTag').textContent=sandboxSession?'🧪 後台獨立進度':'';$('townP').dataset.season=s.id;$('townStats').textContent='💰 '+(sandboxSession?'∞':coins)+(sandboxSession?'　🌟 ∞':'　⭐ '+score())+'　'+'❤️'.repeat(Math.max(0,lives));
- $('townSeason').textContent=s.icon+' '+s.name+' · 第 '+day+' 天 · '+remaining+' 位客人等候';
+ $('sandboxNextDay').hidden=!sandboxSession;$('sandboxTag').innerHTML=sandboxSession?pxIcon('test')+' 後台獨立進度':'';$('townP').dataset.season=s.id;$('townStats').innerHTML=pxIcon('coin')+' '+(sandboxSession?'∞':coins)+(sandboxSession?'　'+pxIcon('skill')+' ∞':'　'+pxIcon('star')+' '+score())+'　'+pxHearts(lives,3,false);
+ $('townSeason').innerHTML=pxSeasonIcon(si)+' '+s.name+' · 第 '+day+' 天 · '+remaining+' 位客人等候';
  $('townSeason').title=seasonBenefitText();
  $('townP').dataset.previewKitchen='true';
  const scenery=$('townScenery'),mapRect=$('townMap').getBoundingClientRect(),sceneKey=s.id+':master:'+Math.round(mapRect.width)+'x'+Math.round(mapRect.height);if(scenery.dataset.season!==sceneKey){scenery.innerHTML=townScene(p);scenery.dataset.season=sceneKey;}

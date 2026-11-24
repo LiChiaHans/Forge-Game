@@ -9,7 +9,7 @@ function guestPreferenceBonus(w,o,food){
  if(food){yes=({劍士:()=>count('1')>=2,法師:()=>!!w.spice,遊俠:()=>count('2')>=2,僧侶:()=>w.c===8||count('2')>=2,盜賊:()=>fast,吟遊詩人:()=>kitchenDishStats(w).aroma>=25,商人:()=>fast,饕客:()=>w.t>o.t||kitchenStars(w)>0}[role]||(()=>false))();}
  else yes=({劍士:()=>count('0')>=2,法師:()=>enchanted,遊俠:()=>count('1')>=2,僧侶:()=>count('2')>=2,盜賊:()=>[0,2].includes(w.c),吟遊詩人:()=>(w.m||0)>0||(w.b||0)>0,商人:()=>fast,饕客:()=>w.t>o.t}[role]||(()=>false))();return yes?.1:0;
 }
-function guestBadge22(o,food){return expandedGameEnabled()&&o?.guest?'<em class="guest-like22" title="'+esc(guestPreferenceText(o,food))+'">♥10%</em>':'';}
+function guestBadge22(o,food){return expandedGameEnabled()&&o?.guest?'<em class="guest-like22" title="'+esc(guestPreferenceText(o,food))+'">'+pxIcon('heart_sm')+'10%</em>':'';}
 function orderGuestHTML(o){
  const guest=o?.guest,source=TOWN_GUEST_ART[guest?.id];
  if(!expandedGameEnabled()||!source)return '';
@@ -20,8 +20,8 @@ function workshopAnyOrderIcon(color){
 }
 function workshopOrderContent(order,{food=false,wait=Math.max(0,order.wait),grade,item,icon,recipe}){
  const portrait=orderGuestHTML(order);
- const mood=order.wait<=order.max/4?'😡':order.wait<=order.max/2?'😒':'';
- return `<span class="workshop-order-status"><span class="wt">⏳${wait}</span><span class="workshop-order-bonus"><span class="em">${mood}</span>${guestBadge22(order,food)}</span></span>
+ const mood=order.wait<=order.max/4?pxIcon('mood_angry'):order.wait<=order.max/2?pxIcon('mood_warn'):'';
+ return `<span class="workshop-order-status"><span class="wt">${pxIcon('hourglass')}${wait}</span><span class="workshop-order-bonus"><span class="em">${mood}</span>${guestBadge22(order,food)}</span></span>
  ${portrait?`<span class="workshop-order-window">${portrait}</span>`:''}
  <span class="workshop-order-details">
    <span class="workshop-order-icon">${icon}</span>

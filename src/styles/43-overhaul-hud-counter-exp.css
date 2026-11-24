@@ -443,3 +443,40 @@
  top:max(82px,calc(env(safe-area-inset-top) + 76px))!important;
  padding:7px 11px!important;font-size:12px!important
 }
+
+/* Unified 16x16 Pixel-Art HUD SVG Icons */
+.px-ico{
+ display:inline-block;width:1.12em;height:1.12em;vertical-align:-0.18em;
+ image-rendering:pixelated;flex:none;pointer-events:none;
+ filter:drop-shadow(0 1px 1px #06090e99)
+}
+#townP .town-header-actions>button .px-ico,
+#townP #townFriends .px-ico,
+#townP #townReviewSave22 .px-ico,
+#app .bar2 #mu .px-ico,
+#kitchenP header>button .px-ico{
+ width:16px;height:16px;vertical-align:middle
+}
+#app .bar #lv .px-ico,
+#townP #townStats .px-ico-heart,
+#kitchenP #kitchenMoney .px-ico-heart{
+ width:1.05em;height:1.05em;margin-right:1px
+}
+.workshop-order .wt .px-ico{
+ width:1.08em;height:1.08em;margin-right:1px;vertical-align:-0.16em
+}
+.workshop-order .guest-like22 .px-ico-heart_sm{
+ width:10px;height:10px;vertical-align:-0.12em;margin-right:1px
+}
+.workshop-order .em .px-ico{
+ width:13px;height:13px;vertical-align:-0.18em
+}
+#pack .chest-icon .px-ico{
+ width:32px;height:32px;display:block;margin:0 auto
+}
+.ws-momentum-bar .px-ico{
+ width:1.08em;height:1.08em;vertical-align:-0.16em;margin-right:2px
+}
+.town-zone-dots button .px-ico{
+ width:1.12em;height:1.12em;vertical-align:-0.18em;margin-right:2px
+}

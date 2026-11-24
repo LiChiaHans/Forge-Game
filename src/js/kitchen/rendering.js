@@ -26,7 +26,7 @@ function kitchenHouseArt(p=TOWN_SEASONS[townVisualSeason()]){
 function kitchenItemName(w){return w.k==='waste'?'廚餘':w.k==='o'?KITCHEN_GRADES[w.t]+'食材包':w.k==='p'?KITCHEN_GRADES[w.t]+['炊煮穀物備料','煎烤肉類備料','切拌蔬菜備料'][w.s]:w.k==='w'?KITCHEN_GRADES[w.t]+KITCHEN_NAMES[w.c]:w.k==='m'?KITCHEN_PROCESS[w.s]:w.k==='spice'?KITCHEN_SPICES[w.spice].name+'調味包':({z:'冰水桶',f:'清潔工具',u:'精選食材券'}[w.k]||'道具');}
 function kitchenModal(title,html){$('kitchenModalTitle').textContent=title;$('kitchenModalContent').innerHTML=html;$('kitchenModal').hidden=false;}
 function renderKitchen(){
- if(!kitchen)return;if(!kitchen.hand)kitchen.useHeld=false;clearKitchenPreview(false);kitchen.g.forEach(kitchenEnsureFresh);syncWorkshopLook();$('kitchenDate').textContent=SEASONS[seasonIndex()].icon+' '+SEASONS[seasonIndex()].name+' · 第 '+day+' 天夜晚';$('kitchenMoney').textContent='💰 '+(sandboxSession?'∞':coins)+'　❤️'+lives;$('kitchenMute').textContent=muted?'🔇':'🔊';
+ if(!kitchen)return;if(!kitchen.hand)kitchen.useHeld=false;clearKitchenPreview(false);kitchen.g.forEach(kitchenEnsureFresh);syncWorkshopLook();$('kitchenDate').innerHTML=pxSeasonIcon(seasonIndex())+' '+SEASONS[seasonIndex()].name+' · 第 '+day+' 天夜晚';$('kitchenMoney').innerHTML=pxIcon('coin')+' '+(sandboxSession?'∞':coins)+'　'+pxIcon('heart')+lives;$('kitchenMute').innerHTML=pxIcon(muted?'sound_off':'sound_on');
  const readyDishes=[...kitchen.g,kitchen.hand].filter(w=>w?.k==='w');
  $('kitchenOrders').innerHTML=kitchen.orders.map((o,i)=>{
   const openOrder=o.c===null;

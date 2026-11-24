@@ -13,7 +13,7 @@ function toggleArchitect(){if(architect.active){confirmCityEdit();return;}if(typ
 function setArchitectSeason(){if(architect.active)toast('只能編輯目前的'+cityContextLabel()+'造景。');}
 function renderArchitect(){
  const selected=architect.active?selectedCityItem():null;
- $('townArchitectBtn').textContent=architect.active?'✓':'🏗';$('townArchitectBtn').setAttribute('aria-label',architect.active?'完成城鎮佈置':'開啟建築師');$('townArchitectBtn').setAttribute('aria-pressed',String(architect.active));$('architectBar').hidden=!architect.active;
+ $('townArchitectBtn').innerHTML=pxIcon(architect.active?'check':'architect');$('townArchitectBtn').setAttribute('aria-label',architect.active?'完成城鎮佈置':'開啟建築師');$('townArchitectBtn').setAttribute('aria-pressed',String(architect.active));$('architectBar').hidden=!architect.active;
  $('architectPanel').hidden=!selected||!!architect.drag?.moved;
  $('architectPanel').dataset.dock=selected&&selected.y>=50?'top':'bottom';
  const mapRect=$('townMap').getBoundingClientRect(),townRect=$('townP').getBoundingClientRect();$('architectPanel').style.setProperty('--architect-map-top',Math.max(0,mapRect.top-townRect.top)+'px');

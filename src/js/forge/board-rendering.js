@@ -12,20 +12,20 @@ function render(){
   if(cheat.s)sp=9999;
   if(day===0&&!tutP2&&g.some(x=>x&&(x.k==='p'||x.k==='w')))tutP2=true;
 
-  $("coin").textContent=(testRun?"🧪 ":"💰 ")+(sandboxSession?"∞":coins);
-  $("ctn").textContent="▶ 繼續遊戲"+(saves.length?"（"+saves.length+"）":"");
+  $("coin").innerHTML=(testRun?pxIcon('test')+" ":pxIcon('coin')+" ")+(sandboxSession?"∞":coins);
+  $("ctn").innerHTML=pxIcon('play')+" 繼續遊戲"+(saves.length?"（"+saves.length+"）":"");
   $("ctn").disabled=!saves.length;
-  $("lv").textContent="❤️".repeat(Math.max(0,lives))+"🖤".repeat(3-Math.max(0,lives));
-  $("mu").textContent=muted?"🔇":"🔊";$("townMute").textContent=muted?"🔇":"🔊";$("townMute").setAttribute("aria-label",muted?"開啟音效":"關閉音效");
+  $("lv").innerHTML=pxHearts(lives,3,true);
+  $("mu").innerHTML=pxIcon(muted?'sound_off':'sound_on');$("townMute").innerHTML=pxIcon(muted?'sound_off':'sound_on');$("townMute").setAttribute("aria-label",muted?"開啟音效":"關閉音效");
   $("spb").hidden=false;
-  $("spb").textContent="🌟技能";
+  $("spb").innerHTML=pxIcon('skill')+"技能";
   if(day===0){
     $("tut").style.display="flex";
     $("tutt").textContent=tutMsg();
   }else $("tut").style.display="none";
-  $("sc").textContent="⭐ "+score()+" · 🏆 "+hi;
-  $("hs").textContent="🏆 歷史最高分："+hi;
-  $("srv").innerHTML=`<span class="season-info">${currentSeason.icon}${currentSeason.name}${seasonIndex()===2&&autumnForgeCharges?'<sup class="season-charge">🔥'+autumnForgeCharges+'</sup>':''}</span><span class="day-info">${day===0?"教學":"第 "+day+" 天"} · 客人 ${dServed}/${dTot}</span>`;
+  $("sc").innerHTML=pxIcon('star')+" "+score()+" · "+pxIcon('trophy')+" "+hi;
+  $("hs").innerHTML=pxIcon('trophy')+" 歷史最高分："+hi;
+  $("srv").innerHTML=`<span class="season-info">${pxSeasonIcon(currentSeason.id)}${currentSeason.name}${seasonIndex()===2&&autumnForgeCharges?'<sup class="season-charge">'+pxIcon('flame')+autumnForgeCharges+'</sup>':''}</span><span class="day-info">${day===0?"教學":"第 "+day+" 天"} · 客人 ${dServed}/${dTot}</span>`;
   renderQ();
 
   const readyW=[...g,hand].filter(w=>w?.k==='w'&&!w.protected);
@@ -48,7 +48,7 @@ function render(){
     let h="";
     for(let i=orders.length;i<(day===0?1:3);i++)
       h+='<div class="od odg" aria-hidden="true"></div>';
-    return h+(orders.length?"":`<div id="closed">🌙 今日已打烊</div>`);
+    return h+(orders.length?"":`<div id="closed">${pxIcon('moon')} 今日已打烊</div>`);
   })();
 
   const th=day===0?tutHints():{};
@@ -96,19 +96,19 @@ function render(){
   ];
   $("shop").innerHTML=
     '<div class="sh">模具<span class="shop-stock">今日剩餘 '+shopRemaining('m')+'/3</span></div>'
-    +'<div class="sg">'+[0,1,2].map(m=>'<button class="si" data-m="'+m+'" '+(coins<MPR||!shopRemaining('m')?'disabled':'')+'>'+mold(m,'','f')+'<small>'+TY[m]+'模 💰'+MPR+'</small></button>').join('')+'</div>'
+    +'<div class="sg">'+[0,1,2].map(m=>'<button class="si" data-m="'+m+'" '+(coins<MPR||!shopRemaining('m')?'disabled':'')+'>'+mold(m,'','f')+'<small>'+TY[m]+'模 '+pxIcon('coin')+MPR+'</small></button>').join('')+'</div>'
     +'<div class="sh">工具<span class="shop-stock">今日剩餘 '+shopRemaining('tool')+'/1</span></div>'
-    +'<div class="sg sg-tools">'+toolItems.map(it=>'<button class="si si-tool" data-'+it.key+'="1" '+(coins<it.price||!shopRemaining('tool')?'disabled':'')+'><span class="forge-tool-icon" data-tool="'+it.key+'">'+forgeToolArt(it.key)+'</span><small>'+it.name+' 💰'+it.price+'</small><span class="tool-desc">'+it.description+'</span></button>').join('')+'</div>'
+    +'<div class="sg sg-tools">'+toolItems.map(it=>'<button class="si si-tool" data-'+it.key+'="1" '+(coins<it.price||!shopRemaining('tool')?'disabled':'')+'><span class="forge-tool-icon" data-tool="'+it.key+'">'+forgeToolArt(it.key)+'</span><small>'+it.name+' '+pxIcon('coin')+it.price+'</small><span class="tool-desc">'+it.description+'</span></button>').join('')+'</div>'
     +'<div class="sh">礦石<span class="shop-stock">今日剩餘 '+shopRemaining('o')+'/3</span></div>'
-    +'<div class="sg sg5">'+[0,1,2,3,4].map(t=>'<button class="si" data-o="'+t+'" '+(coins<OP[t]||!shopRemaining('o')?'disabled':'')+'><div class="q" style="background-color:'+C[t]+'">'+NM[t]+'</div><small>💰'+OP[t]+'</small></button>').join('')+'</div>'
+    +'<div class="sg sg5">'+[0,1,2,3,4].map(t=>'<button class="si" data-o="'+t+'" '+(coins<OP[t]||!shopRemaining('o')?'disabled':'')+'><div class="q" style="background-color:'+C[t]+'">'+NM[t]+'</div><small>'+pxIcon('coin')+OP[t]+'</small></button>').join('')+'</div>'
     +'<div class="sh">鑽石（每日庫存，各限購一個）</div>'
     +(sk('gc')
-      ?'<div class="sg">'+shopD.map((t,k)=>t===null?'<button class="si" disabled>已售完</button>':'<button class="si" data-d="'+k+'" '+(coins<DP[t]?'disabled':'')+'>'+gem(t,'f')+'<small>'+NM[t]+'鑽 💰'+DP[t]+'</small></button>').join('')+'</div>'
-      :'<div class="shop-locked-note">🔒 學習訓練所「寶石匠」後開放購買鑽石</div>');
+      ?'<div class="sg">'+shopD.map((t,k)=>t===null?'<button class="si" disabled>已售完</button>':'<button class="si" data-d="'+k+'" '+(coins<DP[t]?'disabled':'')+'>'+gem(t,'f')+'<small>'+NM[t]+'鑽 '+pxIcon('coin')+DP[t]+'</small></button>').join('')+'</div>'
+      :'<div class="shop-locked-note">'+pxIcon('lock')+' 學習訓練所「寶石匠」後開放購買鑽石</div>');
 
   syncPack();
   $("pack").className=packCap()?"":"all-locked";
-  $("pack").innerHTML=`<span class="chest-icon">📦</span><small>${pack.filter(Boolean).length}/${packCap()}</small>`;
+  $("pack").innerHTML=`<span class="chest-icon">${pxIcon('chest')}</span><small>${pack.filter(Boolean).length}/${packCap()}</small>`;
   $("chestItems").innerHTML=packHTML();
   $("chestInfo").textContent=packCap()?"點擊武器取到手持欄，再拖到棋盤空格。":"升級武器箱技能後可收納武器（2／4／6 格）。";
 

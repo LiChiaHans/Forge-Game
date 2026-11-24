@@ -1,5 +1,10 @@
 name	file	line
 gameTimeout	src/js/core/storage.js	10
+pxIcon	src/js/art/hud-icons.js	60
+pxSeasonIcon	src/js/art/hud-icons.js	66
+pxHearts	src/js/art/hud-icons.js	72
+pxIconFor	src/js/art/hud-icons.js	95
+hydrateHudPixelIcons	src/js/art/hud-icons.js	100
 getWeaponSVG	src/js/forge/weapon-rendering.js	22
 seasonMusicRamp	src/js/audio/sounds-music.js	11
 retireSeasonMusic	src/js/audio/sounds-music.js	17

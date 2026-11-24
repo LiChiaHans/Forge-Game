@@ -434,7 +434,7 @@ function cheerWorkshopFamiliar(kind,msg){
 
 function renderWorkshopMomentumBars(){
  const m=ensureWorkshopMomentum(),contracts=activeContracts(),limit=contractLimit();
- const chipLabel=contracts.length?contracts.map(c=>c.icon+(contracts.length===1?' '+c.name:'')).join(' '):'📜 選契約';
+ const chipLabel=contracts.length?contracts.map(c=>pxIconFor(c.icon)+(contracts.length===1?' '+c.name:'')).join(' '):pxIcon('scroll')+' 選契約';
  const chipClass=contracts.length?'ws-contract-chip':'ws-contract-chip is-empty';
  const famArt=typeof WORKSHOP_FAMILIAR_ART!=='undefined'?WORKSHOP_FAMILIAR_ART:null;
  const fBar=$('forgeFeverBar');
@@ -445,9 +445,9 @@ function renderWorkshopMomentumBars(){
    const active=m.forgeFeverTurns>0,ready=!active&&m.forgeFever>=100,pct=active?Math.round((m.forgeFeverTurns/contractBonuses().feverDuration)*100):m.forgeFever;
    const badge='<button type="button" class="'+chipClass+'" onclick="openTownChronicle()" title="查看本季契約與城鎮大工程">'+chipLabel+(contracts.length<limit?' +':'')+'</button>';
    const fam=famArt?'<span class="ws-familiar'+(active?' is-fever':'')+'" title="熔爐小火龍 · 陪伴鍛造"><img src="'+famArt.forge+'" alt="熔爐小火龍" decoding="async"><em class="ws-fam-tip" hidden></em></span>':'';
-   const btn=active?'<span class="ws-fever-state is-active">🔥 狂熱剩 '+m.forgeFeverTurns+' 步</span>'
-    :ready?'<button type="button" class="ws-fever-btn is-ready" onclick="activateWorkshopFever(\'forge\')">🔥 開啟狂熱！</button>'
-    :'<span class="ws-fever-state">🔥 狂熱 '+m.forgeFever+'%</span>';
+   const btn=active?'<span class="ws-fever-state is-active">'+pxIcon('flame')+' 狂熱剩 '+m.forgeFeverTurns+' 步</span>'
+    :ready?'<button type="button" class="ws-fever-btn is-ready" onclick="activateWorkshopFever(\'forge\')">'+pxIcon('flame')+' 開啟狂熱！</button>'
+    :'<span class="ws-fever-state">'+pxIcon('flame')+' 狂熱 '+m.forgeFever+'%</span>';
    fBar.classList.toggle('is-fever',active);
    fBar.classList.toggle('is-ready',ready);
    fBar.innerHTML=fam+badge+'<div class="ws-fever-track"><i style="width:'+pct+'%"></i></div>'+btn;
@@ -462,9 +462,9 @@ function renderWorkshopMomentumBars(){
    const active=m.kitchenFeverTurns>0,ready=!active&&m.kitchenFever>=100,pct=active?Math.round((m.kitchenFeverTurns/contractBonuses().feverDuration)*100):m.kitchenFever;
    const badge='<button type="button" class="'+chipClass+'" onclick="openTownChronicle()" title="查看本季契約與城鎮大工程">'+chipLabel+(contracts.length<limit?' +':'')+'</button>';
    const fam=famArt?'<span class="ws-familiar'+(active?' is-fever':'')+'" title="橘貓主廚 · 陪伴烹飪"><img src="'+famArt.kitchen+'" alt="橘貓主廚" decoding="async"><em class="ws-fam-tip" hidden></em></span>':'';
-   const btn=active?'<span class="ws-fever-state is-active">🔥 狂熱剩 '+m.kitchenFeverTurns+' 步</span>'
-    :ready?'<button type="button" class="ws-fever-btn is-ready" onclick="activateWorkshopFever(\'kitchen\')">🔥 開啟狂熱！</button>'
-    :'<span class="ws-fever-state">🔥 狂熱 '+m.kitchenFever+'%</span>';
+   const btn=active?'<span class="ws-fever-state is-active">'+pxIcon('flame')+' 狂熱剩 '+m.kitchenFeverTurns+' 步</span>'
+    :ready?'<button type="button" class="ws-fever-btn is-ready" onclick="activateWorkshopFever(\'kitchen\')">'+pxIcon('flame')+' 開啟狂熱！</button>'
+    :'<span class="ws-fever-state">'+pxIcon('flame')+' 狂熱 '+m.kitchenFever+'%</span>';
    kBar.classList.toggle('is-fever',active);
    kBar.classList.toggle('is-ready',ready);
    kBar.innerHTML=fam+badge+'<div class="ws-fever-track"><i style="width:'+pct+'%"></i></div>'+btn;
@@ -484,9 +484,9 @@ function updateTownDailyBadge(){
  const canLandmark=Object.values(TOWN_LANDMARKS).some(lm=>{const lv=m.landmarks[lm.key]||0;return lv<lm.max&&(sandboxSession||coins>=lm.costs[lv]);});
  btn.hidden=false;
  btn.classList.toggle('has-unread',unreadContract||unreadHeadline);
- btn.innerHTML=(modeInfo?'<span class="town-mode-tag">'+modeInfo.icon+(m.mode==='sprint9'?' '+day+'/9天':'')+'</span> ':'')
-  +(unreadContract?'📜 選契約('+(contracts.length)+'/'+limit+')':contracts.map(c=>c.icon+c.name).join('＋'))
-  +' · '+(unreadHeadline?'📰 今日頭條！':canLandmark?'🏛 可建工程':hl?hl.icon+' 頭條':'📰 頭條')
+ btn.innerHTML=(modeInfo?'<span class="town-mode-tag">'+pxIconFor(modeInfo.icon)+(m.mode==='sprint9'?' '+day+'/9天':'')+'</span> ':'')
+  +(unreadContract?pxIcon('scroll')+' 選契約('+(contracts.length)+'/'+limit+')':contracts.map(c=>pxIconFor(c.icon)+c.name).join('＋'))
+  +' · '+(unreadHeadline?pxIcon('news')+' 今日頭條！':canLandmark?pxIcon('landmark')+' 可建工程':hl?pxIconFor(hl.icon)+' 頭條':pxIcon('news')+' 頭條')
   +((unreadContract||unreadHeadline)?'<i class="town-daily-dot" aria-hidden="true"></i>':'');
 }
 

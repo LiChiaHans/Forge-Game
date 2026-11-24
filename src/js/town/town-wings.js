@@ -355,12 +355,12 @@ function renderTownWing(){
  const shipReady=!!(w.shipment&&day>=w.shipment.returnDay);
  const visitors=todayTavernRegulars(),qIds=[visitors[0]?.id,visitors[2]?.id].filter(Boolean);
  const questReady=visitors.some(r=>qIds.includes(r.id)&&!w.regularQuestDone.includes(r.id)&&r.quest.check());
- const westDotBadge=puzzleReady?'<em>🧩拼圖</em>':westRemaining>0?'<em>'+westRemaining+'</em>':'';
+ const westDotBadge=puzzleReady?'<em>'+pxIcon('puzzle')+'拼圖</em>':westRemaining>0?'<em>'+westRemaining+'</em>':'';
  const eastDotBadge=shipReady?'<em>領取</em>':questReady?'<em>✦委託</em>':'';
  goW.hidden=townZone!=='center';
  goE.hidden=townZone!=='center';
  dots.hidden=false;
- dots.innerHTML=[['west','🎣 西側營地'+westDotBadge],['center','🏘 主城鎮'],['east','🛒 東側驛站'+eastDotBadge]].map(([z,lbl])=>'<button type="button" class="'+(townZone===z?'is-active':'')+'" onclick="setTownZone(\''+z+'\')">'+lbl+'</button>').join('');
+ dots.innerHTML=[['west',pxIcon('fishing')+' 西側營地'+westDotBadge],['center',pxIcon('town')+' 主城鎮'],['east',pxIcon('shop')+' 東側驛站'+eastDotBadge]].map(([z,lbl])=>'<button type="button" class="'+(townZone===z?'is-active':'')+'" onclick="setTownZone(\''+z+'\')">'+lbl+'</button>').join('');
  if(townZone==='center'){layer.hidden=true;layer.dataset.zone='center';return;}
  layer.hidden=false;
  layer.dataset.zone=townZone;
@@ -371,7 +371,7 @@ function renderTownWing(){
  const westLv=Math.min(3,Math.max(0,buildingLandmarkTier('west_camp')));
  const eastLv=Math.min(3,Math.max(0,buildingLandmarkTier('east_post')));
  if(townZone==='west'){
-  const tierBadge=westLv>0?'<div class="tw-tier-banner">🎣 '+TOWN_LANDMARKS.west_camp.tierNames[westLv-1]+' '+'★'.repeat(westLv)+'</div>':'';
+  const tierBadge=westLv>0?'<div class="tw-tier-banner">'+pxIcon('fishing')+' '+TOWN_LANDMARKS.west_camp.tierNames[westLv-1]+' '+'★'.repeat(westLv)+'</div>':'';
   const museumSprite=TOWN_WING_BUILDING_ART['west_camp_'+westLv]||TOWN_WING_BUILDING_ART.west_camp_0;
   layer.innerHTML='<img class="town-wing-bg" src="'+bgUrl+'" alt="西側星露溪畔營地" decoding="async">'
    +winterSky
@@ -379,16 +379,16 @@ function renderTownWing(){
    +'<div class="town-wing-fx is-west" aria-hidden="true">'
    +'<span class="tw-sunbeam b1"></span><span class="tw-sunbeam b2"></span>'
    +'<div class="wf-campfire"><span class="cf-flame"></span><span class="cf-flame f2"></span><i class="cf-smoke s1"></i><i class="cf-smoke s2"></i></div>'
-   +'<div class="wf-leap-fish"><span class="lf-fish">🐟</span><span class="lf-ring"></span></div>'
+   +'<div class="wf-leap-fish"><span class="lf-fish">'+pxIcon('fish')+'</span><span class="lf-ring"></span></div>'
    +'<span class="tw-night-halo is-pier"></span><span class="tw-night-halo is-camp"></span>'
    +'</div>'
-   +'<button type="button" class="town-wing-spot" style="left:44%;top:17%;width:48%;height:23%" onclick="openTownWingModal(\'excavate\')"><span class="tw-plaque">⛏ 古物遺跡營地<small>3×3 探勘 · 剩 '+(sandboxSession?'∞':digsRemaining+'/'+WEST_DAILY_DIGS)+' 次</small></span></button>'
-   +'<button type="button" class="town-wing-spot" style="left:17%;top:43%;width:38%;height:16%" onclick="openTownWingModal(\'fishing\')"><span class="tw-plaque">🎣 星露釣魚棧橋<small>'+(night?'🌙 夜間魚群':'☀ 白天魚群')+' · 剩 '+(sandboxSession?'∞':fishRemaining+'/'+fishMax)+'</small></span></button>'
-   +'<button type="button" class="town-wing-spot is-building" data-landmark-tier="'+westLv+'" style="left:45%;top:59%;width:48%;height:29%" onclick="openTownWingModal(\'museum\')"><img class="tw-building-sprite" src="'+museumSprite+'" alt="星露博物小屋" decoding="async"><span class="tw-plaque">🏛 星露博物小屋<small>大工程 Lv '+westLv+'/3</small></span></button>'
+   +'<button type="button" class="town-wing-spot" style="left:44%;top:17%;width:48%;height:23%" onclick="openTownWingModal(\'excavate\')"><span class="tw-plaque">'+pxIcon('pickaxe')+' 古物遺跡營地<small>3×3 探勘 · 剩 '+(sandboxSession?'∞':digsRemaining+'/'+WEST_DAILY_DIGS)+' 次</small></span></button>'
+   +'<button type="button" class="town-wing-spot" style="left:17%;top:43%;width:38%;height:16%" onclick="openTownWingModal(\'fishing\')"><span class="tw-plaque">'+pxIcon('fishing')+' 星露釣魚棧橋<small>'+(night?pxIcon('moon')+' 夜間魚群':pxIcon('sun')+' 白天魚群')+' · 剩 '+(sandboxSession?'∞':fishRemaining+'/'+fishMax)+'</small></span></button>'
+   +'<button type="button" class="town-wing-spot is-building" data-landmark-tier="'+westLv+'" style="left:45%;top:59%;width:48%;height:29%" onclick="openTownWingModal(\'museum\')"><img class="tw-building-sprite" src="'+museumSprite+'" alt="星露博物小屋" decoding="async"><span class="tw-plaque">'+pxIcon('landmark')+' 星露博物小屋<small>大工程 Lv '+westLv+'/3</small></span></button>'
    +'<button type="button" class="town-road-arrow is-east" onclick="setTownZone(\'center\')" aria-label="返回主城鎮"></button>';
  }else{
   const theme=CARAVAN_THEMES[(day-1)%CARAVAN_THEMES.length];
-  const tierBadge=eastLv>0?'<div class="tw-tier-banner">🛒 '+TOWN_LANDMARKS.east_post.tierNames[eastLv-1]+' '+'★'.repeat(eastLv)+'</div>':'';
+  const tierBadge=eastLv>0?'<div class="tw-tier-banner">'+pxIcon('shop')+' '+TOWN_LANDMARKS.east_post.tierNames[eastLv-1]+' '+'★'.repeat(eastLv)+'</div>':'';
   const postSprite=TOWN_WING_BUILDING_ART['east_post_'+eastLv]||TOWN_WING_BUILDING_ART.east_post_0;
   const bubbles=['🍻','🎵','💰'];
   const npcsHtml=visitors.slice(0,3).map((g,idx)=>g&&typeof TOWN_GUEST_ART!=='undefined'&&TOWN_GUEST_ART[g.guestId]?'<button type="button" class="es-guest-npc is-n'+(idx+1)+'" onclick="openTownWingModal(\'tavern\')" title="'+g.name+'（今日在店）"><span class="npc-bubble">'+bubbles[idx%bubbles.length]+'</span><span class="npc-body"><img src="'+TOWN_GUEST_ART[g.guestId]+'" alt="'+g.name+'" decoding="async"></span></button>':'').join('');

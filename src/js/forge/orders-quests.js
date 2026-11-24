@@ -151,23 +151,23 @@ function renderQ(){
   if(btn){
     const doneCnt=quests.filter(q=>q&&q.s==='d').length;
     btn.hidden=false;
-    btn.textContent=doneCnt>=quests.length?"✅任務":"📋任務"+(doneCnt?" "+doneCnt+"/"+quests.length:"");
+    btn.innerHTML=doneCnt>=quests.length?pxIcon('check')+"任務":pxIcon('quest')+"任務"+(doneCnt?" "+doneCnt+"/"+quests.length:"");
     btn.classList.toggle("is-all-done",doneCnt>=quests.length);
   }
   const pg=q=>q.s==='d'?100:q.s==='x'?0:Math.round(q.p/q.n*100);
   bar.innerHTML=quests.map((q,k)=>{
     const d=QD[q.t];
-    return `<div class="qc${q.s==='d'?" d":q.s==='x'?" x":""}"><b>${d.i} ${esc(d.sh(q))}</b><small><span>${q.s==='d'?"✅ 完成":q.s==='x'?"已放棄":q.p+"/"+q.n}</span><span>💰${q.r}</span></small><u style="--pg:${pg(q)}%"></u></div>`;
+    return `<div class="qc${q.s==='d'?" d":q.s==='x'?" x":""}"><b>${d.i} ${esc(d.sh(q))}</b><small><span>${q.s==='d'?pxIcon('check')+" 完成":q.s==='x'?"已放棄":q.p+"/"+q.n}</span><span>${pxIcon('coin')}${q.r}</span></small><u style="--pg:${pg(q)}%"></u></div>`;
   }).join("");
   $("qS").textContent="累計服務 "+all+" 位客人 · 已完成 "+qDone+" 個任務";
   $("qC").innerHTML=quests.map((q,k)=>{
     const d=QD[q.t];
     return `<div class="qr${q.s==='d'?" d":q.s==='x'?" x":""}">
-    <div><b>${d.i} 任務 ${k+1}</b>　<span style="color:#ffd77e">💰 ${q.r}（分數 +${q.r*10}）</span></div>
+    <div><b>${d.i} 任務 ${k+1}</b>　<span style="color:#ffd77e">${pxIcon('coin')} ${q.r}（分數 +${q.r*10}）</span></div>
     <div>${esc(d.tx(q))}</div>
     ${d.tip?`<small>${esc(d.tip)}</small>`:""}${d.day?"<small>每天重新計算進度</small>":""}
     <div class="qb"><i style="width:${pg(q)}%"></i></div>
-    <div class="qa"><span>${q.s==='d'?"✅ 已完成，明天換新任務":q.s==='x'?"已放棄，明天換新任務":"進度 "+q.p+" / "+q.n}</span>${q.s==='a'?`<button data-k="${k}">放棄任務</button>`:""}</div></div>`;
+    <div class="qa"><span>${q.s==='d'?pxIcon('check')+" 已完成，明天換新任務":q.s==='x'?"已放棄，明天換新任務":"進度 "+q.p+" / "+q.n}</span>${q.s==='a'?`<button data-k="${k}">放棄任務</button>`:""}</div></div>`;
   }).join("");
 }
 $("qbar").onclick=()=>openP('qP');

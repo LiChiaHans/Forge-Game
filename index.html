@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="game.css?v=5011bce2b1442368">
+<link rel="stylesheet" href="game.css?v=e237059031d24fdc">
 
 
 
@@ -45,15 +45,15 @@
 <div id="app">
   <div class="bar">
     <span id="coin"></span><span id="sc"></span><button id="srv" onclick="showSeasonNotice()" aria-label="日期、客人與季節資訊"></button>
-    <button onclick="returnToTown()" aria-label="回到城鎮" title="回到城鎮">🏘 回城鎮</button>
+    <button onclick="returnToTown()" aria-label="回到城鎮" title="回到城鎮"><i data-px="town"></i> 回城鎮</button>
   </div>
   <div class="bar bar2">
     <button onclick="showHelp()">?</button>
-    <button onclick="openP('shopP')">🛒商店</button>
-    <button onclick="openP('colP')">📖圖鑑</button>
-    <button id="spb" onclick="visitTrainingFromGame()">🌟技能</button>
-    <button id="questBtn" onclick="openP('qP')" hidden>📋任務</button>
-    <button id="mu" onclick="toggleMute()">🔊</button>
+    <button onclick="openP('shopP')"><i data-px="shop"></i>商店</button>
+    <button onclick="openP('colP')"><i data-px="book"></i>圖鑑</button>
+    <button id="spb" onclick="visitTrainingFromGame()"><i data-px="skill"></i>技能</button>
+    <button id="questBtn" onclick="openP('qP')" hidden><i data-px="quest"></i>任務</button>
+    <button id="mu" onclick="toggleMute()"><i data-px="sound_on"></i></button>
     <span id="lv"></span>
   </div>
   <div id="tut"><span id="tutt"></span><button onclick="skipTut()">略過教學</button></div>
@@ -69,13 +69,13 @@
   <div id="msg"></div>
 </div>
 
-<div id="chestP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('chestP')">×</button><h2>📦 武器箱</h2><p id="chestInfo"></p><button class="exp-wide" onclick="openBlueprintGoal()">📋 查看製作計畫</button><div id="chestItems"></div><button class="legend-chest-button" onclick="openLegendRecipes()">🌟 藍圖收藏</button><button  style="width:100%;margin-top:14px" onclick="closeP('chestP')" class="legacy-modal-close" hidden>關閉</button></div></div>
-<div id="townP"><header class="town-header"><div><span class="town-player-heading"><button id="townAvatar" class="player-avatar" onclick="openAvatarCreator('edit')" title="調整角色外觀" aria-label="調整角色外觀"></button><b>🏘 鍛造小鎮</b><button id="townFriends" onclick="openFriends()" aria-label="好友" title="好友">👥</button></span><span class="town-header-actions"><button id="sandboxNightToggle" hidden onclick="toggleSandboxNight()">🌙 夜晚</button><button id="sandboxNextDay" hidden onclick="nextSandboxDay()">下一天 ▶</button><button id="townArchitectBtn" aria-label="開啟建築師" title="建築師" aria-pressed="false">🏗</button><button id="townAmbient" onclick="toggleAmbientSound()" aria-label="切換環境音場" title="環境音場（瀑布／爐火／酒館壁爐）" aria-pressed="true">🎧</button><button id="townMute" onclick="toggleMute()" aria-label="切換靜音">🔊</button><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁">🏠</button></span></div><button id="townReviewSave22" hidden aria-label="後台測試進度" onclick="openReviewProgress()">💾</button><div id="townStats"></div><div id="townSeason" role="button" tabindex="0" aria-label="查看季節節慶與下一季預告" onclick="openFestival()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openFestival()}"></div><button type="button" id="townDailyBtn" class="town-daily-btn" onclick="openTownChronicle()" hidden></button><span id="sandboxTag" hidden></span><div id="architectBar" hidden><div class="architect-season-picker"><button id="architectSeasonPrev" aria-label="上一個季節">◀</button><output id="architectSeasonName">春天</output><button id="architectSeasonNext" aria-label="下一個季節">▶</button></div><button id="architectInventoryTop">📦 收藏</button><button id="architectLayoutsTop">🖼 版型</button><div id="architectPlacementBar" hidden><span id="architectPlacementHint" aria-live="polite"></span><button id="architectCancelTop">取消放置</button></div></div>
+<div id="chestP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('chestP')">×</button><h2><i data-px="chest"></i> 武器箱</h2><p id="chestInfo"></p><button class="exp-wide" onclick="openBlueprintGoal()"><i data-px="quest"></i> 查看製作計畫</button><div id="chestItems"></div><button class="legend-chest-button" onclick="openLegendRecipes()"><i data-px="skill"></i> 藍圖收藏</button><button  style="width:100%;margin-top:14px" onclick="closeP('chestP')" class="legacy-modal-close" hidden>關閉</button></div></div>
+<div id="townP"><header class="town-header"><div><span class="town-player-heading"><button id="townAvatar" class="player-avatar" onclick="openAvatarCreator('edit')" title="調整角色外觀" aria-label="調整角色外觀"></button><b><i data-px="town"></i> 鍛造小鎮</b><button id="townFriends" onclick="openFriends()" aria-label="好友" title="好友"><i data-px="friends"></i></button></span><span class="town-header-actions"><button id="sandboxNightToggle" hidden onclick="toggleSandboxNight()"><i data-px="moon"></i> 夜晚</button><button id="sandboxNextDay" hidden onclick="nextSandboxDay()">下一天 ▶</button><button id="townArchitectBtn" aria-label="開啟建築師" title="建築師" aria-pressed="false"><i data-px="architect"></i></button><button id="townAmbient" onclick="toggleAmbientSound()" aria-label="切換環境音場" title="環境音場（瀑布／爐火／酒館壁爐）" aria-pressed="true"><i data-px="ambient"></i></button><button id="townMute" onclick="toggleMute()" aria-label="切換靜音"><i data-px="sound_on"></i></button><button onclick="goHome()" aria-label="回到遊戲首頁" title="回到遊戲首頁"><i data-px="home"></i></button></span></div><button id="townReviewSave22" hidden aria-label="後台測試進度" onclick="openReviewProgress()"><i data-px="save"></i></button><div id="townStats"></div><div id="townSeason" role="button" tabindex="0" aria-label="查看季節節慶與下一季預告" onclick="openFestival()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openFestival()}"></div><button type="button" id="townDailyBtn" class="town-daily-btn" onclick="openTownChronicle()" hidden></button><span id="sandboxTag" hidden></span><div id="architectBar" hidden><div class="architect-season-picker"><button id="architectSeasonPrev" aria-label="上一個季節">◀</button><output id="architectSeasonName">春天</output><button id="architectSeasonNext" aria-label="下一個季節">▶</button></div><button id="architectInventoryTop"><i data-px="chest"></i> 收藏</button><button id="architectLayoutsTop"><i data-px="palette"></i> 版型</button><div id="architectPlacementBar" hidden><span id="architectPlacementHint" aria-live="polite"></span><button id="architectCancelTop">取消放置</button></div></div>
 </header><div id="townDayBanner" class="town-day-banner" role="status" aria-live="polite" hidden></div><div id="townMap"><div id="geminiTownScene" aria-hidden="true"><img id="geminiTownImage" alt="" decoding="async"></div><div id="geminiTownEffects" aria-hidden="true"></div><div id="townScenery"></div><div id="townDecorBack"></div><div id="townDecorFront"></div><div id="townPlaza" aria-hidden="true"></div><div id="townFurniture" aria-hidden="true"></div><button id="townExpedition" onclick="openExpedition()" aria-label="城門遠征"><span class="town-sign">⚔ 遠征</span></button><button id="townArchive" class="town-building" onclick="openWeaponAlbum()"></button><button id="townForge" class="town-building" onclick="enterTownForge()"></button><button id="townGreenhouse" class="town-building" onclick="openP('greenhouseP')" aria-label="溫室"></button><button id="townShop" class="town-building" onclick="openP('shopP')"></button><button id="townTraining" class="town-building" onclick="openSkills(false)"></button><button id="townKitchen" hidden class="town-building" onclick="openKitchen()" aria-label="廚房餐廳"></button><button id="townDecorShop" class="town-building" onclick="openDecorationShop()" aria-label="裝飾行"></button><div id="townFountain" aria-label="城鎮噴水池"></div><button id="townFestivalBoard" onclick="openFestival()" aria-label="四季節慶與預告告示牌" hidden></button><div id="townQueue"></div><div id="townPets"><button id="townPet-cat" class="town-pet" onclick="petLove('cat')" aria-label="摸摸小貓"></button><button id="townPet-dog" class="town-pet" onclick="petLove('dog')" aria-label="摸摸小狗"></button></div><div id="townBirds" aria-hidden="true"></div><button id="townChest" onclick="openTownChest()" hidden></button><div id="townNightSky" aria-hidden="true"></div><div id="townWeather" aria-hidden="true"></div><div id="townWingLayer" class="town-wing-layer" hidden></div><button id="townGoWest" class="town-road-arrow is-west" type="button" onclick="setTownZone('west')" aria-label="前往西側溪畔營地" hidden></button><button id="townGoEast" class="town-road-arrow is-east" type="button" onclick="setTownZone('east')" aria-label="前往東側旅商驛站" hidden></button><div id="townZoneDots" class="town-zone-dots" aria-label="城鎮區域切換" hidden></div></div><section id="architectPanel" hidden><div class="architect-panel-heading"><b id="architectSelected"></b><button id="architectDeselect" aria-label="關閉裝飾工具">×</button></div><div id="architectActions"><div class="architect-scale-row"><label for="architectScale">大小</label><input type="range" id="architectScale" min="30" max="200" step="1" value="100"><output id="architectScaleValue">100%</output></div><div class="architect-scale-row"><label for="architectRotation">旋轉</label><input type="range" id="architectRotation" min="0" max="360" step="1" value="0"><output id="architectRotationValue">0°</output></div><div class="architect-transform-tools"><button data-city-action="flip">水平翻轉</button><button data-city-action="flipY">上下翻轉</button><button data-city-action="depth" id="architectDepth">移到後方</button><button data-city-action="roam" id="architectRoam">散步</button><button data-city-action="stow">📦 收起來</button></div></div></section></div>
 <div id="townWingP" class="city-modal" onclick="if(event.target===this)closeTownWingModal()"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="closeTownWingModal()">×</button><h2 id="townWingTitle">區域探索</h2><div id="townWingBody"></div></div></div>
 <div id="museumInspectP" class="city-modal" onclick="if(event.target===this)closeMuseumInspect()"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="closeMuseumInspect()">×</button><h2 id="museumInspectTitle">博物典藏</h2><div id="museumInspectBody"></div></div></div>
-<div id="decorShopP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('decorShopP')">×</button><h2>🎨 裝飾行</h2><p id="decorShopSummary"></p><div id="decorShopTabs" class="city-season-tabs"></div><p id="decorShopNotice" class="city-note"></p><div id="decorShopGrid" class="decor-grid"></div></div></div>
-<div id="decorInventoryP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('decorInventoryP')">×</button><h2 id="decorInventoryTitle">裝飾收藏</h2><p class="city-note">收起的裝飾會留在收藏；每件裝飾只適用於指定的季節與白天／夜晚。</p><div class="decor-inventory-toolbar"><button id="decorInventoryShop">🎨 前往裝飾行</button><button id="decorReturnAll">📦 全部收回</button></div><div id="decorInventoryGrid" class="decor-grid"></div></div></div>
+<div id="decorShopP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('decorShopP')">×</button><h2><i data-px="palette"></i> 裝飾行</h2><p id="decorShopSummary"></p><div id="decorShopTabs" class="city-season-tabs"></div><p id="decorShopNotice" class="city-note"></p><div id="decorShopGrid" class="decor-grid"></div></div></div>
+<div id="decorInventoryP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('decorInventoryP')">×</button><h2 id="decorInventoryTitle">裝飾收藏</h2><p class="city-note">收起的裝飾會留在收藏；每件裝飾只適用於指定的季節與白天／夜晚。</p><div class="decor-inventory-toolbar"><button id="decorInventoryShop"><i data-px="palette"></i> 前往裝飾行</button><button id="decorReturnAll"><i data-px="chest"></i> 全部收回</button></div><div id="decorInventoryGrid" class="decor-grid"></div></div></div>
 <div id="cityLayoutPreviewP" class="city-modal city-layout-preview"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('cityLayoutPreviewP')">×</button><h2 id="cityLayoutPreviewTitle">城鎮版型預覽</h2><p id="cityLayoutPreviewMeta"></p><p id="cityLayoutPreviewStatus" role="status" hidden></p><img id="cityLayoutPreviewImage" alt="城鎮截圖"></div></div>
 
 <div id="cityLayoutsP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('cityLayoutsP')">×</button><h2 id="cityLayoutsTitle">城鎮版型</h2><p class="city-note">版型包含城鎮截圖與作者資訊。缺少的裝飾可付費補齊並套用；預設版型為無裝飾的空白城鎮。儲存後可自行分享給好友。</p><div class="city-layout-save"><input id="cityLayoutName" maxlength="28" aria-label="城鎮版型名稱" placeholder="幫版型取個名字"><button id="cityLayoutSave">儲存目前版型</button></div><div id="cityLayoutsList"></div></div></div>
@@ -114,10 +114,10 @@
  <footer class="avatar-editor-actions"><button onclick="cancelAvatar()">取消</button><button class="pri" id="avatarCreatorConfirm" onclick="confirmAvatar()">完成角色，開始遊戲</button></footer>
 </div></div>
 
-<div id="greenhouseP" class="exp-overlay"><div class="hp greenhouse-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('greenhouseP')">×</button><h2>🌿 溫室</h2><p class="greenhouse-intro">種下元素之花，三天後收成附魔精華。</p><div id="greenhouseSeeds"></div><div id="greenhouseBeds" class="greenhouse-beds"></div><div id="kitchenCompost22" hidden></div><p id="greenhouseDetail"></p></div></div>
+<div id="greenhouseP" class="exp-overlay"><div class="hp greenhouse-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('greenhouseP')">×</button><h2><i data-px="leaf"></i> 溫室</h2><p class="greenhouse-intro">種下元素之花，三天後收成附魔精華。</p><div id="greenhouseSeeds"></div><div id="greenhouseBeds" class="greenhouse-beds"></div><div id="kitchenCompost22" hidden></div><p id="greenhouseDetail"></p></div></div>
 <div id="seedP" class="exp-overlay"><div class="hp seed-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('seedP')">×</button><h2 id="seedTitle">選擇花種</h2><p id="seedCoins"></p><div id="seedChoices"></div><p class="exp-note">庫存種子免費播種；沒有庫存時購買一顆並立即播種。播種當天為種子，第四天開花。</p></div></div>
 
-<div id="leaderboardP" class="exp-overlay"><div class="hp leaderboard-panel"><button class="modal-x" aria-label="關閉視窗" onclick="onlineRequestVersion++;closeP('leaderboardP')">×</button><h2>🏆 全球排行榜</h2><button class="exp-wide" onclick="openFriends()">👥 好友與好友造景</button><p id="leaderboardTotal"></p><p id="leaderboardIdentity"></p><p id="leaderboardLocalOnly" hidden>教學與後台測試不會上傳成績。</p>
+<div id="leaderboardP" class="exp-overlay"><div class="hp leaderboard-panel"><button class="modal-x" aria-label="關閉視窗" onclick="onlineRequestVersion++;closeP('leaderboardP')">×</button><h2><i data-px="trophy"></i> 全球排行榜</h2><button class="exp-wide" onclick="openFriends()"><i data-px="friends"></i> 好友與好友造景</button><p id="leaderboardTotal"></p><p id="leaderboardIdentity"></p><p id="leaderboardLocalOnly" hidden>教學與後台測試不會上傳成績。</p>
  <section id="leaderboardRegisterForm"><label for="leaderboardName">玩家名稱（2～16 個字，全站唯一）</label><div class="lb-form-row"><input id="leaderboardName" maxlength="32" autocomplete="nickname" placeholder="輸入你的排行榜名稱"><button id="leaderboardRegister" class="pri" onclick="registerLeaderboardPlayer()">建立玩家</button></div><p>名稱、頭像與最高紀錄會公開在排行榜。</p><details><summary>已有玩家識別碼？取回原本身份</summary><div class="lb-form-row"><input id="leaderboardRestoreKey" type="password" autocomplete="off" placeholder="貼上玩家識別碼"><button id="leaderboardRestore" onclick="restoreLeaderboardPlayer()">取回</button></div></details></section>
  <div id="leaderboardAccountActions" class="lb-actions" hidden><button id="leaderboardSync" onclick="syncLeaderboardNow()">同步最高紀錄</button><button onclick="$('leaderboardKeyBox').hidden=!$('leaderboardKeyBox').hidden;$('leaderboardKey').value=onlinePlayer.key">玩家識別碼</button><button id="leaderboardSwitch" onclick="switchLeaderboardPlayer()">切換玩家</button></div>
  <div id="leaderboardKeyBox" hidden><p>請自行保管；這是取回身份的憑證，勿分享給其他玩家。</p><input id="leaderboardKey" readonly aria-label="玩家識別碼" onclick="this.select()"></div><p id="leaderboardStatus" role="status"></p><div class="lb-actions"><button class="lb-refresh" onclick="openLeaderboard()">↻ 重新整理</button><button onclick="closeP('leaderboardP');openRec()">個人歷史紀錄</button></div><div id="leaderboardList"></div>
@@ -128,8 +128,8 @@
 
 <div id="forgeCelebration" role="status" aria-live="polite" hidden></div>
 <div id="kitchenP" class="kitchen-screen" hidden>
- <header><b id="kitchenDate"></b><span id="kitchenMoney"></span><button id="kitchenMute" onclick="toggleMute();renderKitchen()" aria-label="切換廚房音效">🔊</button><button onclick="closeKitchen()" aria-label="回到夜間城鎮">🏘</button></header>
- <nav><button onclick="kitchenHelp()">？</button><button onclick="openKitchenMarket()">🥕菜市場</button><button onclick="openKitchenRecipes()">📖食譜</button><button onclick="openKitchenSkills()">👨‍🍳技能</button></nav>
+ <header><b id="kitchenDate"></b><span id="kitchenMoney"></span><button id="kitchenMute" onclick="toggleMute();renderKitchen()" aria-label="切換廚房音效"><i data-px="sound_on"></i></button><button onclick="closeKitchen()" aria-label="回到夜間城鎮"><i data-px="town"></i></button></header>
+ <nav><button onclick="kitchenHelp()">？</button><button onclick="openKitchenMarket()"><i data-px="carrot"></i>菜市場</button><button onclick="openKitchenRecipes()"><i data-px="book"></i>食譜</button><button onclick="openKitchenSkills()"><i data-px="chef"></i>技能</button></nav>
  <section id="kitchenOrders"></section><button id="kitchenChallenge" onclick="openKitchenChallenge()"></button><div id="kitchenFeverBar" class="ws-momentum-bar" hidden></div>
  <main><aside id="kitchenQueue"></aside><div id="kitchenGrid"></div></main>
  <footer><div id="kitchenProcesses"></div><div id="kitchenHand"></div><button id="kitchenFridge" onclick="openKitchenFridge()" aria-label="開啟冰箱"></button></footer><div id="kitchenMessage" role="status"></div>
@@ -138,8 +138,8 @@
 
 <div id="festivalBadgeP" class="city-modal"><div class="hp"><button class="modal-x" aria-label="關閉紀念章視窗" onclick="dismissModal('festivalBadgeP')">×</button><h2 id="festivalBadgeTitle"></h2><div id="festivalBadgeBody"></div></div></div>
 <div id="festivalP" class="city-modal"><div class="hp"><button class="modal-x" aria-label="關閉節慶視窗" onclick="dismissModal('festivalP')">×</button><h2 id="festivalTitle"></h2><div id="festivalBody"></div></div></div>
-<div id="townContractP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉契約與頭條視窗" onclick="dismissModal('townContractP')">×</button><h2 id="townContractTitle">📜 工坊契約與城鎮建設</h2><div id="townContractBody"></div></div></div>
-<div id="runModeP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉試煉模式視窗" onclick="dismissModal('runModeP')">×</button><h2>🔥 選擇試煉模式</h2><div id="runModeBody"></div></div></div>
+<div id="townContractP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉契約與頭條視窗" onclick="dismissModal('townContractP')">×</button><h2 id="townContractTitle"><i data-px="scroll"></i> 工坊契約與城鎮建設</h2><div id="townContractBody"></div></div></div>
+<div id="runModeP" class="city-modal"><div class="hp"><button type="button" class="modal-x" aria-label="關閉試煉模式視窗" onclick="dismissModal('runModeP')">×</button><h2><i data-px="flame"></i> 選擇試煉模式</h2><div id="runModeBody"></div></div></div>
 <div id="workshopFinish" role="status" aria-live="polite" hidden></div>
 <div id="title">
   <small id="assetCacheStatus" class="asset-cache-status" aria-live="off">素材會在背景逐步準備</small>
@@ -148,20 +148,20 @@
   <p id="hs"></p>
   <p>放礦石 · 合成升階 · 鍛造武器 · 賣給客人</p>
   <button class="pri" onclick="beginNewCharacter()">開始遊戲</button>
-  <button id="homeTrials" onclick="openRunModes()">🔥 試煉模式</button>
-  <button id="ctn" onclick="openSaves('load')">▶ 繼續遊戲</button>
+  <button id="homeTrials" onclick="openRunModes()"><i data-px="flame"></i> 試煉模式</button>
+  <button id="ctn" onclick="openSaves('load')"><i data-px="play"></i> 繼續遊戲</button>
   <button onclick="$('title').style.display='none';start('tut')">教學關卡</button>
   
   
   <button id="homeAlbum" onclick="openWeaponAlbum()">📖 圖鑑館</button>
-  <button id="homeLeaderboard" onclick="openLeaderboard()">🏆 全球排行榜</button>
+  <button id="homeLeaderboard" onclick="openLeaderboard()"><i data-px="trophy"></i> 全球排行榜</button>
   <button onclick="showHelp()">遊戲說明</button>
   <p class="cr">製作人: LiChia</p>
   <p class="cr" id="upd">更新日期: 2026/11/19</p>
 </div>
 
 <div id="weaponAlbumP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('weaponAlbumP')">×</button>
-  <h2>📚 圖鑑館</h2><div id="archiveCategories" hidden><button id="archiveWeapons" onclick="setArchiveCategory('weapons')">⚔ 武器</button><button id="archiveDishes" onclick="setArchiveCategory('dishes')">🍽 料理</button><button id="archiveBadges" onclick="setArchiveCategory('badges')">🏅 紀念章</button><button id="archiveMuseum" onclick="setArchiveCategory('museum')">🐟 博物</button></div><div id="archiveSort" class="archive-sort" hidden><label id="archiveSortLabel" for="archiveSortSelect">武器排序</label><select id="archiveSortSelect" aria-label="武器排序" onchange="setArchiveSort(archiveCategory,this.value)"></select><small>各階級內依基礎數值排列</small></div><p id="albumProgress"></p>
+  <h2><i data-px="book"></i> 圖鑑館</h2><div id="archiveCategories" hidden><button id="archiveWeapons" onclick="setArchiveCategory('weapons')"><i data-px="sword"></i> 武器</button><button id="archiveDishes" onclick="setArchiveCategory('dishes')"><i data-px="dish"></i> 料理</button><button id="archiveBadges" onclick="setArchiveCategory('badges')"><i data-px="medal"></i> 紀念章</button><button id="archiveMuseum" onclick="setArchiveCategory('museum')"><i data-px="fish"></i> 博物</button></div><div id="archiveSort" class="archive-sort" hidden><label id="archiveSortLabel" for="archiveSortSelect">武器排序</label><select id="archiveSortSelect" aria-label="武器排序" onchange="setArchiveSort(archiveCategory,this.value)"></select><small>各階級內依基礎數值排列</small></div><p id="albumProgress"></p>
   <div id="albumTabs" role="group" aria-label="依武器階級篩選"></div>
   <div id="albumWeapons"></div>
   <button  style="width:100%;margin-top:14px" onclick="closeP('weaponAlbumP')" class="legacy-modal-close" hidden>關閉圖鑑</button>
@@ -201,29 +201,29 @@
 </div></div>
 
 <div id="shopP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('shopP')">×</button>
-  <h2>🛒 商店</h2><div id="shop"></div>
+  <h2><i data-px="shop"></i> 商店</h2><div id="shop"></div>
   <button  class="pri legacy-modal-close" style="width:100%;margin-top:12px" onclick="closeP('shopP')" hidden>關閉</button>
 </div></div>
 
 <div id="qP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('qP')">×</button>
-  <h2>📋 任務</h2><p id="qS"></p><div id="qC"></div>
+  <h2><i data-px="quest"></i> 任務</h2><p id="qS"></p><div id="qC"></div>
   <p style="font-size:12px;color:var(--mute);margin:6px 0 0">三個任務同時進行，不用接任務，達成就自動領取獎勵（金幣與分數）。太困難可以放棄，該格任務會在隔天換新；已完成的任務也會在隔天換新。</p>
   <button  class="pri legacy-modal-close" style="width:100%;margin-top:12px" onclick="closeP('qP')" hidden>關閉</button>
 </div></div>
 
 <div id="colP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('colP')">×</button>
-  <h2>📖 最佳作品 / 配方圖鑑</h2>
+  <h2><i data-px="book"></i> 最佳作品 / 配方圖鑑</h2>
   <div id="skl"></div><div id="lg"></div><div id="col"></div>
   <button  class="pri legacy-modal-close" style="width:100%;margin-top:12px" onclick="closeP('colP')" hidden>關閉</button>
 </div></div>
 
 <div id="sk"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('sk')">×</button>
-  <h2 id="trainingTitle">🌟 技能</h2><div id="trainingTabs" hidden><button onclick="switchTrainingBranch('forge')" id="trainingForge">⚒ 冶煉廠</button><button onclick="switchTrainingBranch('kitchen')" id="trainingKitchen">🍲 餐廳</button></div><p id="skp"></p><div id="skc"></div>
+  <h2 id="trainingTitle"><i data-px="skill"></i> 技能</h2><div id="trainingTabs" hidden><button onclick="switchTrainingBranch('forge')" id="trainingForge"><i data-px="architect"></i> 冶煉廠</button><button onclick="switchTrainingBranch('kitchen')" id="trainingKitchen"><i data-px="dish"></i> 餐廳</button></div><p id="skp"></p><div id="skc"></div>
   <button id="skb" class="pri" style="width:100%"></button>
 </div></div>
 
 <div id="bagP"><div class="hp"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('bagP')">×</button>
-  <h2>🎒 道具箱</h2>
+  <h2><i data-px="bag"></i> 道具箱</h2>
   <p>點選道具，放到「手持」欄後就能拖到棋盤使用。</p>
   <div id="bagC" class="sg sg4"></div>
   <button  class="pri legacy-modal-close" style="width:100%;margin-top:12px" onclick="closeP('bagP')" hidden>關閉</button>
@@ -288,6 +288,6 @@
 <div id="toasts"></div>
 
 <div id="sceneTransition" role="status" aria-live="polite" tabindex="-1" hidden></div>
-<script src="game.js?v=3d615b16d08f65e7"></script>
+<script src="game.js?v=320a581a48467e9f"></script>
 </body>
 </html>

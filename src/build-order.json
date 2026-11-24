@@ -2,6 +2,7 @@
   "version": 1,
   "scripts": [
     "src/js/core/storage.js",
+    "src/js/art/hud-icons.js",
     "src/js/art/weapon-sprites.js",
     "src/js/forge/weapon-rendering.js",
     "src/js/audio/sounds-music.js",

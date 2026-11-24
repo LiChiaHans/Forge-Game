@@ -180,7 +180,7 @@ const ambientState={scene:'none',ctx:null,noiseBuf:null,nodes:null,crackleTimer:
 function updateAmbientUI(){
  const btn=$('townAmbient'),chk=$('ambientToggle');
  if(btn){
-  btn.textContent=ambientEnabled?'🎧':'🔇';
+  btn.innerHTML=pxIcon(ambientEnabled?'ambient':'sound_off');
   btn.setAttribute('aria-pressed',String(ambientEnabled));
   btn.style.opacity=ambientEnabled?'1':'.52';
  }
