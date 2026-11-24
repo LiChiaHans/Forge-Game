@@ -3560,6 +3560,8 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 
 /* Ensure seasonal weather (Spring petals, Summer shimmer, Autumn leaves, Winter snow) plays over West & East wings too! */
 #townWeather{z-index:6!important}
+.low-effects{--town-event-motion:none}
+@media(prefers-reduced-motion:reduce){:root{--town-event-motion:none}}
 
 .town-road-arrow{
  --road-triangle:polygon(0 0,25% 0,25% 12.5%,50% 12.5%,50% 25%,75% 25%,75% 37.5%,100% 37.5%,100% 62.5%,75% 62.5%,75% 75%,50% 75%,50% 87.5%,25% 87.5%,25% 100%,0 100%);
@@ -3834,6 +3836,8 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 .tw-catch-banner>span{font-size:28px;line-height:1}
 .tw-catch-banner b{display:block;font-size:13.5px;color:#fff2c2}
 .tw-catch-banner small{display:block;font-size:11.5px;color:#cfe2d1;margin-top:2px}
+.tw-catch-banner .tw-link-btn{margin-top:5px;min-height:36px}
+.tw-catch-banner.is-new-catch .tw-px-badge{animation:var(--town-event-motion,museumTankLight) .86s ease-out}
 .fish-meter-box{
  margin:6px 0 12px;padding:10px;border:1.5px solid #68a7b8;border-radius:9px;
  background:linear-gradient(180deg,#1a333f,#12242d);
@@ -3866,6 +3870,33 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
  position:absolute;top:50%;transform:translate(-50%,-50%);
  font-size:20px;line-height:1;filter:drop-shadow(0 1px 3px #000)
 }
+.fish-meter-box.is-idle .fish-track.has-perfect-catch{animation:var(--town-event-motion,fishPerfectTrack) .64s ease-out}
+.fish-perfect-effect{position:absolute;top:52%;z-index:3;pointer-events:none}
+.fish-perfect-effect::before,.fish-perfect-effect::after{
+ content:'';position:absolute;width:74px;height:20px;border:2px solid #ffe17f;border-radius:50%;opacity:0;
+ box-shadow:0 0 7px #ffbd5e9c;animation:var(--town-event-motion,fishPerfectRipple) .53s ease-out
+}
+.fish-perfect-effect::after{border-color:#fff0a7;animation-delay:75ms}
+.fish-perfect-effect i{
+ position:absolute;width:4px;height:4px;background:#fff0a7;box-shadow:2px 2px #cd984f;opacity:0;
+ animation:var(--town-event-motion,fishPerfectDroplet) .38s steps(7,end)
+}
+.fish-perfect-effect i:nth-child(1){--splash-x:-33px;--splash-y:-8px}
+.fish-perfect-effect i:nth-child(2){--splash-x:-21px;--splash-y:-15px}
+.fish-perfect-effect i:nth-child(3){--splash-x:-9px;--splash-y:-13px}
+.fish-perfect-effect i:nth-child(4){--splash-x:11px;--splash-y:-15px}
+.fish-perfect-effect i:nth-child(5){--splash-x:24px;--splash-y:-11px}
+.fish-perfect-effect i:nth-child(6){--splash-x:35px;--splash-y:-7px}
+@keyframes fishPerfectTrack{0%,70%{opacity:1;filter:none}100%{opacity:.45;filter:saturate(.45) brightness(.8)}}
+@keyframes fishPerfectRipple{
+ 0%{transform:translate(-50%,-50%) scale(.22);opacity:.95}
+ 100%{transform:translate(-50%,-50%) scale(1.5);opacity:0}
+}
+@keyframes fishPerfectDroplet{
+ 0%{transform:translate(-2px,-2px);opacity:1}
+ 60%{transform:translate(var(--splash-x),var(--splash-y));opacity:1}
+ 100%{transform:translate(var(--splash-x),9px);opacity:0}
+}
 
 /* 3x3 Ancient Ruin Dig Grid */
 .dig-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:114px;gap:8px;margin:8px 0}
@@ -3883,6 +3914,34 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 .dig-cell>span{font-size:24px;line-height:1.1}
 .dig-cell>b{font-size:11.5px;color:#fff2ca;line-height:1.2}
 .dig-cell>small{font-size:10px;color:#bfd1be}
+.dig-cell.is-revealing{position:relative;animation:var(--town-event-motion,ruinStrike) .18s steps(4,end) var(--dig-delay)}
+.dig-cell.is-revealing>:not(.dig-crust){
+ animation:.22s ease-out calc(var(--dig-delay) + .16s) backwards;
+ animation-name:var(--town-event-motion,ruinTreasure)
+}
+.dig-cell>.dig-crust{
+ position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;
+ background:repeating-linear-gradient(135deg,#78604144 0 4px,transparent 4px 10px),linear-gradient(#514539,#2b241c);
+ animation:.34s steps(6,end) var(--dig-delay) backwards;
+ animation-name:var(--town-event-motion,ruinCrust)
+}
+.dig-crust::before{
+ content:'';position:absolute;left:50%;top:48%;width:60%;height:70%;opacity:0;
+ transform:translate(-50%,-50%);background:#23150d;
+ clip-path:polygon(60% 0,69% 0,58% 28%,79% 33%,61% 52%,85% 64%,76% 70%,50% 56%,36% 74%,44% 100%,33% 100%,23% 72%,44% 45%,34% 36%,8% 42%,5% 34%,34% 24%,47% 32%);
+ animation:var(--town-event-motion,ruinCrack) .25s steps(3,end) calc(var(--dig-delay) + .06s)
+}
+.dig-crust::after{
+ content:'';position:absolute;left:50%;top:50%;width:4px;height:4px;opacity:0;
+ background:#d2a16c;box-shadow:-16px -10px #c08a60,15px -14px #e5b481,-25px 6px #ad8055,19px 11px #bd8c5c,10px 24px #a97044;
+ animation:var(--town-event-motion,ruinDust) .24s steps(4,end) calc(var(--dig-delay) + .1s)
+}
+.dig-grid.is-cross-reveal .dig-crust::before{background:#ffd277;filter:drop-shadow(0 0 4px #edb757)}
+@keyframes ruinStrike{0%,100%{transform:none}25%{transform:translateX(-2px)}60%{transform:translateX(2px)}}
+@keyframes ruinCrust{0%,35%{opacity:1;transform:none}100%{opacity:0;transform:translateY(10px)}}
+@keyframes ruinCrack{0%,75%{opacity:1}100%{opacity:0}}
+@keyframes ruinDust{0%{opacity:1;transform:scale(.25)}70%{opacity:1}100%{opacity:0;transform:scale(1.65)}}
+@keyframes ruinTreasure{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
 /* Museum, Barter & Regular Side Quests */
 .tw-row.is-got-row{border-color:#c9a659;background:linear-gradient(180deg,#24372c,#17251e)}
@@ -3967,6 +4026,8 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
 .tw-item.is-got .tw-px-frame{
  border-color:#e3be68;box-shadow:inset 0 0 10px #ffe49433,0 3px 8px #060a08aa
 }
+.tw-item.is-new-museum-fish .tw-px-frame{border-color:#a3eada;box-shadow:inset 0 0 12px #7fe2cf77,0 0 8px #70ddca55}
+.tw-item.is-new-museum-fish>small{color:#b8f5e4}
 .tw-px-badge{
  width:56px;height:56px;flex:none;display:flex;align-items:center;justify-content:center;
  border:2px solid #cfa557;border-radius:10px;overflow:hidden;
@@ -4069,6 +4130,18 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
  border:2.5px solid #e6c26b;background:#18261f;
  box-shadow:0 8px 20px #040806bb,inset 0 0 18px #ffe49422
 }
+.mi-showcase.is-new-exhibit.is-fish .mi-art-stage,.mi-showcase.is-new-exhibit.is-relic .mi-brass-plaque{position:relative}
+.mi-showcase.is-new-exhibit.is-fish .mi-art-stage{animation:var(--town-event-motion,museumTankLight) .86s ease-out}
+.mi-showcase.is-new-exhibit.is-fish .mi-art-stage::after,.mi-showcase.is-new-exhibit.is-relic .mi-brass-plaque::after{
+ content:'';position:absolute;inset:0;pointer-events:none;opacity:0;
+ background:radial-gradient(ellipse at 50% 6%,#e6ffeb77 0,transparent 73%);
+ animation:var(--town-event-motion,museumLightSweep) .86s ease-out
+}
+.mi-showcase.is-new-exhibit.is-relic .mi-brass-plaque{overflow:hidden;animation:var(--town-event-motion,museumPlaqueLight) .86s ease-out}
+.mi-showcase.is-new-exhibit.is-relic .mi-brass-plaque::after{background:linear-gradient(105deg,transparent 30%,#fff7c5bb 49%,transparent 66%)}
+@keyframes museumTankLight{0%,100%{box-shadow:0 8px 20px #040806bb}22%,52%{box-shadow:0 0 19px #89ffdfa6,inset 0 0 15px #abffe2a6}}
+@keyframes museumPlaqueLight{0%,100%{filter:none}24%,50%{filter:brightness(1.2) drop-shadow(0 0 5px #f8cf7b9c)}}
+@keyframes museumLightSweep{0%{opacity:0;transform:translateX(-18%)}27%,58%{opacity:1}100%{opacity:0;transform:translateX(23%)}}
 .mi-oil-img{display:block;width:100%;height:100%;object-fit:cover}
 .mi-oil-img.is-locked{filter:brightness(0) opacity(.45)}
 .mi-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
