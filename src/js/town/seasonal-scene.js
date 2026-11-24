@@ -6,7 +6,7 @@ const GEMINI_TOWN_BUILDINGS=[
  {id:'townArchive',kind:'archive',name:'星頁圖鑑館',label:'星頁圖鑑館，查看武器收藏',box:[0,.246,.415,.214],sign:[.14,.64,.78,.19],angle:-5},
  {id:'townKitchen',kind:'kitchen',name:'暖爐餐廳',label:'暖爐餐廳，晚間料理營業',box:[.58,.09,.42,.248],sign:[.07,.65,.82,.16],angle:5},
  {id:'townGreenhouse',kind:'greenhouse',name:'晨露溫室',label:'晨露溫室，種植與收成',box:[.005,.464,.398,.20],sign:[.08,.62,.84,.20],angle:5},
- {id:'townForge',kind:'forge',name:'鐵火冶煉廠',label:'鐵火冶煉廠，進入鍛造棋盤',box:[.58,.466,.42,.218],sign:[.08,.62,.82,.19],angle:-5},
+ {id:'townForge',kind:'forge',name:'鐵火冶煉廠',label:'鐵火冶煉廠，進入鍛造棋盤',box:[.58,.466,.42,.218],sign:[.16,.58,.80,.19],angle:-5},
  {id:'townDecorShop',kind:'decor',name:'彩匠裝飾行',label:'彩匠裝飾行，購買城鎮裝飾',box:[0,.68,.412,.226],sign:[.06,.62,.88,.18],angle:-5},
  {id:'townTraining',kind:'training',name:'星盾訓練所',label:'星盾訓練所，提升技能',box:[.582,.69,.418,.226],sign:[.12,.64,.82,.17],angle:5}
 ];

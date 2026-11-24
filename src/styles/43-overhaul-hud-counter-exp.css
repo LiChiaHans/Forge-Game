@@ -357,3 +357,89 @@
   max-width:var(--portrait-layout-width)!important
  }
 }
+
+/* 9. Visual & UI Audit Polish Pass */
+.hud-compass{display:none!important}
+
+/* Expedition close button never overlaps stage buttons 5 & 10 */
+#expeditionP .hp{position:relative}
+#expeditionP .hp>.modal-x{
+ position:absolute!important;top:12px!important;right:12px!important;z-index:8!important
+}
+#expeditionP .exp-header{padding-right:44px!important}
+
+/* Town header: prevent title truncation and brighten Friends button */
+#townP .town-player-heading{gap:5px!important}
+#townP .town-player-heading>b{
+ font-size:15px!important;letter-spacing:.3px;overflow:visible!important;text-overflow:clip!important
+}
+#townP #townFriends{
+ width:30px!important;min-width:30px!important;height:30px!important;min-height:30px!important;
+ border:1.5px solid #d4aa57!important;border-radius:8px!important;
+ background:linear-gradient(180deg,#3d4f60,#263340)!important;
+ color:#fff3cc!important;font-size:15px!important;
+ box-shadow:inset 0 1px 0 #ffffff2a,0 2px 5px #070b1088!important
+}
+#townP .town-header-actions{gap:2px!important;padding:2px 3px!important}
+#townP .town-header-actions>button{
+ height:30px!important;min-height:30px!important;font-size:14px!important
+}
+#townP #townArchitectBtn,#townP #townMute,#townP #townAmbient,#townP .town-header-actions>button:last-child{
+ width:28px!important;min-width:28px!important;padding:0!important;font-size:15px!important
+}
+#townP #sandboxNightToggle,#townP #sandboxNextDay{
+ padding:0 5px!important;font-size:10.5px!important
+}
+
+/* Museum 3-tab single row & uncollected showcase crest */
+.tc-tabs.is-3col{
+ grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important
+}
+.tc-tabs.is-3col button{
+ font-size:12px!important;padding:8px 3px!important;white-space:nowrap
+}
+.tw-item:not(.is-got) .tw-px-frame{
+ position:relative;
+ background:radial-gradient(circle at 50% 45%,#28231e,#161310)!important;
+ border-color:#5a4d3a!important
+}
+.tw-item:not(.is-got) .tw-px-frame::after{
+ content:'?';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+ font-family:'Noto Serif TC',serif;font-size:24px;font-weight:900;
+ color:#c9a66255;pointer-events:none
+}
+
+/* Forge Shop: 5 ores in one balanced row & diamond locked notice */
+#shopP .sg5{
+ grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:5px!important
+}
+#shopP .sg5 .si{padding:7px 2px 6px!important}
+#shopP .sg5 .si small{font-size:11px!important}
+.shop-locked-note{
+ padding:10px 12px;border:1px dashed #8a734a88;border-radius:8px;
+ background:#131922cc;color:#c7ba9c;font-size:12.5px;text-align:center
+}
+
+/* Pixel leather/canvas pouch icon in Forge & Kitchen item box */
+.workshop-pouch-svg{
+ width:42px;height:42px;display:block;image-rendering:pixelated;
+ filter:drop-shadow(0 2px 3px #05080caa)
+}
+#kitchenHand .kitchen-hand-bag{
+ display:inline-flex;align-items:center;justify-content:center;padding:2px!important
+}
+
+/* Greenhouse top scrim for crisp title contrast */
+#greenhouseP .greenhouse-panel{
+ background-image:linear-gradient(180deg,#11201bd8 0%,#15282288 30%,#182c2ab8 100%),var(--greenhouse-art)!important
+}
+#greenhouseP .greenhouse-panel h2,
+#greenhouseP .greenhouse-intro{
+ text-shadow:0 2px 6px #07120ee6
+}
+
+/* Forge prediction banner sits cleanly below top HUD */
+#prediction{
+ top:max(82px,calc(env(safe-area-inset-top) + 76px))!important;
+ padding:7px 11px!important;font-size:12px!important
+}

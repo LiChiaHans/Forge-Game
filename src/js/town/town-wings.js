@@ -383,7 +383,7 @@ function renderTownWing(){
    +'<span class="tw-night-halo is-pier"></span><span class="tw-night-halo is-camp"></span>'
    +'</div>'
    +'<button type="button" class="town-wing-spot" style="left:44%;top:17%;width:48%;height:23%" onclick="openTownWingModal(\'excavate\')"><span class="tw-plaque">⛏ 古物遺跡營地<small>3×3 探勘 · 剩 '+(sandboxSession?'∞':digsRemaining+'/'+WEST_DAILY_DIGS)+' 次</small></span></button>'
-   +'<button type="button" class="town-wing-spot" style="left:20%;top:43%;width:32%;height:16%" onclick="openTownWingModal(\'fishing\')"><span class="tw-plaque">🎣 星露釣魚棧橋<small>'+(night?'🌙 夜間魚群':'☀ 白天魚群')+' · 剩 '+(sandboxSession?'∞':fishRemaining+'/'+fishMax)+' 次</small></span></button>'
+   +'<button type="button" class="town-wing-spot" style="left:17%;top:43%;width:38%;height:16%" onclick="openTownWingModal(\'fishing\')"><span class="tw-plaque">🎣 星露釣魚棧橋<small>'+(night?'🌙 夜間魚群':'☀ 白天魚群')+' · 剩 '+(sandboxSession?'∞':fishRemaining+'/'+fishMax)+'</small></span></button>'
    +'<button type="button" class="town-wing-spot is-building" data-landmark-tier="'+westLv+'" style="left:45%;top:59%;width:48%;height:29%" onclick="openTownWingModal(\'museum\')"><img class="tw-building-sprite" src="'+museumSprite+'" alt="星露博物小屋" decoding="async"><span class="tw-plaque">🏛 星露博物小屋<small>大工程 Lv '+westLv+'/3</small></span></button>'
    +'<button type="button" class="town-road-arrow is-east" onclick="setTownZone(\'center\')" aria-label="返回主城鎮"></button>';
  }else{
@@ -912,7 +912,7 @@ function renderTownWingModal({perfectCatch=null,newCatch=false,digReveal=[],cros
   const tot=mus.fish.length+mus.relics.length,maxTot=FISH_CATALOG.length+RELIC_CATALOG.length;
   const readyRelics=RELIC_CATALOG.filter(r=>(mus.relicShards?.[r.id]||0)>=9&&!mus.relics.includes(r.id)).length;
   title.textContent='🏛 星露博物小屋';
-  const tabs='<div class="tc-tabs"><button type="button" aria-pressed="'+(museumTab==='fish')+'" onclick="setMuseumTab(\'fish\')">🐟 魚類 ('+mus.fish.length+'/'+FISH_CATALOG.length+')</button><button type="button" aria-pressed="'+(museumTab==='relic')+'" onclick="setMuseumTab(\'relic\')">🏺 古物 ('+mus.relics.length+'/'+RELIC_CATALOG.length+(readyRelics?' 🧩':'')+')</button><button type="button" aria-pressed="'+(museumTab==='milestone')+'" onclick="setMuseumTab(\'milestone\')">🏆 加成總覽</button></div>';
+  const tabs='<div class="tc-tabs is-3col"><button type="button" aria-pressed="'+(museumTab==='fish')+'" onclick="setMuseumTab(\'fish\')">🐟 魚類 '+mus.fish.length+'/'+FISH_CATALOG.length+'</button><button type="button" aria-pressed="'+(museumTab==='relic')+'" onclick="setMuseumTab(\'relic\')">🏺 古物 '+mus.relics.length+'/'+RELIC_CATALOG.length+(readyRelics?' 🧩':'')+'</button><button type="button" aria-pressed="'+(museumTab==='milestone')+'" onclick="setMuseumTab(\'milestone\')">🏆 加成總覽</button></div>';
   let content='';
   if(museumTab==='fish'){
    content='<div class="tw-grid">'+FISH_CATALOG.map(f=>museumFishCardHTML(f,mus)).join('')+'</div>';

@@ -25,7 +25,7 @@ function render(){
   }else $("tut").style.display="none";
   $("sc").textContent="⭐ "+score()+" · 🏆 "+hi;
   $("hs").textContent="🏆 歷史最高分："+hi;
-  $("srv").innerHTML=`${typeof seasonalCompassHTML==='function'?seasonalCompassHTML(seasonIndex(),false):''}<span class="season-info">${currentSeason.icon}${currentSeason.name}${seasonIndex()===2&&autumnForgeCharges?'<sup class="season-charge">🔥'+autumnForgeCharges+'</sup>':''}</span><span class="day-info">${day===0?"教學":"第 "+day+" 天"} · 客人 ${dServed}/${dTot}</span>`;
+  $("srv").innerHTML=`<span class="season-info">${currentSeason.icon}${currentSeason.name}${seasonIndex()===2&&autumnForgeCharges?'<sup class="season-charge">🔥'+autumnForgeCharges+'</sup>':''}</span><span class="day-info">${day===0?"教學":"第 "+day+" 天"} · 客人 ${dServed}/${dTot}</span>`;
   renderQ();
 
   const readyW=[...g,hand].filter(w=>w?.k==='w'&&!w.protected);
@@ -78,10 +78,11 @@ function render(){
   $("tools").innerHTML=`<div class="tl2">模具</div>
     <span class="dm" data-drag="mold">${mold(MQ[0],"","f")}</span>
     <div class="mq">${MQ.slice(1,3).map(m=>mold(m,"","")).join("")}</div>`;
+  const pouchSvg='<svg class="workshop-pouch-svg" viewBox="0 0 64 64" shape-rendering="crispEdges" aria-hidden="true"><path fill="#1e1510" d="M22 10h20v6h6v8h6v26h-6v6H16v-6h-6V24h6v-8h6z"/><path fill="#7a4c2a" d="M24 14h16v6h8v28H16V20h8z"/><path fill="#a66c3e" d="M18 22h28v10H18zM26 14h12v4H26z"/><path fill="#54331b" d="M18 32h28v4H18zM18 46h28v4H18z"/><path fill="#e6be62" d="M28 29h8v9h-8z"/><path fill="#fff1b8" d="M30 31h4v3h-4z"/><path fill="#c49458" d="M22 20h4v4h-4zM38 20h4v4h-4z"/></svg>';
   $("handSlot").innerHTML=hand!==null?
     '<div class="tl2">手持</div>'+`<span class="dm" data-drag="hand">${hand.k==='bp'?blueprintShapeHTML(hand.id,hand.rot||0):itemH(hand,1)}</span>`
     +'<button class="hand-stow" onclick="stowHand(event)" aria-label="收回手持物品" title="收回">×</button>'
-    :'<div class="tl2">道具箱</div><button class="dm hand-bag" onclick="openHandBag()" aria-label="開啟道具箱" title="道具箱"><span aria-hidden="true">🎒</span></button>';
+    :'<div class="tl2">道具箱</div><button class="dm hand-bag" onclick="openHandBag()" aria-label="開啟道具箱" title="道具箱">'+pouchSvg+'</button>';
 
   $("q").innerHTML="<small>接下來</small>"+Q.map((t,k)=>
     `<div class="q${k?"":" first"}${cozyOreClass()}"${cozyOreAttributes(t)} data-step="${k+1}" aria-label="第${k+1}顆：${NM[t]}礦" style="background-color:${C[t]};${cozyOreStyle(t)}">${NM[t]}</div>`
@@ -100,8 +101,10 @@ function render(){
     +'<div class="sg sg-tools">'+toolItems.map(it=>'<button class="si si-tool" data-'+it.key+'="1" '+(coins<it.price||!shopRemaining('tool')?'disabled':'')+'><span class="forge-tool-icon" data-tool="'+it.key+'">'+forgeToolArt(it.key)+'</span><small>'+it.name+' 💰'+it.price+'</small><span class="tool-desc">'+it.description+'</span></button>').join('')+'</div>'
     +'<div class="sh">礦石<span class="shop-stock">今日剩餘 '+shopRemaining('o')+'/3</span></div>'
     +'<div class="sg sg5">'+[0,1,2,3,4].map(t=>'<button class="si" data-o="'+t+'" '+(coins<OP[t]||!shopRemaining('o')?'disabled':'')+'><div class="q" style="background-color:'+C[t]+'">'+NM[t]+'</div><small>💰'+OP[t]+'</small></button>').join('')+'</div>'
-    +'<div class="sh '+(sk('gc')?'':'nogc')+'">鑽石（每日庫存，各限購一個）</div>'
-    +'<div class="sg '+(sk('gc')?'':'nogc')+'">'+shopD.map((t,k)=>t===null?'<button class="si" disabled>已售完</button>':'<button class="si" data-d="'+k+'" '+(coins<DP[t]?'disabled':'')+'>'+gem(t,'f')+'<small>'+NM[t]+'鑽 💰'+DP[t]+'</small></button>').join('')+'</div>';
+    +'<div class="sh">鑽石（每日庫存，各限購一個）</div>'
+    +(sk('gc')
+      ?'<div class="sg">'+shopD.map((t,k)=>t===null?'<button class="si" disabled>已售完</button>':'<button class="si" data-d="'+k+'" '+(coins<DP[t]?'disabled':'')+'>'+gem(t,'f')+'<small>'+NM[t]+'鑽 💰'+DP[t]+'</small></button>').join('')+'</div>'
+      :'<div class="shop-locked-note">🔒 學習訓練所「寶石匠」後開放購買鑽石</div>');
 
   syncPack();
   $("pack").className=packCap()?"":"all-locked";

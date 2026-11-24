@@ -1002,7 +1002,7 @@ function kitchenHouseArt(p=TOWN_SEASONS[townVisualSeason()]){
 function kitchenItemName(w){return w.k==='waste'?'廚餘':w.k==='o'?KITCHEN_GRADES[w.t]+'食材包':w.k==='p'?KITCHEN_GRADES[w.t]+['炊煮穀物備料','煎烤肉類備料','切拌蔬菜備料'][w.s]:w.k==='w'?KITCHEN_GRADES[w.t]+KITCHEN_NAMES[w.c]:w.k==='m'?KITCHEN_PROCESS[w.s]:w.k==='spice'?KITCHEN_SPICES[w.spice].name+'調味包':({z:'冰水桶',f:'清潔工具',u:'精選食材券'}[w.k]||'道具');}
 function kitchenModal(title,html){$('kitchenModalTitle').textContent=title;$('kitchenModalContent').innerHTML=html;$('kitchenModal').hidden=false;}
 function renderKitchen(){
- if(!kitchen)return;if(!kitchen.hand)kitchen.useHeld=false;clearKitchenPreview(false);kitchen.g.forEach(kitchenEnsureFresh);syncWorkshopLook();$('kitchenDate').innerHTML=(typeof seasonalCompassHTML==='function'?seasonalCompassHTML(seasonIndex(),true):'')+'<span>'+SEASONS[seasonIndex()].icon+' '+SEASONS[seasonIndex()].name+' · 第 '+day+' 天夜晚</span>';$('kitchenMoney').textContent='💰 '+(sandboxSession?'∞':coins)+'　❤️'+lives;$('kitchenMute').textContent=muted?'🔇':'🔊';
+ if(!kitchen)return;if(!kitchen.hand)kitchen.useHeld=false;clearKitchenPreview(false);kitchen.g.forEach(kitchenEnsureFresh);syncWorkshopLook();$('kitchenDate').textContent=SEASONS[seasonIndex()].icon+' '+SEASONS[seasonIndex()].name+' · 第 '+day+' 天夜晚';$('kitchenMoney').textContent='💰 '+(sandboxSession?'∞':coins)+'　❤️'+lives;$('kitchenMute').textContent=muted?'🔇':'🔊';
  const readyDishes=[...kitchen.g,kitchen.hand].filter(w=>w?.k==='w');
  $('kitchenOrders').innerHTML=kitchen.orders.map((o,i)=>{
   const openOrder=o.c===null;
@@ -1017,7 +1017,8 @@ function renderKitchen(){
  $('kitchenQueue').innerHTML='<small>接下來</small>'+kitchen.q.map((t,i)=>'<span class="kitchen-next" '+(i===0?'data-kdrag="ore" onclick="selectKitchenIngredients()" aria-label="選擇放置食材"':'')+'>'+kitchenArt({k:'o',t})+'<b>'+(i+1)+'</b><b class="kitchen-queue-grade">'+(t+1)+'階 '+KITCHEN_GRADES[t]+'</b></span>').join('');
  $('kitchenGrid').innerHTML=kitchen.g.map((w,i)=>'<button class="kc '+(w?.k==='w'?'kitchen-dish':w?.k==='waste'?'kitchen-waste':'')+(w?.k==='w'&&Date.now()-(kitchen.forgedAt?.[i]||0)<650?' kitchen-complete':'')+(kitchen.heat[i]>0?' is-overheated':'')+'" data-ki="'+i+'" data-piece-kind="'+(w?.k||'empty')+'" '+(w?.k==='w'?'data-kdrag="dish"':'')+' onclick="kitchenClick('+i+')" aria-label="第'+(i+1)+'格 '+esc(w?kitchenItemName(w):kitchen.heat[i]?'餘熱':'空格')+'" style="'+(kitchen.heat[i]>0?workshopHeatStyle(kitchen.heat[i]):'')+(kitchen.tiles[i]?'box-shadow:inset 0 0 0 2px '+KITCHEN_SPICES[kitchen.tiles[i]].color+';':'')+'">'+(w?kitchenArt(w):'')+(w?.k==='p'?'<span class="piece-stage">備料</span>':'')+(w?.k==='w'?'<small class="kitchen-star">'+('★'.repeat(kitchenStars(w)))+('☆'.repeat(3-kitchenStars(w)))+'</small><span class="kitchen-food-label">'+(w.t+1)+'階 '+KITCHEN_NAMES[w.c]+'</span>':'')+(w?.k==='w'?'<small class="kitchen-fresh'+(w.fresh<=KITCHEN_FRESH_WARNING_STEPS?' urgent':'')+'" title="剩餘保鮮步數">'+w.fresh+'</small>':'')+(w?.k==='waste'?'<span class="kitchen-waste-label">廚餘</span>':'')+(kitchen.heat[i]?'<small class="kitchen-heat">'+kitchen.heat[i]+'</small>':'')+(kitchen.tiles[i]?'<span class="kitchen-seasoning">'+KITCHEN_SPICES[kitchen.tiles[i]].icon+'</span>':'')+'</button>').join('');
  $('kitchenProcesses').innerHTML='<small>工序</small>'+kitchen.mq.map((s,i)=>'<button '+(i===0?'data-kdrag="process" onclick="selectKitchenProcess()"':'disabled')+' class="'+(i===0?'kitchen-process-ready ':'')+(i===0&&kitchen.mode==='prep'?'selected':'')+'">'+kitchenProcessArt(s)+'<b>'+KITCHEN_PROCESS[s]+'</b></button>').join('');
- $('kitchenHand').innerHTML=kitchen.hand?'<small>手持</small><button class="kitchen-held-item '+(kitchen.useHeld?'selected':'')+'" data-kdrag="hand" onclick="selectKitchenHeld()" aria-label="選擇使用手持物品" aria-pressed="'+kitchen.useHeld+'">'+kitchenArt(kitchen.hand)+'</button><button class="kitchen-stow" onclick="kitchenStow()" aria-label="收回手持物品">×</button>':'<small>道具箱</small><button class="kitchen-hand-bag" onclick="openKitchenBag()" aria-label="廚房道具箱"><span>🎒</span></button>';
+ const kitchenPouchSvg='<svg class="workshop-pouch-svg" viewBox="0 0 64 64" shape-rendering="crispEdges" aria-hidden="true"><path fill="#221912" d="M22 10h20v6h6v8h6v26h-6v6H16v-6h-6V24h6v-8h6z"/><path fill="#5c7d55" d="M24 14h16v6h8v28H16V20h8z"/><path fill="#84a874" d="M18 22h28v10H18zM26 14h12v4H26z"/><path fill="#3d573a" d="M18 32h28v4H18zM18 46h28v4H18z"/><path fill="#efd07a" d="M28 29h8v9h-8z"/><path fill="#fff6d0" d="M30 31h4v3h-4z"/><path fill="#d4b068" d="M22 20h4v4h-4zM38 20h4v4h-4z"/></svg>';
+ $('kitchenHand').innerHTML=kitchen.hand?'<small>手持</small><button class="kitchen-held-item '+(kitchen.useHeld?'selected':'')+'" data-kdrag="hand" onclick="selectKitchenHeld()" aria-label="選擇使用手持物品" aria-pressed="'+kitchen.useHeld+'">'+kitchenArt(kitchen.hand)+'</button><button class="kitchen-stow" onclick="kitchenStow()" aria-label="收回手持物品">×</button>':'<small>道具箱</small><button class="kitchen-hand-bag" onclick="openKitchenBag()" aria-label="廚房道具箱">'+kitchenPouchSvg+'</button>';
  $('kitchenFridge').innerHTML=kitchenFridgeArt()+'<small>'+kitchen.pack.length+'/'+(2*kitchenLevel('pack'))+'</small>';if(typeof renderWorkshopMomentumBars==='function')renderWorkshopMomentumBars();renderKitchenMessage(kitchen.message);syncKitchenFlightTargets();requestAnimationFrame(fitKitchen);queueReviewSave();
 }
 function fitKitchen(){const screen=$('kitchenP');if(screen.hidden)return;const main=screen.querySelector('main');if(!main||main.clientHeight<1)return;const grid=$('kitchenGrid'),cell=Math.max(24,Math.floor(Math.min((main.clientWidth-54-30)/5,(main.clientHeight-34)/6)));grid.style.width=(cell*5+30)+'px';grid.style.height=(cell*6+34)+'px';grid.style.gridTemplateColumns='repeat(5,'+cell+'px)';grid.style.gridTemplateRows='repeat(6,'+cell+'px)';}
@@ -1253,7 +1254,7 @@ const GEMINI_TOWN_BUILDINGS=[
  {id:'townArchive',kind:'archive',name:'星頁圖鑑館',label:'星頁圖鑑館，查看武器收藏',box:[0,.246,.415,.214],sign:[.14,.64,.78,.19],angle:-5},
  {id:'townKitchen',kind:'kitchen',name:'暖爐餐廳',label:'暖爐餐廳，晚間料理營業',box:[.58,.09,.42,.248],sign:[.07,.65,.82,.16],angle:5},
  {id:'townGreenhouse',kind:'greenhouse',name:'晨露溫室',label:'晨露溫室，種植與收成',box:[.005,.464,.398,.20],sign:[.08,.62,.84,.20],angle:5},
- {id:'townForge',kind:'forge',name:'鐵火冶煉廠',label:'鐵火冶煉廠，進入鍛造棋盤',box:[.58,.466,.42,.218],sign:[.08,.62,.82,.19],angle:-5},
+ {id:'townForge',kind:'forge',name:'鐵火冶煉廠',label:'鐵火冶煉廠，進入鍛造棋盤',box:[.58,.466,.42,.218],sign:[.16,.58,.80,.19],angle:-5},
  {id:'townDecorShop',kind:'decor',name:'彩匠裝飾行',label:'彩匠裝飾行，購買城鎮裝飾',box:[0,.68,.412,.226],sign:[.06,.62,.88,.18],angle:-5},
  {id:'townTraining',kind:'training',name:'星盾訓練所',label:'星盾訓練所，提升技能',box:[.582,.69,.418,.226],sign:[.12,.64,.82,.17],angle:5}
 ];
@@ -2752,7 +2753,7 @@ function render(){
   }else $("tut").style.display="none";
   $("sc").textContent="⭐ "+score()+" · 🏆 "+hi;
   $("hs").textContent="🏆 歷史最高分："+hi;
-  $("srv").innerHTML=`${typeof seasonalCompassHTML==='function'?seasonalCompassHTML(seasonIndex(),false):''}<span class="season-info">${currentSeason.icon}${currentSeason.name}${seasonIndex()===2&&autumnForgeCharges?'<sup class="season-charge">🔥'+autumnForgeCharges+'</sup>':''}</span><span class="day-info">${day===0?"教學":"第 "+day+" 天"} · 客人 ${dServed}/${dTot}</span>`;
+  $("srv").innerHTML=`<span class="season-info">${currentSeason.icon}${currentSeason.name}${seasonIndex()===2&&autumnForgeCharges?'<sup class="season-charge">🔥'+autumnForgeCharges+'</sup>':''}</span><span class="day-info">${day===0?"教學":"第 "+day+" 天"} · 客人 ${dServed}/${dTot}</span>`;
   renderQ();
 
   const readyW=[...g,hand].filter(w=>w?.k==='w'&&!w.protected);
@@ -2805,10 +2806,11 @@ function render(){
   $("tools").innerHTML=`<div class="tl2">模具</div>
     <span class="dm" data-drag="mold">${mold(MQ[0],"","f")}</span>
     <div class="mq">${MQ.slice(1,3).map(m=>mold(m,"","")).join("")}</div>`;
+  const pouchSvg='<svg class="workshop-pouch-svg" viewBox="0 0 64 64" shape-rendering="crispEdges" aria-hidden="true"><path fill="#1e1510" d="M22 10h20v6h6v8h6v26h-6v6H16v-6h-6V24h6v-8h6z"/><path fill="#7a4c2a" d="M24 14h16v6h8v28H16V20h8z"/><path fill="#a66c3e" d="M18 22h28v10H18zM26 14h12v4H26z"/><path fill="#54331b" d="M18 32h28v4H18zM18 46h28v4H18z"/><path fill="#e6be62" d="M28 29h8v9h-8z"/><path fill="#fff1b8" d="M30 31h4v3h-4z"/><path fill="#c49458" d="M22 20h4v4h-4zM38 20h4v4h-4z"/></svg>';
   $("handSlot").innerHTML=hand!==null?
     '<div class="tl2">手持</div>'+`<span class="dm" data-drag="hand">${hand.k==='bp'?blueprintShapeHTML(hand.id,hand.rot||0):itemH(hand,1)}</span>`
     +'<button class="hand-stow" onclick="stowHand(event)" aria-label="收回手持物品" title="收回">×</button>'
-    :'<div class="tl2">道具箱</div><button class="dm hand-bag" onclick="openHandBag()" aria-label="開啟道具箱" title="道具箱"><span aria-hidden="true">🎒</span></button>';
+    :'<div class="tl2">道具箱</div><button class="dm hand-bag" onclick="openHandBag()" aria-label="開啟道具箱" title="道具箱">'+pouchSvg+'</button>';
 
   $("q").innerHTML="<small>接下來</small>"+Q.map((t,k)=>
     `<div class="q${k?"":" first"}${cozyOreClass()}"${cozyOreAttributes(t)} data-step="${k+1}" aria-label="第${k+1}顆：${NM[t]}礦" style="background-color:${C[t]};${cozyOreStyle(t)}">${NM[t]}</div>`
@@ -2827,8 +2829,10 @@ function render(){
     +'<div class="sg sg-tools">'+toolItems.map(it=>'<button class="si si-tool" data-'+it.key+'="1" '+(coins<it.price||!shopRemaining('tool')?'disabled':'')+'><span class="forge-tool-icon" data-tool="'+it.key+'">'+forgeToolArt(it.key)+'</span><small>'+it.name+' 💰'+it.price+'</small><span class="tool-desc">'+it.description+'</span></button>').join('')+'</div>'
     +'<div class="sh">礦石<span class="shop-stock">今日剩餘 '+shopRemaining('o')+'/3</span></div>'
     +'<div class="sg sg5">'+[0,1,2,3,4].map(t=>'<button class="si" data-o="'+t+'" '+(coins<OP[t]||!shopRemaining('o')?'disabled':'')+'><div class="q" style="background-color:'+C[t]+'">'+NM[t]+'</div><small>💰'+OP[t]+'</small></button>').join('')+'</div>'
-    +'<div class="sh '+(sk('gc')?'':'nogc')+'">鑽石（每日庫存，各限購一個）</div>'
-    +'<div class="sg '+(sk('gc')?'':'nogc')+'">'+shopD.map((t,k)=>t===null?'<button class="si" disabled>已售完</button>':'<button class="si" data-d="'+k+'" '+(coins<DP[t]?'disabled':'')+'>'+gem(t,'f')+'<small>'+NM[t]+'鑽 💰'+DP[t]+'</small></button>').join('')+'</div>';
+    +'<div class="sh">鑽石（每日庫存，各限購一個）</div>'
+    +(sk('gc')
+      ?'<div class="sg">'+shopD.map((t,k)=>t===null?'<button class="si" disabled>已售完</button>':'<button class="si" data-d="'+k+'" '+(coins<DP[t]?'disabled':'')+'>'+gem(t,'f')+'<small>'+NM[t]+'鑽 💰'+DP[t]+'</small></button>').join('')+'</div>'
+      :'<div class="shop-locked-note">🔒 學習訓練所「寶石匠」後開放購買鑽石</div>');
 
   syncPack();
   $("pack").className=packCap()?"":"all-locked";
@@ -3280,15 +3284,12 @@ function renderTownWeather(si){
  else{for(let i=0;i<10;i++)particles+=`<i class="town-weather-particle town-petal" style="left:${(i*29+9)%100}%;top:-14px;animation-duration:${10+i%5}s;animation-delay:-${(i*1.9)%12}s;scale:${.65+(i%3)*.2}"></i>`;}
  el.innerHTML=particles;
 }
-function seasonalCompassHTML(si,night){
- const deg=45+(Math.max(0,Math.min(3,Number(si)||0))*90);
- return '<span class="hud-compass" data-season="'+si+'" data-time="'+(night?'night':'day')+'" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="14.5" fill="#2a1d12" stroke="#e4bc62" stroke-width="2"/><path d="M16 16L16 2A14 14 0 0 1 30 16Z" fill="#e984a8" opacity=".78"/><path d="M16 16L30 16A14 14 0 0 1 16 30Z" fill="#59b36b" opacity=".78"/><path d="M16 16L16 30A14 14 0 0 1 2 16Z" fill="#df8838" opacity=".78"/><path d="M16 16L2 16A14 14 0 0 1 16 2Z" fill="#69bfe6" opacity=".78"/><circle cx="16" cy="16" r="10.5" fill="none" stroke="#fff2bf55" stroke-width="1"/><g transform="rotate('+deg+' 16 16)"><polygon points="16,4 18.6,16 16,14 13.4,16" fill="#fff6d1" stroke="#3b230f" stroke-width=".8"/><polygon points="16,28 18,16 16,18 14,16" fill="#8b6232"/></g><circle cx="16" cy="16" r="4.6" fill="'+(night?'#2f4d86':'#ffd85c')+'" stroke="#f6d57a" stroke-width="1.2"/>'+(night?'<circle cx="17.3" cy="15.2" r="2.1" fill="#2a1d12"/>':'')+'</svg></span>';
-}
+function seasonalCompassHTML(){return '';}
 
 function renderTown(){
  const si=townVisualSeason(),p=nightTownPalette(TOWN_SEASONS[si]),s=SEASONS[si],night=isSandboxNight(),remaining=night?(kitchen?.orders.length||0)+(kitchen?.queue.length||0):orders.length+dq.length;
  $('sandboxNextDay').hidden=!sandboxSession;$('sandboxTag').textContent=sandboxSession?'🧪 後台獨立進度':'';$('townP').dataset.season=s.id;$('townStats').textContent='💰 '+(sandboxSession?'∞':coins)+(sandboxSession?'　🌟 ∞':'　⭐ '+score())+'　'+'❤️'.repeat(Math.max(0,lives));
- $('townSeason').innerHTML=seasonalCompassHTML(si,night)+'<span>'+s.icon+' '+s.name+' · 第 '+day+' 天 · '+remaining+' 位客人等候</span>';
+ $('townSeason').textContent=s.icon+' '+s.name+' · 第 '+day+' 天 · '+remaining+' 位客人等候';
  $('townSeason').title=seasonBenefitText();
  $('townP').dataset.previewKitchen='true';
  const scenery=$('townScenery'),mapRect=$('townMap').getBoundingClientRect(),sceneKey=s.id+':master:'+Math.round(mapRect.width)+'x'+Math.round(mapRect.height);if(scenery.dataset.season!==sceneKey){scenery.innerHTML=townScene(p);scenery.dataset.season=sceneKey;}
@@ -6659,7 +6660,7 @@ function renderTownWing(){
    +'<span class="tw-night-halo is-pier"></span><span class="tw-night-halo is-camp"></span>'
    +'</div>'
    +'<button type="button" class="town-wing-spot" style="left:44%;top:17%;width:48%;height:23%" onclick="openTownWingModal(\'excavate\')"><span class="tw-plaque">⛏ 古物遺跡營地<small>3×3 探勘 · 剩 '+(sandboxSession?'∞':digsRemaining+'/'+WEST_DAILY_DIGS)+' 次</small></span></button>'
-   +'<button type="button" class="town-wing-spot" style="left:20%;top:43%;width:32%;height:16%" onclick="openTownWingModal(\'fishing\')"><span class="tw-plaque">🎣 星露釣魚棧橋<small>'+(night?'🌙 夜間魚群':'☀ 白天魚群')+' · 剩 '+(sandboxSession?'∞':fishRemaining+'/'+fishMax)+' 次</small></span></button>'
+   +'<button type="button" class="town-wing-spot" style="left:17%;top:43%;width:38%;height:16%" onclick="openTownWingModal(\'fishing\')"><span class="tw-plaque">🎣 星露釣魚棧橋<small>'+(night?'🌙 夜間魚群':'☀ 白天魚群')+' · 剩 '+(sandboxSession?'∞':fishRemaining+'/'+fishMax)+'</small></span></button>'
    +'<button type="button" class="town-wing-spot is-building" data-landmark-tier="'+westLv+'" style="left:45%;top:59%;width:48%;height:29%" onclick="openTownWingModal(\'museum\')"><img class="tw-building-sprite" src="'+museumSprite+'" alt="星露博物小屋" decoding="async"><span class="tw-plaque">🏛 星露博物小屋<small>大工程 Lv '+westLv+'/3</small></span></button>'
    +'<button type="button" class="town-road-arrow is-east" onclick="setTownZone(\'center\')" aria-label="返回主城鎮"></button>';
  }else{
@@ -7188,7 +7189,7 @@ function renderTownWingModal({perfectCatch=null,newCatch=false,digReveal=[],cros
   const tot=mus.fish.length+mus.relics.length,maxTot=FISH_CATALOG.length+RELIC_CATALOG.length;
   const readyRelics=RELIC_CATALOG.filter(r=>(mus.relicShards?.[r.id]||0)>=9&&!mus.relics.includes(r.id)).length;
   title.textContent='🏛 星露博物小屋';
-  const tabs='<div class="tc-tabs"><button type="button" aria-pressed="'+(museumTab==='fish')+'" onclick="setMuseumTab(\'fish\')">🐟 魚類 ('+mus.fish.length+'/'+FISH_CATALOG.length+')</button><button type="button" aria-pressed="'+(museumTab==='relic')+'" onclick="setMuseumTab(\'relic\')">🏺 古物 ('+mus.relics.length+'/'+RELIC_CATALOG.length+(readyRelics?' 🧩':'')+')</button><button type="button" aria-pressed="'+(museumTab==='milestone')+'" onclick="setMuseumTab(\'milestone\')">🏆 加成總覽</button></div>';
+  const tabs='<div class="tc-tabs is-3col"><button type="button" aria-pressed="'+(museumTab==='fish')+'" onclick="setMuseumTab(\'fish\')">🐟 魚類 '+mus.fish.length+'/'+FISH_CATALOG.length+'</button><button type="button" aria-pressed="'+(museumTab==='relic')+'" onclick="setMuseumTab(\'relic\')">🏺 古物 '+mus.relics.length+'/'+RELIC_CATALOG.length+(readyRelics?' 🧩':'')+'</button><button type="button" aria-pressed="'+(museumTab==='milestone')+'" onclick="setMuseumTab(\'milestone\')">🏆 加成總覽</button></div>';
   let content='';
   if(museumTab==='fish'){
    content='<div class="tw-grid">'+FISH_CATALOG.map(f=>museumFishCardHTML(f,mus)).join('')+'</div>';
