@@ -6,26 +6,25 @@
 #townWeather{z-index:6!important}
 
 .town-road-arrow{
+ --road-triangle:polygon(0 0,25% 0,25% 12.5%,50% 12.5%,50% 25%,75% 25%,75% 37.5%,100% 37.5%,100% 62.5%,75% 62.5%,75% 75%,50% 75%,50% 87.5%,25% 87.5%,25% 100%,0 100%);
  position:absolute;top:45.5%;z-index:7;
- display:inline-flex;align-items:center;gap:4px;
- padding:7px 9px;min-height:36px;
- border:2px solid #e7c268;border-radius:10px;
- background:linear-gradient(180deg,#5f4026ee,#3b2616f2);background-image:none;
- color:#fff3cc;font-size:12px;font-weight:900;letter-spacing:.3px;
- box-shadow:inset 0 1px 0 #ffe9ad55,0 3px 10px #0c0e1099;
+ display:grid;place-items:center;width:50px;height:54px;padding:0;
+ border:0;border-radius:4px;background:none;box-shadow:none;
+ filter:drop-shadow(0 3px 2px #16100bd9);
  cursor:pointer;touch-action:manipulation;
  transition:transform .14s ease,filter .14s ease
 }
-.town-road-arrow:hover{filter:brightness(1.12)}
-.town-road-arrow:active{transform:scale(.95)}
-.town-road-arrow.is-west{left:4px;border-radius:4px 12px 12px 4px}
-.town-road-arrow.is-east{right:4px;border-radius:12px 4px 4px 12px}
-.town-road-arrow span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
-.town-road-arrow em{
- font-style:normal;padding:1px 5px;border-radius:999px;
- background:#c9373f;color:#fff4d4;font-size:10.5px;font-weight:900;
- box-shadow:0 0 0 1px #ffdf8c88
+.town-road-arrow[hidden]{display:none}
+.town-road-arrow::before,.town-road-arrow::after{
+ content:'';grid-area:1/1;clip-path:var(--road-triangle);
+ transform:scaleX(var(--road-direction,1));pointer-events:none
 }
+.town-road-arrow::before{width:34px;height:42px;background:#362019}
+.town-road-arrow::after{width:26px;height:32px;background:linear-gradient(#fff1b8 0 28%,#edc261 28% 75%,#ca8844 75%)}
+.town-road-arrow:hover{filter:drop-shadow(0 3px 2px #16100bd9) brightness(1.18)}
+.town-road-arrow:active{transform:scale(.95)}
+.town-road-arrow.is-west{left:4px;--road-direction:-1}
+.town-road-arrow.is-east{right:4px}
 
 .town-zone-dots{
  position:absolute;left:50%;bottom:8px;transform:translateX(-50%);z-index:8;
@@ -292,7 +291,7 @@
 }
 .fish-meter-box.is-idle .fish-hint{opacity:.75}
 .fish-meter-box .tw-big-btn{margin:0}
-.fish-hint{margin:0 0 8px!important;font-size:12px!important;color:#d6f2ff!important;text-align:center}
+.fish-meter-box .fish-hint{margin:0 0 8px!important;font-size:clamp(10px,3.4vw,12px)!important;line-height:16px;white-space:nowrap;color:#d6f2ff!important;text-align:center}
 .fish-hint b{color:#ffe580}
 .fish-track{
  position:relative;height:32px;margin:0 0 10px;

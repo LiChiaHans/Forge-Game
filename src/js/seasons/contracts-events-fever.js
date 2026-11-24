@@ -137,7 +137,7 @@ function freshTownLandmarks(){
 function freshTownWings(){
  return {
   westDay:0,westDigs:0,westFished:0,fishStreak:0,crossUsed:false,fishSupplyDay:0,
-  digBoard:null,
+  digBoard:null,museum:freshTownMuseum(),
   eastDay:0,eastBought:[],barterDone:false,haggleDone:false,haggleDisc:0,
   shipment:null,
   regularDay:0,regularGifted:[],regularQuestDone:[],
@@ -189,6 +189,7 @@ function cleanWorkshopMomentum(raw){
  });
  if(raw.wings&&typeof raw.wings==='object'){
   const w=raw.wings;
+  base.wings.museum=cleanTownMuseum(w.museum);
   base.wings.westDay=Math.max(0,Math.floor(Number(w.westDay)||0));
   base.wings.westFished=Math.max(0,Math.min(20,Math.floor(Number(w.westFished)||0)));
   // Older saves pooled free casts and digs, and tracked paid tools separately.
@@ -225,10 +226,16 @@ function resetWorkshopMomentum(mode){
  const chosen=mode||pendingRunMode||'normal';
  pendingRunMode='normal';
  workshopMomentum=freshWorkshopMomentum(chosen);
+ resetTownWingSession();
  chronicleTab='daily';
 }
 function snapshotWorkshopMomentum(){return JSON.parse(JSON.stringify(ensureWorkshopMomentum()));}
-function restoreWorkshopMomentum(raw){workshopMomentum=cleanWorkshopMomentum(raw);syncWorkshopMomentumDay(false);}
+function restoreWorkshopMomentum(raw,{recoverLegacyMuseum=false}={}){
+ workshopMomentum=cleanWorkshopMomentum(raw);
+ if(recoverLegacyMuseum&&raw?.wings?.museum===undefined)workshopMomentum.wings.museum=cleanTownMuseum(readLegacyTownMuseum());
+ resetTownWingSession();
+ syncWorkshopMomentumDay(false);
+}
 
 function rollSeasonContractOffers(count=3){
  const pool=SEASON_CONTRACTS.map(c=>c.id);
@@ -671,7 +678,7 @@ function settlementNextHookHTML(phase){
 
 function openRunModes(){
  const body=$('runModeBody');if(!body)return;
- body.innerHTML='<p class="tc-intro">選擇一種規則開始新局（皆會保留你的角色外觀與永久圖鑑／紀念章紀錄）：</p><div class="mode-list">'
+ body.innerHTML='<p class="tc-intro">選擇一種規則開始新局。角色外觀、武器與料理圖鑑、紀念章紀錄會保留，博物館收藏從頭累積。</p><div class="mode-list">'
   +Object.values(RUN_MODES).map(md=>'<button type="button" class="mode-card" data-start-mode="'+md.id+'"><div class="tc-card-top"><span class="tc-icon is-px">'+(typeof pixelEmblemArt==='function'?pixelEmblemArt(md.id,md.name):md.icon)+'</span><div><b>'+md.name+'</b><span class="tc-tag">'+md.tag+'</span></div></div><small>'+md.desc+'</small><span class="tc-choose">以此模式開局 ▶</span></button>').join('')
   +'</div>';
  $('runModeP').style.display='flex';

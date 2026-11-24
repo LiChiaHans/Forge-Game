@@ -6,7 +6,7 @@ function renderMuseumAlbum(){
  const fishList=typeof FISH_CATALOG!=='undefined'?FISH_CATALOG:[],relicList=typeof RELIC_CATALOG!=='undefined'?RELIC_CATALOG:[];
  const fishB=typeof museumFishKitchenBonus==='function'?museumFishKitchenBonus(mus):{stars:0,bonus:0};
  const relicB=typeof museumRelicForgeBonus==='function'?museumRelicForgeBonus(mus):{count:0,bonus:0};
- $('albumProgress').textContent='博物典藏 · 魚類 '+mus.fish.length+'/'+fishList.length+'（🍲+'+(fishB.bonus*100).toFixed(1)+'%）· 古物 '+mus.relics.length+'/'+relicList.length+'（⚒+'+(relicB.bonus*100).toFixed(1)+'%）';
+ $('albumProgress').textContent='本局博物典藏 · 魚類 '+mus.fish.length+'/'+fishList.length+'（🍲+'+(fishB.bonus*100).toFixed(1)+'%）· 古物 '+mus.relics.length+'/'+relicList.length+'（⚒+'+(relicB.bonus*100).toFixed(1)+'%）';
  $('albumWeapons').innerHTML='<section class="album-section museum-album-section"><h3>🐟 星露魚類圖鑑（廚房加成） <small>'+fishB.stars+' ★</small></h3><div class="tw-grid">'
   +fishList.map(f=>{const cnt=mus.fishCounts?.[f.id]||0,got=cnt>0||mus.fish.includes(f.id),st=typeof fishStarLevel==='function'?fishStarLevel(cnt):0;return '<button type="button" class="tw-item is-click'+(got?' is-got':'')+'" data-stars="'+st+'" onclick="openMuseumInspect(\'fish\',\''+f.id+'\')"><div class="tw-px-frame">'+(typeof pixelFishArt==='function'?pixelFishArt(f.id,!got):f.icon)+'</div><b>'+(got?f.name:'？？？')+'</b><small>'+(got?'★'.repeat(st)+'☆'.repeat(3-st)+' · '+cnt+'隻':SEASONS[f.season].icon+(f.night?'🌙 夜':'☀ 日'))+'</small></button>';}).join('')
   +'</div></section><section class="album-section museum-album-section"><h3>🏺 古代文物館藏（冶煉加成） <small>'+mus.relics.length+'/'+relicList.length+'</small></h3><div class="tw-list">'
