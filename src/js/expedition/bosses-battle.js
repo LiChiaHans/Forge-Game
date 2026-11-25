@@ -138,6 +138,7 @@ function finishExpeditionPlayback(){
 }
 function showExpeditionSetup(){stopExpeditionPlayback();expeditionFoodSelected=null;$('expeditionSetup').hidden=false;$('expeditionBattle').hidden=true;renderExpedition();$('expeditionSetup').scrollIntoView?.({block:'start'});}
 function openExpedition(){
+ if(typeof isForgeEnabled==='function'&&!isForgeEnabled()){toast('餐廳模式未開放遠征。');return;}
  syncExpeditionDay();const b=expeditionState.lastBattle;
  if(b&&b.outcome==='ongoing'&&!b.resolved){$('expeditionP').style.display='flex';$('expeditionSetup').hidden=true;$('expeditionBattle').hidden=false;renderExpeditionBattle();if(expeditionTimer===null)expeditionTimer=setInterval(advanceExpeditionBattle,420);startExpeditionFeedbackClock();return;}
  expeditionStage=sandboxSession?Math.max(0,expeditionLab.stage-1):expeditionState.unlocked;saveNow();$('expeditionP').style.display='flex';showExpeditionSetup();

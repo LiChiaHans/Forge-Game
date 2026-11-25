@@ -4,6 +4,12 @@
    Trial Run Modes, Board Chain Combos, Manual Fever & Settlement Hooks
    ========================================================================== */
 
+const RUN_SCOPES={
+ both:{id:'both',icon:'🏘',name:'標準模式',tag:'雙工坊完整體驗',desc:'包含白天冶煉廠與夜晚暖爐餐廳，完整體驗鍛造、料理與遠征冒險。'},
+ forge_only:{id:'forge_only',icon:'⚒',name:'冶煉廠模式',tag:'純白天鍛造',desc:'僅有白天冶煉廠營業，沒有夜晚餐廳；夜晚魚類白天也釣得到，所有餐廳道具與功能移除。'},
+ kitchen_only:{id:'kitchen_only',icon:'🍲',name:'餐廳模式',tag:'純黑夜料理',desc:'僅有黑夜暖爐餐廳營業，沒有白天冶煉廠；白天魚類夜晚也釣得到，關閉遠征，所有冶煉廠道具與功能移除。'}
+};
+
 const RUN_MODES={
  normal:{id:'normal',icon:'🏘',name:'標準經營',tag:'經典無盡',desc:'自由推進四季、遠征 20 關、蒐集 14 枚紀念章與城鎮造景。'},
  sprint9:{id:'sprint9',icon:'⚡',name:'9 天極速衝分賽',tag:'快節奏 · 15 分鐘',desc:'固定 9 天（完整 3 季）結算總分！開局贈送 150 金幣，雙工坊狂熱充能速度 ×1.35。'},
@@ -125,7 +131,7 @@ const DAILY_HEADLINES=[
  }
 ];
 
-let workshopMomentum=null,chronicleTab='daily',pendingRunMode='normal';
+let workshopMomentum=null,chronicleTab='daily',pendingRunMode='normal',pendingRunScope='both';
 const WEST_DAILY_DIGS=3,WEST_BASE_FISH_CASTS=3,WEST_CROSS_SHOVEL_COST=150;
 
 function freshTownLandmarks(){
@@ -145,9 +151,10 @@ function freshTownWings(){
  };
 }
 
-function freshWorkshopMomentum(mode='normal'){
+function freshWorkshopMomentum(mode='normal',scope='both'){
  return {
   mode:RUN_MODES[mode]?mode:'normal',
+  scope:RUN_SCOPES[scope]?scope:'both',
   seasonIndex:-1,
   seasonOffers:[],
   contractIds:[],
@@ -165,7 +172,7 @@ function freshWorkshopMomentum(mode='normal'){
 }
 
 function cleanWorkshopMomentum(raw){
- const base=freshWorkshopMomentum(raw?.mode);
+ const base=freshWorkshopMomentum(raw?.mode,raw?.scope);
  if(!raw||typeof raw!=='object')return base;
  const validContract=id=>SEASON_CONTRACTS.some(c=>c.id===id);
  const validHeadline=id=>DAILY_HEADLINES.some(h=>h.id===id);
@@ -221,11 +228,21 @@ function ensureWorkshopMomentum(){
  return workshopMomentum;
 }
 function activeRunMode(){return day>0?ensureWorkshopMomentum().mode:'normal';}
+function activeRunScope(){return ensureWorkshopMomentum().scope||'both';}
+function isForgeEnabled(){return activeRunScope()!=='kitchen_only';}
+function isKitchenEnabled(){return activeRunScope()!=='forge_only';}
+function runModeSummaryText(momentum){
+ const sc=RUN_SCOPES[momentum?.scope]||RUN_SCOPES.both;
+ const md=RUN_MODES[momentum?.mode]||RUN_MODES.normal;
+ return md.id==='normal'?sc.name:sc.name+' · '+md.name;
+}
 function contractLimit(){return activeRunMode()==='double_contract'?2:1;}
-function resetWorkshopMomentum(mode){
+function resetWorkshopMomentum(mode,scope){
  const chosen=mode||pendingRunMode||'normal';
+ const chosenScope=scope||pendingRunScope||'both';
  pendingRunMode='normal';
- workshopMomentum=freshWorkshopMomentum(chosen);
+ pendingRunScope='both';
+ workshopMomentum=freshWorkshopMomentum(chosen,chosenScope);
  resetTownWingSession();
  chronicleTab='daily';
 }
@@ -238,14 +255,15 @@ function restoreWorkshopMomentum(raw,{recoverLegacyMuseum=false}={}){
 }
 
 function rollSeasonContractOffers(count=3){
- const pool=SEASON_CONTRACTS.map(c=>c.id);
+ const forgeOk=isForgeEnabled();
+ const pool=SEASON_CONTRACTS.filter(c=>forgeOk||c.id!=='war_forge').map(c=>c.id);
  for(let i=pool.length-1;i>0;i--){const j=rnd(i+1);[pool[i],pool[j]]=[pool[j],pool[i]];}
  return pool.slice(0,count);
 }
 
 function syncWorkshopMomentumDay(seasonChanged=false){
  const m=ensureWorkshopMomentum();
- if(day<1){workshopMomentum=freshWorkshopMomentum('normal');return;}
+ if(day<1){workshopMomentum=freshWorkshopMomentum('normal',m.scope);return;}
  const offerCount=m.mode==='double_contract'?4:3;
  const cycleKey=Math.floor((day-1)/3);
  if(seasonChanged||m.seasonIndex!==cycleKey||m.seasonOffers.length<offerCount){
@@ -256,8 +274,14 @@ function syncWorkshopMomentumDay(seasonChanged=false){
  if(m.dailyDay!==day||!m.headlineId){
   const firstDay=m.dailyDay===0&&day===1;
   m.dailyDay=day;
-  const idx=(day+rnd(DAILY_HEADLINES.length))%DAILY_HEADLINES.length;
-  m.headlineId=DAILY_HEADLINES[idx].id;
+  const headlines=DAILY_HEADLINES.filter(h=>{
+   if(!isKitchenEnabled()&&h.id==='food_critic')return false;
+   if(!isForgeEnabled()&&['gem_caravan','leyline_heat','wandering_florist','guild_bounty'].includes(h.id))return false;
+   return true;
+  });
+  const list=headlines.length?headlines:DAILY_HEADLINES;
+  const idx=(day+rnd(list.length))%list.length;
+  m.headlineId=list[idx].id;
   m.dailyChoice=null;
   m.forgeFeverTurns=0;
   m.kitchenFeverTurns=0;
@@ -545,8 +569,10 @@ function pickDailyHeadline(choice){
  }else if(hl.id==='harvest_fair'&&choice==='a'){
   toast('🎊 全城豐收市集！今日冶煉與餐廳成交一律 +15%！');
  }else if(hl.id==='harvest_fair'&&choice==='b'){
-  bag.push({k:'u'});if(!kitchen)kitchen=freshKitchen();kitchen.bag.push({k:'z'});
-  toast('🎒 雙工坊補給送達：冶煉廠獲礦石升級、餐廳獲冰水桶！');
+  const got=[];
+  if(isForgeEnabled()){bag.push({k:'u'});got.push('冶煉廠獲礦石升級');}
+  if(isKitchenEnabled()){if(!kitchen)kitchen=freshKitchen();kitchen.bag.push({k:'z'});got.push('餐廳獲冰水桶');}
+  toast('🎒 工坊補給送達：'+got.join('、')+'！');
  }
  if(bellBonus){coins+=bellBonus;toast('🔔 星盾鐘樓繁榮津貼 +'+bellBonus+' 金幣！');}
  m.dailyChoice=choice;
@@ -600,9 +626,14 @@ function renderTownChronicle(){
   +'</div>';
 
  if(chronicleTab==='landmarks'){
-  const heroW=bestMonumentWeapon();
-  const totalLv=TOWN_LANDMARK_KEYS.reduce((sum,k)=>sum+(m.landmarks[k]||0),0),maxLv=TOWN_LANDMARK_KEYS.length*3,pct=Math.round((totalLv/maxLv)*100);
-  const cards=Object.values(TOWN_LANDMARKS).map(lm=>{
+  const heroW=isForgeEnabled()?bestMonumentWeapon():null;
+  const visibleLandmarks=Object.values(TOWN_LANDMARKS).filter(lm=>{
+   if(!isKitchenEnabled()&&lm.key==='kitchen')return false;
+   if(!isForgeEnabled()&&['forge','expedition','greenhouse'].includes(lm.key))return false;
+   return true;
+  });
+  const totalLv=visibleLandmarks.reduce((sum,lm)=>sum+(m.landmarks[lm.key]||0),0),maxLv=visibleLandmarks.length*3,pct=maxLv?Math.round((totalLv/maxLv)*100):0;
+  const cards=visibleLandmarks.map(lm=>{
    const lv=m.landmarks[lm.key]||0,maxed=lv>=lm.max,cost=maxed?0:lm.costs[lv],canAfford=sandboxSession||coins>=cost;
    const stars=[0,1,2].map(i=>'<span class="lm-star'+(i<lv?' is-on':'')+'">★</span>').join('');
    const heroPreview=lm.key==='expedition'&&heroW?'<div class="lm-hero-showcase"><span class="lm-hero-art">'+hex(heroW.c,bands(heroW),'',heroW.t,heroW)+'</span><span><small>本局城門陳列代表作</small><b>'+esc(itemName(heroW))+'</b></span></div>':'';
@@ -621,10 +652,10 @@ function renderTownChronicle(){
  }
 
  let html=tabs;
- if(m.mode!=='normal'){
-  html+='<div class="tc-mode-banner"><span>'+modeInfo.icon+'</span><div><b>試煉模式：'+modeInfo.name+(m.mode==='sprint9'?'（第 '+day+' / 9 天）':'')+'</b><small>'+modeInfo.desc+'</small></div></div>';
+ if(m.mode!=='normal'||activeRunScope()!=='both'){
+  html+='<div class="tc-mode-banner"><span>'+modeInfo.icon+'</span><div><b>'+runModeSummaryText(m)+(m.mode==='sprint9'?'（第 '+day+' / 9 天）':'')+'</b><small>'+(m.mode!=='normal'?modeInfo.desc:(RUN_SCOPES[activeRunScope()]?.desc||''))+'</small></div></div>';
  }
- html+='<section class="tc-section"><div class="tc-sec-head"><h3>📜 本季工坊契約（'+s.icon+' '+s.name+' · 剩 '+remDays+' 天）</h3><span class="tc-pill">'+(contracts.length>=limit?'已簽 '+contracts.length+'/'+limit:'可選 '+contracts.length+'/'+limit)+'</span></div>';
+ html+='<section class="tc-section"><div class="tc-sec-head"><h3>📜 本季工坊契約（'+s.icon+' '+s.name+(activeRunMode()==='eternal_winter'?' · 永冬鎖定':' · 剩 '+remDays+' 天')+'）</h3><span class="tc-pill">'+(contracts.length>=limit?'已簽 '+contracts.length+'/'+limit:'可選 '+contracts.length+'/'+limit)+'</span></div>';
  if(contracts.length){
   html+='<div class="tc-active-list">'+contracts.map(c=>'<div class="tc-active-card"><div class="tc-card-top"><span class="tc-icon is-px">'+(typeof pixelEmblemArt==='function'?pixelEmblemArt(c.id,c.name+c.tag):c.icon)+'</span><div><b>'+c.name+'</b><span class="tc-tag">'+c.tag+'</span></div></div><p>'+c.desc+'</p></div>').join('')+'</div>';
  }
@@ -654,14 +685,18 @@ function settlementNextHookHTML(phase){
   if(day>=9)hooks.push('🏆 第 9 天完成！點擊下方按鈕即可進行「9 天極速衝分」總結算！');
   else hooks.push('⚡ 9 天衝分賽倒數：還剩 '+(9-day)+' 天衝刺最高分！');
  }
- const ripe=greenhouseBeds.filter(p=>p&&plantAge(p)>=3).length;
- const tomorrowRipe=greenhouseBeds.filter(p=>p&&plantAge(p)===2).length;
+ const ripe=isForgeEnabled()?greenhouseBeds.filter(p=>p&&plantAge(p)>=3).length:0;
+ const tomorrowRipe=isForgeEnabled()?greenhouseBeds.filter(p=>p&&plantAge(p)===2).length:0;
  if(ripe)hooks.push('🌱 溫室已有 '+ripe+' 盆屬性花成熟，回城鎮即可收成精華！');
  else if(tomorrowRipe&&phase==='kitchen')hooks.push('🌱 溫室有 '+tomorrowRipe+' 盆屬性花明天開花，記得收成！');
  if(m.contractIds.length<contractLimit())hooks.push('📜 本季工坊契約尚未選滿，回城鎮可免費簽署強力增益！');
- const readyWeapons=(typeof expeditionWeapons==='function'?expeditionWeapons().filter(x=>!x.w.protected&&x.w.t>=Math.min(3,Math.floor(expeditionState.unlocked/3))).length:0);
+ const readyWeapons=isForgeEnabled()&&typeof expeditionWeapons==='function'?expeditionWeapons().filter(x=>!x.w.protected&&x.w.t>=Math.min(3,Math.floor(expeditionState.unlocked/3))).length:0;
  if(readyWeapons&&expeditionState.unlocked<20)hooks.push('⚔ 已備妥高階武器，可前往城門挑戰第 '+(expeditionState.unlocked+1)+' 關遠征 Boss！');
- const affordLandmark=Object.values(TOWN_LANDMARKS).find(lm=>{const lv=m.landmarks[lm.key]||0;return lv<lm.max&&coins>=lm.costs[lv];});
+ const affordLandmark=Object.values(TOWN_LANDMARKS).find(lm=>{
+  if(!isKitchenEnabled()&&lm.key==='kitchen')return false;
+  if(!isForgeEnabled()&&['forge','expedition','greenhouse'].includes(lm.key))return false;
+  const lv=m.landmarks[lm.key]||0;return lv<lm.max&&coins>=lm.costs[lv];
+ });
  if(affordLandmark)hooks.push('🏛 金幣已足夠升級城鎮大工程「'+affordLandmark.name+'」！');
  const wg=m.wings;
  if(wg?.shipment){
@@ -672,20 +707,40 @@ function settlementNextHookHTML(phase){
  const remainingFish=Math.max(0,westFishingLimit()-(todayWest?.westFished||0));
  const remainingDigs=Math.max(0,WEST_DAILY_DIGS-(todayWest?.westDigs||0));
  if(phase==='forge'&&remainingFish+remainingDigs>0)hooks.push('🎣 西側溪畔今日剩餘釣魚 '+remainingFish+' 次、挖掘 '+remainingDigs+' 次。');
- if(!hooks.length)hooks.push(phase==='forge'?'🍲 晚餐時段即將開啟，準備好料理與主打菜大賺一筆！':'🌅 明天將刷新全新「今日城鎮頭條」與新一批客人！');
+ if(!hooks.length)hooks.push(phase==='forge'?(isKitchenEnabled()?'🍲 晚餐時段即將開啟，準備好料理與主打菜大賺一筆！':'🌅 明天將刷新全新「今日城鎮頭條」與新一批鍛造訂單！'):'🌅 明天將刷新全新「今日城鎮頭條」與新一批客人！');
  return '<div class="settle-hooks"><b>✨ 下一步預告</b>'+hooks.slice(0,2).map(h=>'<p>'+h+'</p>').join('')+'</div>';
 }
 
+let selectedTrialScope='both';
+
+function openStartModeModal(){
+ const body=$('runModeBody'),title=$('runModeP')?.querySelector('h2');
+ if(!body)return;
+ if(title)title.innerHTML=pxIcon('play')+' 選擇開始模式';
+ body.innerHTML='<p class="tc-intro">選擇這局要體驗的工坊模式。角色外觀、圖鑑與紀念章紀錄會保留。</p><div class="mode-list">'
+  +Object.values(RUN_SCOPES).map(sc=>'<button type="button" class="mode-card" data-start-scope="'+sc.id+'"><div class="tc-card-top"><span class="tc-icon is-px">'+pxIconFor(sc.icon)+'</span><div><b>'+sc.name+'</b><span class="tc-tag">'+sc.tag+'</span></div></div><small>'+sc.desc+'</small><span class="tc-choose">以此模式開局 ▶</span></button>').join('')
+  +'</div>';
+ $('runModeP').style.display='flex';
+}
+
 function openRunModes(){
- const body=$('runModeBody');if(!body)return;
- body.innerHTML='<p class="tc-intro">選擇一種規則開始新局。角色外觀、武器與料理圖鑑、紀念章紀錄會保留，博物館收藏從頭累積。</p><div class="mode-list">'
+ const body=$('runModeBody'),title=$('runModeP')?.querySelector('h2');
+ if(!body)return;
+ if(title)title.innerHTML=pxIcon('flame')+' 選擇試煉模式';
+ const scopeTabs='<div class="tc-tabs is-3col" role="tablist" style="margin-bottom:10px">'
+  +Object.values(RUN_SCOPES).map(sc=>'<button type="button" data-trial-scope="'+sc.id+'" aria-pressed="'+(selectedTrialScope===sc.id)+'">'+pxIconFor(sc.icon)+' '+sc.name+'</button>').join('')
+  +'</div>';
+ body.innerHTML='<p class="tc-intro">先選擇工坊模式，再挑選試煉規則開始新局。角色外觀、武器與料理圖鑑、紀念章紀錄會保留。</p>'
+  +scopeTabs
+  +'<div class="mode-list">'
   +Object.values(RUN_MODES).map(md=>'<button type="button" class="mode-card" data-start-mode="'+md.id+'"><div class="tc-card-top"><span class="tc-icon is-px">'+(typeof pixelEmblemArt==='function'?pixelEmblemArt(md.id,md.name):md.icon)+'</span><div><b>'+md.name+'</b><span class="tc-tag">'+md.tag+'</span></div></div><small>'+md.desc+'</small><span class="tc-choose">以此模式開局 ▶</span></button>').join('')
   +'</div>';
  $('runModeP').style.display='flex';
 }
 
-function startTrialRun(mode){
+function startTrialRun(mode,scope){
  pendingRunMode=RUN_MODES[mode]?mode:'normal';
+ pendingRunScope=RUN_SCOPES[scope]?scope:'both';
  $('runModeP').style.display='none';
  beginNewCharacter();
 }
@@ -702,6 +757,10 @@ $('townContractBody')?.addEventListener('click',e=>{
 });
 
 $('runModeBody')?.addEventListener('click',e=>{
+ const tBtn=e.target.closest('[data-trial-scope]');
+ if(tBtn){selectedTrialScope=tBtn.dataset.trialScope;openRunModes();return;}
+ const sBtn=e.target.closest('[data-start-scope]');
+ if(sBtn){startTrialRun('normal',sBtn.dataset.startScope);return;}
  const mBtn=e.target.closest('[data-start-mode]');
- if(mBtn)startTrialRun(mBtn.dataset.startMode);
+ if(mBtn)startTrialRun(mBtn.dataset.startMode,selectedTrialScope);
 });

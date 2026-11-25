@@ -13,7 +13,7 @@ function updateTrainingTabBadges(){
  $('trainingForge').innerHTML='<span>⚒ 冶煉廠</span><em class="st-tab-pill'+(forgeMax?' is-max':sp>0?' is-sp':'')+'">'+(forgeMax?'已滿':'⭐ '+fSp)+'</em>';
  $('trainingKitchen').innerHTML='<span>🍲 餐廳</span><em class="st-tab-pill'+(kitchenMax?' is-max':kSp>0?' is-sp':'')+'">'+(kitchenMax?'已滿':'⭐ '+kSp)+'</em>';
 }
-function openSkills(end){if(!skills.mm)trainingSelected.forge='mm';if(day===0){skMode=end?"end":"menu";renderSk();$("sk").style.display="flex";return;}if($('townP').style.display!=='flex'||!$('kitchenP').hidden){openLearnedForgeSkills();return;}trainingReadOnly=false;trainingBranch='forge';skMode='training';renderSk();$('sk').style.display='flex';}
+function openSkills(end){if(!skills.mm)trainingSelected.forge='mm';if(day===0){skMode=end?"end":"menu";renderSk();$("sk").style.display="flex";return;}if($('townP').style.display!=='flex'||!$('kitchenP').hidden){openLearnedForgeSkills();return;}trainingReadOnly=false;trainingBranch=(typeof isForgeEnabled==='function'&&!isForgeEnabled())?'kitchen':'forge';skMode='training';renderSk();$('sk').style.display='flex';}
 function renderSk(){
  if(day===0){
   $('trainingTabs').hidden=true;
@@ -22,8 +22,14 @@ function renderSk(){
   renderForgeSkillList();
   return;
  }
+ const forgeOn=typeof isForgeEnabled!=='function'||isForgeEnabled();
+ const kitchenOn=typeof isKitchenEnabled!=='function'||isKitchenEnabled();
+ if($('trainingForge'))$('trainingForge').hidden=!forgeOn;
+ if($('trainingKitchen'))$('trainingKitchen').hidden=!kitchenOn;
+ if(!forgeOn&&trainingBranch==='forge')trainingBranch='kitchen';
+ if(!kitchenOn&&trainingBranch==='kitchen')trainingBranch='forge';
  $('sk').classList.toggle('training-readonly',trainingReadOnly);
- $('trainingTabs').hidden=trainingReadOnly;
+ $('trainingTabs').hidden=trainingReadOnly||!forgeOn||!kitchenOn;
  $('trainingTitle').textContent=trainingReadOnly?'⚒ 已學冶煉技能':'🛡 星盾訓練所';
  $('trainingForge').setAttribute('aria-pressed',String(trainingBranch==='forge'));
  $('trainingKitchen').setAttribute('aria-pressed',String(trainingBranch==='kitchen'));

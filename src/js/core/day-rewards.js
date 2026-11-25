@@ -27,7 +27,14 @@ function newDay(){discardCityEdit();
   orders.forEach((_,k)=>enter.set(k,Date.now()+k*250));
   bell();
   shopD=Array.from({length:3},()=>rnd(Math.min(5,day+1))).sort();
-  say((day>0?SEASONS[seasonIndex()].icon+" "+SEASONS[seasonIndex()].name+" · ":"")+"第 "+day+" 天開始！"+(sk("mg")?"紫色發光的格子放東西有魔法加成":""));
+  if(day>0&&typeof isForgeEnabled==='function'&&!isForgeEnabled()){
+   orders=[];dq=[];dLeft=0;dTot=0;
+   sandboxNight=true;
+   if(typeof startKitchenNight==='function')startKitchenNight(true);
+   say((SEASONS[seasonIndex()].icon+" "+SEASONS[seasonIndex()].name+" · ")+"第 "+day+" 天夜晚開始！前往暖爐餐廳準備營業。");
+  }else{
+   say((day>0?SEASONS[seasonIndex()].icon+" "+SEASONS[seasonIndex()].name+" · ":"")+"第 "+day+" 天開始！"+(sk("mg")?"紫色發光的格子放東西有魔法加成":""));
+  }
   render();
   if(day>0&&!booting&&!testRun)showTown();
   showPendingSeasonNotice();
@@ -50,6 +57,14 @@ function renderForgeSettlement(){
 }
 function finishForgeDay(){
  if(!forgeSettlementPending()||lives<=0)return;
+ if(typeof isKitchenEnabled==='function'&&!isKitchenEnabled()){
+  if(typeof activeRunMode==='function'&&activeRunMode()==='sprint9'&&day>=9&&!ensureWorkshopMomentum().sprintDone){
+   ensureWorkshopMomentum().sprintDone=true;$('forgeSettlementP').style.display='none';saveHi();saveNow();
+   ov('🏆 9 天極速衝分完成！','最終總分：⭐ '+score()+' · 總金幣：💰 '+coins+' · 累計服務 '+all+' 位客人 · 遠征勝利 '+expeditionState.victories+' 場！可繼續無盡經營或回首頁再挑戰新高分！','繼續經營第 10 天',()=>{performSceneTransition('城鎮',()=>{newDay();saveNow();});});
+   return;
+  }
+  return performSceneTransition('城鎮',()=>{if(!forgeSettlementPending()||lives<=0)return;$('forgeSettlementP').style.display='none';newDay();saveNow();});
+ }
  return performSceneTransition('城鎮',()=>{if(!forgeSettlementPending()||lives<=0)return;$('forgeSettlementP').style.display='none';setSandboxNight(true);showTown();saveNow();});
 }
 

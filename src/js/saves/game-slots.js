@@ -81,6 +81,7 @@ function openSaves(mode){
   const list=[...saves].sort((a,b)=>b.updated-a.updated);
   $("svC").innerHTML=list.map(e=>
     `<div class="rcard"><div class="rh"><span class="save-player-heading"><span class="player-avatar">${avatarSVG(e.avatar||e.state?.avatar)}</span><b>${esc(e.name)}</b></span><span>第 ${e.day} 天</span></div>
+    <div class="rd">🏷 模式：${esc(typeof runModeSummaryText==='function'?runModeSummaryText(e.state?.momentum):'標準模式')}</div>
     <div class="rd">🕒 開始：${esc(e.date)} ${esc(e.time||"")}</div>
     <div>💰 ${e.coins}　⭐ ${e.score} 分</div>
     <div>🙋 服務 ${(e.state&&e.state.all)||0} 位　✅ 任務 ${(e.state&&e.state.qDone)||0} 個</div>

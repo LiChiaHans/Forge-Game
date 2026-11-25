@@ -480,3 +480,49 @@
 .town-zone-dots button .px-ico{
  width:1.12em;height:1.12em;vertical-align:-0.18em;margin-right:2px
 }
+
+/* Town Header: 50/50 single-row status (#townStats + #townSeason) */
+#townP .town-status-row{
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+ gap:5px;align-items:center;width:100%
+}
+#townP #townStats,#townP #townSeason{
+ width:100%;min-width:0;box-sizing:border-box;margin:0!important;
+ padding:3px 7px!important;font-size:11px!important;line-height:1.35!important;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+ display:flex;align-items:center;justify-content:center;gap:2px
+}
+
+/* Ensure sandbox-only header buttons stay hidden in formal game */
+#townP .town-header-actions>button[hidden],
+#townP #sandboxNightToggle[hidden],
+#townP #sandboxNextDay[hidden]{
+ display:none!important
+}
+
+/* Birds fly in front of buildings and signs */
+#townBirds{z-index:5!important}
+
+/* Decor inventory/shop empty message spans full grid width */
+#decorInventoryGrid>p,#decorShopGrid>p{
+ grid-column:1 / -1;width:100%;margin:10px 0;text-align:center;line-height:1.6
+}
+
+/* Dish album: prevent card text overflow and column misalignment */
+#weaponAlbumP .dish-album-section .album-grid{
+ grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;width:100%;box-sizing:border-box
+}
+#weaponAlbumP .dish-album-section .album-card{
+ min-width:0;overflow:hidden;padding:5px 2px 5px;gap:3px
+}
+#weaponAlbumP .dish-album-section .album-card .album-art{
+ width:40px;height:40px;max-width:100%;display:flex;align-items:center;justify-content:center
+}
+#weaponAlbumP .dish-album-section .album-card b{
+ font-size:10px;line-height:1.25;min-height:2.5em;width:100%;
+ white-space:normal;word-break:keep-all;overflow-wrap:anywhere;
+ display:flex;align-items:center;justify-content:center;text-align:center
+}
+#weaponAlbumP .dish-album-section .album-card small{
+ font-size:9.5px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis
+}
