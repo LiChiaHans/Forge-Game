@@ -2,7 +2,7 @@
 const LEADERBOARD_ORIGIN='https://forge-master-leaderboard.adeption.chatgpt.site';
 const LB_PROFILE_KEY='forgeOnlinePlayerV1',LB_PENDING_KEY='forgeOnlinePendingV1';
 let onlinePlayer=null,onlineRows=[],onlineMine=null,onlineBusy=false,onlineTimer=null,onlineNameCallback=null;
-let onlineRequestVersion=0,onlineNameRequestVersion=0,onlineLastUpload=0;
+let onlineRequestVersion=0,onlineNameRequestVersion=0,onlineLastUpload=0,leaderboardSearchQuery='';
 function readOnline(key,fallback){try{return JSON.parse(localStorage.getItem(key)||'null')||fallback;}catch{return fallback;}}
 function onlineNameKey(name){return String(name||'').normalize('NFKC').trim().replace(/\s+/g,' ').toLowerCase();}
 function onlineAllowed(){return !sandboxSession&&!testRun&&!booting&&day>0&&onlinePlayer&&onlineNameKey(playerName)===onlineNameKey(onlinePlayer.name);}
@@ -33,12 +33,12 @@ async function claimOnlineName(name){
 function onlineWeapon(w,c){if(!w)return null;const out={k:'w',c,t:w.t,m:w.m||0,b:w.b||0};for(const k of ['cs','parts','dts','element','legendId','legendCore','legendPrice','stars','starXp'])if(w[k]!==undefined)out[k]=JSON.parse(JSON.stringify(w[k]));return out;}
 function captureOnlineRecord(){
  if(!onlineAllowed()||score()<=0)return null;
- return {mode:'normal',testRun:false,sandbox:false,runId:String(runId),score:score(),earned,magic,day,served:all,quests:qDone,expedition:expeditionState.cleared.length,avatar:normalizeAvatar(playerAvatar),weapons:best.map((w,c)=>onlineWeapon(w,c)),skills:{...skills}};
+ return {mode:'normal',runMode:typeof activeRunMode==='function'?activeRunMode():'normal',runScope:typeof activeRunScope==='function'?activeRunScope():'both',testRun:false,sandbox:false,runId:String(runId),score:score(),earned,magic,day,served:all,quests:qDone,expedition:expeditionState.cleared.length,avatar:normalizeAvatar(playerAvatar),weapons:best.map((w,c)=>onlineWeapon(w,c)),skills:{...skills}};
 }
 function historicalOnlineRecord(r){
  if(!onlinePlayer||onlineNameKey(r.name)!==onlineNameKey(onlinePlayer.name)||!Number.isSafeInteger(r.score)||r.score<=0)return null;
  const legacy=!Number.isSafeInteger(r.earned)||!Number.isSafeInteger(r.magic);
- return {mode:'normal',testRun:false,sandbox:false,legacy,runId:String(r.id),score:r.score,earned:legacy?0:r.earned,magic:legacy?0:r.magic,day:legacy?0:r.day,served:r.served||0,quests:r.quests||0,expedition:r.expedition||0,avatar:normalizeAvatar(r.avatar||AVATAR_DEFAULT),weapons:Array.from({length:10},(_,c)=>onlineWeapon(r.best?.[c],c)),skills:r.skills||{}};
+ return {mode:'normal',runMode:r.runMode||'normal',runScope:r.runScope||'both',testRun:false,sandbox:false,legacy,runId:String(r.id),score:r.score,earned:legacy?0:r.earned,magic:legacy?0:r.magic,day:legacy?0:r.day,served:r.served||0,quests:r.quests||0,expedition:r.expedition||0,avatar:normalizeAvatar(r.avatar||AVATAR_DEFAULT),weapons:Array.from({length:10},(_,c)=>onlineWeapon(r.best?.[c],c)),skills:r.skills||{}};
 }
 function queueOnlineRecord(immediate=false){
  if(sandboxSession||testRun||booting||!onlinePlayer)return;
@@ -61,7 +61,10 @@ async function flushOnlineRecord(manual=false){
  finally{onlineBusy=false;}
 }
 function renderOnlineAccount(){
- const p=onlinePlayer;$('leaderboardIdentity').textContent=p?'玩家：'+p.name+' · '+(onlineMine?'目前第 '+onlineMine.rank+' 名，最高 '+onlineMine.score.toLocaleString()+' 分':'尚未上傳成績'):'建立唯一玩家名稱，即可加入排行榜。';
+ const p=onlinePlayer;
+ const pending=p?readOnline(LB_PENDING_KEY,{})[p.id]:null;
+ const pendingNote=pending?'（待同步 '+pending.score.toLocaleString()+' 分）':'';
+ $('leaderboardIdentity').innerHTML=p?pxIcon('trophy')+' 玩家：<b>'+esc(p.name)+'</b> · '+(onlineMine?'目前第 <b>'+onlineMine.rank+'</b> 名 · 最高 <b>'+onlineMine.score.toLocaleString()+'</b> 分':'尚未上傳成績')+pendingNote:'建立唯一玩家名稱，即可加入排行榜。';
  $('leaderboardRegisterForm').hidden=!!p;$('leaderboardAccountActions').hidden=!p;$('leaderboardKeyBox').hidden=true;
  $('leaderboardSwitch').hidden=!p;$('leaderboardSync').disabled=!p||sandboxSession||testRun;
  $('leaderboardLocalOnly').hidden=!(sandboxSession||testRun);
@@ -75,13 +78,55 @@ async function openLeaderboard(){
   if(version===onlineRequestVersion)$('leaderboardStatus').textContent='每位玩家只保留最高分，點擊紀錄可查看最佳武器。';
  }catch(e){if(version===onlineRequestVersion)$('leaderboardStatus').textContent='無法讀取排行榜：'+e.message+'，請稍後重新整理。';}
 }
+function leaderboardModeLabel(r){
+ if(!r)return '';
+ const scope=r.runScope&&typeof RUN_SCOPES!=='undefined'?RUN_SCOPES[r.runScope]?.name:'';
+ const mode=r.runMode&&r.runMode!=='normal'&&typeof RUN_MODES!=='undefined'?RUN_MODES[r.runMode]?.name:'';
+ return [scope,mode].filter(Boolean).join(' · ');
+}
+function jumpToMyLeaderboardRank(){
+ const me=$('leaderboardList')?.querySelector('.leaderboard-row.is-me');
+ if(!me){toast('目前前 100 名榜單中尚未找到你的紀錄。');return;}
+ me.scrollIntoView({behavior:'smooth',block:'center'});
+ me.classList.remove('is-pulse');void me.offsetWidth;me.classList.add('is-pulse');
+}
 function renderLeaderboardRows(){
- $('leaderboardList').innerHTML=onlineRows.length?onlineRows.map((r,i)=>'<button class="leaderboard-row '+(r.playerId===onlinePlayer?.id?'is-me':'')+'" data-online-row="'+i+'"><b class="lb-rank">'+(r.rank<=3?['🥇','🥈','🥉'][r.rank-1]:r.rank)+'</b><span class="lb-avatar">'+avatarSVG(normalizeAvatar(r.avatar))+'</span><span class="lb-name">'+esc(r.name)+'<small>'+(r.day?'第 '+r.day+' 天 · 遠征 '+r.expedition+'/20':'舊版最高紀錄')+'</small></span><strong>'+r.score.toLocaleString()+'<small>分</small></strong></button>').join(''):'<div class="lb-empty">第一個傳奇故事，等待你來寫下。<p>目前還沒有上傳的紀錄。</p></div>';
+ const list=$('leaderboardList');if(!list)return;
+ if(!onlineRows.length){
+  list.innerHTML='<div class="lb-empty">第一個傳奇故事，等待你來寫下。<p>目前還沒有上傳的紀錄。</p></div>';
+  return;
+ }
+ const q=onlineNameKey(leaderboardSearchQuery);
+ const indexed=onlineRows.map((r,i)=>({r,i})).filter(({r})=>!q||onlineNameKey(r.name).includes(q));
+ const hasMe=onlineRows.some(r=>r.playerId===onlinePlayer?.id);
+ const toolbar='<div class="lb-toolbar"><input id="leaderboardSearchInput" type="search" maxlength="20" placeholder="搜尋玩家名稱…" value="'+esc(leaderboardSearchQuery)+'" aria-label="搜尋排行榜玩家">'+(hasMe?'<button type="button" class="lb-jump-me" onclick="jumpToMyLeaderboardRank()">定位我的名次</button>':'')+'</div>';
+ const rowsHtml=indexed.length?indexed.map(({r,i})=>{
+  const rankCls=r.rank===1?' is-top1':r.rank===2?' is-top2':r.rank===3?' is-top3':'';
+  const rankBadge=r.rank<=3?pxIcon('trophy'):'#'+r.rank;
+  const modeTag=leaderboardModeLabel(r);
+  const sub=r.day?'第 '+r.day+' 天 · 遠征 '+r.expedition+'/20'+(modeTag?' · '+modeTag:''):'舊版最高紀錄';
+  return '<button class="leaderboard-row'+(r.playerId===onlinePlayer?.id?' is-me':'')+rankCls+'" data-online-row="'+i+'"><b class="lb-rank">'+rankBadge+'</b><span class="lb-avatar">'+avatarSVG(normalizeAvatar(r.avatar))+'</span><span class="lb-name"><em>'+esc(r.name)+'</em><small>'+esc(sub)+'</small></span><strong>'+r.score.toLocaleString()+'<small>分</small></strong></button>';
+ }).join(''):'<div class="lb-empty">找不到符合「'+esc(leaderboardSearchQuery)+'」的玩家。</div>';
+ list.innerHTML=toolbar+rowsHtml;
+ const inp=$('leaderboardSearchInput');
+ if(inp){
+  inp.oninput=e=>{
+   leaderboardSearchQuery=e.target.value||'';
+   const pos=e.target.selectionStart||leaderboardSearchQuery.length;
+   renderLeaderboardRows();
+   const next=$('leaderboardSearchInput');
+   if(next){next.focus();try{next.setSelectionRange(pos,pos);}catch{}}
+  };
+ }
 }
 function openLeaderboardRecord(index){
- const r=onlineRows[index];if(!r)return;$('leaderboardDetailTitle').textContent='第 '+r.rank+' 名 · '+r.name;$('leaderboardDetailProfile').innerHTML='<span class="lb-detail-avatar">'+avatarSVG(normalizeAvatar(r.avatar))+'</span><div><strong>'+r.score.toLocaleString()+' 分</strong><p>'+(r.day?'第 '+r.day+' 天':'天數未記錄')+' · 服務 '+r.served+' 位客人 · 完成 '+r.quests+' 個任務</p><p>'+(r.day?'遠征 '+r.expedition+'/20':'舊版紀錄，未保存遠征與技能資訊')+' · '+new Date(r.updatedAt).toLocaleString('zh-TW')+'</p></div>';
+ const r=onlineRows[index];if(!r)return;
+ const modeTag=leaderboardModeLabel(r);
+ $('leaderboardDetailTitle').textContent='第 '+r.rank+' 名 · '+r.name;
+ $('leaderboardDetailProfile').innerHTML='<span class="lb-detail-avatar">'+avatarSVG(normalizeAvatar(r.avatar))+'</span><div><strong>'+r.score.toLocaleString()+' 分</strong>'+(modeTag?'<p class="lb-detail-mode">'+esc(modeTag)+'</p>':'')+'<p>'+(r.day?'第 '+r.day+' 天':'天數未記錄')+' · 服務 '+r.served+' 位客人 · 完成 '+r.quests+' 個任務</p><p>'+(r.day?'遠征 '+r.expedition+'/20':'舊版紀錄，未保存遠征與技能資訊')+' · '+new Date(r.updatedAt).toLocaleString('zh-TW')+'</p></div>';
  $('leaderboardDetailWeapons').innerHTML=r.weapons.map((w,c)=>'<button class="lb-weapon" data-online-weapon="'+c+'" '+(!w?'disabled':'')+'>'+(w?hex(c,bands(w),'',w.t,w):'<span class="lb-unknown">?</span>')+'<small>'+esc(w?itemName(w):WN[c])+'</small></button>').join('');
- $('leaderboardDetailSkills').textContent='技能：'+Object.keys(SK).filter(k=>r.skills[k]).map(k=>SK[k].n+' Lv'+r.skills[k]).join('、');$('leaderboardDetailP').dataset.row=String(index);$('leaderboardDetailP').style.display='flex';
+ $('leaderboardDetailSkills').textContent='技能：'+(Object.keys(SK).filter(k=>r.skills[k]).map(k=>SK[k].n+' Lv'+r.skills[k]).join('、')||'無記錄');
+ $('leaderboardDetailP').dataset.row=String(index);$('leaderboardDetailP').style.display='flex';
 }
 async function registerLeaderboardPlayer(){
  if(sandboxSession||testRun)return;$('leaderboardRegister').disabled=true;

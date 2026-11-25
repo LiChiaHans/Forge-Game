@@ -979,7 +979,7 @@ function startKitchenNight(force=false){
  kitchenCreateOrders();kitchen.message='晚餐營業開始！點空格放食材，拖曳工序卡備料，第三份工序相連就會自動完成料理。';
 }
 function kitchenRollFood(){const table=[[],[[1,2]],[[1,4],[2,2]],[[1,6],[2,4],[3,2]]][kitchenLevel('purchase')],roll=Math.random()*100;let cumulative=0;for(const [tier,chance]of table){cumulative+=chance;if(roll<cumulative)return tier;}return 0;}
-function openKitchen(){if(day<1)return;if(!sandboxNight){toast('現在是白天；冶煉廠營業結束後，會開啟同一天的晚餐時段。');return;}if(!kitchen?.done&&requireWorkshopTraining('kitchen'))return;return performSceneTransition('餐廳',()=>{if(!kitchen?.done&&requireWorkshopTraining('kitchen'))return;$('sk').style.display='none';startKitchenNight();if(typeof checkNightlyFishKitchenSupply==='function')checkNightlyFishKitchenSupply();$('kitchenP').hidden=false;renderKitchen();saveNow();if(kitchen.done){renderKitchenSettlement();return;}});}
+function openKitchen(){if(day<1)return;if(typeof isKitchenEnabled==='function'&&!isKitchenEnabled()){toast('冶煉廠模式未開放餐廳。');return;}if(!sandboxNight){toast('現在是白天；冶煉廠營業結束後，會開啟同一天的晚餐時段。');return;}if(!kitchen?.done&&requireWorkshopTraining('kitchen'))return;return performSceneTransition('餐廳',()=>{if(!kitchen?.done&&requireWorkshopTraining('kitchen'))return;$('sk').style.display='none';startKitchenNight();if(typeof checkNightlyFishKitchenSupply==='function')checkNightlyFishKitchenSupply();$('kitchenP').hidden=false;renderKitchen();saveNow();if(kitchen.done){renderKitchenSettlement();return;}});}
 function closeKitchen(){return performSceneTransition('城鎮',()=>{cancelKitchenDrag();clearKitchenIngredientFlights();clearKitchenDepartures();$('kitchenP').hidden=true;$('kitchenModal').hidden=true;showTown();});}
 function kitchenNeighbors(i){return nb(i);}
 function kitchenGroup(i){const item=kitchen.g[i];if(!item)return [];const out=[i];for(let k=0;k<out.length;k++)for(const n of nb(out[k]))if(!out.includes(n)&&kitchen.g[n]?.k===item.k&&(item.k==='p'||kitchen.g[n].t===item.t))out.push(n);return out;}
@@ -1221,7 +1221,7 @@ function nightSkyArt(si){
 }
 function renderTownNight(){
  
- $('townReviewSave22').hidden=day<1;$('townReviewSave22').setAttribute('aria-label',sandboxSession?'後台測試進度':'遊戲進度與備份');const night=isSandboxNight(),si=townVisualSeason();$('townP').dataset.time=night?'night':'day';$('sandboxNightToggle').hidden=!sandboxSession;$('sandboxNightToggle').innerHTML=night?pxIcon('sun')+' 白天':pxIcon('moon')+' 夜晚';const kitchenOn=typeof isKitchenEnabled!=='function'||isKitchenEnabled();$('townKitchen').hidden=!kitchenOn;if(kitchenOn&&$('townKitchen').dataset.built!==String(si)){$('townKitchen').innerHTML=kitchenHouseArt();$('townKitchen').dataset.built=String(si);}$('townKitchen').setAttribute('aria-label',night?'廚房餐廳，開始晚餐營業':'廚房餐廳，晚間營業');
+ $('townReviewSave22').hidden=day<1;$('townReviewSave22').setAttribute('aria-label',sandboxSession?'後台測試進度':'遊戲進度與備份');const night=isSandboxNight(),si=townVisualSeason();$('townP').dataset.time=night?'night':'day';$('sandboxNightToggle').hidden=!sandboxSession;$('sandboxNightToggle').innerHTML=night?pxIcon('sun')+' 白天':pxIcon('moon')+' 夜晚';const kitchenOn=typeof isKitchenEnabled!=='function'||isKitchenEnabled();$('townKitchen').hidden=false;$('townKitchen').classList.toggle('is-mode-disabled',!kitchenOn);$('townKitchen').disabled=!kitchenOn;$('townKitchen').setAttribute('aria-disabled',String(!kitchenOn));if($('townKitchen').dataset.built!==String(si)){$('townKitchen').innerHTML=kitchenHouseArt();$('townKitchen').dataset.built=String(si);}$('townKitchen').setAttribute('aria-label',night?'廚房餐廳，開始晚餐營業':'廚房餐廳，晚間營業');
  const key=si+':'+night;if($('townNightSky').dataset.key!==key){$('townNightSky').innerHTML=night?nightSkyArt(si):'';$('townNightSky').dataset.key=key;}$('townSeason').innerHTML=pxSeasonIcon(si)+' '+SEASONS[si].name+' · 第'+day+'天'+(night?'黑夜 · 餐廳營業':'白天 · 冶煉廠營業');
  for(const id of ['townArchive','townForge','townShop','townTraining','townDecorShop','townGreenhouse']){const el=$(id),existing=el.querySelector('.night-house-glow');if(!night)existing?.remove();else if(!existing){const glow=document.createElement('span');glow.className='night-house-glow';el.appendChild(glow);}}
 }
@@ -3417,8 +3417,20 @@ function renderTown(){
  $('townForge').setAttribute('aria-label','冶煉廠，進入棋盤');
  const forgeOn=typeof isForgeEnabled!=='function'||isForgeEnabled();
  const kitchenOn=typeof isKitchenEnabled!=='function'||isKitchenEnabled();
- ['townForge','townExpedition','townGreenhouse','townShop'].forEach(id=>{if($(id))$(id).hidden=!forgeOn;});
- if($('townKitchen'))$('townKitchen').hidden=!kitchenOn;
+ ['townForge','townExpedition','townGreenhouse','townShop'].forEach(id=>{
+  const el=$(id);if(!el)return;
+  el.hidden=false;
+  el.classList.toggle('is-mode-disabled',!forgeOn);
+  el.disabled=!forgeOn;
+  el.setAttribute('aria-disabled',String(!forgeOn));
+ });
+ if($('townKitchen')){
+  const el=$('townKitchen');
+  el.hidden=false;
+  el.classList.toggle('is-mode-disabled',!kitchenOn);
+  el.disabled=!kitchenOn;
+  el.setAttribute('aria-disabled',String(!kitchenOn));
+ }
  renderTownVisitors(remaining);
  if(!$('townFountain').innerHTML)$('townFountain').innerHTML=townFountainArt();
  if(!$('townExpedition').dataset.built){$('townExpedition').innerHTML=townExpeditionSign();$('townExpedition').dataset.built='1';}
@@ -5868,13 +5880,24 @@ function activeDailyHeadline(){
  return day>0&&m.headlineId?DAILY_HEADLINES.find(h=>h.id===m.headlineId)||null:null;
 }
 
+function isLandmarkEnabled(key){
+ if(!isKitchenEnabled()&&key==='kitchen')return false;
+ if(!isForgeEnabled()&&['forge','expedition','greenhouse'].includes(key))return false;
+ return true;
+}
+
 function buildingLandmarkTier(kind){
- if(day<1)return 0;
+ if(day<1||!isLandmarkEnabled(kind))return 0;
  return ensureWorkshopMomentum().landmarks[kind]||0;
 }
 
 function landmarkBonuses(){
- const l=day>0?ensureWorkshopMomentum().landmarks:freshTownLandmarks();
+ const raw=day>0?ensureWorkshopMomentum().landmarks:freshTownLandmarks();
+ const l={...raw};
+ if(!isLandmarkEnabled('forge'))l.forge=0;
+ if(!isLandmarkEnabled('kitchen'))l.kitchen=0;
+ if(!isLandmarkEnabled('expedition'))l.expedition=0;
+ if(!isLandmarkEnabled('greenhouse'))l.greenhouse=0;
  return {
   forgeSale:[0,.08,.16,.25][l.forge]||0,
   forgeHeatReduce:[0,2,4,6][l.forge]||0,
@@ -6145,7 +6168,7 @@ function pickDailyHeadline(choice){
 
 function upgradeLandmark(key){
  const lm=TOWN_LANDMARKS[key];
- if(day<1||!lm)return false;
+ if(day<1||!lm||!isLandmarkEnabled(key))return false;
  const m=ensureWorkshopMomentum(),lv=m.landmarks[key]||0;
  if(lv>=lm.max)return false;
  const cost=lm.costs[lv];
@@ -6190,11 +6213,7 @@ function renderTownChronicle(){
 
  if(chronicleTab==='landmarks'){
   const heroW=isForgeEnabled()?bestMonumentWeapon():null;
-  const visibleLandmarks=Object.values(TOWN_LANDMARKS).filter(lm=>{
-   if(!isKitchenEnabled()&&lm.key==='kitchen')return false;
-   if(!isForgeEnabled()&&['forge','expedition','greenhouse'].includes(lm.key))return false;
-   return true;
-  });
+  const visibleLandmarks=Object.values(TOWN_LANDMARKS).filter(lm=>isLandmarkEnabled(lm.key));
   const totalLv=visibleLandmarks.reduce((sum,lm)=>sum+(m.landmarks[lm.key]||0),0),maxLv=visibleLandmarks.length*3,pct=maxLv?Math.round((totalLv/maxLv)*100):0;
   const cards=visibleLandmarks.map(lm=>{
    const lv=m.landmarks[lm.key]||0,maxed=lv>=lm.max,cost=maxed?0:lm.costs[lv],canAfford=sandboxSession||coins>=cost;
@@ -7741,7 +7760,7 @@ function installTownMotionObserver(){
  const observer=new MutationObserver(syncTownMotion);['townP',...townModalIds].forEach(id=>observer.observe($(id),{attributes:true,attributeFilter:['style','hidden']}));document.addEventListener('visibilitychange',syncTownMotion);syncTownMotion();
 }
 
-function openP(id){$(id).style.display="flex";render();if(id==='greenhouseP')renderGreenhousePanel();}
+function openP(id){if((id==='shopP'||id==='greenhouseP')&&typeof isForgeEnabled==='function'&&!isForgeEnabled()){toast('餐廳模式未開放此建築。');return;}$(id).style.display="flex";render();if(id==='greenhouseP')renderGreenhousePanel();}
 function closeP(id){$(id).style.display="none"}let sceneTransitionCurrent='遊戲首頁',sceneTransitionRun=null,sceneTransitionApplying=false;
 function finishSceneTransition(run){
  if(sceneTransitionRun!==run)return;sceneTransitionRun=null;clearTimeout(run.timer);for(const animation of run.animations){animation.onfinish=null;animation.oncancel=null;animation.cancel?.();}
@@ -7908,7 +7927,7 @@ installFriendsControls();
 const LEADERBOARD_ORIGIN='https://forge-master-leaderboard.adeption.chatgpt.site';
 const LB_PROFILE_KEY='forgeOnlinePlayerV1',LB_PENDING_KEY='forgeOnlinePendingV1';
 let onlinePlayer=null,onlineRows=[],onlineMine=null,onlineBusy=false,onlineTimer=null,onlineNameCallback=null;
-let onlineRequestVersion=0,onlineNameRequestVersion=0,onlineLastUpload=0;
+let onlineRequestVersion=0,onlineNameRequestVersion=0,onlineLastUpload=0,leaderboardSearchQuery='';
 function readOnline(key,fallback){try{return JSON.parse(localStorage.getItem(key)||'null')||fallback;}catch{return fallback;}}
 function onlineNameKey(name){return String(name||'').normalize('NFKC').trim().replace(/\s+/g,' ').toLowerCase();}
 function onlineAllowed(){return !sandboxSession&&!testRun&&!booting&&day>0&&onlinePlayer&&onlineNameKey(playerName)===onlineNameKey(onlinePlayer.name);}
@@ -7939,12 +7958,12 @@ async function claimOnlineName(name){
 function onlineWeapon(w,c){if(!w)return null;const out={k:'w',c,t:w.t,m:w.m||0,b:w.b||0};for(const k of ['cs','parts','dts','element','legendId','legendCore','legendPrice','stars','starXp'])if(w[k]!==undefined)out[k]=JSON.parse(JSON.stringify(w[k]));return out;}
 function captureOnlineRecord(){
  if(!onlineAllowed()||score()<=0)return null;
- return {mode:'normal',testRun:false,sandbox:false,runId:String(runId),score:score(),earned,magic,day,served:all,quests:qDone,expedition:expeditionState.cleared.length,avatar:normalizeAvatar(playerAvatar),weapons:best.map((w,c)=>onlineWeapon(w,c)),skills:{...skills}};
+ return {mode:'normal',runMode:typeof activeRunMode==='function'?activeRunMode():'normal',runScope:typeof activeRunScope==='function'?activeRunScope():'both',testRun:false,sandbox:false,runId:String(runId),score:score(),earned,magic,day,served:all,quests:qDone,expedition:expeditionState.cleared.length,avatar:normalizeAvatar(playerAvatar),weapons:best.map((w,c)=>onlineWeapon(w,c)),skills:{...skills}};
 }
 function historicalOnlineRecord(r){
  if(!onlinePlayer||onlineNameKey(r.name)!==onlineNameKey(onlinePlayer.name)||!Number.isSafeInteger(r.score)||r.score<=0)return null;
  const legacy=!Number.isSafeInteger(r.earned)||!Number.isSafeInteger(r.magic);
- return {mode:'normal',testRun:false,sandbox:false,legacy,runId:String(r.id),score:r.score,earned:legacy?0:r.earned,magic:legacy?0:r.magic,day:legacy?0:r.day,served:r.served||0,quests:r.quests||0,expedition:r.expedition||0,avatar:normalizeAvatar(r.avatar||AVATAR_DEFAULT),weapons:Array.from({length:10},(_,c)=>onlineWeapon(r.best?.[c],c)),skills:r.skills||{}};
+ return {mode:'normal',runMode:r.runMode||'normal',runScope:r.runScope||'both',testRun:false,sandbox:false,legacy,runId:String(r.id),score:r.score,earned:legacy?0:r.earned,magic:legacy?0:r.magic,day:legacy?0:r.day,served:r.served||0,quests:r.quests||0,expedition:r.expedition||0,avatar:normalizeAvatar(r.avatar||AVATAR_DEFAULT),weapons:Array.from({length:10},(_,c)=>onlineWeapon(r.best?.[c],c)),skills:r.skills||{}};
 }
 function queueOnlineRecord(immediate=false){
  if(sandboxSession||testRun||booting||!onlinePlayer)return;
@@ -7967,7 +7986,10 @@ async function flushOnlineRecord(manual=false){
  finally{onlineBusy=false;}
 }
 function renderOnlineAccount(){
- const p=onlinePlayer;$('leaderboardIdentity').textContent=p?'玩家：'+p.name+' · '+(onlineMine?'目前第 '+onlineMine.rank+' 名，最高 '+onlineMine.score.toLocaleString()+' 分':'尚未上傳成績'):'建立唯一玩家名稱，即可加入排行榜。';
+ const p=onlinePlayer;
+ const pending=p?readOnline(LB_PENDING_KEY,{})[p.id]:null;
+ const pendingNote=pending?'（待同步 '+pending.score.toLocaleString()+' 分）':'';
+ $('leaderboardIdentity').innerHTML=p?pxIcon('trophy')+' 玩家：<b>'+esc(p.name)+'</b> · '+(onlineMine?'目前第 <b>'+onlineMine.rank+'</b> 名 · 最高 <b>'+onlineMine.score.toLocaleString()+'</b> 分':'尚未上傳成績')+pendingNote:'建立唯一玩家名稱，即可加入排行榜。';
  $('leaderboardRegisterForm').hidden=!!p;$('leaderboardAccountActions').hidden=!p;$('leaderboardKeyBox').hidden=true;
  $('leaderboardSwitch').hidden=!p;$('leaderboardSync').disabled=!p||sandboxSession||testRun;
  $('leaderboardLocalOnly').hidden=!(sandboxSession||testRun);
@@ -7981,13 +8003,55 @@ async function openLeaderboard(){
   if(version===onlineRequestVersion)$('leaderboardStatus').textContent='每位玩家只保留最高分，點擊紀錄可查看最佳武器。';
  }catch(e){if(version===onlineRequestVersion)$('leaderboardStatus').textContent='無法讀取排行榜：'+e.message+'，請稍後重新整理。';}
 }
+function leaderboardModeLabel(r){
+ if(!r)return '';
+ const scope=r.runScope&&typeof RUN_SCOPES!=='undefined'?RUN_SCOPES[r.runScope]?.name:'';
+ const mode=r.runMode&&r.runMode!=='normal'&&typeof RUN_MODES!=='undefined'?RUN_MODES[r.runMode]?.name:'';
+ return [scope,mode].filter(Boolean).join(' · ');
+}
+function jumpToMyLeaderboardRank(){
+ const me=$('leaderboardList')?.querySelector('.leaderboard-row.is-me');
+ if(!me){toast('目前前 100 名榜單中尚未找到你的紀錄。');return;}
+ me.scrollIntoView({behavior:'smooth',block:'center'});
+ me.classList.remove('is-pulse');void me.offsetWidth;me.classList.add('is-pulse');
+}
 function renderLeaderboardRows(){
- $('leaderboardList').innerHTML=onlineRows.length?onlineRows.map((r,i)=>'<button class="leaderboard-row '+(r.playerId===onlinePlayer?.id?'is-me':'')+'" data-online-row="'+i+'"><b class="lb-rank">'+(r.rank<=3?['🥇','🥈','🥉'][r.rank-1]:r.rank)+'</b><span class="lb-avatar">'+avatarSVG(normalizeAvatar(r.avatar))+'</span><span class="lb-name">'+esc(r.name)+'<small>'+(r.day?'第 '+r.day+' 天 · 遠征 '+r.expedition+'/20':'舊版最高紀錄')+'</small></span><strong>'+r.score.toLocaleString()+'<small>分</small></strong></button>').join(''):'<div class="lb-empty">第一個傳奇故事，等待你來寫下。<p>目前還沒有上傳的紀錄。</p></div>';
+ const list=$('leaderboardList');if(!list)return;
+ if(!onlineRows.length){
+  list.innerHTML='<div class="lb-empty">第一個傳奇故事，等待你來寫下。<p>目前還沒有上傳的紀錄。</p></div>';
+  return;
+ }
+ const q=onlineNameKey(leaderboardSearchQuery);
+ const indexed=onlineRows.map((r,i)=>({r,i})).filter(({r})=>!q||onlineNameKey(r.name).includes(q));
+ const hasMe=onlineRows.some(r=>r.playerId===onlinePlayer?.id);
+ const toolbar='<div class="lb-toolbar"><input id="leaderboardSearchInput" type="search" maxlength="20" placeholder="搜尋玩家名稱…" value="'+esc(leaderboardSearchQuery)+'" aria-label="搜尋排行榜玩家">'+(hasMe?'<button type="button" class="lb-jump-me" onclick="jumpToMyLeaderboardRank()">定位我的名次</button>':'')+'</div>';
+ const rowsHtml=indexed.length?indexed.map(({r,i})=>{
+  const rankCls=r.rank===1?' is-top1':r.rank===2?' is-top2':r.rank===3?' is-top3':'';
+  const rankBadge=r.rank<=3?pxIcon('trophy'):'#'+r.rank;
+  const modeTag=leaderboardModeLabel(r);
+  const sub=r.day?'第 '+r.day+' 天 · 遠征 '+r.expedition+'/20'+(modeTag?' · '+modeTag:''):'舊版最高紀錄';
+  return '<button class="leaderboard-row'+(r.playerId===onlinePlayer?.id?' is-me':'')+rankCls+'" data-online-row="'+i+'"><b class="lb-rank">'+rankBadge+'</b><span class="lb-avatar">'+avatarSVG(normalizeAvatar(r.avatar))+'</span><span class="lb-name"><em>'+esc(r.name)+'</em><small>'+esc(sub)+'</small></span><strong>'+r.score.toLocaleString()+'<small>分</small></strong></button>';
+ }).join(''):'<div class="lb-empty">找不到符合「'+esc(leaderboardSearchQuery)+'」的玩家。</div>';
+ list.innerHTML=toolbar+rowsHtml;
+ const inp=$('leaderboardSearchInput');
+ if(inp){
+  inp.oninput=e=>{
+   leaderboardSearchQuery=e.target.value||'';
+   const pos=e.target.selectionStart||leaderboardSearchQuery.length;
+   renderLeaderboardRows();
+   const next=$('leaderboardSearchInput');
+   if(next){next.focus();try{next.setSelectionRange(pos,pos);}catch{}}
+  };
+ }
 }
 function openLeaderboardRecord(index){
- const r=onlineRows[index];if(!r)return;$('leaderboardDetailTitle').textContent='第 '+r.rank+' 名 · '+r.name;$('leaderboardDetailProfile').innerHTML='<span class="lb-detail-avatar">'+avatarSVG(normalizeAvatar(r.avatar))+'</span><div><strong>'+r.score.toLocaleString()+' 分</strong><p>'+(r.day?'第 '+r.day+' 天':'天數未記錄')+' · 服務 '+r.served+' 位客人 · 完成 '+r.quests+' 個任務</p><p>'+(r.day?'遠征 '+r.expedition+'/20':'舊版紀錄，未保存遠征與技能資訊')+' · '+new Date(r.updatedAt).toLocaleString('zh-TW')+'</p></div>';
+ const r=onlineRows[index];if(!r)return;
+ const modeTag=leaderboardModeLabel(r);
+ $('leaderboardDetailTitle').textContent='第 '+r.rank+' 名 · '+r.name;
+ $('leaderboardDetailProfile').innerHTML='<span class="lb-detail-avatar">'+avatarSVG(normalizeAvatar(r.avatar))+'</span><div><strong>'+r.score.toLocaleString()+' 分</strong>'+(modeTag?'<p class="lb-detail-mode">'+esc(modeTag)+'</p>':'')+'<p>'+(r.day?'第 '+r.day+' 天':'天數未記錄')+' · 服務 '+r.served+' 位客人 · 完成 '+r.quests+' 個任務</p><p>'+(r.day?'遠征 '+r.expedition+'/20':'舊版紀錄，未保存遠征與技能資訊')+' · '+new Date(r.updatedAt).toLocaleString('zh-TW')+'</p></div>';
  $('leaderboardDetailWeapons').innerHTML=r.weapons.map((w,c)=>'<button class="lb-weapon" data-online-weapon="'+c+'" '+(!w?'disabled':'')+'>'+(w?hex(c,bands(w),'',w.t,w):'<span class="lb-unknown">?</span>')+'<small>'+esc(w?itemName(w):WN[c])+'</small></button>').join('');
- $('leaderboardDetailSkills').textContent='技能：'+Object.keys(SK).filter(k=>r.skills[k]).map(k=>SK[k].n+' Lv'+r.skills[k]).join('、');$('leaderboardDetailP').dataset.row=String(index);$('leaderboardDetailP').style.display='flex';
+ $('leaderboardDetailSkills').textContent='技能：'+(Object.keys(SK).filter(k=>r.skills[k]).map(k=>SK[k].n+' Lv'+r.skills[k]).join('、')||'無記錄');
+ $('leaderboardDetailP').dataset.row=String(index);$('leaderboardDetailP').style.display='flex';
 }
 async function registerLeaderboardPlayer(){
  if(sandboxSession||testRun)return;$('leaderboardRegister').disabled=true;

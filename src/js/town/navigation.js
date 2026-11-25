@@ -14,8 +14,20 @@ function renderTown(){
  $('townForge').setAttribute('aria-label','冶煉廠，進入棋盤');
  const forgeOn=typeof isForgeEnabled!=='function'||isForgeEnabled();
  const kitchenOn=typeof isKitchenEnabled!=='function'||isKitchenEnabled();
- ['townForge','townExpedition','townGreenhouse','townShop'].forEach(id=>{if($(id))$(id).hidden=!forgeOn;});
- if($('townKitchen'))$('townKitchen').hidden=!kitchenOn;
+ ['townForge','townExpedition','townGreenhouse','townShop'].forEach(id=>{
+  const el=$(id);if(!el)return;
+  el.hidden=false;
+  el.classList.toggle('is-mode-disabled',!forgeOn);
+  el.disabled=!forgeOn;
+  el.setAttribute('aria-disabled',String(!forgeOn));
+ });
+ if($('townKitchen')){
+  const el=$('townKitchen');
+  el.hidden=false;
+  el.classList.toggle('is-mode-disabled',!kitchenOn);
+  el.disabled=!kitchenOn;
+  el.setAttribute('aria-disabled',String(!kitchenOn));
+ }
  renderTownVisitors(remaining);
  if(!$('townFountain').innerHTML)$('townFountain').innerHTML=townFountainArt();
  if(!$('townExpedition').dataset.built){$('townExpedition').innerHTML=townExpeditionSign();$('townExpedition').dataset.built='1';}

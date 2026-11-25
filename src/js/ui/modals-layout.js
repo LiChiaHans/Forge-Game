@@ -29,5 +29,5 @@ function installTownMotionObserver(){
  const observer=new MutationObserver(syncTownMotion);['townP',...townModalIds].forEach(id=>observer.observe($(id),{attributes:true,attributeFilter:['style','hidden']}));document.addEventListener('visibilitychange',syncTownMotion);syncTownMotion();
 }
 
-function openP(id){$(id).style.display="flex";render();if(id==='greenhouseP')renderGreenhousePanel();}
+function openP(id){if((id==='shopP'||id==='greenhouseP')&&typeof isForgeEnabled==='function'&&!isForgeEnabled()){toast('餐廳模式未開放此建築。');return;}$(id).style.display="flex";render();if(id==='greenhouseP')renderGreenhousePanel();}
 function closeP(id){$(id).style.display="none"}

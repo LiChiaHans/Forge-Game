@@ -305,13 +305,24 @@ function activeDailyHeadline(){
  return day>0&&m.headlineId?DAILY_HEADLINES.find(h=>h.id===m.headlineId)||null:null;
 }
 
+function isLandmarkEnabled(key){
+ if(!isKitchenEnabled()&&key==='kitchen')return false;
+ if(!isForgeEnabled()&&['forge','expedition','greenhouse'].includes(key))return false;
+ return true;
+}
+
 function buildingLandmarkTier(kind){
- if(day<1)return 0;
+ if(day<1||!isLandmarkEnabled(kind))return 0;
  return ensureWorkshopMomentum().landmarks[kind]||0;
 }
 
 function landmarkBonuses(){
- const l=day>0?ensureWorkshopMomentum().landmarks:freshTownLandmarks();
+ const raw=day>0?ensureWorkshopMomentum().landmarks:freshTownLandmarks();
+ const l={...raw};
+ if(!isLandmarkEnabled('forge'))l.forge=0;
+ if(!isLandmarkEnabled('kitchen'))l.kitchen=0;
+ if(!isLandmarkEnabled('expedition'))l.expedition=0;
+ if(!isLandmarkEnabled('greenhouse'))l.greenhouse=0;
  return {
   forgeSale:[0,.08,.16,.25][l.forge]||0,
   forgeHeatReduce:[0,2,4,6][l.forge]||0,
@@ -582,7 +593,7 @@ function pickDailyHeadline(choice){
 
 function upgradeLandmark(key){
  const lm=TOWN_LANDMARKS[key];
- if(day<1||!lm)return false;
+ if(day<1||!lm||!isLandmarkEnabled(key))return false;
  const m=ensureWorkshopMomentum(),lv=m.landmarks[key]||0;
  if(lv>=lm.max)return false;
  const cost=lm.costs[lv];
@@ -627,11 +638,7 @@ function renderTownChronicle(){
 
  if(chronicleTab==='landmarks'){
   const heroW=isForgeEnabled()?bestMonumentWeapon():null;
-  const visibleLandmarks=Object.values(TOWN_LANDMARKS).filter(lm=>{
-   if(!isKitchenEnabled()&&lm.key==='kitchen')return false;
-   if(!isForgeEnabled()&&['forge','expedition','greenhouse'].includes(lm.key))return false;
-   return true;
-  });
+  const visibleLandmarks=Object.values(TOWN_LANDMARKS).filter(lm=>isLandmarkEnabled(lm.key));
   const totalLv=visibleLandmarks.reduce((sum,lm)=>sum+(m.landmarks[lm.key]||0),0),maxLv=visibleLandmarks.length*3,pct=maxLv?Math.round((totalLv/maxLv)*100):0;
   const cards=visibleLandmarks.map(lm=>{
    const lv=m.landmarks[lm.key]||0,maxed=lv>=lm.max,cost=maxed?0:lm.costs[lv],canAfford=sandboxSession||coins>=cost;
