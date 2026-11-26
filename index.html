@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="game.css?v=00a6258154235e95">
+<link rel="stylesheet" href="game.css?v=1e411de1746d8509">
 
 
 
@@ -117,7 +117,7 @@
 <div id="greenhouseP" class="exp-overlay"><div class="hp greenhouse-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('greenhouseP')">×</button><h2><i data-px="leaf"></i> 溫室</h2><p class="greenhouse-intro">種下元素之花，三天後收成附魔精華。</p><div id="greenhouseSeeds"></div><div id="greenhouseBeds" class="greenhouse-beds"></div><div id="kitchenCompost22" hidden></div><p id="greenhouseDetail"></p></div></div>
 <div id="seedP" class="exp-overlay"><div class="hp seed-panel"><button type="button" class="modal-x" aria-label="關閉視窗" onclick="dismissModal('seedP')">×</button><h2 id="seedTitle">選擇花種</h2><p id="seedCoins"></p><div id="seedChoices"></div><p class="exp-note">庫存種子免費播種；沒有庫存時購買一顆並立即播種。播種當天為種子，第四天開花。</p></div></div>
 
-<div id="leaderboardP" class="exp-overlay"><div class="hp leaderboard-panel"><button class="modal-x" aria-label="關閉視窗" onclick="onlineRequestVersion++;closeP('leaderboardP')">×</button><h2><i data-px="trophy"></i> 全球排行榜</h2><button class="exp-wide" onclick="openFriends()"><i data-px="friends"></i> 好友與好友造景</button><p id="leaderboardTotal"></p><p id="leaderboardIdentity"></p><p id="leaderboardLocalOnly" hidden>教學與後台測試不會上傳成績。</p>
+<div id="leaderboardP" class="exp-overlay"><div class="hp leaderboard-panel"><button class="modal-x" aria-label="關閉視窗" onclick="onlineRequestVersion++;closeP('leaderboardP')">×</button><h2><i data-px="trophy"></i> 全球排行榜</h2><p id="leaderboardTotal"></p><p id="leaderboardIdentity"></p><p id="leaderboardLocalOnly" hidden>教學與後台測試不會上傳成績。</p>
  <section id="leaderboardRegisterForm"><label for="leaderboardName">玩家名稱（2～16 個字，全站唯一）</label><div class="lb-form-row"><input id="leaderboardName" maxlength="32" autocomplete="nickname" placeholder="輸入你的排行榜名稱"><button id="leaderboardRegister" class="pri" onclick="registerLeaderboardPlayer()">建立玩家</button></div><p>名稱、頭像與最高紀錄會公開在排行榜。</p><details><summary>已有玩家識別碼？取回原本身份</summary><div class="lb-form-row"><input id="leaderboardRestoreKey" type="password" autocomplete="off" placeholder="貼上玩家識別碼"><button id="leaderboardRestore" onclick="restoreLeaderboardPlayer()">取回</button></div></details></section>
  <div id="leaderboardAccountActions" class="lb-actions" hidden><button id="leaderboardSync" onclick="syncLeaderboardNow()">同步最高紀錄</button><button onclick="$('leaderboardKeyBox').hidden=!$('leaderboardKeyBox').hidden;$('leaderboardKey').value=onlinePlayer.key">玩家識別碼</button><button id="leaderboardSwitch" onclick="switchLeaderboardPlayer()">切換玩家</button></div>
  <div id="leaderboardKeyBox" hidden><p>請自行保管；這是取回身份的憑證，勿分享給其他玩家。</p><input id="leaderboardKey" readonly aria-label="玩家識別碼" onclick="this.select()"></div><p id="leaderboardStatus" role="status"></p><div class="lb-actions"><button class="lb-refresh" onclick="openLeaderboard()">↻ 重新整理</button><button onclick="closeP('leaderboardP');openRec()">個人歷史紀錄</button></div><div id="leaderboardList"></div>
