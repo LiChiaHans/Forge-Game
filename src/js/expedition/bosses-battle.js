@@ -1,32 +1,32 @@
 
 
 const EXPEDITIONS=[
- {name:'苔原史萊姆',area:'林間小徑',kind:'slime',color:'#81ad67',hp:65,atk:12,def:3,spd:8,gold:120,loot:{k:'o',t:1}},
- {name:'疾風灰狼',area:'風嘯森林',kind:'wolf',color:'#a3b9bc',hp:115,atk:18,def:6,spd:18,gold:200,loot:{k:'m',s:0}},
- {name:'岩甲魔像',area:'廢棄礦坑',kind:'golem',color:'#99a397',hp:180,atk:22,def:22,spd:8,gold:300,loot:{k:'d',t:0}},
- {name:'盜賊隊長',area:'舊城商道',kind:'knight',color:'#af7773',hp:220,atk:31,def:16,spd:25,gold:450,loot:{k:'o',t:2}},
- {name:'冰霜守衛',area:'霜封哨站',kind:'golem',color:'#a5dbe8',hp:280,atk:35,def:26,spd:17,gold:650,loot:{k:'d',t:1}},
- {name:'熔火魔獸',area:'赤焰山谷',kind:'dragon',color:'#dc9470',hp:340,atk:42,def:20,spd:27,gold:900,loot:{k:'o',t:3}},
- {name:'夜影獵豹',area:'月影古林',kind:'wolf',color:'#a593c7',hp:400,atk:46,def:25,spd:42,gold:1200,loot:{k:'d',t:2}},
- {name:'遺跡巨兵',area:'沉睡王陵',kind:'golem',color:'#c3b17b',hp:480,atk:58,def:38,spd:20,gold:1500,loot:{k:'o',t:4}},
- {name:'暮色飛龍',area:'龍脊山巔',kind:'dragon',color:'#a587b5',hp:580,atk:65,def:36,spd:32,gold:2000,loot:{k:'d',t:3}},
- {name:'古王之鎧',area:'星隕王座',kind:'knight',color:'#e0c57a',hp:700,atk:75,def:45,spd:34,gold:2600,loot:{k:'d',t:4}}
+ {name:'苔原史萊姆',area:'林間小徑',kind:'slime',color:'#81ad67',hp:85,atk:14,def:4,spd:9,gold:120,loot:{k:'o',t:1}},
+ {name:'疾風灰狼',area:'風嘯森林',kind:'wolf',color:'#a3b9bc',hp:150,atk:20,def:8,spd:20,gold:200,loot:{k:'m',s:0}},
+ {name:'岩甲魔像',area:'廢棄礦坑',kind:'golem',color:'#99a397',hp:235,atk:25,def:25,spd:9,gold:300,loot:{k:'d',t:0}},
+ {name:'盜賊隊長',area:'舊城商道',kind:'knight',color:'#af7773',hp:285,atk:35,def:18,spd:27,gold:450,loot:{k:'o',t:2}},
+ {name:'冰霜守衛',area:'霜封哨站',kind:'golem',color:'#a5dbe8',hp:365,atk:39,def:30,spd:19,gold:650,loot:{k:'d',t:1}},
+ {name:'熔火魔獸',area:'赤焰山谷',kind:'dragon',color:'#dc9470',hp:440,atk:47,def:23,spd:29,gold:900,loot:{k:'o',t:3}},
+ {name:'夜影獵豹',area:'月影古林',kind:'wolf',color:'#a593c7',hp:520,atk:52,def:29,spd:45,gold:1200,loot:{k:'d',t:2}},
+ {name:'遺跡巨兵',area:'沉睡王陵',kind:'golem',color:'#c3b17b',hp:625,atk:65,def:44,spd:22,gold:1500,loot:{k:'o',t:4}},
+ {name:'暮色飛龍',area:'龍脊山巔',kind:'dragon',color:'#a587b5',hp:755,atk:73,def:41,spd:35,gold:2000,loot:{k:'d',t:3}},
+ {name:'古王之鎧',area:'星隕王座',kind:'knight',color:'#e0c57a',hp:910,atk:84,def:52,spd:37,gold:2600,loot:{k:'d',t:4}}
 ];
 const SECOND_BOSSES=[
- ['深淵苔皇','潮汐深林','slime','#4f9f8b',1100,99,66,47,3400],
- ['雷嵐獵王','碎雷海岸','wolf','#81c7e5',1400,123,84,61,4100],
- ['玄晶巨像','玄晶礦脈','golem','#a39ed5',1800,147,108,55,4900],
- ['永夜劍侯','暗影王道','knight','#b38ebf',2250,173,121,75,5800],
- ['極寒霜后','冰海王庭','knight','#b5e7ef',2750,198,140,79,6800],
- ['熔日龍王','赤日熔城','dragon','#ef9d72',3400,225,160,84,7900],
- ['虛空追獵者','斷星天梯','wolf','#aa8fe2',4200,258,180,106,9100],
- ['界門鎮守者','世界裂隙','golem','#d9b67c',5050,298,213,93,10500],
- ['星噬古龍','終夜星海','dragon','#b6a0eb',6000,339,234,116,12200],
- ['終焉星冕王','終焉王座','knight','#f0d7a2',7250,388,275,127,15000]
+ ['深淵苔皇','潮汐深林','slime','#4f9f8b',1410,111,76,51,3400],
+ ['雷嵐獵王','碎雷海岸','wolf','#81c7e5',1790,138,97,66,4100],
+ ['玄晶巨像','玄晶礦脈','golem','#a39ed5',2300,165,124,60,4900],
+ ['永夜劍侯','暗影王道','knight','#b38ebf',2880,194,139,81,5800],
+ ['極寒霜后','冰海王庭','knight','#b5e7ef',3520,222,161,85,6800],
+ ['熔日龍王','赤日熔城','dragon','#ef9d72',4350,252,184,91,7900],
+ ['虛空追獵者','斷星天梯','wolf','#aa8fe2',5380,289,207,114,9100],
+ ['界門鎮守者','世界裂隙','golem','#d9b67c',6460,334,245,100,10500],
+ ['星噬古龍','終夜星海','dragon','#b6a0eb',7680,380,269,125,12200],
+ ['終焉星冕王','終焉王座','knight','#f0d7a2',9280,435,316,137,15000]
 ];
 SECOND_BOSSES.forEach(([name,area,kind,color,hp,atk,def,spd,gold])=>EXPEDITIONS.push({name,area,kind,color,hp,atk,def,spd,gold,cycle:2}));
 function freshExpeditionState(){return {day:0,attempts:0,unlocked:0,cleared:[],wonToday:[],victories:0,endless:0,lastBattle:null};}
-let expeditionState=freshExpeditionState(),expeditionSelected='',expeditionStage=0,expeditionBattleStep=0,expeditionTimer=null;
+let expeditionState=freshExpeditionState(),expeditionSelected='',expeditionOffhand='',expeditionStage=0,expeditionBattleStep=0,expeditionTimer=null;
 
 function restoreExpeditionState(raw){
  const r=raw&&typeof raw==='object'?raw:{},s=freshExpeditionState();
@@ -54,20 +54,29 @@ function baseBossRule(m){return m.kind==='dragon'?'巨龍循環：蓄力 → 雙
 function bossIntent(b){const next=(b.enemyTurns||0)+1,m=b.monster;if(m.kind==='dragon')return ['蓄力（本次不攻擊）','蓄力重擊 ×2','普通攻擊'][(next-1)%3];if(m.kind==='wolf'&&next%3===0)return '雙段連擊（各 60%）';if(m.kind==='golem'&&next%3===0)return '攻擊後硬化';return '普通攻擊';}
 function guardBattle(b){if(!b||b.resolved||b.outcome!=='ongoing'||b.guardUsed)return false;b.guardUsed=true;b.guarding=true;b.guardRemainingMs=EXPEDITION_GUARD_MS;b.effectStamp=Date.now();return true;}
 function useExpeditionGuard(){syncExpeditionEffects();if(guardBattle(expeditionState.lastBattle))renderExpeditionBattle();}
-function expeditionBattleState(w,monster){
+function computeExpeditionWeaponStats(w){
  const base=weaponStats(w),mb=medalBonuses(),cb=typeof contractBonuses==='function'?contractBonuses():{battleAtk:0,battleDef:0},effective=Math.min(20,base.stacks||0);
- const stats={...base,atk:Math.round(base.atk*(1+mb.battleAtk+(cb.battleAtk||0))),def:Math.round(base.def*(1+mb.battleDef+(cb.battleDef||0))),spd:Math.round(base.spd*(1+mb.battleSpd)),arcane:base.arcane+effective*mb.enchantExtra,ward:base.ward+effective*mb.enchantExtra};
- const hpMax=100+stats.def*2,shield=stats.ward+Math.round(hpMax*mb.battleStartShield);
- return initCombatTraits({weapon:JSON.parse(JSON.stringify(w)),monster:JSON.parse(JSON.stringify(monster)),stats,hpMax,hp:hpMax,shield,enemyHp:monster.hp,heroClock:1000/Math.max(1,stats.spd),enemyClock:1000/Math.max(1,monster.spd),enemyDef:monster.def,skillUsed:false,guardUsed:false,guarding:false,guardRemainingMs:0,foodRecovered:0,enemyTurns:0,bossHardened:false,outcome:'ongoing',resolved:false,log:[]});
+ return {...base,atk:Math.round(base.atk*(1+mb.battleAtk+(cb.battleAtk||0))),def:Math.round(base.def*(1+mb.battleDef+(cb.battleDef||0))),spd:Math.round(base.spd*(1+mb.battleSpd)),arcane:base.arcane+effective*mb.enchantExtra,ward:base.ward+effective*mb.enchantExtra};
+}
+function expeditionBattleState(w,monster,offhand=null){
+ const mb=medalBonuses(),stats=computeExpeditionWeaponStats(w),offhandStats=offhand?computeExpeditionWeaponStats(offhand):null;
+ const hpMax=100+stats.def*2+(offhandStats?Math.round(offhandStats.def*.5):0),shield=stats.ward+Math.round(hpMax*mb.battleStartShield);
+ return initCombatTraits({weapon:JSON.parse(JSON.stringify(w)),offhand:offhand?JSON.parse(JSON.stringify(offhand)):null,monster:JSON.parse(JSON.stringify(monster)),stats,offhandStats,hpMax,hp:hpMax,shield,enemyHp:monster.hp,heroClock:1000/Math.max(1,stats.spd),enemyClock:1000/Math.max(1,monster.spd),enemyDef:monster.def,skillUsed:false,offhandSkillUsed:false,tagCooldown:0,bossStunned:0,guardUsed:false,guarding:false,guardRemainingMs:0,foodRecovered:0,enemyTurns:0,bossHardened:false,outcome:'ongoing',resolved:false,log:[]});
 }
 function runBattleTurn(b){
  if(b.outcome!=='ongoing')return;const s=b.stats,m=b.monster,heroElement=elementOf(b.weapon),enemyElement=elementOf(m);let row;
  if(b.heroClock<=b.enemyClock){
   // Time still passes while guarding, but a missed attack is never banked for later.
   if(b.guarding){b.heroClock+=1000/Math.max(1,s.spd);return;}
-  const profile=weaponAttackProfile(b),mult=elementMultiplier(heroElement,enemyElement),base=Math.max(1,Math.round(s.atk*mult*profile.power)-Math.floor(b.enemyDef*(1-profile.ignore)*.6)),physical=Math.max(1,Math.round(base*(b.bossHardened?.4:1)*bossPhysicalFactor(b))),hardened=!!b.bossHardened,raw=physical+s.arcane+profile.arcane+profile.counter,absorbed=Math.min(b.enemyWard||0,raw),damage=Math.min(b.enemyHp,raw-absorbed);b.enemyWard=Math.max(0,(b.enemyWard||0)-absorbed);b.bossHardened=false;b.enemyHp-=damage;b.heroClock+=1000/Math.max(1,s.spd);
-  row={actor:'hero',damage,effect:profile.text,element:heroElement,multiplier:mult,text:elementName(heroElement)+'屬性命中 '+damage+' 傷害（×'+mult.toFixed(2)+'）'+(hardened?' · 硬化抵擋部分物理傷害':'')+(profile.text?' · '+profile.text:'')+(absorbed?' · 敵盾吸收 '+absorbed:'')};applyHeroExtra(b,row);
+  if(b.tagCooldown>0)b.tagCooldown--;
+  const profile=weaponAttackProfile(b),mult=elementMultiplier(heroElement,enemyElement),base=Math.max(1,Math.round(s.atk*mult*profile.power)-Math.floor(b.enemyDef*(1-profile.ignore)*.6)),stunMult=b.bossStunned>0?1.35:1,physical=Math.max(1,Math.round(base*(b.bossHardened?.4:1)*bossPhysicalFactor(b)*stunMult)),hardened=!!b.bossHardened,raw=physical+s.arcane+profile.arcane+profile.counter,absorbed=Math.min(b.enemyWard||0,raw),damage=Math.min(b.enemyHp,raw-absorbed);b.enemyWard=Math.max(0,(b.enemyWard||0)-absorbed);b.bossHardened=false;b.enemyHp-=damage;b.heroClock+=1000/Math.max(1,s.spd);
+  row={actor:'hero',damage,effect:profile.text,element:heroElement,multiplier:mult,text:elementName(heroElement)+'屬性命中 '+damage+' 傷害（×'+mult.toFixed(2)+'）'+(stunMult>1?' · 破招暴擊':'')+(hardened?' · 硬化抵擋部分物理傷害':'')+(profile.text?' · '+profile.text:'')+(absorbed?' · 敵盾吸收 '+absorbed:'')};applyHeroExtra(b,row);
  }else{
+  if(b.bossStunned>0){
+   b.bossStunned--;b.enemyClock+=1000/Math.max(1,m.spd);
+   row={actor:'enemy',damage:0,absorbed:0,stunned:true,text:m.name+' 暈眩中，無法行動！'};
+   b.log.push({...row,hp:b.hp,shield:b.shield,enemyHp:b.enemyHp});checkBattleOutcome(b);return;
+  }
   b.enemyTurns=(b.enemyTurns||0)+1;const turn=b.enemyTurns,phase=(turn-1)%3,mult=elementMultiplier(enemyElement,heroElement),charge=m.kind==='dragon'&&phase===0,heavy=m.kind==='dragon'&&phase===1,hits=m.kind==='wolf'&&turn%3===0?2:1,power=heavy?2:hits===2?.6:1;
   let damage=0,absorbed=0;const traitPower=charge?1:bossAttackPower(b);
   if(!charge){for(let k=0;k<hits;k++){let raw=Math.max(1,Math.round(m.atk*mult*power*traitPower)-Math.floor(s.def*.6));raw=weaponIncoming(b,raw);if(b.guarding)raw=Math.max(1,Math.ceil(raw*.4));const block=Math.min(b.shield,raw);b.shield-=block;absorbed+=block;const hit=Math.min(b.hp,raw-block);b.hp-=hit;damage+=hit;}b.enemyAttacks=(b.enemyAttacks||0)+1;const defended=b.guarding;b.foodRecovered=Math.max(0,(b.foodRecovered||0)-damage);row={actor:'enemy',damage,absorbed,element:enemyElement,multiplier:mult,text:m.name+(heavy?' 蓄力重擊':hits===2?' 雙段連擊':'攻擊')+'造成 '+damage+' 傷害'+(defended?' · 防禦架勢減傷 60%':'')+(absorbed?' · 護盾吸收 '+absorbed:'')};}
@@ -101,13 +110,45 @@ function consumeExpeditionWeapon(chosen){
  else{const [where,index]=chosen.key.split(':'),list=where==='g'?g:where==='pack'?pack:where==='bag'?bag:null,i=Number(index);if(!list||list[i]!==chosen.w)return false;if(where==='bag')list.splice(i,1);else list[i]=null;}
  return true;
 }
+function tagSwitchBattle(b){
+ if(!b||!b.offhand||b.resolved||b.outcome!=='ongoing'||b.guarding||(b.tagCooldown||0)>0)return false;
+ const prevW=b.weapon,prevS=b.stats,prevSkill=b.skillUsed;
+ b.weapon=b.offhand;b.stats=b.offhandStats||computeExpeditionWeaponStats(b.weapon);b.skillUsed=!!b.offhandSkillUsed;
+ b.offhand=prevW;b.offhandStats=prevS;b.offhandSkillUsed=!!prevSkill;
+ b.tagCooldown=3;
+ const e1=elementOf(prevW),e2=elementOf(b.weapon),em=elementOf(b.monster),mult=elementMultiplier(e2,em);
+ const resonance=e1!=='none'&&e2!=='none'&&e1!==e2;
+ const power=resonance?1.55:1.15;
+ const raw=Math.max(1,Math.round(b.stats.atk*mult*power)-Math.floor(b.enemyDef*.45))+b.stats.arcane;
+ const absorbed=Math.min(b.enemyWard||0,raw),damage=Math.min(b.enemyHp,raw-absorbed);
+ b.enemyWard=Math.max(0,(b.enemyWard||0)-absorbed);b.enemyHp-=damage;
+ const canInterrupt=!!(b.chargeName&&b.chargeRemainingMs>0)&&([5,8].includes(b.weapon.c)||mult>=1.5||resonance);
+ if(canInterrupt){
+  b.chargeName=null;b.chargeRemainingMs=0;b.chargeTurn=0;b.bossStunned=1;
+  b.enemyClock+=600/Math.max(1,b.monster.spd);
+ }
+ b.log.push({actor:'hero',skill:true,tag:true,resonance,interrupted:canInterrupt,damage,hp:b.hp,shield:b.shield,enemyHp:b.enemyHp,text:'🔄 換手連攜「'+itemName(b.weapon)+'」！'+damage+' 傷害'+(resonance?' · 元素共鳴！':'')+(canInterrupt?' · ⚡打斷蓄力並暈眩！':'')+(absorbed?' · 敵盾吸收 '+absorbed:'')});
+ checkBattleOutcome(b);return true;
+}
+function useExpeditionTag(){
+ syncExpeditionEffects();const b=expeditionState.lastBattle;if(!b||!tagSwitchBattle(b))return;
+ expeditionBattleStep=b.log.length;combatSound('hero');if(b.outcome!=='ongoing')settleExpeditionBattle(b);
+ renderExpeditionBattle();showBattleFeedback(b.log.at(-1));
+}
 function beginExpedition(confirmed=false){
  syncExpeditionDay();if((!sandboxSession&&(lives<=0||expeditionStage>expeditionState.unlocked||expeditionCleared(expeditionStage)))||$('expeditionSetup').hidden)return;
  if(!sandboxSession&&lives===1&&!confirmed){confirmBox('只剩最後一顆愛心','這次遠征若落敗，會失去最後一顆愛心並結束遊戲。出戰武器也會消耗。確定要挑戰嗎？','仍要挑戰',()=>beginExpedition(true));return;}
- const chosen=expeditionWeapons().find(x=>x.key===expeditionSelected);if(!chosen)return;if(chosen.w.protected){toast('請先取消武器保護才能出戰');return;}
+ const list=expeditionWeapons(),chosen=list.find(x=>x.key===expeditionSelected);if(!chosen)return;if(chosen.w.protected){toast('請先取消武器保護才能出戰');return;}
+ const offhandChosen=expeditionOffhand&&expeditionOffhand!==chosen.key?list.find(x=>x.key===expeditionOffhand&&!x.w.protected):null;
  if(expeditionFoodSelected&&!expeditionFoodOptions().some(x=>x.w===expeditionFoodSelected)){expeditionFoodSelected=null;renderExpeditionFoodSetup();toast('選定料理已不可用，請重新選擇。');return;}
- const b=expeditionBattleState(chosen.w,expeditionMonster(expeditionStage));b.foodChoice=expeditionFoodSelected;if(!consumeExpeditionWeapon(chosen))return;
- battleUserPaused=false;battleLastAdvance=0;expeditionFoodOpen=false;stopExpeditionPlayback();expeditionState.attempts++;expeditionState.lastBattle={...b,stage:expeditionStage,gold:0,loot:null,first:true,day};expeditionSelected='';expeditionBattleStep=0;
+ const b=expeditionBattleState(chosen.w,expeditionMonster(expeditionStage),offhandChosen?offhandChosen.w:null);b.foodChoice=expeditionFoodSelected;
+ if(!consumeExpeditionWeapon(chosen))return;
+ if(offhandChosen){
+  // Re-index if both were in bag and main was earlier in array
+  const sameBag=chosen.key.startsWith('bag:')&&offhandChosen.key.startsWith('bag:');
+  const okOff=sameBag?consumeExpeditionWeapon({...offhandChosen,key:'bag:'+(Number(offhandChosen.key.split(':')[1])>(Number(chosen.key.split(':')[1]))?Number(offhandChosen.key.split(':')[1])-1:Number(offhandChosen.key.split(':')[1]))}):consumeExpeditionWeapon(offhandChosen);
+ }
+ battleUserPaused=false;battleLastAdvance=0;expeditionFoodOpen=false;stopExpeditionPlayback();expeditionState.attempts++;expeditionState.lastBattle={...b,stage:expeditionStage,gold:0,loot:null,first:true,day};expeditionSelected='';expeditionOffhand='';expeditionBattleStep=0;
  // Save the consumed weapon before the first action. Reload/exit never refunds it or grants an unearned reward.
  saveNow();if(sandboxSession)saveReviewProgress();render();$('expeditionSetup').hidden=true;$('expeditionBattle').hidden=false;renderExpeditionBattle();
  expeditionTimer=setInterval(advanceExpeditionBattle,420);startExpeditionFeedbackClock();

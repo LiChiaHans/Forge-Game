@@ -949,7 +949,7 @@ function renderTownWingModal({perfectCatch=null,newCatch=false,digReveal=[],cros
   const tot=mus.fish.length+mus.relics.length,maxTot=FISH_CATALOG.length+RELIC_CATALOG.length;
   const readyRelics=RELIC_CATALOG.filter(r=>(mus.relicShards?.[r.id]||0)>=9&&!mus.relics.includes(r.id)).length;
   title.textContent='🏛 星露博物小屋';
-  const tabs='<div class="tc-tabs is-3col"><button type="button" aria-pressed="'+(museumTab==='fish')+'" onclick="setMuseumTab(\'fish\')">🐟 魚類 '+mus.fish.length+'/'+FISH_CATALOG.length+'</button><button type="button" aria-pressed="'+(museumTab==='relic')+'" onclick="setMuseumTab(\'relic\')">🏺 古物 '+mus.relics.length+'/'+RELIC_CATALOG.length+(readyRelics?' 🧩':'')+'</button><button type="button" aria-pressed="'+(museumTab==='milestone')+'" onclick="setMuseumTab(\'milestone\')">🏆 加成總覽</button></div>';
+  const tabs='<div class="tc-tabs is-3col"><button type="button" aria-pressed="'+(museumTab==='fish')+'" onclick="setMuseumTab(\'fish\')">'+pxIcon('fish')+' 魚類 '+mus.fish.length+'/'+FISH_CATALOG.length+'</button><button type="button" aria-pressed="'+(museumTab==='relic')+'" onclick="setMuseumTab(\'relic\')">'+pxIcon('pickaxe')+' 古物 '+mus.relics.length+'/'+RELIC_CATALOG.length+(readyRelics?' '+pxIcon('puzzle'):'')+'</button><button type="button" aria-pressed="'+(museumTab==='milestone')+'" onclick="setMuseumTab(\'milestone\')">'+pxIcon('trophy')+' 加成總覽</button></div>';
   let content='';
   if(museumTab==='fish'){
    content='<div class="tw-grid">'+FISH_CATALOG.map(f=>museumFishCardHTML(f,mus)).join('')+'</div>';

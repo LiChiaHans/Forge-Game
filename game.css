@@ -5402,3 +5402,36 @@ button,a,select,input{-webkit-tap-highlight-color:transparent}
  flex:1 1 0;min-width:0;min-height:40px;height:40px;margin:0!important;padding:8px 10px!important;
  display:inline-flex;align-items:center;justify-content:center;font-size:13px;white-space:nowrap
 }
+
+/* Dual-Weapon Tag-Team Expedition & Battle Floating FX */
+.exp-weapon-wrap{display:flex;flex-direction:column;gap:4px;min-width:0}
+.exp-weapon-wrap .exp-weapon.is-offhand{
+ border-color:#68b8e6!important;background:linear-gradient(180deg,#1f3547,#142330)!important
+}
+.exp-offhand-btn{
+ padding:4px 6px;font-size:11px;font-weight:800;border-radius:5px;
+ border:1px solid #5c839e;background:#1a2b38;color:#b8ddf2
+}
+.exp-offhand-btn.is-on{
+ border-color:#80d4ff;background:#264b66;color:#fff
+}
+.exp-dual-banner{
+ margin:0 0 8px;padding:7px 10px;border-radius:7px;
+ border:1.5px solid #68b8e6;background:linear-gradient(180deg,#1c3142,#13212c);
+ color:#e4f5ff
+}
+.exp-dual-banner b{display:block;font-size:12.5px;color:#9de2ff}
+.exp-dual-banner small{display:block;font-size:11px;color:#c2dfee;margin-top:2px}
+.exp-offhand-pill{
+ display:inline-block;margin:2px 0;padding:1px 6px;border-radius:99px;
+ border:1px solid #6ec2f088;background:#172b3a;color:#9fe0ff;font-size:10px;font-weight:700
+}
+#expeditionTag{
+ border:1.5px solid #68b8e6!important;
+ background:linear-gradient(180deg,#2b5a7a,#1b3b52)!important;color:#eef9ff!important
+}
+#expeditionTag:disabled{opacity:.52!important}
+.battle-damage22.is-resonance{
+ color:#8bf0ff!important;text-shadow:0 2px 6px #072233,0 0 10px #4cd3ff!important;
+ font-size:17px!important
+}

@@ -81,13 +81,13 @@ function openSaves(mode){
   const list=[...saves].sort((a,b)=>b.updated-a.updated);
   $("svC").innerHTML=list.map(e=>
     `<div class="rcard"><div class="rh"><span class="save-player-heading"><span class="player-avatar">${avatarSVG(e.avatar||e.state?.avatar)}</span><b>${esc(e.name)}</b></span><span>第 ${e.day} 天</span></div>
-    <div class="rd">🏷 模式：${esc(typeof runModeSummaryText==='function'?runModeSummaryText(e.state?.momentum):'標準模式')}</div>
-    <div class="rd">🕒 開始：${esc(e.date)} ${esc(e.time||"")}</div>
-    <div>💰 ${e.coins}　⭐ ${e.score} 分</div>
-    <div>🙋 服務 ${(e.state&&e.state.all)||0} 位　✅ 任務 ${(e.state&&e.state.qDone)||0} 個</div>
+    <div class="rd">${pxIcon('scroll')} 模式：${esc(typeof runModeSummaryText==='function'?runModeSummaryText(e.state?.momentum):'標準模式')}</div>
+    <div class="rd">${pxIcon('hourglass')} 開始：${esc(e.date)} ${esc(e.time||"")}</div>
+    <div>${pxIcon('coin')} ${e.coins}　${pxIcon('star')} ${e.score} 分</div>
+    <div>${pxIcon('friends')} 服務 ${(e.state&&e.state.all)||0} 位　${pxIcon('check')} 任務 ${(e.state&&e.state.qDone)||0} 個</div>
     <div style="display:flex;gap:8px;margin-top:8px">
     <button class="pri" style="flex:1" data-id="${e.id}" data-a="${mode==="over"?"over":"load"}">${mode==="over"?"覆蓋這個存檔":"繼續"}</button>
-    ${mode==="over"?"":`<button data-id="${e.id}" data-a="del">🗑</button>`}
+    ${mode==="over"?"":`<button data-id="${e.id}" data-a="del" aria-label="刪除存檔">刪除</button>`}
     </div></div>`
   ).join("")||"<p>沒有存檔</p>";
   $("svP").style.display="flex";

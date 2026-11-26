@@ -46,7 +46,7 @@ function openRec(){
   $("recS").textContent=recs.length
     ?"最多保留 5 筆，依分數由高到低排列。":"還沒有紀錄，快去玩一局吧！";
   $("recC").innerHTML=recs.map((r,k)=>
-    `<div class="rcard" data-record-index="${k}"><div class="rh"><b>#${k+1} ${esc(r.name)}</b><span>⭐ ${r.score} 分</span></div><div class="rd">📅 ${esc(r.date||"")}${r.served!=null?" · 🙋 服務 "+r.served+" 位 · ✅ 任務 "+(r.quests||0)+" 個":""}</div><div class="rg">${colHTML(r.best)}</div></div>`
+    `<div class="rcard" data-record-index="${k}"><div class="rh"><b>#${k+1} ${esc(r.name)}</b><span>${pxIcon('star')} ${r.score} 分</span></div><div class="rd">${pxIcon('hourglass')} ${esc(r.date||"")}${r.served!=null?" · "+pxIcon('friends')+" 服務 "+r.served+" 位 · "+pxIcon('check')+" 任務 "+(r.quests||0)+" 個":""}</div><div class="rg">${colHTML(r.best)}</div></div>`
   ).join("");
   $("recClr").style.display=recs.length?"block":"none";
   $("recP").style.display="flex";
